@@ -1,18 +1,13 @@
-import {FieldDef} from '../../fielddef';
+import {isCountingAggregateOp} from '../../aggregate';
+import {isScaleChannel} from '../../channel';
+import {FieldDef, isContinuous, isDiscrete} from '../../fielddef';
+import {hasContinuousDomain} from '../../scale';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, Dict, differ, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
-
-
-const DEFAULT_NULL_FILTERS = {
-  nominal: false,
-  ordinal: false,
-  quantitative: true,
-  temporal: true
-};
 
 export class NullFilterNode extends DataFlowNode {
   private _filteredFields: Dict<FieldDef<string>>;
@@ -28,15 +23,18 @@ export class NullFilterNode extends DataFlowNode {
   }
 
   public static make(model: ModelWithField) {
-    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef) => {
-      if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
-        if (model.config.filterInvalid ||
-          (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
-          aggregator[fieldDef.field] = fieldDef;
-        } else {
-          // define this so we know that we don't filter nulls for this field
-          // this makes it easier to merge into parents
-          aggregator[fieldDef.field] = null;
+    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
+      if (model.config.invalidValues === 'filter' && !fieldDef.aggregate && fieldDef.field) {
+        // Vega's aggregate operator already handle invalid values, so we only have to consider non-aggregate field here.
+
+        const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+        if (scaleComponent) {
+          const scaleType = scaleComponent.get('type');
+
+          // only automatically filter null for continuous domain since discrete domain scales can handle invalid values.
+          if (hasContinuousDomain(scaleType)) {
+            aggregator[fieldDef.field] = fieldDef;
+          }
         }
       }
       return aggregator;

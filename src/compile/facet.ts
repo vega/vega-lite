@@ -9,6 +9,7 @@ import {initFacetResolve, ResolveMapping} from '../resolve';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
+import {VgAxis} from '../vega.schema';
 import {VgDomain, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
@@ -24,7 +25,7 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -179,13 +180,16 @@ export class FacetModel extends ModelWithField {
         const headerChannel = channel === 'x' ? 'column' : 'row';
 
         const layoutHeader = this.component.layoutHeaders[headerChannel];
-        for (const axis of child.component.axes[channel].axes) {
-          const headerType = getHeaderType(axis.orient);
+        for (const axisComponent of child.component.axes[channel]) {
+          const mainAxis = axisComponent.main;
+          const headerType = getHeaderType(mainAxis.get('orient'));
           layoutHeader[headerType] = layoutHeader[headerType] ||
             [this.makeHeaderComponent(headerChannel, false)];
-          layoutHeader[headerType][0].axes.push(axis);
+
+          // LayoutHeader no longer keep track of property precedence, thus let's combine.
+          layoutHeader[headerType][0].axes.push(mainAxis.combine() as VgAxis);
+          delete axisComponent.main;
         }
-        child.component.axes[channel].axes = [];
       } else {
         // Otherwise do nothing for independent axes
       }
@@ -193,14 +197,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public parseLegend() {
-    this.child.parseLegend();
-
-    this.component.legends = {};
-    keys(this.child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      if (this.resolve[channel].legend === 'shared') {
-        moveSharedLegendUp(this.component.legends, this.child, channel);
-      }
-    });
+    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

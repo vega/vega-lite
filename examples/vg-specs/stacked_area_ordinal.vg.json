@@ -23,7 +23,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"])"
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 },
                 {
                     "type": "formula",
@@ -197,14 +197,13 @@
         },
         {
             "name": "color",
-            "type": "sequential",
+            "type": "ordinal",
             "domain": {
                 "data": "source_0",
-                "field": "Cylinders"
+                "field": "Cylinders",
+                "sort": true
             },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+            "range": "ordinal"
         }
     ],
     "axes": [
@@ -246,7 +245,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "SUM(Weight_in_lbs)",
             "zindex": 1
@@ -254,7 +252,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

@@ -21,10 +21,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin",
@@ -162,7 +158,6 @@
     "legends": [
         {
             "fill": "color",
-            "format": "s",
             "title": "MEAN(Horsepower)",
             "type": "gradient"
         }

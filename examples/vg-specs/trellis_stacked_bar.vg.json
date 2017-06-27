@@ -14,10 +14,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "variety",
@@ -209,7 +205,7 @@
             "axes": [
                 {
                     "scale": "x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "SUM(yield)",
@@ -286,7 +282,6 @@
                 {
                     "scale": "x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",

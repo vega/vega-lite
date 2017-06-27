@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 
-import {AxisOrient} from '../../../src/axis';
 import * as encode from '../../../src/compile/axis/encode';
 import {labelAlign} from '../../../src/compile/axis/encode';
+import {AxisOrient} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 

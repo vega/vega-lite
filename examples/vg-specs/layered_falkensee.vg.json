@@ -267,7 +267,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"end\"] !== null && !isNaN(datum[\"end\"])"
+                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
                 },
                 {
                     "type": "formula",
@@ -480,7 +480,7 @@
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "YEAR(start)",
+            "title": "YEAR(start), YEAR(year)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -509,11 +509,11 @@
             "orient": "bottom",
             "tickCount": 5,
             "ticks": false,
-            "zindex": 0
+            "zindex": 0,
+            "gridScale": "y"
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "population",
             "zindex": 1
@@ -521,7 +521,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

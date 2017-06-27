@@ -33,10 +33,6 @@
                     "as": "precipitation"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
-                },
-                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -71,10 +67,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"temp_max\"])",
                     "as": "temp_max"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
                 },
                 {
                     "type": "formula",
@@ -118,10 +110,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"temp_min\"])",
                     "as": "temp_min"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_min\"] !== null && !isNaN(datum[\"temp_min\"])"
                 },
                 {
                     "type": "formula",
@@ -372,17 +360,15 @@
             }
         },
         {
-            "scale": "layer_0_y",
-            "format": "s",
-            "orient": "left",
             "title": "Mean Precipitation",
+            "scale": "layer_0_y",
+            "orient": "left",
             "zindex": 1
         },
         {
-            "scale": "layer_1_y",
-            "format": "s",
-            "orient": "right",
             "title": "Temperature (min and max)",
+            "scale": "layer_1_y",
+            "orient": "right",
             "zindex": 1
         }
     ]

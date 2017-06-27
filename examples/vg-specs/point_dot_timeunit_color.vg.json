@@ -23,7 +23,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 },
                 {
                     "type": "formula",
@@ -117,7 +117,7 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "MEAN(temp)",
@@ -126,7 +126,6 @@
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",

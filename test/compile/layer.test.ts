@@ -104,8 +104,8 @@ describe('Layer', function() {
     it('should create second axis on top', () => {
       model.parseAxisAndHeader();
 
-      assert.equal(model.component.axes['x'].axes.length, 2);
-      assert.equal(model.component.axes['x'].axes[1].orient, 'top');
+      assert.equal(model.component.axes['x'].length, 2);
+      assert.equal(model.component.axes['x'][1].main.implicit.orient, 'top');
     });
   });
 });

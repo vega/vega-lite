@@ -214,7 +214,7 @@
             "axes": [
                 {
                     "scale": "child_Displacement_Horsepower_x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -223,7 +223,6 @@
                 {
                     "scale": "child_Displacement_Horsepower_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -234,7 +233,6 @@
                 },
                 {
                     "scale": "child_Displacement_Horsepower_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Displacement",
                     "zindex": 1
@@ -242,7 +240,6 @@
                 {
                     "scale": "child_Displacement_Horsepower_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -335,7 +332,7 @@
             "axes": [
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -344,7 +341,6 @@
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -355,7 +351,6 @@
                 },
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Displacement",
                     "zindex": 1
@@ -363,7 +358,6 @@
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -456,7 +450,7 @@
             "axes": [
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -465,7 +459,6 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -476,7 +469,6 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -484,7 +476,6 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -577,7 +568,7 @@
             "axes": [
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -586,7 +577,6 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -597,7 +587,6 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -605,7 +594,6 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

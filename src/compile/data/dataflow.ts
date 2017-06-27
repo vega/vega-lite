@@ -69,6 +69,16 @@ export class DataFlowNode {
     this._parent.removeChild(this);
   }
 
+  /**
+   * Insert another node as a parent of this node.
+   */
+  public insertAsParentOf(other: DataFlowNode) {
+    const parent = other.parent;
+    parent.removeChild(this);
+    this.parent = parent;
+    other.parent = this;
+  }
+
   public swapWithParent() {
     const parent = this._parent;
     const newParent = parent.parent;

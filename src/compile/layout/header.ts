@@ -1,9 +1,8 @@
 /**
  * Utility for generating row / column headers
  */
-import {AxisOrient} from '../../axis';
 import {contains} from '../../util';
-import {Orient, VgAxis, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
+import {AxisOrient, Orient, VgAxis, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
 

@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {AGGREGATE_OP_INDEX, AggregateOp} from './aggregate';
+import {AGGREGATE_OP_INDEX, AggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -127,12 +127,10 @@ export interface FieldDef<F> extends FieldDefBase<F> {
 export interface ScaleFieldDef<F> extends FieldDef<F> {
   scale?: Scale;
   /**
-   * Sort order for a particular field.
-   * For quantitative or temporal fields, this can be either `"ascending"` or `"descending"`
-   * For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+   * Sort order for a field with discrete domain.
+   * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
    *
-   * __Default value:__ `"ascending"`
-   *
+   * __Note:__ For fields with continuous domain, please use `"scale": {"reverse": true}` to flip the scale instead.
    */
   sort?: SortField | SortOrder;
 }
@@ -360,6 +358,13 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       fieldDef = {
         ...fieldDef,
         type: fullType
+      };
+    }
+    if (isCountingAggregateOp(fieldDef.aggregate) && fieldDef.type !== 'quantitative') {
+      log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
+      fieldDef = {
+        ...fieldDef,
+        type: 'quantitative'
       };
     }
   } else {

@@ -25,7 +25,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 },
                 {
                     "type": "extent",
@@ -47,7 +47,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')",
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], null) + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], null)",
                     "as": "bin_maxbins_6_Acceleration_range"
                 },
                 {
@@ -219,7 +219,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(Horsepower)",
             "zindex": 1
@@ -227,7 +226,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",
@@ -239,7 +237,6 @@
     "legends": [
         {
             "stroke": "color",
-            "format": "s",
             "title": "BIN(Acceleration)"
         }
     ]

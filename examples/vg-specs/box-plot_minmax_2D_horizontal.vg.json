@@ -16,7 +16,36 @@
             "url": "data/population.json",
             "format": {
                 "type": "json"
-            }
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "q1",
+                        "q3",
+                        "median",
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "people",
+                        "people",
+                        "people",
+                        "people",
+                        "people"
+                    ],
+                    "as": [
+                        "lowerBox",
+                        "upperBox",
+                        "midBox",
+                        "lowerWhisker",
+                        "upperWhisker"
+                    ]
+                }
+            ]
         },
         {
             "name": "data_0",
@@ -24,30 +53,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"lowerWhisker\"])",
+                    "as": "lowerWhisker"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "min",
-                        "q1"
-                    ],
-                    "fields": [
-                        "people",
-                        "people"
-                    ],
-                    "as": [
-                        "min_people",
-                        "q1_people"
-                    ]
+                    "expr": "datum[\"lowerWhisker\"] !== null && !isNaN(datum[\"lowerWhisker\"])"
                 }
             ]
         },
@@ -57,30 +73,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperWhisker\"])",
+                    "as": "upperWhisker"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "q3",
-                        "max"
-                    ],
-                    "fields": [
-                        "people",
-                        "people"
-                    ],
-                    "as": [
-                        "q3_people",
-                        "max_people"
-                    ]
+                    "expr": "datum[\"upperBox\"] !== null && !isNaN(datum[\"upperBox\"])"
                 }
             ]
         },
@@ -90,30 +93,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "q1",
-                        "q3"
-                    ],
-                    "fields": [
-                        "people",
-                        "people"
-                    ],
-                    "as": [
-                        "q1_people",
-                        "q3_people"
-                    ]
+                    "expr": "datum[\"lowerBox\"] !== null && !isNaN(datum[\"lowerBox\"])"
                 }
             ]
         },
@@ -123,27 +113,12 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"midBox\"])",
+                    "as": "midBox"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "median"
-                    ],
-                    "fields": [
-                        "people"
-                    ],
-                    "as": [
-                        "median_people"
-                    ]
+                    "expr": "datum[\"midBox\"] !== null && !isNaN(datum[\"midBox\"])"
                 }
             ]
         }
@@ -202,7 +177,7 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "min_people"
+                        "field": "lowerWhisker"
                     },
                     "y": {
                         "scale": "y",
@@ -211,7 +186,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     "stroke": {
                         "value": "#4c78a8"
@@ -231,7 +206,7 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     "y": {
                         "scale": "y",
@@ -240,7 +215,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "max_people"
+                        "field": "upperWhisker"
                     },
                     "stroke": {
                         "value": "#4c78a8"
@@ -260,11 +235,11 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     "yc": {
                         "scale": "y",
@@ -275,7 +250,7 @@
                         "value": 5
                     },
                     "fill": {
-                        "value": "skyblue"
+                        "value": "#4c78a8"
                     }
                 }
             },
@@ -292,7 +267,7 @@
                 "update": {
                     "xc": {
                         "scale": "x",
-                        "field": "median_people"
+                        "field": "midBox"
                     },
                     "yc": {
                         "scale": "y",
@@ -307,6 +282,9 @@
                     },
                     "fill": {
                         "value": "white"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
             },
@@ -321,31 +299,31 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "min_people"
+                        "field": "lowerWhisker"
                     },
                     {
                         "data": "data_0",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     {
                         "data": "data_1",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     {
                         "data": "data_1",
-                        "field": "max_people"
+                        "field": "upperWhisker"
                     },
                     {
                         "data": "data_2",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     {
                         "data": "data_2",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     {
                         "data": "data_3",
-                        "field": "median_people"
+                        "field": "midBox"
                     }
                 ],
                 "sort": true
@@ -392,17 +370,16 @@
     ],
     "axes": [
         {
+            "title": "population",
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
-            "title": "population",
             "zindex": 1
         },
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",

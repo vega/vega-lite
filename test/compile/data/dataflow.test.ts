@@ -30,9 +30,8 @@ describe('compile/data/dataflow', function() {
 
         assert.equal(d.numChildren(), 0);
       });
-    });
 
-    it('should correctly swap two nodes', function() {
+      it('should correctly swap two nodes', function() {
         const root = new DataFlowNode('root');
         const parent = new DataFlowNode('parent');
         parent.parent = root;
@@ -67,6 +66,46 @@ describe('compile/data/dataflow', function() {
           assert.equal(c.numChildren(), 0);
           assert.equal(c.parent.debugName, 'parent');
         });
+      });
+    });
+
+    describe('remove', function() {
+      it('should remove node from dataflow', function() {
+        const a = new DataFlowNode('a');
+        const b = new DataFlowNode('b');
+        b.parent = a;
+
+        const c = new DataFlowNode('c');
+        c.parent = b;
+
+        assert.deepEqual(a.children, [b]);
+        assert.equal(b.parent, a);
+        assert.equal(c.parent, b);
+
+        b.remove();
+
+        assert.deepEqual(a.children, [c]);
+        assert.equal(c.parent, a);
+      });
+    });
+
+    describe('insertAsParentOf', function() {
+      it('should insert node into dataflow', function() {
+        const a = new DataFlowNode('a');
+        const anotherChild = new DataFlowNode('a');
+        const b = new DataFlowNode('b');
+        const c = new DataFlowNode('c');
+
+        anotherChild.parent = a;
+        c.parent = a;
+
+        b.insertAsParentOf(c);
+
+        assert.sameDeepMembers(a.children, [anotherChild, b]);
+        assert.equal(b.parent, a);
+        assert.equal(c.parent, b);
+        assert.equal(anotherChild.parent, a);
+      });
     });
   });
 });

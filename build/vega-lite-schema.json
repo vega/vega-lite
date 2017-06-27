@@ -45,14 +45,6 @@
         }
       ]
     },
-    "AreaOverlay": {
-      "enum": [
-        "line",
-        "linepoint",
-        "none"
-      ],
-      "type": "string"
-    },
     "Axis": {
       "additionalProperties": false,
       "properties": {
@@ -77,6 +69,26 @@
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "The padding, in pixels, between axis and text labels.",
@@ -238,6 +250,26 @@
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.",
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "Padding in pixels between axis ticks and tick labels.",
@@ -953,6 +985,19 @@
     "BoxPlotDef": {
       "additionalProperties": false,
       "properties": {
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orient"
         },
@@ -961,8 +1006,7 @@
         }
       },
       "required": [
-        "type",
-        "orient"
+        "type"
       ],
       "type": "object"
     },
@@ -1110,7 +1154,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1387,7 +1431,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1458,7 +1502,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1668,9 +1712,12 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
@@ -1687,10 +1734,6 @@
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
-        },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
         },
         "padding": {
           "$ref": "#/definitions/Padding",
@@ -2914,52 +2957,6 @@
           "$ref": "#/definitions/ValueDef"
         }
       },
-      "required": [
-        "x",
-        "x2",
-        "xc",
-        "width",
-        "y",
-        "y2",
-        "yc",
-        "height",
-        "opacity",
-        "fill",
-        "fillOpacity",
-        "stroke",
-        "strokeWidth",
-        "strokeOpacity",
-        "strokeDash",
-        "strokeDashOffset",
-        "cursor",
-        "clip",
-        "size",
-        "shape",
-        "path",
-        "innerRadius",
-        "outerRadius",
-        "startAngle",
-        "endAngle",
-        "interpolate",
-        "tension",
-        "orient",
-        "url",
-        "align",
-        "baseline",
-        "text",
-        "dir",
-        "ellipsis",
-        "limit",
-        "dx",
-        "dy",
-        "radius",
-        "theta",
-        "angle",
-        "font",
-        "fontSize",
-        "fontWeight",
-        "fontStyle"
-      ],
       "type": "object"
     },
     "Header": {
@@ -3061,17 +3058,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3209,17 +3197,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3372,7 +3351,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3387,6 +3366,18 @@
         "type"
       ],
       "type": "object"
+    },
+    "LegendOrient": {
+      "enum": [
+        "left",
+        "right",
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "none"
+      ],
+      "type": "string"
     },
     "AndFilter": {
       "additionalProperties": false,
@@ -3939,20 +3930,6 @@
       ],
       "type": "string"
     },
-    "OverlayConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "area": {
-          "$ref": "#/definitions/AreaOverlay",
-          "description": "Type of overlay for area mark (line or linepoint)"
-        },
-        "line": {
-          "description": "Whether to overlay line with point.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        }
-      },
-      "type": "object"
-    },
     "Padding": {
       "anyOf": [
         {
@@ -4030,7 +4007,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
@@ -4264,6 +4241,10 @@
             "null"
           ]
         },
+        "reverse": {
+          "description": "If true, reverses the order of the scale range.\n__Default value:__ `false`.",
+          "type": "boolean"
+        },
         "round": {
           "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
           "type": "boolean"
@@ -4432,7 +4413,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -5673,17 +5654,16 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
-        },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
@@ -5788,6 +5768,26 @@
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
@@ -5902,6 +5902,26 @@
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.",
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "Padding in pixels between axis ticks and tick labels.",
@@ -6069,17 +6089,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -6173,17 +6184,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",

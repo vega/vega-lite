@@ -4,7 +4,7 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
 or even better, submit a pull request.
 
-- For small fixes, please feel free to submit a pull request. No worry about creating an issue first.
+- For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
 - For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
 so we can better coordinate our efforts, prevent duplication of work,
@@ -18,9 +18,7 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors,
-starting from smaller tasks to a larger task. You can also find
-[all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted).
+You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task.
 
 ## Documentation and Website
 
@@ -47,24 +45,17 @@ you can run `npm run site` to serve the github page locally at [http://localhost
   brew install node
   ```
 
-2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
+2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies. We use [yarn](https://yarnpkg.com/) to have reproducible dependencies:
 
   ```sh
   git clone https://github.com/vega/vega-lite.git
   cd vega-lite
-  npm install
+  yarn
   ```
 
   Now you should be able to build and test the code.
 
-3. To make the gallery work, you need to install [bower](http://bower.io/) and its dependencies:
-
-  ```sh
-  npm install -g bower
-  bower install
-  ```
-
-4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
+3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
 
   For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
   ```sh
@@ -88,9 +79,9 @@ you can run `npm run site` to serve the github page locally at [http://localhost
 - `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specifications.
-  - `examples/vl-examples.json` lists all examples under `examples/`. Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`.
+  - `specs` Vega-Lite examples.
+  - `vg-specs` The generated Vega of the Vega-Lite examples.
 
-- `lib/` contains JSON schema's `schema.json`
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery
 - `src/` - Main source code directory.
@@ -106,7 +97,6 @@ For example, `test/compile/` test files inside `src/compile/`.
   - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
   to allow putting JSON spec in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
-Some of them are downloaded from the TypeStrong community.
 
 
 ## Commands
@@ -178,10 +168,10 @@ for instructions).
 ## Developing Vega-Lite and Vega-Util
 
 Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
-If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
+If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
 
 ```sh
-# first link datalib global npm
+# first link vega-util global npm
 cd path/to/vega-util
 npm link
 # then link vega-lite to datalib
@@ -192,9 +182,11 @@ npm link vega-util
 Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
 ## Pull Requests and Travis
+
 All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/vg-specs/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
 
 ### Code Coverage
+
 When checking for code coverage, we require that your PR tests covers at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR or `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
 
 # Note

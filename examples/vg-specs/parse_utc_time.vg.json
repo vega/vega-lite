@@ -24,7 +24,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 },
                 {
                     "type": "formula",
@@ -80,7 +80,7 @@
                         "signal": "timeFormat(datum[\"year_Year\"], '%Y')"
                     },
                     "fill": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     },
                     "align": {
                         "value": "center"
@@ -159,7 +159,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(Horsepower)",
             "zindex": 1
@@ -167,7 +166,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

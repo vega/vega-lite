@@ -21,10 +21,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "Cylinders"
@@ -142,7 +138,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(Acceleration)",
             "zindex": 1
@@ -150,7 +145,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

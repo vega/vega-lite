@@ -12,7 +12,7 @@ describe('Interval Selections', function() {
     "mark": "circle",
     "encoding": {
       "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "y": {"field": "Miles-per-Gallon","type": "quantitative"},
       "color": {"field": "Origin", "type": "nominal"}
     }
   });
@@ -27,7 +27,7 @@ describe('Interval Selections', function() {
       "translate": false,
       "zoom": false
     },
-    "three": {
+    "thr-ee": {
       "type": "interval",
       "on": "[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress",
       "translate": false,
@@ -52,8 +52,8 @@ describe('Interval Selections', function() {
             "update": "[one_x[0], clamp(x(unit), 0, width)]"
           },
           {
-            "events": {"scale": "x"},
-            "update": "!isArray(one_Horsepower) ? one_x : [scale(\"x\", one_Horsepower[0]), scale(\"x\", one_Horsepower[1])]"
+            "events": {"signal": "one_scale_trigger"},
+            "update": "[scale(\"x\", one_Horsepower[0]), scale(\"x\", one_Horsepower[1])]"
           }
         ]
       }, {
@@ -62,6 +62,9 @@ describe('Interval Selections', function() {
           "events": {"signal": "one_x"},
           "update": "invert(\"x\", one_x)"
         }]
+      }, {
+        "name": "one_scale_trigger",
+        "update": "(!isArray(one_Horsepower) || (invert(\"x\", one_x)[0] === one_Horsepower[0] && invert(\"x\", one_x)[1] === one_Horsepower[1])) ? one_scale_trigger : {}"
       }]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
@@ -70,10 +73,10 @@ describe('Interval Selections', function() {
         "on": []
       }]);
 
-      const threeSg = interval.signals(model, selCmpts['three']);
+      const threeSg = interval.signals(model, selCmpts['thr_ee']);
       assert.includeDeepMembers(threeSg, [
         {
-          "name": "three_x",
+          "name": "thr_ee_x",
           "value": [],
           "on": [
             {
@@ -82,7 +85,7 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_x[0], clamp(x(unit), 0, width)]"
+              "update": "[thr_ee_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": parseSelector('keydown', 'scope')[0],
@@ -90,23 +93,23 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_x[0], clamp(x(unit), 0, width)]"
+              "update": "[thr_ee_x[0], clamp(x(unit), 0, width)]"
             },
             {
-              "events": {"scale": "x"},
-              "update": "!isArray(three_Horsepower) ? three_x : [scale(\"x\", three_Horsepower[0]), scale(\"x\", three_Horsepower[1])]"
+              "events": {"signal": "thr_ee_scale_trigger"},
+              "update": "[scale(\"x\", thr_ee_Horsepower[0]), scale(\"x\", thr_ee_Horsepower[1])]"
             }
           ]
         },
         {
-          "name": "three_Horsepower",
+          "name": "thr_ee_Horsepower",
           "on": [{
-            "events": {"signal": "three_x"},
-            "update": "invert(\"x\", three_x)"
+            "events": {"signal": "thr_ee_x"},
+            "update": "invert(\"x\", thr_ee_x)"
           }]
         },
         {
-          "name": "three_y",
+          "name": "thr_ee_y",
           "value": [],
           "on": [
             {
@@ -115,7 +118,7 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_y[0], clamp(y(unit), 0, height)]"
+              "update": "[thr_ee_y[0], clamp(y(unit), 0, height)]"
             },
             {
               "events": parseSelector('keydown', 'scope')[0],
@@ -123,20 +126,24 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_y[0], clamp(y(unit), 0, height)]"
+              "update": "[thr_ee_y[0], clamp(y(unit), 0, height)]"
             },
             {
-              "events": {"scale": "y"},
-              "update": "!isArray(three_Miles_per_Gallon) ? three_y : [scale(\"y\", three_Miles_per_Gallon[0]), scale(\"y\", three_Miles_per_Gallon[1])]"
+              "events": {"signal": "thr_ee_scale_trigger"},
+              "update": "[scale(\"y\", thr_ee_Miles_per_Gallon[0]), scale(\"y\", thr_ee_Miles_per_Gallon[1])]"
             }
           ]
         },
         {
-          "name": "three_Miles_per_Gallon",
+          "name": "thr_ee_Miles_per_Gallon",
           "on": [{
-            "events": {"signal": "three_y"},
-            "update": "invert(\"y\", three_y)"
+            "events": {"signal": "thr_ee_y"},
+            "update": "invert(\"y\", thr_ee_y)"
           }]
+        },
+        {
+          "name": "thr_ee_scale_trigger",
+          "update": "(!isArray(thr_ee_Horsepower) || (invert(\"x\", thr_ee_x)[0] === thr_ee_Horsepower[0] && invert(\"x\", thr_ee_x)[1] === thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (invert(\"y\", thr_ee_y)[0] === thr_ee_Miles_per_Gallon[0] && invert(\"y\", thr_ee_y)[1] === thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}"
         }
       ]);
     });
@@ -154,15 +161,15 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(twoSg, [
         {
           "name": "two_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]}"
+          "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]}"
         }
       ]);
 
-      const threeSg = interval.signals(model, selCmpts['three']);
+      const threeSg = interval.signals(model, selCmpts['thr_ee']);
       assert.includeDeepMembers(threeSg, [
         {
-          "name": "three_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: three_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]}"
+          "name": "thr_ee_tuple",
+          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]}"
         }
       ]);
     });
@@ -175,8 +182,8 @@ describe('Interval Selections', function() {
     const twoExpr = interval.modifyExpr(model, selCmpts['two']);
     assert.equal(twoExpr, 'two_tuple, true');
 
-    const threeExpr = interval.modifyExpr(model, selCmpts['three']);
-    assert.equal(threeExpr, 'three_tuple, {unit: \"\"}');
+    const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
+    assert.equal(threeExpr, 'thr_ee_tuple, {unit: \"\"}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
@@ -199,11 +206,11 @@ describe('Interval Selections', function() {
         ]
       },
       {
-        "name": "three_modify",
+        "name": "thr_ee_modify",
         "on": [
           {
-            "events": {"signal": "three_tuple"},
-            "update": `modify(\"three_store\", ${threeExpr})`
+            "events": {"signal": "thr_ee_tuple"},
+            "update": `modify(\"thr_ee_store\", ${threeExpr})`
           }
         ]
       }
@@ -318,7 +325,7 @@ describe('Interval Selections', function() {
     // Scale-bound interval selections should not add a brush mark.
     assert.sameDeepMembers(interval.marks(model, selCmpts['two'], marks), marks);
 
-    assert.sameDeepMembers(interval.marks(model, selCmpts['three'], marks), [
+    assert.sameDeepMembers(interval.marks(model, selCmpts['thr_ee'], marks), [
       {
         "type": "rect",
         "encode": {
@@ -328,23 +335,23 @@ describe('Interval Selections', function() {
           },
           "update": {
             "x": {
-              "signal": "three_x[0]"
+              "signal": "thr_ee_x[0]"
             },
             "y": {
-              "signal": "three_y[0]"
+              "signal": "thr_ee_y[0]"
             },
             "x2": {
-              "signal": "three_x[1]"
+              "signal": "thr_ee_x[1]"
             },
             "y2": {
-              "signal": "three_y[1]"
+              "signal": "thr_ee_y[1]"
             }
           }
         }
       },
       {"hello": "world"},
       {
-        "name": "three_brush",
+        "name": "thr_ee_brush",
         "type": "rect",
         "encode": {
           "enter": {
@@ -353,16 +360,16 @@ describe('Interval Selections', function() {
           },
           "update": {
             "x": {
-              "signal": "three_x[0]"
+              "signal": "thr_ee_x[0]"
             },
             "y": {
-              "signal": "three_y[0]"
+              "signal": "thr_ee_y[0]"
             },
             "x2": {
-              "signal": "three_x[1]"
+              "signal": "thr_ee_x[1]"
             },
             "y2": {
-              "signal": "three_y[1]"
+              "signal": "thr_ee_y[1]"
             }
           }
         }

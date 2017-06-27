@@ -161,9 +161,9 @@
                         },
                         {
                             "events": {
-                                "scale": "concat_0_x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_date) ? brush_x : [scale(\"concat_0_x\", brush_date[0]), scale(\"concat_0_x\", brush_date[1])]"
+                            "update": "[scale(\"concat_0_x\", brush_date[0]), scale(\"concat_0_x\", brush_date[1])]"
                         },
                         {
                             "events": {
@@ -189,6 +189,10 @@
                             "update": "invert(\"concat_0_x\", brush_x)"
                         }
                     ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "update": "(!isArray(brush_date) || (invert(\"concat_0_x\", brush_x)[0] === brush_date[0] && invert(\"concat_0_x\", brush_x)[1] === brush_date[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
@@ -451,6 +455,7 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "date",
@@ -460,9 +465,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%Y')"
-                                },
-                                "angle": {
-                                    "value": 0
                                 }
                             }
                         }
@@ -480,10 +482,9 @@
                     "gridScale": "concat_0_y"
                 },
                 {
-                    "scale": "concat_0_y",
-                    "format": "s",
-                    "orient": "left",
                     "tickCount": 3,
+                    "scale": "concat_0_y",
+                    "orient": "left",
                     "title": "price",
                     "zindex": 1
                 }
@@ -573,6 +574,7 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "zindex": 1,
@@ -581,9 +583,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                                },
-                                "angle": {
-                                    "value": 0
                                 }
                             }
                         }
@@ -602,7 +601,6 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "price",
                     "zindex": 1
@@ -610,7 +608,6 @@
                 {
                     "scale": "concat_1_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

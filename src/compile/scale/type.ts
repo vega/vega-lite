@@ -65,9 +65,11 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'ordinal':
       if (channel === 'color') {
-        return 'sequential';
+        return 'ordinal';
       } else if (rangeType(channel) === 'discrete') {
-        log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
+        if (channel !== 'text' && channel !=='tooltip') {
+          log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
+        }
         return 'ordinal';
       }
       return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);

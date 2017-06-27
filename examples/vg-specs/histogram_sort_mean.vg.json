@@ -18,13 +18,7 @@
                 "parse": {
                     "Horsepower": "number"
                 }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                }
-            ]
+            }
         },
         {
             "name": "data_0",
@@ -129,7 +123,7 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "MEAN(Horsepower)",
@@ -138,7 +132,6 @@
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",

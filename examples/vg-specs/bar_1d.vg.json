@@ -25,10 +25,6 @@
                     "expr": "datum.year == 2000"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [],
                     "ops": [
@@ -104,17 +100,16 @@
     ],
     "axes": [
         {
+            "title": "population",
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
-            "title": "population",
             "zindex": 1
         },
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",

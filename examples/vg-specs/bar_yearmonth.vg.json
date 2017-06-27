@@ -24,7 +24,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 },
                 {
                     "type": "formula",
@@ -161,7 +161,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(temp)",
             "zindex": 1
@@ -169,7 +168,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

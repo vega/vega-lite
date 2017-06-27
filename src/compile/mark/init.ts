@@ -14,7 +14,7 @@ import {Orient} from './../../vega.schema';
 
 
 export function normalizeMarkDef(markDef: MarkDef, encoding: Encoding<string>, scales: ScaleComponentIndex, config: Config) {
-  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
+  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, scales, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
@@ -22,17 +22,17 @@ export function normalizeMarkDef(markDef: MarkDef, encoding: Encoding<string>, s
 
   const specifiedFilled = markDef.filled;
   if (specifiedFilled === undefined) {
-    markDef.filled = filled(markDef.type, config);
+    markDef.filled = filled(markDef, config);
   }
 }
 
 /**
  * Initialize encoding's value with some special default values
  */
-export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
+export function initEncoding(mark: MarkDef, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
   const opacityConfig = getMarkConfig('opacity', mark, config);
   if (!encoding.opacity && opacityConfig === undefined) {
-    const opacity = defaultOpacity(mark, encoding, stacked);
+    const opacity = defaultOpacity(mark.type, encoding, stacked);
     if (opacity !== undefined) {
       encoding.opacity = {value: opacity};
     }
@@ -52,8 +52,9 @@ function defaultOpacity(mark: Mark, encoding: Encoding<string>, stacked: StackPr
   return undefined;
 }
 
-function filled(mark: Mark, config: Config) {
-  const filledConfig = getMarkConfig('filled', mark, config);
+function filled(markDef: MarkDef, config: Config) {
+  const filledConfig = getMarkConfig('filled', markDef, config);
+  const mark = markDef.type;
   return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 

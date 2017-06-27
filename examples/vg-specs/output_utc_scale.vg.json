@@ -173,7 +173,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "price",
             "zindex": 1
@@ -181,7 +180,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

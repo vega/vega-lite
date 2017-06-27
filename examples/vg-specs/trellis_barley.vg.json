@@ -12,13 +12,7 @@
                 "parse": {
                     "yield": "number"
                 }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
+            }
         },
         {
             "name": "trellis_barley_row",
@@ -172,7 +166,7 @@
             "axes": [
                 {
                     "scale": "trellis_barley_x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "MEDIAN(yield)",
@@ -268,7 +262,6 @@
                 {
                     "scale": "trellis_barley_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",

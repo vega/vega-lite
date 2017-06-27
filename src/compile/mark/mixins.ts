@@ -16,7 +16,7 @@ export function color(model: UnitModel) {
 
   const e = nonPosition('color', model, {
     vgChannel: filled ? 'fill' : 'stroke',
-    defaultValue: getMarkConfig('color', model.mark(), config) as string
+    defaultValue: getMarkConfig('color', model.markDef, config) as string
   });
 
   // If there is no fill, always fill symbols

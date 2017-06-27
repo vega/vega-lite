@@ -61,10 +61,6 @@
                     "as": "b"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "a"
@@ -159,17 +155,16 @@
     ],
     "axes": [
         {
+            "title": "Average of b",
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
-            "title": "Average of b",
             "zindex": 1
         },
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",

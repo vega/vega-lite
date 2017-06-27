@@ -1,13 +1,14 @@
-import {AxisOrient} from '../../axis';
+import {Axis} from '../../axis';
 import {Channel, SpatialScaleChannel, X} from '../../channel';
+import {FieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
-import {VgAxis} from '../../vega.schema';
+import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: VgAxis) {
+export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Partial<VgAxis>) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :
@@ -29,18 +30,12 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
   }
 
   // Label Angle
-  if (axis.labelAngle !== undefined) {
-    labelsSpec.angle = {value: axis.labelAngle};
-  } else {
-    // auto rotate for X
-    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
-      labelsSpec.angle = {value: 270};
-    }
+  const angle = labelAngle(axis, channel, fieldDef);
+  if (angle) {
+    labelsSpec.angle = {value: angle};
   }
 
   if (labelsSpec.angle && channel === 'x') {
-    // Make angle within [0,360)
-    const angle = ((labelsSpec.angle.value % 360) + 360) % 360;
     const align = labelAlign(angle, def.orient);
     if (align) {
       labelsSpec.align = {value: align};
@@ -59,7 +54,18 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
 
   return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
 }
-
+export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
+  if (axis.labelAngle !== undefined) {
+    // Make angle within [0,360)
+    return ((axis.labelAngle % 360) + 360) % 360;
+  } else {
+    // auto rotate for X
+    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
+      return 270;
+    }
+  }
+  return undefined;
+}
 export function labelAlign(angle: number, orient: AxisOrient) {
   if (angle && angle > 0) {
     if (angle > 180) {

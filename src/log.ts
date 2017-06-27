@@ -4,11 +4,14 @@
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
+import {Axis} from './axis';
 import {Channel} from './channel';
+import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
+import {Legend} from './legend';
 import {Mark} from './mark';
-import {ScaleType} from './scale';
+import {Scale, ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
 
@@ -127,6 +130,11 @@ export namespace message {
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
   }
+
+  export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
+    return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
+  }
+
   export function invalidAggregate(aggregate: AggregateOp | string) {
     return `Invalid aggregation operator "${aggregate}"`;
   }
@@ -139,7 +147,7 @@ export namespace message {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
-  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
+  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
     return `${channel} dropped as it is incompatible with ${markOrFacet}${when ? ` when ${when}` : ''}.`;
   }
 
@@ -215,6 +223,10 @@ export namespace message {
 
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
+  }
+
+  export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
+    return `Conflicting ${propertyOf} property ${property} (${v1} and ${v2}).  Using ${v1}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {

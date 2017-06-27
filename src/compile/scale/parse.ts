@@ -1,10 +1,10 @@
 import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
-import {Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
-import {Explicit, mergeValuesWithExplicit} from '../split';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleDomain} from './domain';
@@ -12,15 +12,6 @@ import {parseScaleProperty} from './properties';
 import {parseScaleRange} from './range';
 import {scaleType} from './type';
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
-  'round',
-  // quantitative / time
-  'clamp', 'nice',
-  // quantitative
-  'exponent', 'interpolate', 'zero', // zero depends on domain
-  // ordinal
-  'padding', 'paddingInner', 'paddingOuter', // padding
-];
 
 export function parseScale(model: Model) {
   parseScaleCore(model);
@@ -80,6 +71,10 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   }, {});
 }
 
+const scaleTypeTieBreaker = tieBreakByComparing(
+  (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
+);
+
 function parseNonUnitScaleCore(model: Model) {
   const scaleComponents: ScaleComponentIndex = model.component.scales = {};
 
@@ -103,9 +98,8 @@ function parseNonUnitScaleCore(model: Model) {
         if (scaleType) {
           if (scaleCompatible(scaleType.value, childScaleType.value)) {
             // merge scale component if type are compatible
-            scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit(
-              scaleType, childScaleType,
-              (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
+            scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit<VgScale, ScaleType>(
+              scaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker
             );
           } else {
             // Otherwise, mark as conflict and remove from the index so they don't get merged

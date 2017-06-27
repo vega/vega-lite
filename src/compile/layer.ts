@@ -7,11 +7,12 @@ import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisComponentIndex} from './axis/component';
+import {parseLayerAxis} from './axis/parse';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/assemble';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -84,56 +85,11 @@ export class LayerModel extends Model {
   }
 
   public parseAxisAndHeader() {
-    const axisComponent: AxisComponentIndex = this.component.axes = {};
-
-    for (const child of this.children) {
-      child.parseAxisAndHeader();
-
-      keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-        if ((this.resolve[channel] as SpatialResolve).axis === 'shared') {
-          // If shared/union axis
-
-          // Just use the first axes definition for each channel
-          // TODO: what if the axes from different children are not compatible
-          if (!axisComponent[channel]) {
-            axisComponent[channel] = child.component.axes[channel];
-          }
-        } else {
-          // If axes are independent
-          // TODO(#2251): correctly merge axis
-          if (!axisComponent[channel]) {
-            // copy the first axis
-            axisComponent[channel] = child.component.axes[channel];
-          } else {
-            // put every odd numbered axis on the right/top
-            axisComponent[channel].axes.push({
-              ...child.component.axes[channel].axes[0],
-              ...(axisComponent[channel].axes.length % 2 === 1 ? {orient: channel === 'y' ? 'right' : 'top'} : {})
-            });
-            if (child.component.axes[channel].gridAxes.length > 0) {
-              axisComponent[channel].gridAxes.push({
-                ...child.component.axes[channel].gridAxes[0]
-              });
-            }
-          }
-        }
-        // delete child.component.axes[channel];
-      });
-    }
+    parseLayerAxis(this);
   }
 
   public parseLegend() {
-    const legendComponent = this.component.legends = {};
-
-    for (const child of this.children) {
-      child.parseLegend();
-
-      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if (this.resolve[channel].legend === 'shared') {
-          moveSharedLegendUp(legendComponent, child, channel);
-        }
-      });
-    }
+    parseNonUnitLegend(this);
   }
 
   public assembleParentGroupProperties(): VgEncodeEntry {

@@ -13,7 +13,7 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
@@ -147,17 +147,7 @@ export class RepeatModel extends Model {
   }
 
   public parseLegend() {
-    const legendComponent = this.component.legends = {};
-
-    for (const child of this.children) {
-      child.parseLegend();
-
-      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if (this.resolve[channel].legend === 'shared') {
-          moveSharedLegendUp(this.component.legends, child, channel);
-        }
-      });
-    }
+    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

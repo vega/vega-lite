@@ -479,9 +479,9 @@
                         },
                         {
                             "events": {
-                                "scale": "child_distance_x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_distance) ? brush_x : [scale(\"child_distance_x\", brush_distance[0]), scale(\"child_distance_x\", brush_distance[1])]"
+                            "update": "[scale(\"child_distance_x\", brush_distance[0]), scale(\"child_distance_x\", brush_distance[1])]"
                         },
                         {
                             "events": {
@@ -507,6 +507,10 @@
                             "update": "invert(\"child_distance_x\", brush_x)"
                         }
                     ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "update": "(!isArray(brush_distance) || (invert(\"child_distance_x\", brush_x)[0] === brush_distance[0] && invert(\"child_distance_x\", brush_x)[1] === brush_distance[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
@@ -835,7 +839,6 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(distance)",
                     "values": {
@@ -860,7 +863,6 @@
                 },
                 {
                     "scale": "child_distance_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -868,7 +870,6 @@
                 {
                     "scale": "child_distance_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -932,9 +933,9 @@
                         },
                         {
                             "events": {
-                                "scale": "child_delay_x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_delay) ? brush_x : [scale(\"child_delay_x\", brush_delay[0]), scale(\"child_delay_x\", brush_delay[1])]"
+                            "update": "[scale(\"child_delay_x\", brush_delay[0]), scale(\"child_delay_x\", brush_delay[1])]"
                         },
                         {
                             "events": {
@@ -960,6 +961,10 @@
                             "update": "invert(\"child_delay_x\", brush_x)"
                         }
                     ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "update": "(!isArray(brush_delay) || (invert(\"child_delay_x\", brush_x)[0] === brush_delay[0] && invert(\"child_delay_x\", brush_x)[1] === brush_delay[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
@@ -1288,7 +1293,6 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(delay)",
                     "values": {
@@ -1313,7 +1317,6 @@
                 },
                 {
                     "scale": "child_delay_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1321,7 +1324,6 @@
                 {
                     "scale": "child_delay_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -1385,9 +1387,9 @@
                         },
                         {
                             "events": {
-                                "scale": "child_time_x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_time) ? brush_x : [scale(\"child_time_x\", brush_time[0]), scale(\"child_time_x\", brush_time[1])]"
+                            "update": "[scale(\"child_time_x\", brush_time[0]), scale(\"child_time_x\", brush_time[1])]"
                         },
                         {
                             "events": {
@@ -1413,6 +1415,10 @@
                             "update": "invert(\"child_time_x\", brush_x)"
                         }
                     ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "update": "(!isArray(brush_time) || (invert(\"child_time_x\", brush_x)[0] === brush_time[0] && invert(\"child_time_x\", brush_x)[1] === brush_time[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
@@ -1741,7 +1747,6 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(time)",
                     "values": {
@@ -1766,7 +1771,6 @@
                 },
                 {
                     "scale": "child_time_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1774,7 +1778,6 @@
                 {
                     "scale": "child_time_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

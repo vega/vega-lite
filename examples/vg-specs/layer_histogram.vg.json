@@ -274,7 +274,6 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
             "orient": "bottom",
             "title": "BIN(distance)",
             "values": {
@@ -299,7 +298,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1
@@ -307,7 +305,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

@@ -2,7 +2,7 @@ import {Channel, TEXT} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, isScaleFieldDef, OrderFieldDef} from '../fielddef';
 import * as log from '../log';
-import {Mark, MarkConfig, TextConfig} from '../mark';
+import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSize, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
@@ -15,6 +15,7 @@ import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
 import {RepeaterValue, RepeatModel} from './repeat';
+import {Explicit} from './split';
 import {UnitModel} from './unit';
 
 
@@ -57,7 +58,7 @@ export function applyConfig(e: VgEncodeEntry,
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
-    const value = getMarkConfig(property, model.mark(), model.config);
+    const value = getMarkConfig(property, model.markDef, model.config);
     if (value !== undefined) {
       e[property] = {value: value};
     }
@@ -69,30 +70,37 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
  * Return value mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, config: Config): MarkConfig[P] {
-  const markSpecificConfig = config[mark];
-  if (markSpecificConfig[prop] !== undefined) {
-    return markSpecificConfig[prop];
+export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P] {
+  if (mark.role) { // role config has higher pre
+    const roleSpecificConfig = config[mark.role];
+    if (roleSpecificConfig && roleSpecificConfig[prop] !== undefined) {
+      return roleSpecificConfig[prop];
+    }
+  } else {
+    const markSpecificConfig = config[mark.type];
+    if (markSpecificConfig[prop] !== undefined) {
+      return markSpecificConfig[prop];
+    }
   }
+
   return config.mark[prop];
 }
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
   if (fieldDef.type === 'quantitative') {
-    const format = numberFormat(fieldDef, specifiedFormat, config, 'text');
+    const format = numberFormat(fieldDef, specifiedFormat, config);
     if (fieldDef.bin) {
       if (useBinRange) {
         // For bin range, no need to apply format as the formula that creates range already include format
         return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')` + `+'-'+` +
-            `format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
+          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
     } else {
       return {
-        signal: `format(${field(fieldDef, {expr})}, '${format}')`
+        signal: `${formatExpr(field(fieldDef, {expr}), format)}`
       };
     }
   } else if (fieldDef.type === 'temporal') {
@@ -110,22 +118,27 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
  *
  * @param format explicitly specified format
  */
-export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config, channel: Channel) {
-  // Specified format in axis/legend has higher precedence than fieldDef.format
-  const format = specifiedFormat;
+export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 
-    if (format) {
-      return format;
-    } else if (fieldDef.aggregate === 'count' && channel === TEXT) {
-      // FIXME: need a more holistic way to deal with this.
-      return 'd';
+    // Specified format in axis/legend has higher precedence than fieldDef.format
+    if (specifiedFormat) {
+      return specifiedFormat;
     }
+
     // TODO: need to make this work correctly for numeric ordinal / nominal type
     return config.numberFormat;
   }
   return undefined;
+}
+
+function formatExpr(field: string, format: string) {
+  return `format(${field}, ${format ? `'${format}'` : null})`;
+}
+
+export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
+  return formatExpr(field, specifiedFormat || config.numberFormat);
 }
 
 /**
@@ -154,4 +167,13 @@ export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<strin
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});
+}
+
+export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
+  return {
+    explicit: v1.explicit, // keep the old explicit
+    value: v1.value === v2.value ?
+      v1.value : // if title is the same just use one of them
+      v1.value + ', ' + v2.value // join title with comma if different
+  };
 }

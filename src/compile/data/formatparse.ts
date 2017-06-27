@@ -1,3 +1,4 @@
+import {isCountingAggregateOp} from '../../aggregate';
 import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
 import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
@@ -59,7 +60,7 @@ export class ParseNode extends DataFlowNode {
         if (fieldDef.type === TEMPORAL) {
           parse[fieldDef.field] = 'date';
         } else if (fieldDef.type === QUANTITATIVE) {
-          if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+          if (calcFieldMap[fieldDef.field] || isCountingAggregateOp(fieldDef.aggregate)) {
             return;
           }
           parse[fieldDef.field] = 'number';

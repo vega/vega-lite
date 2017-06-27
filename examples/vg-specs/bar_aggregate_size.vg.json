@@ -26,10 +26,6 @@
                     "expr": "datum.year == 2000"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "age"
@@ -146,16 +142,14 @@
             }
         },
         {
-            "scale": "y",
-            "format": "s",
-            "orient": "left",
             "title": "population",
+            "scale": "y",
+            "orient": "left",
             "zindex": 1
         },
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

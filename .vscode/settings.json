@@ -10,6 +10,8 @@
     "build": true
   },
   "files.trimTrailingWhitespace": true,
+  "tslint.autoFixOnSave": true,
+  "tsimporter.filesToExclude": ["build/**"],
   "tsimporter.spaceBetweenBraces": false,
   "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false
 }

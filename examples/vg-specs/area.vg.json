@@ -23,7 +23,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 },
                 {
                     "type": "formula",
@@ -130,6 +130,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "YEARMONTH(date)",
@@ -139,9 +140,6 @@
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "angle": {
-                            "value": 0
                         }
                     }
                 }
@@ -160,7 +158,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "SUM(count)",
             "zindex": 1
@@ -168,7 +165,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

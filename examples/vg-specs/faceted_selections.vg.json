@@ -162,7 +162,6 @@
             "axes": [
                 {
                     "scale": "y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Y",
                     "zindex": 1
@@ -221,7 +220,7 @@
             "axes": [
                 {
                     "scale": "x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "X",
@@ -299,9 +298,9 @@
                         },
                         {
                             "events": {
-                                "scale": "x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_X) ? brush_x : [scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
+                            "update": "[scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
                         },
                         {
                             "events": {
@@ -327,6 +326,10 @@
                             "update": "invert(\"x\", brush_x)"
                         }
                     ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "update": "(!isArray(brush_X) || (invert(\"x\", brush_x)[0] === brush_X[0] && invert(\"x\", brush_x)[1] === brush_X[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
@@ -715,7 +718,6 @@
                 {
                     "scale": "x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -727,7 +729,6 @@
                 {
                     "scale": "y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

@@ -9,7 +9,7 @@ import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponentIndex} from './scale/component';
@@ -70,17 +70,7 @@ export class ConcatModel extends Model {
   }
 
   public parseLegend() {
-    const legendComponent = this.component.legends = {};
-
-    for (const child of this.children) {
-      child.parseLegend();
-
-      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if (this.resolve[channel].legend === 'shared') {
-          moveSharedLegendUp(legendComponent, child, channel);
-        }
-      });
-    }
+    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

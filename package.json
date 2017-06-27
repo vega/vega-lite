@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.5",
+  "version": "2.0.0-beta.6",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -103,9 +103,10 @@
     "typescript": "^2.3.4",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.5.0",
     "uglify-js": "^3.0.15",
-    "vega": "3.0.0-beta.33",
+    "vega": "^3.0.0-beta.38",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "3.0.0-beta.17",
+    "vega-embed": "^3.0.0-beta.19",
+    "vega-tooltip": "^0.4.2",
     "watchify": "^3.9.0",
     "yaml-front-matter": "^3.4.0"
   },

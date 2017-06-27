@@ -23,10 +23,6 @@
                     "as": "gender"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "gender",
@@ -158,10 +154,9 @@
             },
             "axes": [
                 {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
                     "title": "population",
+                    "scale": "y",
+                    "orient": "left",
                     "zindex": 1
                 }
             ]

@@ -22,10 +22,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
-                },
-                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -151,7 +147,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(temp)",
             "zindex": 1
@@ -159,7 +154,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

@@ -114,26 +114,6 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-export type AreaOverlay = 'line' | 'linepoint' | 'none';
-
-export interface OverlayConfig {
-  /**
-   * Whether to overlay line with point.
-   *
-   * __Default value:__ `false`
-   */
-  line?: boolean;
-
-  /**
-   * Type of overlay for area mark (line or linepoint)
-   */
-  area?: AreaOverlay;
-}
-
-export const defaultOverlayConfig: OverlayConfig = {
-  line: false
-};
-
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
 export interface VLOnlyConfig {
@@ -147,12 +127,11 @@ export interface VLOnlyConfig {
   countTitle?: string;
 
   /**
-   * Whether to filter invalid values (`null` and `NaN`) from the data.
-   * - By default (`undefined`), only quantitative and temporal fields are filtered.
-   * - If set to `true`, all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+   * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
+   * - If set to `"filter"` (default), all data items with null values are filtered.
+   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
-  filterInvalid?: boolean;
+  invalidValues?: 'filter';
 
   /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
@@ -178,11 +157,6 @@ export interface VLOnlyConfig {
   /** Facet Config */
   facet?: FacetConfig;
 
-  // FIXME: move this to line/area
-  /** Mark Overlay Config */
-  overlay?: OverlayConfig;
-
-
   /** Scale Config */
   scale?: ScaleConfig;
 
@@ -191,7 +165,6 @@ export interface VLOnlyConfig {
 
   /** Default stack offset for stackable mark. */
   stack?: StackOffset;
-
 }
 
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
@@ -220,9 +193,10 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 
 export const defaultConfig: Config = {
   padding: 5,
-  numberFormat: 's',
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',
+
+  invalidValues: 'filter',
 
   cell: defaultCellConfig,
 
@@ -233,16 +207,15 @@ export const defaultConfig: Config = {
   line: {},
   point: {},
   rect: {},
-  rule: {},
+  rule: {color: 'black'},
   square: {},
-  text: mark.defaultTextConfig,
+  text: {color: 'black'},
   tick: mark.defaultTickConfig,
 
   box: {size: 14},
   boxWhisker: {},
-  boxMid: {},
+  boxMid: {color: 'white'},
 
-  overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: {},
   axisX: {},
@@ -267,7 +240,7 @@ export function initConfig(config: Config) {
 
 const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
 
-const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'invalidValues'];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,

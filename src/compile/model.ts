@@ -13,17 +13,19 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {LayoutSize, LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {parseLayoutSize} from './layout/parse';
+import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScale} from './scale/parse';
+import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
@@ -247,16 +249,11 @@ export abstract class Model {
   public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    const {x, y} = this.component.axes;
-
-    return [
-      ...(x ? x.axes.concat(x.gridAxes) : []),
-      ...(y ? y.axes.concat(y.gridAxes) : []),
-    ];
+    return assembleAxes(this.component.axes);
   }
 
   public assembleLegends(): VgLegend[] {
-    return vals(this.component.legends);
+    return assembleLegends(this);
   }
 
   public assembleGroup(signals: VgSignal[] = []) {

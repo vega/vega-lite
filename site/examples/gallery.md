@@ -11,22 +11,7 @@ To see example code for embedding visualization in a webpage, please refer to [t
 * TOC
 {:toc}
 
-## Basic
-
-<div class="gallery" data-gallery-group="Basic"></div>
-
-## Stacked and Layered Plots
-
-<div class="gallery" data-gallery-group="Stack"></div>
-
-## Trellis Plots
-
-<div class="gallery" data-gallery-group="Trellis"></div>
-
-## Statistical Plots
-
-<div class="gallery" data-gallery-group="Statistical"></div>
-
-## Interactive Plots
-
-<div class="gallery" data-gallery-group="Interactive"></div>
+{% for group in site.data.examples %}
+## {{ group[0] }}
+<span class="gallery">{% for spec in group[1] %}{% include preview spec=spec.name title=spec.title %}{% endfor %}</span>
+{% endfor %}

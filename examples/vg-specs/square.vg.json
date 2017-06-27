@@ -104,7 +104,7 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "Horsepower",
@@ -113,7 +113,6 @@
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",
@@ -124,7 +123,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "Miles_per_Gallon",
             "zindex": 1
@@ -132,7 +130,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

@@ -38,7 +38,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 },
                 {
                     "type": "collect",
@@ -74,7 +74,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
             ]
         }
@@ -210,7 +210,7 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "miles",
@@ -219,7 +219,6 @@
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",
@@ -230,7 +229,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "gas",
             "zindex": 1
@@ -238,7 +236,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

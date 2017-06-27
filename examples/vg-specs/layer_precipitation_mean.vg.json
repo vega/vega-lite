@@ -32,10 +32,6 @@
                     "as": "precipitation"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
-                },
-                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -65,10 +61,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"precipitation\"])",
                     "as": "precipitation"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
                 },
                 {
                     "type": "aggregate",
@@ -245,7 +237,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(precipitation)",
             "zindex": 1
@@ -253,7 +244,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

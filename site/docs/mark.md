@@ -7,8 +7,6 @@ permalink: /docs/mark.html
 
 Marks are the basic visual building block of a visualization. They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.
 
-The `mark` property of a [single view specification](spec.html#single-view-spec) can either be (1) a string describing [mark type](#mark-type) or (2) a mark definition object.
-
 {: .suppress-error}
 ```json
 {
@@ -19,8 +17,27 @@ The `mark` property of a [single view specification](spec.html#single-view-spec)
 }
 ```
 
+The `mark` property of a [single view specification](spec.html#single-view-spec) can either be (1) a string describing [mark type](#mark-type) or (2) a [mark definition object](#mark-def).
+
+For example, a bar chart has `mark` as a simple string `"bar"`.
+
+<span class="vl-example" data-name="bar"></span>
+
 ## Mark Definition Object
 {:#mark-def}
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "mark": {
+    "type": ...,       // mark
+    ...
+  },
+  ...
+}
+```
 
 A mark definition object can contains the following values.
 

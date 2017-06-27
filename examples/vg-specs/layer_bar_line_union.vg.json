@@ -236,7 +236,7 @@
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "a",
+            "title": "a, b",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -256,7 +256,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "c",
             "zindex": 1
@@ -264,7 +263,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

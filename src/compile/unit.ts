@@ -14,7 +14,7 @@ import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
-import {parseAxisComponent} from './axis/parse';
+import {parseUnitAxis} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -22,7 +22,7 @@ import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {assembleLayoutUnitSignals} from './layout/assemble';
 import {LegendIndex} from './legend/component';
-import {parseLegendComponent} from './legend/parse';
+import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {Model, ModelWithField} from './model';
@@ -72,7 +72,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedScales = this.initScales(mark, encoding);
 
     // FIXME: this one seems out of place!
-    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
+    this.encoding = initEncoding(this.markDef, encoding, this.stack, this.config);
 
     this.specifiedAxes = this.initAxes(encoding);
     this.specifiedLegends = this.initLegend(encoding);
@@ -205,11 +205,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public parseAxisAndHeader() {
-    this.component.axes = parseAxisComponent(this, [X, Y]);
+    this.component.axes = parseUnitAxis(this);
   }
 
   public parseLegend() {
-    this.component.legends = parseLegendComponent(this);
+    this.component.legends = parseUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

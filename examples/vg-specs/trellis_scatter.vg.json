@@ -114,7 +114,6 @@
             "axes": [
                 {
                     "scale": "y",
-                    "format": "s",
                     "orient": "left",
                     "title": "US_DVD_Sales",
                     "zindex": 1
@@ -173,7 +172,7 @@
             "axes": [
                 {
                     "scale": "x",
-                    "format": "s",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Worldwide_Gross",
@@ -247,7 +246,6 @@
                 {
                     "scale": "x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -259,7 +257,6 @@
                 {
                     "scale": "y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

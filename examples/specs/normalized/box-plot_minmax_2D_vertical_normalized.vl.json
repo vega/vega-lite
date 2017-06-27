@@ -4,6 +4,40 @@
   "data": {
     "url": "data/population.json"
   },
+  "transform": [
+    {
+      "summarize": [
+        {
+          "aggregate": "q1",
+          "field": "people",
+          "as": "lowerBox"
+        },
+        {
+          "aggregate": "q3",
+          "field": "people",
+          "as": "upperBox"
+        },
+        {
+          "aggregate": "median",
+          "field": "people",
+          "as": "midBox"
+        },
+        {
+          "aggregate": "min",
+          "field": "people",
+          "as": "lowerWhisker"
+        },
+        {
+          "aggregate": "max",
+          "field": "people",
+          "as": "upperWhisker"
+        }
+      ],
+      "groupby": [
+        "age"
+      ]
+    }
+  ],
   "layer": [
     {
       "mark": {
@@ -11,22 +45,20 @@
         "role": "boxWhisker"
       },
       "encoding": {
+        "y": {
+          "field": "lowerWhisker",
+          "type": "quantitative",
+          "axis": {
+            "title": "population"
+          }
+        },
+        "y2": {
+          "field": "lowerBox",
+          "type": "quantitative"
+        },
         "x": {
           "field": "age",
           "type": "ordinal"
-        },
-        "y": {
-          "axis": {
-            "title": "population"
-          },
-          "aggregate": "min",
-          "field": "people",
-          "type": "quantitative"
-        },
-        "y2": {
-          "aggregate": "q1",
-          "field": "people",
-          "type": "quantitative"
         }
       }
     },
@@ -36,19 +68,17 @@
         "role": "boxWhisker"
       },
       "encoding": {
-        "x": {
-          "field": "age",
-          "type": "ordinal"
-        },
         "y": {
-          "aggregate": "q3",
-          "field": "people",
+          "field": "upperBox",
           "type": "quantitative"
         },
         "y2": {
-          "aggregate": "max",
-          "field": "people",
+          "field": "upperWhisker",
           "type": "quantitative"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
         }
       }
     },
@@ -58,22 +88,17 @@
         "role": "box"
       },
       "encoding": {
-        "x": {
-          "field": "age",
-          "type": "ordinal"
-        },
         "y": {
-          "aggregate": "q1",
-          "field": "people",
+          "field": "lowerBox",
           "type": "quantitative"
         },
         "y2": {
-          "aggregate": "q3",
-          "field": "people",
+          "field": "upperBox",
           "type": "quantitative"
         },
-        "color": {
-          "value": "skyblue"
+        "x": {
+          "field": "age",
+          "type": "ordinal"
         },
         "size": {
           "value": 5
@@ -86,20 +111,16 @@
         "role": "boxMid"
       },
       "encoding": {
+        "y": {
+          "field": "midBox",
+          "type": "quantitative"
+        },
         "x": {
           "field": "age",
           "type": "ordinal"
         },
-        "y": {
-          "aggregate": "median",
-          "field": "people",
-          "type": "quantitative"
-        },
         "size": {
           "value": 5
-        },
-        "color": {
-          "value": "white"
         }
       }
     }

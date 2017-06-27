@@ -14,7 +14,11 @@ export function runStreamingExample(eleId: string) {
     }
   };
 
-  function cb(err: Error, res: {view: any, spec: any}) {
+
+
+  embed(eleId, vlSpec, {
+    actions: false
+  }).then(function(res) {
     const {view} = res;
 
     /**
@@ -43,9 +47,5 @@ export function runStreamingExample(eleId: string) {
       const changeSet = view.changeset().insert(valueGenerator()).remove((t: {x: number}) => t.x < minimumX);
       view.change('table', changeSet).run();
     }, 1000);
-  }
-
-  embed(eleId, vlSpec, {
-    actions: false
-  }, cb);
+  });
 }

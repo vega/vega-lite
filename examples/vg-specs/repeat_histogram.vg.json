@@ -352,7 +352,6 @@
             "axes": [
                 {
                     "scale": "child_Horsepower_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {
@@ -377,7 +376,6 @@
                 },
                 {
                     "scale": "child_Horsepower_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -385,7 +383,6 @@
                 {
                     "scale": "child_Horsepower_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -486,7 +483,6 @@
             "axes": [
                 {
                     "scale": "child_Miles_per_Gallon_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(Miles_per_Gallon)",
                     "values": {
@@ -511,7 +507,6 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -519,7 +514,6 @@
                 {
                     "scale": "child_Miles_per_Gallon_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -620,7 +614,6 @@
             "axes": [
                 {
                     "scale": "child_Acceleration_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(Acceleration)",
                     "values": {
@@ -645,7 +638,6 @@
                 },
                 {
                     "scale": "child_Acceleration_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -653,7 +645,6 @@
                 {
                     "scale": "child_Acceleration_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
