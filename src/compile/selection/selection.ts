@@ -220,6 +220,10 @@ export function predicate(model: Model, selections: LogicalOperand<string>): str
     const store = stringValue(vname + STORE);
     const op = PREDICATES_OPS[selCmpt.resolve];
 
+    if (selCmpt.timeUnit) {
+      selCmpt.timeUnit.clone().insertAsParentOf(model.component.data.main);
+    }
+
     return compiler(selCmpt.type).predicate +
       `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
   }
