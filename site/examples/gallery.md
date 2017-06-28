@@ -15,3 +15,8 @@ To see example code for embedding visualization in a webpage, please refer to [t
 ## {{ group[0] }}
 <span class="gallery">{% for spec in group[1] %}{% include preview spec=spec.name title=spec.title %}{% endfor %}</span>
 {% endfor %}
+
+## Community Examples
+
+
+* Grouped Bar Chart by @churtado: https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364
