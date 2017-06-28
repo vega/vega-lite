@@ -32,10 +32,6 @@
                     "as": "distance"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
-                {
                     "type": "extent",
                     "field": "distance",
                     "signal": "child_distance_bin_maxbins_20_distance_extent"
@@ -68,6 +64,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
                 }
             ]
         },
@@ -79,10 +79,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"delay\"])",
                     "as": "delay"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
                 },
                 {
                     "type": "extent",
@@ -117,6 +113,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
                 }
             ]
         },
@@ -128,10 +128,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"time\"])",
                     "as": "time"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
                 },
                 {
                     "type": "extent",
@@ -166,6 +162,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
                 }
             ]
         }

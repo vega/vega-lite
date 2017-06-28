@@ -3,9 +3,8 @@ import {every, flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {FilterInvalidNode} from './filterinvalid';
 import {DataComponent} from './index';
-import {NonPositiveFilterNode} from './nonpositivefilter';
-import {NullFilterNode} from './nullfilter';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
@@ -85,13 +84,9 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Start optimization path from the root. Useful for removing nodes.
  */
 function removeUnnecessaryNodes(node: DataFlowNode) {
-  // remove empty non positive filter
-  if (node instanceof NonPositiveFilterNode && every(vals(node.filter), b => b === false)) {
-    node.remove();
-  }
 
   // remove empty null filter nodes
-  if (node instanceof NullFilterNode && every(vals(node.filteredFields), f => f === null)) {
+  if (node instanceof FilterInvalidNode && every(vals(node.filter), f => f === null)) {
     node.remove();
   }
 

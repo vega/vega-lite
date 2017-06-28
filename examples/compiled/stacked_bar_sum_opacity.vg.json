@@ -26,10 +26,6 @@
                     "as": "gender"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "age",
@@ -64,6 +60,10 @@
                         "sum_people_end"
                     ],
                     "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 }
             ]
         }

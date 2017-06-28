@@ -47,13 +47,13 @@
                     "as": "price"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonthdatehoursminutes_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), hours(datum[\"date\"]), minutes(datum[\"date\"]), 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonthdatehoursminutes_date\"] !== null && !isNaN(datum[\"yearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         }

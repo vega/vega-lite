@@ -44,10 +44,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_10_Acceleration",
@@ -62,6 +58,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
                 }
             ]
         },
@@ -97,10 +97,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_10_Acceleration",
@@ -115,6 +111,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
                 }
             ]
         }

@@ -65,10 +65,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_10_Acceleration",
@@ -85,6 +81,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
                 }
             ]
         },
@@ -143,10 +143,6 @@
                     "expr": "datum.Origin === 'Japan'"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_10_Acceleration",
@@ -163,6 +159,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
                 }
             ]
         }

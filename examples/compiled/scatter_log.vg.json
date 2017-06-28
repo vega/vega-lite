@@ -60,10 +60,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"y\"] > 0"
                 }
             ]
         }

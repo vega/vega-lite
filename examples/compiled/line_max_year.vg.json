@@ -18,10 +18,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -40,6 +36,10 @@
                     "as": [
                         "max_temp_max"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }

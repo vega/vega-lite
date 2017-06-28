@@ -22,10 +22,6 @@
                     "as": "temp_range"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -44,6 +40,10 @@
                     "as": [
                         "mean_temp_range"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         }

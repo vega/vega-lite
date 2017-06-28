@@ -20,10 +20,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-                },
-                {
                     "type": "extent",
                     "field": "Acceleration",
                     "signal": "bin_maxbins_6_Acceleration_extent"
@@ -40,6 +36,10 @@
                     "extent": {
                         "signal": "bin_maxbins_6_Acceleration_extent"
                     }
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
             ]
         }

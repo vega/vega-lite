@@ -14,10 +14,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "extent",
                     "field": "Horsepower",
                     "signal": "child_bin_maxbins_15_Horsepower_extent"
@@ -51,6 +47,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_15_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_15_Horsepower\"])"
                 }
             ]
         },
