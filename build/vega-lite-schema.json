@@ -653,82 +653,6 @@
       },
       "type": "object"
     },
-    "BaseIntervalSelectionDef": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "enum": [
-            "scales"
-          ],
-          "type": "string"
-        },
-        "encodings": {
-          "items": {
-            "$ref": "#/definitions/SingleDefChannel"
-          },
-          "type": "array"
-        },
-        "fields": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "mark": {
-          "$ref": "#/definitions/BrushDef"
-        },
-        "on": {
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
-        },
-        "translate": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        },
-        "zoom": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "BaseMultiSelectionDef": {
-      "additionalProperties": false,
-      "properties": {
-        "encodings": {
-          "items": {
-            "$ref": "#/definitions/SingleDefChannel"
-          },
-          "type": "array"
-        },
-        "fields": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "nearest": {
-          "type": "boolean"
-        },
-        "on": {
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
-        },
-        "toggle": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        }
-      },
-      "type": "object"
-    },
     "BaseSelectionDef": {
       "additionalProperties": false,
       "properties": {
@@ -743,45 +667,6 @@
             "type": "string"
           },
           "type": "array"
-        },
-        "on": {
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
-        }
-      },
-      "type": "object"
-    },
-    "BaseSingleSelectionDef": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VgBinding"
-            },
-            {
-              "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
-              },
-              "type": "object"
-            }
-          ]
-        },
-        "encodings": {
-          "items": {
-            "$ref": "#/definitions/SingleDefChannel"
-          },
-          "type": "array"
-        },
-        "fields": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "nearest": {
-          "type": "boolean"
         },
         "on": {
         },
@@ -1085,7 +970,7 @@
       ],
       "type": "object"
     },
-    "BrushDef": {
+    "BrushConfig": {
       "additionalProperties": false,
       "properties": {
         "fill": {
@@ -3149,7 +3034,7 @@
           "type": "array"
         },
         "mark": {
-          "$ref": "#/definitions/BrushDef"
+          "$ref": "#/definitions/BrushConfig"
         },
         "on": {
         },
@@ -3178,6 +3063,50 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "IntervalSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "enum": [
+            "scales"
+          ],
+          "type": "string"
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mark": {
+          "$ref": "#/definitions/BrushConfig"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "translate": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
+        "zoom": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
       "type": "object"
     },
     "LayoutSize": {
@@ -4003,6 +3932,38 @@
       ],
       "type": "object"
     },
+    "MultiSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "toggle": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "type": "object"
+    },
     "NamedData": {
       "additionalProperties": false,
       "properties": {
@@ -4662,13 +4623,13 @@
       "additionalProperties": false,
       "properties": {
         "interval": {
-          "$ref": "#/definitions/BaseIntervalSelectionDef"
+          "$ref": "#/definitions/IntervalSelectionConfig"
         },
         "multi": {
-          "$ref": "#/definitions/BaseMultiSelectionDef"
+          "$ref": "#/definitions/MultiSelectionConfig"
         },
         "single": {
-          "$ref": "#/definitions/BaseSingleSelectionDef"
+          "$ref": "#/definitions/SingleSelectionConfig"
         }
       },
       "required": [
@@ -4814,6 +4775,45 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "SingleSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgBinding"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/definitions/VgBinding"
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        }
+      },
       "type": "object"
     },
     "SortField": {

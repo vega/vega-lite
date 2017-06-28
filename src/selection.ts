@@ -8,6 +8,7 @@ export type SelectionResolutions = 'global' | 'independent' | 'union' |
 export interface BaseSelectionDef {
   on?: any;
   resolve?: SelectionResolutions;
+  // TODO(https://github.com/vega/vega-lite/issues/2596).
   // predicate?: string;
   // domain?: SelectionDomain;
 
@@ -16,17 +17,17 @@ export interface BaseSelectionDef {
   encodings?: SingleDefChannel[];
 }
 
-export interface BaseSingleSelectionDef extends BaseSelectionDef {
+export interface SingleSelectionConfig extends BaseSelectionDef {
   bind?: VgBinding | {[key: string]: VgBinding};
   nearest?: boolean;
 }
 
-export interface BaseMultiSelectionDef extends BaseSelectionDef {
+export interface MultiSelectionConfig extends BaseSelectionDef {
   toggle?: string | boolean;
   nearest?: boolean;
 }
 
-export interface BrushDef {
+export interface BrushConfig {
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
@@ -36,31 +37,31 @@ export interface BrushDef {
   strokeDashOffset?: number;
 }
 
-export interface BaseIntervalSelectionDef extends BaseSelectionDef {
+export interface IntervalSelectionConfig extends BaseSelectionDef {
   translate?: string | boolean;
   zoom?: string | boolean;
   bind?: 'scales';
-  mark?: BrushDef;
+  mark?: BrushConfig;
 }
 
-export interface SingleSelection extends BaseSingleSelectionDef {
+export interface SingleSelection extends SingleSelectionConfig {
   type: 'single';
 }
 
-export interface MultiSelection extends BaseMultiSelectionDef {
+export interface MultiSelection extends MultiSelectionConfig {
   type: 'multi';
 }
 
-export interface IntervalSelection extends BaseIntervalSelectionDef {
+export interface IntervalSelection extends IntervalSelectionConfig {
   type: 'interval';
 }
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
 export interface SelectionConfig {
-  single: BaseSingleSelectionDef;
-  multi: BaseMultiSelectionDef;
-  interval: BaseIntervalSelectionDef;
+  single: SingleSelectionConfig;
+  multi: MultiSelectionConfig;
+  interval: IntervalSelectionConfig;
 }
 
 export const defaultConfig:SelectionConfig = {
