@@ -8,6 +8,8 @@ UnitSpec:
 
 type:
   datetime: transform.html#datetime
+  dataformat: data.html#format
+  dataurlformat: data.html#format
   filter:   transform.html#filter
   equalfilter: transform.html#equalfilter
   rangefilter: transform.html#rangefilter
@@ -23,6 +25,10 @@ UrlData:
   format: "#format"
 
 InlineData:
+  values: "#inline"
+  format: "#format"
+
+NamedData:
   values: "#inline"
   format: "#format"
 
