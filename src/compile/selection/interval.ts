@@ -112,12 +112,15 @@ const interval:SelectionCompiler = {
     // Two brush marks ensure that fill colors and other aesthetic choices do
     // not interefere with the core marks, but that the brushed region can still
     // be interacted with (e.g., dragging it around).
+    const {fill, fillOpacity, ...stroke} = selCmpt.mark;
+    keys(stroke).forEach((k) => stroke[k] = {value: stroke[k]});
+
     return [{
       type: 'rect',
       encode: {
         enter: {
-          fill: {value: '#333'},
-          fillOpacity: {value: 0.125}
+          fill: {value: fill},
+          fillOpacity: {value: fillOpacity}
         },
         update: update
       }
@@ -127,7 +130,7 @@ const interval:SelectionCompiler = {
       encode: {
         enter: {
           fill: {value: 'transparent'},
-          stroke: {value: 'white'}
+          ...stroke
         },
         update: update
       }

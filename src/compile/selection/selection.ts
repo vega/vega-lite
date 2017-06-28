@@ -3,7 +3,7 @@ import {Channel, ScaleChannel, SingleDefChannel} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
-import {SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
+import {BrushDef, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {LayerModel} from '../layer';
@@ -28,6 +28,7 @@ export interface SelectionComponent {
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolutions;
+  mark?: BrushDef;
 
   // Transforms
   project?: ProjectComponent[];

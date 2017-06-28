@@ -674,6 +674,9 @@
           },
           "type": "array"
         },
+        "mark": {
+          "$ref": "#/definitions/BrushDef"
+        },
         "on": {
         },
         "resolve": {
@@ -1080,6 +1083,36 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "BrushDef": {
+      "additionalProperties": false,
+      "properties": {
+        "fill": {
+          "type": "string"
+        },
+        "fillOpacity": {
+          "type": "number"
+        },
+        "stroke": {
+          "type": "string"
+        },
+        "strokeDash": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "type": "number"
+        },
+        "strokeWidth": {
+          "type": "number"
+        }
+      },
       "type": "object"
     },
     "CalculateTransform": {
@@ -3114,6 +3147,9 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "mark": {
+          "$ref": "#/definitions/BrushDef"
         },
         "on": {
         },

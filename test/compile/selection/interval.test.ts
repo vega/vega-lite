@@ -32,7 +32,16 @@ describe('Interval Selections', function() {
       "on": "[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress",
       "translate": false,
       "zoom": false,
-      "resolve": "intersect"
+      "resolve": "intersect",
+      "mark": {
+        "fill": "red",
+        "fillOpacity": 0.75,
+        "stroke": "black",
+        "strokeWidth": 4,
+        "strokeDash": [10, 5],
+        "strokeDashOffset": 3,
+        "strokeOpacity": 0.25
+      }
     }
   });
 
@@ -330,8 +339,8 @@ describe('Interval Selections', function() {
         "type": "rect",
         "encode": {
           "enter": {
-            "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125}
+            "fill": {"value": "red"},
+            "fillOpacity": {"value": 0.75}
           },
           "update": {
             "x": {
@@ -356,7 +365,11 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "stroke": {"value": "white"}
+            "stroke": {"value": "black"},
+            "strokeWidth": {"value": 4},
+            "strokeDash": {"value": [10, 5]},
+            "strokeDashOffset": {"value": 3},
+            "strokeOpacity": {"value": 0.25}
           },
           "update": {
             "x": {

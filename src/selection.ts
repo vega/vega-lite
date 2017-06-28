@@ -26,10 +26,21 @@ export interface BaseMultiSelectionDef extends BaseSelectionDef {
   nearest?: boolean;
 }
 
+export interface BrushDef {
+  fill?: string;
+  fillOpacity?: number;
+  stroke?: string;
+  strokeOpacity?: number;
+  strokeWidth?: number;
+  strokeDash?: number[];
+  strokeDashOffset?: number;
+}
+
 export interface BaseIntervalSelectionDef extends BaseSelectionDef {
   translate?: string | boolean;
   zoom?: string | boolean;
   bind?: 'scales';
+  mark?: BrushDef;
 }
 
 export interface SingleSelection extends BaseSingleSelectionDef {
@@ -60,6 +71,7 @@ export const defaultConfig:SelectionConfig = {
     encodings: ['x', 'y'],
     translate: '[mousedown, window:mouseup] > window:mousemove!',
     zoom: 'wheel',
+    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global'
   }
 };
