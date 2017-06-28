@@ -22,12 +22,7 @@ You can find [tasks with the "help-wanted" label in the issue tracker](https://g
 
 ### Help Create New Examples
 
-To submit a new example, you can fork the `master` branch and add a new `.vl.json` file to `examples/specs`. After adding the file, run `yarn run build:examples` to make sure that a compiled Vega file is included in your pull request.   
-
-If possible, please try to re-use datasets from [vega-datasets](https://github.com/vega/vega-datasets).  
-If you need a new dataset for your example, please try to submit an example with *small* [inline data](https://vega.github.io/vega-lite/docs/data.html#inline).  
-
-To avoid redundancy, please also make sure that your example is different from existing examples. 
+To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull reuqest to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
 
 ## Documentation and Website
 
