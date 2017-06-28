@@ -8,11 +8,10 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
+import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
 import {IdentifierNode} from './indentifier';
 import {LookupNode} from './lookup';
-import {NonPositiveFilterNode} from './nonpositivefilter';
-import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -85,7 +84,6 @@ function makeWalkTree(data: VgData[]) {
     }
 
     if (node instanceof FilterNode ||
-      node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
@@ -93,7 +91,7 @@ function makeWalkTree(data: VgData[]) {
       dataSource.transform.push(node.assemble());
     }
 
-    if (node instanceof NonPositiveFilterNode ||
+    if (node instanceof FilterInvalidNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof StackNode) {

@@ -53,10 +53,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_distance",
@@ -71,6 +67,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
                 }
             ]
         },
@@ -106,10 +106,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_distance",
@@ -124,6 +120,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
                 }
             ]
         },
@@ -155,10 +155,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_delay",
@@ -173,6 +169,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
                 }
             ]
         },
@@ -208,10 +208,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_delay",
@@ -226,6 +222,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
                 }
             ]
         },
@@ -257,10 +257,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_time",
@@ -275,6 +271,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
                 }
             ]
         },
@@ -310,10 +310,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_time",
@@ -328,6 +324,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
                 }
             ]
         }

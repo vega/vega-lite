@@ -25,10 +25,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"health\"] !== null && !isNaN(datum[\"health\"]) && datum[\"income\"] !== null && !isNaN(datum[\"income\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"income\"] > 0"
                 }
             ]
         }

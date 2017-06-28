@@ -17,10 +17,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
-                },
-                {
                     "type": "extent",
                     "field": "IMDB_Rating",
                     "signal": "bin_maxbins_30_IMDB_Rating_extent"
@@ -53,6 +49,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_30_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"])"
                 }
             ]
         }

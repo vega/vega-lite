@@ -20,10 +20,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
-                },
-                {
                     "type": "extent",
                     "field": "Acceleration",
                     "signal": "bin_maxbins_6_Acceleration_extent"
@@ -57,6 +53,10 @@
                     "as": [
                         "mean_Horsepower"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 }
             ]
         }

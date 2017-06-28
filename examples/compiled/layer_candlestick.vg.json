@@ -241,13 +241,13 @@
                     "as": "high"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonthdate_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
                 }
             ]
         },
@@ -271,13 +271,13 @@
                     "as": "close"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonthdate_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
                 }
             ]
         }
