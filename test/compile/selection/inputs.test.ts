@@ -34,20 +34,8 @@ describe('Inputs Selection Transform', function() {
         "Origin": {"input": "select", "options": ["Japan", "USA", "Europe"]}
       }
     },
-    "four": {
-      "type": "multi",
-      "bind": {"input": "range", "min": 0, "max": 10, "step": 1}
-    },
-    "five": {
-      "type": "interval",
-      "bind": {"input": "range", "min": 0, "max": 10, "step": 1}
-    },
     "six": {
       "type": "interval",
-      "bind": "scales"
-    },
-    "seven": {
-      "type": "single",
       "bind": "scales"
     }
   });
@@ -56,10 +44,7 @@ describe('Inputs Selection Transform', function() {
     assert.isTrue(inputs.has(selCmpts['one']));
     assert.isTrue(inputs.has(selCmpts['two']));
     assert.isTrue(inputs.has(selCmpts['three']));
-    assert.isFalse(inputs.has(selCmpts['four']));
-    assert.isFalse(inputs.has(selCmpts['five']));
     assert.isFalse(inputs.has(selCmpts['six']));
-    assert.isFalse(inputs.has(selCmpts['four']));
   });
 
   it('adds widget binding for default projection', function() {

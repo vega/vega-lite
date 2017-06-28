@@ -1,11 +1,11 @@
 import {TransformCompiler} from './transforms';
 
-
 const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.nearest !== undefined && selCmpt.nearest !== false;
+    return selCmpt.type !== 'interval' &&
+      selCmpt.nearest !== undefined && selCmpt.nearest !== false;
   },
 
   marks: function(model, selCmpt, marks, selMarks) {

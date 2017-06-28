@@ -31,7 +31,7 @@ describe('Nearest Selection Transform', function() {
     const selCmpts = getModel('circle').component.selection;
     assert.isTrue(nearest.has(selCmpts['one']));
     assert.isTrue(nearest.has(selCmpts['two']));
-    assert.isTrue(nearest.has(selCmpts['three']));
+    assert.isFalse(nearest.has(selCmpts['three']));
     assert.isFalse(nearest.has(selCmpts['four']));
     assert.isFalse(nearest.has(selCmpts['five']));
   });

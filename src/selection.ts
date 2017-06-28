@@ -1,35 +1,55 @@
 import {SingleDefChannel} from './channel';
 import {VgBinding} from './vega.schema';
 
-
 export type SelectionTypes = 'single' | 'multi' | 'interval';
 export type SelectionResolutions = 'global' | 'independent' | 'union' |
   'union_others' | 'intersect' | 'intersect_others';
 
 export interface BaseSelectionDef {
-  // domain?: SelectionDomain;
-  resolve?: SelectionResolutions;
   on?: any;
+  resolve?: SelectionResolutions;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
+  // domain?: SelectionDomain;
 
   // Transforms
   fields?: string[];
   encodings?: SingleDefChannel[];
-  toggle?: string | boolean;
-  translate?: string | boolean;
-  zoom?: string | boolean;
+}
+
+export interface BaseSingleSelectionDef extends BaseSelectionDef {
+  bind?: VgBinding | {[key: string]: VgBinding};
   nearest?: boolean;
 }
 
-export interface SelectionDef extends BaseSelectionDef {
-  type: SelectionTypes;
+export interface BaseMultiSelectionDef extends BaseSelectionDef {
+  toggle?: string | boolean;
+  nearest?: boolean;
 }
 
+export interface BaseIntervalSelectionDef extends BaseSelectionDef {
+  translate?: string | boolean;
+  zoom?: string | boolean;
+  bind?: 'scales';
+}
+
+export interface SingleSelection extends BaseSingleSelectionDef {
+  type: 'single';
+}
+
+export interface MultiSelection extends BaseMultiSelectionDef {
+  type: 'multi';
+}
+
+export interface IntervalSelection extends BaseIntervalSelectionDef {
+  type: 'interval';
+}
+
+export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
+
 export interface SelectionConfig {
-  single: BaseSelectionDef;
-  multi: BaseSelectionDef;
-  interval: BaseSelectionDef;
+  single: BaseSingleSelectionDef;
+  multi: BaseMultiSelectionDef;
+  interval: BaseIntervalSelectionDef;
 }
 
 export const defaultConfig:SelectionConfig = {
