@@ -7,7 +7,6 @@ import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
-
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
@@ -113,7 +112,10 @@ const interval:SelectionCompiler = {
     // not interefere with the core marks, but that the brushed region can still
     // be interacted with (e.g., dragging it around).
     const {fill, fillOpacity, ...stroke} = selCmpt.mark;
-    keys(stroke).forEach((k) => stroke[k] = {value: stroke[k]});
+    const vgStroke = keys(stroke).reduce((def, k) => {
+      def[k] = {value: stroke[k]};
+      return def;
+    }, {});
 
     return [{
       type: 'rect',
@@ -130,7 +132,7 @@ const interval:SelectionCompiler = {
       encode: {
         enter: {
           fill: {value: 'transparent'},
-          ...stroke
+          ...vgStroke
         },
         update: update
       }
