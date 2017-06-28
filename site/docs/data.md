@@ -30,7 +30,7 @@ Inline Data can be specified using `values` property.
 
 {% include table.html props="values,format" source="InlineData" %}
 
-For example, the following specification embeds an inline data table with two rows and two columns (`a` and `b`).
+For example, the following specification embeds an inline data table with nine rows and two columns (`a` and `b`).
 
 <span class="vl-example" data-name="bar"></span>
 
