@@ -4,8 +4,7 @@ const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type !== 'interval' &&
-      selCmpt.nearest !== undefined && selCmpt.nearest !== false;
+    return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
   marks: function(model, selCmpt, marks, selMarks) {

@@ -15,12 +15,26 @@ describe('Toggle Selection Transform', function() {
     }
   });
 
+  model.parseScale();
   const selCmpts = model.component.selection = selection.parseUnitSelection(model, {
     "one": {"type": "multi"},
     "two": {
       "type": "multi", "resolve": "union",
       "on": "mouseover", "toggle": "event.ctrlKey", "encodings": ["y", "color"]
-    }
+    },
+    "three": {"type": "multi", "toggle": false},
+    "four": {"type": "multi", "toggle": null},
+    "five": {"type": "single", "toggle": true},
+    "six": {"type": "interval", "toggle": true}
+  });
+
+  it('identifies transform invocation', function() {
+    assert.isNotFalse(toggle.has(selCmpts['one']));
+    assert.isNotFalse(toggle.has(selCmpts['two']));
+    assert.isNotTrue(toggle.has(selCmpts['three']));
+    assert.isNotTrue(toggle.has(selCmpts['four']));
+    assert.isNotTrue(toggle.has(selCmpts['five']));
+    assert.isNotTrue(toggle.has(selCmpts['six']));
   });
 
   it('builds toggle signals', function() {

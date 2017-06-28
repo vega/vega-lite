@@ -20,7 +20,8 @@ function getModel(markType: any) {
     "two": {"type": "multi", "nearest": true},
     "three": {"type": "interval", "nearest": true},
     "four": {"type": "single", "nearest": false},
-    "five": {"type": "multi"}
+    "five": {"type": "multi"},
+    "six": {"type": "multi", "nearest": null}
   });
 
   return model;
@@ -29,11 +30,12 @@ function getModel(markType: any) {
 describe('Nearest Selection Transform', function() {
   it('identifies transform invocation', function() {
     const selCmpts = getModel('circle').component.selection;
-    assert.isTrue(nearest.has(selCmpts['one']));
-    assert.isTrue(nearest.has(selCmpts['two']));
-    assert.isFalse(nearest.has(selCmpts['three']));
-    assert.isFalse(nearest.has(selCmpts['four']));
-    assert.isFalse(nearest.has(selCmpts['five']));
+    assert.isNotFalse(nearest.has(selCmpts['one']));
+    assert.isNotFalse(nearest.has(selCmpts['two']));
+    assert.isNotTrue(nearest.has(selCmpts['three']));
+    assert.isNotTrue(nearest.has(selCmpts['four']));
+    assert.isNotTrue(nearest.has(selCmpts['five']));
+    assert.isNotTrue(nearest.has(selCmpts['six']));
   });
 
   it('adds voronoi for non-path marks', function() {

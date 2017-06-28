@@ -7,8 +7,7 @@ const TOGGLE = '_toggle';
 
 const toggle:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type === 'multi' &&
-      selCmpt.toggle !== undefined && selCmpt.toggle !== false;
+    return selCmpt.type === 'multi' && selCmpt.toggle;
   },
 
   signals: function(model, selCmpt, signals) {
