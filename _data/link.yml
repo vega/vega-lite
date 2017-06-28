@@ -1,4 +1,4 @@
-UnitSpec:
+TopLevelFacetedUnitSpec:
   data: data.html
   transform: transform.html
   selection: interaction.html
@@ -7,14 +7,17 @@ UnitSpec:
   config: config.html
 
 type:
+  aggregateop: aggregate.html#supported-aggregation-operations
+  config: config.html
+  data: data.html
   datetime: transform.html#datetime
   filter:   transform.html#filter
   equalfilter: transform.html#equalfilter
   rangefilter: transform.html#rangefilter
   oneoffilter: transform.html#oneoffilter
-  timeunit: timeunit.html
   scaletype: scale.html#type
-  aggregateop: aggregate.html#supported-aggregation-operations
+  selection: selection.html
+  timeunit: timeunit.html
 
 # Please use "" if # exists in url
 
