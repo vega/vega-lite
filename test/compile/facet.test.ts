@@ -164,6 +164,33 @@ describe('FacetModel', function() {
     });
   });
 
+  describe('assembleHeaderMarks', () => {
+    it('should sort headers in ascending order', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative', format: 'd'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseAxisAndHeader();
+
+      const headerMarks = model.assembleHeaderMarks();
+      const columnHeader = headerMarks.filter(function(d){
+        return d.name === "column_header";
+      })[0];
+
+      assert.deepEqual(columnHeader.sort, {field: 'datum["a"]', order: 'ascending'});
+    });
+
+  });
+
+
 
   describe('parseAxisAndHeader', () => {
     // TODO: add more tests
@@ -185,7 +212,12 @@ describe('FacetModel', function() {
         }
       });
       model.parseAxisAndHeader();
-      assert(model.component.layoutHeaders.column.fieldRef, "timeFormat(parent[\"year_date\"], '%Y')");
+      const headerMarks = model.assembleHeaderMarks();
+      const columnHeader = headerMarks.filter(function(d){
+        return d.name === "column_header";
+      })[0];
+
+      assert(columnHeader.title.text.signal, "timeFormat(parent[\"year_date\"], '%Y')");
     });
 
     it('applies number format for fieldref of a quantitative field', () => {
@@ -202,7 +234,12 @@ describe('FacetModel', function() {
         }
       });
       model.parseAxisAndHeader();
-      assert(model.component.layoutHeaders.column.fieldRef, "format(parent[\"a\"], 'd')");
+      const headerMarks = model.assembleHeaderMarks();
+      const columnHeader = headerMarks.filter(function(d){
+        return d.name === "column_header";
+      })[0];
+
+      assert(columnHeader.title.text.signal, "format(parent[\"a\"], 'd')");
     });
 
     it('ignores number format for fieldref of a binned field', () => {
@@ -219,7 +256,12 @@ describe('FacetModel', function() {
         }
       });
       model.parseAxisAndHeader();
-      assert(model.component.layoutHeaders.column.fieldRef, "parent[\"a\"]");
+      const headerMarks = model.assembleHeaderMarks();
+      const columnHeader = headerMarks.filter(function(d){
+        return d.name === "column_header";
+      })[0];
+
+      assert(columnHeader.title.text.signal, "parent[\"a\"]");
     });
   });
 });

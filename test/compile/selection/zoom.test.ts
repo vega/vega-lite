@@ -40,16 +40,18 @@ describe('Zoom Selection Transform', function() {
     "six": {
       "type": "interval",
       "bind": "scales"
-    }
+    },
+    "seven": {"type": "interval", "zoom": null}
   });
 
   it('identifies transform invocation', function() {
-    assert.isFalse(zoom.has(selCmpts['one']));
-    assert.isFalse(zoom.has(selCmpts['two']));
-    assert.isFalse(zoom.has(selCmpts['three']));
-    assert.isTrue(zoom.has(selCmpts['four']));
-    assert.isTrue(zoom.has(selCmpts['five']));
-    assert.isTrue(zoom.has(selCmpts['six']));
+    assert.isNotTrue(zoom.has(selCmpts['one']));
+    assert.isNotTrue(zoom.has(selCmpts['two']));
+    assert.isNotTrue(zoom.has(selCmpts['three']));
+    assert.isNotFalse(zoom.has(selCmpts['four']));
+    assert.isNotFalse(zoom.has(selCmpts['five']));
+    assert.isNotFalse(zoom.has(selCmpts['six']));
+    assert.isNotTrue(zoom.has(selCmpts['seven']));
   });
 
   it('builds signals for default invocation', function() {

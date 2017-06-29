@@ -35,31 +35,20 @@ describe('Inputs Selection Transform', function() {
       }
     },
     "four": {
-      "type": "multi",
-      "bind": {"input": "range", "min": 0, "max": 10, "step": 1}
-    },
-    "five": {
-      "type": "interval",
-      "bind": {"input": "range", "min": 0, "max": 10, "step": 1}
+      "type": "single", "bind": null
     },
     "six": {
       "type": "interval",
-      "bind": "scales"
-    },
-    "seven": {
-      "type": "single",
       "bind": "scales"
     }
   });
 
   it('identifies transform invocation', function() {
-    assert.isTrue(inputs.has(selCmpts['one']));
-    assert.isTrue(inputs.has(selCmpts['two']));
-    assert.isTrue(inputs.has(selCmpts['three']));
-    assert.isFalse(inputs.has(selCmpts['four']));
-    assert.isFalse(inputs.has(selCmpts['five']));
-    assert.isFalse(inputs.has(selCmpts['six']));
-    assert.isFalse(inputs.has(selCmpts['four']));
+    assert.isNotFalse(inputs.has(selCmpts['one']));
+    assert.isNotFalse(inputs.has(selCmpts['two']));
+    assert.isNotFalse(inputs.has(selCmpts['three']));
+    assert.isNotTrue(inputs.has(selCmpts['four']));
+    assert.isNotTrue(inputs.has(selCmpts['six']));
   });
 
   it('adds widget binding for default projection', function() {

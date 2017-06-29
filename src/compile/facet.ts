@@ -103,7 +103,9 @@ export class FacetModel extends ModelWithField {
 
     // if we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const isCrossedFacet = this.channelHasField(ROW) && this.channelHasField(COLUMN);
+    const hasRow = this.channelHasField(ROW);
+    const hasColumn = this.channelHasField(COLUMN);
+
     this.component.mark = [{
       name: this.getName('cell'),
       type: 'group',
@@ -112,18 +114,24 @@ export class FacetModel extends ModelWithField {
           name: this.component.data.facetRoot.name,
           data: this.component.data.facetRoot.data,
           groupby: [].concat(
-            this.channelHasField(ROW) ? [this.field(ROW)] : [],
-            this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
+            hasRow ? [this.field(ROW)] : [],
+            hasColumn ? [this.field(COLUMN)] : []
           ),
-          ...(isCrossedFacet ? {aggregate: {
+          ...(hasRow && hasColumn ? {aggregate: {
             cross: true
           }}: {})
         }
       },
-      ...(isCrossedFacet ? {sort: {
-        field: [this.field(ROW, {expr: 'datum'}), this.field(COLUMN, {expr: 'datum'})],
-        order: ['ascending', 'ascending']
-      }} : {}),
+      sort: {
+        field: [].concat(
+          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
+          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+        ),
+        order: [].concat(
+          hasRow ? [ (this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [],
+          hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
+        )
+      },
       encode: {
         update: getFacetGroupProperties(this)
       }
@@ -155,7 +163,7 @@ export class FacetModel extends ModelWithField {
 
       this.component.layoutHeaders[channel] = {
         title,
-        fieldRef: formatSignalRef(fieldDef, header.format, 'parent', this.config, true),
+        facetFieldDef: fieldDef,
         // TODO: support adding label to footer as well
         header: [this.makeHeaderComponent(channel, true)]
       };

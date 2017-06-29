@@ -17,7 +17,7 @@ When the top-level `width` property is specified, the width of the single plot i
 
 <span class="vl-example" data-name="bar_size_explicit"></span>
 
-**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be overridden with `"fit"`.
+**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be overridden with `null`.
 
 **Warning**: If the cardinality of the x/y-field's domain is too high, the `rangeStep` might become less than one pixel and the mark might not appear correctly.
 
@@ -35,7 +35,7 @@ This example shows continuous y-scale and ordinal x-scale:
 
 <span class="vl-example" data-name="bar_size_default"></span>
 
-- If the `x` / `y` channel has an ordinal scale with `rangeStep` = `"fit"`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
+- If the `x` / `y` channel has an ordinal scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 

@@ -20,6 +20,10 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task.
 
+### Help Create New Examples
+
+To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull reuqest to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
+
 ## Documentation and Website
 
 The website is under `site/` and the documentation is under `site/docs/`.
@@ -193,9 +197,9 @@ When checking for code coverage, we require that your PR tests covers at least t
 
 Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
 
-- [PoleStar: Contribute](https://github.com/uwdata/polestar/wiki/Contribute)
+
 - [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)
-- [Compass: Contribute](https://github.com/uwdata/compass/wiki/Contribute)
+- [CompassQL: Contribute](https://github.com/uwdata/compassql/wiki/Contribute)
 
 -----
 

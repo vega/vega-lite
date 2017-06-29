@@ -16,9 +16,9 @@ These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`]
 ## Top-Level Specifications
 {:top-level-spec}
 
-Any kind of top-level specifications (such as a standalone single view specification) can contain the following properties:
+Any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
-__TODO: Add TopLevelProperties for `$schema`, `background`, `padding`, `autoResize`, `config`. (Please look at toplevelprops.ts for now)__
+{% include table.html props="$schema,background,padding,autoResize,config" source="TopLevelFacetedUnitSpec" %}
 
 ## Single View Specifications
 {:#single-view-spec}
@@ -57,7 +57,7 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following top-level properties:
 
-{% include table.html props="name,description,width,height,data,transform,selection,mark,encoding" source="UnitSpec" %}
+{% include table.html props="name,description,width,height,data,transform,selection,mark,encoding" source="TopLevelFacetedUnitSpec" %}
 
 ## Layered and Multi-view Specifications
 

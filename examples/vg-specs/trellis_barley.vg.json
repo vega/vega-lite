@@ -110,6 +110,10 @@
             "from": {
                 "data": "trellis_barley_row"
             },
+            "sort": {
+                "field": "datum[\"site\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"site\"]"
@@ -209,6 +213,14 @@
                         "site"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"site\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

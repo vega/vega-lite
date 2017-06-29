@@ -127,6 +127,10 @@
             "from": {
                 "data": "row"
             },
+            "sort": {
+                "field": "datum[\"Origin\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"Origin\"]"
@@ -218,6 +222,14 @@
                         "Origin"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"Origin\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

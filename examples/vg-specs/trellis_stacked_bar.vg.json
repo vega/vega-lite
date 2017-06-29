@@ -160,6 +160,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"year\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"year\"]"
@@ -195,6 +199,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"year\"]",
+                "order": "ascending"
+            },
             "encode": {
                 "update": {
                     "width": {
@@ -224,6 +232,14 @@
                         "year"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"year\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

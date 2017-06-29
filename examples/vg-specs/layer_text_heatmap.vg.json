@@ -140,7 +140,7 @@
                         "band": 0.5
                     },
                     "text": {
-                        "signal": "format(datum[\"count_*\"], null)"
+                        "signal": "format(datum[\"count_*\"], '')"
                     },
                     "fill": {
                         "value": "white"

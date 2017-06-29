@@ -36,7 +36,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], null) + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], null)",
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], '') + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], '')",
                     "as": "bin_maxbins_6_Acceleration_range"
                 },
                 {
@@ -118,6 +118,10 @@
             "from": {
                 "data": "row"
             },
+            "sort": {
+                "field": "datum[\"bin_maxbins_6_Acceleration\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"bin_maxbins_6_Acceleration_range\"]"
@@ -193,6 +197,14 @@
                         "bin_maxbins_6_Acceleration_range"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"bin_maxbins_6_Acceleration_range\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

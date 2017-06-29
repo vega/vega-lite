@@ -1,11 +1,13 @@
 /**
  * Utility for generating row / column headers
  */
+import {FacetFieldDef} from '../../facet';
+import {field} from '../../fielddef';
 import {contains} from '../../util';
 import {AxisOrient, Orient, VgAxis, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
+import {formatSignalRef} from '../common';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
-
 
 export type HeaderChannel = 'row' | 'column';
 export const HEADER_CHANNELS: HeaderChannel[] = ['row', 'column'];
@@ -19,13 +21,10 @@ export const HEADER_TYPES: HeaderType[] = ['header', 'footer'];
 export interface LayoutHeaderComponent {
   title?: string;
 
-  /**
-   * Field that is used to drive a header group (for facet only).
-   */
-  fieldRef?: {signal: string};
-
   // TODO: repeat and concat can have multiple header / footer.
   // Need to redesign this part a bit.
+
+  facetFieldDef?: FacetFieldDef<string>;
 
   /**
    * An array of header components for headers.
@@ -93,9 +92,12 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
 export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent) {
   if (header) {
     let title = null;
-    if (layoutHeader.fieldRef && header.labels) {
+    if (layoutHeader.facetFieldDef && header.labels) {
+      const {facetFieldDef} = layoutHeader;
+      const format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
+
       title = {
-        text: layoutHeader.fieldRef,
+        text: formatSignalRef(facetFieldDef, format, 'parent', model.config, true),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         encode: {
@@ -122,7 +124,13 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         name: model.getName(`${channel}_${headerType}`),
         type: 'group',
         role: `${channel}-${headerType}`,
-        ...(layoutHeader.fieldRef ? {from: {data: model.getName(channel)}} : {}),
+        ...(layoutHeader.facetFieldDef ? {
+          from: {data: model.getName(channel)},
+          sort: {
+            field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
+            order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.header.sort) || 'ascending'
+          }
+        } : {}),
         ...(title ? {title} : {}),
         encode: {
           update: {

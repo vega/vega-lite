@@ -13,7 +13,7 @@ const DELTA  = '_zoom_delta';
 
 const zoom:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type === 'interval' && selCmpt.zoom !== undefined && selCmpt.zoom !== false;
+    return selCmpt.type === 'interval' && selCmpt.zoom;
   },
 
   signals: function(model, selCmpt, signals) {

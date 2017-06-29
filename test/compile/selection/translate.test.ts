@@ -40,16 +40,18 @@ describe('Translate Selection Transform', function() {
     "six": {
       "type": "interval",
       "bind": "scales"
-    }
+    },
+    "seven": {"type": "interval", "translate": null}
   });
 
   it('identifies transform invocation', function() {
-    assert.isFalse(translate.has(selCmpts['one']));
-    assert.isFalse(translate.has(selCmpts['two']));
-    assert.isFalse(translate.has(selCmpts['three']));
-    assert.isTrue(translate.has(selCmpts['four']));
-    assert.isTrue(translate.has(selCmpts['five']));
-    assert.isTrue(translate.has(selCmpts['six']));
+    assert.isNotTrue(translate.has(selCmpts['one']));
+    assert.isNotTrue(translate.has(selCmpts['two']));
+    assert.isNotTrue(translate.has(selCmpts['three']));
+    assert.isNotFalse(translate.has(selCmpts['four']));
+    assert.isNotFalse(translate.has(selCmpts['five']));
+    assert.isNotFalse(translate.has(selCmpts['six']));
+    assert.isNotTrue(translate.has(selCmpts['seven']));
   });
 
   it('builds signals for default invocation', function() {

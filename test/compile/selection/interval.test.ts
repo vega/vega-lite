@@ -32,7 +32,16 @@ describe('Interval Selections', function() {
       "on": "[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress",
       "translate": false,
       "zoom": false,
-      "resolve": "intersect"
+      "resolve": "intersect",
+      "mark": {
+        "fill": "red",
+        "fillOpacity": 0.75,
+        "stroke": "black",
+        "strokeWidth": 4,
+        "strokeDash": [10, 5],
+        "strokeDashOffset": 3,
+        "strokeOpacity": 0.25
+      }
     }
   });
 
@@ -64,7 +73,7 @@ describe('Interval Selections', function() {
         }]
       }, {
         "name": "one_scale_trigger",
-        "update": "(!isArray(one_Horsepower) || (invert(\"x\", one_x)[0] === one_Horsepower[0] && invert(\"x\", one_x)[1] === one_Horsepower[1])) ? one_scale_trigger : {}"
+        "update": "(!isArray(one_Horsepower) || (+invert(\"x\", one_x)[0] === +one_Horsepower[0] && +invert(\"x\", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}"
       }]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
@@ -143,7 +152,7 @@ describe('Interval Selections', function() {
         },
         {
           "name": "thr_ee_scale_trigger",
-          "update": "(!isArray(thr_ee_Horsepower) || (invert(\"x\", thr_ee_x)[0] === thr_ee_Horsepower[0] && invert(\"x\", thr_ee_x)[1] === thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (invert(\"y\", thr_ee_y)[0] === thr_ee_Miles_per_Gallon[0] && invert(\"y\", thr_ee_y)[1] === thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}"
+          "update": "(!isArray(thr_ee_Horsepower) || (+invert(\"x\", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert(\"x\", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert(\"y\", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert(\"y\", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}"
         }
       ]);
     });
@@ -330,8 +339,8 @@ describe('Interval Selections', function() {
         "type": "rect",
         "encode": {
           "enter": {
-            "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125}
+            "fill": {"value": "red"},
+            "fillOpacity": {"value": 0.75}
           },
           "update": {
             "x": {
@@ -356,7 +365,11 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "stroke": {"value": "white"}
+            "stroke": {"value": "black"},
+            "strokeWidth": {"value": 4},
+            "strokeDash": {"value": [10, 5]},
+            "strokeDashOffset": {"value": 3},
+            "strokeOpacity": {"value": 0.25}
           },
           "update": {
             "x": {
