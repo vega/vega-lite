@@ -68,7 +68,7 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 
 ### Custom Axis Encodings
 
-**TODO**
+**TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/axes/#custom-axis-encodings), but within each element's block, we do not have `enter/update/exit`.)
 
 {:#axis-config}
 ## Axis Config

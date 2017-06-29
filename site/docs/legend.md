@@ -36,7 +36,6 @@ By default, Vega-Lite automatically creates legends for `color`, `size`, and `sh
 }
 ```
 
-## Customizing Legend
 
 The field's legend can be removed by setting `legend` to `false`.
 If `legend` is `true`, default legend properties are applied.
@@ -45,21 +44,25 @@ If `legend` is `true`, default legend properties are applied.
 Either Legend properties or Legend Config can be customized. To customize Legend properties, you need to set `legend` to an legend property object. To customize Legend Config, you need set config properties by specifying `config: {legend: {...}}`.
 
 
-### Legend Properties
+## Legend Properties
 
 Legend properties will apply to the current encoding channel only. Axis properties can be customized by setting `legend` to an legend property object. The `legend` property object supports the following properties:
 
-#### General
+### General
 
 {% include table.html props="fillColor,offset,orient,padding,values,format,entryPadding,type,zindex" source="Legend" %}
 
-#### Title
+### Title
 
 {% include table.html props="title,titleAlign" source="Legend" %}
 
-#### Tick
+### Tick
 
 {% include table.html props="tickCount" source="Legend" %}
+
+### Custom Legend Encodings
+
+**TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/legends/#custom-legend-encodings), but within each element's block, we do not have `enter/update/exit`.)
 
 {:#legend-config}
 ### Legend Config

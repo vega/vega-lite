@@ -60,7 +60,7 @@ For JSDocs comment in the interfaces, please add `__Default value:__` line at th
 
 #### Examples
 
-To include an example specification, the specification's `.vl.json` file must be in `examples/specs`.
+To include an example specification in the documentation, the specification's `.vl.json` file must be in `examples/specs`.
 Then you can use the following span tag to include the specification (e.g., for `point_1d.vl.json`):
 
 ```
