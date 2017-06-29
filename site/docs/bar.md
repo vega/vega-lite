@@ -15,7 +15,7 @@ permalink: /docs/bar.html
 }
 ```
 
-The `bar` mark encodes x and y channels with a pair of discrete and continuous fields.
+The `bar` mark encodes x and y channels with a pair of discrete and continuous fields. Rect marks are useful in a wide variety of visualizations, including bar charts and timelines.
 
 ### Single Bar Chart
 

@@ -15,7 +15,7 @@ permalink: /docs/rect.html
 }
 ```
 
-The `rect` mark represents an arbitrary rectangle.
+The `rect` mark represents an arbitrary rectangle. Rect marks are useful in a wide variety of visualizations, including bar charts and timelines.
 
 ### Heatmap
 
