@@ -5,7 +5,7 @@ title: Customizing Size
 permalink: /docs/size.html
 ---
 
-At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple sub-plots or _cells_.
+At its core, a Vega-Lite specification describes a single plot. When a [facet channel](channel.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple sub-plots or _cells_.
 
 ## Width and Height of a Single Plot
 

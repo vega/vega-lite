@@ -7,7 +7,7 @@ permalink: /docs/scale.html
 
 Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes).
 
-Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels). Supported [scale types](#type) are quantitative, time, and ordinal. Default scale properties are determined based on a set of rules for each scale type, but [`scale`](encoding.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
+Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels). Supported [scale types](#type) are quantitative, time, and ordinal. Default scale properties are determined based on a set of rules for each scale type, but [`scale`](channeldef.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
 
 {: .suppress-error}
 ```json

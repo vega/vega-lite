@@ -23,7 +23,7 @@ permalink: /docs/sort.html
 }
 ```
 
-`sort` property of [a mark properties channel](encoding.html#mark-props) determines the order of the scale domain. Supported `sort` value depends on the field's scale type.
+`sort` property of [a mark properties channel](channel.html#mark-props) determines the order of the scale domain. Supported `sort` value depends on the field's scale type.
 
 ## Continuous Scale
 

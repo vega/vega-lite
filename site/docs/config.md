@@ -51,7 +51,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 {:#cell-config}
 ## Cell Configuration  (`config.cell.*`)
 
-At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
+At its core, a Vega-Lite specification describes a single plot. When a [facet channel](channel.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
 Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each single plot and each plot in a trellis plot.
 
 ### Cell Size Configuration
@@ -70,7 +70,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 {:#mark-config}
 ## Mark Configuration (`config.mark.*`)
 
-`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks. Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).
+`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks. Some of these properties will be overridden by data mapped to [mark properties channels](channel.html#props-channels).
 
 A mark config object can have the following properties:
 
