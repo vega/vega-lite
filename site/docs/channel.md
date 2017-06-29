@@ -19,7 +19,7 @@ Position channels determine the position of the marks.
 
 ### Mark Properties Channels
 
-Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
+Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](channeldef.html#value) as well. Here are the supported mark properties:
 
 {% include table.html props="color,opacity,shape,size,text,tooltip" source="Encoding" %}
 

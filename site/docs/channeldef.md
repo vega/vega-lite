@@ -7,7 +7,7 @@ permalink: /docs/channeldef.html
 {:#def}
 ## Channel Definition
 
-Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value). In addition, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
+Each channel definition object **must** describe the [data field encoded by the channel](#channel.html) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value). In addition, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
 
 
 {:#field}
@@ -17,6 +17,7 @@ To encode a particular field in the data set with a particular channel, the chan
 
 {% include table.html props="field" source="FieldDef" %}
 
+{:#type}
 ### Data Type
 
 If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement).
@@ -71,7 +72,7 @@ For more information about these field transforms, please see the following page
 {:#value}
 ### Constant Value
 
-For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.
+For [mark properties channels](channel.html#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.
 
 {% include table.html props="value" source="ValueDef<number>" %}
 
@@ -102,7 +103,7 @@ By default, Vega-Lite automatically generates a scale and a guide for each field
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [scale](scale.html)      | Object        | A property object for a scale of a [mark property channel](#props-channels). |
+| [scale](scale.html)      | Object        | A property object for a scale of a [mark property channel](channel.html#props-channels). |
 | [axis](axis.html)        | Boolean &#124; Object  | Boolean flag for showing an axis (`true` by default), or a property object for an axis of a position channel (`x` or `y`) or a facet channel (`row` or `column`). |
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing a legend (`true` by default), or a config object for a legend of a non-position mark property channel (`color`, `size`, or `shape`). |
 
