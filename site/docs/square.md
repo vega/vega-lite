@@ -15,7 +15,7 @@ permalink: /docs/square.html
 }
 ```
 
-`square` marks is similar to `point` mark, except that (1) the `shape` value is always set to `square` (2) they are filled by default.
+`square` marks is similar to [`point`](point.html) mark, except that (1) the `shape` value is always set to `square` (2) they are filled by default.
 
 ### Scatterplot with Square
 
