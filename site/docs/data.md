@@ -70,8 +70,26 @@ For example, to create a data source named `myData`, use the following data
 
 ## Format
 
-The format object has the following properties:
+The format object describes the data format and additional parsing instructions.
 
-{% include table.html props="type,parse,property,feature,mesh" source="DataUrlFormat" %}
+{% include table.html props="type,parse" source="DataUrlFormat" %}
 
-**TODO: Please help split the table above into sections like in https://vega.github.io/vega/docs/data/**
+### json
+
+Loads a JavaScript Object Notation (JSON) file. Assumes row-oriented data, where each row is an object with named attributes. This is the default file format, and so will be used if no format parameter is provided. If specified, the `format` parameter should have a type property of `"json"`, and can also accept the following:
+
+{% include table.html props="property" source="DataUrlFormat" %}
+
+### csv
+
+Load a comma-separated values (CSV) file. This format type does not support any additional properties.
+
+### tsv
+
+Load a tab-separated values (TSV) file. This format type does not support any additional properties.
+
+### topojson
+
+Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The input file must contain valid TopoJSON data. The TopoJSON input is then converted into a GeoJSON format. There are two mutually exclusive properties that can be used to specify the conversion process:
+
+{% include table.html props="feature,mesh" source="DataUrlFormat" %}
