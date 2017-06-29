@@ -4,12 +4,17 @@
 
 export interface DataFormat {
   /**
-   * A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `"number"`, `"boolean"` or `"date"`). For example, `"parse": {"modified_on": "date"}` parses the `modified_on` field in each input record a Date value. Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
+   * If set to auto (the default), perform automatic type inference to determine the desired data types.
+   * Alternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `"number"`, `"boolean"` or `"date"`).
+   * For example, `"parse": {"modified_on": "date"}` parses the `modified_on` field in each input record a Date value.
+   *
+   * For `"date"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+   * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
    */
-  parse?: any;
+  parse?: 'auto' | object;
 
   /**
-   * (JSON only) The JSON property containing the desired data.
+   * The JSON property containing the desired data.
    * This parameter can be used when the loaded JSON file may have surrounding structure or meta-data.
    * For example `"property": "values.features"` is equivalent to retrieving `json.values.features`
    * from the loaded JSON object.
@@ -46,7 +51,7 @@ export type Data = UrlData | InlineData | NamedData;
 
 export interface UrlData {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`. The default format type is determined by the extension of the file URL. If no extension is detected, `"json"` will be used by default.
+   * Data format properties
    */
   format?: DataUrlFormat;
 
@@ -59,7 +64,7 @@ export interface UrlData {
 
 export interface InlineData {
   /**
-   * Parsing properties.
+   * Data format properties
    */
   format?: DataFormat;
   /**
@@ -70,7 +75,7 @@ export interface InlineData {
 
 export interface NamedData {
   /**
-   * Parsing properties.
+   * Data format properties
    */
   format?: DataFormat;
   /**
