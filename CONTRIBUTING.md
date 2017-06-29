@@ -39,6 +39,43 @@ it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
 you can run `npm run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
+### Documentation Guide
+
+General Guides for Markdown Files:
+
+- Wrap properties (`key`) with back ticks.
+- Wrap values with back ticks for numbers and booleans (e.g., `5`, `true`) and wrap string values with both back ticks and double quotes (`"red"`).
+
+#### Property Table
+
+To generate a property tables from the JSON schema (which is in turn generated from the Typescript interfaces, you can include the `table.html` template. For example, to generate a table that includes `rangeStep`, `scheme`, and `padding` from `Scale`, you can use
+
+```
+{% include table.html props="rangeStep,scheme,padding" source="Scale" %}
+```
+
+To define a link for types in the table, you can edit `_data/link.yml`.
+
+For JSDocs comment in the interfaces, please add `__Default value:__` line at the end to describe the property's value.
+
+#### Examples
+
+To include an example specification, the specification's `.vl.json` file must be in `examples/specs`.
+Then you can use the following span tag to include the specification (e.g., for `point_1d.vl.json`):
+
+```
+<span class="vl-example" data-name="point_1d"></span>
+```
+
+Before adding a new example, you might want to search inside `examples/` folder to see if there are other redundant examples that you can reuse.
+
+To name the example file:
+- Please begin with mark type and follow by some description for a static single view example.
+- For composite views, please begin the file with the operator name (e.g., `layer`).
+- Finally, please make sure any interactive example begins with `interactive`.
+
+After adding a new example, make sure to run `yarn run build:examples` so that your pull request includes a new compiled Vega specs in `examples/vg-specs`.
+
 # Development Guide
 
 ## Repository Setup
