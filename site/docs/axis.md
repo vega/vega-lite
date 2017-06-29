@@ -7,11 +7,8 @@ permalink: /docs/axis.html
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
-By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.
-
-Axis can be customized via the `axis` property of a channel definition.
-The field's axis can be removed by setting `axis` to `false`. If `axis` is `true`, default axis properties are applied.
-As described below, `axis` can also be an [object that defines its properties](#axis-properties).
+By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.
+If `axis` is not defined, default axis properties are applied. User can provide set `axis` to an object to customize [axis properties](#axis-properties) or set `axis` to `null` to remove the axis.
 
 Besides `axis` property of each encoding channel, the configuration object ([`config`](config.html)) also provides [axis config](#axis-config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
@@ -43,11 +40,15 @@ Besides `axis` property of each encoding channel, the configuration object ([`co
 }
 ```
 
+* TOC
+{:toc}
+
+
 <!--TODO: add default behavior for each property -->
 
 ## Axis Properties
 
-To customize axis, an `axis` object can contain the following groups of properties:
+To customize axis, an `axis` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
 
 ### General
 
@@ -64,6 +65,10 @@ To customize axis, an `axis` object can contain the following groups of properti
 ### Title
 
 {% include table.html props="title,titleAlign,titleAngle,titleMaxLength,titlePadding,maxExtent,minExtent" source="Axis" %}
+
+### Custom Axis Encodings
+
+**TODO**
 
 {:#axis-config}
 ## Axis Config

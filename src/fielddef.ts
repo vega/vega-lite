@@ -137,6 +137,10 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   /**
+   * By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.
+   * If `axis` is not defined, default axis properties are applied.
+   * User can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)
+   * or set `axis` to `null` to remove the axis.
    * @nullable
    */
   axis?: Axis;

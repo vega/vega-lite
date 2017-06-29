@@ -4163,7 +4163,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.\nIf `axis` is not defined, default axis properties are applied.\nUser can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)\nor set `axis` to `null` to remove the axis."
         },
         "bin": {
           "anyOf": [
