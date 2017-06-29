@@ -104,12 +104,10 @@ export interface FieldDef<F> extends FieldDefBase<F> {
 export interface ScaleFieldDef<F> extends FieldDef<F> {
     scale?: Scale;
     /**
-     * Sort order for a particular field.
-     * For quantitative or temporal fields, this can be either `"ascending"` or `"descending"`
-     * For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+     * Sort order for a field with discrete domain.
+     * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
      *
-     * __Default value:__ `"ascending"`
-     *
+     * __Note:__ For fields with continuous domain, please use `"scale": {"reverse": true}` to flip the scale instead.
      */
     sort?: SortField | SortOrder;
 }

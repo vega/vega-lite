@@ -162,7 +162,6 @@ export interface TextConfig extends MarkConfig {
      */
     shortTimeLabels?: boolean;
 }
-export declare const defaultTextConfig: TextConfig;
 export interface TickConfig extends MarkConfig {
     /**
      * The width of the ticks.

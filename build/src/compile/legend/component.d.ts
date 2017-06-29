@@ -1,7 +1,9 @@
 import { Legend } from '../..//legend';
 import { NonspatialScaleChannel } from '../../channel';
 import { VgLegend } from '../../vega.schema';
-export declare type LegendComponent = VgLegend;
+import { Split } from '../split';
+export declare class LegendComponent extends Split<Partial<VgLegend>> {
+}
 export declare type LegendComponentIndex = {
     [P in NonspatialScaleChannel]?: LegendComponent;
 };

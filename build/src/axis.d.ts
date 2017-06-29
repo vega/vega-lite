@@ -1,7 +1,6 @@
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
-import { VgAxisBase, VgAxisConfig } from './vega.schema';
-export declare type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
+import { AxisOrient, VgAxis, VgAxisBase, VgAxisConfig } from './vega.schema';
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {
 }
 export interface Axis extends VgAxisBase, Guide {
@@ -79,7 +78,8 @@ export interface AxisEncoding {
      */
     title?: GuideEncodingEntry;
 }
-export declare const AXIS_PROPERTIES: (keyof Axis)[];
+export declare const AXIS_PROPERTIES: (keyof (VgAxis | Axis))[];
+export declare const VG_AXIS_PROPERTIES: (keyof VgAxis)[];
 export interface AxisConfigMixins {
     /** Generic axis config. */
     axis?: AxisConfig;

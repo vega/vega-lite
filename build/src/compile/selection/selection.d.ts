@@ -1,6 +1,6 @@
 import { Channel, ScaleChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
-import { SelectionDef, SelectionResolutions, SelectionTypes } from '../../selection';
+import { BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes } from '../../selection';
 import { Dict } from '../../util';
 import { VgBinding, VgData, VgEventStream, VgSignalRef } from '../../vega.schema';
 import { LayerModel } from '../layer';
@@ -19,6 +19,7 @@ export interface SelectionComponent {
         [key: string]: VgBinding;
     };
     resolve: SelectionResolutions;
+    mark?: BrushConfig;
     project?: ProjectComponent[];
     fields?: any;
     scales?: Channel[];

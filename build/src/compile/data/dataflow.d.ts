@@ -29,6 +29,10 @@ export declare class DataFlowNode {
      * Remove node from the dataflow.
      */
     remove(): void;
+    /**
+     * Insert another node as a parent of this node.
+     */
+    insertAsParentOf(other: DataFlowNode): void;
     swapWithParent(): void;
 }
 export declare class OutputNode extends DataFlowNode {

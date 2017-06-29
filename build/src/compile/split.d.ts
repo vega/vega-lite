@@ -5,6 +5,7 @@ export declare class Split<T extends Object> {
     readonly explicit: T;
     readonly implicit: T;
     constructor(explicit?: T, implicit?: T);
+    clone(): Split<T>;
     combine(keys?: (keyof T)[]): T;
     get<K extends keyof T>(key: K): T[K];
     getWithExplicit<K extends keyof T>(key: K): Explicit<T[K]>;
@@ -20,4 +21,6 @@ export interface Explicit<T> {
 }
 export declare function makeExplicit<T>(value: T): Explicit<T>;
 export declare function makeImplicit<T>(value: T): Explicit<T>;
-export declare function mergeValuesWithExplicit<T>(v1: Explicit<T>, v2: Explicit<T>, compare?: (v1: T, v2: T) => number): Explicit<T>;
+export declare function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number): (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T>;
+export declare function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string): Explicit<T>;
+export declare function mergeValuesWithExplicit<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend', tieBreaker?: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T>): Explicit<T>;

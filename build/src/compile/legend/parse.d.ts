@@ -1,10 +1,8 @@
-import { Channel, NonspatialScaleChannel } from '../../channel';
+import { NonspatialScaleChannel } from '../../channel';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
 import { LegendComponent, LegendComponentIndex } from './component';
-export declare function parseLegendComponent(model: UnitModel): LegendComponentIndex;
-export declare function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent;
-/**
- * Move legend from child up.
- */
-export declare function moveSharedLegendUp(legendComponent: LegendComponent, child: Model, channel: Channel): void;
+export declare function parseUnitLegend(model: UnitModel): LegendComponentIndex;
+export declare function parseLegendForChannel(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent;
+export declare function parseNonUnitLegend(model: Model): void;
+export declare function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent): LegendComponent;

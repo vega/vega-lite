@@ -83,20 +83,6 @@ export interface FacetConfig {
     cell?: CellConfig;
 }
 export declare const defaultFacetConfig: FacetConfig;
-export declare type AreaOverlay = 'line' | 'linepoint' | 'none';
-export interface OverlayConfig {
-    /**
-     * Whether to overlay line with point.
-     *
-     * __Default value:__ `false`
-     */
-    line?: boolean;
-    /**
-     * Type of overlay for area mark (line or linepoint)
-     */
-    area?: AreaOverlay;
-}
-export declare const defaultOverlayConfig: OverlayConfig;
 export declare type RangeConfig = (number | string)[] | VgRangeScheme | {
     step: number;
 };
@@ -110,12 +96,11 @@ export interface VLOnlyConfig {
      */
     countTitle?: string;
     /**
-     * Whether to filter invalid values (`null` and `NaN`) from the data.
-     * - By default (`undefined`), only quantitative and temporal fields are filtered.
-     * - If set to `true`, all data items with null values are filtered.
-     * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+     * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
+     * - If set to `"filter"` (default), all data items with null values are filtered.
+     * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
      */
-    filterInvalid?: boolean;
+    invalidValues?: 'filter';
     /**
      * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
      *
@@ -134,8 +119,6 @@ export interface VLOnlyConfig {
     cell?: CellConfig;
     /** Facet Config */
     facet?: FacetConfig;
-    /** Mark Overlay Config */
-    overlay?: OverlayConfig;
     /** Scale Config */
     scale?: ScaleConfig;
     /** Selection Config */

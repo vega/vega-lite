@@ -120,8 +120,54 @@ export declare type VgEncodeEntry = {
         test: string;
     })[];
 };
-export declare type VgAxis = any;
-export declare type VgLegend = any;
+export declare type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
+export interface VgAxis {
+    scale: string;
+    domain?: boolean;
+    format?: string;
+    grid?: boolean;
+    gridScale?: string;
+    labels?: boolean;
+    labelPadding?: number;
+    labelOverlap?: boolean | 'parity' | 'greedy';
+    maxExtent?: number;
+    minExtent?: number;
+    offset?: number;
+    orient?: AxisOrient;
+    position?: number;
+    ticks?: boolean;
+    tickCount?: number;
+    tickExtra?: boolean;
+    tickSize?: number;
+    title?: string;
+    titleAlign?: string;
+    titleAngle?: number;
+    titleMaxLength?: number;
+    titlePadding?: number;
+    values?: any[] | VgSignalRef;
+    zindex?: number;
+    encode?: VgAxisEncode;
+}
+export interface VgLegend {
+    fill?: string;
+    stroke?: string;
+    size?: string;
+    shape?: string;
+    opacity?: string;
+    entryPadding?: number;
+    fillColor?: string;
+    format?: string;
+    offset?: number;
+    orient?: LegendOrient;
+    padding?: number;
+    tickCount?: number;
+    title?: string;
+    titleAlign?: string;
+    type?: 'symbol' | 'gradient';
+    values?: any[] | VgSignalRef;
+    zindex?: number;
+    encode?: VgLegendEncode;
+}
 export interface VgBinTransform extends BaseBin {
     type: 'bin';
     extent?: number[] | {
@@ -261,6 +307,12 @@ export interface VgAxisBase {
      * @maximum 360
      */
     labelAngle?: number;
+    /**
+     * The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
+     *
+     * __Default value:__ `true` for x-axes with horizontal labels, otherwise `false`.
+     */
+    labelOverlap?: boolean | 'parity' | 'greedy';
     /**
      * Boolean value that determines whether the axis should include ticks.
      */
@@ -421,6 +473,7 @@ export interface VgAxisConfig extends VgAxisBase {
      */
     titleY?: number;
 }
+export declare type LegendOrient = 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
 export interface VgLegendBase {
     /**
      * Padding (in pixels) between legend entries in a symbol legend.
@@ -435,7 +488,7 @@ export interface VgLegendBase {
      *
      * __Default value:__  `"right"`
      */
-    orient?: 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
+    orient?: LegendOrient;
     /**
      * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
      *

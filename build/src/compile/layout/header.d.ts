@@ -1,8 +1,8 @@
 /**
  * Utility for generating row / column headers
  */
-import { AxisOrient } from '../../axis';
-import { VgAxis } from '../../vega.schema';
+import { FacetFieldDef } from '../../facet';
+import { AxisOrient, VgAxis } from '../../vega.schema';
 import { Model } from '../model';
 export declare type HeaderChannel = 'row' | 'column';
 export declare const HEADER_CHANNELS: HeaderChannel[];
@@ -13,12 +13,7 @@ export declare const HEADER_TYPES: HeaderType[];
  */
 export interface LayoutHeaderComponent {
     title?: string;
-    /**
-     * Field that is used to drive a header group (for facet only).
-     */
-    fieldRef?: {
-        signal: string;
-    };
+    facetFieldDef?: FacetFieldDef<string>;
     /**
      * An array of header components for headers.
      * For facet, there should be only one header component, which is data-driven.

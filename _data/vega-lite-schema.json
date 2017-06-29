@@ -45,14 +45,6 @@
         }
       ]
     },
-    "AreaOverlay": {
-      "enum": [
-        "line",
-        "linepoint",
-        "none"
-      ],
-      "type": "string"
-    },
     "Axis": {
       "additionalProperties": false,
       "properties": {
@@ -77,6 +69,26 @@
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "The padding, in pixels, between axis and text labels.",
@@ -238,6 +250,26 @@
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.",
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "Padding in pixels between axis ticks and tick labels.",
@@ -624,25 +656,6 @@
     "BaseSelectionDef": {
       "additionalProperties": false,
       "properties": {
-        "bind": {
-          "anyOf": [
-            {
-              "enum": [
-                "scales"
-              ],
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/VgBinding"
-            },
-            {
-              "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
-              },
-              "type": "object"
-            }
-          ]
-        },
         "encodings": {
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
@@ -655,31 +668,10 @@
           },
           "type": "array"
         },
-        "nearest": {
-          "type": "boolean"
-        },
         "on": {
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolutions"
-        },
-        "toggle": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        },
-        "translate": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        },
-        "zoom": {
-          "type": [
-            "string",
-            "boolean"
-          ]
         }
       },
       "type": "object"
@@ -953,6 +945,19 @@
     "BoxPlotDef": {
       "additionalProperties": false,
       "properties": {
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orient"
         },
@@ -961,9 +966,38 @@
         }
       },
       "required": [
-        "type",
-        "orient"
+        "type"
       ],
+      "type": "object"
+    },
+    "BrushConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "fill": {
+          "type": "string"
+        },
+        "fillOpacity": {
+          "type": "number"
+        },
+        "stroke": {
+          "type": "string"
+        },
+        "strokeDash": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "type": "number"
+        },
+        "strokeWidth": {
+          "type": "number"
+        }
+      },
       "type": "object"
     },
     "CalculateTransform": {
@@ -1110,7 +1144,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1387,7 +1421,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1458,7 +1492,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1609,7 +1643,7 @@
           "description": "Area-Specific Config "
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "axis": {
@@ -1668,9 +1702,12 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
@@ -1688,13 +1725,9 @@
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
         },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
-        },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "point": {
           "$ref": "#/definitions/MarkConfig",
@@ -1775,10 +1808,21 @@
           "type": "string"
         },
         "parse": {
-          "description": "A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `\"number\"`, `\"boolean\"` or `\"date\"`). For example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value. Specific date formats can be provided (e.g., `{foo: 'date:\"%m%d%Y\"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:\"%m%d%Y\"'}`). See more about [UTC time](timeunit.html#utc)"
+          "anyOf": [
+            {
+              "enum": [
+                "auto"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "If set to auto (the default), perform automatic type inference to determine the desired data types.\nAlternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `\"number\"`, `\"boolean\"` or `\"date\"`).\nFor example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value.\n\nFor `\"date\"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).\nFor Specific date formats can be provided (e.g., `{foo: 'date:\"%m%d%Y\"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:\"%m%d%Y\"'}`). See more about [UTC time](timeunit.html#utc)"
         },
         "property": {
-          "description": "(JSON only) The JSON property containing the desired data.\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\nfrom the loaded JSON object.",
+          "description": "The JSON property containing the desired data.\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\nfrom the loaded JSON object.",
           "type": "string"
         }
       },
@@ -1805,10 +1849,21 @@
           "type": "string"
         },
         "parse": {
-          "description": "A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `\"number\"`, `\"boolean\"` or `\"date\"`). For example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value. Specific date formats can be provided (e.g., `{foo: 'date:\"%m%d%Y\"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:\"%m%d%Y\"'}`). See more about [UTC time](timeunit.html#utc)"
+          "anyOf": [
+            {
+              "enum": [
+                "auto"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "If set to auto (the default), perform automatic type inference to determine the desired data types.\nAlternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `\"number\"`, `\"boolean\"` or `\"date\"`).\nFor example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value.\n\nFor `\"date\"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).\nFor Specific date formats can be provided (e.g., `{foo: 'date:\"%m%d%Y\"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:\"%m%d%Y\"'}`). See more about [UTC time](timeunit.html#utc)"
         },
         "property": {
-          "description": "(JSON only) The JSON property containing the desired data.\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\nfrom the loaded JSON object.",
+          "description": "The JSON property containing the desired data.\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\nfrom the loaded JSON object.",
           "type": "string"
         },
         "type": {
@@ -2524,7 +2579,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "layer": {
@@ -2556,7 +2611,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -2629,7 +2684,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "mark": {
@@ -2655,7 +2710,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -2681,7 +2736,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "mark": {
@@ -2707,7 +2762,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -2914,52 +2969,6 @@
           "$ref": "#/definitions/ValueDef"
         }
       },
-      "required": [
-        "x",
-        "x2",
-        "xc",
-        "width",
-        "y",
-        "y2",
-        "yc",
-        "height",
-        "opacity",
-        "fill",
-        "fillOpacity",
-        "stroke",
-        "strokeWidth",
-        "strokeOpacity",
-        "strokeDash",
-        "strokeDashOffset",
-        "cursor",
-        "clip",
-        "size",
-        "shape",
-        "path",
-        "innerRadius",
-        "outerRadius",
-        "startAngle",
-        "endAngle",
-        "interpolate",
-        "tension",
-        "orient",
-        "url",
-        "align",
-        "baseline",
-        "text",
-        "dir",
-        "ellipsis",
-        "limit",
-        "dx",
-        "dy",
-        "radius",
-        "theta",
-        "angle",
-        "font",
-        "fontSize",
-        "fontWeight",
-        "fontStyle"
-      ],
       "type": "object"
     },
     "Header": {
@@ -2969,6 +2978,9 @@
         "format": {
           "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
           "type": "string"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortOrder"
         },
         "title": {
           "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
@@ -2990,7 +3002,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Parsing properties."
+          "description": "Data format properties"
         },
         "values": {
           "description": "Pass array of objects instead of a url to a file.",
@@ -3022,15 +3034,112 @@
       ],
       "type": "string"
     },
+    "IntervalSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "enum": [
+            "scales"
+          ],
+          "type": "string"
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mark": {
+          "$ref": "#/definitions/BrushConfig"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "translate": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
+        "type": {
+          "enum": [
+            "interval"
+          ],
+          "type": "string"
+        },
+        "zoom": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "IntervalSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "enum": [
+            "scales"
+          ],
+          "type": "string"
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mark": {
+          "$ref": "#/definitions/BrushConfig"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "translate": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
+        "zoom": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "type": "object"
+    },
     "LayoutSize": {
       "additionalProperties": false,
       "properties": {
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -3061,17 +3170,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3209,17 +3309,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3372,7 +3463,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3387,6 +3478,18 @@
         "type"
       ],
       "type": "object"
+    },
+    "LegendOrient": {
+      "enum": [
+        "left",
+        "right",
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "none"
+      ],
+      "type": "string"
     },
     "AndFilter": {
       "additionalProperties": false,
@@ -3810,12 +3913,85 @@
       "minimum": 1,
       "type": "number"
     },
+    "MultiSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "toggle": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
+        "type": {
+          "enum": [
+            "multi"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "MultiSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "toggle": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "type": "object"
+    },
     "NamedData": {
       "additionalProperties": false,
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Parsing properties."
+          "description": "Data format properties"
         },
         "name": {
           "description": "Provide a placeholder name and bind data at runtime.",
@@ -3939,20 +4115,6 @@
       ],
       "type": "string"
     },
-    "OverlayConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "area": {
-          "$ref": "#/definitions/AreaOverlay",
-          "description": "Type of overlay for area mark (line or linepoint)"
-        },
-        "line": {
-          "description": "Whether to overlay line with point.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        }
-      },
-      "type": "object"
-    },
     "Padding": {
       "anyOf": [
         {
@@ -4030,7 +4192,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
@@ -4264,6 +4426,10 @@
             "null"
           ]
         },
+        "reverse": {
+          "description": "If true, reverses the order of the scale range.\n__Default value:__ `false`.",
+          "type": "boolean"
+        },
         "round": {
           "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
           "type": "boolean"
@@ -4432,7 +4598,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4479,13 +4645,13 @@
       "additionalProperties": false,
       "properties": {
         "interval": {
-          "$ref": "#/definitions/BaseSelectionDef"
+          "$ref": "#/definitions/IntervalSelectionConfig"
         },
         "multi": {
-          "$ref": "#/definitions/BaseSelectionDef"
+          "$ref": "#/definitions/MultiSelectionConfig"
         },
         "single": {
-          "$ref": "#/definitions/BaseSelectionDef"
+          "$ref": "#/definitions/SingleSelectionConfig"
         }
       },
       "required": [
@@ -4496,73 +4662,17 @@
       "type": "object"
     },
     "SelectionDef": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "anyOf": [
-            {
-              "enum": [
-                "scales"
-              ],
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/VgBinding"
-            },
-            {
-              "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
-              },
-              "type": "object"
-            }
-          ]
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SingleSelection"
         },
-        "encodings": {
-          "items": {
-            "$ref": "#/definitions/SingleDefChannel"
-          },
-          "type": "array"
+        {
+          "$ref": "#/definitions/MultiSelection"
         },
-        "fields": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "nearest": {
-          "type": "boolean"
-        },
-        "on": {
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
-        },
-        "toggle": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        },
-        "translate": {
-          "type": [
-            "string",
-            "boolean"
-          ]
-        },
-        "type": {
-          "$ref": "#/definitions/SelectionTypes"
-        },
-        "zoom": {
-          "type": [
-            "string",
-            "boolean"
-          ]
+        {
+          "$ref": "#/definitions/IntervalSelection"
         }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
+      ]
     },
     "SelectionDomain": {
       "anyOf": [
@@ -4624,14 +4734,6 @@
       ],
       "type": "string"
     },
-    "SelectionTypes": {
-      "enum": [
-        "single",
-        "multi",
-        "interval"
-      ],
-      "type": "string"
-    },
     "SingleDefChannel": {
       "enum": [
         "x",
@@ -4648,6 +4750,93 @@
         "tooltip"
       ],
       "type": "string"
+    },
+    "SingleSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgBinding"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/definitions/VgBinding"
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        },
+        "type": {
+          "enum": [
+            "single"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "SingleSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgBinding"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/definitions/VgBinding"
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "encodings": {
+          "items": {
+            "$ref": "#/definitions/SingleDefChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "type": "boolean"
+        },
+        "on": {
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolutions"
+        }
+      },
+      "type": "object"
     },
     "SortField": {
       "additionalProperties": false,
@@ -5173,7 +5362,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5196,7 +5385,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "mark": {
@@ -5209,7 +5398,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "selection": {
           "additionalProperties": {
@@ -5226,7 +5415,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -5243,7 +5432,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5270,7 +5459,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
           "$ref": "#/definitions/ResolveMapping"
@@ -5309,7 +5498,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5349,7 +5538,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
           "$ref": "#/definitions/ResolveMapping"
@@ -5374,7 +5563,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5393,7 +5582,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
           "type": "number"
         },
         "layer": {
@@ -5416,7 +5605,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
           "$ref": "#/definitions/ResolveMapping"
@@ -5429,7 +5618,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
           "type": "number"
         }
       },
@@ -5445,7 +5634,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5469,7 +5658,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "repeat": {
           "$ref": "#/definitions/Repeat"
@@ -5511,7 +5700,7 @@
           "type": "string"
         },
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5535,7 +5724,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
           "$ref": "#/definitions/ResolveMapping"
@@ -5595,7 +5784,7 @@
       "additionalProperties": false,
       "properties": {
         "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
           "type": "boolean"
         },
         "background": {
@@ -5604,7 +5793,7 @@
         },
         "padding": {
           "$ref": "#/definitions/Padding",
-          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`"
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         }
       },
       "type": "object"
@@ -5646,7 +5835,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataUrlFormat",
-          "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`. The default format type is determined by the extension of the file URL. If no extension is detected, `\"json\"` will be used by default."
+          "description": "Data format properties"
         },
         "url": {
           "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
@@ -5673,17 +5862,16 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
-        },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
@@ -5788,6 +5976,26 @@
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
@@ -5902,6 +6110,26 @@
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.",
           "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
         },
         "labelPadding": {
           "description": "Padding in pixels between axis ticks and tick labels.",
@@ -6069,17 +6297,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -6173,17 +6392,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",

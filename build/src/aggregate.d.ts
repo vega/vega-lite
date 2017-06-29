@@ -3,6 +3,8 @@ export declare const AGGREGATE_OPS: AggregateOp[];
 export declare const AGGREGATE_OP_INDEX: {
     [T: string]: boolean;
 };
+export declare const COUNTING_OPS: AggregateOp[];
+export declare function isCountingAggregateOp(aggregate: string): boolean;
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export declare const SUM_OPS: AggregateOp[];
 /**

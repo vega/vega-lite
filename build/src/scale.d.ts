@@ -1,5 +1,6 @@
 import { Channel } from './channel';
 import { DateTime } from './datetime';
+import { VgScale } from './vega.schema';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
     const BIN_LINEAR: 'bin-linear';
@@ -233,6 +234,11 @@ export interface Scale {
      */
     domain?: Domain;
     /**
+     * If true, reverses the order of the scale range.
+     * __Default value:__ `false`.
+     */
+    reverse?: boolean;
+    /**
      * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
      */
     range?: Range;
@@ -316,6 +322,7 @@ export interface Scale {
     zero?: boolean;
     interpolate?: 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
 }
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[];
 export declare const SCALE_PROPERTIES: (keyof Scale)[];
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**

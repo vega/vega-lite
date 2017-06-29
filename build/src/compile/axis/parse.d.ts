@@ -1,10 +1,11 @@
 import { SpatialScaleChannel } from '../../channel';
-import { VgAxis } from '../../vega.schema';
+import { LayerModel } from '../layer';
 import { UnitModel } from '../unit';
-import { AxisComponentIndex } from './component';
-export declare function parseAxisComponent(model: UnitModel, axisChannels: SpatialScaleChannel[]): AxisComponentIndex;
+import { AxisComponentIndex, AxisComponentPart } from './component';
+export declare function parseUnitAxis(model: UnitModel): AxisComponentIndex;
+export declare function parseLayerAxis(model: LayerModel): void;
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export declare function parseGridAxis(channel: SpatialScaleChannel, model: UnitModel): VgAxis;
-export declare function parseMainAxis(channel: SpatialScaleChannel, model: UnitModel): any;
+export declare function parseGridAxis(channel: SpatialScaleChannel, model: UnitModel): AxisComponentPart;
+export declare function parseMainAxis(channel: SpatialScaleChannel, model: UnitModel): AxisComponentPart;

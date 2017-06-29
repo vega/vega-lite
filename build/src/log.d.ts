@@ -4,6 +4,7 @@
 import { LoggerInterface } from 'vega-util';
 import { AggregateOp } from './aggregate';
 import { Channel } from './channel';
+import { CompositeMark } from './compositemark';
 import { DateTime, DateTimeExpr } from './datetime';
 import { FieldDef } from './fielddef';
 import { Mark } from './mark';
@@ -48,10 +49,11 @@ export declare namespace message {
     function invalidTransformIgnored(transform: any): string;
     const NO_FIELDS_NEEDS_AS = "If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.";
     function invalidFieldType(type: Type): string;
+    function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
     function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;
-    function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string): string;
+    function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string): string;
     function facetChannelShouldBeDiscrete(channel: string): string;
     function discreteChannelCannotEncode(channel: Channel, type: Type): string;
     const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = "Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.";
@@ -71,6 +73,7 @@ export declare namespace message {
     function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType): string;
     function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel): string;
     function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType): string;
+    function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T): string;
     function independentScaleMeansIndependentGuide(channel: Channel): string;
     function conflictedDomain(channel: Channel): string;
     const INVAID_DOMAIN = "Invalid scale domain";

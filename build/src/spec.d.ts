@@ -16,7 +16,7 @@ export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
      */
     $schema?: string;
     /**
-     * Vega-Lite configuration object.
+     * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
      */
     config?: Config;
 };
@@ -45,7 +45,7 @@ export interface LayoutSize {
      * __Default value:__ This will be determined by the following rules:
      *
      * - For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).
-     * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `"fit"`, the width will be the value of [`config.cell.width`](config.html#cell-config).
+     * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).
      * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
      *
      * __Note__: For plot with `row` and `column` channels, this represents the width of a single cell.
@@ -56,7 +56,7 @@ export interface LayoutSize {
      *
      * __Default value:__
      * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
-     * - For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `"fit"`, the height will be the value of [`config.cell.height`](config.html#cell-config).
+     * - For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).
      * - If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.
      *
      * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.

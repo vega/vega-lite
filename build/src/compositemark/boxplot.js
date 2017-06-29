@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var fielddef_1 = require("../fielddef");
-var fielddef_2 = require("./../fielddef");
+var vega_util_1 = require("vega-util");
+var encoding_1 = require("../encoding");
+var encoding_2 = require("./../encoding");
+var fielddef_1 = require("./../fielddef");
+var log = require("./../log");
 exports.BOXPLOT = 'box-plot';
 function isBoxPlotDef(mark) {
     return !!mark['type'];
@@ -12,163 +15,245 @@ exports.BOXPLOT_ROLES = ['boxWhisker', 'box', 'boxMid'];
 exports.VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX = {
     box: ['size']
 };
+var supportedChannels = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+function filterUnsupportedChannels(spec) {
+    return tslib_1.__assign({}, spec, { encoding: encoding_1.reduce(spec.encoding, function (newEncoding, fieldDef, channel) {
+            if (supportedChannels.indexOf(channel) > -1) {
+                newEncoding[channel] = fieldDef;
+            }
+            else {
+                log.warn(log.message.incompatibleChannel(channel, exports.BOXPLOT));
+            }
+            return newEncoding;
+        }, {}) });
+}
+exports.filterUnsupportedChannels = filterUnsupportedChannels;
 function normalizeBoxPlot(spec, config) {
+    spec = filterUnsupportedChannels(spec);
     var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
-    var _x = encoding.x, _y = encoding.y, nonPositionEncoding = tslib_1.__rest(encoding, ["x", "y"]);
-    var size = nonPositionEncoding.size, nonPositionEncodingWithoutSize = tslib_1.__rest(nonPositionEncoding, ["size"]);
-    var _color = nonPositionEncodingWithoutSize.color, nonPositionEncodingWithoutColorSize = tslib_1.__rest(nonPositionEncodingWithoutSize, ["color"]);
-    var midTickAndBarSizeChannelDef = size ? { size: size } : { size: { value: config.box.size } };
-    var discreteAxisFieldDef;
-    var continuousAxisChannelDef;
-    var discreteAxis;
-    var continuousAxis;
-    if (fielddef_1.isFieldDef(encoding.x) && fielddef_1.isFieldDef(encoding.y)) {
-        // 2D
-        var orient = box2DOrient(spec);
-        var params = box2DParams(spec, orient);
-        discreteAxisFieldDef = params.discreteAxisFieldDef;
-        continuousAxisChannelDef = params.continuousAxisChannelDef;
-        discreteAxis = params.discreteAxis;
-        continuousAxis = params.continuousAxis;
+    var kIQRScalar = undefined;
+    if (isBoxPlotDef(mark)) {
+        if (mark.extent) {
+            if (vega_util_1.isNumber(mark.extent)) {
+                kIQRScalar = mark.extent;
+            }
+        }
     }
-    else if (fielddef_1.isFieldDef(encoding.x) && fielddef_2.isContinuous(encoding.x) && encoding.y === undefined) {
-        // 1D horizontal
-        continuousAxis = 'x';
-        continuousAxisChannelDef = encoding.x;
+    var isMinMax = kIQRScalar === undefined;
+    var orient = boxOrient(spec);
+    var _a = boxParams(spec, orient, kIQRScalar), transform = _a.transform, continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis, encodingWithoutContinuousAxis = _a.encodingWithoutContinuousAxis;
+    var size = encodingWithoutContinuousAxis.size, color = encodingWithoutContinuousAxis.color, nonPositionEncodingWithoutColorSize = tslib_1.__rest(encodingWithoutContinuousAxis, ["size", "color"]);
+    var sizeMixins = size ? { size: size } : { size: { value: config.box.size } };
+    var continuousAxisScaleAndAxis = {};
+    if (continuousAxisChannelDef.scale) {
+        continuousAxisScaleAndAxis['scale'] = continuousAxisChannelDef.scale;
     }
-    else if (encoding.x === undefined && fielddef_1.isFieldDef(encoding.y) && fielddef_2.isContinuous(encoding.y)) {
-        // 1D vertical
-        continuousAxis = 'y';
-        continuousAxisChannelDef = encoding.y;
+    if (continuousAxisChannelDef.axis) {
+        continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
     }
-    else {
-        throw new Error('Need a continuous axis for 1D boxplots');
-    }
-    if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== exports.BOXPLOT) {
-        throw new Error("Continuous axis should not have customized aggregation function " + continuousAxisChannelDef.aggregate);
-    }
-    var baseContinuousFieldDef = {
-        field: continuousAxisChannelDef.field,
-        type: continuousAxisChannelDef.type
-    };
-    var minFieldDef = tslib_1.__assign({ aggregate: 'min' }, baseContinuousFieldDef);
-    var minWithAxisFieldDef = tslib_1.__assign({ axis: continuousAxisChannelDef.axis }, minFieldDef);
-    var q1FieldDef = tslib_1.__assign({ aggregate: 'q1' }, baseContinuousFieldDef);
-    var medianFieldDef = tslib_1.__assign({ aggregate: 'median' }, baseContinuousFieldDef);
-    var q3FieldDef = tslib_1.__assign({ aggregate: 'q3' }, baseContinuousFieldDef);
-    var maxFieldDef = tslib_1.__assign({ aggregate: 'max' }, baseContinuousFieldDef);
-    var discreteAxisEncodingMixin = discreteAxisFieldDef !== undefined ? (_a = {}, _a[discreteAxis] = discreteAxisFieldDef, _a) : {};
-    return tslib_1.__assign({}, outerSpec, { layer: [
+    return tslib_1.__assign({}, outerSpec, { transform: transform, layer: [
             {
                 mark: {
                     type: 'rule',
                     role: 'boxWhisker'
                 },
-                encoding: tslib_1.__assign({}, discreteAxisEncodingMixin, (_b = {}, _b[continuousAxis] = minWithAxisFieldDef, _b[continuousAxis + '2'] = q1FieldDef, _b), nonPositionEncodingWithoutColorSize)
+                encoding: tslib_1.__assign((_b = {}, _b[continuousAxis] = tslib_1.__assign({ field: 'lowerWhisker', type: continuousAxisChannelDef.type }, continuousAxisScaleAndAxis), _b[continuousAxis + '2'] = {
+                    field: 'lowerBox',
+                    type: continuousAxisChannelDef.type
+                }, _b), nonPositionEncodingWithoutColorSize)
             }, {
                 mark: {
                     type: 'rule',
                     role: 'boxWhisker'
                 },
-                encoding: tslib_1.__assign({}, discreteAxisEncodingMixin, (_c = {}, _c[continuousAxis] = q3FieldDef, _c[continuousAxis + '2'] = maxFieldDef, _c), nonPositionEncodingWithoutColorSize)
+                encoding: tslib_1.__assign((_c = {}, _c[continuousAxis] = {
+                    field: 'upperBox',
+                    type: continuousAxisChannelDef.type
+                }, _c[continuousAxis + '2'] = {
+                    field: 'upperWhisker',
+                    type: continuousAxisChannelDef.type
+                }, _c), nonPositionEncodingWithoutColorSize)
             }, {
                 mark: {
                     type: 'bar',
                     role: 'box'
                 },
-                encoding: tslib_1.__assign({}, discreteAxisEncodingMixin, (_d = {}, _d[continuousAxis] = q1FieldDef, _d[continuousAxis + '2'] = q3FieldDef, _d), nonPositionEncodingWithoutSize, midTickAndBarSizeChannelDef)
+                encoding: tslib_1.__assign((_d = {}, _d[continuousAxis] = {
+                    field: 'lowerBox',
+                    type: continuousAxisChannelDef.type
+                }, _d[continuousAxis + '2'] = {
+                    field: 'upperBox',
+                    type: continuousAxisChannelDef.type
+                }, _d), encodingWithoutContinuousAxis, sizeMixins)
             }, {
                 mark: {
                     type: 'tick',
                     role: 'boxMid'
                 },
-                encoding: tslib_1.__assign({}, discreteAxisEncodingMixin, (_e = {}, _e[continuousAxis] = medianFieldDef, _e), nonPositionEncoding, midTickAndBarSizeChannelDef, { color: { value: 'white' } })
+                encoding: tslib_1.__assign((_e = {}, _e[continuousAxis] = {
+                    field: 'midBox',
+                    type: continuousAxisChannelDef.type
+                }, _e), nonPositionEncodingWithoutColorSize, sizeMixins)
             }
         ] });
-    var _a, _b, _c, _d, _e;
+    var _b, _c, _d, _e;
 }
 exports.normalizeBoxPlot = normalizeBoxPlot;
-function box2DOrient(spec) {
+function boxOrient(spec) {
     var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
-    // FIXME: refactor code such that we don't have to do this casting
-    // We can cast here as we already check from outside that both x and y are FieldDef
-    var xDef = encoding.x;
-    var yDef = encoding.y;
-    var resultOrient;
-    if (fielddef_2.isDiscrete(xDef) && fielddef_2.isContinuous(yDef)) {
-        resultOrient = 'vertical';
-    }
-    else if (fielddef_2.isDiscrete(yDef) && fielddef_2.isContinuous(xDef)) {
-        resultOrient = 'horizontal';
-    }
-    else {
-        if (fielddef_2.isContinuous(xDef) && fielddef_2.isContinuous(yDef)) {
-            if (xDef.aggregate === undefined && yDef.aggregate === exports.BOXPLOT) {
-                resultOrient = 'vertical';
+    if (fielddef_1.isFieldDef(encoding.x) && fielddef_1.isContinuous(encoding.x)) {
+        // x is continuous
+        if (fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
+            // both x and y are continuous
+            if (encoding.x.aggregate === undefined && encoding.y.aggregate === exports.BOXPLOT) {
+                return 'vertical';
             }
-            else if (yDef.aggregate === undefined && xDef.aggregate === exports.BOXPLOT) {
-                resultOrient = 'horizontal';
+            else if (encoding.y.aggregate === undefined && encoding.x.aggregate === exports.BOXPLOT) {
+                return 'horizontal';
             }
-            else if (xDef.aggregate === exports.BOXPLOT && yDef.aggregate === exports.BOXPLOT) {
+            else if (encoding.x.aggregate === exports.BOXPLOT && encoding.y.aggregate === exports.BOXPLOT) {
                 throw new Error('Both x and y cannot have aggregate');
             }
             else {
-                if (isBoxPlotDef(mark)) {
-                    if (mark && mark.orient) {
-                        resultOrient = mark.orient;
-                    }
-                    else {
-                        // default orientation = vertical
-                        resultOrient = 'vertical';
-                    }
+                if (isBoxPlotDef(mark) && mark.orient) {
+                    return mark.orient;
                 }
-                else {
-                    resultOrient = 'vertical';
-                }
+                // default orientation = vertical
+                return 'vertical';
             }
         }
-        else {
-            throw new Error('Both x and y cannot be discrete');
-        }
+        // x is continuous but y is not
+        return 'horizontal';
     }
-    return resultOrient;
-}
-exports.box2DOrient = box2DOrient;
-function box2DParams(spec, orient) {
-    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
-    var discreteAxisFieldDef;
-    var continuousAxisChannelDef;
-    var discreteAxis;
-    var continuousAxis;
-    // FIXME: refactor code such that we don't have to do this casting
-    // We can cast here as we already check from outside that both x and y are FieldDef
-    var xDef = encoding.x;
-    var yDef = encoding.y;
-    if (orient === 'vertical') {
-        discreteAxis = 'x';
-        continuousAxis = 'y';
-        continuousAxisChannelDef = yDef;
-        discreteAxisFieldDef = xDef;
+    else if (fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
+        // y is continuous but x is not
+        return 'vertical';
     }
     else {
-        discreteAxis = 'y';
+        // Neither x nor y is continuous.
+        throw new Error('Need a valid continuous axis for boxplots');
+    }
+}
+function boxContinousAxis(spec, orient) {
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var continuousAxisChannelDef;
+    var continuousAxis;
+    if (orient === 'vertical') {
+        continuousAxis = 'y';
+        continuousAxisChannelDef = encoding.y; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
+    }
+    else {
         continuousAxis = 'x';
-        continuousAxisChannelDef = xDef;
-        discreteAxisFieldDef = yDef;
+        continuousAxisChannelDef = encoding.x; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
     }
     if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
         var aggregate = continuousAxisChannelDef.aggregate, continuousAxisWithoutAggregate = tslib_1.__rest(continuousAxisChannelDef, ["aggregate"]);
         if (aggregate !== exports.BOXPLOT) {
-            throw new Error("Continuous axis should not have customized aggregation function " + aggregate);
+            log.warn("Continuous axis should not have customized aggregation function " + aggregate);
         }
         continuousAxisChannelDef = continuousAxisWithoutAggregate;
     }
     return {
-        discreteAxisFieldDef: discreteAxisFieldDef,
         continuousAxisChannelDef: continuousAxisChannelDef,
-        discreteAxis: discreteAxis,
         continuousAxis: continuousAxis
     };
 }
-exports.box2DParams = box2DParams;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYm94cGxvdC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21wb3NpdGVtYXJrL2JveHBsb3QudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ0Esd0NBQXVDO0FBRXZDLDBDQUEwRjtBQU03RSxRQUFBLE9BQU8sR0FBZSxVQUFVLENBQUM7QUFTOUMsc0JBQTZCLElBQTBCO0lBQ3JELE1BQU0sQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBQ3hCLENBQUM7QUFGRCxvQ0FFQztBQUVZLFFBQUEsYUFBYSxHQUFrQixDQUFDLFlBQVksRUFBRSxLQUFLLEVBQUUsUUFBUSxDQUFDLENBQUM7QUFnQi9ELFFBQUEscUNBQXFDLEdBRTlDO0lBQ0YsR0FBRyxFQUFFLENBQUMsTUFBTSxDQUFDO0NBQ2QsQ0FBQztBQUVGLDBCQUFpQyxJQUE0RCxFQUFFLE1BQWM7SUFDcEcsSUFBQSxnQkFBVSxFQUFFLHdCQUFrQixFQUFFLHNEQUFZLENBQVM7SUFDckQsSUFBQSxlQUFLLEVBQUUsZUFBSyxFQUFFLDBEQUFzQixDQUFhO0lBQ2pELElBQUEsK0JBQVUsRUFBRSw4RUFBaUMsQ0FBd0I7SUFDckUsSUFBQSw2Q0FBYSxFQUFFLCtGQUFzQyxDQUFtQztJQUMvRixJQUFNLDJCQUEyQixHQUFHLElBQUksR0FBRyxFQUFDLElBQUksRUFBRSxJQUFJLEVBQUMsR0FBRyxFQUFDLElBQUksRUFBRSxFQUFDLEtBQUssRUFBRSxNQUFNLENBQUMsR0FBRyxDQUFDLElBQUksRUFBQyxFQUFDLENBQUM7SUFFM0YsSUFBSSxvQkFBb0IsQ0FBQztJQUN6QixJQUFJLHdCQUFpRCxDQUFDO0lBQ3RELElBQUksWUFBWSxDQUFDO0lBQ2pCLElBQUksY0FBYyxDQUFDO0lBRW5CLEVBQUUsQ0FBQyxDQUFDLHFCQUFVLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxJQUFJLHFCQUFVLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxDQUFD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
+function boxParams(spec, orient, kIQRScalar) {
+    var _a = boxContinousAxis(spec, orient), continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis;
+    var encoding = spec.encoding;
+    var isMinMax = kIQRScalar === undefined;
+    var summarize = [
+        {
+            aggregate: 'q1',
+            field: continuousAxisChannelDef.field,
+            as: 'lowerBox'
+        },
+        {
+            aggregate: 'q3',
+            field: continuousAxisChannelDef.field,
+            as: 'upperBox'
+        },
+        {
+            aggregate: 'median',
+            field: continuousAxisChannelDef.field,
+            as: 'midBox'
+        }
+    ];
+    var postAggregateCalculates = [];
+    if (isMinMax) {
+        summarize.push({
+            aggregate: 'min',
+            field: continuousAxisChannelDef.field,
+            as: 'lowerWhisker'
+        });
+        summarize.push({
+            aggregate: 'max',
+            field: continuousAxisChannelDef.field,
+            as: 'upperWhisker'
+        });
+    }
+    else {
+        postAggregateCalculates = [
+            {
+                calculate: 'datum.upperBox - datum.lowerBox',
+                as: 'IQR'
+            },
+            {
+                calculate: 'datum.lowerBox - datum.IQR * ' + kIQRScalar,
+                as: 'lowerWhisker'
+            },
+            {
+                calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
+                as: 'lowerWhisker'
+            }
+        ];
+    }
+    var groupby = [];
+    var bins = [];
+    var timeUnits = [];
+    var encodingWithoutContinuousAxis = {};
+    encoding_2.forEach(encoding, function (channelDef, channel) {
+        if (channel === continuousAxis) {
+            // Skip continuous axis as we already handle it separately
+            return;
+        }
+        if (fielddef_1.isFieldDef(channelDef)) {
+            if (channelDef.aggregate && channelDef.aggregate !== exports.BOXPLOT) {
+                summarize.push({
+                    aggregate: channelDef.aggregate,
+                    field: channelDef.field,
+                    as: fielddef_1.field(channelDef)
+                });
+            }
+            else if (channelDef.aggregate === undefined) {
+                var transformedField = fielddef_1.field(channelDef);
+                // Add bin or timeUnit transform if applicable
+                if (channelDef.bin) {
+                    var bin = channelDef.bin, field_1 = channelDef.field;
+                    bins.push({ bin: bin, field: field_1, as: transformedField });
+                }
+                else if (channelDef.timeUnit) {
+                    var timeUnit = channelDef.timeUnit, field_2 = channelDef.field;
+                    timeUnits.push({ timeUnit: timeUnit, field: field_2, as: transformedField });
+                }
+                groupby.push(transformedField);
+            }
+            // now the field should refer to post-transformed field instead
+            encodingWithoutContinuousAxis[channel] = {
+                field: fielddef_1.field(channelDef),
+                type: channelDef.type
+            };
+        }
+        else {
+            // For value def, just copy
+            encodingWithoutContinuousAxis[channel] = encoding[channel];
+        }
+    });
+    return {
+        transform: [].concat(bins, timeUnits, [{ summarize: summarize, groupby: groupby }], postAggregateCalculates),
+        continuousAxisChannelDef: continuousAxisChannelDef,
+        continuousAxis: continuousAxis,
+        encodingWithoutContinuousAxis: encodingWithoutContinuousAxis
+    };
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYm94cGxvdC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21wb3NpdGVtYXJrL2JveHBsb3QudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsdUNBQW1DO0FBR25DLHdDQUFtQztBQUduQywwQ0FBZ0Q7QUFDaEQsMENBQTZHO0FBQzdHLDhCQUFnQztBQU1uQixRQUFBLE9BQU8sR0FBZSxVQUFVLENBQUM7QUFXOUMsc0JBQTZCLElBQTBCO0lBQ3JELE1BQU0sQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBQ3hCLENBQUM7QUFGRCxvQ0FFQztBQUVZLFFBQUEsYUFBYSxHQUFrQixDQUFDLFlBQVksRUFBRSxLQUFLLEVBQUUsUUFBUSxDQUFDLENBQUM7QUFnQi9ELFFBQUEscUNBQXFDLEdBRTlDO0lBQ0YsR0FBRyxFQUFFLENBQUMsTUFBTSxDQUFDO0NBQ2QsQ0FBQztBQUVGLElBQU0saUJBQWlCLEdBQWMsQ0FBQyxHQUFHLEVBQUUsR0FBRyxFQUFFLE9BQU8sRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFFLE1BQU0sQ0FBQyxDQUFDO0FBQ3RGLG1DQUEwQyxJQUE2RDtJQUNyRyxNQUFNLHNCQUNELElBQUksSUFDUCxRQUFRLEVBQUUsaUJBQU0sQ0FBQyxJQUFJLENBQUMsUUFBUSxFQUFFLFVBQUMsV0FBVyxFQUFFLFFBQVEsRUFBRSxPQUFPO1lBQzdELEVBQUUsQ0FBQyxDQUFDLGlCQUFpQixDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7Z0JBQzVDLFdBQVcsQ0FBQyxPQUFPLENBQUMsR0FBRyxRQUFRLENBQUM7WUFDbEMsQ0FBQztZQUFDLElBQUksQ0FBQyxDQUFDO2dCQUNOLEdBQUcsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLE9BQU8sQ0FBQyxtQkFBbUIsQ0FBQyxPQUFPLEVBQUUsZUFBTyxDQUFDLENBQUMsQ0FBQztZQUM5RCxD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
