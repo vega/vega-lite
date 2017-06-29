@@ -7,7 +7,7 @@ permalink: /docs/transform.html
 
 Data transformations in Vega-Lite are described via either top-level transforms (the `transform` property) or [inline transforms inside `encoding`](encoding.html#inline) (`aggregate`, `bin`, `timeUnit`, and `sort`).
 
-When both types of transforms are specified, the top-level transforms are executed first based on the order in the array. Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`,and `sort`.
+When both types of transforms are specified, the top-level `transform`s are executed first based on the order in the array. Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
 
 ## Top-level Transform Property
 
@@ -33,12 +33,22 @@ Vega-Lite's `transform` supports the following types of transformations:
 - [Summarize](#summarize)
 - [TimeUnit](#timeunit)
 
-<!-- TODO population use calc to derive Male / Female -->
-<!-- TODO example about filterInvalid -->
-
 
 {:#bin}
 ### Bin
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"bin": ..., "field": ..., "as" ...} // Bin Transform
+     ...
+  ],
+  ...
+}
+```
 
 `bin` transform in the `transform` array has the following properties:
 
@@ -47,6 +57,18 @@ Vega-Lite's `transform` supports the following types of transformations:
 
 {:#calculate}
 ### Calculate
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"calculate": ..., "as" ...} // Calculate Transform
+     ...
+  ],
+  ...
+}
+```
 
 {% include table.html props="calculate,as" source="CalculateTransform" %}
 
@@ -58,6 +80,18 @@ This example use `calculate` to derive a new field, then `filter` data based on 
 
 {:#filter}
 ### Filter
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"filter": ...} // Calculate Transform
+     ...
+  ],
+  ...
+}
+```
 
 Vega-Lite filter transform the following property:
 
@@ -77,6 +111,13 @@ For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, e
 #### Equal Filter
 
 {% include table.html props="field,equal,timeUnit" source="EqualFilter" %}
+
+To check if the `car_color` field's value is equal to `"red"`, we can use the following filter:
+
+{: .suppress-error}
+```json
+{"filter": {"field": "car_color", "equal": "red"}}
+```
 
 {:#rangefilter}
 #### Range Filter
@@ -98,7 +139,7 @@ A DateTime object must have at least one of the following properties:
 
 **Examples**
 
-- `{"field": "car_color", "equal": "red"}` checks if the `car_color` field's value is equal to `"red"`.
+
 - `{"field": "car_color", "in":["red", "yellow"]}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
 - `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range [0,5] (0 ≤ x ≤ 5).
 - `{"field": "x", "range": [null, 5]}` checks if the `x` field's value is in range [-Infinity,5] (x ≤ 5).
@@ -107,6 +148,22 @@ A DateTime object must have at least one of the following properties:
 
 {:#summarize}
 ### Summarize
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {
+      "summarize": {"aggregate": ..., "field": ..., "as": ...,
+      "groupby": [...]
+    } // Summarize Transform
+     ...
+  ],
+  ...
+}
+```
 
 A `summarize` transform in the `transform` array has the following properties:
 
@@ -119,6 +176,19 @@ A `summarize` transform in the `transform` array has the following properties:
 
 {:#timeunit}
 ### TimeUnit
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"timeUnit": ..., "field": ..., "as" ...} // TimeUnit Transform
+     ...
+  ],
+  ...
+}
+```
 
 A `timeUnit` transform in the `transform` array has the following properties:
 
