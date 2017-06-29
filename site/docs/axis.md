@@ -64,7 +64,7 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 
 ### Title
 
-{% include table.html props="title,titleAlign,titleAngle,titleMaxLength,titlePadding,maxExtent,minExtent" source="Axis" %}
+{% include table.html props="maxExtent,minExtent,title,titleAlign,titleAngle,titleMaxLength,titlePadding" source="Axis" %}
 
 ### Custom Axis Encodings
 
