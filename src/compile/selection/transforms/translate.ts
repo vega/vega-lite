@@ -13,7 +13,7 @@ const DELTA  = '_translate_delta';
 
 const translate:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type === 'interval' && selCmpt.translate !== undefined && selCmpt.translate !== false;
+    return selCmpt.type === 'interval' && selCmpt.translate;
   },
 
   signals: function(model, selCmpt, signals) {
