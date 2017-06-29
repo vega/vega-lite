@@ -43,6 +43,7 @@
         - [Axis Config]({{site.baseurl}}/docs/axis.html#axis-config)
     - [Legend]({{site.baseurl}}/docs/legend.html)
         - [Legend Properties]({{site.baseurl}}/docs/legend.html#legend-properties)
+        - [Legend Config]({{site.baseurl}}/docs/legend.html#legend-config)
 - [Composition]({{site.baseurl}}/docs/composition.html)
     - [Concat]({{site.baseurl}}/docs/concat.html)
     - [Facet]({{site.baseurl}}/docs/facet.html)

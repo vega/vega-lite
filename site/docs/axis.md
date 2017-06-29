@@ -8,7 +8,7 @@ permalink: /docs/axis.html
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
 By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.
-If `axis` is not defined, default axis properties are applied. User can provide set `axis` to an object to customize [axis properties](#axis-properties) or set `axis` to `null` to remove the axis.
+If `axis` is not defined, default axis properties are applied. User can set `axis` to an object to customize [axis properties](#axis-properties) or set `axis` to `null` to remove the axis.
 
 Besides `axis` property of each encoding channel, the configuration object ([`config`](config.html)) also provides [axis config](#axis-config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
@@ -56,11 +56,11 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 
 ### Labels
 
-{% include table.html props="labels,format,labelAngle,labelPadding" source= "Axis" %}
+{% include table.html props="format,labels,labelAngle,labelPadding" source= "Axis" %}
 
 ### Ticks
 
-{% include table.html props="ticks,tickExtra,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,tickCount,tickExtra,tickSize,values" source="Axis" %}
 
 ### Title
 
@@ -85,7 +85,7 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### Labels
 
-{% include table.html props="labels,labelAngle,labelPadding,labelColor,labelFont,labelFontSize,labelLimit,shortTimeLabels" source="AxisConfig" %}
+{% include table.html props="labels,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelPadding,shortTimeLabels" source="AxisConfig" %}
 
 ### Ticks
 
@@ -93,5 +93,5 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### Title
 
-{% include table.html props="maxExtent,minExtent,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}
+{% include table.html props="titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleMaxLength,titlePadding,maxExtent,minExtent" source="AxisConfig" %}
 
