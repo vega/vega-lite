@@ -1,4 +1,19 @@
-## Bar
+---
+layout: docs
+menu: docs
+title: Bar
+permalink: /docs/bar.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "bar",
+  "encoding": ... ,
+  ...
+}
+```
 
 The `bar` mark encodes x and y channels with a pair of discrete and continuous fields.
 

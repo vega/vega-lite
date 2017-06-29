@@ -48,13 +48,7 @@ A mark definition object can contains the following values.
 
 The `mark` property in a Vega-Lite specification defines the visualization's mark type.
 
-The supported mark types are [`point`](#point), [`circle`](#circle-and-square), [`square`](#circle-and-square), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar), [`line`](#line), and [`area`](#area). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+The supported mark types are [`point`](point.html), [`circle`](circle.html), [`square`](square.html), [`text`](text.html), [`tick`](tick.html), [`bar`](bar.html), [`rectangle`](rectangle.html), [`line`](line.html), and [`area`](area.html). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
-
-The rest of this page presents different chart types that can be created using each mark type.
-
-* TOC
-{:toc}
-

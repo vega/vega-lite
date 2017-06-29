@@ -1,4 +1,19 @@
-## Point
+---
+layout: docs
+menu: docs
+title: Point
+permalink: /docs/point.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "point",
+  "encoding": ... ,
+  ...
+}
+```
 
 `point` mark represents each data point with a symbol.
 

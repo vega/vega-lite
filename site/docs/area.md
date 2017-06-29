@@ -1,4 +1,19 @@
-## Area
+---
+layout: docs
+menu: docs
+title: Area
+permalink: /docs/area.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "area",
+  "encoding": ... ,
+  ...
+}
+```
 
 `area` represent multiple data element as a single area shape.
 

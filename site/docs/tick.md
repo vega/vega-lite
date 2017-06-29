@@ -1,4 +1,19 @@
-## Tick
+---
+layout: docs
+menu: docs
+title: Tick
+permalink: /docs/tick.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "tick",
+  "encoding": ... ,
+  ...
+}
+```
 
 The `tick` mark represents each data point as a short line. This is a useful mark for displaying the distribution of values in a field.
 

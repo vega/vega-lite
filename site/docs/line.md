@@ -1,4 +1,19 @@
-## Line
+---
+layout: docs
+menu: docs
+title: Line
+permalink: /docs/line.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "line",
+  "encoding": ... ,
+  ...
+}
+```
 
 The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for `area`).
 

@@ -1,4 +1,19 @@
-## Text
+---
+layout: docs
+menu: docs
+title: Text
+permalink: /docs/text.html
+---
+
+{: .suppress-error}
+```json
+{
+  "data": ... ,
+  "mark": "text",
+  "encoding": ... ,
+  ...
+}
+```
 
 `text` mark represents each data point with a text instead of a point.
 
