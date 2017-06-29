@@ -27,6 +27,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Vega-VSCode](https://github.com/vega/vega-vscode), Vega Language Plug-in for Visual Studio Code
 * [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 * [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
+* [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. Can also be used for [creating visualizations with vega/vega-lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 
 ## Libraries
 
