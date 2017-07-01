@@ -20,13 +20,13 @@ If you want access to the compiled Vega spec from a Javascript program, you can 
 var vgSpec = vl.compile(vlSpec).spec;
 ```
 
-You could also pass in a customize logger as an optional parameter, which allow you configure your output messages.
+By default, warnings and errors are printed to the JavaScript console. To customize how errors and warnings are handled, you can pass a customize logger to the compile function. 
 
 ```js
 var vgSpec = vl.compile(vlSpec, logger).spec;
 ```
 
-A custom logger implementation should implement the following interface:
+A custom logger should implement the following interface:
 
 ```typescript
 interface LoggerInterface {

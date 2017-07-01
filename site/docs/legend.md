@@ -46,7 +46,7 @@ Besides `legend` property of each encoding channel, the configuration object ([`
 
 ## Legend Properties
 
-To customize legend, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
+To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
 
 
 
