@@ -18,7 +18,6 @@ import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {unionDomains} from './scale/domain';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 

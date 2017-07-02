@@ -1,11 +1,11 @@
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
-import {VgDomain, VgScale} from '../../vega.schema';
+import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
 export type ScaleComponentProps = {
   // TODO: integrate selectionDomain here and prevent domainRaw from below
-  domains?: VgDomain[];
+  domains?: VgNonUnionDomain[];
 } & Partial<Pick<VgScale,
   // All VgDomain property except domain.
   // (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)

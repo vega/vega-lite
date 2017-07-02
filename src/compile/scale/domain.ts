@@ -1,24 +1,22 @@
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
-import {Channel, isScaleChannel, ScaleChannel} from '../../channel';
+import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, Scale, ScaleConfig, ScaleType} from '../../scale';
+import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
-import {keys} from '../../util';
-import {VgSignalRef} from '../../vega.schema';
 import {
   FieldRefUnionDomain,
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
-  isSignalRefDomain,
   VgDataRef,
   VgDomain,
-  VgSortField
+  VgNonUnionDomain,
+  VgSortField,
 } from '../../vega.schema';
 import {FACET_SCALE_PREFIX} from '../data/assemble';
 import {FacetModel} from '../facet';
@@ -39,7 +37,7 @@ function parseUnitScaleDomain(model: UnitModel) {
   const scales = model.specifiedScales;
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     const specifiedScale = scales[channel];
     const specifiedDomain = specifiedScale ? specifiedScale.domain : undefined;
 
@@ -70,10 +68,10 @@ function parseNonUnitScaleDomain(model: Model) {
 
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     // FIXME: Arvind -- Please revise logic for merging selectionDomain / domainRaw
 
-    let domains: VgDomain[];
+    let domains: VgNonUnionDomain[];
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -131,8 +129,7 @@ function normalizeUnaggregatedDomain(domain: Domain, fieldDef: FieldDef<string>,
   return domain;
 }
 
-// FIXME: Domoritz --  please change this to return VgDomain[] and union one at the end in assemble
-export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgDomain {
+export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgNonUnionDomain[] {
   const scaleType = model.getScaleComponent(channel).get('type');
 
   const domain = normalizeUnaggregatedDomain(model.scaleDomain(channel), model.fieldDef(channel), scaleType, model.config.scale);
@@ -146,13 +143,13 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === 'x' && model.channelHasField('x2')) {
     if (model.channelHasField('x')) {
-      return unionDomains(parseSingleChannelDomain(scaleType, domain, model, 'x'), parseSingleChannelDomain(scaleType, domain, model, 'x2'));
+      return parseSingleChannelDomain(scaleType, domain, model, 'x').concat(parseSingleChannelDomain(scaleType, domain, model, 'x2'));
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'x2');
     }
   } else if (channel === 'y' && model.channelHasField('y2')) {
     if (model.channelHasField('y')) {
-      return unionDomains(parseSingleChannelDomain(scaleType, domain, model, 'y'), parseSingleChannelDomain(scaleType, domain, model, 'y2'));
+      return parseSingleChannelDomain(scaleType, domain, model, 'y').concat( parseSingleChannelDomain(scaleType, domain, model, 'y2'));
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
@@ -160,7 +157,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
-function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel: ScaleChannel | 'x2' | 'y2'): VgDomain {
+function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel: ScaleChannel | 'x2' | 'y2'): VgNonUnionDomain[] {
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
@@ -172,82 +169,86 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
           return {signal: dateTimeExpr(dt, true)};
         });
       }
-      return domain;
+      return [domain];
     }
   }
 
   const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
     if(stack.offset === 'normalize') {
-      return [0, 1];
+      return [[0, 1]];
     }
-    return {
-      data: model.requestDataName(MAIN),
-      fields: [
-        model.field(channel, {suffix: 'start'}),
-        model.field(channel, {suffix: 'end'})
-      ]
-    };
+
+    const data = model.requestDataName(MAIN);
+    return [{
+      data,
+      field: model.field(channel, {suffix: 'start'})
+    }, {
+      data,
+      field: model.field(channel, {suffix: 'end'})
+    }];
   }
 
   const sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
 
   if (domain === 'unaggregated') {
-    return {
-      data: model.requestDataName(MAIN),
-      fields: [
-        model.field(channel, {aggregate: 'min'}),
-        model.field(channel, {aggregate: 'max'})
-      ]
-    };
+    const data = model.requestDataName(MAIN);
+    return [{
+      data,
+      field: model.field(channel, {aggregate: 'min'})
+    }, {
+      data,
+      field: model.field(channel, {aggregate: 'max'})
+    }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
       const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+      return [{signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`}];
     }
 
     if (hasDiscreteDomain(scaleType)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
-      return {
+      return [{
         data: model.requestDataName(MAIN),
         field: model.field(channel, {binSuffix: 'range'}),
         sort: {
           field: model.field(channel, {binSuffix: 'start'}),
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
-      };
+      }];
     } else { // continuous scales
       if (channel === 'x' || channel === 'y') {
         // X/Y position have to include start and end for non-ordinal scale
-        return {
-          data: model.requestDataName(MAIN),
-          fields: [
-            model.field(channel, {binSuffix: 'start'}),
-            model.field(channel, {binSuffix: 'end'})
-          ]
-        };
+        const data = model.requestDataName(MAIN);
+        return [{
+          data,
+          field: model.field(channel, {binSuffix: 'start'})
+        }, {
+          data,
+          field: model.field(channel, {binSuffix: 'end'})
+        }];
       } else {
         // TODO: use bin_mid
-        return {
+        return [{
           data: model.requestDataName(MAIN),
           field: model.field(channel, {binSuffix: 'start'})
-        };
+        }];
       }
     }
   } else if (sort) {
-    return {
+    return [{
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
       field: model.field(channel),
       sort: sort
-    };
+    }];
   } else {
-    return {
+    return [{
       data: model.requestDataName(MAIN),
       field: model.field(channel)
-    };
+    }];
   }
 }
 
@@ -317,60 +318,30 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: 
 }
 
 /**
- * Convert the domain to an array of data refs or an array of values. Also, throw
- * away sorting information since we always sort the domain when we union two domains.
+ * Converts an array of domains to a single Vega scale domain.
  */
-function normalizeDomain(domain: VgDomain): (any[] | VgDataRef | VgSignalRef)[] {
-  if (util.isArray(domain)) {
-    return [domain];
-  } else if (isSignalRefDomain(domain)) {
-    return [domain];
-  } else if (isDataRefDomain(domain)) {
-    delete domain.sort;
-    return [domain];
-  } else if(isFieldRefUnionDomain(domain)) {
-    return domain.fields.map(d => {
-      return {
-        data: domain.data,
-        field: d
-      };
-    });
-  } else if (isDataRefUnionedDomain(domain)) {
-    return domain.fields;
+export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
+  const uniqueDomains = util.unique(domains, util.hash);
+
+  if (uniqueDomains.length === 1) {
+    return uniqueDomains[0];
   }
-  /* istanbul ignore next: This should never happen. */
-  throw new Error(log.message.INVAID_DOMAIN);
-}
 
-/**
- * Union two data domains. A unioned domain is always sorted.
- */
-export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
-  const normalizedDomain1 = normalizeDomain(domain1);
-  const normalizedDomain2 = normalizeDomain(domain2);
-
-  let domains = normalizedDomain1.concat(normalizedDomain2);
-  domains = util.unique(domains, util.hash);
-
-  if (domains.length > 1) {
-    const allData = domains.map(d => {
-      if (isDataRefDomain(d)) {
-        return d.data;
-      }
-      return null;
-    });
-
-    if (util.unique(allData, x => x).length === 1 && allData[0] !== null) {
-      // create a union domain of different fields with a single data source
-      const domain: FieldRefUnionDomain = {
-        data: allData[0],
-        fields: domains.map(d => (d as VgDataRef).field)
-      };
-      return domain;
+  const allData = domains.map(d => {
+    if (isDataRefDomain(d)) {
+      return d.data;
     }
+    return null;
+  });
 
-    return {fields: domains, sort: true};
-  } else {
-    return domains[0];
+  if (util.unique(allData, x => x).length === 1 && allData[0] !== null) {
+    // create a union domain of different fields with a single data source
+    const domain: FieldRefUnionDomain = {
+      data: allData[0],
+      fields: domains.map(d => (d as VgDataRef).field)
+    };
+    return domain;
   }
+
+  return {fields: domains, sort: true};
 }

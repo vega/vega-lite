@@ -1,9 +1,9 @@
 import {assert} from 'chai';
+
 import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
 import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
 import {keys} from '../../src/util';
-import {DataRefUnionDomain, isDataRefUnionedDomain} from '../../src/vega.schema';
 import {parseRepeatModel} from '../util';
 
 describe('Repeat', function() {
@@ -119,8 +119,7 @@ describe('Repeat', function() {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      assert(isDataRefUnionedDomain(colorScale.get('domains')));
-      assert.deepEqual((colorScale.get('domains')[0] as DataRefUnionDomain).fields.length, 4);
+      assert.deepEqual(colorScale.get('domains').length, 4);
 
       model.parseLegend();
 

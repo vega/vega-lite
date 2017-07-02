@@ -84,7 +84,9 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
-export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
+// Domains that are not a union of domains
+export type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
+export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
 
 export type VgMarkGroup = any;
 

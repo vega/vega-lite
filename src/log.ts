@@ -241,8 +241,6 @@ export namespace message {
     return `Cannot set ${channel}-scale's "domain" as it is binned. Please use "bin"'s "extent" instead.`;
   }
 
-  export const INVAID_DOMAIN = 'Invalid scale domain';
-
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
 
   // AXIS

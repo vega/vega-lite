@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {ScaleChannel} from '../../../src/channel';
-import {domainSort, parseDomainForChannel, unionDomains} from '../../../src/compile/scale/domain';
+import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
 import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {UnitModel} from '../../../src/compile/unit';
 import {MAIN} from '../../../src/data';
@@ -10,7 +10,7 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {SortField} from '../../../src/sort';
-import {FieldRefUnionDomain, VgDataRef, VgDomain, VgSortField} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -33,10 +33,10 @@ describe('compile/scale', () => {
         });
 
       const xDomain = testParseDomainForChannel(model, 'x');
-      assert.deepEqual(xDomain, {data: 'main', fields: ['a', 'b']});
+      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}, {data: 'main', field: 'b'}]);
 
       const yDomain = testParseDomainForChannel(model, 'y');
-      assert.deepEqual(yDomain, {data: 'main', fields: ['c', 'd']});
+      assert.deepEqual(yDomain, [{data: 'main', field: 'c'}, {data: 'main', field: 'd'}]);
     });
 
     it('should have correct domain for color', function() {
@@ -48,7 +48,7 @@ describe('compile/scale', () => {
         });
 
       const xDomain = testParseDomainForChannel(model, 'color');
-      assert.deepEqual(xDomain, {data: 'main', field: 'a'});
+      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
     });
 
     it('should have correct domain for color ConditionField', function() {
@@ -62,7 +62,7 @@ describe('compile/scale', () => {
         });
 
       const xDomain = testParseDomainForChannel(model, 'color');
-      assert.deepEqual(xDomain, {data: 'main', field: 'a'});
+      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
     });
 
     it('should return domain for stack', function() {
@@ -79,10 +79,13 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(testParseDomainForChannel(model,'y'), {
+      assert.deepEqual(testParseDomainForChannel(model,'y'), [{
         data: 'main',
-        fields: ['sum_origin_start', 'sum_origin_end']
-      });
+        field: 'sum_origin_start'
+      }, {
+        data: 'main',
+        field: 'sum_origin_end'
+      }]);
     });
 
     it('should return normalize domain for stack if specified', function() {
@@ -102,7 +105,7 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(testParseDomainForChannel(model,'y'), [0, 1]);
+      assert.deepEqual(testParseDomainForChannel(model,'y'), [[0, 1]]);
     });
 
     describe('for quantitative', function() {
@@ -120,12 +123,13 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model,'y'), {
-          data: 'main',
-          fields: [
-            'bin_maxbins_15_origin_start',
-            'bin_maxbins_15_origin_end'
-        ]});
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [{
+            data: 'main',
+            field: 'bin_maxbins_15_origin_start'
+          }, {
+            data: 'main',
+            field: 'bin_maxbins_15_origin_end'
+          }]);
 
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
       }));
@@ -143,10 +147,14 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = testParseDomainForChannel(model,'y') as FieldRefUnionDomain;
 
-          assert.deepEqual(_domain.data, MAIN);
-          assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
+          assert.deepEqual(testParseDomainForChannel(model,'y'), [{
+            data: MAIN,
+            field: 'min_acceleration'
+          }, {
+            data: MAIN,
+            field: 'max_acceleration'
+          }]);
         });
 
       it('should return the aggregated domain for sum Q', log.wrap((localLogger) => {
@@ -161,8 +169,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = testParseDomainForChannel(model,'y') as VgDataRef;
-        assert.deepEqual(_domain.data, MAIN);
+        testParseDomainForChannel(model,'y');
         assert.equal(
           localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum')
         );
@@ -181,7 +188,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model,'y');
 
-        assert.deepEqual(_domain, [0, 200]);
+        assert.deepEqual(_domain, [[0, 200]]);
       });
 
       it('should ignore the custom domain when binned', log.wrap((localLogger) => {
@@ -198,16 +205,17 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model,'y');
 
-        assert.deepEqual(_domain, {
-          data: 'main',
-          fields: [
-            'bin_maxbins_15_origin_start',
-            'bin_maxbins_15_origin_end'
-        ]});
+        assert.deepEqual(_domain, [{
+            data: 'main',
+            field: 'bin_maxbins_15_origin_start'
+          }, {
+            data: 'main',
+            field: 'bin_maxbins_15_origin_end'
+          }]);
         assert.equal(localLogger.warns[0], log.message.conflictedDomain("y"));
       }));
 
-      it('should return the aggregated domain if we do not overrride it', function() {
+      it('should return the aggregated domain if we do not override it', function() {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -218,12 +226,16 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = testParseDomainForChannel(model,'y') as VgDataRef;
 
-        assert.deepEqual(_domain.data, MAIN);
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [
+          {
+            data: 'main',
+            field: 'origin'
+          }
+        ]);
       });
 
-      it('should return the aggregated domain if specified in config', function() {
+      it('should use the aggregated data for domain if specified in config', function() {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -239,10 +251,14 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = testParseDomainForChannel(model,'y') as FieldRefUnionDomain;
 
-        assert.deepEqual(_domain.data, MAIN);
-        assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [{
+            data: MAIN,
+            field: 'min_acceleration'
+          }, {
+            data: MAIN,
+            field: 'max_acceleration'
+          }]);
       });
     });
 
@@ -260,7 +276,7 @@ describe('compile/scale', () => {
             }
           });
           const _domain = testParseDomainForChannel(model,'y');
-          assert.deepEqual(_domain, {data: 'main', field: 'month_origin', sort: true});
+          assert.deepEqual(_domain, [{data: 'main', field: 'month_origin', sort: true}]);
         });
 
         it('should return the correct domain for yearmonth T',
@@ -277,7 +293,7 @@ describe('compile/scale', () => {
             });
             const _domain = testParseDomainForChannel(model,'y');
 
-            assert.deepEqual(_domain, {data: 'main', field: 'yearmonth_origin'});
+            assert.deepEqual(_domain, [{data: 'main', field: 'yearmonth_origin'}]);
           });
 
 
@@ -302,11 +318,11 @@ describe('compile/scale', () => {
             });
             const _domain = testParseDomainForChannel(model,'x');
 
-            assert.deepEqual(_domain, {
+            assert.deepEqual(_domain, [{
               data: 'raw',
               field: 'month_date',
               sort: sortDef
-            });
+            }]);
         });
 
       it('should return the right custom domain with DateTime objects', () => {
@@ -338,11 +354,11 @@ describe('compile/scale', () => {
               y: {field: 'origin', type: "nominal", sort: sortDef}
             }
           });
-        assert.deepEqual(testParseDomainForChannel(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [{
             data: "raw",
             field: 'origin',
             sort: sortDef
-          });
+          }]);
       });
 
       it('should return correct domain with the provided sort property with order property', function() {
@@ -354,11 +370,11 @@ describe('compile/scale', () => {
             }
           });
 
-        assert.deepEqual(testParseDomainForChannel(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [{
             data: "raw",
             field: 'origin',
             sort: sortDef
-          });
+        }]);
       });
 
       it('should return correct domain without sort if sort is not provided', function() {
@@ -369,79 +385,140 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), [{
           data: "main",
           field: 'origin',
           sort: true
-        });
+        }]);
       });
     });
   });
 
-  describe('unionDomains()', () => {
-    it('should union field and data ref union domains', () => {
-      const domain1 = {
+  describe('mergeDomains()', () => {
+    it('should merge the same domains', () => {
+      const domain = mergeDomains([{
         data: 'foo',
-        fields: ['a', 'b']
-      };
-      const domain2 = {
-        fields: [{
-          data: 'foo',
-          field: 'b'
-        },{
-          data: 'foo',
-          field: 'c'
-        }]
-      };
+        field: 'a',
+        sort: {field: 'b', op: 'mean'}
+      }, {
+        data: 'foo',
+        field: 'a',
+        sort: {field: 'b', op: 'mean'}
+      }]);
 
-      const unioned = unionDomains(domain1, domain2);
-      assert.deepEqual(unioned, {
+      assert.deepEqual(domain, {
         data: 'foo',
-        fields: ['a', 'b', 'c']
+        field: 'a',
+        sort: {field: 'b', op: 'mean'}
       });
     });
 
-    it('should union data ref union domains', () => {
-      const domain1 = {
+    it('should sort the output domain, if one domain is sorted', () => {
+      const domain = mergeDomains([{
         data: 'foo',
-        fields: ['a', 'b']
-      };
+        field: 'a'
+      }, {
+        data: 'foo',
+        field: 'a',
+        sort: {field: 'b', op: 'mean'}
+      }]);
 
-      const domain2 = {
+      assert.deepEqual(domain, {
         data: 'foo',
-        fields: ['b', 'c']
-      };
-
-      const unioned = unionDomains(domain1, domain2);
-      assert.deepEqual(unioned, {
-        data: 'foo',
-        fields: ['a', 'b', 'c']
+        field: 'a',
+        sort: {field: 'b', op: 'mean'}
       });
     });
 
-    it('should union signal domains', () => {
-      const domain1 = {
-        signal: 'foo'
-      };
+    it('should merge domains with the same data', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a'
+      }, {
+        data: 'foo',
+        field: 'b'
+      }]);
 
-      const domain2 = {
+      assert.deepEqual(domain, {
+        data: 'foo',
+        fields: ['a', 'b']
+      });
+    });
+
+    it('should maintain sort', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: true
+      }, {
+        data: 'foo',
+        field: 'b',
+        sort: true
+      }]);
+
+      assert.deepEqual(domain, {
+        data: 'foo',
+        fields: ['a', 'b'],
+        sort: true
+      });
+    });
+
+    it('should merge domains with different data', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a'
+      }, {
         data: 'bar',
-        fields: ['b', 'c']
-      };
+        field: 'a'
+      }]);
 
-      const unioned = unionDomains(domain1, domain2);
-      assert.deepEqual<VgDomain>(unioned, {
-        fields: [
-          {
+      assert.deepEqual(domain, [{
+        data: 'foo',
+        field: 'a'
+      }, {
+        data: 'bar',
+        field: 'a'
+      }]);
+    });
+
+    it('should merge domains with the same and different data', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a'
+      }, {
+        data: 'foo',
+        field: 'b'
+      }, {
+        data: 'bar',
+        field: 'a'
+      }]);
+
+      assert.deepEqual(domain, [{
+        data: 'foo',
+        fields: 'a'
+      }, {
+        data: 'foo',
+        fields: 'b'
+      }, {
+        data: 'bar',
+        field: 'a'
+      }]);
+    });
+
+    it('should merge signal domains', () => {
+      const domain = mergeDomains([{
+        signal: 'foo'
+      }, {
+        data: 'bar',
+        field: 'a'
+      }]);
+
+      assert.deepEqual(domain, {
+        fields: [{
             signal: 'foo'
-          },
-          {
+          }, {
             data: 'bar',
-            field: 'b'
-          },
-          {
-            data: 'bar',
-            field: 'c'
+            field: 'a'
           }
         ],
         sort: true

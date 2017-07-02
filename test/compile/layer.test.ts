@@ -25,16 +25,14 @@ describe('Layer', function() {
       model.parseScale();
 
       assert.deepEqual(model.component.scales['x'].get('domains'), [{
-        // FIXME: please correct the output
-        fields: [{
           data: 'layer_0_main',
-          field: 'a'
+          field: 'a',
+          sort: true
         },{
           data: 'layer_1_main',
-          field: 'b'
-        }],
-        sort: true
-      }]);
+          field: 'b',
+          sort: true
+        }]);
     });
 
     it('should union explicit and referenced domains', () => {
@@ -53,17 +51,13 @@ describe('Layer', function() {
       });
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].explicit.domains, [{
-        // FIXME: please correct the output
-        fields: [
-          [1, 2, 3],
-          {
-            data: 'layer_1_main',
-            field: 'b'
-          }
-        ],
-        sort: true
-      }]);
+      assert.deepEqual(model.component.scales['x'].explicit.domains, [
+        [1, 2, 3],
+        {
+          data: 'layer_1_main',
+          field: 'b',
+          sort: true
+        }]);
     });
   });
 
