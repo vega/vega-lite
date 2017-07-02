@@ -310,6 +310,8 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
     },
     spec: normalizeNonFacetUnit({
       mark,
+      ...(width ? {width} : {}),
+      ...(height ? {height} : {}),
       encoding,
       ...(selection ? {selection} : {})
     }, config)
