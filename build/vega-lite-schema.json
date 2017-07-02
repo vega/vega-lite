@@ -4727,7 +4727,7 @@
           "type": "array"
         },
         "summarize": {
-          "description": "Array of objects that contains aggregate information for the transform.",
+          "description": "Array of objects that each define an aggregation.",
           "items": {
             "$ref": "#/definitions/Summarize"
           },

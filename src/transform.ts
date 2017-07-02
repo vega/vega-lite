@@ -66,7 +66,7 @@ export interface TimeUnitTransform {
 
 export interface SummarizeTransform {
   /**
-   * Array of objects that contains aggregate information for the transform.
+   * Array of objects that each define an aggregation.
    */
   summarize: Summarize[];
 
