@@ -1,7 +1,7 @@
 <div id="showcase">
   <div class="examples">
   {% for image in page.images %}
-    <a class="preview" href="https://vega.github.io/new-editor/?mode=vega-lite&spec={{image.spec}}"
+    <a class="preview" href="https://vega.github.io/editor/#/examples/vega-lite/{{image.spec}}"
       style="background-image: url('build/examples/images/{{image.spec}}.vl.svg')">
     </a>
   {% endfor %}

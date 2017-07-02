@@ -38,7 +38,7 @@ images:
   </span>
   <span class="lead-buttons">
     [Get started]({{site.baseurl}}/tutorials/getting_started.html)
-    [Try online](https://vega.github.io/new-editor/?mode=vega-lite)
+    [Try online](https://vega.github.io/editor/#/custom/vega-lite)
   </span>
 </span>
 
