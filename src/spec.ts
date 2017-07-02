@@ -386,7 +386,7 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 // FIXME(#1804): re-design this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
-  const {mark, encoding, ...outerSpec} = spec;
+  const {mark, selection, encoding, ...outerSpec} = spec;
   const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer
@@ -420,6 +420,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
         filled: true,
         role: 'pointOverlay'
       },
+      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
