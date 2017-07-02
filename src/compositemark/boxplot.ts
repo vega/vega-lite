@@ -303,8 +303,9 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         const transformedField = field(channelDef);
 
         // Add bin or timeUnit transform if applicable
-        if (channelDef.bin) {
-          const {bin, field} = channelDef;
+        const bin = channelDef.bin;
+        if (bin) {
+          const {field} = channelDef;
           bins.push({bin, field, as: transformedField});
         } else if (channelDef.timeUnit) {
           const {timeUnit, field} = channelDef;
