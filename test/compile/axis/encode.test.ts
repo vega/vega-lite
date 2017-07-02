@@ -4,6 +4,7 @@ import {assert} from 'chai';
 
 import * as encode from '../../../src/compile/axis/encode';
 import {labelAlign} from '../../../src/compile/axis/encode';
+import {Split} from '../../../src/compile/split';
 import {AxisOrient} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -17,7 +18,7 @@ describe('compile/axis', () => {
           x: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-      const labels = encode.labels(model, 'x', {}, {});
+      const labels = encode.labels(model, 'x', {}, new Split<{}>());
       assert.equal(labels.angle.value, 270);
     });
 
@@ -28,7 +29,7 @@ describe('compile/axis', () => {
           x: {field: "a", type: "temporal", timeUnit: "quarter"}
         }
       });
-      const labels = encode.labels(model, 'x', {}, {});
+      const labels = encode.labels(model, 'x', {}, new Split<{}>());
       const expected = "'Q' + quarter(datum.value)";
       assert.equal(labels.text.signal, expected);
     });
@@ -40,7 +41,7 @@ describe('compile/axis', () => {
           x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
         }
       });
-      const labels = encode.labels(model, 'x', {}, {});
+      const labels = encode.labels(model, 'x', {}, new Split<{}>());
       const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       assert.equal(labels.text.signal, expected);
     });
