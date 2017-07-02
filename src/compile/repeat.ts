@@ -32,7 +32,7 @@ export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: R
   return replaceRepeater(encoding, repeater);
 }
 
-type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
+type EncodingOrFacet<F> = Encoding<F> & Facet<F>;
 
 /**
  * Replace repeater values in a field def with the concrete field name.
