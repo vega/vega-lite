@@ -20,7 +20,7 @@ import {ScaleComponent} from '../scale/component';
  * @return Vega ValueRef for stackable x or y
  */
 export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+    stack: StackProperties, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
@@ -32,7 +32,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
  * @return Vega ValueRef for stackable x2 or y2
  */
 export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+    stack: StackProperties, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   if (isFieldDef(aFieldDef) && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
       channel.charAt(0) === stack.fieldChannel.charAt(0)
