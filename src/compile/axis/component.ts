@@ -2,7 +2,7 @@ import {Axis} from '../../axis';
 import {VgAxis} from '../../vega.schema';
 import {Split} from '../split';
 
-export class AxisComponentPart extends  Split<Partial<VgAxis>> {}
+export class AxisComponentPart extends Split<Partial<VgAxis>> {}
 
 export interface AxisComponent {
   main?: AxisComponentPart;
