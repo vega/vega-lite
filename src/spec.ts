@@ -464,17 +464,10 @@ function fieldDefIndex<T>(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: Di
     accumulate(dict, vlEncoding.fieldDefs(spec.facet));
     fieldDefIndex(spec.spec, dict);
   } else if (isRepeatSpec(spec)) {
-    accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else if (isConcatSpec(spec)) {
     const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
-    childSpec.forEach(child => {
-      if (isUnitSpec(child)) {
-        accumulate(dict, vlEncoding.fieldDefs(child.encoding));
-      } else {
-        fieldDefIndex(child, dict);
-      }
-    });
+    childSpec.forEach(child => fieldDefIndex(child, dict));
   } else { // Unit Spec
     accumulate(dict, vlEncoding.fieldDefs(spec.encoding));
   }
