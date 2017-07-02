@@ -66,7 +66,8 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
-  const {mark, encoding, ...outerSpec} = spec;
+  // TODO: use selection
+  const {mark, encoding, selection: _sel, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
