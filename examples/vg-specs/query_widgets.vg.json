@@ -232,19 +232,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Horsepower"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Horsepower"
-                    }
-                ],
-                "sort": true
-            },
             "range": [
                 0,
                 {
@@ -253,24 +240,24 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
+            "zero": true,
             "domain": {
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "Miles_per_Gallon"
+                        "field": "Horsepower"
                     },
                     {
                         "data": "data_1",
-                        "field": "Miles_per_Gallon"
+                        "field": "Horsepower"
                     }
                 ],
                 "sort": true
-            },
+            }
+        },
+        {
+            "name": "y",
+            "type": "linear",
             "range": [
                 {
                     "signal": "height"
@@ -279,11 +266,25 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Miles_per_Gallon"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Miles_per_Gallon"
+                    }
+                ],
+                "sort": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -296,8 +297,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         }
     ],
     "axes": [

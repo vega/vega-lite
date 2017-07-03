@@ -484,6 +484,7 @@
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -504,16 +505,11 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         },
         {
             "name": "child_Displacement_Horsepower_x",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Horsepower"
-            },
             "range": [
                 0,
                 {
@@ -522,15 +518,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            }
         },
         {
             "name": "child_Displacement_Horsepower_y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Displacement"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -539,15 +535,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "Displacement"
+            }
         },
         {
             "name": "child_Displacement_Miles_per_Gallon_x",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "Miles_per_Gallon"
-            },
             "range": [
                 0,
                 {
@@ -556,15 +552,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_1",
+                "field": "Miles_per_Gallon"
+            }
         },
         {
             "name": "child_Displacement_Miles_per_Gallon_y",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "Displacement"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -573,15 +569,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_1",
+                "field": "Displacement"
+            }
         },
         {
             "name": "child_Miles_per_Gallon_Horsepower_x",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "Horsepower"
-            },
             "range": [
                 0,
                 {
@@ -590,15 +586,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_2",
+                "field": "Horsepower"
+            }
         },
         {
             "name": "child_Miles_per_Gallon_Horsepower_y",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "Miles_per_Gallon"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -607,15 +603,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_2",
+                "field": "Miles_per_Gallon"
+            }
         },
         {
             "name": "child_Miles_per_Gallon_Miles_per_Gallon_x",
             "type": "linear",
-            "domain": {
-                "data": "data_3",
-                "field": "Miles_per_Gallon"
-            },
             "range": [
                 0,
                 {
@@ -624,15 +620,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_3",
+                "field": "Miles_per_Gallon"
+            }
         },
         {
             "name": "child_Miles_per_Gallon_Miles_per_Gallon_y",
             "type": "linear",
-            "domain": {
-                "data": "data_3",
-                "field": "Miles_per_Gallon"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -641,7 +637,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_3",
+                "field": "Miles_per_Gallon"
+            }
         }
     ],
     "legends": [

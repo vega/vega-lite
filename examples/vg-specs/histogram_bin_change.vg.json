@@ -112,13 +112,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "bin_maxbins_30_IMDB_Rating_start",
-                    "bin_maxbins_30_IMDB_Rating_end"
-                ]
-            },
             "range": [
                 0,
                 {
@@ -126,15 +119,19 @@
                 }
             ],
             "round": true,
-            "zero": false
+            "zero": false,
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_30_IMDB_Rating_start",
+                    "bin_maxbins_30_IMDB_Rating_end"
+                ],
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -143,7 +140,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            }
         }
     ],
     "axes": [

@@ -287,6 +287,13 @@
         {
             "name": "x",
             "type": "time",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
             "domain": {
                 "fields": [
                     {
@@ -303,22 +310,11 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "price"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -327,17 +323,21 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "price"
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "data": "data_0",
                 "field": "symbol",
                 "sort": true
-            },
-            "range": "category"
+            }
         }
     ],
     "axes": [

@@ -148,25 +148,21 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "Year"
-            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Year"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -175,16 +171,20 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "mean_Horsepower"
+            }
         },
         {
             "name": "color",
             "type": "bin-ordinal",
+            "range": "ramp",
+            "zero": false,
             "domain": {
                 "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
-            },
-            "range": "ramp",
-            "zero": false
+            }
         }
     ],
     "axes": [

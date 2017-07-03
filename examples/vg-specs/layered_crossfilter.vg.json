@@ -1602,6 +1602,14 @@
         {
             "name": "child_distance_x",
             "type": "linear",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false,
             "domain": {
                 "fields": [
                     {
@@ -1622,19 +1630,20 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false
+            }
         },
         {
             "name": "child_distance_y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -1647,20 +1656,19 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         },
         {
             "name": "child_delay_x",
             "type": "linear",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false,
             "domain": {
                 "fields": [
                     {
@@ -1681,19 +1689,20 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false
+            }
         },
         {
             "name": "child_delay_y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -1706,41 +1715,11 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         },
         {
             "name": "child_time_x",
             "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_4",
-                        "field": "bin_maxbins_20_time_start"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "bin_maxbins_20_time_end"
-                    },
-                    {
-                        "data": "data_5",
-                        "field": "bin_maxbins_20_time_start"
-                    },
-                    {
-                        "data": "data_5",
-                        "field": "bin_maxbins_20_time_end"
-                    }
-                ],
-                "sort": true
-            },
             "range": [
                 0,
                 {
@@ -1748,11 +1727,41 @@
                 }
             ],
             "round": true,
-            "zero": false
+            "zero": false,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_4",
+                        "field": "bin_maxbins_20_time_start"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "bin_maxbins_20_time_end"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "bin_maxbins_20_time_start"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "bin_maxbins_20_time_end"
+                    }
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_time_y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -1765,16 +1774,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         }
     ],
     "config": {

@@ -173,21 +173,30 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "data_0",
-                "field": "date"
-            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "data_0",
+                "field": "date"
+            }
         },
         {
             "name": "y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -200,20 +209,12 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -226,8 +227,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         }
     ],
     "axes": [

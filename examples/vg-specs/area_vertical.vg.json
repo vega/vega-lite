@@ -107,10 +107,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "sum_Weight_in_lbs"
-            },
             "range": [
                 0,
                 {
@@ -119,15 +115,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "sum_Weight_in_lbs"
+            }
         },
         {
             "name": "y",
             "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "year_Year"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -135,7 +131,11 @@
                 0
             ],
             "round": true,
-            "nice": "year"
+            "nice": "year",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Year"
+            }
         }
     ],
     "axes": [

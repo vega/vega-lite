@@ -91,13 +91,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "bin_maxbins_10_IMDB_Rating_start",
-                    "bin_maxbins_10_IMDB_Rating_end"
-                ]
-            },
             "range": [
                 0,
                 {
@@ -105,7 +98,15 @@
                 }
             ],
             "round": true,
-            "zero": false
+            "zero": false,
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_10_IMDB_Rating_start",
+                    "bin_maxbins_10_IMDB_Rating_end"
+                ],
+                "sort": true
+            }
         }
     ],
     "axes": [

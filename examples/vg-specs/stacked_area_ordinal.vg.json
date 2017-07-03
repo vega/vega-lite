@@ -167,10 +167,6 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "year_Year"
-            },
             "range": [
                 0,
                 {
@@ -178,18 +174,15 @@
                 }
             ],
             "round": true,
-            "nice": "year"
+            "nice": "year",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Year"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_Weight_in_lbs_start",
-                    "sum_Weight_in_lbs_end"
-                ]
-            },
             "range": [
                 {
                     "signal": "height"
@@ -198,17 +191,25 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_Weight_in_lbs_start",
+                    "sum_Weight_in_lbs_end"
+                ],
+                "sort": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "ordinal",
             "domain": {
                 "data": "source_0",
                 "field": "Cylinders",
                 "sort": true
-            },
-            "range": "ordinal"
+            }
         }
     ],
     "axes": [

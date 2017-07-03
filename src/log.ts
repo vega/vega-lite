@@ -2,7 +2,6 @@
  * Vega-Lite's singleton logger utility.
  */
 
-import {VgSortField} from 'vega-lite/build/src/vega.schema';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -15,6 +14,7 @@ import {Mark} from './mark';
 import {Scale, ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
+import {VgSortField} from './vega.schema';
 
 
 export {LoggerInterface} from 'vega-util';

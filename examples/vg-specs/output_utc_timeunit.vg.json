@@ -110,10 +110,6 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "data_0",
-                "field": "utcyearmonthdatehoursminutes_date"
-            },
             "range": [
                 0,
                 {
@@ -121,15 +117,15 @@
                 }
             ],
             "round": true,
-            "nice": "minute"
+            "nice": "minute",
+            "domain": {
+                "data": "data_0",
+                "field": "utcyearmonthdatehoursminutes_date"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "price"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -138,7 +134,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "price"
+            }
         }
     ],
     "axes": [

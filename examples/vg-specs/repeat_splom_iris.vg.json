@@ -1825,6 +1825,7 @@
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -1893,16 +1894,11 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         },
         {
             "name": "child_petalWidth_sepalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "sepalLength"
-            },
             "range": [
                 0,
                 {
@@ -1911,15 +1907,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_0",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_petalWidth_sepalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "petalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -1928,15 +1924,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_0",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalWidth_sepalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "sepalWidth"
-            },
             "range": [
                 0,
                 {
@@ -1945,15 +1941,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_1",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_petalWidth_sepalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "petalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -1962,15 +1958,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_1",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalWidth_petalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "petalLength"
-            },
             "range": [
                 0,
                 {
@@ -1979,15 +1975,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_2",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_petalWidth_petalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "petalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -1996,15 +1992,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_2",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalWidth_petalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_3",
-                "field": "petalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2013,15 +2009,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_3",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalWidth_petalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_3",
-                "field": "petalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2030,15 +2026,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_3",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalLength_sepalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_4",
-                "field": "sepalLength"
-            },
             "range": [
                 0,
                 {
@@ -2047,15 +2043,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_4",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_petalLength_sepalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_4",
-                "field": "petalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2064,15 +2060,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_4",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_petalLength_sepalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_5",
-                "field": "sepalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2081,15 +2077,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_5",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_petalLength_sepalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_5",
-                "field": "petalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2098,15 +2094,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_5",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_petalLength_petalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_6",
-                "field": "petalLength"
-            },
             "range": [
                 0,
                 {
@@ -2115,15 +2111,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_6",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_petalLength_petalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_6",
-                "field": "petalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2132,15 +2128,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_6",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_petalLength_petalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_7",
-                "field": "petalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2149,15 +2145,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_7",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_petalLength_petalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_7",
-                "field": "petalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2166,15 +2162,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_7",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_sepalWidth_sepalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_8",
-                "field": "sepalLength"
-            },
             "range": [
                 0,
                 {
@@ -2183,15 +2179,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_8",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_sepalWidth_sepalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_8",
-                "field": "sepalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2200,15 +2196,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_8",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalWidth_sepalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_9",
-                "field": "sepalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2217,15 +2213,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_9",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalWidth_sepalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_9",
-                "field": "sepalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2234,15 +2230,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_9",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalWidth_petalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_10",
-                "field": "petalLength"
-            },
             "range": [
                 0,
                 {
@@ -2251,15 +2247,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_10",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_sepalWidth_petalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_10",
-                "field": "sepalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2268,15 +2264,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_10",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalWidth_petalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_11",
-                "field": "petalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2285,15 +2281,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_11",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_sepalWidth_petalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_11",
-                "field": "sepalWidth"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2302,15 +2298,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_11",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalLength_sepalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_12",
-                "field": "sepalLength"
-            },
             "range": [
                 0,
                 {
@@ -2319,15 +2315,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_12",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_sepalLength_sepalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_12",
-                "field": "sepalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2336,15 +2332,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_12",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_sepalLength_sepalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_13",
-                "field": "sepalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2353,15 +2349,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_13",
+                "field": "sepalWidth"
+            }
         },
         {
             "name": "child_sepalLength_sepalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_13",
-                "field": "sepalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2370,15 +2366,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_13",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_sepalLength_petalLength_x",
             "type": "linear",
-            "domain": {
-                "data": "data_14",
-                "field": "petalLength"
-            },
             "range": [
                 0,
                 {
@@ -2387,15 +2383,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_14",
+                "field": "petalLength"
+            }
         },
         {
             "name": "child_sepalLength_petalLength_y",
             "type": "linear",
-            "domain": {
-                "data": "data_14",
-                "field": "sepalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2404,15 +2400,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_14",
+                "field": "sepalLength"
+            }
         },
         {
             "name": "child_sepalLength_petalWidth_x",
             "type": "linear",
-            "domain": {
-                "data": "data_15",
-                "field": "petalWidth"
-            },
             "range": [
                 0,
                 {
@@ -2421,15 +2417,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_15",
+                "field": "petalWidth"
+            }
         },
         {
             "name": "child_sepalLength_petalWidth_y",
             "type": "linear",
-            "domain": {
-                "data": "data_15",
-                "field": "sepalLength"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -2438,7 +2434,11 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "data_15",
+                "field": "sepalLength"
+            }
         }
     ],
     "legends": [

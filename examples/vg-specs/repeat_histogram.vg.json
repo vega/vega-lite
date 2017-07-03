@@ -547,6 +547,7 @@
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -563,97 +564,93 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         },
         {
             "name": "child_Horsepower_x",
             "type": "linear",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false,
             "domain": {
                 "data": "data_0",
                 "fields": [
                     "bin_maxbins_10_Horsepower_start",
                     "bin_maxbins_10_Horsepower_end"
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_Horsepower_y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "data": "data_0",
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_Miles_per_Gallon_x",
             "type": "linear",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false,
             "domain": {
                 "data": "data_1",
                 "fields": [
                     "bin_maxbins_10_Miles_per_Gallon_start",
                     "bin_maxbins_10_Miles_per_Gallon_end"
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_Miles_per_Gallon_y",
             "type": "linear",
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "data": "data_1",
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_Acceleration_x",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "fields": [
-                    "bin_maxbins_10_Acceleration_start",
-                    "bin_maxbins_10_Acceleration_end"
-                ]
-            },
             "range": [
                 0,
                 {
@@ -661,18 +658,19 @@
                 }
             ],
             "round": true,
-            "zero": false
+            "zero": false,
+            "domain": {
+                "data": "data_2",
+                "fields": [
+                    "bin_maxbins_10_Acceleration_start",
+                    "bin_maxbins_10_Acceleration_end"
+                ],
+                "sort": true
+            }
         },
         {
             "name": "child_Acceleration_y",
             "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "fields": [
-                    "count_*_start",
-                    "count_*_end"
-                ]
-            },
             "range": [
                 {
                     "signal": "height"
@@ -681,7 +679,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_2",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ],
+                "sort": true
+            }
         }
     ],
     "legends": [

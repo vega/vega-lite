@@ -119,26 +119,22 @@
         {
             "name": "x",
             "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "a",
-                "sort": true
-            },
             "range": {
                 "step": {
                     "signal": "x_step"
                 }
             },
             "round": true,
-            "padding": 0.5
+            "padding": 0.5,
+            "domain": {
+                "data": "data_0",
+                "field": "a",
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "b"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -147,7 +143,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "b"
+            }
         }
     ],
     "axes": [

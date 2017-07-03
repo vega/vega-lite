@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {Channel} from '../../channel';
+import {Channel, ScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {isSelectionDomain} from '../../scale';
 import {keys, stringValue} from '../../util';
@@ -15,8 +15,8 @@ export function assembleScaleForModelAndChildren(model: Model) {
 }
 
 export function assembleScalesForModel(model: Model): VgScale[] {
-    return keys(model.component.scales).reduce((scales: VgScale[], channel: Channel) => {
-      const scaleComponent= model.component.scales[channel];
+    return keys(model.component.scales).reduce((scales: VgScale[], channel: ScaleChannel) => {
+      const scaleComponent = model.component.scales[channel];
       if (scaleComponent.merged) {
         // Skipped merged scales
         return scales;

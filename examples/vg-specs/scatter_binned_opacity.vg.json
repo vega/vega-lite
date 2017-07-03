@@ -97,10 +97,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            },
             "range": [
                 0,
                 {
@@ -109,15 +105,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -126,18 +122,22 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            }
         },
         {
             "name": "opacity",
             "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
-            },
             "range": [
                 0.3,
                 0.8
-            ]
+            ],
+            "domain": {
+                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+            }
         }
     ],
     "axes": [

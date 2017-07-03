@@ -256,6 +256,15 @@
         {
             "name": "x",
             "type": "linear",
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -288,16 +297,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         }
     ],
     "axes": [

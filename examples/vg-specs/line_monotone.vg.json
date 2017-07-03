@@ -83,25 +83,21 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "date"
-            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "source_0",
+                "field": "date"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "price"
-            },
             "range": [
                 {
                     "signal": "height"
@@ -110,7 +106,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "price"
+            }
         }
     ],
     "axes": [

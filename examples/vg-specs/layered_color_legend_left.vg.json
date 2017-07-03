@@ -164,43 +164,30 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "date"
-                    }
-                ],
-                "sort": true
-            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
+            "round": true,
             "domain": {
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "price"
+                        "field": "date"
                     },
                     {
                         "data": "data_1",
-                        "field": "price"
+                        "field": "date"
                     }
                 ],
                 "sort": true
-            },
+            }
+        },
+        {
+            "name": "y",
+            "type": "linear",
             "range": [
                 {
                     "signal": "height"
@@ -209,11 +196,25 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    }
+                ],
+                "sort": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -226,8 +227,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": "category"
+            }
         }
     ],
     "axes": [

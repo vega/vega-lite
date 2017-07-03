@@ -453,10 +453,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": [
-                75,
-                150
-            ],
             "range": [
                 0,
                 {
@@ -465,15 +461,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": false
+            "zero": false,
+            "domain": [
+                75,
+                150
+            ]
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": [
-                20,
-                40
-            ],
             "range": [
                 {
                     "signal": "height"
@@ -482,31 +478,35 @@
             ],
             "round": true,
             "nice": true,
-            "zero": false
+            "zero": false,
+            "domain": [
+                20,
+                40
+            ]
         },
         {
             "name": "size",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders"
-            },
             "range": [
                 0,
                 361
             ],
             "nice": false,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders"
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
                 "sort": true
-            },
-            "range": "category"
+            }
         }
     ],
     "axes": [

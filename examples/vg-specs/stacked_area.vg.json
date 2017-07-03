@@ -165,10 +165,6 @@
         {
             "name": "x",
             "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
-            },
             "range": [
                 0,
                 {
@@ -176,18 +172,15 @@
                 }
             ],
             "nice": "month",
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonth_date"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_count_start",
-                    "sum_count_end"
-                ]
-            },
             "range": [
                 {
                     "signal": "height"
@@ -196,18 +189,26 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_count_start",
+                    "sum_count_end"
+                ],
+                "sort": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": {
+                "scheme": "category20b"
+            },
             "domain": {
                 "data": "source_0",
                 "field": "series",
                 "sort": true
-            },
-            "range": {
-                "scheme": "category20b"
             }
         }
     ],

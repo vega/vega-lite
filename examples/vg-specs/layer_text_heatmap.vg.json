@@ -150,19 +150,6 @@
         {
             "name": "x",
             "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Cylinders"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Cylinders"
-                    }
-                ],
-                "sort": true
-            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -170,11 +157,32 @@
             },
             "round": true,
             "paddingInner": 0,
-            "paddingOuter": 0
+            "paddingOuter": 0,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Cylinders"
+                    }
+                ],
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "band",
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0,
+            "paddingOuter": 0,
             "domain": {
                 "fields": [
                     {
@@ -187,26 +195,18 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "round": true,
-            "paddingInner": 0,
-            "paddingOuter": 0
+            }
         },
         {
             "name": "color",
             "type": "sequential",
+            "range": "heatmap",
+            "nice": false,
+            "zero": false,
             "domain": {
                 "data": "data_0",
                 "field": "count_*"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
+            }
         }
     ],
     "axes": [

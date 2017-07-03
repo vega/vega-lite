@@ -423,6 +423,18 @@
         {
             "name": "x",
             "type": "linear",
+            "domainRaw": {
+                "signal": "region_Horsepower"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -435,27 +447,11 @@
                     }
                 ],
                 "sort": true
-            },
-            "domainRaw": {
-                "signal": "region_Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         },
         {
             "name": "concat_0_y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
-            },
             "domainRaw": {
                 "signal": "region_Miles_per_Gallon"
             },
@@ -467,15 +463,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
+            }
         },
         {
             "name": "concat_1_y",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "Acceleration"
-            },
             "range": [
                 {
                     "signal": "concat_1_height"
@@ -484,7 +480,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_1",
+                "field": "Acceleration"
+            }
         }
     ],
     "config": {

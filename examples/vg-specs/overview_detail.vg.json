@@ -582,10 +582,6 @@
         {
             "name": "concat_0_x",
             "type": "time",
-            "domain": {
-                "data": "data_0",
-                "field": "date"
-            },
             "domainRaw": {
                 "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
             },
@@ -595,15 +591,15 @@
                     "signal": "width"
                 }
             ],
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "data_0",
+                "field": "date"
+            }
         },
         {
             "name": "concat_0_y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "price"
-            },
             "range": [
                 {
                     "signal": "concat_0_height"
@@ -612,30 +608,30 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "price"
+            }
         },
         {
             "name": "concat_1_x",
             "type": "time",
-            "domain": {
-                "data": "data_1",
-                "field": "date"
-            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true
+            "round": true,
+            "domain": {
+                "data": "data_1",
+                "field": "date"
+            }
         },
         {
             "name": "concat_1_y",
             "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "price"
-            },
             "range": [
                 {
                     "signal": "concat_1_height"
@@ -644,7 +640,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_1",
+                "field": "price"
+            }
         }
     ],
     "config": {

@@ -166,19 +166,6 @@
         {
             "name": "x",
             "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "a"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "a"
-                    }
-                ],
-                "sort": true
-            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -186,24 +173,24 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
+            "paddingOuter": 0.05,
             "domain": {
                 "fields": [
                     {
                         "data": "data_1",
-                        "field": "b"
+                        "field": "a"
                     },
                     {
                         "data": "data_2",
-                        "field": "b"
+                        "field": "a"
                     }
                 ],
                 "sort": true
-            },
+            }
+        },
+        {
+            "name": "y",
+            "type": "linear",
             "range": [
                 {
                     "signal": "height"
@@ -212,7 +199,20 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "b"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "b"
+                    }
+                ],
+                "sort": true
+            }
         }
     ],
     "axes": [

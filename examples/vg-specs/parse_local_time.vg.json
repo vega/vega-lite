@@ -90,18 +90,18 @@
         {
             "name": "y",
             "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "hours_date",
-                "sort": true
-            },
             "range": {
                 "step": {
                     "signal": "y_step"
                 }
             },
             "round": true,
-            "padding": 0.5
+            "padding": 0.5,
+            "domain": {
+                "data": "data_0",
+                "field": "hours_date",
+                "sort": true
+            }
         }
     ],
     "axes": [

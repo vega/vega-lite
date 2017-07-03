@@ -288,10 +288,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Worldwide_Gross"
-            },
             "range": [
                 0,
                 {
@@ -300,15 +296,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Worldwide_Gross"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "US_DVD_Sales"
-            },
             "range": [
                 {
                     "signal": "child_height"
@@ -317,7 +313,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "US_DVD_Sales"
+            }
         }
     ],
     "config": {

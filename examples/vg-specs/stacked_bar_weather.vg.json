@@ -119,11 +119,6 @@
         {
             "name": "x",
             "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "month_date",
-                "sort": true
-            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -131,18 +126,16 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            "paddingOuter": 0.05,
+            "domain": {
+                "data": "source_0",
+                "field": "month_date",
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "count_*_start",
-                    "count_*_end"
-                ]
-            },
             "range": [
                 {
                     "signal": "height"
@@ -151,24 +144,32 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ],
+                "sort": true
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
-            "domain": [
-                "sun",
-                "fog",
-                "drizzle",
-                "rain",
-                "snow"
-            ],
             "range": [
                 "#e7ba52",
                 "#c7c7c7",
                 "#aec7e8",
                 "#1f77b4",
                 "#9467bd"
+            ],
+            "domain": [
+                "sun",
+                "fog",
+                "drizzle",
+                "rain",
+                "snow"
             ]
         }
     ],
