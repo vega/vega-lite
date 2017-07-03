@@ -1,6 +1,6 @@
 import {SCALE_CHANNELS} from '../../channel';
 import {ScaleType} from '../../scale';
-import {Dict, duplicate, extend, keys} from '../../util';
+import {Dict, duplicate, extend, keys, stringValue} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
@@ -48,7 +48,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
     }).map(function(field) {
       return {
         type: 'filter',
-        expr: 'datum["' + field + '"] > 0'
+        expr: `datum[${stringValue(field)}] > 0`
       } as VgFilterTransform;
     });
   }
