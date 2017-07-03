@@ -339,8 +339,8 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model,'y');
 
         assert.deepEqual(_domain, [
-          {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
-          {"signal": "datetime(1980, 0, 1, 0, 0, 0, 0)"}
+          {"signal": "{data: datetime(1970, 0, 1, 0, 0, 0, 0)}"},
+          {"signal": "{data: datetime(1980, 0, 1, 0, 0, 0, 0)}"}
         ]);
       });
     });

@@ -160,7 +160,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     } else {
       if (isDateTime(domain[0])) {
         return (domain as DateTime[]).map((dt) => {
-          return {signal: dateTimeExpr(dt, true)};
+          return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
         });
       }
       return [domain];
