@@ -314,17 +314,18 @@ export interface VgStackTransform {
 
 export type VgSort = {
   field: string;
-  order: 'ascending' | 'descending';
+  order?: 'ascending' | 'descending';
 } | {
   field: string[];
-  order: ('ascending' | 'descending')[];
+  order?: ('ascending' | 'descending')[];
 };
 
 export interface VgImputeTransform {
   type: 'impute';
   groupby?: string[];
   field: string;
-  orderby?: string[];
+  key: string;
+  keyvals?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
 }
