@@ -39,6 +39,6 @@ Alternatively, we can map the same field to `detail`, creating multiple lines bu
 
 ### Line Chart with Custom Path
 
-By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples. However, a field can be mapped to `path` channel for determining custom path.
+By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples. However, a field can be mapped to the `order` channel for determining a custom path.
 
 <span class="vl-example" data-name="scatter_connected"></span>
