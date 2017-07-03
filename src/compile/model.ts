@@ -182,8 +182,8 @@ export abstract class Model {
     this.parseScale();
     this.parseMarkDef();
     this.parseLayoutSize(); // depends on scale
-    this.parseData(); // (pathorder) depends on markDef
     this.parseSelection();
+    this.parseData(); // (pathorder) depends on markDef
     this.parseAxisAndHeader(); // depends on scale
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.

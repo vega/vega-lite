@@ -6,6 +6,7 @@ import {SelectionDomain} from '../../scale';
 import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
+import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
@@ -213,7 +214,7 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-export function predicate(model: Model, selections: LogicalOperand<string>): string {
+export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
   function expr(name: string): string {
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
@@ -221,7 +222,13 @@ export function predicate(model: Model, selections: LogicalOperand<string>): str
     const op = PREDICATES_OPS[selCmpt.resolve];
 
     if (selCmpt.timeUnit) {
-      selCmpt.timeUnit.clone().insertAsParentOf(model.component.data.main);
+      const child = dfnode || model.component.data.main;
+      const tunode = selCmpt.timeUnit.clone();
+      if (child.parent) {
+        tunode.insertAsParentOf(child);
+      } else {
+        child.parent = tunode;
+      }
     }
 
     return compiler(selCmpt.type).predicate +

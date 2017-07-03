@@ -18,18 +18,20 @@ import {TimeUnitNode} from './timeunit';
 
 
 export class FilterNode extends DataFlowNode {
+  private expr: string;
   public clone() {
     return new FilterNode(this.model, duplicate(this.filter));
   }
 
   constructor(private readonly model: Model, private filter: LogicalOperand<Filter>) {
     super();
+    this.expr = expression(this.model, this.filter, this);
   }
 
   public assemble(): VgFilterTransform {
     return {
       type: 'filter',
-      expr: expression(this.model, this.filter)
+      expr: this.expr
     };
   }
 }
@@ -130,11 +132,24 @@ export function parseTransformArray(model: Model) {
   let previous: DataFlowNode;
   let lookupCounter = 0;
 
+  function insert(newNode: DataFlowNode) {
+    if (!first) {
+      // A parent may be inserted during node construction
+      // (e.g., selection FilterNodes may add a TimeUnitNode).
+      first = newNode.parent || newNode;
+    } else if (newNode.parent) {
+      previous.insertAsParentOf(newNode);
+    } else {
+      newNode.parent = previous;
+    }
+
+    previous = newNode;
+  }
+
   model.transforms.forEach(t => {
     if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
-
       // Automatically add a parse node for filters with filter objects
       const parse = {};
       const filter = t.filter;
@@ -162,13 +177,7 @@ export function parseTransformArray(model: Model) {
 
       if (keys(parse).length > 0) {
         const parseNode = new ParseNode(parse);
-
-        if (!first) {
-          first = parseNode;
-        } else {
-          parseNode.parent = previous;
-        }
-        previous = parseNode;
+        insert(parseNode);
       }
 
       node = new FilterNode(model, t.filter);
@@ -185,12 +194,7 @@ export function parseTransformArray(model: Model) {
       return;
     }
 
-    if (!first) {
-      first = node;
-    } else {
-      node.parent = previous;
-    }
-    previous = node;
+    insert(node);
   });
 
   const last = node;
