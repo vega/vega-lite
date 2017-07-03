@@ -8,6 +8,7 @@ import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
+import {isBoolean} from '../../util';
 import {
   FieldRefUnionDomain,
   isDataRefDomain,
@@ -17,6 +18,7 @@ import {
   VgDomain,
   VgNonUnionDomain,
   VgSortField,
+  VgUnionSortField
 } from '../../vega.schema';
 import {FACET_SCALE_PREFIX} from '../data/assemble';
 import {FacetModel} from '../facet';
@@ -43,9 +45,9 @@ function parseUnitScaleDomain(model: UnitModel) {
 
     const hasSpecifiedDomain = specifiedDomain && !isSelectionDomain(specifiedDomain);
 
-    const domain = parseDomainForChannel(model, channel);
+    const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
-    localScaleCmpt.set('domains', [domain], hasSpecifiedDomain);
+    localScaleCmpt.set('domains', domains, hasSpecifiedDomain);
 
     if (isSelectionDomain(specifiedDomain)) {
       // As scale parsing occurs before selection parsing, we use a temporary
@@ -85,19 +87,11 @@ function parseNonUnitScaleDomain(model: Model) {
       }
     }
 
-    // TODO: domoritz -- please check if using forEach below is correct
     if (model instanceof FacetModel) {
       domains.forEach((domain) => {
         // Replace the scale domain with data output from a cloned subtree after the facet.
-        if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
+        if (isDataRefDomain(domain)) {
           domain.data = FACET_SCALE_PREFIX + model.getName(domain.data);
-        } else if (isDataRefUnionedDomain(domain)) {
-          domain.fields = domain.fields.map((f: VgDataRef) => {
-            return {
-              ...f,
-              data: FACET_SCALE_PREFIX + model.getName(f.data)
-            };
-          });
         }
       });
     }
@@ -149,7 +143,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     }
   } else if (channel === 'y' && model.channelHasField('y2')) {
     if (model.channelHasField('y')) {
-      return parseSingleChannelDomain(scaleType, domain, model, 'y').concat( parseSingleChannelDomain(scaleType, domain, model, 'y2'));
+      return parseSingleChannelDomain(scaleType, domain, model, 'y').concat(parseSingleChannelDomain(scaleType, domain, model, 'y2'));
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
@@ -321,27 +315,94 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: 
  * Converts an array of domains to a single Vega scale domain.
  */
 export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
-  const uniqueDomains = util.unique(domains, util.hash);
+  const uniqueDomains = util.unique(domains.map(d => {
+    // ignore sort property when computing the unique domains
+    if (isDataRefDomain(d)) {
+      const {sort: _s, ...dom} = d;
+      return dom;
+    }
+    return d;
+  }), util.hash);
+
+  const sorts: VgSortField[] = util.unique(domains.map(d => {
+    if (isDataRefDomain(d)) {
+      const s = d.sort;
+      if (s !== undefined && !isBoolean(s)) {
+        if (s.op === 'count') {
+          // let's make sure that if op is count, we don't use a field
+          delete s.field;
+        }
+        if (s.order === 'ascending') {
+          // drop order: ascending as it is the default
+          delete s.order;
+        }
+      }
+      return s;
+    }
+    return undefined;
+  }).filter(s => s !== undefined), util.hash);
 
   if (uniqueDomains.length === 1) {
-    return uniqueDomains[0];
+    const domain = domains[0];
+    if (isDataRefDomain(domain) && sorts.length > 0) {
+      let sort = sorts[0];
+      if (sorts.length > 1) {
+        log.warn(log.message.MORE_THAN_ONE_SORT);
+        sort = true;
+      }
+      return {
+        ...domain,
+        sort: sort
+      };
+    }
+    return domain;
   }
 
-  const allData = domains.map(d => {
+  let sort: VgUnionSortField = true;
+
+  // only keep simple sort properties that work with unioned domains
+  const onlySimpleSorts = sorts.filter(s => {
+    if (isBoolean(s)) {
+      return true;
+    }
+    if (s.op === 'count') {
+      return true;
+    }
+    log.warn(log.message.domainSortDropped(s));
+    return false;
+  }) as VgUnionSortField[];
+
+  if (onlySimpleSorts.length === 1) {
+    sort = onlySimpleSorts[0];
+  } else if (onlySimpleSorts.length > 1) {
+    // ignore sort = false if we have another sort property
+    const filteredSorts = onlySimpleSorts.filter(s => s !== false);
+
+    if (filteredSorts.length > 1) {
+      log.warn(log.message.MORE_THAN_ONE_SORT);
+      sort = true;
+    } else {
+      sort = filteredSorts[0];
+    }
+  }
+
+  const allData = util.unique(domains.map(d => {
     if (isDataRefDomain(d)) {
       return d.data;
     }
     return null;
-  });
+  }), x => x);
 
-  if (util.unique(allData, x => x).length === 1 && allData[0] !== null) {
+  if (allData.length === 1 && allData[0] !== null) {
     // create a union domain of different fields with a single data source
     const domain: FieldRefUnionDomain = {
       data: allData[0],
-      fields: domains.map(d => (d as VgDataRef).field)
+      fields: uniqueDomains.map(d => (d as VgDataRef).field),
+      sort
     };
+
     return domain;
   }
 
-  return {fields: domains, sort: true};
+  return {fields: uniqueDomains, sort};
 }

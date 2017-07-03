@@ -6,6 +6,7 @@ import {keys, stringValue} from '../../util';
 import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, isVgRangeStep, isVgSignalRef, VgDataRef, VgRange, VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
+import {mergeDomains} from './domain';
 
 export function assembleScaleForModelAndChildren(model: Model) {
   return model.children.reduce((scales, child) => {
@@ -22,7 +23,10 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       }
 
       // We need to cast here as combine returns Partial<VgScale> by default.
-      const scale = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']) as VgScale;
+      const scaleComProps = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']);
+      // FIXME: why do I need to delete this property?
+      delete scaleComProps.domains;
+      const scale = scaleComProps as VgScale;
 
       scale.range = assembleScaleRange(scale.range, scale.name, model, channel);
 
@@ -35,30 +39,23 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         scale.domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-      // Correct references to data as the original domain's data was determined
-      // in parseScale, which happens before parseData. Thus the original data
-      // reference can be incorrect.
-      const domains = scaleComponent.get('domains');
-      // FIXME(domoritz): please make the right union and domain correction
-      // scaleDomain = unionDomains(domains);
-      // if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
-      //   domain.data = model.lookupDataSource(domain.data);
-      //   scales.push(scale);
-      // } else if (isDataRefUnionedDomain(domain)) {
-      //   domain.fields = domain.fields.map((f: VgDataRef) => {
-      //     return {
-      //       ...f,
-      //       data: model.lookupDataSource(f.data)
-      //     };
-      //   });
-      //   scales.push(scale);
-      // } else if (isSignalRefDomain(domain) || isArray(domain)) {
-      //   scales.push(scale);
-      // } else {
-      //   throw new Error('invalid scale domain');
-      // }
+      const domains = scaleComponent.get('domains').map(domain => {
+        // Correct references to data as the original domain's data was determined
+        // in parseScale, which happens before parseData. Thus the original data
+        // reference can be incorrect.
+
+        if (isDataRefDomain(domain)) {
+          domain.data = model.lookupDataSource(domain.data);
+        }
+        return domain;
+      });
+
+      // domains is an array that has to be merged into a single vega domain
+      scale.domain = mergeDomains(domains);
+      scales.push(scale);
+
       return scales;
-    }, []);
+    }, [] as VgScale[]);
 }
 
 export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model: Model, channel: Channel) {

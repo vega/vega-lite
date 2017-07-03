@@ -1,3 +1,4 @@
+import {AggregateOp} from '../../aggregate';
 import {isScaleChannel} from '../../channel';
 import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
@@ -163,11 +164,11 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public assemble(): VgAggregateTransform {
-    const ops: string[] = [];
+    const ops: AggregateOp[] = [];
     const fields: string[] = [];
     const as: string[] = [];
     keys(this.measures).forEach(field => {
-      keys(this.measures[field]).forEach(op => {
+      keys(this.measures[field]).forEach((op: AggregateOp) => {
         as.push(this.measures[field][op]);
         ops.push(op);
         fields.push(field);

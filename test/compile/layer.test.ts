@@ -28,7 +28,7 @@ describe('Layer', function() {
           data: 'layer_0_main',
           field: 'a',
           sort: true
-        },{
+        }, {
           data: 'layer_1_main',
           field: 'b',
           sort: true
@@ -42,7 +42,7 @@ describe('Layer', function() {
           encoding: {
             x: {scale: {domain: [1, 2, 3]}, field: 'b', type: 'ordinal'}
           }
-        },{
+        }, {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'ordinal'}
@@ -97,7 +97,7 @@ describe('Layer', function() {
         encoding: {
           x: {field: 'a', type: 'quantitative'}
         }
-      },{
+      }, {
         mark: 'point',
         encoding: {
           x: {field: 'b', type: 'quantitative'}
@@ -112,7 +112,7 @@ describe('Layer', function() {
 
     assert.equal(model.children.length, 2);
 
-    it('should leave scales in children', () => {
+    it('should leave scales in children when set to be independent', () => {
       model.parseScale();
 
       assert.equal(model.component.scales['x'], undefined);

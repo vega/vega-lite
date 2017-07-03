@@ -10,7 +10,7 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {SortField} from '../../../src/sort';
-import {FieldRefUnionDomain, VgDataRef, VgSortField} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef, VgDomain, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -230,7 +230,7 @@ describe('compile/scale', () => {
         assert.deepEqual(testParseDomainForChannel(model,'y'), [
           {
             data: 'main',
-            field: 'origin'
+            field: 'min_origin'
           }
         ]);
       });
@@ -406,10 +406,24 @@ describe('compile/scale', () => {
         sort: {field: 'b', op: 'mean'}
       }]);
 
-      assert.deepEqual(domain, {
+      assert.deepEqual<VgDomain>(domain, {
         data: 'foo',
         field: 'a',
         sort: {field: 'b', op: 'mean'}
+      });
+    });
+
+    it('should drop field if op is count', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: {op: 'count', field: 'b'}
+      }]);
+
+      assert.deepEqual<VgDomain>(domain, {
+        data: 'foo',
+        field: 'a',
+        sort: {op: 'count'}
       });
     });
 
@@ -420,10 +434,28 @@ describe('compile/scale', () => {
       }, {
         data: 'foo',
         field: 'a',
+        sort: {field: 'b', op: 'mean', order: 'descending'}
+      }]);
+
+      assert.deepEqual<VgDomain>(domain, {
+        data: 'foo',
+        field: 'a',
+        sort: {field: 'b', op: 'mean', order: 'descending'}
+      });
+    });
+
+    it('should ignore order: ascending', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: {field: 'b', op: 'mean', order: 'ascending'}
+      }, {
+        data: 'foo',
+        field: 'a',
         sort: {field: 'b', op: 'mean'}
       }]);
 
-      assert.deepEqual(domain, {
+      assert.deepEqual<VgDomain>(domain, {
         data: 'foo',
         field: 'a',
         sort: {field: 'b', op: 'mean'}
@@ -439,27 +471,49 @@ describe('compile/scale', () => {
         field: 'b'
       }]);
 
-      assert.deepEqual(domain, {
+      assert.deepEqual<VgDomain>(domain, {
         data: 'foo',
-        fields: ['a', 'b']
+        fields: ['a', 'b'],
+        sort: true
       });
     });
 
-    it('should maintain sort', () => {
+    it('should maintain sort even if false', () => {
       const domain = mergeDomains([{
         data: 'foo',
         field: 'a',
-        sort: true
+        sort: false
       }, {
         data: 'foo',
         field: 'b',
-        sort: true
       }]);
 
       assert.deepEqual(domain, {
         data: 'foo',
         fields: ['a', 'b'],
-        sort: true
+        sort: false
+      });
+    });
+
+    it('should ignore sort false if there is another sort', () => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: false
+      }, {
+        data: 'foo',
+        field: 'b',
+        sort: {
+          op: 'count'
+        }
+      }]);
+
+      assert.deepEqual<VgDomain>(domain, {
+        data: 'foo',
+        fields: ['a', 'b'],
+        sort: {
+          op: 'count'
+        }
       });
     });
 
@@ -472,13 +526,42 @@ describe('compile/scale', () => {
         field: 'a'
       }]);
 
-      assert.deepEqual(domain, [{
+      assert.deepEqual(domain, {
+        fields: [{
+          data: 'foo',
+          field: 'a'
+        }, {
+          data: 'bar',
+          field: 'a'
+        }],
+        sort: true
+      });
+    });
+
+    it('should merge domains with different data and sort', () => {
+      const domain = mergeDomains([{
         data: 'foo',
-        field: 'a'
+        field: 'a',
+        sort: {
+          op: 'count'
+        }
       }, {
         data: 'bar',
         field: 'a'
       }]);
+
+      assert.deepEqual<VgDomain>(domain, {
+        fields: [{
+          data: 'foo',
+          field: 'a'
+        }, {
+          data: 'bar',
+          field: 'a'
+        }],
+        sort: {
+          op: 'count'
+        }
+      });
     });
 
     it('should merge domains with the same and different data', () => {
@@ -493,16 +576,19 @@ describe('compile/scale', () => {
         field: 'a'
       }]);
 
-      assert.deepEqual(domain, [{
-        data: 'foo',
-        fields: 'a'
-      }, {
-        data: 'foo',
-        fields: 'b'
-      }, {
-        data: 'bar',
-        field: 'a'
-      }]);
+      assert.deepEqual(domain, {
+        fields: [{
+          data: 'foo',
+          field: 'a'
+        }, {
+          data: 'foo',
+          field: 'b'
+        }, {
+          data: 'bar',
+          field: 'a'
+        }],
+        sort: true
+      });
     });
 
     it('should merge signal domains', () => {
@@ -524,6 +610,75 @@ describe('compile/scale', () => {
         sort: true
       });
     });
+
+    it('should warn if sorts conflict', log.wrap((localLogger) => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: {
+          op: 'count'
+        }
+      }, {
+        data: 'foo',
+        field: 'b',
+        sort: true
+      }]);
+
+      assert.deepEqual(domain, {
+        data: 'foo',
+        fields: ['a', 'b'],
+        sort: true
+      });
+
+      assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
+    }));
+
+    it('should warn if sorts conflict even if we do not union', log.wrap((localLogger) => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: {
+          op: 'count'
+        }
+      }, {
+        data: 'foo',
+        field: 'a',
+        sort: true
+      }]);
+
+      assert.deepEqual(domain, {
+        data: 'foo',
+        field: 'a',
+        sort: true
+      });
+
+      assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
+    }));
+
+    it('should warn if we had to drop complex sort', log.wrap((localLogger) => {
+      const domain = mergeDomains([{
+        data: 'foo',
+        field: 'a',
+        sort: {
+          op: 'mean',
+          field: 'c'
+        }
+      }, {
+        data: 'foo',
+        field: 'b'
+      }]);
+
+      assert.deepEqual(domain, {
+        data: 'foo',
+        fields: ['a', 'b'],
+        sort: true
+      });
+
+      assert.equal(localLogger.warns[0], log.message.domainSortDropped({
+        op: 'mean',
+        field: 'c'
+      }));
+    }));
   });
 
   describe('domainSort()', () => {
@@ -547,7 +702,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, {op: 'sum', field: 'y'});
+      assert.deepEqual<VgSortField>(sort, {op: 'sum', field: 'y'});
     });
 
     it('should return normal sort spec if aggregration is count and field not specified', () => {
@@ -559,7 +714,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, {op: 'count'});
+      assert.deepEqual<VgSortField>(sort, {op: 'count'});
     });
 
     it('should return true if sort specified', () => {

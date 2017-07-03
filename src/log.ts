@@ -2,6 +2,7 @@
  * Vega-Lite's singleton logger utility.
  */
 
+import {VgSortField} from 'vega-lite/build/src/vega.schema';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -241,7 +242,13 @@ export namespace message {
     return `Cannot set ${channel}-scale's "domain" as it is binned. Please use "bin"'s "extent" instead.`;
   }
 
+  export function domainSortDropped(sort: VgSortField) {
+    return `Dropping sort property ${JSON.stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+  }
+
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
+
+  export const MORE_THAN_ONE_SORT = 'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
 
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
