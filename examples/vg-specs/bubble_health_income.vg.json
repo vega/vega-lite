@@ -266,7 +266,7 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
+            "labelOverlap": "greedy",
             "orient": "bottom",
             "tickCount": 5,
             "title": "income",
