@@ -161,7 +161,7 @@ export type VgSignal = {
 
 export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';
 export type VgEncodeEntry = {
-  [k in VgEncodeChannel]?: VgValueRef | (VgValueRef | {test: string})[];
+  [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
 
 

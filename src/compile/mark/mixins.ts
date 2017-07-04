@@ -36,7 +36,7 @@ export function markDefProperties(mark: MarkDef, props: (keyof MarkDef)[]) {
   }, {});
 }
 
-export function valueIfDefined(prop: string, value: string): VgEncodeEntry {
+export function valueIfDefined(prop: string, value: string | number | boolean): VgEncodeEntry {
   if (value !== undefined) {
     return {[prop]: {value: value}};
   }

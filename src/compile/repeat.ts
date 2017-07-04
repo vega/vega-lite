@@ -25,14 +25,12 @@ export type RepeaterValue = {
 };
 
 export function replaceRepeaterInFacet(facet: Facet<Field>, repeater: RepeaterValue): Facet<string> {
-  return replaceRepeater(facet, repeater);
+  return replaceRepeater(facet, repeater) as Facet<string>;
 }
 
 export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {
-  return replaceRepeater(encoding, repeater);
+  return replaceRepeater(encoding, repeater) as Encoding<string>;
 }
-
-type EncodingOrFacet<F> = Encoding<F> & Facet<F>;
 
 /**
  * Replace repeater values in a field def with the concrete field name.
@@ -54,6 +52,8 @@ function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: Repeater
     return fieldDef as FieldDef<string>;
   }
 }
+
+type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
 
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
