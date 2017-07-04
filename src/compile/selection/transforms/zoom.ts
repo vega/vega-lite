@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel, X, Y} from '../../../channel';
+import {Channel, ScaleChannel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
 import {channelSignalName, SelectionComponent} from '../selection';
@@ -60,22 +60,24 @@ const zoom:TransformCompiler = {
 
 export {zoom as default};
 
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);
   const signal:any = signals.filter((s:any) => {
     return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
   })[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
+  const scaleType = model.getScaleComponent(channel).get('type');
   const base = hasScales ? domain(model, channel) : signal.name;
-  const anchor = `${name}${ANCHOR}.${channel}`;
   const delta  = name + DELTA;
-  const scale  = stringValue(model.scaleName(channel));
-  const range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
-    `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`;
+  const anchor = `${name}${ANCHOR}.${channel}`;
+  const zoomFn = !hasScales ? 'zoomLinear' :
+    scaleType === 'log' ? 'zoomLog' :
+    scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
+  const update = `${zoomFn}(${base}, ${anchor}, ${delta})`;
 
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? range : `clampRange(${range}, 0, ${sizeSg})`
+    update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
   });
 }
