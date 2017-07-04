@@ -5,6 +5,7 @@ import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
+import {ScaleType} from '../../scale';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
@@ -136,9 +137,11 @@ export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGr
   return specifiedAxis[property];
 }
 
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean) {
-  // TODO: use true for non-log continuous scales, and use "greedy" for log scales
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean, scaleType: ScaleType) {
   if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+    if (scaleType === 'log') {
+      return 'greedy';
+    }
     return true;
   }
   return undefined;

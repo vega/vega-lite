@@ -1,12 +1,12 @@
 import {Axis, AXIS_PROPERTIES, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
-import {Channel, SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
+import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
 import {ResolveMode} from '../../resolve';
-import {Dict, keys, some} from '../../util';
+import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
 import {titleMerger} from '../common';
 import {LayerModel} from '../layer';
-import {defaultTieBreaker, Explicit, mergeValuesWithExplicit, Split} from '../split';
+import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
 import * as encode from './encode';
@@ -276,7 +276,8 @@ function getSpecifiedOrDefaultValue<K extends keyof (Axis|VgAxis)>(property: K, 
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap':
-      return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis);  // TODO: scaleType
+      const scaleType = model.component.scales[channel].get('type');
+      return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
     case 'domain':
       return rules.domain(property, specifiedAxis, isGridAxis, channel);
     case 'ticks':
