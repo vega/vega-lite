@@ -487,13 +487,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_distance_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_distance_layer_0_width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_distance_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_distance_layer_0_width)"
                         }
                     ]
                 },
@@ -555,7 +555,7 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
                         }
                     ]
                 },
@@ -941,13 +941,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_delay_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_delay_layer_0_width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_delay_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_delay_layer_0_width)"
                         }
                     ]
                 },
@@ -1009,7 +1009,7 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
                         }
                     ]
                 },
@@ -1395,13 +1395,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_time_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_time_layer_0_width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_time_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_time_layer_0_width)"
                         }
                     ]
                 },
@@ -1463,7 +1463,7 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
                         }
                     ]
                 },

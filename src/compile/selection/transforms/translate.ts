@@ -44,7 +44,7 @@ const translate:TransformCompiler = {
       value: {},
       on: [{
         events: events,
-        update: `{x: x(unit) - ${anchor}.x, y: y(unit) - ${anchor}.y}`
+        update: `{x: ${anchor}.x - x(unit), y: ${anchor}.y - y(unit)}`
       }]
     });
 
@@ -62,13 +62,6 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function getSign(selCmpt: SelectionComponent, channel: Channel) {
-  if (scalesCompiler.has(selCmpt)) {
-    return channel === Y ? '-' : '+';
-  }
-  return '-';
-}
-
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);
@@ -79,7 +72,7 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleCh
   const delta  = name + DELTA;
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleType = model.getScaleComponent(channel).get('type');
-  const sign = getSign(selCmpt, channel);
+  const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
   const extent = `${anchor}.extent_${channel}`;
   const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
   const panFn = !hasScales ? 'panLinear' :
