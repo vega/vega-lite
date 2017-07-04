@@ -4,14 +4,15 @@ import {assert} from 'chai';
 import {selector as parseSelector} from 'vega-event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import translate from '../../../src/compile/selection/transforms/translate';
+import {ScaleType} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
 
-describe('Translate Selection Transform', function() {
+function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "x": {"field": "Horsepower","type": "quantitative", "scale": {"type": xscale || "linear"}},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative", "scale": {"type": yscale || "linear"}},
       "color": {"field": "Origin", "type": "nominal"}
     }
   });
@@ -44,7 +45,12 @@ describe('Translate Selection Transform', function() {
     "seven": {"type": "interval", "translate": null}
   });
 
+  return {model, selCmpts};
+}
+
+describe('Translate Selection Transform', function() {
   it('identifies transform invocation', function() {
+    const {model, selCmpts} = getModel();
     assert.isNotTrue(translate.has(selCmpts['one']));
     assert.isNotTrue(translate.has(selCmpts['two']));
     assert.isNotTrue(translate.has(selCmpts['three']));
@@ -54,126 +60,166 @@ describe('Translate Selection Transform', function() {
     assert.isNotTrue(translate.has(selCmpts['seven']));
   });
 
-  it('builds signals for default invocation', function() {
-    model.component.selection = {four: selCmpts['four']};
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "four_translate_anchor",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('@four_brush:mousedown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}"
-          }
-        ]
-      },
-      {
-        "name": "four_translate_delta",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
-            "update": "{x: x(unit) - four_translate_anchor.x, y: y(unit) - four_translate_anchor.y}"
-          }
-        ]
-      }
-    ]);
+  describe('Anchor/Delta signals', function() {
+    const {model, selCmpts} = getModel();
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
-      {
-        "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_x[0] + four_translate_delta.x, four_translate_anchor.extent_x[1] + four_translate_delta.x], 0, width)"
-      }
-    ]);
+    it('builds them for default invocation', function() {
+      model.component.selection = {four: selCmpts['four']};
+      const signals = selection.assembleUnitSelectionSignals(model, []);
+      assert.includeDeepMembers(signals, [
+        {
+          "name": "four_translate_anchor",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('@four_brush:mousedown', 'scope'),
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}"
+            }
+          ]
+        },
+        {
+          "name": "four_translate_delta",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
+              "update": "{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}"
+            }
+          ]
+        }
+      ]);
+    });
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
-      {
-        "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_y[0] + four_translate_delta.y, four_translate_anchor.extent_y[1] + four_translate_delta.y], 0, height)"
-      }
-    ]);
+    it('builds them for custom events', function() {
+      model.component.selection = {five: selCmpts['five']};
+      const signals = selection.assembleUnitSelectionSignals(model, []);
+      assert.includeDeepMembers(signals, [
+        {
+          "name": "five_translate_anchor",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}"
+            }
+          ]
+        },
+        {
+          "name": "five_translate_delta",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
+              "update": "{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}"
+            }
+          ]
+        }
+      ]);
+    });
+
+    it('builds them for scale-bound intervals', function() {
+      model.component.selection = {six: selCmpts['six']};
+      const signals = selection.assembleUnitSelectionSignals(model, []);
+      assert.includeDeepMembers(signals, [
+        {
+          "name": "six_translate_anchor",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('mousedown', 'scope'),
+              "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
+            }
+          ]
+        },
+        {
+          "name": "six_translate_delta",
+          "value": {},
+          "on": [
+            {
+              "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
+              "update": "{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}"
+            }
+          ]
+        }
+      ]);
+    });
   });
 
-  it('builds signals for custom events', function() {
-    model.component.selection = {five: selCmpts['five']};
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "five_translate_anchor",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}"
-          }
-        ]
-      },
-      {
-        "name": "five_translate_delta",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
-            "update": "{x: x(unit) - five_translate_anchor.x, y: y(unit) - five_translate_anchor.y}"
-          }
-        ]
-      }
-    ]);
+  describe('Translate Signal', function() {
+    it('always builds panLinear exprs for brushes', function() {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {four: selCmpts['four']};
+      let signals = selection.assembleUnitSelectionSignals(model, []);
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
+        {
+          "events": {"signal": "four_translate_delta"},
+          "update": "clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)"
+        }
+      ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_x')[0].on, [
-      {
-        "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_x[0] + five_translate_delta.x, five_translate_anchor.extent_x[1] + five_translate_delta.x], 0, width)"
-      }
-    ]);
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
+        {
+          "events": {"signal": "four_translate_delta"},
+          "update": "clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)"
+        }
+      ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_y')[0].on, [
-      {
-        "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_y[0] + five_translate_delta.y, five_translate_anchor.extent_y[1] + five_translate_delta.y], 0, height)"
-      }
-    ]);
-  });
+      const model2 = getModel('log', 'pow').model;
+      model2.component.selection = {four: selCmpts['four']};
+      signals = selection.assembleUnitSelectionSignals(model2, []);
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
+        {
+          "events": {"signal": "four_translate_delta"},
+          "update": "clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)"
+        }
+      ]);
 
-  it('builds signals for scale-bound translate', function() {
-    model.component.selection = {six: selCmpts['six']};
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "six_translate_anchor",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('mousedown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
-          }
-        ]
-      },
-      {
-        "name": "six_translate_delta",
-        "value": {},
-        "on": [
-          {
-            "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
-            "update": "{x: x(unit) - six_translate_anchor.x, y: y(unit) - six_translate_anchor.y}"
-          }
-        ]
-      }
-    ]);
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
+        {
+          "events": {"signal": "four_translate_delta"},
+          "update": "clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)"
+        }
+      ]);
+    });
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
-      {
-        "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_x[0] - span(six_translate_anchor.extent_x) * six_translate_delta.x / width, six_translate_anchor.extent_x[1] - span(six_translate_anchor.extent_x) * six_translate_delta.x / width]"
-      }
-    ]);
+    it('builds panLinear exprs for scale-bound intervals', function() {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {six: selCmpts['six']};
+      const signals = selection.assembleUnitSelectionSignals(model, []);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
-      {
-        "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_y[0] + span(six_translate_anchor.extent_y) * six_translate_delta.y / height, six_translate_anchor.extent_y[1] + span(six_translate_anchor.extent_y) * six_translate_delta.y / height]"
-      }
-    ]);
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
+        {
+          "events": {"signal": "six_translate_delta"},
+          "update": "panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)"
+        }
+      ]);
+
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
+        {
+          "events": {"signal": "six_translate_delta"},
+          "update": "panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)"
+        }
+      ]);
+    });
+
+    it('builds panLog/panPow exprs for scale-bound intervals', function() {
+      const {model, selCmpts} = getModel('log', 'pow');
+      model.component.selection = {six: selCmpts['six']};
+      const signals = selection.assembleUnitSelectionSignals(model, []);
+
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
+        {
+          "events": {"signal": "six_translate_delta"},
+          "update": "panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)"
+        }
+      ]);
+
+      assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
+        {
+          "events": {"signal": "six_translate_delta"},
+          "update": "panPow(six_translate_anchor.extent_y, six_translate_delta.y / height)"
+        }
+      ]);
+    });
   });
 });
