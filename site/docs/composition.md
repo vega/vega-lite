@@ -5,4 +5,42 @@ title: Composing Layered & Multi-view Plots
 permalink: /docs/composition.html
 ---
 
-TODO Intro to composition and link to compositional operators
+With Vega-Lite, you cannot only create visualizations that consist of a single view. With Vega-Lite's *view composition algebra*, you can combine views into larger multiview displays. You can combine views through [faceting](facet.html), [layering](layer.html), [concatenation](concat.html), and [repeating](repeat.html).
+
+A view that is composed of multiple views can itself be composed with other views. Through this **hierarchical composiiton**, you can create a whole dashboard as a single specification.
+
+Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
+
+## Faceting
+
+With the `facet` operator, you can partition the data and create a view for each subset to create a [trellis plot](https://en.wikipedia.org/wiki/Small_multiple). As a shortcut, Vega-Lite also has the [`column` and `row` encoding channels](encoding.html#facet) to quickly create a faceted view.
+
+Learn how to use it on the [facet page](facet.html).
+
+## Layering
+
+With the `layer` operator, you can stack multiple views on top of each other. This can be useful to add annotations to views. Vega-Lite automatically unions scale domains and combines axes and legends.
+
+However, Vega-Lite can not enforce that a unioned domain is *semantically meaningful*. To prohibit layering of composite views with incongruent internal structures, the layer operator restricts its operands to be single or layered views.
+
+Learn how to use it on the [layering page](layer.html).
+
+## Concatenation
+
+To place views side-by-side, Vega-Lite provides operators for horizontal (`hconcat`) and vertical (`vconcat`) concatenation.
+
+Learn how to use it on the [concatenation page](concat.html).
+
+## Repeating
+
+Often, you may concatenate similar views where the only difference is the field that is used in an encoding. The `repeat` operator is a shortcut that creates a view for each entry in an array of fields.
+
+The `repeat` operator generates multiple plots like `facet`. However, unlike `facet` it allows full replication of a data set in each view.
+
+Learn how to use it on the [repeat page](repeat.html).
+
+## Resolution
+
+Vega-Lite determines whether scale domains should be unioned. If the scale domain is unioned, axes and legends can be merged. Otherwise they have to be independent.
+
+To override scale, axis, and legend resolution, you can set the [resolve](resolve.html) property.
