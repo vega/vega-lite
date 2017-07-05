@@ -498,9 +498,11 @@ footer .edit-page {
 .example {
   display: flex;
   align-items: stretch;
-  justify-content: space-around;
   margin-top: 1em;
   flex-flow: row wrap;
+  width: 100%;
+  max-width: 786px;
+  overflow: scroll;
 }
 .example .example-vis {
   flex: 1 1 0;

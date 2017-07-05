@@ -112,9 +112,8 @@ By default, line marks order their points in their paths by the field of channel
 
 {% include table.html props="row,column" source="EncodingWithFacet" %}
 
-For more information, please see [facet page](facet.html).
+For more information, read the [facet documentation](facet.html).
 
-**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
 
 {:#def}
 ## Channel Definition
