@@ -126,7 +126,7 @@ After adding a new example, make sure to run `yarn run build:examples` so that y
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery
 - `src/` - Main source code directory.
-  - `src/vl.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
+  - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
   Other files under `src/` reflect namespace structure.
   All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.
   For example, `vl.channel.*` methods are in `src/channel.ts`.

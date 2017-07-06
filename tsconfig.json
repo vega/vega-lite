@@ -18,15 +18,9 @@
     "src/**/*.ts",
     "test/**/*.ts",
     "examples/**/*.ts",
-    "typings/*.d.ts",
-    "node_modules/@types/**/*.d.ts"
+    "typings/*.d.ts"
   ],
   "exclude": [
-    "node_modules",
-    "data",
-    "_site",
-    "site",
-    "test-gallery",
     "typings/vega-lite.d.ts"
   ]
 }
