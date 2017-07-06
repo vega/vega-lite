@@ -32,12 +32,12 @@ if ! [ -f build/vega-lite-schema.json ]; then
   echo "${RED} build/vega-lite-schema.json not found${NC}"
   exit 1;
 fi
-if ! [ -f build/src/vl.js ]; then
-  echo "${RED} build/src/vl.js not found.  Typescripts may be not compiled.${NC}"
+if ! [ -f build/src/index.js ]; then
+  echo "${RED} build/src/index.js not found.  Typescripts may not be compiled.${NC}"
   exit 1;
 fi
-if ! [ -f build/src/vl.d.ts ]; then
-  echo "${RED} build/src/vl.d.ts not found.  Typescript declarations may be not compiled.${NC}"
+if ! [ -f build/src/index.d.ts ]; then
+  echo "${RED} build/src/index.d.ts not found.  Typescript declarations may not be compiled.${NC}"
   exit 1;
 fi
 
