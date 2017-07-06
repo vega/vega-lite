@@ -5,13 +5,13 @@ title: Layering views
 permalink: /docs/layer.html
 ---
 
-Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is part of Vega-Lite's [view compositon algebra](compositon.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
+Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is none of Vega-Lite's [view compositon operators](compositon.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
 
 {: .suppress-error}
 ```json
 {
-  "layer": [  // Layer array
-    ...  // Specifications
+  "layer": [
+    ...  // Single or layered view specifications
   ]
 }
 ```
@@ -19,6 +19,8 @@ Sometimes, it's useful to superimpose one chart on top of another. You can accom
 A layered spec has the following properties:
 
 {% include table.html props="layer,data,transform,width,height,name,description,resolve" source="LayerSpec" %}
+
+Please note that you can *only layer single or layered views* to guarantee that the combined views have a compatible layout. For instance, it is not clear how a composed view with two views side-by-side could be layered on top of a single view.
 
 ## Example
 
