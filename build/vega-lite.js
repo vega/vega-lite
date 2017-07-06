@@ -1444,7 +1444,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.7",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1467,7 +1467,7 @@ module.exports={
     "tsc": "tsc",
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
     "build": "npm run tsc && cp package.json build && browserify src/vl.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
-    "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
+    "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
     "build:examples": "npm run build && npm run build:examples-only",
     "build:examples-only": "./scripts/build-examples.sh && rm -rf examples/specs/normalized/* && scripts/build-normalized-examples",
     "build:images": "npm run data && scripts/generate-images.sh",
@@ -1546,7 +1546,7 @@ module.exports={
     "typescript": "^2.3.4",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.5.0",
     "uglify-js": "^3.0.15",
-    "vega": "^3.0.0-beta.38",
+    "vega": "v3.0.0-beta.38",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "^3.0.0-beta.19",
     "vega-tooltip": "^0.4.2",
