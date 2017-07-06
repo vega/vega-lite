@@ -5,9 +5,9 @@ title: Composing Layered & Multi-view Plots
 permalink: /docs/composition.html
 ---
 
-With Vega-Lite, you cannot only create visualizations that consist of a single view. With Vega-Lite's *view composition algebra*, you can combine views into larger multiview displays. You can combine views through [faceting](facet.html), [layering](layer.html), [concatenation](concat.html), and [repeating](repeat.html).
+With Vega-Lite, you can not only create single view visualizations, but also [facet](facet.html), [layer](layer.html), [concatenate](concat.html), and [repeat](repeat.html) these views into larger, more complex multiview displays.
 
-A view that is composed of multiple views can itself be composed with other views. Through this **hierarchical composiiton**, you can create a whole dashboard as a single specification.
+A view that is composed of multiple views can itself be composed with other views. Through this **hierarchical composition**, you can create a whole dashboard as a single specification.
 
 Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
 
@@ -19,9 +19,9 @@ Learn how to use it on the [facet page](facet.html).
 
 ## Layering
 
-With the `layer` operator, you can stack multiple views on top of each other. This can be useful to add annotations to views. Vega-Lite automatically unions scale domains and combines axes and legends.
+With the `layer` operator, you can place multiple views on top of each other. This can be useful to add annotations to views. Vega-Lite automatically unions scale domains and combines axes and legends.
 
-However, Vega-Lite can not enforce that a unioned domain is *semantically meaningful*. To prohibit layering of composite views with incongruent internal structures, the layer operator restricts its operands to be single or layered views.
+However, Vega-Lite can not enforce that a unioned domain is *semantically meaningful*. To prohibit layering of composite views with incompatible layouts, the layer operator restricts its operands to be single or layered views.
 
 Learn how to use it on the [layering page](layer.html).
 

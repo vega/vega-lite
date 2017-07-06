@@ -9,7 +9,7 @@ permalink: /docs/facet.html
 
 There are **two ways** to facet views in Vega-Lite:
 
-First, the [`facet` operator](#facet-operator) is part of Vega-Lite's [view composition algebra](composition.html). This is the most flexible way to create faceted plots and allows composition with other operators.
+First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view composition operators](composition.html). This is the most flexible way to create faceted plots and allows composition with other operators.
 
 Second, as a shortcut you can use the [`column` or `row` channel](#facet-channels).
 
