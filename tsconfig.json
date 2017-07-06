@@ -12,6 +12,7 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
+    "noResolve": true,
     "inlineSourceMap": true,
     "typeRoots" : ["./typings", "node_modules/@types"]
   },
@@ -19,15 +20,15 @@
     "src/**/*.ts",
     "test/**/*.ts",
     "examples/**/*.ts",
-    "typings/*.d.ts",
-    "node_modules/@types/**/*.d.ts",
-    "site/static/main.ts"
+    "typings/*.d.ts"
   ],
   "exclude": [
     "node_modules",
+    "build",
     "data",
     "_site",
     "site",
-    "test-gallery"
+    "test-gallery",
+    "typings/vega-lite.d.ts"
   ]
 }
