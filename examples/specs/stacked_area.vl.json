@@ -11,8 +11,12 @@
       "axis": {"format": "%Y", "labelAngle": 0}
     },
     "y": {
-      "aggregate": "sum", "field": "count","type": "quantitative"
+      "aggregate": "sum", "field": "count", "type": "quantitative"
     },
-    "color": {"field":"series", "type":"nominal", "scale":{"scheme": "category20b"}}
+    "color": {
+      "field": "series",
+      "type": "nominal",
+      "scale": {"scheme": "category20b"}
+    }
   }
 }

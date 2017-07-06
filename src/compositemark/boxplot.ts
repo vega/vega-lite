@@ -66,7 +66,8 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
-  const {mark, encoding, ...outerSpec} = spec;
+  // TODO: use selection
+  const {mark, encoding, selection: _sel, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -302,8 +303,9 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         const transformedField = field(channelDef);
 
         // Add bin or timeUnit transform if applicable
-        if (channelDef.bin) {
-          const {bin, field} = channelDef;
+        const bin = channelDef.bin;
+        if (bin) {
+          const {field} = channelDef;
           bins.push({bin, field, as: transformedField});
         } else if (channelDef.timeUnit) {
           const {timeUnit, field} = channelDef;

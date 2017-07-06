@@ -6,9 +6,10 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
+import {Split} from '../split';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Partial<VgAxis>) {
+export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :
@@ -36,7 +37,7 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
   }
 
   if (labelsSpec.angle && channel === 'x') {
-    const align = labelAlign(angle, def.orient);
+    const align = labelAlign(angle, def.get('orient'));
     if (align) {
       labelsSpec.align = {value: align};
     }

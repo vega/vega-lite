@@ -21,16 +21,6 @@ describe('compile/legend', function() {
         assert.isUndefined((symbol||{}).strokeDashOffset);
     });
 
-    it('should return not override size of the symbol for shape channel', function() {
-      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
-          mark: "point",
-          encoding: {
-            x: {field: "a", type: "nominal"},
-            shape: {field: "b", type: "nominal", legend: {"shape": "circle"}}}
-        }), SHAPE);
-        assert.isUndefined(symbol.size);
-    });
-
     it('should return specific symbols.shape.value if user has specified', function() {
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",

@@ -27,8 +27,6 @@ describe('normalize()', function () {
       };
       const config = initConfig(spec.config);
       assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
-        "width": 123,
-        "height": 234,
         "name": "faceted",
         "description": "faceted spec",
         "data": {"url": "data/movies.json"},
@@ -37,6 +35,8 @@ describe('normalize()', function () {
         },
         "spec": {
           "mark": "point",
+          "width": 123,
+          "height": 234,
           "encoding": {
             "x": {"field": "Worldwide_Gross","type": "quantitative"},
             "y": {"field": "US_DVD_Sales","type": "quantitative"}

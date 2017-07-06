@@ -14,7 +14,7 @@ describe('Axis', function() {
       const model1 = parseUnitModelWithScale({
         "mark": "bar",
         "encoding": {
-          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true}
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}
         },
         "data": {"url": "data/movies.json"}
       });

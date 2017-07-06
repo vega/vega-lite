@@ -81,10 +81,12 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.MILLISECONDS
 ];
 
-const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
+type SingleTimeUnit = typeof SINGLE_TIMEUNITS[0];
+
+const SINGLE_TIMEUNIT_INDEX = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
-}, {});
+}, {} as {[key in SingleTimeUnit]: boolean});
 
 export function isSingleTimeUnit(timeUnit: TimeUnit) {
   return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
@@ -209,12 +211,12 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
     }
   }
 
-  const d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
+  const d = SINGLE_TIMEUNITS.reduce((dateExpr: DateTimeExpr, tu: TimeUnit) => {
     if (containsTimeUnit(fullTimeUnit, tu)) {
-      _d[tu] = func(tu);
+      dateExpr[tu] = func(tu);
     }
-    return _d;
-  }, {});
+    return dateExpr;
+  }, {} as {[key in SingleTimeUnit]: string});
 
   if (d.day && keys(d).length > 1) {
     log.warn(log.message.dayReplacedWithDate(fullTimeUnit));

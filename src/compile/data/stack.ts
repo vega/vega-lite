@@ -3,7 +3,7 @@ import {isScaleChannel} from '../../channel';
 import {field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
-import {contains, duplicate} from '../../util';
+import {contains, duplicate, stringValue} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';
@@ -151,11 +151,22 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (stack.impute) {
+      const order = stack.groupby.length === 1 ? stack.groupby[0] : 'key_' + stack.groupby.join('_');
+
+      // Impute only takes a single key so we might have to create one
+      if (stack.groupby.length > 1) {
+        transform.push({
+          type: 'formula',
+          expr: stack.groupby.map(f => `datum[${stringValue(f)}]`).join(` + '_' + `),
+          as: order
+        });
+      }
+
       transform.push({
         type: 'impute',
         field: stack.field,
         groupby: stack.stackby,
-        orderby: stack.groupby,
+        key: order,
         method: 'value',
         value: 0
       });

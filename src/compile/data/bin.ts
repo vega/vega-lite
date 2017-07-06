@@ -71,7 +71,7 @@ export class BinNode extends DataFlowNode {
       const fieldDefBin = fieldDef.bin;
       if (fieldDefBin) {
         const bin = normalizeBin(fieldDefBin, undefined) || {};
-        const key = binKey(fieldDefBin, fieldDef.field);
+        const key = binKey(bin, fieldDef.field);
         if (!(key in binComponent)) {
           binComponent[key] =  createBinComponent(bin, fieldDef, model, key);
         }

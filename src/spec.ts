@@ -300,7 +300,7 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   const {row: row, column: column, ...encoding} = spec.encoding;
 
   // Mark and encoding should be moved into the inner spec
-  const {mark: mark, selection: selection, encoding: _, ...outerSpec} = spec;
+  const {mark, width, height, selection, encoding: _, ...outerSpec} = spec;
 
   return {
     ...outerSpec,
@@ -310,6 +310,8 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
     },
     spec: normalizeNonFacetUnit({
       mark,
+      ...(width ? {width} : {}),
+      ...(height ? {height} : {}),
       encoding,
       ...(selection ? {selection} : {})
     }, config)
@@ -384,7 +386,7 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 // FIXME(#1804): re-design this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
-  const {mark, encoding, ...outerSpec} = spec;
+  const {mark, selection, encoding, ...outerSpec} = spec;
   const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer
@@ -408,6 +410,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
         type: 'line',
         role: 'lineOverlay'
       },
+      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
@@ -418,6 +421,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
         filled: true,
         role: 'pointOverlay'
       },
+      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
@@ -461,17 +465,10 @@ function fieldDefIndex<T>(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: Di
     accumulate(dict, vlEncoding.fieldDefs(spec.facet));
     fieldDefIndex(spec.spec, dict);
   } else if (isRepeatSpec(spec)) {
-    accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else if (isConcatSpec(spec)) {
     const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
-    childSpec.forEach(child => {
-      if (isUnitSpec(child)) {
-        accumulate(dict, vlEncoding.fieldDefs(child.encoding));
-      } else {
-        fieldDefIndex(child, dict);
-      }
-    });
+    childSpec.forEach(child => fieldDefIndex(child, dict));
   } else { // Unit Spec
     accumulate(dict, vlEncoding.fieldDefs(spec.encoding));
   }
