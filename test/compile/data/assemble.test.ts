@@ -7,6 +7,16 @@ import {OutputNode} from '../../../src/compile/data/dataflow';
 import {SourceNode} from '../../../src/compile/data/source';
 import {Data} from '../../../src/data';
 import {VgData} from '../../../src/vega.schema';
+import {parseUnitModel} from '../../util';
+
+const model = parseUnitModel({
+  "mark": "circle",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles-per-Gallon","type": "quantitative"},
+      "color": {"field": "Origin", "type": "nominal"}
+    }
+});
 
 describe('compile/data/assemble', () => {
   describe('assembleData', () => {
@@ -18,7 +28,7 @@ describe('compile/data/assemble', () => {
 
       assert.equal(main.getSource(), 'mainOut');
 
-      const data = assembleData({
+      const data = assembleData(model, {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
@@ -43,7 +53,7 @@ describe('compile/data/assemble', () => {
       assert.equal(raw.getSource(), 'rawOut');
       assert.equal(main.getSource(), 'mainOut');
 
-      const data = assembleData({
+      const data = assembleData(model, {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,

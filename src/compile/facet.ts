@@ -213,7 +213,7 @@ export class FacetModel extends ModelWithField {
   public assembleData(): VgData[] {
     if (!this.parent) {
       // only assemble data in the root
-      return assembleData(this.component.data);
+      return assembleData(this, this.component.data);
     }
 
     return [];

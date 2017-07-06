@@ -3,9 +3,19 @@ import {Channel, ScaleChannel, SingleDefChannel} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
-import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
+import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
-import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
+import {
+  isSignalRefDomain,
+  VgBinding,
+  VgData,
+  VgDomain,
+  VgEventStream,
+  VgIdentifierTransform,
+  VgScale,
+  VgSignalRef,
+} from '../../vega.schema';
+import {SOURCE_PREFIX} from '../data/assemble';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -200,6 +210,32 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
     }
   });
   return clipGroup ? clipMarks(marks) : marks;
+}
+
+const IDENTIFIER_TRANSFORM: VgIdentifierTransform = {type: 'identifier', as: SELECTION_ID};
+export function addIdentifierTransforms(model: Model, data: VgData[]) {
+  let identifier = false;
+  forEachSelection(model, (selCmpt) => {
+    identifier = identifier || selCmpt.project.some((proj) => proj.field === SELECTION_ID);
+  });
+
+  if (!identifier) {
+    return data;
+  }
+
+  for (const def of data) {
+    let index = -1;
+    const transform = def.transform || [];
+    const aggr = transform.some((t, i) => (index = i, t.type === 'aggregate'));
+    if (aggr) {
+      transform.splice(index+1, 0, IDENTIFIER_TRANSFORM);
+    } else if (def.name.indexOf(SOURCE_PREFIX) >= 0) {
+      transform.unshift(IDENTIFIER_TRANSFORM);
+    }
+    def.transform = transform;
+  }
+
+  return data;
 }
 
 const PREDICATES_OPS = {
