@@ -1,5 +1,4 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
-import {CompositeMark} from './compositemark';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
 import {Data} from './data';

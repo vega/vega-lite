@@ -15,7 +15,7 @@
     "inlineSourceMap": true
   },
   "include": [
-    "*.ts",
+    "static/*.ts",
     "../typings/vega-embed.d.ts",
     "../typings/vega-util.d.ts"
   ]
