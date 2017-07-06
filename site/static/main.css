@@ -185,7 +185,7 @@ pre {
 
 nav {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
@@ -254,13 +254,32 @@ nav a:hover {
   font-weight: bold;
 }
 .sidebar-nav-item a:hover {
-  color: black;
+  color: #4682B4;
   text-decoration: none;
 }
+
+.sub-menu-nav {
+  padding: 0;
+}
+
+.sub-item {
+  padding-left: 1em;
+  padding-top: 0.25em;
+  border-left: 2px solid #eee;
+}
+
+.sub-item a {
+  padding: 0;
+  font-size: 0.9em;
+}
+
+.sub-sub-nav {
+  padding-left: 0px;
+}
+
 .title h1 {
   margin-top: 0.3em;
 }
-
 
 .vl-title {
   font-weight: bold;

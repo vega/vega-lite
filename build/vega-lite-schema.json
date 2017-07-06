@@ -4907,7 +4907,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operations to apply to the fields, such as sum, average or count. See the aggregate operation reference for more."
+          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)\nfor more information."
         },
         "as": {
           "description": "The output field names to use for each aggregated field.",
@@ -4936,7 +4936,7 @@
           "type": "array"
         },
         "summarize": {
-          "description": "Array of objects that contains aggregate information for the transform.",
+          "description": "Array of objects that define aggregate fields.",
           "items": {
             "$ref": "#/definitions/Summarize"
           },

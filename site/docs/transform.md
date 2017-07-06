@@ -156,7 +156,7 @@ A DateTime object must have at least one of the following properties:
   ...
   "transform": [
     {
-      "summarize": {"aggregate": ..., "field": ..., "as": ...,
+      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
       "groupby": [...]
     } // Summarize Transform
      ...
