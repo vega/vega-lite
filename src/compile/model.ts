@@ -5,6 +5,7 @@ import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
+import * as log from '../log';
 import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
@@ -426,8 +427,15 @@ export abstract class Model {
   /**
    * Traverse a model's hierarchy to get a particular selection component.
    */
-  public getSelectionComponent(name: string): SelectionComponent {
-    return this.component.selection[name] || this.parent.getSelectionComponent(name);
+  public getSelectionComponent(varName: string, origName: string): SelectionComponent {
+    let sel = this.component.selection[varName];
+    if (!sel && this.parent) {
+      sel = this.parent.getSelectionComponent(varName, origName);
+    }
+    if (!sel) {
+      throw new Error(log.message.selectionNotFound(origName));
+    }
+    return sel;
   }
 }
 
