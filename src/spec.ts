@@ -410,6 +410,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
         type: 'line',
         role: 'lineOverlay'
       },
+      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
