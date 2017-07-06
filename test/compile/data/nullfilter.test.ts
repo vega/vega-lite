@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {UnitSpec} from '../../../src/spec';
+import {TopLevel, UnitSpec} from '../../../src/spec';
 
 import {NullFilterNode} from '../../../src/compile/data/nullfilter';
 import {ModelWithField} from '../../../src/compile/model';
@@ -35,7 +35,7 @@ describe('compile/data/nullfilter', function() {
     });
 
     it('should add filterNull for Q and T when invalidValues is "filter".', function () {
-      const model = parseUnitModelWithScale(mergeDeep(spec, {
+      const model = parseUnitModelWithScale(mergeDeep<TopLevel<UnitSpec>>(spec, {
         config: {
           invalidValues: 'filter'
         }
@@ -47,7 +47,7 @@ describe('compile/data/nullfilter', function() {
     });
 
     it('should add no null filter if when invalidValues is null', function () {
-      const model = parseUnitModelWithScale(mergeDeep(spec, {
+      const model = parseUnitModelWithScale(mergeDeep<TopLevel<UnitSpec>>(spec, {
         config: {
           invalidValues: null
         }
