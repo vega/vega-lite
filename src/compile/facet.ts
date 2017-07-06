@@ -5,7 +5,7 @@ import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {initFacetResolve, ResolveMapping} from '../resolve';
+import {ResolveMapping} from '../resolve';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
@@ -28,6 +28,7 @@ import {labels} from './legend/encode';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {parseGuideResolve} from './resolve';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 
 
@@ -39,10 +40,7 @@ export class FacetModel extends ModelWithField {
   public readonly children: Model[];
 
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(
-      spec, parent, parentGivenName, config,
-      initFacetResolve(spec.resolve || {})
-    );
+    super(spec, parent, parentGivenName, config, spec.resolve);
 
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
@@ -183,11 +181,15 @@ export class FacetModel extends ModelWithField {
   private mergeChildAxis(channel: 'x' | 'y') {
     const {child} = this;
     if (child.component.axes[channel]) {
-      if (this.resolve[channel].axis === 'shared') {
+      const {layoutHeaders, resolve} = this.component;
+      const channelResolve = resolve[channel];
+      channelResolve.axis = parseGuideResolve(resolve, channel);
+
+      if (channelResolve.axis === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 
-        const layoutHeader = this.component.layoutHeaders[headerChannel];
+        const layoutHeader = layoutHeaders[headerChannel];
         for (const axisComponent of child.component.axes[channel]) {
           const mainAxis = axisComponent.main;
           const headerType = getHeaderType(mainAxis.get('orient'));

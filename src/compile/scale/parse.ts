@@ -1,9 +1,11 @@
-import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
+import {NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
+import {ResolveMode} from '../../resolve';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
-import {keys} from '../../util';
+import {contains, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
+import {defaultScaleResolve} from '../resolve';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
@@ -75,11 +77,12 @@ const scaleTypeTieBreaker = tieBreakByComparing(
   (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
 );
 
+
 function parseNonUnitScaleCore(model: Model) {
   const scaleComponents: ScaleComponentIndex = model.component.scales = {};
 
   const scaleTypeWithExplicitIndex: {[k in ScaleChannel]?: Explicit<ScaleType>} = {};
-  const channelHasConflict: {[k in ScaleChannel]?: true} = {};
+  const resolve = model.component.resolve;
 
   // Parse each child scale and determine if a particular channel can be merged.
   for (const child of model.children) {
@@ -87,11 +90,11 @@ function parseNonUnitScaleCore(model: Model) {
 
     // Instead of always merging right away -- check if it is compatible to merge first!
     keys(child.component.scales).forEach((channel: ScaleChannel) => {
-      if (model.resolve[channel].scale === 'shared') {
-        if (channelHasConflict[channel]) {
-          return;
-        }
+      // if resolve is undefined, set default first
+      resolve[channel] = resolve[channel] || {};
+      resolve[channel].scale = resolve[channel].scale || defaultScaleResolve(channel, model);
 
+      if (model.component.resolve[channel].scale === 'shared') {
         const scaleType = scaleTypeWithExplicitIndex[channel];
         const childScaleType = child.component.scales[channel].getWithExplicit('type');
 
@@ -102,8 +105,9 @@ function parseNonUnitScaleCore(model: Model) {
               scaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker
             );
           } else {
-            // Otherwise, mark as conflict and remove from the index so they don't get merged
-            channelHasConflict[channel] = true;
+            // Otherwise, update conflicting channel to be independent
+            model.component.resolve[channel] = 'independent';
+            // Remove from the index so they don't get merged
             delete scaleTypeWithExplicitIndex[channel];
           }
         } else {
