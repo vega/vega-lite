@@ -17,7 +17,7 @@ To embed a Vega-Lite specification on your web page first load the required libr
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
 ```
 
-We suggest that you use cdnjs for deployments. 
+We suggest that you use cdnjs for deployments.
 
 If you prefer to host the dependencies yourself, we suggest that you use npm to install the libraries([Vega](https://www.npmjs.com/package/vega), [Vega-Lite](https://www.npmjs.com/package/vega-lite), and [Vega-Embed](https://www.npmjs.com/package/vega-embed)) to get the latest stable version. To install with npm, simply install it as you would any other npm module.
 
@@ -44,7 +44,8 @@ vega.embed("#vis", yourVlSpec);
 
 Vega-Embed automatically adds links to export an image, view the source, and open the specification in the online editor. These links can be individually disabled. For more information, read the [Vega-Embed documentation](https://github.com/vega/vega-embed).
 
-Here is the fianl html file in the easiest way to embed Vega-Lite:
+Here is the final HTML file in the easiest way to embed Vega-Lite:
+
 ```html
 <!DOCTYPE html>
 <html>

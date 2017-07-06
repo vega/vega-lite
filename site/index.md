@@ -38,7 +38,7 @@ images:
   </span>
   <span class="lead-buttons">
     [Get started]({{site.baseurl}}/tutorials/getting_started.html)
-    [Try online](https://vega.github.io/new-editor/?mode=vega-lite)
+    [Try online](https://vega.github.io/editor/#/custom/vega-lite)
   </span>
 </span>
 
@@ -56,7 +56,7 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 * [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v2.json))
 * Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js)
 * Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9)
-* The website and documentation for Vega-Lite v1 is at [https://vega.github.io/vega-lite-v1/](vega.github.io/vega-lite-v1/).
+* The website and documentation for Vega-Lite v1 is at [https://vega.github.io/vega-lite-v1/](https://vega.github.io/vega-lite-v1/).
 
 
 ## Team
