@@ -105,6 +105,10 @@ export namespace message {
     return `Cannot project a selection on encoding channel ${channel}, which has no field.`;
   }
 
+  export function selectionNotFound(name: string) {
+    return `Cannot find a selection named "${name}"`;
+  }
+
   // REPEAT
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;

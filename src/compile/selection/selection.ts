@@ -213,9 +213,9 @@ const PREDICATES_OPS = {
 
 export function predicate(model: Model, selections: LogicalOperand<string>): string {
   function expr(name: string): string {
-    name = varName(name);
-    const selCmpt = model.getSelectionComponent(name);
-    const store = stringValue(name + STORE);
+    const vname = varName(name);
+    const selCmpt = model.getSelectionComponent(vname, name);
+    const store = stringValue(vname + STORE);
     const op = PREDICATES_OPS[selCmpt.resolve];
 
     return compiler(selCmpt.type).predicate +
@@ -244,7 +244,7 @@ export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSi
   } else if (!selDomain.encoding && !selDomain.field) {
     warn('A "field" or "encoding" must be specified when using a selection as a scale domain.');
   } else {
-    selCmpt = model.getSelectionComponent(name);
+    selCmpt = model.getSelectionComponent(name, selDomain.selection);
     return {
       signal: compiler(selCmpt.type).scaleDomain +
         `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
