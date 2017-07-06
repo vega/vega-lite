@@ -2,7 +2,7 @@ import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../chan
 import {Config} from '../config';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
+import {NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -32,10 +32,7 @@ export class LayerModel extends Model {
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config) {
 
-    super(
-      spec, parent, parentGivenName, config,
-      initLayerResolve(spec.resolve || {})
-    );
+    super(spec, parent, parentGivenName, config, spec.resolve);
 
     const layoutSize = {
       ...parentGivenSize,

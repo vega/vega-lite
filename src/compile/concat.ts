@@ -1,7 +1,7 @@
 import {NonspatialScaleChannel, ScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
-import {initConcatResolve, ResolveMapping} from '../resolve';
+import {ResolveMapping} from '../resolve';
 import {Scale} from '../scale';
 import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
 import {Dict, keys, vals} from '../util';
@@ -22,7 +22,7 @@ export class ConcatModel extends Model {
   public readonly isVConcat: boolean;
 
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config, initConcatResolve(spec.resolve || {}));
+    super(spec, parent, parentGivenName, config, spec.resolve);
 
     this.isVConcat = isVConcatSpec(spec);
 

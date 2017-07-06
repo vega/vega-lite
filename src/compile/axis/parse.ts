@@ -1,16 +1,17 @@
 import {Axis, AXIS_PROPERTIES, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
 import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
-import {ResolveMode} from '../../resolve';
 import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
 import {titleMerger} from '../common';
 import {LayerModel} from '../layer';
+import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
+
 
 type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
@@ -42,51 +43,44 @@ const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
   left: 'right',
   right: 'left'
 };
-export function parseLayerAxis(model: LayerModel) {
-  const axisComponents: AxisComponentIndex = model.component.axes = {};
 
-  const axisResolveIndex: {[k in SpatialScaleChannel]?: ResolveMode} = {};
+export function parseLayerAxis(model: LayerModel) {
+  const {axes, resolve} = model.component;
   const axisCount: {[k in AxisOrient]: number} = {top: 0, bottom: 0, right: 0, left: 0};
 
   for (const child of model.children) {
     child.parseAxisAndHeader();
 
-
     keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-      if (model.resolve[channel].axis === 'shared' &&
-          axisResolveIndex[channel] !== 'independent' &&
-          model.component.scales[channel]) {
-        // If default rule says shared and so far there is no conflict and the scale is merged,
+      const channelResolve = model.component.resolve[channel];
+      channelResolve.axis = parseGuideResolve(model.component.resolve, channel);
+      if (channelResolve.axis === 'shared') {
+        // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
-        axisComponents[channel] = mergeAxisComponents(axisComponents[channel], child.component.axes[channel]);
+        axes[channel] = mergeAxisComponents(axes[channel], child.component.axes[channel]);
 
-        if (axisComponents[channel]) {
-          // If merge return something, then there is no conflict.
-          // Thus, we can set / preserve the resolve index to be shared.
-          axisResolveIndex[channel] = 'shared';
-        } else {
-          // If merge returns nothing, there is a conflict and thus we cannot make the axis shared.
-          axisResolveIndex[channel] = 'independent';
-          delete axisComponents[channel];
+        if (!axes[channel]) {
+          // If merge returns nothing, there is a conflict so we cannot make the axis shared.
+          // Thus, mark axis as independent and remove the axis component.
+          channelResolve.axis = 'independent';
+          delete axes[channel];
         }
-      } else {
-        axisResolveIndex[channel] = 'independent';
       }
     });
   }
 
   // Move axes to layer's axis component and merge shared axes
-  keys(axisResolveIndex).forEach((channel: SpatialScaleChannel) => {
+  ['x', 'y'].forEach((channel: SpatialScaleChannel) => {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis
         return;
       }
 
-      if (axisResolveIndex[channel] === 'independent') {
+      if (resolve[channel].axis === 'independent') {
         // If axes are independent, concat the axisComponent array.
-        axisComponents[channel] = (axisComponents[channel] || []).concat(child.component.axes[channel]);
+        axes[channel] = (axes[channel] || []).concat(child.component.axes[channel]);
 
         // Automatically adjust orient
         child.component.axes[channel].forEach(axisComponent => {
