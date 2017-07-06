@@ -1,9 +1,3 @@
-// TODO remove after migrating docs
-declare module vg {
-  export const version: string;
-  export function embed(selector: any, spec: any, f?: (view: any, spec: any) => void): void;
-}
-
 declare module 'vega' {
   export const version: string;
   export function parse(spec: any): any;
