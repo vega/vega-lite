@@ -879,8 +879,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
-          "minimum": 0,
+          "description": "Size of the box and mid tick of a box plot ",
           "type": "number"
         },
         "stroke": {
@@ -1636,7 +1635,6 @@
       "type": "object"
     },
     "Config": {
-      "additionalProperties": true,
       "properties": {
         "area": {
           "$ref": "#/definitions/MarkConfig",
@@ -3395,19 +3393,24 @@
       "additionalProperties": false,
       "properties": {
         "gradient": {
-          "$ref": "#/definitions/GuideEncodingEntry"
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for legend gradient filled rect marks."
         },
         "labels": {
-          "$ref": "#/definitions/GuideEncodingEntry"
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for legend label text marks."
         },
         "legend": {
-          "$ref": "#/definitions/GuideEncodingEntry"
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for the legend container.\nThis can be useful for creating legend with custom x, y position."
         },
         "symbols": {
-          "$ref": "#/definitions/GuideEncodingEntry"
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for legend symbol marks."
         },
         "title": {
-          "$ref": "#/definitions/GuideEncodingEntry"
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for the legend title text mark."
         }
       },
       "type": "object"
@@ -4904,7 +4907,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operations to apply to the fields, such as sum, average or count. See the aggregate operation reference for more."
+          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)\nfor more information."
         },
         "as": {
           "description": "The output field names to use for each aggregated field.",
@@ -4933,7 +4936,7 @@
           "type": "array"
         },
         "summarize": {
-          "description": "Array of objects that contains aggregate information for the transform.",
+          "description": "Array of objects that define aggregate fields.",
           "items": {
             "$ref": "#/definitions/Summarize"
           },
@@ -5360,6 +5363,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5371,7 +5376,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",
@@ -5430,6 +5436,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5441,7 +5449,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",
@@ -5496,6 +5505,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5507,7 +5518,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",
@@ -5561,6 +5573,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5572,7 +5586,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",
@@ -5632,6 +5647,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5643,7 +5660,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",
@@ -5698,6 +5716,8 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
+          "description": "URL to JSON schema for this Vega-Lite specification.",
+          "format": "uri",
           "type": "string"
         },
         "autoResize": {
@@ -5709,7 +5729,8 @@
           "type": "string"
         },
         "config": {
-          "$ref": "#/definitions/Config"
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
           "$ref": "#/definitions/Data",

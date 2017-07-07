@@ -322,13 +322,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
                         }
                     ]
                 },
@@ -395,7 +395,7 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
                         }
                     ]
                 },
@@ -448,13 +448,13 @@
                             "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width]"
+                            "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / child_width)"
                         },
                         {
                             "events": {
                                 "signal": "grid_zoom_delta"
                             },
-                            "update": "[grid_zoom_anchor.x + (domain(\"x\")[0] - grid_zoom_anchor.x) * grid_zoom_delta, grid_zoom_anchor.x + (domain(\"x\")[1] - grid_zoom_anchor.x) * grid_zoom_delta]"
+                            "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
                         }
                     ],
                     "push": "outer"
@@ -466,13 +466,13 @@
                             "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height]"
+                            "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / child_height)"
                         },
                         {
                             "events": {
                                 "signal": "grid_zoom_delta"
                             },
-                            "update": "[grid_zoom_anchor.y + (domain(\"y\")[0] - grid_zoom_anchor.y) * grid_zoom_delta, grid_zoom_anchor.y + (domain(\"y\")[1] - grid_zoom_anchor.y) * grid_zoom_delta]"
+                            "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
                         }
                     ],
                     "push": "outer"
@@ -523,7 +523,7 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - grid_translate_anchor.x, y: y(unit) - grid_translate_anchor.y}"
+                            "update": "{x: grid_translate_anchor.x - x(unit), y: grid_translate_anchor.y - y(unit)}"
                         }
                     ]
                 },

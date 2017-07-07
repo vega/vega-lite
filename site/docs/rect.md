@@ -15,7 +15,7 @@ permalink: /docs/rect.html
 }
 ```
 
-The `rect` mark represents an arbitrary rectangle.
+The `rect` mark represents an arbitrary rectangle. 
 
 ### Heatmap
 

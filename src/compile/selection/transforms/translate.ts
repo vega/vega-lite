@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel, X, Y} from '../../../channel';
+import {Channel, ScaleChannel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
 import {channelSignalName, SelectionComponent} from '../selection';
@@ -44,7 +44,7 @@ const translate:TransformCompiler = {
       value: {},
       on: [{
         events: events,
-        update: `{x: x(unit) - ${anchor}.x, y: y(unit) - ${anchor}.y}`
+        update: `{x: ${anchor}.x - x(unit), y: ${anchor}.y - y(unit)}`
       }]
     });
 
@@ -62,31 +62,26 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function getSign(selCmpt: SelectionComponent, channel: Channel) {
-  if (scalesCompiler.has(selCmpt)) {
-    return channel === Y ? '+' : '-';
-  }
-  return '+';
-}
-
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);
   const signal:any = signals.filter((s:any) => {
     return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
   })[0];
-  const sizeSg = model.getSizeSignalRef(size).signal;
   const anchor = name + ANCHOR;
   const delta  = name + DELTA;
-  const sign = getSign(selCmpt, channel);
-  const offset = sign + (hasScales ?
-    ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / ${sizeSg}` :
-    ` ${delta}.${channel}`);
+  const sizeSg = model.getSizeSignalRef(size).signal;
+  const scaleType = model.getScaleComponent(channel).get('type');
+  const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
   const extent = `${anchor}.extent_${channel}`;
-  const range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
+  const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
+  const panFn = !hasScales ? 'panLinear' :
+    scaleType === 'log' ? 'panLog' :
+    scaleType === 'pow' ? 'panPow' : 'panLinear';
+  const update = `${panFn}(${extent}, ${offset})`;
 
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? range : `clampRange(${range}, 0, ${sizeSg})`
+    update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
   });
 }

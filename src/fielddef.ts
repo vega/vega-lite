@@ -184,7 +184,7 @@ export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Co
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {condition: FieldDef<F>}) {
+export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {condition: Condition<FieldDef<F>>}) {
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 

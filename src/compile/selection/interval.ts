@@ -42,6 +42,8 @@ const interval:SelectionCompiler = {
       const dname = channelSignalName(selCmpt, channel, 'data');
       const vname = channelSignalName(selCmpt, channel, 'visual');
       const scaleStr = stringValue(model.scaleName(channel));
+      const scaleType = model.getScaleComponent(channel).get('type');
+      const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
       signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(channel)}, ` +
@@ -50,8 +52,8 @@ const interval:SelectionCompiler = {
       scaleTriggers.push({
         scaleName: model.scaleName(channel),
         expr: `(!isArray(${dname}) || ` +
-          `(+invert(${scaleStr}, ${vname})[0] === +${dname}[0] && ` +
-            `+invert(${scaleStr}, ${vname})[1] === +${dname}[1]))`
+          `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
+            `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
       });
     });
 

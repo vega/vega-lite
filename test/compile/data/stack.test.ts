@@ -126,7 +126,7 @@ describe('compile/data/stack', () => {
         type: 'impute',
         field: 'sum_a',
         groupby: ['c'],
-        orderby: ['b'],
+        key: 'b',
         method: "value",
         value: 0
       },

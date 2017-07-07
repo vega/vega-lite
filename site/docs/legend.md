@@ -7,7 +7,11 @@ permalink: /docs/legend.html
 
 Similar to [axes](axis.html), legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
-By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded. Legend can be further customized via the channel definition's `legend` property.
+By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded. 
+If `legend` is not defined, default legend properties are applied. User can  set `legend` to an object to customize [legend properties](#legend-properties) or set `legend` to `null` to remove the legend.
+
+Besides `legend` property of each encoding channel, the configuration object ([`config`](config.html)) also provides [legend config](#legend-config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
+
 
 {: .suppress-error}
 ```json
@@ -36,56 +40,54 @@ By default, Vega-Lite automatically creates legends for `color`, `size`, and `sh
 }
 ```
 
-
-The field's legend can be removed by setting `legend` to `false`.
-If `legend` is `true`, default legend properties are applied.
-
-
-Either Legend properties or Legend Config can be customized. To customize Legend properties, you need to set `legend` to an legend property object. To customize Legend Config, you need set config properties by specifying `config: {legend: {...}}`.
+* TOC
+{:toc}
 
 
 ## Legend Properties
 
-Legend properties will apply to the current encoding channel only. Axis properties can be customized by setting `legend` to an legend property object. The `legend` property object supports the following properties:
+To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
+
+
 
 ### General
 
-{% include table.html props="fillColor,offset,orient,padding,values,format,entryPadding,type,zindex" source="Legend" %}
-
-### Title
-
-{% include table.html props="title,titleAlign" source="Legend" %}
+{% include table.html props="entryPadding,fillColor,format,offset,orient,padding,type,values,zindex" source="Legend" %}
 
 ### Tick
 
 {% include table.html props="tickCount" source="Legend" %}
+
+### Title
+
+{% include table.html props="title,titleAlign" source="Legend" %}
 
 ### Custom Legend Encodings
 
 **TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/legends/#custom-legend-encodings), but within each element's block, we do not have `enter/update/exit`.)
 
 {:#legend-config}
-### Legend Config
+## Legend Config
 
 Legend Config will apply to the all encoding channel has `legend`. Legend Config can be customized by setting `config: {legend: {...}}`. Legend Config supports the following configurations:
 
-#### General
+### General
 
 {% include table.html props="cornerRadius,fillColor,orient,offset,strokeColor,strokeDash,strokeWidth,padding" source="LegendConfig" %}
 
-#### Labels
+### Gradient
+
+{% include table.html props="gradientLabelBaseline,gradientLabelLimit,gradientLabelOffset,gradientStrokeColor,gradientStrokeWidth,gradientHeight,gradientWidth" source="LegendConfig" %}
+
+### Labels
 
 {% include table.html props="labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,shortTimeLabels" source="LegendConfig" %}
 
-#### Symbols
+### Symbols
 
 {% include table.html props="entryPadding,symbolColor,symbolType,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
 
-#### Title
+### Title
 
 {% include table.html props="titleAlign,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="LegendConfig" %}
-
-#### Gradient
-
-{% include table.html props="gradientLabelBaseline,gradientLabelLimit,gradientLabelOffset,gradientHeight,gradientStrokeColor,gradientStrokeWidth,gradientWidth" source="LegendConfig" %}
 

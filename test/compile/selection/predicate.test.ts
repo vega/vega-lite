@@ -102,4 +102,8 @@ describe('Selection Predicate', function() {
       '((vlPoint("two_store", "", datum, "union", "all")) && ' +
       '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))');
   });
+
+  it('throws an error for unknown selections', function() {
+    assert.throws(() => predicate(model, 'helloworld'), 'Cannot find a selection named "helloworld"');
+  });
 });

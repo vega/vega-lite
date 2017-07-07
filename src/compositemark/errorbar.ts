@@ -7,7 +7,8 @@ export const ERRORBAR: 'error-bar' = 'error-bar';
 export type ERRORBAR = typeof ERRORBAR;
 
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<Field>, ERRORBAR>): LayerSpec {
-  const {mark: _m, encoding: encoding, ...outerSpec} = spec;
+  // TODO: use selection
+  const {mark: _m, selection: _sel, encoding, ...outerSpec} = spec;
   const {size: _s, ...encodingWithoutSize} = encoding;
   const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;
   const {x: _x, y: _y, ...encodingWithoutX_X2_Y_Y2} = encodingWithoutX2Y2;

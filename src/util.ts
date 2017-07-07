@@ -15,7 +15,7 @@ export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringVa
  * // → {'a': 1, 'c': 3}
  *
  */
-export function pick(obj: any, props: string[]) {
+export function pick(obj: object, props: string[]) {
   const copy = {};
   props.forEach((prop) => {
     if (obj.hasOwnProperty(prop)) {
@@ -29,7 +29,7 @@ export function pick(obj: any, props: string[]) {
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export function omit(obj: any, props: string[]) {
+export function omit(obj: object, props: string[]) {
   const copy = duplicate(obj);
   props.forEach((prop) => {
     delete copy[prop];
@@ -90,7 +90,7 @@ export function flatten(arrays: any[]) {
 /**
  * recursively merges src into dest
  */
-export function mergeDeep(dest: any, ...src: any[]) {
+export function mergeDeep<T>(dest: T, ...src: Partial<T>[]): T {
   for (const s of src) {
     dest = deepMerge_(dest, s);
   }
@@ -113,7 +113,7 @@ function deepMerge_(dest: any, src: any) {
     if (typeof src[p] !== 'object' || isArray(src[p]) || src[p] === null) {
       dest[p] = src[p];
     } else if (typeof dest[p] !== 'object' || dest[p] === null) {
-      dest[p] = mergeDeep(src[p].constructor === Array ? [] : {}, src[p]);
+      dest[p] = mergeDeep(isArray(src[p].constructor) ? [] : {}, src[p]);
     } else {
       mergeDeep(dest[p], src[p]);
     }

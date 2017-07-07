@@ -15,7 +15,7 @@ permalink: /docs/point.html
 }
 ```
 
-`point` mark represents each data point with a symbol.
+`point` mark represents each data point with a symbol. Point marks are commonly used in visualizations like scatterplots.
 
 ### Dot Plot
 
