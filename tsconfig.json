@@ -12,22 +12,21 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
-    "inlineSourceMap": true,
-    "typeRoots" : ["./typings", "node_modules/@types"]
+    "inlineSourceMap": true
   },
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
     "examples/**/*.ts",
     "typings/*.d.ts",
-    "node_modules/@types/**/*.d.ts",
-    "site/static/main.ts"
+    "node_modules/@types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
     "data",
     "_site",
     "site",
-    "test-gallery"
+    "test-gallery",
+    "typings/vega-lite.d.ts"
   ]
 }

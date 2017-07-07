@@ -12,12 +12,11 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
-    "inlineSourceMap": true,
-    "typeRoots" : ["../typings", "../node_modules/@types"]
+    "inlineSourceMap": true
   },
   "include": [
     "*.ts",
-    "../typings/*.d.ts",
-    "../node_modules/@types/**/*.d.ts"
+    "../typings/vega-embed.d.ts",
+    "../typings/vega-util.d.ts"
   ]
 }
