@@ -54,10 +54,8 @@ export class Split<T extends Object> {
   }
 
   public set<K extends keyof T>(key: K, value: T[K], explicit: boolean) {
+    delete this[explicit ? 'implicit' : 'explicit'][key];
     this[explicit ? 'explicit' : 'implicit'][key] = value;
-    if (explicit) {
-      delete this.implicit[key];
-    }
     return this;
   }
 
