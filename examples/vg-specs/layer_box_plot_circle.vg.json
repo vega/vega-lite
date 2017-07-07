@@ -150,30 +150,6 @@
         {
             "name": "height",
             "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_0_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_0_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_1_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_2_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_3_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_1_width",
-            "update": "500"
         }
     ],
     "marks": [

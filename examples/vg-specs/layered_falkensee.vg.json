@@ -290,22 +290,6 @@
         {
             "name": "height",
             "update": "200"
-        },
-        {
-            "name": "layer_0_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_1_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_1_layer_0_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_1_layer_1_width",
-            "update": "500"
         }
     ],
     "marks": [

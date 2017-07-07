@@ -14,6 +14,7 @@ import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
+import {parseRepeatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -115,6 +116,10 @@ export class RepeatModel extends Model {
     this.children.forEach((child) => {
       child.parseData();
     });
+  }
+
+  public parseLayoutSize() {
+    parseRepeatLayoutSize(this);
   }
 
   public parseSelection() {

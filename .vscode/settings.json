@@ -13,5 +13,8 @@
   "tslint.autoFixOnSave": true,
   "tsimporter.filesToExclude": ["build/**"],
   "tsimporter.spaceBetweenBraces": false,
-  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false
+  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false,
+  "tsimporter.filesToExclude": {
+    "build/**": true
+  }
 }

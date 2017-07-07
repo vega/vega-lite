@@ -1,35 +1,39 @@
 import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
-import {FacetModel} from '../facet';
+import {ConcatModel} from '../concat';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
+import {RepeatModel} from '../repeat';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit, Split} from '../split';
 import {UnitModel} from '../unit';
 import {LayoutSize, LayoutSizeComponent, LayoutSizeIndex} from './component';
 
-export function parseLayoutSize(model: Model) {
-  if (model instanceof UnitModel) {
-    parseUnitLayoutSize(model);
-  } else {
-    parseNonUnitLayoutSize(model);
-  }
+export function parseLayerLayoutSize(model: Model) {
+  parseChildrenLayoutSize(model);
+
+  const layoutSizeCmpt = model.component.layoutSize;
+  layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
+  layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
 
-function parseNonUnitLayoutSize(model: Model) {
+export const parseRepeatLayoutSize = parseLayerLayoutSize;
+
+export function parseConcatLayoutSize(model: ConcatModel) {
+  parseChildrenLayoutSize(model);
+  const layoutSizeCmpt = model.component.layoutSize;
+
+  const sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
+  layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+}
+
+export function parseChildrenLayoutSize(model: Model) {
   for (const child of model.children) {
-    parseLayoutSize(child);
-  }
-
-  if (!(model instanceof FacetModel)) {
-    // Merge size
-    const layoutSizeCmpt = model.component.layoutSize;
-    layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'x'));
-    layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'y'));
+    child.parseLayoutSize();
   }
 }
 
-function parseNonUnitLayoutSizeForChannel(model: Model, channel: 'x' | 'y'): Explicit<LayoutSize> {
-  const sizeType = channel === 'x' ? 'width' : 'height';
+function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'height'): Explicit<LayoutSize> {
+  const channel = sizeType === 'width' ? 'x' : 'y';
   const resolve = model.component.resolve;
 
   let mergedSize: Explicit<LayoutSize>;
@@ -75,7 +79,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, channel: 'x' | 'y'): Exp
   }
 }
 
-function parseUnitLayoutSize(model: UnitModel) {
+export function parseUnitLayoutSize(model: UnitModel) {
   const layoutSizeComponent = model.component.layoutSize;
   if (!layoutSizeComponent.explicit.width) {
     const width = defaultUnitSize(model, 'width');

@@ -10,6 +10,7 @@ import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
+import {parseConcatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
@@ -36,6 +37,10 @@ export class ConcatModel extends Model {
     this.children.forEach((child) => {
       child.parseData();
     });
+  }
+
+  public parseLayoutSize() {
+    parseConcatLayoutSize(this);
   }
 
   public parseSelection() {

@@ -21,7 +21,6 @@ import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
-import {parseLayoutSize} from './layout/parse';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
@@ -202,9 +201,7 @@ export abstract class Model {
     parseScale(this);
   }
 
-  public parseLayoutSize() {
-    parseLayoutSize(this);
-  }
+  public abstract parseLayoutSize(): void;
 
   public parseMarkDef() {
     parseMarkDef(this);
