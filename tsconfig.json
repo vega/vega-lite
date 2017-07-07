@@ -19,7 +19,7 @@
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
-    "examples/**/*.ts",
+    "examples/*.test.ts",
     "typings/*.d.ts"
   ],
   "exclude": [
