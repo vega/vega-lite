@@ -43,7 +43,7 @@ export class TimeUnitNode extends DataFlowNode {
     return new TimeUnitNode(formula);
   }
 
-  public static makeFromTransfrom(model: Model, t: TimeUnitTransform) {
+  public static makeFromTransform(model: Model, t: TimeUnitTransform) {
     return new TimeUnitNode({
       [t.field]: {
         as: t.as,

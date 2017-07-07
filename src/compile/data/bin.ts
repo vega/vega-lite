@@ -90,7 +90,7 @@ export class BinNode extends DataFlowNode {
     return new BinNode(bins);
   }
 
-  public static makeBinFromTransform(model: Model, t: BinTransform) {
+  public static makeFromTransform(model: Model, t: BinTransform) {
     const bins: Dict<BinComponent> = {};
 
     const bin = normalizeBin(t.bin, undefined) || {};

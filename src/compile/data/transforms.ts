@@ -182,9 +182,9 @@ export function parseTransformArray(model: Model) {
 
       node = new FilterNode(model, t.filter);
     } else if (isBin(t)) {
-      node = BinNode.makeBinFromTransform(model, t);
+      node = BinNode.makeFromTransform(model, t);
     } else if (isTimeUnit(t)) {
-      node = TimeUnitNode.makeFromTransfrom(model, t);
+      node = TimeUnitNode.makeFromTransform(model, t);
     } else if (isSummarize(t)) {
       node = AggregateNode.makeFromTransform(model, t);
     } else if (isLookup(t)) {

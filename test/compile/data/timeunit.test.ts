@@ -11,7 +11,7 @@ function assembleFromEncoding(model: ModelWithField) {
 }
 
 function assembleFromTransform(model: Model, t: TimeUnitTransform) {
-  return TimeUnitNode.makeFromTransfrom(model, t).assemble();
+  return TimeUnitNode.makeFromTransform(model, t).assemble();
 }
 
 describe('compile/data/timeunit', () => {
