@@ -1,9 +1,8 @@
-import {json, text} from 'd3-request';
+import {text} from 'd3-request';
 import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
 import {vegaLite} from 'vega-tooltip';
-import {Spec} from '../../build/src/spec';
 import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;

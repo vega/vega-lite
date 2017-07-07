@@ -14,11 +14,9 @@ export function runStreamingExample(eleId: string) {
     }
   };
 
-
-
   embed(eleId, vlSpec, {
     actions: false
-  }).then(function(res) {
+  }).then(res => {
     const {view} = res;
 
     /**
@@ -44,7 +42,9 @@ export function runStreamingExample(eleId: string) {
     let minimumX = -100;
     window.setInterval(() => {
       minimumX++;
-      const changeSet = view.changeset().insert(valueGenerator()).remove((t: {x: number}) => t.x < minimumX);
+      const changeSet = view.changeset()
+        .insert(valueGenerator())
+        .remove((t: {x: number}) => t.x < minimumX);
       view.change('table', changeSet).run();
     }, 1000);
   });
