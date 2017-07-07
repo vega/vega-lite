@@ -12,6 +12,7 @@ import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
+import {parseLayerLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
@@ -60,6 +61,10 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseData();
     }
+  }
+
+  public parseLayoutSize() {
+    parseLayerLayoutSize(this);
   }
 
   public parseSelection() {
