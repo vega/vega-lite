@@ -51,7 +51,7 @@ export interface TimeUnitTransform {
 }
 export interface SummarizeTransform {
     /**
-     * Array of objects that contains aggregate information for the transform.
+     * Array of objects that define aggregate fields.
      */
     summarize: Summarize[];
     /**
@@ -61,7 +61,9 @@ export interface SummarizeTransform {
 }
 export interface Summarize {
     /**
-     * The aggregation operations to apply to the fields, such as sum, average or count. See the aggregate operation reference for more.
+     * The aggregation operations to apply to the fields, such as sum, average or count.
+     * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)
+     * for more information.
      */
     aggregate: AggregateOp;
     /**

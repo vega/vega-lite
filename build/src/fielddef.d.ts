@@ -147,7 +147,7 @@ export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelD
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
 export declare function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {
-    condition: FieldDef<F>;
+    condition: Condition<FieldDef<F>>;
 });
 export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
 export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef<any>;

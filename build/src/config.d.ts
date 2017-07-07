@@ -143,5 +143,5 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
     [role: string]: any;
 }
 export declare const defaultConfig: Config;
-export declare function initConfig(config: Config): any;
+export declare function initConfig(config: Config): Config;
 export declare function stripConfig(config: Config): Config;

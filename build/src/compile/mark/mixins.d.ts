@@ -5,7 +5,7 @@ import { VgEncodeEntry, VgValueRef } from '../../vega.schema';
 import { UnitModel } from '../unit';
 export declare function color(model: UnitModel): VgEncodeEntry;
 export declare function markDefProperties(mark: MarkDef, props: (keyof MarkDef)[]): {};
-export declare function valueIfDefined(prop: string, value: VgValueRef): VgEncodeEntry;
+export declare function valueIfDefined(prop: string, value: string | number | boolean): VgEncodeEntry;
 /**
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
@@ -17,270 +17,270 @@ export declare function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0]
 export declare function text(model: UnitModel, channel?: 'text' | 'tooltip'): VgEncodeEntry;
 export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', model: UnitModel): {
     dir?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     font?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     path?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     text?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     x?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     y?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     x2?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     y2?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     size?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     shape?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     url?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     stroke?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeWidth?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeDash?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeDashOffset?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeOpacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fillOpacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     orient?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     tension?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     align?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     angle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     baseline?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     dx?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     radius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontSize?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontStyle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontWeight?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     width?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     yc?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     cursor?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     clip?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     outerRadius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     startAngle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     endAngle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     ellipsis?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     limit?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
 };
 export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef): {
     dir?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     font?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     path?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     text?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     x?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     y?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     x2?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     y2?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     size?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     shape?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     url?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     stroke?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeWidth?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeDash?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeDashOffset?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     strokeOpacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fillOpacity?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     orient?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     tension?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     align?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     angle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     baseline?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     dx?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     radius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontSize?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontStyle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     fontWeight?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     width?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     yc?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     cursor?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     clip?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     outerRadius?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     startAngle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     endAngle?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     ellipsis?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
     limit?: VgValueRef | (VgValueRef & {
-        test: string;
+        test?: string;
     })[];
 };
 export declare function binnedPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', scaleName: string, spacing: number): {

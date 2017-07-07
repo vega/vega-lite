@@ -10,12 +10,12 @@ export { extend, isArray, isObject, isNumber, isString, truncate, toSet, stringV
  * // → {'a': 1, 'c': 3}
  *
  */
-export declare function pick(obj: any, props: string[]): {};
+export declare function pick(obj: object, props: string[]): {};
 /**
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export declare function omit(obj: any, props: string[]): any;
+export declare function omit(obj: object, props: string[]): object;
 export declare function hash(a: any): string;
 export declare function contains<T>(array: T[], item: T): boolean;
 /** Returns the array without the elements in item */
@@ -33,7 +33,7 @@ export declare function flatten(arrays: any[]): any;
 /**
  * recursively merges src into dest
  */
-export declare function mergeDeep(dest: any, ...src: any[]): any;
+export declare function mergeDeep<T>(dest: T, ...src: Partial<T>[]): T;
 export declare function unique<T>(values: T[], f: (item: T) => string): T[];
 export interface Dict<T> {
     [key: string]: T;

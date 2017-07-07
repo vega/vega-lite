@@ -118,7 +118,7 @@ export declare abstract class Model {
     /**
      * Traverse a model's hierarchy to get a particular selection component.
      */
-    getSelectionComponent(name: string): SelectionComponent;
+    getSelectionComponent(varName: string, origName: string): SelectionComponent;
 }
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export declare abstract class ModelWithField extends Model {

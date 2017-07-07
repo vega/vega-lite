@@ -10,7 +10,7 @@ export declare function remove(mark: string): void;
 export declare type CompositeMark = BOXPLOT | ERRORBAR;
 export declare type CompositeMarkDef = BoxPlotDef;
 export declare type CompositeAggregate = BOXPLOT;
-export declare const COMPOSITE_MARK_ROLES: ("boxWhisker" | "box" | "boxMid")[];
+export declare const COMPOSITE_MARK_ROLES: ("box" | "boxWhisker" | "boxMid")[];
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {
 }
 export declare const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {

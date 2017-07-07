@@ -43,6 +43,7 @@ export declare function debug(..._: any[]): void;
 export declare namespace message {
     const INVALID_SPEC = "Invalid spec";
     function cannotProjectOnChannelWithoutField(channel: Channel): string;
+    function selectionNotFound(name: string): string;
     function noSuchRepeatedValue(field: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
