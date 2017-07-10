@@ -69,7 +69,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   }
 
   const output = {
-    $schema: 'http://vega.github.io/schema/vega/v3.0.json',
+    $schema: 'https://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
     // By using Vega layout, we don't support custom autosize
     autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
