@@ -56,18 +56,18 @@ describe('Inputs Selection Transform', function() {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "one_tuple",
-        "update": "{fields: [\"_id\"], values: [one__id]}"
+        "update": "{fields: [\"_vgsid_\"], values: [one__vgsid_]}"
       }
     ]);
 
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
-        "name": "one__id",
+        "name": "one__vgsid_",
         "value": "",
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && datum[\"_id\"]"
+            "update": "datum && datum[\"_vgsid_\"]"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}

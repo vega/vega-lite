@@ -1,6 +1,7 @@
 import {isUrlData, MAIN} from '../../data';
 import {every, flatten, vals} from '../../util';
 import {VgData} from '../../vega.schema';
+import {Model} from '../model';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -9,16 +10,20 @@ import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import {iterateFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
+import {iterateFromLeaves} from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode, LookupNode} from './transforms';
-
+// tslint:disable-next-line:ordered-imports
+// This tslint rule causes a circular dependency here for some reason.
+import {addIdentifierTransforms} from '../selection/selection';
 
 export const FACET_SCALE_PREFIX = 'scale_';
+
+export const SOURCE_PREFIX = 'source_';
 
 /**
  * Start optimization path from the root. Useful for removing nodes.
@@ -307,8 +312,8 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleData(dataCompomponent: DataComponent): VgData[] {
-  let roots: SourceNode[] = vals(dataCompomponent.sources);
+export function assembleData(model: Model, dataComponent: DataComponent): VgData[] {
+  let roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
@@ -331,7 +336,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   roots.forEach(root => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
-      root.dataName = `source_${sourceIndex++}`;
+      root.dataName = `${SOURCE_PREFIX}${sourceIndex++}`;
     }
 
     const newData: VgData = root.assemble();
@@ -353,10 +358,10 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   for (const d of data) {
     for (const t of d.transform || []) {
       if (t.type === 'lookup') {
-        t.from = dataCompomponent.outputNodes[t.from].getSource();
+        t.from = dataComponent.outputNodes[t.from].getSource();
       }
     }
   }
 
-  return data;
+  return addIdentifierTransforms(model, data);
 }

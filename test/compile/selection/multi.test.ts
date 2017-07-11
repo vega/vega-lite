@@ -30,7 +30,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "datum && {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]}"
+        update: "datum && {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]}"
       }]
     }]);
 
