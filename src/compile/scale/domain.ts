@@ -43,11 +43,9 @@ function parseUnitScaleDomain(model: UnitModel) {
     const specifiedScale = scales[channel];
     const specifiedDomain = specifiedScale ? specifiedScale.domain : undefined;
 
-    const hasSpecifiedDomain = specifiedDomain && !isSelectionDomain(specifiedDomain);
-
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
-    localScaleCmpt.set('domains', domains, hasSpecifiedDomain);
+    localScaleCmpt.domains = domains;
 
     if (isSelectionDomain(specifiedDomain)) {
       // As scale parsing occurs before selection parsing, we use a temporary
@@ -78,11 +76,10 @@ function parseNonUnitScaleDomain(model: Model) {
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
       if (childComponent) {
-        const childDomains = childComponent.get('domains');
         if (domains === undefined) {
-          domains = childDomains;
+          domains = childComponent.domains;
         } else {
-          domains = domains.concat(childDomains);
+          domains = domains.concat(childComponent.domains);
         }
       }
     }
@@ -96,7 +93,7 @@ function parseNonUnitScaleDomain(model: Model) {
       });
     }
 
-    localScaleComponents[channel].set('domains', domains, true);
+    localScaleComponents[channel].domains = domains;
   });
 }
 

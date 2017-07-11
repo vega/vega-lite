@@ -119,7 +119,7 @@ describe('Repeat', function() {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      assert.deepEqual(colorScale.get('domains').length, 4);
+      assert.deepEqual(colorScale.domains.length, 4);
 
       model.parseLegend();
 

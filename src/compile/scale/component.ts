@@ -3,18 +3,17 @@ import {Scale, ScaleType} from '../../scale';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
-export type ScaleComponentProps = {
-  // TODO: integrate selectionDomain here and prevent domainRaw from below
-  domains?: VgNonUnionDomain[];
-} & Partial<Pick<VgScale,
+export type ScaleComponentProps = Partial<Pick<VgScale,
   // All VgDomain property except domain.
   // (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
   // TODO: also exclude domainRaw and property implement the right scaleComponent for selection domain
   'name' | 'type' | 'domainRaw' | 'range' | 'clamp' | 'exponent' | 'interpolate' | 'nice' | 'padding' | 'paddingInner' | 'paddingOuter' | 'reverse' | 'round' | 'zero'
 >>;
 
-export class ScaleComponent extends Split<Partial<ScaleComponentProps>> {
+export class ScaleComponent extends Split<ScaleComponentProps> {
   public merged = false;
+
+  public domains: VgNonUnionDomain[] = [];
 
   constructor(name: string, typeWithExplicit: Explicit<ScaleType>) {
     super(
