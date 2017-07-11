@@ -315,13 +315,13 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: 
  * Converts an array of domains to a single Vega scale domain.
  */
 export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
-  const uniqueDomains = util.unique(domains.map(d => {
+  const uniqueDomains = util.unique(domains.map(domain => {
     // ignore sort property when computing the unique domains
-    if (isDataRefDomain(d)) {
-      const {sort: _s, ...dom} = d;
-      return dom;
+    if (isDataRefDomain(domain)) {
+      const {sort: _s, ...domainWithoutSort} = domain;
+      return domainWithoutSort;
     }
-    return d;
+    return domain;
   }), util.hash);
 
   const sorts: VgSortField[] = util.unique(domains.map(d => {
@@ -358,8 +358,6 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return domain;
   }
 
-  let sort: VgUnionSortField = true;
-
   // only keep simple sort properties that work with unioned domains
   const onlySimpleSorts = sorts.filter(s => {
     if (isBoolean(s)) {
@@ -371,6 +369,8 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     log.warn(log.message.domainSortDropped(s));
     return false;
   }) as VgUnionSortField[];
+
+  let sort: VgUnionSortField = true;
 
   if (onlySimpleSorts.length === 1) {
     sort = onlySimpleSorts[0];
