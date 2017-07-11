@@ -19,7 +19,7 @@ const scaleBindings:TransformCompiler = {
     const bound: Channel[] = selCmpt.scales = [];
 
     selCmpt.project.forEach(function(p) {
-      const channel = p.encoding;
+      const channel = p.channel;
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 

@@ -6,6 +6,8 @@ import {SelectionDomain} from '../../scale';
 import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
+import {DataFlowNode} from '../data/dataflow';
+import {TimeUnitNode} from '../data/timeunit';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -33,6 +35,7 @@ export interface SelectionComponent {
   // Transforms
   project?: ProjectComponent[];
   fields?: any;
+  timeUnit?: TimeUnitNode;
   scales?: Channel[];
   toggle?: any;
   translate?: any;
@@ -42,7 +45,7 @@ export interface SelectionComponent {
 
 export interface ProjectComponent {
   field?: string;
-  encoding?: ScaleChannel;
+  channel?: ScaleChannel;
 }
 
 export interface SelectionCompiler {
@@ -211,12 +214,22 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-export function predicate(model: Model, selections: LogicalOperand<string>): string {
+export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
   function expr(name: string): string {
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
     const op = PREDICATES_OPS[selCmpt.resolve];
+
+    if (selCmpt.timeUnit) {
+      const child = dfnode || model.component.data.main;
+      const tunode = selCmpt.timeUnit.clone();
+      if (child.parent) {
+        tunode.insertAsParentOf(child);
+      } else {
+        child.parent = tunode;
+      }
+    }
 
     return compiler(selCmpt.type).predicate +
       `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
