@@ -423,18 +423,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domainRaw": {
-                "signal": "region_Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -447,13 +435,26 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "domainRaw": {
+                "signal": "region_Horsepower"
+            },
+            "round": true,
+            "nice": true,
+            "zero": true
         },
         {
             "name": "concat_0_y",
             "type": "linear",
-            "domainRaw": {
-                "signal": "region_Miles_per_Gallon"
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
             },
             "range": [
                 {
@@ -461,17 +462,20 @@
                 },
                 0
             ],
+            "domainRaw": {
+                "signal": "region_Miles_per_Gallon"
+            },
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "concat_1_y",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Acceleration"
+            },
             "range": [
                 {
                     "signal": "concat_1_height"
@@ -480,11 +484,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "Acceleration"
-            }
+            "zero": true
         }
     ],
     "config": {

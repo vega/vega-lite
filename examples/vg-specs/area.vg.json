@@ -103,6 +103,10 @@
         {
             "name": "x",
             "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonth_date"
+            },
             "range": [
                 0,
                 {
@@ -110,15 +114,15 @@
                 }
             ],
             "nice": "month",
-            "round": true,
-            "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
-            }
+            "round": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "sum_count"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -127,11 +131,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "sum_count"
-            }
+            "zero": true
         }
     ],
     "axes": [

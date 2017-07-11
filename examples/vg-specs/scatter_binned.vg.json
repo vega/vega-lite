@@ -129,14 +129,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -144,19 +136,19 @@
                     "bin_maxbins_10_IMDB_Rating_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -164,21 +156,29 @@
                     "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "size",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
             "range": [
                 0,
                 361
             ],
             "nice": false,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            }
+            "zero": true
         }
     ],
     "axes": [

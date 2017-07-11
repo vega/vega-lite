@@ -88,6 +88,10 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -96,15 +100,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_Displacement"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -113,11 +117,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Displacement"
-            }
+            "zero": true
         }
     ],
     "axes": [

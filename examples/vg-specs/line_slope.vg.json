@@ -122,22 +122,26 @@
         {
             "name": "x",
             "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "year",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
                 }
             },
             "padding": 0.5,
-            "round": true,
-            "domain": {
-                "data": "source_0",
-                "field": "year",
-                "sort": true
-            }
+            "round": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "median_yield"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -146,21 +150,17 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "median_yield"
-            }
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "source_0",
                 "field": "site",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "axes": [

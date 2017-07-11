@@ -241,14 +241,6 @@
         {
             "name": "x",
             "type": "band",
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "fields": [
                     {
@@ -265,11 +257,23 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "layer_0_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "mean_precipitation"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -278,24 +282,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "mean_precipitation"
-            }
+            "zero": true
         },
         {
             "name": "layer_1_y",
             "type": "linear",
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "zero": false,
-            "round": true,
-            "nice": true,
             "domain": {
                 "fields": [
                     {
@@ -308,7 +299,16 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "zero": false,
+            "round": true,
+            "nice": true
         }
     ],
     "axes": [

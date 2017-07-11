@@ -289,6 +289,10 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "X"
+            },
             "range": [
                 0,
                 {
@@ -297,15 +301,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "X"
-            }
+            "nice": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Y"
+            },
             "range": [
                 {
                     "signal": "child_height"
@@ -314,11 +318,7 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Y"
-            }
+            "nice": true
         }
     ],
     "config": {

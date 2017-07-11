@@ -96,6 +96,10 @@
         {
             "name": "x",
             "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Year"
+            },
             "range": [
                 0,
                 {
@@ -103,15 +107,15 @@
                 }
             ],
             "round": true,
-            "nice": "year",
-            "domain": {
-                "data": "source_0",
-                "field": "year_Year"
-            }
+            "nice": "year"
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_Horsepower"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -120,11 +124,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
-            }
+            "zero": true
         }
     ],
     "axes": [

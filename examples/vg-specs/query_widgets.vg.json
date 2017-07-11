@@ -232,6 +232,19 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Horsepower"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Horsepower"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 0,
                 {
@@ -240,24 +253,24 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Horsepower"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Horsepower"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Miles_per_Gallon"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Miles_per_Gallon"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 {
                     "signal": "height"
@@ -266,25 +279,11 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Miles_per_Gallon"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Miles_per_Gallon"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "fields": [
                     {
@@ -297,7 +296,8 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "axes": [

@@ -17,19 +17,10 @@ export class Split<T extends object> {
     return new Split(duplicate(this.explicit), duplicate(this.implicit));
   }
 
-  public combine(keys: (keyof T)[] = []): T {
-    const base = keys.reduce((b, key) => {
-      const value = this.get(key);
-      if (value) {
-        b[key] = value;
-      }
-      return b;
-    }, {} as Partial<T>);
-
+  public combine(): T {
     // FIXME remove "as any".
     // Add "as any" to avoid an error "Spread types may only be created from object types".
     return {
-      ...base as any,
       ...this.explicit as any, // Explicit properties comes first
       ...this.implicit as any
     };

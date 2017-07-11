@@ -94,14 +94,6 @@
         {
             "name": "x",
             "type": "band",
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "data": "source_0",
                 "field": "Cylinders",
@@ -109,11 +101,23 @@
                     "op": "count",
                     "order": "descending"
                 }
-            }
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "count_*"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -122,11 +126,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "count_*"
-            }
+            "zero": true
         }
     ],
     "axes": [

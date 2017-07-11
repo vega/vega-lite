@@ -103,18 +103,18 @@
         {
             "name": "x",
             "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "a",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
                 }
             },
             "round": true,
-            "padding": 0.5,
-            "domain": {
-                "data": "source_0",
-                "field": "a",
-                "sort": true
-            }
+            "padding": 0.5
         }
     ],
     "axes": [

@@ -228,56 +228,56 @@
         {
             "name": "x",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
+            "domain": [
+                75,
+                150
+            ],
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "round": true,
             "nice": true,
-            "zero": false,
-            "domain": [
-                75,
-                150
-            ]
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
+            "domain": [
+                20,
+                40
+            ],
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "round": true,
             "nice": true,
-            "zero": false,
-            "domain": [
-                20,
-                40
-            ]
+            "zero": false
         },
         {
             "name": "size",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders"
+            },
             "range": [
                 0,
                 361
             ],
             "nice": false,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders"
-            }
+            "zero": true
         }
     ],
     "axes": [

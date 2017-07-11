@@ -629,6 +629,10 @@
         {
             "name": "concat_0_x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -637,15 +641,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "concat_0_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "concat_0_height"
@@ -654,15 +658,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "concat_1_x",
             "type": "linear",
+            "domain": [
+                0,
+                25
+            ],
             "range": [
                 0,
                 {
@@ -671,15 +675,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": false,
-            "domain": [
-                0,
-                25
-            ]
+            "zero": false
         },
         {
             "name": "concat_1_y",
             "type": "linear",
+            "domain": [
+                0,
+                500
+            ],
             "range": [
                 {
                     "signal": "concat_1_height"
@@ -688,11 +692,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": false,
-            "domain": [
-                0,
-                500
-            ]
+            "zero": false
         }
     ],
     "config": {

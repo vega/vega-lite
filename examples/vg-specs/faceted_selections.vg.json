@@ -800,8 +800,9 @@
         {
             "name": "x",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_X"
+            "domain": {
+                "data": "source_0",
+                "field": "X"
             },
             "range": [
                 0,
@@ -809,19 +810,19 @@
                     "signal": "child_width"
                 }
             ],
+            "domainRaw": {
+                "signal": "grid_X"
+            },
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "X"
-            }
+            "nice": true
         },
         {
             "name": "y",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_Y"
+            "domain": {
+                "data": "source_0",
+                "field": "Y"
             },
             "range": [
                 {
@@ -829,13 +830,12 @@
                 },
                 0
             ],
+            "domainRaw": {
+                "signal": "grid_Y"
+            },
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Y"
-            }
+            "nice": true
         }
     ],
     "config": {

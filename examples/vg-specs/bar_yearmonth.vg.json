@@ -98,6 +98,10 @@
         {
             "name": "x",
             "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonth_date"
+            },
             "range": [
                 0,
                 {
@@ -105,15 +109,15 @@
                 }
             ],
             "round": true,
-            "nice": "month",
-            "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
-            }
+            "nice": "month"
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_temp"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -122,11 +126,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "mean_temp"
-            }
+            "zero": true
         }
     ],
     "axes": [

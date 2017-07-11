@@ -496,14 +496,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "fields": [
                     {
@@ -524,11 +516,32 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "count_*"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "count_*"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 {
                     "signal": "height"
@@ -537,20 +550,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "count_*"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "count_*"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         }
     ],
     "axes": [

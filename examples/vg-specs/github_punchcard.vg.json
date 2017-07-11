@@ -107,48 +107,48 @@
         {
             "name": "x",
             "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "hours_time",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
                 }
             },
             "round": true,
-            "padding": 0.5,
-            "domain": {
-                "data": "source_0",
-                "field": "hours_time",
-                "sort": true
-            }
+            "padding": 0.5
         },
         {
             "name": "y",
             "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "day_time",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "y_step"
                 }
             },
             "round": true,
-            "padding": 0.5,
-            "domain": {
-                "data": "source_0",
-                "field": "day_time",
-                "sort": true
-            }
+            "padding": 0.5
         },
         {
             "name": "size",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "sum_count"
+            },
             "range": [
                 0,
                 361
             ],
             "nice": false,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "sum_count"
-            }
+            "zero": true
         }
     ],
     "axes": [

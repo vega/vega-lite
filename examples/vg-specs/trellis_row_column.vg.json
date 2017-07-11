@@ -377,6 +377,10 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -385,15 +389,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "child_height"
@@ -402,31 +406,27 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "shape",
             "type": "ordinal",
-            "range": "symbol",
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
                 "sort": true
-            }
+            },
+            "range": "symbol"
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "source_0",
                 "field": "Cylinders",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "legends": [

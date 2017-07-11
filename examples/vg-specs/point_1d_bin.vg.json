@@ -91,14 +91,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -106,7 +98,15 @@
                     "bin_maxbins_10_IMDB_Rating_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "zero": false
         }
     ],
     "axes": [

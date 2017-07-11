@@ -150,6 +150,19 @@
         {
             "name": "x",
             "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Cylinders"
+                    }
+                ],
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -157,24 +170,24 @@
             },
             "round": true,
             "paddingInner": 0,
-            "paddingOuter": 0,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Cylinders"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Cylinders"
-                    }
-                ],
-                "sort": true
-            }
+            "paddingOuter": 0
         },
         {
             "name": "y",
             "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    }
+                ],
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "y_step"
@@ -182,31 +195,18 @@
             },
             "round": true,
             "paddingInner": 0,
-            "paddingOuter": 0,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Origin"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "Origin"
-                    }
-                ],
-                "sort": true
-            }
+            "paddingOuter": 0
         },
         {
             "name": "color",
             "type": "sequential",
-            "range": "heatmap",
-            "nice": false,
-            "zero": false,
             "domain": {
                 "data": "data_0",
                 "field": "count_*"
-            }
+            },
+            "range": "heatmap",
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

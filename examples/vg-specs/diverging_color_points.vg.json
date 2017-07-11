@@ -79,6 +79,10 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -87,15 +91,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -104,27 +108,23 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "color",
             "type": "sequential",
+            "domain": [
+                1000,
+                2750,
+                4500
+            ],
             "range": [
                 "#ff7f0e",
                 "#e7ba52",
                 "#17becf"
             ],
             "nice": false,
-            "zero": false,
-            "domain": [
-                1000,
-                2750,
-                4500
-            ]
+            "zero": false
         }
     ],
     "axes": [

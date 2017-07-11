@@ -114,6 +114,14 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_yield_start",
+                    "sum_yield_end"
+                ],
+                "sort": true
+            },
             "range": [
                 0,
                 {
@@ -122,19 +130,16 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_yield_start",
-                    "sum_yield_end"
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "variety",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "y_step"
@@ -142,22 +147,17 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "source_0",
-                "field": "variety",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "source_0",
                 "field": "site",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "axes": [

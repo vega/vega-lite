@@ -115,6 +115,10 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "x"
+            },
             "range": [
                 0,
                 {
@@ -123,15 +127,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "x"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "y"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -140,21 +144,17 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "y"
-            }
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "ordinal",
             "domain": {
                 "data": "data_0",
                 "field": "a",
                 "sort": true
-            }
+            },
+            "range": "ordinal"
         }
     ],
     "axes": [

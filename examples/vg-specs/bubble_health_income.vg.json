@@ -233,8 +233,9 @@
         {
             "name": "x",
             "type": "log",
-            "domainRaw": {
-                "signal": "view_income"
+            "domain": {
+                "data": "source_0",
+                "field": "income"
             },
             "range": [
                 0,
@@ -242,18 +243,18 @@
                     "signal": "width"
                 }
             ],
+            "domainRaw": {
+                "signal": "view_income"
+            },
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "income"
-            }
+            "nice": true
         },
         {
             "name": "y",
             "type": "linear",
-            "domainRaw": {
-                "signal": "view_health"
+            "domain": {
+                "data": "source_0",
+                "field": "health"
             },
             "range": [
                 {
@@ -261,27 +262,26 @@
                 },
                 0
             ],
+            "domainRaw": {
+                "signal": "view_health"
+            },
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "source_0",
-                "field": "health"
-            }
+            "nice": true
         },
         {
             "name": "size",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "population"
+            },
             "range": [
                 0,
                 361
             ],
             "nice": false,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "population"
-            }
+            "zero": true
         }
     ],
     "axes": [

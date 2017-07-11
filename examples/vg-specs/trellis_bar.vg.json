@@ -311,6 +311,11 @@
         {
             "name": "x",
             "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "age",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -318,16 +323,19 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "source_0",
-                "field": "age",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_people_start",
+                    "sum_people_end"
+                ],
+                "sort": true
+            },
             "range": [
                 {
                     "signal": "child_height"
@@ -336,28 +344,20 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_people_start",
-                    "sum_people_end"
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": [
-                "#EA98D2",
-                "#659CCA"
-            ],
             "domain": {
                 "data": "source_0",
                 "field": "gender",
                 "sort": true
-            }
+            },
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
         }
     ],
     "legends": [

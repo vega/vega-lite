@@ -301,14 +301,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                {
-                    "signal": "child_width"
-                }
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -316,11 +308,23 @@
                     "bin_maxbins_15_Horsepower_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "child_width"
+                }
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
             "range": [
                 {
                     "signal": "child_height"
@@ -329,11 +333,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            }
+            "zero": true
         }
     ],
     "config": {

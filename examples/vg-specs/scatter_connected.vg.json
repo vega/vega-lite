@@ -146,6 +146,19 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "miles"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "miles"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 0,
                 {
@@ -154,24 +167,24 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "miles"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "miles"
-                    }
-                ],
-                "sort": true
-            }
+            "nice": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "gas"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "gas"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 {
                     "signal": "height"
@@ -180,20 +193,7 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "gas"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "gas"
-                    }
-                ],
-                "sort": true
-            }
+            "nice": true
         }
     ],
     "axes": [

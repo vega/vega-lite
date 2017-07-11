@@ -121,6 +121,11 @@
         {
             "name": "x",
             "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "month_date",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -128,16 +133,19 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "source_0",
-                "field": "month_date",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ],
+                "sort": true
+            },
             "range": [
                 {
                     "signal": "height"
@@ -146,28 +154,20 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "count_*_start",
-                    "count_*_end"
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "size",
             "type": "point",
-            "range": [
-                2,
-                20
-            ],
             "domain": {
                 "data": "source_0",
                 "field": "weather",
                 "sort": true
-            }
+            },
+            "range": [
+                2,
+                20
+            ]
         }
     ],
     "axes": [

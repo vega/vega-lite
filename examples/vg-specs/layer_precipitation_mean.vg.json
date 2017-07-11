@@ -161,6 +161,11 @@
         {
             "name": "x",
             "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "month_date",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "x_step"
@@ -168,25 +173,11 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "data_0",
-                "field": "month_date",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -199,7 +190,16 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         }
     ],
     "axes": [

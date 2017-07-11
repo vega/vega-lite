@@ -275,6 +275,10 @@
         {
             "name": "child_Origin_x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -283,15 +287,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "child_Origin_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -300,25 +304,25 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "child_Origin_color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "data_0",
                 "field": "Origin",
                 "sort": true
-            }
+            },
+            "range": "category"
         },
         {
             "name": "child_Cylinders_x",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -327,15 +331,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "child_Cylinders_y",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -344,21 +348,17 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "child_Cylinders_color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "data_1",
                 "field": "Cylinders",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "config": {

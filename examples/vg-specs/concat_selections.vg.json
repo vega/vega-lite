@@ -778,6 +778,10 @@
         {
             "name": "concat_0_x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
+            },
             "range": [
                 0,
                 {
@@ -786,15 +790,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "concat_0_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            },
             "range": [
                 {
                     "signal": "concat_0_height"
@@ -803,17 +807,14 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "concat_1_x",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_Displacement"
+            "domain": {
+                "data": "data_1",
+                "field": "Displacement"
             },
             "range": [
                 0,
@@ -821,19 +822,19 @@
                     "signal": "width"
                 }
             ],
+            "domainRaw": {
+                "signal": "grid_Displacement"
+            },
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "Displacement"
-            }
+            "zero": true
         },
         {
             "name": "concat_1_y",
             "type": "linear",
-            "domainRaw": {
-                "signal": "grid_Acceleration"
+            "domain": {
+                "data": "data_1",
+                "field": "Acceleration"
             },
             "range": [
                 {
@@ -841,13 +842,12 @@
                 },
                 0
             ],
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "Acceleration"
-            }
+            "zero": true
         }
     ],
     "config": {

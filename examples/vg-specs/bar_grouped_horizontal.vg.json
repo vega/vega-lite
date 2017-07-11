@@ -274,6 +274,14 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_people_start",
+                    "sum_people_end"
+                ],
+                "sort": true
+            },
             "range": [
                 0,
                 {
@@ -282,19 +290,16 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_people_start",
-                    "sum_people_end"
-                ],
-                "sort": true
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "gender",
+                "sort": true
+            },
             "range": {
                 "step": {
                     "signal": "y_step"
@@ -302,25 +307,20 @@
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "source_0",
-                "field": "gender",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": [
-                "#EA98D2",
-                "#659CCA"
-            ],
             "domain": {
                 "data": "source_0",
                 "field": "gender",
                 "sort": true
-            }
+            },
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
         }
     ],
     "legends": [

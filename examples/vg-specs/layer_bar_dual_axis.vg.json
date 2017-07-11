@@ -174,14 +174,6 @@
         {
             "name": "x",
             "type": "band",
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "fields": [
                     {
@@ -194,11 +186,23 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "layer_0_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "mean_precipitation"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -207,15 +211,15 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "mean_precipitation"
-            }
+            "zero": true
         },
         {
             "name": "layer_1_y",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "mean_temp_max"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -224,11 +228,7 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "data_1",
-                "field": "mean_temp_max"
-            }
+            "nice": true
         }
     ],
     "axes": [

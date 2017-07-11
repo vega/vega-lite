@@ -582,8 +582,9 @@
         {
             "name": "concat_0_x",
             "type": "time",
-            "domainRaw": {
-                "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
+            "domain": {
+                "data": "data_0",
+                "field": "date"
             },
             "range": [
                 0,
@@ -591,15 +592,18 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
-            "domain": {
-                "data": "data_0",
-                "field": "date"
-            }
+            "domainRaw": {
+                "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
+            },
+            "round": true
         },
         {
             "name": "concat_0_y",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "price"
+            },
             "range": [
                 {
                     "signal": "concat_0_height"
@@ -608,30 +612,30 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "price"
-            }
+            "zero": true
         },
         {
             "name": "concat_1_x",
             "type": "time",
+            "domain": {
+                "data": "data_1",
+                "field": "date"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "round": true,
-            "domain": {
-                "data": "data_1",
-                "field": "date"
-            }
+            "round": true
         },
         {
             "name": "concat_1_y",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "price"
+            },
             "range": [
                 {
                     "signal": "concat_1_height"
@@ -640,11 +644,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_1",
-                "field": "price"
-            }
+            "zero": true
         }
     ],
     "config": {
