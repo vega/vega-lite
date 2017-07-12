@@ -170,9 +170,11 @@ export class RepeatModel extends Model {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
-    }, []);
+    // TODO(https://github.com/vega/vega-lite/issues/2415): for repeat with shared scales, need to move some of the signals from the children to parent
+    // return this.children.reduce((signals, child) => {
+    //   return signals.concat(child.assembleLayoutSignals());
+    // }, []);
+    return [];
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

@@ -91,7 +91,6 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
             {name: 'height', update: model.getName('height')}
           ] : []
         ),
-        model.assembleLayoutSignals(),
         model.assembleSelectionTopLevelSignals([])
       )
     ),
