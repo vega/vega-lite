@@ -1,6 +1,7 @@
 import {SingleDefChannel} from './channel';
 import {VgBinding} from './vega.schema';
 
+export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
@@ -182,8 +183,8 @@ export interface SelectionConfig {
 }
 
 export const defaultConfig:SelectionConfig = {
-  single: {on: 'click', fields: ['_id'], resolve: 'global'},
-  multi: {on: 'click', fields: ['_id'], toggle: 'event.shiftKey', resolve: 'global'},
+  single: {on: 'click', fields: [SELECTION_ID], resolve: 'global'},
+  multi: {on: 'click', fields: [SELECTION_ID], toggle: 'event.shiftKey', resolve: 'global'},
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
     encodings: ['x', 'y'],

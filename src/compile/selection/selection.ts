@@ -3,7 +3,7 @@ import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
-import {BrushConfig, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
+import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
@@ -318,8 +318,15 @@ export function unitName(model: Model) {
     name += (facet.facet.row ? ` + '_' + facet[${stringValue(facet.field('row'))}]` : '')
       + (facet.facet.column ? ` + '_' + facet[${stringValue(facet.field('column'))}]` : '');
   }
-
   return name;
+}
+
+export function requiresSelectionId(model: Model) {
+  let identifier = false;
+  forEachSelection(model, (selCmpt) => {
+    identifier = identifier || selCmpt.project.some((proj) => proj.field === SELECTION_ID);
+  });
+  return identifier;
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
