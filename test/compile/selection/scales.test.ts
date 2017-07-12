@@ -44,7 +44,12 @@ describe('Selection + Scales', function() {
             }
           }
         }
-      ]});
+      ],
+      resolve: {
+        color: {scale: 'independent'},
+        opacity: {scale: 'independent'}
+      }
+    });
 
     model.parseScale();
     model.parseSelection();

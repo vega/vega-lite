@@ -32,7 +32,7 @@ const interval:SelectionCompiler = {
     }
 
     selCmpt.project.forEach(function(p) {
-      const channel = p.encoding;
+      const channel = p.channel;
       if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
         return;
@@ -150,10 +150,10 @@ export function projections(selCmpt: SelectionComponent) {
   let yi: number = null;
 
   selCmpt.project.forEach(function(p, i) {
-    if (p.encoding === X) {
+    if (p.channel === X) {
       x  = p;
       xi = i;
-    } else if (p.encoding === Y) {
+    } else if (p.channel === Y) {
       y = p;
       yi = i;
     }

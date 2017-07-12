@@ -12,10 +12,10 @@ const multi:SelectionCompiler = {
     const datum = nearest.has(selCmpt) ?
       '(item().isVoronoi ? datum.datum : datum)' : 'datum';
     const bins = {};
-    const encodings = proj.map((p) => stringValue(p.encoding)).filter((e) => e).join(', ');
+    const encodings = proj.map((p) => stringValue(p.channel)).filter((e) => e).join(', ');
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => {
-      const channel = p.encoding;
+      const channel = p.channel;
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
       // FIXME: Arvind -- please log proper warning when the specified encoding channel has no field

@@ -6,7 +6,7 @@ import {Facet} from '../facet';
 import {Field, FieldDef, isRepeatRef} from '../fielddef';
 import * as log from '../log';
 import {Repeat} from '../repeat';
-import {initRepeatResolve, ResolveMapping} from '../resolve';
+import {ResolveMapping} from '../resolve';
 import {RepeatSpec} from '../spec';
 import {Dict, keys} from '../util';
 import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -81,10 +81,7 @@ export class RepeatModel extends Model {
   public readonly children: Model[];
 
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
-    super(
-      spec, parent, parentGivenName, config,
-      initRepeatResolve(spec.resolve || {})
-    );
+    super(spec, parent, parentGivenName, config, spec.resolve);
 
     this.repeat = spec.repeat;
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);

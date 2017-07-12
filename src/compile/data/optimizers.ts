@@ -1,4 +1,4 @@
-import {hasIntersection} from '../../util';
+import {hasIntersection, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -77,4 +77,27 @@ export function removeUnusedSubtrees(node: DataFlowNode) {
     node.remove();
   }
   return true;
+}
+
+/**
+ * Removes duplicate time unit nodes (as determined by the name of the
+ * output field) that may be generated due to selections projected over
+ * time units.
+ */
+export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
+  let fields = {};
+  return iterateFromLeaves((node: DataFlowNode) => {
+    if (node instanceof TimeUnitNode) {
+      const pfields = node.producedFields();
+      const dupe = keys(pfields).every((k) => !!fields[k]);
+
+      if (dupe) {
+        node.remove();
+      } else {
+        fields = {...fields, ...pfields};
+      }
+    }
+
+    return true;
+  })(leaf);
 }

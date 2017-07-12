@@ -319,6 +319,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   roots = roots.filter(r => r.numChildren() > 0);
 
   getLeaves(roots).forEach(iterateFromLeaves(optimizers.moveParseUp));
+  getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
 
   roots.forEach(moveFacetDown);
 

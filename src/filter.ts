@@ -1,3 +1,4 @@
+import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
 import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -108,12 +109,12 @@ export function isOneOfFilter(filter: any): filter is OneOfFilter {
  * Converts a filter into an expression.
  */
 // model is only used for selection filters.
-export function expression(model: Model, filterOp: LogicalOperand<Filter>): string {
+export function expression(model: Model, filterOp: LogicalOperand<Filter>, node?: DataFlowNode): string {
   return logicalExpr(filterOp, (filter: Filter) => {
     if (isString(filter)) {
       return filter;
     } else if (isSelectionFilter(filter)) {
-      return predicate(model, filter.selection);
+      return predicate(model, filter.selection, node);
     } else { // Filter Object
       const fieldExpr = filter.timeUnit ?
         // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.

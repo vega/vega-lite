@@ -5,6 +5,7 @@ import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {numberFormat, titleMerger} from '../common';
 import {Model} from '../model';
+import {parseGuideResolve} from '../resolve';
 import {Explicit, makeImplicit} from '../split';
 import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -92,44 +93,39 @@ function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifi
 }
 
 export function parseNonUnitLegend(model: Model) {
-  const legendComponent = model.component.legends = {};
-  const legendResolveIndex: {[k in NonspatialScaleChannel]?: ResolveMode} = {};
+  const {legends, resolve} = model.component;
 
   for (const child of model.children) {
     child.parseLegend();
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      if (model.resolve[channel].legend === 'shared' &&
-          legendResolveIndex[channel] !== 'independent' &&
-          model.component.scales[channel]) {
-        // If default rule says shared and so far there is no conflict and the scale is merged,
+      const channelResolve = model.component.resolve[channel];
+      channelResolve.legend = parseGuideResolve(model.component.resolve, channel);
+
+      if (channelResolve.legend === 'shared') {
+        // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
-        legendComponent[channel] = mergeLegendComponent(legendComponent[channel], child.component.legends[channel]);
+        legends[channel] = mergeLegendComponent(legends[channel], child.component.legends[channel]);
 
-        if (legendComponent[channel]) {
-          // If merge return something, then there is no conflict.
-          // Thus, we can set / preserve the resolve index to be shared.
-          legendResolveIndex[channel] = 'shared';
-        } else {
-          // If merge returns nothing, there is a conflict and thus we cannot make the legend shared.
-          legendResolveIndex[channel] = 'independent';
-          delete legendComponent[channel];
+        if (!legends[channel]) {
+          // If merge returns nothing, there is a conflict so we cannot make the legend shared.
+          // Thus, mark legend as independent and remove the legend component.
+          channelResolve.legend = 'independent';
+          delete legends[channel];
         }
-      } else {
-        legendResolveIndex[channel] = 'independent';
       }
     });
   }
 
-  keys(legendResolveIndex).forEach((channel: NonspatialScaleChannel) => {
+  keys(legends).forEach((channel: NonspatialScaleChannel) => {
     for (const child of model.children) {
       if (!child.component.legends[channel]) {
         // skip if the child does not have a particular legend
         return;
       }
 
-      if (legendResolveIndex[channel] === 'shared') {
+      if (resolve[channel].legend === 'shared') {
         // After merging shared legend, make sure to remove legend from child
         delete child.component.legends[channel];
       }

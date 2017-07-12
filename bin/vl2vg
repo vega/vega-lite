@@ -34,8 +34,8 @@ function compile(vlSpec) {
   // TODO: deal with error
   var vgSpec = result.spec;
   if (args.p) {
-    process.stdout.write(JSON.stringify(vgSpec, null, 4));
+    process.stdout.write(JSON.stringify(vgSpec, null, 4) + '\n');
   } else {
-    process.stdout.write(JSON.stringify(vgSpec));
+    process.stdout.write(JSON.stringify(vgSpec) + '\n');
   }
 }

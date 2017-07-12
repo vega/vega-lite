@@ -39,14 +39,6 @@ import {UnitModel} from './unit';
  */
 export interface Component {
   data: DataComponent;
-  scales: ScaleComponentIndex;
-  selection: Dict<SelectionComponent>;
-
-  /** Dictionary mapping channel to VgAxis definition */
-  axes: AxisComponentIndex;
-
-  /** Dictionary mapping channel to VgLegend definition */
-  legends: LegendComponentIndex;
 
   layoutSize: LayoutSizeComponent;
 
@@ -56,6 +48,16 @@ export interface Component {
   };
 
   mark: VgMarkGroup[];
+  scales: ScaleComponentIndex;
+  selection: Dict<SelectionComponent>;
+
+  /** Dictionary mapping channel to VgAxis definition */
+  axes: AxisComponentIndex;
+
+  /** Dictionary mapping channel to VgLegend definition */
+  legends: LegendComponentIndex;
+
+  resolve: ResolveMapping;
 }
 
 export interface NameMapInterface {
@@ -112,8 +114,7 @@ export abstract class Model {
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config,
-    public readonly resolve: ResolveMapping) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping) {
     this.parent = parent;
     this.config = config;
 
@@ -136,10 +137,14 @@ export abstract class Model {
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
-      mark: null, scales: null, axes: {x: null, y: null},
       layoutSize: new Split<LayoutSize>(),
       layoutHeaders:{row: {}, column: {}},
-      legends: null, selection: null
+      mark: null,
+      resolve: resolve || {},
+      selection: null,
+      scales: null,
+      axes: {},
+      legends: {},
     };
   }
 
@@ -177,8 +182,8 @@ export abstract class Model {
     this.parseScale();
     this.parseMarkDef();
     this.parseLayoutSize(); // depends on scale
-    this.parseData(); // (pathorder) depends on markDef
     this.parseSelection();
+    this.parseData(); // (pathorder) depends on markDef
     this.parseAxisAndHeader(); // depends on scale
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
