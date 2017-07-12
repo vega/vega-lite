@@ -3,6 +3,7 @@ import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model, ModelWithField} from '../model';
+import {requiresSelectionId} from '../selection/selection';
 import {UnitModel} from '../unit';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -16,7 +17,7 @@ import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {parseTransformArray} from './transforms';
+import {IdentifierNode, parseTransformArray} from './transforms';
 
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
@@ -102,6 +103,18 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
+  // Default discrete selections require an identifier transform to
+  // uniquely identify data points as the _id field is volatile. Add
+  // this transform at the head of our pipeline such that the identifier
+  // field is available for all subsequent datasets. Additional identifier
+  // transforms will be necessary when new tuples are constructed
+  // (e.g., post-aggregation).
+  if (requiresSelectionId(model) && !model.parent) {
+    const ident = new IdentifierNode();
+    ident.parent = head;
+    head = ident;
+  }
+
   // HACK: This is equivalent for merging bin extent for union scale.
   // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
   const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
@@ -161,6 +174,12 @@ export function parseData(model: Model): DataComponent {
     if (agg) {
       agg.parent = head;
       head = agg;
+
+      if (requiresSelectionId(model)) {
+        const ident = new IdentifierNode();
+        ident.parent = head;
+        head = ident;
+      }
     }
 
     const stack = StackNode.make(model);
