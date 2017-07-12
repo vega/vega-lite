@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel, ScaleChannel, SingleDefChannel} from '../../channel';
+import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
@@ -298,4 +298,22 @@ export function channelSignalName(selCmpt: SelectionComponent, channel: Channel,
 
 function clipMarks(marks: any[]): any[] {
   return marks.map((m) => (m.clip = true, m));
+}
+
+export function spatialProjections(selCmpt: SelectionComponent) {
+  let x:ProjectComponent = null;
+  let xi:number = null;
+  let y:ProjectComponent = null;
+  let yi: number = null;
+
+  selCmpt.project.forEach((p, i) => {
+    if (p.channel === X) {
+      x  = p;
+      xi = i;
+    } else if (p.channel === Y) {
+      y = p;
+      yi = i;
+    }
+  });
+  return {x, xi, y, yi};
 }
