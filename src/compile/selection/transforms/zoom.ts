@@ -33,9 +33,11 @@ const zoom:TransformCompiler = {
       name: name + ANCHOR,
       on: [{
         events: events,
-        update: hasScales ?
-          `{x: invert(${sx}, x(unit)), y: invert(${sy}, y(unit))}` :
-          `{x: x(unit), y: y(unit)}`
+        update: !hasScales ? `{x: x(unit), y: y(unit)}` :
+          '{' + [
+            (sx ? `x: invert(${sx}, x(unit))` : ''),
+            (sy ? `y: invert(${sy}, y(unit))` : '')
+          ].filter((expr) => !!expr).join(', ') + '}'
       }]
     }, {
       name: delta,
