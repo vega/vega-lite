@@ -24,6 +24,10 @@
             },
             "transform": [
                 {
+                    "type": "identifier",
+                    "as": "_vgsid_"
+                },
+                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin",
@@ -38,6 +42,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "identifier",
+                    "as": "_vgsid_"
                 }
             ]
         }
@@ -80,7 +88,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null"
                 }
             ]
         },

@@ -30,7 +30,7 @@ describe('Single Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
+        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null"
       }]
     }]);
 
@@ -81,7 +81,7 @@ describe('Single Selection', function() {
   it('builds top-level signals', function() {
     const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
-      name: 'one', update: 'data(\"one_store\").length && {_id: data(\"one_store\")[0].values[0]}'
+      name: 'one', update: 'data(\"one_store\").length && {_vgsid_: data(\"one_store\")[0].values[0]}'
     }]);
 
     const twoSg = single.topLevelSignals(model, selCmpts['two'], []);

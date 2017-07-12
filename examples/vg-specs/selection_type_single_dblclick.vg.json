@@ -24,6 +24,10 @@
             },
             "transform": [
                 {
+                    "type": "identifier",
+                    "as": "_vgsid_"
+                },
+                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin",
@@ -38,6 +42,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "identifier",
+                    "as": "_vgsid_"
                 }
             ]
         }
@@ -71,7 +79,7 @@
         },
         {
             "name": "pts",
-            "update": "data(\"pts_store\").length && {_id: data(\"pts_store\")[0].values[0]}"
+            "update": "data(\"pts_store\").length && {_vgsid_: data(\"pts_store\")[0].values[0]}"
         },
         {
             "name": "pts_tuple",
@@ -84,7 +92,7 @@
                             "type": "dblclick"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null"
                 }
             ]
         },
