@@ -14,7 +14,7 @@ export declare class TimeUnitNode extends DataFlowNode {
     clone(): TimeUnitNode;
     constructor(formula: Dict<TimeUnitComponent>);
     static makeFromEncoding(model: ModelWithField): TimeUnitNode;
-    static makeFromTransfrom(model: Model, t: TimeUnitTransform): TimeUnitNode;
+    static makeFromTransform(model: Model, t: TimeUnitTransform): TimeUnitNode;
     merge(other: TimeUnitNode): void;
     producedFields(): {};
     dependentFields(): {};

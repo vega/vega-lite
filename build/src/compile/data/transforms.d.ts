@@ -8,6 +8,7 @@ import { DataFlowNode } from './dataflow';
 export declare class FilterNode extends DataFlowNode {
     private readonly model;
     private filter;
+    private expr;
     clone(): FilterNode;
     constructor(model: Model, filter: LogicalOperand<Filter>);
     assemble(): VgFilterTransform;

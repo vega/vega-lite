@@ -8,7 +8,7 @@ function assembleFromEncoding(model) {
     return timeunit_1.TimeUnitNode.makeFromEncoding(model).assemble();
 }
 function assembleFromTransform(model, t) {
-    return timeunit_1.TimeUnitNode.makeFromTransfrom(model, t).assemble();
+    return timeunit_1.TimeUnitNode.makeFromTransform(model, t).assemble();
 }
 describe('compile/data/timeunit', function () {
     describe('parseUnit', function () {

@@ -33,7 +33,7 @@ var TimeUnitNode = (function (_super) {
         }
         return new TimeUnitNode(formula);
     };
-    TimeUnitNode.makeFromTransfrom = function (model, t) {
+    TimeUnitNode.makeFromTransform = function (model, t) {
         return new TimeUnitNode((_a = {},
             _a[t.field] = {
                 as: t.as,

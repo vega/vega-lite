@@ -18,7 +18,7 @@ export declare class BinNode extends DataFlowNode {
     clone(): BinNode;
     constructor(bins: Dict<BinComponent>);
     static makeBinFromEncoding(model: ModelWithField): BinNode;
-    static makeBinFromTransform(model: Model, t: BinTransform): BinNode;
+    static makeFromTransform(model: Model, t: BinTransform): BinNode;
     merge(other: BinNode): void;
     producedFields(): {};
     dependentFields(): {};

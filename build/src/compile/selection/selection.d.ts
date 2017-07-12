@@ -3,6 +3,8 @@ import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes } from '../../selection';
 import { Dict } from '../../util';
 import { VgBinding, VgData, VgEventStream, VgSignalRef } from '../../vega.schema';
+import { DataFlowNode } from '../data/dataflow';
+import { TimeUnitNode } from '../data/timeunit';
 import { LayerModel } from '../layer';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
@@ -22,6 +24,7 @@ export interface SelectionComponent {
     mark?: BrushConfig;
     project?: ProjectComponent[];
     fields?: any;
+    timeUnit?: TimeUnitNode;
     scales?: Channel[];
     toggle?: any;
     translate?: any;
@@ -30,7 +33,7 @@ export interface SelectionComponent {
 }
 export interface ProjectComponent {
     field?: string;
-    encoding?: ScaleChannel;
+    channel?: ScaleChannel;
 }
 export interface SelectionCompiler {
     signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
@@ -46,7 +49,7 @@ export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]
 export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
-export declare function predicate(model: Model, selections: LogicalOperand<string>): string;
+export declare function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
 export declare function isRawSelectionDomain(domainRaw: VgSignalRef): boolean;
 export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;

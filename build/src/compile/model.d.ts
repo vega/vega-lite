@@ -21,18 +21,19 @@ import { SelectionComponent } from './selection/selection';
  */
 export interface Component {
     data: DataComponent;
-    scales: ScaleComponentIndex;
-    selection: Dict<SelectionComponent>;
-    /** Dictionary mapping channel to VgAxis definition */
-    axes: AxisComponentIndex;
-    /** Dictionary mapping channel to VgLegend definition */
-    legends: LegendComponentIndex;
     layoutSize: LayoutSizeComponent;
     layoutHeaders: {
         row?: LayoutHeaderComponent;
         column?: LayoutHeaderComponent;
     };
     mark: VgMarkGroup[];
+    scales: ScaleComponentIndex;
+    selection: Dict<SelectionComponent>;
+    /** Dictionary mapping channel to VgAxis definition */
+    axes: AxisComponentIndex;
+    /** Dictionary mapping channel to VgLegend definition */
+    legends: LegendComponentIndex;
+    resolve: ResolveMapping;
 }
 export interface NameMapInterface {
     rename(oldname: string, newName: string): void;
@@ -47,7 +48,6 @@ export declare class NameMap implements NameMapInterface {
     get(name: string): string;
 }
 export declare abstract class Model {
-    readonly resolve: ResolveMapping;
     readonly parent: Model;
     readonly name: string;
     readonly description: string;

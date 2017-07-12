@@ -15,7 +15,3 @@ export declare type ResolveMapping = {
 } & {
     [C in NonspatialScaleChannel]?: NonspatialResolve;
 };
-export declare function initLayerResolve(resolve: ResolveMapping): ResolveMapping;
-export declare function initConcatResolve(resolve: ResolveMapping): ResolveMapping;
-export declare function initRepeatResolve(resolve: ResolveMapping): ResolveMapping;
-export declare function initFacetResolve(resolve: ResolveMapping): ResolveMapping;

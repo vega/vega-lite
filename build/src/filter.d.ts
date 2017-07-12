@@ -1,3 +1,4 @@
+import { DataFlowNode } from './compile/data/dataflow';
 import { Model } from './compile/model';
 import { DateTime } from './datetime';
 import { LogicalOperand } from './logical';
@@ -62,4 +63,4 @@ export declare function isOneOfFilter(filter: any): filter is OneOfFilter;
 /**
  * Converts a filter into an expression.
  */
-export declare function expression(model: Model, filterOp: LogicalOperand<Filter>): string;
+export declare function expression(model: Model, filterOp: LogicalOperand<Filter>, node?: DataFlowNode): string;
