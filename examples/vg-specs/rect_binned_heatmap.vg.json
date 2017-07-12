@@ -137,7 +137,8 @@
                 "fields": [
                     "bin_maxbins_60_IMDB_Rating_start",
                     "bin_maxbins_60_IMDB_Rating_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -156,7 +157,8 @@
                 "fields": [
                     "bin_maxbins_40_Rotten_Tomatoes_Rating_start",
                     "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 {

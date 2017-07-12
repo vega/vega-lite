@@ -30,7 +30,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
+        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null"
       }]
     }]);
 

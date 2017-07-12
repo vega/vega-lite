@@ -29,6 +29,10 @@
             },
             "transform": [
                 {
+                    "type": "identifier",
+                    "as": "_vgsid_"
+                },
+                {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
@@ -65,7 +69,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null"
                 }
             ]
         },
