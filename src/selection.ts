@@ -71,7 +71,7 @@ export const defaultConfig:SelectionConfig = {
     on: '[mousedown, window:mouseup] > window:mousemove!',
     encodings: ['x', 'y'],
     translate: '[mousedown, window:mouseup] > window:mousemove!',
-    zoom: 'wheel',
+    zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global'
   }

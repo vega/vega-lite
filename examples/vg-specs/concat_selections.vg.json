@@ -310,6 +310,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -325,6 +326,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -654,7 +656,8 @@
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel"
+                                    "type": "wheel",
+                                    "consume": true
                                 }
                             ],
                             "update": "{x: invert(\"concat_1_x\", x(unit)), y: invert(\"concat_1_y\", y(unit))}"
@@ -668,7 +671,8 @@
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel"
+                                    "type": "wheel",
+                                    "consume": true
                                 }
                             ],
                             "force": true,

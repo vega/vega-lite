@@ -227,7 +227,8 @@
                     "events": [
                         {
                             "source": "scope",
-                            "type": "wheel"
+                            "type": "wheel",
+                            "consume": true
                         }
                     ],
                     "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
@@ -241,7 +242,8 @@
                     "events": [
                         {
                             "source": "scope",
-                            "type": "wheel"
+                            "type": "wheel",
+                            "consume": true
                         }
                     ],
                     "force": true,
@@ -473,6 +475,7 @@
                         {
                             "source": "scope",
                             "type": "wheel",
+                            "consume": true,
                             "markname": "brush_brush"
                         }
                     ],
@@ -488,6 +491,7 @@
                         {
                             "source": "scope",
                             "type": "wheel",
+                            "consume": true,
                             "markname": "brush_brush"
                         }
                     ],

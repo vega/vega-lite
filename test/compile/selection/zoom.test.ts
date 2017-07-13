@@ -71,7 +71,7 @@ describe('Zoom Selection Transform', function() {
           "name": "four_zoom_anchor",
           "on": [
             {
-              "events": parseSelector('@four_brush:wheel', 'scope'),
+              "events": parseSelector('@four_brush:wheel!', 'scope'),
               "update": "{x: x(unit), y: y(unit)}"
             }
           ]
@@ -80,7 +80,7 @@ describe('Zoom Selection Transform', function() {
           "name": "four_zoom_delta",
           "on": [
             {
-              "events": parseSelector('@four_brush:wheel', 'scope'),
+              "events": parseSelector('@four_brush:wheel!', 'scope'),
               "force": true,
               "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
             }
@@ -125,7 +125,7 @@ describe('Zoom Selection Transform', function() {
           "name": "six_zoom_anchor",
           "on": [
             {
-              "events": parseSelector('wheel', 'scope'),
+              "events": parseSelector('wheel!', 'scope'),
               "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
             }
           ]
@@ -134,7 +134,7 @@ describe('Zoom Selection Transform', function() {
           "name": "six_zoom_delta",
           "on": [
             {
-              "events": parseSelector('wheel', 'scope'),
+              "events": parseSelector('wheel!', 'scope'),
               "force": true,
               "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
             }
