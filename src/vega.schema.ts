@@ -38,7 +38,7 @@ export type VgSignalRef = {
   signal: string
 };
 
-export function isVgSignalRef(o: any) {
+export function isVgSignalRef(o: any): o is VgSignalRef  {
   return !!o['signal'];
 }
 
