@@ -193,9 +193,9 @@ export abstract class Model {
 
     this.parseSelection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
-    this.parseAxisAndHeader(); // depends on scale
+    this.parseAxisAndHeader(); // depends on scale and layout size
     this.parseLegend(); // depends on scale, markDef
-    this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
+    this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
