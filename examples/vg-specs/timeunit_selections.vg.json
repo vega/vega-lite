@@ -267,6 +267,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -282,6 +283,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],

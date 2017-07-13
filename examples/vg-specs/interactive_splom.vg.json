@@ -166,8 +166,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -178,7 +179,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -250,8 +251,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -262,7 +264,7 @@
                                             "markname": "brush_brush"
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -280,6 +282,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -298,6 +301,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -367,8 +371,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -378,7 +383,7 @@
                                             ]
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -396,6 +401,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -413,6 +419,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -642,8 +649,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -654,7 +662,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -709,8 +717,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -721,7 +730,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -793,8 +802,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -805,7 +815,7 @@
                                             "markname": "brush_brush"
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -823,6 +833,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -841,6 +852,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -928,8 +940,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -939,7 +952,7 @@
                                             ]
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -957,6 +970,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -974,6 +988,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -1202,8 +1217,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -1214,7 +1230,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -1269,8 +1285,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -1281,7 +1298,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -1353,8 +1370,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -1365,7 +1383,7 @@
                                             "markname": "brush_brush"
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -1383,6 +1401,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -1401,6 +1420,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -1488,8 +1508,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -1499,7 +1520,7 @@
                                             ]
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -1517,6 +1538,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -1534,6 +1556,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -1762,8 +1785,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -1774,7 +1798,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -1829,8 +1853,9 @@
                         },
                         {
                             "events": {
-                                "source": "scope",
+                                "source": "window",
                                 "type": "mousemove",
+                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
@@ -1841,7 +1866,7 @@
                                         ]
                                     },
                                     {
-                                        "source": "scope",
+                                        "source": "window",
                                         "type": "mouseup"
                                     }
                                 ]
@@ -1913,8 +1938,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -1925,7 +1951,7 @@
                                             "markname": "brush_brush"
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -1943,6 +1969,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -1961,6 +1988,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "event.shiftKey"
                                     ],
@@ -2048,8 +2076,9 @@
                         {
                             "events": [
                                 {
-                                    "source": "scope",
+                                    "source": "window",
                                     "type": "mousemove",
+                                    "consume": true,
                                     "between": [
                                         {
                                             "source": "scope",
@@ -2059,7 +2088,7 @@
                                             ]
                                         },
                                         {
-                                            "source": "scope",
+                                            "source": "window",
                                             "type": "mouseup"
                                         }
                                     ]
@@ -2077,6 +2106,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]
@@ -2094,6 +2124,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "filter": [
                                         "!event.shiftKey"
                                     ]

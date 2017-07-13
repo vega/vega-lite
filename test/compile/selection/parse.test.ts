@@ -39,7 +39,7 @@ describe('Selection', function() {
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert.equal(component.three.translate, '[mousedown, window:mouseup] > window:mousemove!');
-    assert.equal(component.three.zoom, 'wheel');
+    assert.equal(component.three.zoom, 'wheel!');
     assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Horsepower', channel: 'x'}, {field: 'Miles_per_Gallon', channel: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
   });
