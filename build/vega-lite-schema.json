@@ -2489,17 +2489,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2528,17 +2518,7 @@
         },
         "hconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -2637,17 +2617,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2662,6 +2632,28 @@
         "spec"
       ],
       "type": "object"
+    },
+    "Spec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/CompositeUnitSpec"
+        },
+        {
+          "$ref": "#/definitions/LayerSpec"
+        },
+        {
+          "$ref": "#/definitions/FacetedSpec"
+        },
+        {
+          "$ref": "#/definitions/RepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/VConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/HConcatSpec"
+        }
+      ]
     },
     "CompositeUnitSpecAlias": {
       "additionalProperties": false,
@@ -2794,17 +2786,7 @@
         },
         "vconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -5516,17 +5498,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5572,17 +5544,7 @@
         },
         "hconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -5727,17 +5689,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5801,17 +5753,7 @@
         },
         "vconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }

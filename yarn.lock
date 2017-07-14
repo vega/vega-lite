@@ -993,11 +993,9 @@ commander@2, commander@2.9.0, commander@^2.2.0, commander@^2.9.0, commander@~2.9
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@~2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.10.0.tgz#e1f5d3245de246d1a5ca04702fa1ad1bd7e405fe"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+commander@~2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -4484,9 +4482,9 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-node@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-3.2.0.tgz#9814f0c0141784900cf12fef1197ad4b7f4d23d1"
+ts-node@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-3.3.0.tgz#c13c6a3024e30be1180dd53038fc209289d4bf69"
   dependencies:
     arrify "^1.0.0"
     chalk "^2.0.0"
@@ -4496,7 +4494,7 @@ ts-node@^3.1.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.0"
     tsconfig "^6.0.0"
-    v8flags "^2.0.11"
+    v8flags "^3.0.0"
     yn "^2.0.0"
 
 tsconfig@^5.0.3:
@@ -4593,19 +4591,23 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-to-json-schema@vega/typescript-to-json-schema#v0.7.0:
-  version "0.7.0"
-  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/2152cfb86a760c2e92282b3f43934f6f3b007a68"
+typescript-to-json-schema@vega/typescript-to-json-schema#v0.8.0:
+  version "0.8.0"
+  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/5c44f4a521ebec204e679e4b01c39f734bf7028f"
   dependencies:
-    commander "~2.10.0"
+    commander "~2.11.0"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
-    ts-node "^3.1.0"
-    typescript "~2.4.1"
+    ts-node "^3.3.0"
+    typescript "~2.4.2"
 
-typescript@^2.4.1, typescript@~2.4.1:
+typescript@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.1.tgz#c3ccb16ddaa0b2314de031e7e6fee89e5ba346bc"
+
+typescript@~2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 
 ua-parser-js@0.7.12:
   version "0.7.12"
@@ -4719,9 +4721,9 @@ uuid@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
-v8flags@^2.0.11:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
+v8flags@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-3.0.0.tgz#4be9604488e0c4123645def705b1848d16b8e01f"
   dependencies:
     user-home "^1.1.1"
 
@@ -4749,7 +4751,7 @@ vega-dataflow@2:
     vega-statistics "1"
     vega-util "^1.1"
 
-"vega-datasets@github:vega/vega-datasets#gh-pages", vega-datasets@vega/vega-datasets#gh-pages:
+vega-datasets@vega/vega-datasets#gh-pages:
   version "1.8.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/26bddc53d6112cff239436cdc85f56249c39e9e0"
 
@@ -4925,31 +4927,7 @@ vega-wordcloud@1:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@^3.0.0-beta.31, vega@^3.0.0-beta.38:
-  version "3.0.0-rc1"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-rc1.tgz#6b40974d17c1a36704123cc47793e45f5e3682b6"
-  dependencies:
-    vega-crossfilter "1"
-    vega-dataflow "2"
-    vega-datasets vega/vega-datasets#gh-pages
-    vega-encode "1"
-    vega-expression "2"
-    vega-force "1"
-    vega-geo "1"
-    vega-hierarchy "1"
-    vega-loader "2"
-    vega-parser "1"
-    vega-runtime "1"
-    vega-scale "2"
-    vega-scenegraph "2"
-    vega-statistics "1"
-    vega-util "^1.2"
-    vega-view "1"
-    vega-voronoi "1"
-    vega-wordcloud "1"
-    yargs "4"
-
-vega@^3.0.0-rc4:
+vega@^3.0.0-beta.31, vega@^3.0.0-beta.38, vega@^3.0.0-rc4:
   version "3.0.0-rc4"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-rc4.tgz#c83e2331357bf746f64b0bec3be12c742366f5db"
   dependencies:

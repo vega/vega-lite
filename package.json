@@ -101,7 +101,7 @@
     "tslint": "5.4.3",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.1",
-    "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.7.0",
+    "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
     "uglify-js": "^3.0.24",
     "vega": "^3.0.0-rc4",
     "vega-datasets": "vega/vega-datasets#gh-pages",
