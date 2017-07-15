@@ -51,11 +51,6 @@ export function scaleType(
  */
 function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
-
-  if (util.contains(['row', 'column'], channel)) {
-    return 'band';
-  }
-
   switch (fieldDef.type) {
     case 'nominal':
       if (channel === 'color' || rangeType(channel) === 'discrete') {

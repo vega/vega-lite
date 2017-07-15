@@ -15,24 +15,6 @@ import {VgRange, VgRangeScheme, VgScale} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
   describe('parseRange()', function() {
-    describe('row', function() {
-      it('should always return height.', () => {
-        assert.deepEqual(
-          parseRangeForChannel('row', 'point', NOMINAL, {}, defaultConfig, false, undefined, undefined, []).value,
-          'height'
-        );
-      });
-    });
-
-    describe('column', function() {
-      it('should always return width.', () => {
-        assert.deepEqual(
-          parseRangeForChannel('column', 'point', NOMINAL, {}, defaultConfig, false, undefined, undefined, []).value,
-          'width'
-        );
-      });
-    });
-
     describe('x/y', function() {
       it('should return config.cell.width for x-continous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
