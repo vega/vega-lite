@@ -205,7 +205,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 
     if (hasDiscreteDomain(scaleType)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
+      // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
       return {
         data: model.requestDataName(MAIN),
         field: model.field(channel, {binSuffix: 'range'}),

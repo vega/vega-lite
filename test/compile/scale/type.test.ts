@@ -32,31 +32,6 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('row/column', () => {
-      it('should return band for row/column', function() {
-        [ROW, COLUMN].forEach((channel) => {
-          assert.deepEqual(
-            scaleType(undefined, channel, {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, defaultScaleConfig),
-            ScaleType.BAND
-          );
-        });
-      });
-
-      it('should return band for row/column even if other type is specified', function() {
-        [ROW, COLUMN].forEach((channel) => {
-          [ScaleType.LINEAR, ScaleType.ORDINAL, ScaleType.POINT].forEach((badScaleType) => {
-            log.runLocalLogger((localLogger) => {
-              assert.deepEqual(
-                scaleType(badScaleType, channel, {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, defaultScaleConfig),
-                ScaleType.BAND
-              );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, 'band'));
-            });
-          });
-        });
-      });
-    });
-
     describe('nominal/ordinal', () => {
       describe('color', () => {
         it('should return ordinal scale for nominal data by default.', () => {
