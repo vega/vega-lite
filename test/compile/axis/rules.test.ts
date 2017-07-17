@@ -41,46 +41,36 @@ describe('compile/axis', ()=> {
   });
 
   describe('orient()', function () {
-    it('should return specified orient', function () {
-      const orient = rules.orient({orient: 'bottom'}, 'x');
-      assert.deepEqual(orient, 'bottom');
-    });
-
     it('should return bottom for x by default', function () {
-      const orient = rules.orient({}, 'x');
+      const orient = rules.orient('x');
       assert.deepEqual(orient, 'bottom');
     });
 
     it('should return top for column by default', function () {
-      const orient = rules.orient({}, 'column');
+      const orient = rules.orient('column');
       assert.deepEqual(orient, 'top');
     });
 
     it('should return left for row by default', function () {
-      const orient = rules.orient({}, 'row');
+      const orient = rules.orient('row');
       assert.deepEqual(orient, 'left');
     });
 
     it('should return left for y by default', function () {
-      const orient = rules.orient({}, 'y');
+      const orient = rules.orient('y');
       assert.deepEqual(orient, 'left');
     });
   });
 
   describe('tickCount', function() {
     it('should return undefined by default for non-x', function () {
-      const tickCount = rules.tickCount({}, 'y', {field: 'a', type: 'quantitative'});
+      const tickCount = rules.tickCount('y', {field: 'a', type: 'quantitative'});
       assert.deepEqual(tickCount, undefined);
     });
 
     it('should return 5 by default for x', function () {
-      const tickCount = rules.tickCount({}, 'x', {field: 'a', type: 'quantitative'});
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'});
       assert.deepEqual(tickCount, 5);
-    });
-
-    it('should return specified tickCount', function () {
-      const tickCount = rules.tickCount({tickCount: 10}, 'x', {field: 'a', type: 'quantitative'});
-      assert.deepEqual(tickCount, 10);
     });
   });
 
@@ -140,18 +130,13 @@ describe('compile/axis', ()=> {
 
   describe('zindex()', function () {
     it('should return undefined by default without grid defined', function () {
-      const zindex = rules.zindex({}, false);
+      const zindex = rules.zindex(false);
       assert.deepEqual(zindex, 1);
     });
 
     it('should return back by default with grid defined', function () {
-      const zindex = rules.zindex({}, true);
+      const zindex = rules.zindex(true);
       assert.deepEqual(zindex, 0);
-    });
-
-    it('should return specified zindex', function () {
-      const zindex = rules.zindex({zindex: 2}, false);
-      assert.deepEqual(zindex, 2);
     });
   });
 });

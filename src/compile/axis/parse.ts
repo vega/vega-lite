@@ -3,7 +3,7 @@ import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
 import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
-import {titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
@@ -11,7 +11,6 @@ import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
-
 
 type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
@@ -220,7 +219,7 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
 
   // 1.2. Add properties
   AXIS_PROPERTIES.forEach(function(property) {
-    const value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
+    const value = getProperty(property, axis, channel, model, isGridAxis);
     if (value !== undefined) {
       const explicit = property === 'values' ?
         !!axis.values :  // specified axis.values is already respected, but may get transformed.
@@ -263,25 +262,26 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
   return axisComponent;
 }
 
-function getSpecifiedOrDefaultValue<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
+function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
     case 'domain':
       return rules.domain(property, specifiedAxis, isGridAxis, channel);
     case 'format':
-      return rules.format(specifiedAxis, fieldDef, model.config);
+      return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid':
       return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
-    case 'labelOverlap':
+    case 'labelOverlap': {
       const scaleType = model.component.scales[channel].get('type');
       return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
+    }
     case 'orient':
-      return rules.orient(specifiedAxis, channel);
+      return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
     case 'tickCount':
-      return rules.tickCount(specifiedAxis, channel, fieldDef); // TODO: scaleType
+      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef)); // TODO: scaleType
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':
@@ -289,7 +289,7 @@ function getSpecifiedOrDefaultValue<K extends keyof (Axis|VgAxis)>(property: K, 
     case 'values':
       return rules.values(specifiedAxis, model, fieldDef);
     case 'zindex':
-      return rules.zindex(specifiedAxis, isGridAxis);
+      return getSpecifiedOrDefaultValue(specifiedAxis.zindex, rules.zindex(isGridAxis));
   }
   // Otherwise, return specified property.
   return specifiedAxis[property];
