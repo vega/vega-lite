@@ -87,7 +87,7 @@ describe('filter', () => {
 
     it('should return a correct expression for a RangeFilter', () => {
       const expr = expression(null, {field: 'x', range: [0, 5]});
-      assert.equal(expr, 'inrange(datum["x"], 0, 5)');
+      assert.equal(expr, 'inrange(datum["x"], [0, 5])');
     });
 
     it('should return a correct expression for a RangeFilter with no lower bound', () => {
@@ -121,7 +121,7 @@ describe('filter', () => {
       {field: 'x', range: [0, 5]}
     ]});
 
-    assert.equal(expr, '(datum["color"]==="red") && (inrange(datum["x"], 0, 5))');
+    assert.equal(expr, '(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
 
     expr = expression(null, {and: [
       {field: 'color', oneOf: ['red', 'yellow']},
