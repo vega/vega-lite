@@ -79,7 +79,7 @@ export type FieldRefUnionDomain = {
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
 export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | VgRangeStep;
 
-export type VgRangeStep = {step: number};
+export type VgRangeStep = {step: number | VgSignalRef};
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
@@ -160,7 +160,8 @@ export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
 
 export type VgSignal = {
   name: string,
-  update: string
+  value?: any,
+  update?: string
 };
 
 export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';

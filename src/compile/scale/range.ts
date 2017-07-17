@@ -55,17 +55,17 @@ function parseUnitScaleRange(model: UnitModel) {
 }
 
 function getXYRangeStep(model: UnitModel) {
-  const xyRangeSteps = [];
+  const xyRangeSteps: number[] = [];
 
   const xScale = model.getScaleComponent('x');
   const xRange = xScale && xScale.get('range');
-  if (xRange && isVgRangeStep(xRange)) {
+  if (xRange && isVgRangeStep(xRange) && isNumber(xRange.step)) {
     xyRangeSteps.push(xRange.step);
   }
 
   const yScale = model.getScaleComponent('y');
   const yRange = yScale && yScale.get('range');
-  if (yRange && isVgRangeStep(yRange)) {
+  if (yRange && isVgRangeStep(yRange) && isNumber(yRange.step)) {
     xyRangeSteps.push(yRange.step);
   }
 

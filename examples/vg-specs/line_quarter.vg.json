@@ -74,8 +74,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 21
+        },
+        {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
         },
         {
             "name": "child_height",
@@ -321,7 +325,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "x_step"
+                }
             },
             "round": true,
             "padding": 0.5

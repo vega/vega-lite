@@ -129,8 +129,12 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 21
+        },
+        {
             "name": "height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
@@ -329,7 +333,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
