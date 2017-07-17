@@ -13,7 +13,7 @@ import {UnitModel} from '../unit';
 import {labelAngle} from './encode';
 
 
-export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
+export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
   if (isGridAxis || channel === ROW || channel === COLUMN) {
     return false;
   }
@@ -22,10 +22,6 @@ export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGr
 
 export const domain = domainAndTicks;
 export const ticks = domainAndTicks;
-
-export function format(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config) {
-  return numberFormat(fieldDef, specifiedAxis.format, config);
-}
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
@@ -70,12 +66,7 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
   return undefined;
 }
 
-export function orient(specifiedAxis: Axis, channel: Channel) {
-  const orient = specifiedAxis.orient;
-  if (orient) {
-    return orient;
-  }
-
+export function orient(channel: Channel) {
   switch (channel) {
     case COLUMN:
       // FIXME test and decide
@@ -90,12 +81,7 @@ export function orient(specifiedAxis: Axis, channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
-  const count = specifiedAxis.tickCount;
-  if (count !== undefined) {
-    return count;
-  }
-
+export function tickCount(channel: Channel, fieldDef: FieldDef<string>) {
   // FIXME depends on scale type too
   if (channel === X && !fieldDef.bin) {
     // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
@@ -140,11 +126,7 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
   return vals;
 }
 
-export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
-  const z = specifiedAxis.zindex;
-  if (z !== undefined) {
-    return z;
-  }
+export function zindex(isGridAxis: boolean) {
   if (isGridAxis) {
     // if grid is true, need to put layer on the back so that grid is behind marks
     return 0;

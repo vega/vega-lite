@@ -113,6 +113,13 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   }
 }
 
+export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T) {
+  if (specifiedValue !== undefined) {
+    return specifiedValue;
+  }
+  return defaultValue;
+}
+
 /**
  * Returns number format for a fieldDef
  *

@@ -1,9 +1,10 @@
 import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
+import {title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {ResolveMode} from '../../resolve';
 import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
-import {numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {Explicit, makeImplicit} from '../split';
@@ -46,7 +47,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonspatialScale
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
   LEGEND_PROPERTIES.forEach(function(property) {
-    const value = getSpecifiedOrDefaultValue(property, legend, channel, model);
+    const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
       const explicit = property === 'values' ?
         !!legend.values :  // specified legend.values is already respected, but may get transformed.
@@ -74,18 +75,18 @@ export function parseLegendForChannel(model: UnitModel, channel: NonspatialScale
   return legendCmpt;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
+function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
     case 'format':
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
-      return rules.title(specifiedLegend, fieldDef, model.config);
+      return getSpecifiedOrDefaultValue(specifiedLegend.title, fieldDefTitle(fieldDef, model.config));
     case 'values':
       return rules.values(specifiedLegend);
     case 'type':
-      return rules.type(specifiedLegend, fieldDef.type, channel, model.getScaleComponent(channel).get('type'));
+      return getSpecifiedOrDefaultValue(specifiedLegend.type, rules.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }
 
   // Otherwise, return specified property.
