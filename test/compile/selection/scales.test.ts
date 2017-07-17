@@ -72,7 +72,8 @@ describe('Selection + Scales', function() {
 
     assert.isObject(cscale.domain);
     assert.property(cscale, 'domainRaw');
-    assert.propertyVal(cscale.domainRaw, 'signal', 'null');
+    assert.propertyVal(cscale.domainRaw, 'signal',
+      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\", \"all\")");
 
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');

@@ -4681,8 +4681,7 @@
             }
           },
           "required": [
-            "selection",
-            "field"
+            "selection"
           ],
           "type": "object"
         },
@@ -4697,8 +4696,7 @@
             }
           },
           "required": [
-            "selection",
-            "encoding"
+            "selection"
           ],
           "type": "object"
         }

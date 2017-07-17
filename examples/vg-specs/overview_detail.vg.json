@@ -75,11 +75,11 @@
         },
         {
             "name": "concat_0_height",
-            "update": "60"
+            "update": "200"
         },
         {
             "name": "concat_1_height",
-            "update": "200"
+            "update": "60"
         },
         {
             "name": "unit",
@@ -113,6 +113,143 @@
                     },
                     "height": {
                         "signal": "concat_0_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_0_marks",
+                    "type": "area",
+                    "clip": true,
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "concat_0_x",
+                                "field": "date"
+                            },
+                            "y": {
+                                "scale": "concat_0_y",
+                                "field": "price"
+                            },
+                            "y2": {
+                                "scale": "concat_0_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "orient": {
+                                "value": "vertical"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "concat_0_x",
+                    "type": "time",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "date"
+                    },
+                    "domainRaw": {
+                        "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
+                    },
+                    "range": [
+                        0,
+                        {
+                            "signal": "width"
+                        }
+                    ],
+                    "round": true
+                },
+                {
+                    "name": "concat_0_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    "range": [
+                        {
+                            "signal": "concat_0_height"
+                        },
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "title": "",
+                    "scale": "concat_0_x",
+                    "labelOverlap": true,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "concat_0_x",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "concat_0_y"
+                },
+                {
+                    "scale": "concat_0_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
+                    "orient": "left",
+                    "title": "price",
+                    "zindex": 1
+                },
+                {
+                    "scale": "concat_0_y",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "concat_0_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "concat_1_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "concat_1_height"
                     },
                     "stroke": {
                         "value": "#ccc"
@@ -162,7 +299,7 @@
                             "events": {
                                 "signal": "brush_scale_trigger"
                             },
-                            "update": "[scale(\"concat_0_x\", brush_date[0]), scale(\"concat_0_x\", brush_date[1])]"
+                            "update": "[scale(\"concat_1_x\", brush_date[0]), scale(\"concat_1_x\", brush_date[1])]"
                         },
                         {
                             "events": {
@@ -185,17 +322,17 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"concat_0_x\", brush_x)"
+                            "update": "invert(\"concat_1_x\", brush_x)"
                         }
                     ]
                 },
                 {
                     "name": "brush_scale_trigger",
-                    "update": "(!isArray(brush_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_date[1])) ? brush_scale_trigger : {}"
+                    "update": "(!isArray(brush_date) || (+invert(\"concat_1_x\", brush_x)[0] === +brush_date[0] && +invert(\"concat_1_x\", brush_x)[1] === +brush_date[1])) ? brush_scale_trigger : {}"
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_0_\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]}"
+                    "update": "{unit: \"concat_1_\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]}"
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -300,7 +437,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -309,7 +446,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "value": 0
                                 },
                                 {
@@ -318,7 +455,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -327,7 +464,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "field": {
                                         "group": "height"
                                     }
@@ -340,23 +477,23 @@
                     }
                 },
                 {
-                    "name": "concat_0_marks",
+                    "name": "concat_1_marks",
                     "type": "area",
                     "from": {
-                        "data": "data_0"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
                             "x": {
-                                "scale": "concat_0_x",
+                                "scale": "concat_1_x",
                                 "field": "date"
                             },
                             "y": {
-                                "scale": "concat_0_y",
+                                "scale": "concat_1_y",
                                 "field": "price"
                             },
                             "y2": {
-                                "scale": "concat_0_y",
+                                "scale": "concat_1_y",
                                 "value": 0
                             },
                             "fill": {
@@ -383,7 +520,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -392,7 +529,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "value": 0
                                 },
                                 {
@@ -401,7 +538,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -410,7 +547,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
                                     "field": {
                                         "group": "height"
                                     }
@@ -425,139 +562,11 @@
             ],
             "scales": [
                 {
-                    "name": "concat_0_x",
-                    "type": "time",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "date"
-                    },
-                    "range": [
-                        0,
-                        {
-                            "signal": "width"
-                        }
-                    ],
-                    "round": true
-                },
-                {
-                    "name": "concat_0_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    "range": [
-                        {
-                            "signal": "concat_0_height"
-                        },
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_0_x",
-                    "labelOverlap": true,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "date",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "concat_0_x",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
-                },
-                {
-                    "tickCount": 3,
-                    "scale": "concat_0_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
-                    "orient": "left",
-                    "title": "price",
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "type": "group",
-            "name": "concat_1_group",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_1_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "concat_1_marks",
-                    "type": "area",
-                    "clip": true,
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "concat_1_y",
-                                "field": "price"
-                            },
-                            "y2": {
-                                "scale": "concat_1_y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
                     "name": "concat_1_x",
                     "type": "time",
                     "domain": {
                         "data": "data_1",
                         "field": "date"
-                    },
-                    "domainRaw": {
-                        "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")"
                     },
                     "range": [
                         0,
@@ -587,17 +596,17 @@
             ],
             "axes": [
                 {
-                    "title": "",
                     "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
+                    "title": "date",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
                                 "text": {
-                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                                    "signal": "timeFormat(datum.value, '%Y')"
                                 }
                             }
                         }
@@ -615,22 +624,13 @@
                     "gridScale": "concat_1_y"
                 },
                 {
+                    "tickCount": 3,
                     "scale": "concat_1_y",
                     "maxExtent": 30,
                     "minExtent": 30,
                     "orient": "left",
                     "title": "price",
                     "zindex": 1
-                },
-                {
-                    "scale": "concat_1_y",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_x"
                 }
             ]
         }

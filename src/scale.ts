@@ -344,7 +344,7 @@ export interface ExtendedScheme {
   count?: number;
 }
 
-export type SelectionDomain = {selection: string, field: string} | {selection: string, encoding: string};
+export type SelectionDomain = {selection: string, field?: string} | {selection: string, encoding?: string};
 export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | ExtendedScheme;
 
