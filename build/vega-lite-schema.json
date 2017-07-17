@@ -673,9 +673,11 @@
           "type": "array"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         }
       },
       "type": "object"
@@ -977,27 +979,34 @@
       "additionalProperties": false,
       "properties": {
         "fill": {
+          "description": "The fill color of the interval mark.\n\n__Default value:__ `#333333`",
           "type": "string"
         },
         "fillOpacity": {
+          "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
           "type": "number"
         },
         "stroke": {
+          "description": "The stroke color of the interval mark.\n\n__Default value:__ `#ffffff`",
           "type": "string"
         },
         "strokeDash": {
+          "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "strokeDashOffset": {
+          "description": "The offset (in pixels) with which to begin drawing the stroke dash array.",
           "type": "number"
         },
         "strokeOpacity": {
+          "description": "The stroke opacity of the interval mark (a value between 0 and 1).",
           "type": "number"
         },
         "strokeWidth": {
+          "description": "The stroke width of the interval mark.",
           "type": "number"
         }
       },
@@ -3047,9 +3056,11 @@
           "$ref": "#/definitions/BrushConfig"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "translate": {
           "type": [
@@ -3100,9 +3111,11 @@
           "$ref": "#/definitions/BrushConfig"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "translate": {
           "type": [
@@ -3925,9 +3938,11 @@
           "type": "boolean"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "toggle": {
           "type": [
@@ -3966,9 +3981,11 @@
           "type": "boolean"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "toggle": {
           "type": [
@@ -4775,9 +4792,11 @@
           "type": "boolean"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "type": {
           "enum": [
@@ -4823,9 +4842,11 @@
           "type": "boolean"
         },
         "on": {
+          "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions"
+          "$ref": "#/definitions/SelectionResolutions",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         }
       },
       "type": "object"

@@ -1,0 +1,231 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "encode": {
+        "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
+    "data": [
+        {
+            "name": "pts_store"
+        },
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin",
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        },
+        {
+            "name": "pts",
+            "update": "data(\"pts_store\").length && {_id: data(\"pts_store\")[0].values[0]}"
+        },
+        {
+            "name": "pts_tuple",
+            "value": {},
+            "on": [
+                {
+                    "events": [
+                        {
+                            "source": "scope",
+                            "type": "click"
+                        }
+                    ],
+                    "update": "datum && {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]}"
+                }
+            ]
+        },
+        {
+            "name": "pts_modify",
+            "on": [
+                {
+                    "events": {
+                        "signal": "pts_tuple"
+                    },
+                    "update": "modify(\"pts_store\", pts_tuple, true)"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Cylinders"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Origin"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    },
+                    "fill": [
+                        {
+                            "test": "vlPoint(\"pts_store\", \"\", datum, \"union\", \"all\")",
+                            "scale": "color",
+                            "field": "count_*"
+                        },
+                        {
+                            "value": "grey"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "color",
+            "type": "sequential",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
+            "range": "heatmap",
+            "nice": false,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Cylinders",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Origin",
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "Number of Records",
+            "type": "gradient"
+        }
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
+}
