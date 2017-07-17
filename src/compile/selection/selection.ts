@@ -258,10 +258,15 @@ export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSi
   let selCmpt = model.component.selection && model.component.selection[name];
   if (selCmpt) {
     warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
-  } else if (!selDomain.encoding && !selDomain.field) {
-    warn('A "field" or "encoding" must be specified when using a selection as a scale domain.');
   } else {
     selCmpt = model.getSelectionComponent(name, selDomain.selection);
+    if (!selDomain.encoding && !selDomain.field) {
+      selDomain.field = selCmpt.project[0].field;
+      if (selCmpt.project.length > 1) {
+        warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
+        `Using "field": ${stringValue(selDomain.field)}.`);
+      }
+    }
     return {
       signal: compiler(selCmpt.type).scaleDomain +
         `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
