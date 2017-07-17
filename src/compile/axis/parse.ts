@@ -267,23 +267,23 @@ function getSpecifiedOrDefaultValue<K extends keyof (Axis|VgAxis)>(property: K, 
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
+    case 'domain':
+      return rules.domain(property, specifiedAxis, isGridAxis, channel);
+    case 'format':
+      return rules.format(specifiedAxis, fieldDef, model.config);
+    case 'grid':
+      return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap':
       const scaleType = model.component.scales[channel].get('type');
       return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
-    case 'domain':
-      return rules.domain(property, specifiedAxis, isGridAxis, channel);
-    case 'ticks':
-      return rules.ticks(property, specifiedAxis, isGridAxis, channel);
-    case 'format':
-      return rules.format(specifiedAxis, fieldDef, model.config);
-    case 'grid':
-      return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
     case 'orient':
       return rules.orient(specifiedAxis, channel);
     case 'tickCount':
       return rules.tickCount(specifiedAxis, channel, fieldDef); // TODO: scaleType
+    case 'ticks':
+      return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':
       return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
     case 'values':
