@@ -160,6 +160,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "bottom",
             "tickCount": 5,
             "title": "a b",
@@ -178,6 +180,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "c d",
             "zindex": 1

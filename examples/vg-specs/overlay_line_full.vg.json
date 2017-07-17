@@ -227,6 +227,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "price",
             "zindex": 1

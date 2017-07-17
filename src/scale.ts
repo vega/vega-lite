@@ -66,6 +66,10 @@ const SCALE_CATEGORY_INDEX: {[k in ScaleType]: ScaleType | 'numeric' | 'ordinal-
   band: 'ordinal-position'
 };
 
+export function getScaleCategory(scaleType: ScaleType) {
+  return SCALE_CATEGORY_INDEX[scaleType];
+}
+
 /**
  * Whether the two given scale types can be merged together.
  */

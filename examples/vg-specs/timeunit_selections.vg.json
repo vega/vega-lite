@@ -525,6 +525,8 @@
                 },
                 {
                     "scale": "concat_0_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "price",
                     "zindex": 1
@@ -665,6 +667,8 @@
                 },
                 {
                     "scale": "concat_1_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "price",
                     "zindex": 1

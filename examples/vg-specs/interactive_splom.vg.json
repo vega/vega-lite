@@ -588,6 +588,8 @@
                 {
                     "scale": "child_Horsepower_Horsepower_x",
                     "labelOverlap": true,
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -606,6 +608,8 @@
                 },
                 {
                     "scale": "child_Horsepower_Horsepower_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -1163,6 +1167,8 @@
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_x",
                     "labelOverlap": true,
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -1181,6 +1187,8 @@
                 },
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -1738,6 +1746,8 @@
                 {
                     "scale": "child_Acceleration_Horsepower_x",
                     "labelOverlap": true,
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Acceleration",
@@ -1756,6 +1766,8 @@
                 },
                 {
                     "scale": "child_Acceleration_Horsepower_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -2313,6 +2325,8 @@
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_x",
                     "labelOverlap": true,
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Acceleration",
@@ -2331,6 +2345,8 @@
                 },
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1

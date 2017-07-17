@@ -354,6 +354,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "MAX(Horsepower), MIN(Horsepower)",
             "zindex": 1

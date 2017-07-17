@@ -309,6 +309,8 @@
             "title": "population",
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "bottom",
             "tickCount": 5,
             "zindex": 1

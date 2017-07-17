@@ -232,6 +232,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "MEAN(precipitation)",
             "zindex": 1

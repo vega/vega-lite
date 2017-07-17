@@ -24,6 +24,24 @@ describe('compile/axis', ()=> {
     });
   });
 
+  describe('minMaxExtent', () => {
+    it('returns specified extent for a non-grid axis', () => {
+      assert.equal(rules.minMaxExtent(50, false, 'linear'), 50);
+    });
+
+    it('returns undefined for a grid axis', () => {
+      assert.equal(rules.minMaxExtent(50, true, 'linear'), undefined);
+    });
+
+    it('returns 25 for a non-grid quantitative axis by default', () => {
+      assert.equal(rules.minMaxExtent(undefined, false, 'linear'), 25);
+    });
+
+    it('returns undefined for a non-grid ordinal axis by default', () => {
+      assert.equal(rules.minMaxExtent(undefined, false, 'ordinal'), undefined);
+    });
+  });
+
   describe('orient()', function () {
     it('should return bottom for x by default', function () {
       const orient = rules.orient('x');
