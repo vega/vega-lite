@@ -12,6 +12,17 @@ import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 import {labelAngle} from './encode';
 
+
+export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
+  if (isGridAxis || channel === ROW || channel === COLUMN) {
+    return false;
+  }
+  return specifiedAxis[property];
+}
+
+export const domain = domainAndTicks;
+export const ticks = domainAndTicks;
+
 export function format(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config) {
   return numberFormat(fieldDef, specifiedAxis.format, config);
 }
@@ -44,6 +55,17 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
     if (model.getScaleComponent(gridChannel)) {
       return model.scaleName(gridChannel);
     }
+  }
+  return undefined;
+}
+
+
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean, scaleType: ScaleType) {
+  if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+    if (scaleType === 'log') {
+      return 'greedy';
+    }
+    return true;
   }
   return undefined;
 }
@@ -129,23 +151,3 @@ export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
   }
   return 1; // otherwise return undefined and use Vega's default.
 }
-
-export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
-  if (isGridAxis || channel === ROW || channel === COLUMN) {
-    return false;
-  }
-  return specifiedAxis[property];
-}
-
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean, scaleType: ScaleType) {
-  if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
-    if (scaleType === 'log') {
-      return 'greedy';
-    }
-    return true;
-  }
-  return undefined;
-}
-
-export const domain = domainAndTicks;
-export const ticks = domainAndTicks;
