@@ -10,23 +10,17 @@ import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 
 export function assembleLayoutSignals(model: Model): VgSignal[] {
-  const signals: VgSignal[] = [];
-  const width = sizeExpr(model, 'width');
-  if (width !== undefined) {
-    signals.push({name: model.getName('width'), update: width});
-  }
-  const height = sizeExpr(model, 'height');
-  if (height !== undefined) {
-    signals.push({name: model.getName('height'), update: height});
-  }
-  return signals;
+  return [].concat(
+    sizeSignals(model, 'width'),
+    sizeSignals(model, 'height')
+  );
 }
 
-export function sizeExpr(model: Model, sizeType: 'width' | 'height'): string {
+export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSignal[] {
   const channel = sizeType==='width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
   if (size === 'merged') {
-    return undefined;
+    return [];
   } else if (size === 'range-step') {
     const scaleComponent = model.getScaleComponent(channel);
 
@@ -50,12 +44,22 @@ export function sizeExpr(model: Model, sizeType: 'width' | 'height'): string {
           // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
           1;
 
-        return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${range.step}`;
+        return [{
+          name: scaleName + '_step',
+          value: range.step,
+        }, {
+          name: model.getName(sizeType),
+          update: `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`
+        }
+        ];
       }
     }
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('layout size is range step although there is no rangeStep.');
   }
-  return size ? `${size}` : undefined;
+  return size ? [{
+    name: model.getName(sizeType),
+    update: `${size}`
+  }] : [];
 }
 

@@ -56,8 +56,12 @@
             "update": "200"
         },
         {
+            "name": "trellis_barley_y_step",
+            "value": 12
+        },
+        {
             "name": "trellis_barley_child_height",
-            "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * 12"
+            "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * trellis_barley_y_step"
         }
     ],
     "layout": {
@@ -314,7 +318,9 @@
                 }
             },
             "range": {
-                "step": 12
+                "step": {
+                    "signal": "trellis_barley_y_step"
+                }
             },
             "round": true,
             "padding": 0.5

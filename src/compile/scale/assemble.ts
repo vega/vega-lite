@@ -1,14 +1,15 @@
 import {isArray} from 'vega-util';
 import * as log from '../../log';
 import {isSelectionDomain} from '../../scale';
-import {stringValue, vals} from '../../util';
-import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, VgDataRef, VgScale} from '../../vega.schema';
+import {keys, stringValue} from '../../util';
+import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, isVgRangeStep, VgDataRef, VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 
 
 export function assembleScale(model: Model): VgScale[] {
-    return vals(model.component.scales).reduce((scales: VgScale[], scaleComponent) => {
+    return keys(model.component.scales).reduce((scales: VgScale[], channel) => {
+      const scaleComponent= model.component.scales[channel];
       if (scaleComponent.merged) {
         // Skipped merged scales
         return scales;
@@ -16,6 +17,17 @@ export function assembleScale(model: Model): VgScale[] {
 
       // We need to cast here as combine returns Partial<VgScale> by default.
       const scale = scaleComponent.combine(['name', 'type', 'domain', 'domainRaw', 'range']) as VgScale;
+
+
+      // add signals to x/y range
+      if (channel === 'x' || channel === 'y') {
+        if (isVgRangeStep(scale.range)) {
+          // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+          scale.range = {
+            step: {signal: scale.name + '_step'}
+          };
+        }
+      }
 
       const domainRaw = scaleComponent.get('domainRaw');
       // As scale parsing occurs before selection parsing, a temporary signal

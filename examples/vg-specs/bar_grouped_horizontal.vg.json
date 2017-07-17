@@ -80,8 +80,12 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 6
+        },
+        {
             "name": "child_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 6"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "layout": {
@@ -297,7 +301,9 @@
                 "sort": true
             },
             "range": {
-                "step": 6
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
