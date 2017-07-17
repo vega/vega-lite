@@ -80,6 +80,10 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
         continue;
       }
 
+      if (key === 'mark') {
+        selDef[key] = {...cfg[key], ...selDef[key]};
+      }
+
       if (selDef[key] === undefined || selDef[key] === true) {
         selDef[key] = cfg[key] || selDef[key];
       }
