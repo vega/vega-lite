@@ -142,6 +142,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "bottom",
             "tickCount": 5,
             "title": "SUM(Weight_in_lbs)",

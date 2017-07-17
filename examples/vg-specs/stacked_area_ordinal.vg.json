@@ -250,6 +250,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "SUM(Weight_in_lbs)",
             "zindex": 1

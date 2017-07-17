@@ -286,6 +286,14 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
       const scaleType = model.component.scales[channel].get('type');
       return rules.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
+    case 'minExtent': {
+      const scaleType = model.component.scales[channel].get('type');
+      return rules.minMaxExtent(specifiedAxis.minExtent, isGridAxis, scaleType);
+    }
+    case 'maxExtent': {
+      const scaleType = model.component.scales[channel].get('type');
+      return rules.minMaxExtent(specifiedAxis.maxExtent, isGridAxis, scaleType);
+    }
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
     case 'tickCount':

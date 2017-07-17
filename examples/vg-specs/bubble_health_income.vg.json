@@ -276,6 +276,8 @@
         {
             "scale": "x",
             "labelOverlap": "greedy",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "bottom",
             "tickCount": 5,
             "title": "income",
@@ -294,6 +296,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "health",
             "zindex": 1

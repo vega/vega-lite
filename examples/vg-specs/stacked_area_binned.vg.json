@@ -233,6 +233,8 @@
     "axes": [
         {
             "scale": "x",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "bottom",
             "title": "BIN(Acceleration)",
             "values": {
@@ -257,6 +259,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "SUM(Horsepower)",
             "zindex": 1

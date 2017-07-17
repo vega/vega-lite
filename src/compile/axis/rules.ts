@@ -5,7 +5,7 @@ import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
@@ -50,6 +50,24 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
     }
     return true;
   }
+  return undefined;
+}
+
+export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean, scaleType: ScaleType) {
+  if (!isGridAxis) {
+    // Only apply extent to non-grid axes as grid axes do not have labels and title.
+    // Otherwise, we would add unnecessary extent to faceted plots.
+    if (specifiedExtent) {
+      return specifiedExtent;
+    }
+
+    // For quantitative scale, set extent to 25 by default to avoid jumpy axis title
+    // (Fix https://github.com/vega/vega-lite/issues/2282)
+    if (getScaleCategory(scaleType) === 'numeric') {
+      return 25;
+    }
+  }
+
   return undefined;
 }
 

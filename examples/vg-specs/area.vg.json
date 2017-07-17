@@ -165,6 +165,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "SUM(count)",
             "zindex": 1

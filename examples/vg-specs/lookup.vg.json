@@ -170,6 +170,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 25,
+            "minExtent": 25,
             "orient": "left",
             "title": "MEAN(age)",
             "zindex": 1

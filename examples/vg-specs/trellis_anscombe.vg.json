@@ -115,6 +115,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Y",
                     "zindex": 1
@@ -182,6 +184,8 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "X",

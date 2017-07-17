@@ -167,6 +167,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -187,6 +189,8 @@
             "axes": [
                 {
                     "scale": "x",
+                    "maxExtent": 25,
+                    "minExtent": 25,
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {
