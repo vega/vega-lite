@@ -90,7 +90,9 @@
                 "field": "mean_price"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,

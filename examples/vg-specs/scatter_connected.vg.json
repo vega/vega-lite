@@ -160,7 +160,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "zero": false,
             "round": true,
@@ -183,7 +185,9 @@
                 "sort": true
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "zero": false,

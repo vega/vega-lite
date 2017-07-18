@@ -334,7 +334,9 @@
                 "sort": true
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,

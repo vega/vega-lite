@@ -77,7 +77,7 @@ export type FieldRefUnionDomain = {
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | VgRangeStep;
+export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgRangeScheme | VgRangeStep;
 
 export type VgRangeStep = {step: number | VgSignalRef};
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {

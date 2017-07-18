@@ -286,7 +286,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "round": true,
             "nice": true,

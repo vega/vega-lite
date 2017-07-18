@@ -106,7 +106,9 @@
             },
             "range": [
                 0,
-                300
+                {
+                    "signal": "width"
+                }
             ],
             "nice": "month",
             "round": true
@@ -119,7 +121,9 @@
                 "field": "sum_count"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,

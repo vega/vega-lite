@@ -552,7 +552,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -569,7 +571,9 @@
                         "signal": "grid_Horsepower"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1120,7 +1124,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -1137,7 +1143,9 @@
                         "signal": "grid_Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1688,7 +1696,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -1705,7 +1715,9 @@
                         "signal": "grid_Horsepower"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -2256,7 +2268,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -2273,7 +2287,9 @@
                         "signal": "grid_Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,

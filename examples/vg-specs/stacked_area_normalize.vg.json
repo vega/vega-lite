@@ -167,7 +167,9 @@
             },
             "range": [
                 0,
-                300
+                {
+                    "signal": "width"
+                }
             ],
             "nice": "month",
             "round": true
@@ -180,7 +182,9 @@
                 1
             ],
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
