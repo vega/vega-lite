@@ -1,6 +1,6 @@
 import {Axis} from '../../axis';
 import {binToString} from '../../bin';
-import {Channel, COLUMN, ROW, SpatialScaleChannel, X, Y} from '../../channel';
+import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
@@ -14,7 +14,7 @@ import {labelAngle} from './encode';
 
 
 export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
-  if (isGridAxis || channel === ROW || channel === COLUMN) {
+  if (isGridAxis) {
     return false;
   }
   return specifiedAxis[property];
@@ -68,12 +68,8 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
 
 export function orient(channel: Channel) {
   switch (channel) {
-    case COLUMN:
-      // FIXME test and decide
-      return 'top';
     case X:
       return 'bottom';
-    case ROW:
     case Y:
       return 'left';
   }
