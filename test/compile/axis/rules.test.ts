@@ -46,16 +46,6 @@ describe('compile/axis', ()=> {
       assert.deepEqual(orient, 'bottom');
     });
 
-    it('should return top for column by default', function () {
-      const orient = rules.orient('column');
-      assert.deepEqual(orient, 'top');
-    });
-
-    it('should return left for row by default', function () {
-      const orient = rules.orient('row');
-      assert.deepEqual(orient, 'left');
-    });
-
     it('should return left for y by default', function () {
       const orient = rules.orient('y');
       assert.deepEqual(orient, 'left');
