@@ -299,7 +299,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "trellis_barley_child_width"
+                }
             ],
             "zero": false,
             "round": true,

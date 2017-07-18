@@ -458,7 +458,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "concat_0_width"
+                        }
                     ],
                     "round": true,
                     "nice": "second"
@@ -471,7 +473,9 @@
                         "field": "price"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -591,7 +595,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "concat_1_width"
+                        }
                     ],
                     "round": true,
                     "nice": "minute"
@@ -604,7 +610,9 @@
                         "field": "price"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,

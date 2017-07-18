@@ -117,7 +117,9 @@
                 "field": "mean_temp"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,

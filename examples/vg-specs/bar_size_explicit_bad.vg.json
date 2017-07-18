@@ -89,7 +89,9 @@
             },
             "range": [
                 0,
-                120
+                {
+                    "signal": "width"
+                }
             ],
             "round": false,
             "paddingInner": 0.1,
@@ -103,7 +105,9 @@
                 "field": "count_*"
             },
             "range": [
-                120,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,

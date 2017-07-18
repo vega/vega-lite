@@ -772,7 +772,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "zero": false,
             "round": true,
@@ -789,7 +791,9 @@
                 "signal": "grid_Y"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "zero": false,

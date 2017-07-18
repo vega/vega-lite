@@ -487,7 +487,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -501,7 +503,9 @@
                         "field": "Horsepower"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "concat_0_height"
+                        },
                         0
                     ],
                     "round": true,
@@ -739,7 +743,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -756,7 +762,9 @@
                         "signal": "grid_Acceleration"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "concat_1_height"
+                        },
                         0
                     ],
                     "round": true,

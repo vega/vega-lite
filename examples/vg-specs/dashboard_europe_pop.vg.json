@@ -743,7 +743,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "concat_0_width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -762,7 +764,9 @@
                         }
                     },
                     "range": [
-                        700,
+                        {
+                            "signal": "concat_0_height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1133,7 +1137,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "concat_1_width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -1152,7 +1158,9 @@
                         }
                     },
                     "range": [
-                        700,
+                        {
+                            "signal": "concat_1_height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1583,7 +1591,9 @@
                     },
                     "range": [
                         0,
-                        260
+                        {
+                            "signal": "concat_2_width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1597,7 +1607,9 @@
                         "field": "Population_ages_15_64_of_total"
                     },
                     "range": [
-                        260,
+                        {
+                            "signal": "concat_2_height"
+                        },
                         0
                     ],
                     "zero": false,

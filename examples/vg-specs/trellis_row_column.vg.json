@@ -382,7 +382,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -396,7 +398,9 @@
                 "field": "Miles_per_Gallon"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,

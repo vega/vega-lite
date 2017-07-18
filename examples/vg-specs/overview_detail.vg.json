@@ -430,7 +430,9 @@
                     },
                     "range": [
                         0,
-                        480
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true
                 },
@@ -442,7 +444,9 @@
                         "field": "price"
                     },
                     "range": [
-                        60,
+                        {
+                            "signal": "concat_0_height"
+                        },
                         0
                     ],
                     "round": true,
@@ -549,7 +553,9 @@
                     },
                     "range": [
                         0,
-                        480
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true
                 },
@@ -561,7 +567,9 @@
                         "field": "price"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "concat_1_height"
+                        },
                         0
                     ],
                     "round": true,

@@ -354,6 +354,10 @@ export abstract class Model {
     return node.getSource();
   }
 
+  public getSizeName(oldSizeName: string): string {
+     return this.layoutSizeNameMap.get(oldSizeName);
+  }
+
   public renameLayoutSize(oldName: string, newName: string) {
     this.layoutSizeNameMap.rename(oldName, newName);
   }

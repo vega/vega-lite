@@ -132,7 +132,9 @@
                 "field": "mean_age"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
