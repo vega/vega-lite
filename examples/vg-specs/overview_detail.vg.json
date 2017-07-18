@@ -571,6 +571,7 @@
             ],
             "axes": [
                 {
+                    "title": "",
                     "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",

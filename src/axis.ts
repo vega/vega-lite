@@ -63,6 +63,17 @@ export interface Axis extends VgAxisBase, Guide {
   encoding?: AxisEncoding;
 }
 
+/**
+ * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
+ * (Properties not listed are applicable for both)
+ */
+export const AXIS_PROPERTY_TYPE: {[k in keyof Axis]: 'main' | 'grid'} = {
+  grid: 'grid',
+  labelOverlap: 'main',
+  offset: 'main',
+  title: 'main'
+};
+
 export interface AxisEncoding {
   /**
    * Custom encoding for the axis container.

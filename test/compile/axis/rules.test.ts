@@ -8,35 +8,19 @@ import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
-    it('should return specified orient', function () {
-      const grid = rules.grid(parseUnitModelWithScale({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative', axis:{grid: false}}
-          }
-        }), X, true);
+    it('should return true by default for continuous scale that is not binned', function () {
+      const grid = rules.grid('linear', {field: 'a', type: 'quantitative'});
+      assert.deepEqual(grid, true);
+    });
+
+    it('should return false by default for binned field', function () {
+      const grid = rules.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, false);
     });
 
-    it('should return true by default', function () {
-      const grid = rules.grid(parseUnitModelWithScale({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X, true);
-      assert.deepEqual(grid, true);
-
-    });
-
-    it('should return undefined for non-gridAxis', function () {
-      const grid = rules.grid(parseUnitModelWithScale({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X, false);
-      assert.deepEqual(grid, undefined);
+    it('should return false by default for a discrete scale', function () {
+      const grid = rules.grid('point', {field: 'a', type: 'quantitative'});
+      assert.deepEqual(grid, false);
     });
   });
 
@@ -65,30 +49,19 @@ describe('compile/axis', ()=> {
   });
 
   describe('title()', function () {
-    it('should add explicitly specified title', function () {
-      const title = rules.title({title: 'Custom'}, {field: 'a', type: "quantitative"}, {}, false);
-      assert.deepEqual(title, 'Custom');
-    });
-
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {}, false);
+      const title = rules.title(3, {field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'a');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({titleMaxLength: 10}, {aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
+      const title = rules.title(10, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title({titleMaxLength: 3}, {aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
+      const title = rules.title(3, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SU…');
-    });
-
-
-    it('should add return undefined for gridAxis', function () {
-      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {}, true);
-      assert.deepEqual(title, undefined);
     });
   });
 
