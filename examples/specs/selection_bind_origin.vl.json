@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "selection": {
+    "org": {
+      "type": "single",
+      "fields": ["Origin"],
+      "bind": {"input": "select", "options": ["Europe", "Japan", "USA"]}
+    }
+  },
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "color": {
+      "condition": {
+        "selection": "org",
+        "field": "Cylinders", "type": "ordinal"
+      },
+      "value": "grey"
+    }
+  }
+}

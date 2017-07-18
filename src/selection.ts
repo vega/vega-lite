@@ -46,17 +46,51 @@ export interface BaseSelectionDef {
   // domain?: SelectionDomain;
 
   // Transforms
-  fields?: string[];
+
+  /**
+   * An array of encoding channels. The corresponding data field values
+   * must match for a data tuple to fall within the selection.
+   */
   encodings?: SingleDefChannel[];
+
+  /**
+   * An array of field names whose values must match for a data tuple to
+   * fall within the selection.
+   */
+  fields?: string[];
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
+  /**
+   * Establish a two-way binding between a single selection and input elements
+   * (also known as dynamic query widgets). A binding takes the form of
+   * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
+   * or can be a mapping between projected field/encodings and binding definitions.
+   */
   bind?: VgBinding | {[key: string]: VgBinding};
+
+  /**
+   * When true, an invisible voronoi diagram is computed to accelerate discrete
+   * selection. The data value _nearest_ the mouse cursor is added to the selection.
+   */
   nearest?: boolean;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
+  /**
+   * Controls whether data values should be toggled or only ever inserted into
+   * multi selections. Can be `true`, `false` (for insertion only), or a
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/).
+   *
+   * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
+   * data values are toggled when a user interacts with the shift-key pressed).
+   */
   toggle?: string | boolean;
+
+  /**
+   * When true, an invisible voronoi diagram is computed to accelerate discrete
+   * selection. The data value _nearest_ the mouse cursor is added to the selection.
+   */
   nearest?: boolean;
 }
 
@@ -100,9 +134,41 @@ export interface BrushConfig {
 }
 
 export interface IntervalSelectionConfig extends BaseSelectionDef {
+  /**
+   * When truthy, allows a user to interactively move an interval selection
+   * back-and-forth. Can be `true`, `false` (to disable panning), or a
+   * [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)
+   * which must include a start and end event to trigger continuous panning.
+   *
+   * __Default value:__ `true`, which corresponds to
+   * `[mousedown, window:mouseup] > window:mousemove!` which corresponds to
+   * clicks and dragging within an interval selection to reposition it.
+   */
   translate?: string | boolean;
+
+  /**
+   * When truthy, allows a user to interactively resize an interval selection.
+   * Can be `true`, `false` (to disable zooming), or a [Vega event stream
+   * definition](https://vega.github.io/vega/docs/event-streams/). Currently,
+   * only `wheel` events are supported.
+   *
+   *
+   * __Default value:__ `true`, which corresponds to `wheel!`.
+   */
   zoom?: string | boolean;
+
+  /**
+   * Establishes a two-way binding between the interval selection and the scales
+   * used within the same view. This allows a user to interactively pan and
+   * zoom the view.
+   */
   bind?: 'scales';
+
+  /**
+   * Each (unbound) interval selection also adds a rectangle mark to depict the
+   * extents of the interval. The `mark` property can be used to customize the
+   * appearance of the mark.
+   */
   mark?: BrushConfig;
 }
 

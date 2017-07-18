@@ -661,12 +661,14 @@
       "additionalProperties": false,
       "properties": {
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
@@ -3035,25 +3037,29 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
+          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.",
           "enum": [
             "scales"
           ],
           "type": "string"
         },
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "mark": {
-          "$ref": "#/definitions/BrushConfig"
+          "$ref": "#/definitions/BrushConfig",
+          "description": "Each (unbound) interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
           "description": "A Vega event stream (object or selector) that triggers the selection."
@@ -3063,6 +3069,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "translate": {
+          "description": "When truthy, allows a user to interactively move an interval selection\nback-and-forth. Can be `true`, `false` (to disable panning), or a\n[Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)\nwhich must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to\n`[mousedown, window:mouseup] > window:mousemove!` which corresponds to\nclicks and dragging within an interval selection to reposition it.",
           "type": [
             "string",
             "boolean"
@@ -3075,6 +3082,7 @@
           "type": "string"
         },
         "zoom": {
+          "description": "When truthy, allows a user to interactively resize an interval selection.\nCan be `true`, `false` (to disable zooming), or a [Vega event stream\ndefinition](https://vega.github.io/vega/docs/event-streams/). Currently,\nonly `wheel` events are supported.\n\n\n__Default value:__ `true`, which corresponds to `wheel!`.",
           "type": [
             "string",
             "boolean"
@@ -3090,25 +3098,29 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
+          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.",
           "enum": [
             "scales"
           ],
           "type": "string"
         },
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "mark": {
-          "$ref": "#/definitions/BrushConfig"
+          "$ref": "#/definitions/BrushConfig",
+          "description": "Each (unbound) interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
           "description": "A Vega event stream (object or selector) that triggers the selection."
@@ -3118,12 +3130,14 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "translate": {
+          "description": "When truthy, allows a user to interactively move an interval selection\nback-and-forth. Can be `true`, `false` (to disable panning), or a\n[Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)\nwhich must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to\n`[mousedown, window:mouseup] > window:mousemove!` which corresponds to\nclicks and dragging within an interval selection to reposition it.",
           "type": [
             "string",
             "boolean"
           ]
         },
         "zoom": {
+          "description": "When truthy, allows a user to interactively resize an interval selection.\nCan be `true`, `false` (to disable zooming), or a [Vega event stream\ndefinition](https://vega.github.io/vega/docs/event-streams/). Currently,\nonly `wheel` events are supported.\n\n\n__Default value:__ `true`, which corresponds to `wheel!`.",
           "type": [
             "string",
             "boolean"
@@ -3923,18 +3937,21 @@
       "additionalProperties": false,
       "properties": {
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "nearest": {
+          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.",
           "type": "boolean"
         },
         "on": {
@@ -3945,6 +3962,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "toggle": {
+          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).",
           "type": [
             "string",
             "boolean"
@@ -3966,18 +3984,21 @@
       "additionalProperties": false,
       "properties": {
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "nearest": {
+          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.",
           "type": "boolean"
         },
         "on": {
@@ -3988,6 +4009,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
         },
         "toggle": {
+          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).",
           "type": [
             "string",
             "boolean"
@@ -4774,21 +4796,25 @@
               },
               "type": "object"
             }
-          ]
+          ],
+          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions."
         },
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "nearest": {
+          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.",
           "type": "boolean"
         },
         "on": {
@@ -4824,21 +4850,25 @@
               },
               "type": "object"
             }
-          ]
+          ],
+          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions."
         },
         "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
             "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
         "fields": {
+          "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "nearest": {
+          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.",
           "type": "boolean"
         },
         "on": {

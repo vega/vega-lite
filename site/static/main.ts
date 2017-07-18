@@ -80,6 +80,16 @@ window['changeSpec'] = function(elId: string, newSpec: string) {
   getSpec(el);
 };
 
+window['buildSpecOpts'] = function(id: string, baseName: string) {
+  const oldName = select('#' + id).attr('data-name');
+  const prefixSel = select('select[name=' + id + ']');
+  const inputsSel = selectAll('input[name=' + id + ']:checked');
+  const prefix = prefixSel.empty() ? id : prefixSel.property('value');
+  const values = inputsSel.nodes().map((n: any) => n.value).sort().join('_');
+  const newName = baseName + prefix + (values ? '_' + values : '');
+  if (oldName !== newName) window['changeSpec'](id, newName);
+};
+
 selectAll('.vl-example').each(function(this: Element) {
   getSpec(this);
 });
