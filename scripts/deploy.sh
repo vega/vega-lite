@@ -9,7 +9,8 @@ scripts/pre-deploy.sh
 
 npm run clean
 npm run test
-npm run build:examples
+npm run build
+npm run build:examples-only
 
 # Check if all required files are here
 if ! [ -f build/vega-lite.js ]; then
