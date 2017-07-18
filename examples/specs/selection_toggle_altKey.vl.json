@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "selection": {
+    "paintbrush": {
+      "type": "multi",
+      "toggle": "event.altKey"
+    }
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "color": {
+      "condition": {
+        "selection": "paintbrush",
+        "field": "Cylinders", "type": "ordinal"
+      },
+      "value": "grey"
+    },
+    "size": {"value": 75}
+  }
+}

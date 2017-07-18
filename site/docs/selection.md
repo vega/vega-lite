@@ -48,7 +48,7 @@ _Note:_ the two intervals do not have any effect on the visualization yet (we'll
 
 <div class="vl-example" data-name="interval_mark_style"></div>
 
-Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include: [bind](#), [nearest](#), [project](#), [toggle](#), [translate](#), and [zoom](#).
+Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include: [bind](selection-bind.html), [nearest](selection-nearest.html), [project](selection-project.html), [toggle](selection-toggle.html), [translate](#), and [zoom](#).
 
 ## Using Selections
 
@@ -86,7 +86,7 @@ An alternate way to construct this technique would be to filter out the input da
 
 However, setting the scale domains (rather than filtering data out) yields superior interactive performance. Rather than testing whether each data value falls within the selection or not, the scale domains are changed directly to the brush extents.
 
-If the selection is [projected](#) over _multiple_ fields or encodings, one must be given as part of the scale domain definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
+If the selection is [projected](selection-project.html) over _multiple_ fields or encodings, one must be given as part of the scale domain definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
 
   * `"scale": {"domain": {"selection": "brush", "encoding": "x"}}` or
   * `"scale": {"domain": {"selection": "brush", "field": "date"}}`
