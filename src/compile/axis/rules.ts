@@ -5,7 +5,7 @@ import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
@@ -28,21 +28,8 @@ export const ticks = domainAndTicks;
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: UnitModel, channel: SpatialScaleChannel) {
-  const grid = model.axis(channel).grid;
-  if (grid !== undefined) {
-    return grid;
-  }
-
-  return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
-}
-
-export function grid(model: UnitModel, channel: SpatialScaleChannel, isGridAxis: boolean) {
-  if (!isGridAxis) {
-    return undefined;
-  }
-
-  return gridShow(model, channel);
+export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
+  return !hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 
 export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
@@ -56,8 +43,8 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
 }
 
 
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean, scaleType: ScaleType) {
-  if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, scaleType: ScaleType) {
+  if (channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
     if (scaleType === 'log') {
       return 'greedy';
     }
@@ -87,23 +74,9 @@ export function tickCount(channel: Channel, fieldDef: FieldDef<string>) {
   return undefined;
 }
 
-export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean) {
-  if (isGridAxis) {
-    return undefined;
-  }
-
-  if (specifiedAxis.title === '') {
-    return undefined;
-  }
-
-  if (specifiedAxis.title !== undefined) {
-    return specifiedAxis.title;
-  }
-
+export function title(maxLength: number, fieldDef: FieldDef<string>, config: Config) {
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(fieldDef, config);
-
-  const maxLength: number = specifiedAxis.titleMaxLength;
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 

@@ -1,4 +1,4 @@
-import {Axis, AXIS_PROPERTIES, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
+import {Axis, AXIS_PROPERTIES, AXIS_PROPERTY_TYPE, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
 import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
 import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
@@ -265,18 +265,26 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
 function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
   const fieldDef = model.fieldDef(channel);
 
+  if ((isGridAxis && AXIS_PROPERTY_TYPE[property] === 'main') ||
+      (!isGridAxis && AXIS_PROPERTY_TYPE[property] === 'grid')) {
+    // Do not apply unapplicable properties
+    return undefined;
+  }
+
   switch (property) {
     case 'domain':
       return rules.domain(property, specifiedAxis, isGridAxis, channel);
     case 'format':
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
-    case 'grid':
-      return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
+    case 'grid': {
+      const scaleType = model.component.scales[channel].get('type');
+      return getSpecifiedOrDefaultValue(specifiedAxis.grid, rules.grid(scaleType, fieldDef));
+    }
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap': {
       const scaleType = model.component.scales[channel].get('type');
-      return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
+      return rules.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
@@ -285,7 +293,7 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':
-      return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
+      return getSpecifiedOrDefaultValue(specifiedAxis.title, rules.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
     case 'values':
       return rules.values(specifiedAxis, model, fieldDef);
     case 'zindex':

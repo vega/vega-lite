@@ -224,6 +224,7 @@
             },
             "axes": [
                 {
+                    "title": "",
                     "scale": "x",
                     "orient": "bottom",
                     "tickCount": 5,
