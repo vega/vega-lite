@@ -82,7 +82,7 @@ export function parseRangeForChannel(
     zero: boolean, mark: Mark, specifiedSize: LayoutSize, sizeSignal: VgSignalRef, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
-  let noRangeStep = !!specifiedSize;
+  const noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
@@ -101,16 +101,14 @@ export function parseRangeForChannel(
           case 'scheme':
             return makeImplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
-            if (specifiedSize === undefined) {
-              const rangeStep = specifiedScale[property];
-              if (rangeStep !== null) {
+            const rangeStep = specifiedScale[property];
+            if (rangeStep !== null) {
+              if (specifiedSize === undefined) {
                 return makeImplicit({step: rangeStep});
               } else {
-                noRangeStep = true;
+                // If top-level size is specified, we ignore specified rangeStep.
+                log.warn(log.message.rangeStepDropped(channel));
               }
-            } else {
-              // If top-level size is specified, we ignore specified rangeStep.
-              log.warn(log.message.rangeStepDropped(channel));
             }
         }
       }
