@@ -8,6 +8,7 @@ export declare class ConcatModel extends Model {
     readonly isVConcat: boolean;
     constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     parseData(): void;
+    parseLayoutSize(): void;
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;

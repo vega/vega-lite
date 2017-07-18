@@ -6,10 +6,10 @@ import { ResolveMapping } from '../resolve';
 import { BaseSpec } from '../spec';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
+import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
 import { DataComponent } from './data/index';
-import { LayoutSize, LayoutSizeComponent } from './layout/component';
+import { LayoutSizeComponent, LayoutSizeIndex } from './layout/component';
 import { LayoutHeaderComponent } from './layout/header';
 import { LegendComponentIndex } from './legend/component';
 import { ScaleComponent, ScaleComponentIndex } from './scale/component';
@@ -56,19 +56,20 @@ export declare abstract class Model {
     /** Name map for scales, which can be renamed by a model's parent. */
     protected scaleNameMap: NameMapInterface;
     /** Name map for size, which can be renamed by a model's parent. */
-    protected sizeNameMap: NameMapInterface;
+    protected layoutSizeNameMap: NameMapInterface;
     readonly config: Config;
     readonly component: Component;
     readonly abstract children: Model[];
     constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping);
-    readonly width: number;
-    readonly height: number;
-    protected initSize(size: LayoutSize): void;
+    readonly width: number | VgSignalRef;
+    readonly height: number | VgSignalRef;
+    private getLayoutSize(sizeType);
+    protected initSize(size: LayoutSizeIndex): void;
     parse(): void;
     abstract parseData(): void;
     abstract parseSelection(): void;
     parseScale(): void;
-    parseLayoutSize(): void;
+    abstract parseLayoutSize(): void;
     parseMarkDef(): void;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
@@ -92,14 +93,12 @@ export declare abstract class Model {
      * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
      */
     requestDataName(name: DataSourceType): string;
-    getSizeSignalRef(sizeType: 'width' | 'height'): {
-        signal: string;
-    };
+    getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef;
     /**
      * Lookup the name of the datasource for an output node. You probably want to call this in assemble.
      */
     lookupDataSource(name: string): string;
-    renameSize(oldName: string, newName: string): void;
+    renameLayoutSize(oldName: string, newName: string): void;
     channelSizeName(channel: Channel): string;
     sizeName(size: string): string;
     renameScale(oldName: string, newName: string): void;

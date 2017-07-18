@@ -1091,9 +1091,10 @@ function log(method, level, input) {
 }
 
 var None  = 0;
-var Warn  = 1;
-var Info  = 2;
-var Debug = 3;
+var Error$1 = 1;
+var Warn  = 2;
+var Info  = 3;
+var Debug = 4;
 
 var logger = function(_) {
   var level = _ || None;
@@ -1105,6 +1106,10 @@ var logger = function(_) {
       } else {
         return level;
       }
+    },
+    error: function() {
+      if (level >= Error$1) log('error', 'ERROR', arguments);
+      return this;
     },
     warn: function() {
       if (level >= Warn) log('warn', 'WARN', arguments);
@@ -1467,6 +1472,7 @@ exports.truthy = truthy;
 exports.falsy = falsy;
 exports.logger = logger;
 exports.None = None;
+exports.Error = Error$1;
 exports.Warn = Warn;
 exports.Info = Info;
 exports.Debug = Debug;
@@ -1511,7 +1517,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.8",
+  "version": "2.0.0-beta.9",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1594,13 +1600,13 @@ module.exports={
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.7",
-    "ajv": "5.2.0",
+    "@types/node": "^8.0.11",
+    "ajv": "5.2.2",
     "browser-sync": "^2.18.12",
     "browserify": "^14.4.0",
     "browserify-shim": "^3.8.14",
-    "chai": "^4.0.2",
-    "cheerio": "^1.0.0-rc.1",
+    "chai": "^4.1.0",
+    "cheerio": "^1.0.0-rc.2",
     "codecov": "^2.2.0",
     "d3": "^4.9.1",
     "exorcist": "^0.4.0",
@@ -1614,8 +1620,8 @@ module.exports={
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.1",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.7.0",
-    "uglify-js": "^3.0.23",
-    "vega": "^3.0.0-rc1",
+    "uglify-js": "^3.0.24",
+    "vega": "^3.0.0-rc2",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "^3.0.0-beta.19",
     "vega-tooltip": "^0.4.2",
@@ -1626,7 +1632,7 @@ module.exports={
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.7.1",
     "vega-event-selector": "^2.0.0",
-    "vega-util": "^1.3.1",
+    "vega-util": "^1.4.1",
     "yargs": "^8.0.2"
   }
 }
@@ -2094,7 +2100,7 @@ function parseLayerAxis(model) {
                         }
                     }
                     axisCount[orient]++;
-                    // TODO: automaticaly add extra offset?
+                    // TODO(https://github.com/vega/vega-lite/issues/2634): automaticaly add extra offset?
                 });
             }
             // After merging, make sure to remove axes from child
@@ -2666,7 +2672,9 @@ var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
-var parse_2 = require("./legend/parse");
+var assemble_2 = require("./layout/assemble");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 var ConcatModel = (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
@@ -2683,6 +2691,9 @@ var ConcatModel = (function (_super) {
         this.children.forEach(function (child) {
             child.parseData();
         });
+    };
+    ConcatModel.prototype.parseLayoutSize = function () {
+        parse_2.parseConcatLayoutSize(this);
     };
     ConcatModel.prototype.parseSelection = function () {
         var _this = this;
@@ -2718,7 +2729,7 @@ var ConcatModel = (function (_super) {
         return null;
     };
     ConcatModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     ConcatModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -2740,7 +2751,7 @@ var ConcatModel = (function (_super) {
     ConcatModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, []);
+        }, assemble_2.assembleLayoutSignals(this));
     };
     ConcatModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -2764,7 +2775,7 @@ var ConcatModel = (function (_super) {
 }(model_1.Model));
 exports.ConcatModel = ConcatModel;
 
-},{"../spec":101,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./legend/parse":44,"./model":58,"tslib":5}],21:[function(require,module,exports){
+},{"../spec":101,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./model":58,"tslib":5}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4746,7 +4757,8 @@ var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
 var header_1 = require("./layout/header");
-var parse_2 = require("./legend/parse");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 var repeat_1 = require("./repeat");
 var resolve_1 = require("./resolve");
@@ -4789,6 +4801,9 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.parseData = function () {
         this.component.data = parse_1.parseData(this);
         this.child.parseData();
+    };
+    FacetModel.prototype.parseLayoutSize = function () {
+        parse_2.parseChildrenLayoutSize(this);
     };
     FacetModel.prototype.parseSelection = function () {
         // As a facet has a single child, the selection components are the same.
@@ -4880,7 +4895,7 @@ var FacetModel = (function (_super) {
         }
     };
     FacetModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     FacetModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -4945,7 +4960,7 @@ function getFacetGroupProperties(model) {
     return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
 }
 
-},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../mark":97,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/header":39,"./legend/parse":44,"./model":58,"./repeat":59,"./resolve":60,"tslib":5}],37:[function(require,module,exports){
+},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../mark":97,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/header":39,"./layout/parse":40,"./legend/parse":44,"./model":58,"./repeat":59,"./resolve":60,"tslib":5}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4958,7 +4973,8 @@ var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_2 = require("./data/parse");
 var assemble_2 = require("./layout/assemble");
-var parse_3 = require("./legend/parse");
+var parse_3 = require("./layout/parse");
+var parse_4 = require("./legend/parse");
 var model_1 = require("./model");
 var selection_1 = require("./selection/selection");
 var unit_1 = require("./unit");
@@ -4985,6 +5001,9 @@ var LayerModel = (function (_super) {
             var child = _a[_i];
             child.parseData();
         }
+    };
+    LayerModel.prototype.parseLayoutSize = function () {
+        parse_3.parseLayerLayoutSize(this);
     };
     LayerModel.prototype.parseSelection = function () {
         var _this = this;
@@ -5013,7 +5032,7 @@ var LayerModel = (function (_super) {
         parse_1.parseLayerAxis(this);
     };
     LayerModel.prototype.parseLegend = function () {
-        parse_3.parseNonUnitLegend(this);
+        parse_4.parseNonUnitLegend(this);
     };
     LayerModel.prototype.assembleParentGroupProperties = function () {
         return tslib_1.__assign({ width: this.getSizeSignalRef('width'), height: this.getSizeSignalRef('height') }, common_1.applyConfig({}, this.config.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
@@ -5030,7 +5049,7 @@ var LayerModel = (function (_super) {
     LayerModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, assemble_2.assembleLayoutLayerSignals(this));
+        }, assemble_2.assembleLayoutSignals(this));
     };
     LayerModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -5060,57 +5079,57 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../log":95,"../mark":97,"../spec":101,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/assemble":38,"./legend/parse":44,"./model":58,"./selection/selection":70,"./unit":81,"tslib":5}],38:[function(require,module,exports){
+},{"../log":95,"../mark":97,"../spec":101,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./model":58,"./selection/selection":70,"./unit":81,"tslib":5}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
-// FIXME: rename this file to assemble.ts
-// TODO: rewrite this such that we merge redundant signals
-function assembleLayoutLayerSignals(model) {
-    return [
-        { name: model.getName('width'), update: layerSizeExpr(model, 'width') },
-        { name: model.getName('height'), update: layerSizeExpr(model, 'height') }
-    ];
-}
-exports.assembleLayoutLayerSignals = assembleLayoutLayerSignals;
-function layerSizeExpr(model, sizeType) {
-    var childrenSizeSignals = model.children.map(function (child) { return child.getName(sizeType); }).join(', ');
-    return "max(" + childrenSizeSignals + ")";
-}
-exports.layerSizeExpr = layerSizeExpr;
-function assembleLayoutUnitSignals(model) {
-    return [
-        { name: model.getName('width'), update: unitSizeExpr(model, 'width') },
-        { name: model.getName('height'), update: unitSizeExpr(model, 'height') }
-    ];
-}
-exports.assembleLayoutUnitSignals = assembleLayoutUnitSignals;
-function unitSizeExpr(model, sizeType) {
-    var channel = sizeType === 'width' ? 'x' : 'y';
-    var scaleComponent = model.getScaleComponent(channel);
-    if (scaleComponent) {
-        var type = scaleComponent.get('type');
-        var range = scaleComponent.get('range');
-        if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
-            var scaleName = model.scaleName(channel);
-            var cardinality = "domain('" + scaleName + "').length";
-            var padding = scaleComponent.get('padding');
-            var paddingOuter = scaleComponent.get('paddingOuter');
-            paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-            var paddingInner = scaleComponent.get('paddingInner');
-            paddingInner = type === 'band' ?
-                // only band has real paddingInner
-                (paddingInner !== undefined ? paddingInner : padding) :
-                // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-                // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-                1;
-            return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
-        }
+function assembleLayoutSignals(model) {
+    var signals = [];
+    var width = sizeExpr(model, 'width');
+    if (width !== undefined) {
+        signals.push({ name: model.getName('width'), update: width });
     }
-    return "" + model.component.layoutSize.get(sizeType);
+    var height = sizeExpr(model, 'height');
+    if (height !== undefined) {
+        signals.push({ name: model.getName('height'), update: height });
+    }
+    return signals;
 }
-exports.unitSizeExpr = unitSizeExpr;
+exports.assembleLayoutSignals = assembleLayoutSignals;
+function sizeExpr(model, sizeType) {
+    var channel = sizeType === 'width' ? 'x' : 'y';
+    var size = model.component.layoutSize.get(sizeType);
+    if (size === 'merged') {
+        return undefined;
+    }
+    else if (size === 'range-step') {
+        var scaleComponent = model.getScaleComponent(channel);
+        if (scaleComponent) {
+            var type = scaleComponent.get('type');
+            var range = scaleComponent.get('range');
+            if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
+                var scaleName = model.scaleName(channel);
+                var cardinality = "domain('" + scaleName + "').length";
+                var padding = scaleComponent.get('padding');
+                var paddingOuter = scaleComponent.get('paddingOuter');
+                paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+                var paddingInner = scaleComponent.get('paddingInner');
+                paddingInner = type === 'band' ?
+                    // only band has real paddingInner
+                    (paddingInner !== undefined ? paddingInner : padding) :
+                    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+                    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+                    1;
+                return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
+            }
+        }
+        /* istanbul ignore next: Condition should not happen -- only for warning in development. */
+        throw new Error('layout size is range step although there is no rangeStep.');
+    }
+    return size ? "" + size : undefined;
+}
+exports.sizeExpr = sizeExpr;
 
 },{"../../scale":98,"../../vega.schema":109}],39:[function(require,module,exports){
 "use strict";
@@ -5193,22 +5212,73 @@ exports.getHeaderGroup = getHeaderGroup;
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
-var unit_1 = require("../unit");
-function parseLayoutSize(model) {
-    if (model instanceof unit_1.UnitModel) {
-        parseUnitLayoutSize(model);
-    }
-    else {
-        parseNonUnitLayoutSize(model);
-    }
+var split_1 = require("../split");
+function parseLayerLayoutSize(model) {
+    parseChildrenLayoutSize(model);
+    var layoutSizeCmpt = model.component.layoutSize;
+    layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
+    layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
-exports.parseLayoutSize = parseLayoutSize;
-function parseNonUnitLayoutSize(model) {
+exports.parseLayerLayoutSize = parseLayerLayoutSize;
+exports.parseRepeatLayoutSize = parseLayerLayoutSize;
+function parseConcatLayoutSize(model) {
+    parseChildrenLayoutSize(model);
+    var layoutSizeCmpt = model.component.layoutSize;
+    var sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
+    layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+}
+exports.parseConcatLayoutSize = parseConcatLayoutSize;
+function parseChildrenLayoutSize(model) {
     for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
         var child = _a[_i];
-        parseLayoutSize(child);
+        child.parseLayoutSize();
     }
-    // TODO(https://github.com/vega/vega-lite/issues/2198): merge size
+}
+exports.parseChildrenLayoutSize = parseChildrenLayoutSize;
+function parseNonUnitLayoutSizeForChannel(model, sizeType) {
+    var channel = sizeType === 'width' ? 'x' : 'y';
+    var resolve = model.component.resolve;
+    var mergedSize;
+    // Try to merge layout size
+    for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
+        var child = _a[_i];
+        var childSize = child.component.layoutSize.getWithExplicit(sizeType);
+        var scaleResolve = resolve[channel] ? resolve[channel].scale : undefined;
+        if (scaleResolve === 'independent' && childSize.value === 'range-step') {
+            // Do not merge independent scales with range-step as their size depends
+            // on the scale domains, which can be different between scales.
+            mergedSize = undefined;
+            break;
+        }
+        if (mergedSize) {
+            if (scaleResolve === 'independent' && mergedSize.value !== childSize.value) {
+                // For independent scale, only merge if all the sizes are the same.
+                // If the values are different, abandon the merge!
+                mergedSize = undefined;
+                break;
+            }
+            mergedSize = split_1.mergeValuesWithExplicit(mergedSize, childSize, sizeType, '', split_1.defaultTieBreaker);
+        }
+        else {
+            mergedSize = childSize;
+        }
+    }
+    if (mergedSize) {
+        // If merged, rename size and set size of all children.
+        for (var _b = 0, _c = model.children; _b < _c.length; _b++) {
+            var child = _c[_b];
+            model.renameLayoutSize(child.getSizeSignalRef(sizeType).signal, model.getSizeSignalRef(sizeType).signal);
+            child.component.layoutSize.set(sizeType, 'merged', false);
+        }
+        return mergedSize;
+    }
+    else {
+        // Otherwise, there is no merged size.
+        return {
+            explicit: false,
+            value: undefined
+        };
+    }
 }
 function parseUnitLayoutSize(model) {
     var layoutSizeComponent = model.component.layoutSize;
@@ -5221,6 +5291,7 @@ function parseUnitLayoutSize(model) {
         layoutSizeComponent.set('height', height, false);
     }
 }
+exports.parseUnitLayoutSize = parseUnitLayoutSize;
 function defaultUnitSize(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var config = model.config;
@@ -5230,7 +5301,7 @@ function defaultUnitSize(model, sizeType) {
         var range = scaleComponent.get('range');
         if (scale_1.hasDiscreteDomain(scaleType) && vega_schema_1.isVgRangeStep(range)) {
             // For discrete domain with range.step, use dynamic width/height
-            return null;
+            return 'range-step';
         }
         else {
             // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
@@ -5249,7 +5320,7 @@ function defaultUnitSize(model, sizeType) {
     }
 }
 
-},{"../../scale":98,"../../vega.schema":109,"../unit":81}],41:[function(require,module,exports){
+},{"../../scale":98,"../../vega.schema":109,"../split":80}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
@@ -6334,10 +6405,12 @@ function defaultSize(model) {
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
+var vega_schema_1 = require("../../vega.schema");
 var common_1 = require("../common");
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
@@ -6478,23 +6551,21 @@ function text(textDef, config) {
 }
 exports.text = text;
 function midX(width, config) {
-    if (width) {
+    if (vega_util_1.isNumber(width)) {
         return { value: width / 2 };
     }
-    if (typeof config.scale.rangeStep === 'string') {
-        // TODO: For fit-mode, use middle of the width
-        throw new Error('midX can not handle string rangeSteps');
+    else if (vega_schema_1.isVgSignalRef(width)) {
+        return tslib_1.__assign({}, width, { mult: 0.5 });
     }
     return { value: config.scale.rangeStep / 2 };
 }
 exports.midX = midX;
 function midY(height, config) {
-    if (height) {
+    if (vega_util_1.isNumber(height)) {
         return { value: height / 2 };
     }
-    if (typeof config.scale.rangeStep === 'string') {
-        // TODO: For fit-mode, use middle of the width
-        throw new Error('midX can not handle string rangeSteps');
+    else if (vega_schema_1.isVgSignalRef(height)) {
+        return tslib_1.__assign({}, height, { mult: 0.5 });
     }
     return { value: config.scale.rangeStep / 2 };
 }
@@ -6561,10 +6632,11 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":12,"../../fielddef":90,"../../scale":98,"../../util":107,"../common":18,"tslib":5}],58:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":90,"../../scale":98,"../../util":107,"../../vega.schema":109,"../common":18,"tslib":5,"vega-util":7}],58:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
@@ -6572,11 +6644,10 @@ var log = require("../log");
 var util_1 = require("../util");
 var assemble_1 = require("./axis/assemble");
 var header_1 = require("./layout/header");
-var parse_1 = require("./layout/parse");
 var assemble_2 = require("./legend/assemble");
 var mark_1 = require("./mark/mark");
 var assemble_3 = require("./scale/assemble");
-var parse_2 = require("./scale/parse");
+var parse_1 = require("./scale/parse");
 var split_1 = require("./split");
 var unit_1 = require("./unit");
 var NameMap = (function () {
@@ -6625,7 +6696,7 @@ var Model = (function () {
         this.name = spec.name || parentGivenName;
         // Shared name maps
         this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
-        this.sizeNameMap = parent ? parent.sizeNameMap : new NameMap();
+        this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
         this.data = spec.data;
         this.description = spec.description;
         this.transforms = spec.transform || [];
@@ -6648,28 +6719,29 @@ var Model = (function () {
     }
     Object.defineProperty(Model.prototype, "width", {
         get: function () {
-            /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-            var w = this.component.layoutSize.get('width');
-            if (w !== undefined) {
-                return w;
-            }
-            throw new Error('calling model.width before parseLayoutSize()');
+            return this.getLayoutSize('width');
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Model.prototype, "height", {
         get: function () {
-            /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-            var h = this.component.layoutSize.get('height');
-            if (h !== undefined) {
-                return h;
-            }
-            throw new Error('calling model.height before parseLayoutSize()');
+            return this.getLayoutSize('height');
         },
         enumerable: true,
         configurable: true
     });
+    Model.prototype.getLayoutSize = function (sizeType) {
+        /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+        var size = this.component.layoutSize.get(sizeType);
+        if (size !== undefined) {
+            if (vega_util_1.isNumber(size)) {
+                return size;
+            }
+            return this.getSizeSignalRef(sizeType);
+        }
+        throw new Error("calling model." + sizeType + " before parseLayoutSize()");
+    };
     Model.prototype.initSize = function (size) {
         var width = size.width, height = size.height;
         if (width) {
@@ -6684,16 +6756,13 @@ var Model = (function () {
         this.parseMarkDef();
         this.parseLayoutSize(); // depends on scale
         this.parseSelection();
-        this.parseData(); // (pathorder) depends on markDef
+        this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
         this.parseAxisAndHeader(); // depends on scale
         this.parseLegend(); // depends on scale, markDef
         this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
     };
     Model.prototype.parseScale = function () {
-        parse_2.parseScale(this);
-    };
-    Model.prototype.parseLayoutSize = function () {
-        parse_1.parseLayoutSize(this);
+        parse_1.parseScale(this);
     };
     Model.prototype.parseMarkDef = function () {
         mark_1.parseMarkDef(this);
@@ -6791,9 +6860,8 @@ var Model = (function () {
         return fullName;
     };
     Model.prototype.getSizeSignalRef = function (sizeType) {
-        // TODO: this could change in the future once we have sizeSignal merging
         return {
-            signal: this.getName(sizeType)
+            signal: this.layoutSizeNameMap.get(this.getName(sizeType))
         };
     };
     /**
@@ -6808,14 +6876,14 @@ var Model = (function () {
         }
         return node.getSource();
     };
-    Model.prototype.renameSize = function (oldName, newName) {
-        this.sizeNameMap.rename(oldName, newName);
+    Model.prototype.renameLayoutSize = function (oldName, newName) {
+        this.layoutSizeNameMap.rename(oldName, newName);
     };
     Model.prototype.channelSizeName = function (channel) {
         return this.sizeName(channel === channel_1.X || channel === channel_1.COLUMN ? 'width' : 'height');
     };
     Model.prototype.sizeName = function (size) {
-        return this.sizeNameMap.get(this.getName(size));
+        return this.layoutSizeNameMap.get(this.getName(size));
     };
     Model.prototype.renameScale = function (oldName, newName) {
         this.scaleNameMap.rename(oldName, newName);
@@ -6909,7 +6977,7 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../util":107,"./axis/assemble":13,"./layout/header":39,"./layout/parse":40,"./legend/assemble":41,"./mark/mark":50,"./scale/assemble":61,"./scale/parse":64,"./split":80,"./unit":81,"tslib":5}],59:[function(require,module,exports){
+},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../util":107,"./axis/assemble":13,"./layout/header":39,"./legend/assemble":41,"./mark/mark":50,"./scale/assemble":61,"./scale/parse":64,"./split":80,"./unit":81,"tslib":5,"vega-util":7}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6920,7 +6988,9 @@ var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
-var parse_2 = require("./legend/parse");
+var assemble_2 = require("./layout/assemble");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 function replaceRepeaterInFacet(facet, repeater) {
     return replaceRepeater(facet, repeater);
@@ -7001,6 +7071,9 @@ var RepeatModel = (function (_super) {
             child.parseData();
         });
     };
+    RepeatModel.prototype.parseLayoutSize = function () {
+        parse_2.parseRepeatLayoutSize(this);
+    };
     RepeatModel.prototype.parseSelection = function () {
         var _this = this;
         // Merge selections up the hierarchy so that they may be referenced
@@ -7032,7 +7105,7 @@ var RepeatModel = (function (_super) {
         // TODO(#2415): support shared axes
     };
     RepeatModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     RepeatModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -7054,7 +7127,7 @@ var RepeatModel = (function (_super) {
     RepeatModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, []);
+        }, assemble_2.assembleLayoutSignals(this));
     };
     RepeatModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -7084,7 +7157,7 @@ var RepeatModel = (function (_super) {
 }(model_1.Model));
 exports.RepeatModel = RepeatModel;
 
-},{"../fielddef":90,"../log":95,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./legend/parse":44,"./model":58,"tslib":5,"vega-util":7}],60:[function(require,module,exports){
+},{"../fielddef":90,"../log":95,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./model":58,"tslib":5,"vega-util":7}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../channel");
@@ -7365,7 +7438,7 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
         }
         if (scale_1.hasDiscreteDomain(scaleType)) {
             // ordinal bin scale takes domain from bin_range, ordered by bin_start
-            // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
+            // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
             return {
                 data: model.requestDataName(data_1.MAIN),
                 field: model.field(channel, { binSuffix: 'range' }),
@@ -7815,7 +7888,7 @@ function paddingOuter(padding, channel, scaleType, paddingInner, scaleConfig) {
 }
 exports.paddingOuter = paddingOuter;
 function round(channel, scaleConfig) {
-    if (util.contains(['x', 'y', 'row', 'column'], channel)) {
+    if (util.contains(['x', 'y'], channel)) {
         return scaleConfig.round;
     }
     return undefined;
@@ -7842,6 +7915,7 @@ exports.zero = zero;
 },{"../../channel":12,"../../log":95,"../../scale":98,"../../timeunit":103,"../../util":107,"../split":80,"../unit":81,"./range":66}],66:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var log = require("../../log");
 var scale_1 = require("../../scale");
@@ -7955,14 +8029,13 @@ function parseScheme(scheme) {
 }
 function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull) {
     switch (channel) {
-        // TODO: revise row/column when facetSpec has top-level width/height
-        case channel_1.ROW:
-            return 'height';
-        case channel_1.COLUMN:
-            return 'width';
         case channel_1.X:
         case channel_1.Y:
-            if (topLevelSize === undefined) {
+            var size = void 0;
+            if (vega_util_1.isNumber(topLevelSize)) {
+                size = topLevelSize;
+            }
+            else {
                 if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
                     if (channel === channel_1.X && mark === 'text') {
                         if (config.scale.textXRangeStep) {
@@ -7977,9 +8050,9 @@ function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize
                 }
                 // If specified range step is null or the range step config is null.
                 // Use default topLevelSize rule/config
-                topLevelSize = channel === channel_1.X ? config.cell.width : config.cell.height;
+                size = channel === channel_1.X ? config.cell.width : config.cell.height;
             }
-            return channel === channel_1.X ? [0, topLevelSize] : [topLevelSize, 0];
+            return channel === channel_1.X ? [0, size] : [size, 0];
         case channel_1.SIZE:
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
@@ -8068,7 +8141,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":12,"../../log":95,"../../scale":98,"../../util":107,"../../vega.schema":109,"../split":80,"../unit":81,"./properties":65}],67:[function(require,module,exports){
+},{"../../channel":12,"../../log":95,"../../scale":98,"../../util":107,"../../vega.schema":109,"../split":80,"../unit":81,"./properties":65,"vega-util":7}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -8110,9 +8183,6 @@ exports.scaleType = scaleType;
  * Determine appropriate default scale type.
  */
 function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
-    if (util.contains(['row', 'column'], channel)) {
-        return 'band';
-    }
     switch (fieldDef.type) {
         case 'nominal':
             if (channel === 'color' || channel_1.rangeType(channel) === 'discrete') {
@@ -8284,7 +8354,7 @@ var interval = {
     },
     marks: function (model, selCmpt, marks) {
         var name = selCmpt.name;
-        var _a = projections(selCmpt), xi = _a.xi, yi = _a.yi;
+        var _a = selection_1.spatialProjections(selCmpt), xi = _a.xi, yi = _a.yi;
         var tpl = name + selection_1.TUPLE;
         var store = "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")";
         // Do not add a brush if we're binding to scales.
@@ -8334,24 +8404,6 @@ var interval = {
     }
 };
 exports.default = interval;
-function projections(selCmpt) {
-    var x = null;
-    var xi = null;
-    var y = null;
-    var yi = null;
-    selCmpt.project.forEach(function (p, i) {
-        if (p.channel === channel_1.X) {
-            x = p;
-            xi = i;
-        }
-        else if (p.channel === channel_1.Y) {
-            y = p;
-            yi = i;
-        }
-    });
-    return { x: x, xi: xi, y: y, yi: yi };
-}
-exports.projections = projections;
 /**
  * Returns the visual and data signals for an interval selection.
  */
@@ -8444,6 +8496,7 @@ exports.default = multi;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
+var channel_1 = require("../../channel");
 var log_1 = require("../../log");
 var util_1 = require("../../util");
 var layer_1 = require("../layer");
@@ -8680,8 +8733,26 @@ exports.channelSignalName = channelSignalName;
 function clipMarks(marks) {
     return marks.map(function (m) { return (m.clip = true, m); });
 }
+function spatialProjections(selCmpt) {
+    var x = null;
+    var xi = null;
+    var y = null;
+    var yi = null;
+    selCmpt.project.forEach(function (p, i) {
+        if (p.channel === channel_1.X) {
+            x = p;
+            xi = i;
+        }
+        else if (p.channel === channel_1.Y) {
+            y = p;
+            yi = i;
+        }
+    });
+    return { x: x, xi: xi, y: y, yi: yi };
+}
+exports.spatialProjections = spatialProjections;
 
-},{"../../log":95,"../../util":107,"../layer":37,"../unit":81,"./interval":68,"./multi":69,"./single":71,"./transforms/transforms":77,"vega-event-selector":6}],71:[function(require,module,exports){
+},{"../../channel":12,"../../log":95,"../../util":107,"../layer":37,"../unit":81,"./interval":68,"./multi":69,"./single":71,"./transforms/transforms":77,"vega-event-selector":6}],71:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -8759,12 +8830,14 @@ function id(str) {
 },{"../../../util":107,"../selection":70,"./nearest":73}],73:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var selection_1 = require("../selection");
 var VORONOI = 'voronoi';
 var nearest = {
     has: function (selCmpt) {
         return selCmpt.type !== 'interval' && selCmpt.nearest;
     },
     marks: function (model, selCmpt, marks, selMarks) {
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var mark = marks[0];
         var index = selMarks.indexOf(mark);
         var isPathgroup = mark.name === model.getName('pathgroup');
@@ -8783,8 +8856,8 @@ var nearest = {
             },
             transform: [{
                     type: 'voronoi',
-                    x: 'datum.x',
-                    y: 'datum.y',
+                    x: (x || (!x && !y)) ? 'datum.x' : { expr: '0' },
+                    y: (y || (!x && !y)) ? 'datum.y' : { expr: '0' },
                     size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
                 }]
         };
@@ -8800,7 +8873,7 @@ var nearest = {
 };
 exports.default = nearest;
 
-},{}],74:[function(require,module,exports){
+},{"../selection":70}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../../log");
@@ -8981,7 +9054,7 @@ var translate = {
         var name = selCmpt.name;
         var hasScales = scales_1.default.has(selCmpt);
         var anchor = name + ANCHOR;
-        var _a = interval_1.projections(selCmpt), x = _a.x, y = _a.y;
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var events = vega_event_selector_1.selector(selCmpt.translate, 'scope');
         if (!hasScales) {
             events = events.map(function (e) { return (e.between[0].markname = name + interval_1.BRUSH, e); });
@@ -9057,7 +9130,7 @@ var zoom = {
         var name = selCmpt.name;
         var hasScales = scales_1.default.has(selCmpt);
         var delta = name + DELTA;
-        var _a = interval_1.projections(selCmpt), x = _a.x, y = _a.y;
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var sx = util_1.stringValue(model.scaleName(channel_1.X));
         var sy = util_1.stringValue(model.scaleName(channel_1.Y));
         var events = vega_event_selector_1.selector(selCmpt.zoom, 'scope');
@@ -9166,10 +9239,8 @@ var Split = (function () {
         }
     };
     Split.prototype.set = function (key, value, explicit) {
+        delete this[explicit ? 'implicit' : 'explicit'][key];
         this[explicit ? 'explicit' : 'implicit'][key] = value;
-        if (explicit) {
-            delete this.implicit[key];
-        }
         return this;
     };
     Split.prototype.copyKeyFromSplit = function (key, s) {
@@ -9268,7 +9339,8 @@ var parse_2 = require("./data/parse");
 var facet_1 = require("./facet");
 var layer_1 = require("./layer");
 var assemble_2 = require("./layout/assemble");
-var parse_3 = require("./legend/parse");
+var parse_3 = require("./layout/parse");
+var parse_4 = require("./legend/parse");
 var init_1 = require("./mark/init");
 var mark_2 = require("./mark/mark");
 var model_1 = require("./model");
@@ -9401,6 +9473,9 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.parseData = function () {
         this.component.data = parse_2.parseData(this);
     };
+    UnitModel.prototype.parseLayoutSize = function () {
+        parse_3.parseUnitLayoutSize(this);
+    };
     UnitModel.prototype.parseSelection = function () {
         this.component.selection = selection_1.parseUnitSelection(this, this.selection);
     };
@@ -9411,7 +9486,7 @@ var UnitModel = (function (_super) {
         this.component.axes = parse_1.parseUnitAxis(this);
     };
     UnitModel.prototype.parseLegend = function () {
-        this.component.legends = parse_3.parseUnitLegend(this);
+        this.component.legends = parse_4.parseUnitLegend(this);
     };
     UnitModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -9433,7 +9508,7 @@ var UnitModel = (function (_super) {
         return null;
     };
     UnitModel.prototype.assembleLayoutSignals = function () {
-        return assemble_2.assembleLayoutUnitSignals(this);
+        return assemble_2.assembleLayoutSignals(this);
     };
     UnitModel.prototype.assembleMarks = function () {
         var marks = this.component.mark || [];
@@ -9495,7 +9570,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":12,"../encoding":88,"../fielddef":90,"../mark":97,"../scale":98,"../stack":102,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./facet":36,"./layer":37,"./layout/assemble":38,"./legend/parse":44,"./mark/init":48,"./mark/mark":50,"./model":58,"./repeat":59,"./selection/selection":70,"tslib":5}],82:[function(require,module,exports){
+},{"../channel":12,"../encoding":88,"../fielddef":90,"../mark":97,"../scale":98,"../stack":102,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./facet":36,"./layer":37,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./mark/init":48,"./mark/mark":50,"./model":58,"./repeat":59,"./selection/selection":70,"tslib":5}],82:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -10570,9 +10645,9 @@ function expression(model, filterOp, node) {
                 var lower = filter.range[0];
                 var upper = filter.range[1];
                 if (lower !== null && upper !== null) {
-                    return 'inrange(' + fieldExpr + ', ' +
+                    return 'inrange(' + fieldExpr + ', [' +
                         valueExpr(lower, filter.timeUnit) + ', ' +
-                        valueExpr(upper, filter.timeUnit) + ')';
+                        valueExpr(upper, filter.timeUnit) + '])';
                 }
                 else if (lower !== null) {
                     return fieldExpr + ' >= ' + lower;
@@ -11229,7 +11304,7 @@ exports.defaultConfig = {
         on: '[mousedown, window:mouseup] > window:mousemove!',
         encodings: ['x', 'y'],
         translate: '[mousedown, window:mouseup] > window:mousemove!',
-        zoom: 'wheel',
+        zoom: 'wheel!',
         mark: { fill: '#333', fillOpacity: 0.125, stroke: 'white' },
         resolve: 'global'
     }
@@ -12286,6 +12361,10 @@ exports.getEncodingMappingError = getEncodingMappingError;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
+function isVgSignalRef(o) {
+    return !!o['signal'];
+}
+exports.isVgSignalRef = isVgSignalRef;
 function isVgRangeStep(range) {
     return !!range['step'];
 }

@@ -18,6 +18,7 @@ export declare class RepeatModel extends Model {
     constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config);
     private _initChildren(spec, repeat, repeater, config);
     parseData(): void;
+    parseLayoutSize(): void;
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;

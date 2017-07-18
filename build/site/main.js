@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.8",
+  "version": "2.0.0-beta.9",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -85,13 +85,13 @@ module.exports={
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.7",
-    "ajv": "5.2.0",
+    "@types/node": "^8.0.11",
+    "ajv": "5.2.2",
     "browser-sync": "^2.18.12",
     "browserify": "^14.4.0",
     "browserify-shim": "^3.8.14",
-    "chai": "^4.0.2",
-    "cheerio": "^1.0.0-rc.1",
+    "chai": "^4.1.0",
+    "cheerio": "^1.0.0-rc.2",
     "codecov": "^2.2.0",
     "d3": "^4.9.1",
     "exorcist": "^0.4.0",
@@ -105,8 +105,8 @@ module.exports={
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.1",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.7.0",
-    "uglify-js": "^3.0.23",
-    "vega": "^3.0.0-rc1",
+    "uglify-js": "^3.0.24",
+    "vega": "^3.0.0-rc2",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "^3.0.0-beta.19",
     "vega-tooltip": "^0.4.2",
@@ -117,7 +117,7 @@ module.exports={
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.7.1",
     "vega-event-selector": "^2.0.0",
-    "vega-util": "^1.3.1",
+    "vega-util": "^1.4.1",
     "yargs": "^8.0.2"
   }
 }
@@ -585,7 +585,7 @@ function parseLayerAxis(model) {
                         }
                     }
                     axisCount[orient]++;
-                    // TODO: automaticaly add extra offset?
+                    // TODO(https://github.com/vega/vega-lite/issues/2634): automaticaly add extra offset?
                 });
             }
             // After merging, make sure to remove axes from child
@@ -1157,7 +1157,9 @@ var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
-var parse_2 = require("./legend/parse");
+var assemble_2 = require("./layout/assemble");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 var ConcatModel = (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
@@ -1174,6 +1176,9 @@ var ConcatModel = (function (_super) {
         this.children.forEach(function (child) {
             child.parseData();
         });
+    };
+    ConcatModel.prototype.parseLayoutSize = function () {
+        parse_2.parseConcatLayoutSize(this);
     };
     ConcatModel.prototype.parseSelection = function () {
         var _this = this;
@@ -1209,7 +1214,7 @@ var ConcatModel = (function (_super) {
         return null;
     };
     ConcatModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     ConcatModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -1231,7 +1236,7 @@ var ConcatModel = (function (_super) {
     ConcatModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, []);
+        }, assemble_2.assembleLayoutSignals(this));
     };
     ConcatModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -1255,7 +1260,7 @@ var ConcatModel = (function (_super) {
 }(model_1.Model));
 exports.ConcatModel = ConcatModel;
 
-},{"../spec":94,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./legend/parse":37,"./model":51,"tslib":294}],14:[function(require,module,exports){
+},{"../spec":94,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./model":51,"tslib":294}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3237,7 +3242,8 @@ var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
 var header_1 = require("./layout/header");
-var parse_2 = require("./legend/parse");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 var repeat_1 = require("./repeat");
 var resolve_1 = require("./resolve");
@@ -3280,6 +3286,9 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.parseData = function () {
         this.component.data = parse_1.parseData(this);
         this.child.parseData();
+    };
+    FacetModel.prototype.parseLayoutSize = function () {
+        parse_2.parseChildrenLayoutSize(this);
     };
     FacetModel.prototype.parseSelection = function () {
         // As a facet has a single child, the selection components are the same.
@@ -3371,7 +3380,7 @@ var FacetModel = (function (_super) {
         }
     };
     FacetModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     FacetModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -3436,7 +3445,7 @@ function getFacetGroupProperties(model) {
     return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
 }
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../mark":90,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/header":32,"./legend/parse":37,"./model":51,"./repeat":52,"./resolve":53,"tslib":294}],30:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../mark":90,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/header":32,"./layout/parse":33,"./legend/parse":37,"./model":51,"./repeat":52,"./resolve":53,"tslib":294}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3449,7 +3458,8 @@ var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_2 = require("./data/parse");
 var assemble_2 = require("./layout/assemble");
-var parse_3 = require("./legend/parse");
+var parse_3 = require("./layout/parse");
+var parse_4 = require("./legend/parse");
 var model_1 = require("./model");
 var selection_1 = require("./selection/selection");
 var unit_1 = require("./unit");
@@ -3476,6 +3486,9 @@ var LayerModel = (function (_super) {
             var child = _a[_i];
             child.parseData();
         }
+    };
+    LayerModel.prototype.parseLayoutSize = function () {
+        parse_3.parseLayerLayoutSize(this);
     };
     LayerModel.prototype.parseSelection = function () {
         var _this = this;
@@ -3504,7 +3517,7 @@ var LayerModel = (function (_super) {
         parse_1.parseLayerAxis(this);
     };
     LayerModel.prototype.parseLegend = function () {
-        parse_3.parseNonUnitLegend(this);
+        parse_4.parseNonUnitLegend(this);
     };
     LayerModel.prototype.assembleParentGroupProperties = function () {
         return tslib_1.__assign({ width: this.getSizeSignalRef('width'), height: this.getSizeSignalRef('height') }, common_1.applyConfig({}, this.config.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
@@ -3521,7 +3534,7 @@ var LayerModel = (function (_super) {
     LayerModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, assemble_2.assembleLayoutLayerSignals(this));
+        }, assemble_2.assembleLayoutSignals(this));
     };
     LayerModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -3551,57 +3564,57 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../log":88,"../mark":90,"../spec":94,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./legend/parse":37,"./model":51,"./selection/selection":63,"./unit":74,"tslib":294}],31:[function(require,module,exports){
+},{"../log":88,"../mark":90,"../spec":94,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./model":51,"./selection/selection":63,"./unit":74,"tslib":294}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
-// FIXME: rename this file to assemble.ts
-// TODO: rewrite this such that we merge redundant signals
-function assembleLayoutLayerSignals(model) {
-    return [
-        { name: model.getName('width'), update: layerSizeExpr(model, 'width') },
-        { name: model.getName('height'), update: layerSizeExpr(model, 'height') }
-    ];
-}
-exports.assembleLayoutLayerSignals = assembleLayoutLayerSignals;
-function layerSizeExpr(model, sizeType) {
-    var childrenSizeSignals = model.children.map(function (child) { return child.getName(sizeType); }).join(', ');
-    return "max(" + childrenSizeSignals + ")";
-}
-exports.layerSizeExpr = layerSizeExpr;
-function assembleLayoutUnitSignals(model) {
-    return [
-        { name: model.getName('width'), update: unitSizeExpr(model, 'width') },
-        { name: model.getName('height'), update: unitSizeExpr(model, 'height') }
-    ];
-}
-exports.assembleLayoutUnitSignals = assembleLayoutUnitSignals;
-function unitSizeExpr(model, sizeType) {
-    var channel = sizeType === 'width' ? 'x' : 'y';
-    var scaleComponent = model.getScaleComponent(channel);
-    if (scaleComponent) {
-        var type = scaleComponent.get('type');
-        var range = scaleComponent.get('range');
-        if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
-            var scaleName = model.scaleName(channel);
-            var cardinality = "domain('" + scaleName + "').length";
-            var padding = scaleComponent.get('padding');
-            var paddingOuter = scaleComponent.get('paddingOuter');
-            paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-            var paddingInner = scaleComponent.get('paddingInner');
-            paddingInner = type === 'band' ?
-                // only band has real paddingInner
-                (paddingInner !== undefined ? paddingInner : padding) :
-                // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-                // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-                1;
-            return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
-        }
+function assembleLayoutSignals(model) {
+    var signals = [];
+    var width = sizeExpr(model, 'width');
+    if (width !== undefined) {
+        signals.push({ name: model.getName('width'), update: width });
     }
-    return "" + model.component.layoutSize.get(sizeType);
+    var height = sizeExpr(model, 'height');
+    if (height !== undefined) {
+        signals.push({ name: model.getName('height'), update: height });
+    }
+    return signals;
 }
-exports.unitSizeExpr = unitSizeExpr;
+exports.assembleLayoutSignals = assembleLayoutSignals;
+function sizeExpr(model, sizeType) {
+    var channel = sizeType === 'width' ? 'x' : 'y';
+    var size = model.component.layoutSize.get(sizeType);
+    if (size === 'merged') {
+        return undefined;
+    }
+    else if (size === 'range-step') {
+        var scaleComponent = model.getScaleComponent(channel);
+        if (scaleComponent) {
+            var type = scaleComponent.get('type');
+            var range = scaleComponent.get('range');
+            if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
+                var scaleName = model.scaleName(channel);
+                var cardinality = "domain('" + scaleName + "').length";
+                var padding = scaleComponent.get('padding');
+                var paddingOuter = scaleComponent.get('paddingOuter');
+                paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+                var paddingInner = scaleComponent.get('paddingInner');
+                paddingInner = type === 'band' ?
+                    // only band has real paddingInner
+                    (paddingInner !== undefined ? paddingInner : padding) :
+                    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+                    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+                    1;
+                return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
+            }
+        }
+        /* istanbul ignore next: Condition should not happen -- only for warning in development. */
+        throw new Error('layout size is range step although there is no rangeStep.');
+    }
+    return size ? "" + size : undefined;
+}
+exports.sizeExpr = sizeExpr;
 
 },{"../../scale":91,"../../vega.schema":102}],32:[function(require,module,exports){
 "use strict";
@@ -3684,22 +3697,73 @@ exports.getHeaderGroup = getHeaderGroup;
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
-var unit_1 = require("../unit");
-function parseLayoutSize(model) {
-    if (model instanceof unit_1.UnitModel) {
-        parseUnitLayoutSize(model);
-    }
-    else {
-        parseNonUnitLayoutSize(model);
-    }
+var split_1 = require("../split");
+function parseLayerLayoutSize(model) {
+    parseChildrenLayoutSize(model);
+    var layoutSizeCmpt = model.component.layoutSize;
+    layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
+    layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
-exports.parseLayoutSize = parseLayoutSize;
-function parseNonUnitLayoutSize(model) {
+exports.parseLayerLayoutSize = parseLayerLayoutSize;
+exports.parseRepeatLayoutSize = parseLayerLayoutSize;
+function parseConcatLayoutSize(model) {
+    parseChildrenLayoutSize(model);
+    var layoutSizeCmpt = model.component.layoutSize;
+    var sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
+    layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+}
+exports.parseConcatLayoutSize = parseConcatLayoutSize;
+function parseChildrenLayoutSize(model) {
     for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
         var child = _a[_i];
-        parseLayoutSize(child);
+        child.parseLayoutSize();
     }
-    // TODO(https://github.com/vega/vega-lite/issues/2198): merge size
+}
+exports.parseChildrenLayoutSize = parseChildrenLayoutSize;
+function parseNonUnitLayoutSizeForChannel(model, sizeType) {
+    var channel = sizeType === 'width' ? 'x' : 'y';
+    var resolve = model.component.resolve;
+    var mergedSize;
+    // Try to merge layout size
+    for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
+        var child = _a[_i];
+        var childSize = child.component.layoutSize.getWithExplicit(sizeType);
+        var scaleResolve = resolve[channel] ? resolve[channel].scale : undefined;
+        if (scaleResolve === 'independent' && childSize.value === 'range-step') {
+            // Do not merge independent scales with range-step as their size depends
+            // on the scale domains, which can be different between scales.
+            mergedSize = undefined;
+            break;
+        }
+        if (mergedSize) {
+            if (scaleResolve === 'independent' && mergedSize.value !== childSize.value) {
+                // For independent scale, only merge if all the sizes are the same.
+                // If the values are different, abandon the merge!
+                mergedSize = undefined;
+                break;
+            }
+            mergedSize = split_1.mergeValuesWithExplicit(mergedSize, childSize, sizeType, '', split_1.defaultTieBreaker);
+        }
+        else {
+            mergedSize = childSize;
+        }
+    }
+    if (mergedSize) {
+        // If merged, rename size and set size of all children.
+        for (var _b = 0, _c = model.children; _b < _c.length; _b++) {
+            var child = _c[_b];
+            model.renameLayoutSize(child.getSizeSignalRef(sizeType).signal, model.getSizeSignalRef(sizeType).signal);
+            child.component.layoutSize.set(sizeType, 'merged', false);
+        }
+        return mergedSize;
+    }
+    else {
+        // Otherwise, there is no merged size.
+        return {
+            explicit: false,
+            value: undefined
+        };
+    }
 }
 function parseUnitLayoutSize(model) {
     var layoutSizeComponent = model.component.layoutSize;
@@ -3712,6 +3776,7 @@ function parseUnitLayoutSize(model) {
         layoutSizeComponent.set('height', height, false);
     }
 }
+exports.parseUnitLayoutSize = parseUnitLayoutSize;
 function defaultUnitSize(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var config = model.config;
@@ -3721,7 +3786,7 @@ function defaultUnitSize(model, sizeType) {
         var range = scaleComponent.get('range');
         if (scale_1.hasDiscreteDomain(scaleType) && vega_schema_1.isVgRangeStep(range)) {
             // For discrete domain with range.step, use dynamic width/height
-            return null;
+            return 'range-step';
         }
         else {
             // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
@@ -3740,7 +3805,7 @@ function defaultUnitSize(model, sizeType) {
     }
 }
 
-},{"../../scale":91,"../../vega.schema":102,"../unit":74}],34:[function(require,module,exports){
+},{"../../scale":91,"../../vega.schema":102,"../split":73}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
@@ -4825,10 +4890,12 @@ function defaultSize(model) {
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
+var vega_schema_1 = require("../../vega.schema");
 var common_1 = require("../common");
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
@@ -4969,23 +5036,21 @@ function text(textDef, config) {
 }
 exports.text = text;
 function midX(width, config) {
-    if (width) {
+    if (vega_util_1.isNumber(width)) {
         return { value: width / 2 };
     }
-    if (typeof config.scale.rangeStep === 'string') {
-        // TODO: For fit-mode, use middle of the width
-        throw new Error('midX can not handle string rangeSteps');
+    else if (vega_schema_1.isVgSignalRef(width)) {
+        return tslib_1.__assign({}, width, { mult: 0.5 });
     }
     return { value: config.scale.rangeStep / 2 };
 }
 exports.midX = midX;
 function midY(height, config) {
-    if (height) {
+    if (vega_util_1.isNumber(height)) {
         return { value: height / 2 };
     }
-    if (typeof config.scale.rangeStep === 'string') {
-        // TODO: For fit-mode, use middle of the width
-        throw new Error('midX can not handle string rangeSteps');
+    else if (vega_schema_1.isVgSignalRef(height)) {
+        return tslib_1.__assign({}, height, { mult: 0.5 });
     }
     return { value: config.scale.rangeStep / 2 };
 }
@@ -5052,10 +5117,11 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../common":11,"tslib":294}],51:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../../vega.schema":102,"../common":11,"tslib":294,"vega-util":306}],51:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
@@ -5063,11 +5129,10 @@ var log = require("../log");
 var util_1 = require("../util");
 var assemble_1 = require("./axis/assemble");
 var header_1 = require("./layout/header");
-var parse_1 = require("./layout/parse");
 var assemble_2 = require("./legend/assemble");
 var mark_1 = require("./mark/mark");
 var assemble_3 = require("./scale/assemble");
-var parse_2 = require("./scale/parse");
+var parse_1 = require("./scale/parse");
 var split_1 = require("./split");
 var unit_1 = require("./unit");
 var NameMap = (function () {
@@ -5116,7 +5181,7 @@ var Model = (function () {
         this.name = spec.name || parentGivenName;
         // Shared name maps
         this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
-        this.sizeNameMap = parent ? parent.sizeNameMap : new NameMap();
+        this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
         this.data = spec.data;
         this.description = spec.description;
         this.transforms = spec.transform || [];
@@ -5139,28 +5204,29 @@ var Model = (function () {
     }
     Object.defineProperty(Model.prototype, "width", {
         get: function () {
-            /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-            var w = this.component.layoutSize.get('width');
-            if (w !== undefined) {
-                return w;
-            }
-            throw new Error('calling model.width before parseLayoutSize()');
+            return this.getLayoutSize('width');
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Model.prototype, "height", {
         get: function () {
-            /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-            var h = this.component.layoutSize.get('height');
-            if (h !== undefined) {
-                return h;
-            }
-            throw new Error('calling model.height before parseLayoutSize()');
+            return this.getLayoutSize('height');
         },
         enumerable: true,
         configurable: true
     });
+    Model.prototype.getLayoutSize = function (sizeType) {
+        /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+        var size = this.component.layoutSize.get(sizeType);
+        if (size !== undefined) {
+            if (vega_util_1.isNumber(size)) {
+                return size;
+            }
+            return this.getSizeSignalRef(sizeType);
+        }
+        throw new Error("calling model." + sizeType + " before parseLayoutSize()");
+    };
     Model.prototype.initSize = function (size) {
         var width = size.width, height = size.height;
         if (width) {
@@ -5175,16 +5241,13 @@ var Model = (function () {
         this.parseMarkDef();
         this.parseLayoutSize(); // depends on scale
         this.parseSelection();
-        this.parseData(); // (pathorder) depends on markDef
+        this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
         this.parseAxisAndHeader(); // depends on scale
         this.parseLegend(); // depends on scale, markDef
         this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
     };
     Model.prototype.parseScale = function () {
-        parse_2.parseScale(this);
-    };
-    Model.prototype.parseLayoutSize = function () {
-        parse_1.parseLayoutSize(this);
+        parse_1.parseScale(this);
     };
     Model.prototype.parseMarkDef = function () {
         mark_1.parseMarkDef(this);
@@ -5282,9 +5345,8 @@ var Model = (function () {
         return fullName;
     };
     Model.prototype.getSizeSignalRef = function (sizeType) {
-        // TODO: this could change in the future once we have sizeSignal merging
         return {
-            signal: this.getName(sizeType)
+            signal: this.layoutSizeNameMap.get(this.getName(sizeType))
         };
     };
     /**
@@ -5299,14 +5361,14 @@ var Model = (function () {
         }
         return node.getSource();
     };
-    Model.prototype.renameSize = function (oldName, newName) {
-        this.sizeNameMap.rename(oldName, newName);
+    Model.prototype.renameLayoutSize = function (oldName, newName) {
+        this.layoutSizeNameMap.rename(oldName, newName);
     };
     Model.prototype.channelSizeName = function (channel) {
         return this.sizeName(channel === channel_1.X || channel === channel_1.COLUMN ? 'width' : 'height');
     };
     Model.prototype.sizeName = function (size) {
-        return this.sizeNameMap.get(this.getName(size));
+        return this.layoutSizeNameMap.get(this.getName(size));
     };
     Model.prototype.renameScale = function (oldName, newName) {
         this.scaleNameMap.rename(oldName, newName);
@@ -5400,7 +5462,7 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../util":100,"./axis/assemble":6,"./layout/header":32,"./layout/parse":33,"./legend/assemble":34,"./mark/mark":43,"./scale/assemble":54,"./scale/parse":57,"./split":73,"./unit":74,"tslib":294}],52:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../util":100,"./axis/assemble":6,"./layout/header":32,"./legend/assemble":34,"./mark/mark":43,"./scale/assemble":54,"./scale/parse":57,"./split":73,"./unit":74,"tslib":294,"vega-util":306}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5411,7 +5473,9 @@ var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_1 = require("./data/parse");
-var parse_2 = require("./legend/parse");
+var assemble_2 = require("./layout/assemble");
+var parse_2 = require("./layout/parse");
+var parse_3 = require("./legend/parse");
 var model_1 = require("./model");
 function replaceRepeaterInFacet(facet, repeater) {
     return replaceRepeater(facet, repeater);
@@ -5492,6 +5556,9 @@ var RepeatModel = (function (_super) {
             child.parseData();
         });
     };
+    RepeatModel.prototype.parseLayoutSize = function () {
+        parse_2.parseRepeatLayoutSize(this);
+    };
     RepeatModel.prototype.parseSelection = function () {
         var _this = this;
         // Merge selections up the hierarchy so that they may be referenced
@@ -5523,7 +5590,7 @@ var RepeatModel = (function (_super) {
         // TODO(#2415): support shared axes
     };
     RepeatModel.prototype.parseLegend = function () {
-        parse_2.parseNonUnitLegend(this);
+        parse_3.parseNonUnitLegend(this);
     };
     RepeatModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -5545,7 +5612,7 @@ var RepeatModel = (function (_super) {
     RepeatModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, []);
+        }, assemble_2.assembleLayoutSignals(this));
     };
     RepeatModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
@@ -5575,7 +5642,7 @@ var RepeatModel = (function (_super) {
 }(model_1.Model));
 exports.RepeatModel = RepeatModel;
 
-},{"../fielddef":83,"../log":88,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./legend/parse":37,"./model":51,"tslib":294,"vega-util":306}],53:[function(require,module,exports){
+},{"../fielddef":83,"../log":88,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./model":51,"tslib":294,"vega-util":306}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../channel");
@@ -5856,7 +5923,7 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
         }
         if (scale_1.hasDiscreteDomain(scaleType)) {
             // ordinal bin scale takes domain from bin_range, ordered by bin_start
-            // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
+            // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
             return {
                 data: model.requestDataName(data_1.MAIN),
                 field: model.field(channel, { binSuffix: 'range' }),
@@ -6306,7 +6373,7 @@ function paddingOuter(padding, channel, scaleType, paddingInner, scaleConfig) {
 }
 exports.paddingOuter = paddingOuter;
 function round(channel, scaleConfig) {
-    if (util.contains(['x', 'y', 'row', 'column'], channel)) {
+    if (util.contains(['x', 'y'], channel)) {
         return scaleConfig.round;
     }
     return undefined;
@@ -6333,6 +6400,7 @@ exports.zero = zero;
 },{"../../channel":5,"../../log":88,"../../scale":91,"../../timeunit":96,"../../util":100,"../split":73,"../unit":74,"./range":59}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var log = require("../../log");
 var scale_1 = require("../../scale");
@@ -6446,14 +6514,13 @@ function parseScheme(scheme) {
 }
 function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull) {
     switch (channel) {
-        // TODO: revise row/column when facetSpec has top-level width/height
-        case channel_1.ROW:
-            return 'height';
-        case channel_1.COLUMN:
-            return 'width';
         case channel_1.X:
         case channel_1.Y:
-            if (topLevelSize === undefined) {
+            var size = void 0;
+            if (vega_util_1.isNumber(topLevelSize)) {
+                size = topLevelSize;
+            }
+            else {
                 if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
                     if (channel === channel_1.X && mark === 'text') {
                         if (config.scale.textXRangeStep) {
@@ -6468,9 +6535,9 @@ function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize
                 }
                 // If specified range step is null or the range step config is null.
                 // Use default topLevelSize rule/config
-                topLevelSize = channel === channel_1.X ? config.cell.width : config.cell.height;
+                size = channel === channel_1.X ? config.cell.width : config.cell.height;
             }
-            return channel === channel_1.X ? [0, topLevelSize] : [topLevelSize, 0];
+            return channel === channel_1.X ? [0, size] : [size, 0];
         case channel_1.SIZE:
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
@@ -6559,7 +6626,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":5,"../../log":88,"../../scale":91,"../../util":100,"../../vega.schema":102,"../split":73,"../unit":74,"./properties":58}],60:[function(require,module,exports){
+},{"../../channel":5,"../../log":88,"../../scale":91,"../../util":100,"../../vega.schema":102,"../split":73,"../unit":74,"./properties":58,"vega-util":306}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -6601,9 +6668,6 @@ exports.scaleType = scaleType;
  * Determine appropriate default scale type.
  */
 function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
-    if (util.contains(['row', 'column'], channel)) {
-        return 'band';
-    }
     switch (fieldDef.type) {
         case 'nominal':
             if (channel === 'color' || channel_1.rangeType(channel) === 'discrete') {
@@ -6775,7 +6839,7 @@ var interval = {
     },
     marks: function (model, selCmpt, marks) {
         var name = selCmpt.name;
-        var _a = projections(selCmpt), xi = _a.xi, yi = _a.yi;
+        var _a = selection_1.spatialProjections(selCmpt), xi = _a.xi, yi = _a.yi;
         var tpl = name + selection_1.TUPLE;
         var store = "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")";
         // Do not add a brush if we're binding to scales.
@@ -6825,24 +6889,6 @@ var interval = {
     }
 };
 exports.default = interval;
-function projections(selCmpt) {
-    var x = null;
-    var xi = null;
-    var y = null;
-    var yi = null;
-    selCmpt.project.forEach(function (p, i) {
-        if (p.channel === channel_1.X) {
-            x = p;
-            xi = i;
-        }
-        else if (p.channel === channel_1.Y) {
-            y = p;
-            yi = i;
-        }
-    });
-    return { x: x, xi: xi, y: y, yi: yi };
-}
-exports.projections = projections;
 /**
  * Returns the visual and data signals for an interval selection.
  */
@@ -6935,6 +6981,7 @@ exports.default = multi;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
+var channel_1 = require("../../channel");
 var log_1 = require("../../log");
 var util_1 = require("../../util");
 var layer_1 = require("../layer");
@@ -7171,8 +7218,26 @@ exports.channelSignalName = channelSignalName;
 function clipMarks(marks) {
     return marks.map(function (m) { return (m.clip = true, m); });
 }
+function spatialProjections(selCmpt) {
+    var x = null;
+    var xi = null;
+    var y = null;
+    var yi = null;
+    selCmpt.project.forEach(function (p, i) {
+        if (p.channel === channel_1.X) {
+            x = p;
+            xi = i;
+        }
+        else if (p.channel === channel_1.Y) {
+            y = p;
+            yi = i;
+        }
+    });
+    return { x: x, xi: xi, y: y, yi: yi };
+}
+exports.spatialProjections = spatialProjections;
 
-},{"../../log":88,"../../util":100,"../layer":30,"../unit":74,"./interval":61,"./multi":62,"./single":64,"./transforms/transforms":70,"vega-event-selector":298}],64:[function(require,module,exports){
+},{"../../channel":5,"../../log":88,"../../util":100,"../layer":30,"../unit":74,"./interval":61,"./multi":62,"./single":64,"./transforms/transforms":70,"vega-event-selector":298}],64:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -7250,12 +7315,14 @@ function id(str) {
 },{"../../../util":100,"../selection":63,"./nearest":66}],66:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var selection_1 = require("../selection");
 var VORONOI = 'voronoi';
 var nearest = {
     has: function (selCmpt) {
         return selCmpt.type !== 'interval' && selCmpt.nearest;
     },
     marks: function (model, selCmpt, marks, selMarks) {
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var mark = marks[0];
         var index = selMarks.indexOf(mark);
         var isPathgroup = mark.name === model.getName('pathgroup');
@@ -7274,8 +7341,8 @@ var nearest = {
             },
             transform: [{
                     type: 'voronoi',
-                    x: 'datum.x',
-                    y: 'datum.y',
+                    x: (x || (!x && !y)) ? 'datum.x' : { expr: '0' },
+                    y: (y || (!x && !y)) ? 'datum.y' : { expr: '0' },
                     size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
                 }]
         };
@@ -7291,7 +7358,7 @@ var nearest = {
 };
 exports.default = nearest;
 
-},{}],67:[function(require,module,exports){
+},{"../selection":63}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../../log");
@@ -7472,7 +7539,7 @@ var translate = {
         var name = selCmpt.name;
         var hasScales = scales_1.default.has(selCmpt);
         var anchor = name + ANCHOR;
-        var _a = interval_1.projections(selCmpt), x = _a.x, y = _a.y;
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var events = vega_event_selector_1.selector(selCmpt.translate, 'scope');
         if (!hasScales) {
             events = events.map(function (e) { return (e.between[0].markname = name + interval_1.BRUSH, e); });
@@ -7548,7 +7615,7 @@ var zoom = {
         var name = selCmpt.name;
         var hasScales = scales_1.default.has(selCmpt);
         var delta = name + DELTA;
-        var _a = interval_1.projections(selCmpt), x = _a.x, y = _a.y;
+        var _a = selection_1.spatialProjections(selCmpt), x = _a.x, y = _a.y;
         var sx = util_1.stringValue(model.scaleName(channel_1.X));
         var sy = util_1.stringValue(model.scaleName(channel_1.Y));
         var events = vega_event_selector_1.selector(selCmpt.zoom, 'scope');
@@ -7657,10 +7724,8 @@ var Split = (function () {
         }
     };
     Split.prototype.set = function (key, value, explicit) {
+        delete this[explicit ? 'implicit' : 'explicit'][key];
         this[explicit ? 'explicit' : 'implicit'][key] = value;
-        if (explicit) {
-            delete this.implicit[key];
-        }
         return this;
     };
     Split.prototype.copyKeyFromSplit = function (key, s) {
@@ -7759,7 +7824,8 @@ var parse_2 = require("./data/parse");
 var facet_1 = require("./facet");
 var layer_1 = require("./layer");
 var assemble_2 = require("./layout/assemble");
-var parse_3 = require("./legend/parse");
+var parse_3 = require("./layout/parse");
+var parse_4 = require("./legend/parse");
 var init_1 = require("./mark/init");
 var mark_2 = require("./mark/mark");
 var model_1 = require("./model");
@@ -7892,6 +7958,9 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.parseData = function () {
         this.component.data = parse_2.parseData(this);
     };
+    UnitModel.prototype.parseLayoutSize = function () {
+        parse_3.parseUnitLayoutSize(this);
+    };
     UnitModel.prototype.parseSelection = function () {
         this.component.selection = selection_1.parseUnitSelection(this, this.selection);
     };
@@ -7902,7 +7971,7 @@ var UnitModel = (function (_super) {
         this.component.axes = parse_1.parseUnitAxis(this);
     };
     UnitModel.prototype.parseLegend = function () {
-        this.component.legends = parse_3.parseUnitLegend(this);
+        this.component.legends = parse_4.parseUnitLegend(this);
     };
     UnitModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -7924,7 +7993,7 @@ var UnitModel = (function (_super) {
         return null;
     };
     UnitModel.prototype.assembleLayoutSignals = function () {
-        return assemble_2.assembleLayoutUnitSignals(this);
+        return assemble_2.assembleLayoutSignals(this);
     };
     UnitModel.prototype.assembleMarks = function () {
         var marks = this.component.mark || [];
@@ -7986,7 +8055,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../mark":90,"../scale":91,"../stack":95,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./facet":29,"./layer":30,"./layout/assemble":31,"./legend/parse":37,"./mark/init":41,"./mark/mark":43,"./model":51,"./repeat":52,"./selection/selection":63,"tslib":294}],75:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../mark":90,"../scale":91,"../stack":95,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./facet":29,"./layer":30,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./mark/init":41,"./mark/mark":43,"./model":51,"./repeat":52,"./selection/selection":63,"tslib":294}],75:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -9061,9 +9130,9 @@ function expression(model, filterOp, node) {
                 var lower = filter.range[0];
                 var upper = filter.range[1];
                 if (lower !== null && upper !== null) {
-                    return 'inrange(' + fieldExpr + ', ' +
+                    return 'inrange(' + fieldExpr + ', [' +
                         valueExpr(lower, filter.timeUnit) + ', ' +
-                        valueExpr(upper, filter.timeUnit) + ')';
+                        valueExpr(upper, filter.timeUnit) + '])';
                 }
                 else if (lower !== null) {
                     return fieldExpr + ' >= ' + lower;
@@ -9720,7 +9789,7 @@ exports.defaultConfig = {
         on: '[mousedown, window:mouseup] > window:mousemove!',
         encodings: ['x', 'y'],
         translate: '[mousedown, window:mouseup] > window:mousemove!',
-        zoom: 'wheel',
+        zoom: 'wheel!',
         mark: { fill: '#333', fillOpacity: 0.125, stroke: 'white' },
         resolve: 'global'
     }
@@ -10777,6 +10846,10 @@ exports.getEncodingMappingError = getEncodingMappingError;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
+function isVgSignalRef(o) {
+    return !!o['signal'];
+}
+exports.isVgSignalRef = isVgSignalRef;
 function isVgRangeStep(range) {
     return !!range['step'];
 }
@@ -10813,7 +10886,7 @@ exports.isSignalRefDomain = isSignalRefDomain;
 },{"./util":100}],103:[function(require,module,exports){
 
 },{}],104:[function(require,module,exports){
-// https://d3js.org/d3-collection/ Version 1.0.4. Copyright 2017 Mike Bostock.
+// https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -10902,10 +10975,10 @@ var nest = function() {
       nest;
 
   function apply(array, depth, createResult, setResult) {
-    if (depth >= keys.length) {
-      if (sortValues != null) array.sort(sortValues);
-      return rollup != null ? rollup(array) : array;
-    }
+    if (depth >= keys.length) return rollup != null
+        ? rollup(array) : (sortValues != null
+        ? array.sort(sortValues)
+        : array);
 
     var i = -1,
         n = array.length,
@@ -13419,7 +13492,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-time":111}],111:[function(require,module,exports){
-// https://d3js.org/d3-time/ Version 1.0.7. Copyright 2017 Mike Bostock.
+// https://d3js.org/d3-time/ Version 1.0.6. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -13464,13 +13537,7 @@ function newInterval(floori, offseti, count, field) {
     return newInterval(function(date) {
       if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
     }, function(date, step) {
-      if (date >= date) {
-        if (step < 0) while (++step <= 0) {
-          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
-        } else while (--step >= 0) {
-          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
-        }
-      }
+      if (date >= date) while (--step >= 0) while (offseti(date, 1), !test(date)) {} // eslint-disable-line no-empty
     });
   };
 
@@ -32843,9 +32910,10 @@ function log(method, level, input) {
 }
 
 var None  = 0;
-var Warn  = 1;
-var Info  = 2;
-var Debug = 3;
+var Error$1 = 1;
+var Warn  = 2;
+var Info  = 3;
+var Debug = 4;
 
 var logger = function(_) {
   var level = _ || None;
@@ -32857,6 +32925,10 @@ var logger = function(_) {
       } else {
         return level;
       }
+    },
+    error: function() {
+      if (level >= Error$1) log('error', 'ERROR', arguments);
+      return this;
     },
     warn: function() {
       if (level >= Warn) log('warn', 'WARN', arguments);
@@ -33219,6 +33291,7 @@ exports.truthy = truthy;
 exports.falsy = falsy;
 exports.logger = logger;
 exports.None = None;
+exports.Error = Error$1;
 exports.Warn = Warn;
 exports.Info = Info;
 exports.Debug = Debug;
@@ -33267,7 +33340,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 	(factory((global.vega = global.vega || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "3.0.0-rc1";
+var version = "3.0.0-rc2";
 
 var bin$1 = function(_) {
   // determine range
@@ -34080,7 +34153,7 @@ function accessorFields(fn) {
   return fn == null ? null : fn.fields;
 }
 
-var error = function(message) {
+var error$1 = function(message) {
   throw Error(message);
 };
 
@@ -34127,15 +34200,15 @@ var splitAccessPath = function(p) {
       if (j > i) push();
       b = i = j + 1;
     } else if (c === ']') {
-      if (!b) error('Access path missing open bracket: ' + p);
+      if (!b) error$1('Access path missing open bracket: ' + p);
       if (b > 0) push();
       b = 0;
       i = j + 1;
     }
   }
 
-  if (b) error('Access path missing closing bracket: ' + p);
-  if (q) error('Access path missing closing quote: ' + p);
+  if (b) error$1('Access path missing closing bracket: ' + p);
+  if (q) error$1('Access path missing closing quote: ' + p);
 
   if (j > i) {
     j++;
@@ -34195,9 +34268,10 @@ function log(method, level, input) {
 }
 
 var None  = 0;
-var Warn  = 1;
-var Info  = 2;
-var Debug = 3;
+var Error$1 = 1;
+var Warn  = 2;
+var Info  = 3;
+var Debug = 4;
 
 var logger = function(_) {
   var level = _ || None;
@@ -34209,6 +34283,10 @@ var logger = function(_) {
       } else {
         return level;
       }
+    },
+    error: function() {
+      if (level >= Error$1) log('error', 'ERROR', arguments);
+      return this;
     },
     warn: function() {
       if (level >= Warn) log('warn', 'WARN', arguments);
@@ -35237,8 +35315,8 @@ function http(url, options) {
       if (options[name]) req[name](options[name]);
     });
 
-    req.on('error', function(error$$1) {
-        reject(error$$1 || 'Error loading URL: ' + url);
+    req.on('error', function(error) {
+        reject(error || 'Error loading URL: ' + url);
       })
       .on('load', function(result) {
         var text$$1 = result && result.responseText;
@@ -35258,8 +35336,8 @@ function http(url, options) {
 function file(filename) {
   return new Promise(function(accept, reject) {
     var f = fs();
-    f ? f.readFile(filename, function(error$$1, data) {
-          if (error$$1) reject(error$$1);
+    f ? f.readFile(filename, function(error, data) {
+          if (error) reject(error);
           else accept(data);
         })
       : reject('No file system access for ' + filename);
@@ -35610,16 +35688,16 @@ var topojson = function(data, format) {
   if (format && (property = format.feature)) {
     return (object = data.objects[property])
       ? feature(data, object).features
-      : error('Invalid TopoJSON object: ' + property);
+      : error$1('Invalid TopoJSON object: ' + property);
   }
 
   else if (format && (property = format.mesh)) {
     return (object = data.objects[property])
       ? [mesh(data, object)]
-      : error('Invalid TopoJSON object: ' + property);
+      : error$1('Invalid TopoJSON object: ' + property);
   }
 
-  error('Missing TopoJSON feature or mesh parameter.');
+  error$1('Missing TopoJSON feature or mesh parameter.');
 };
 
 var formats = {
@@ -36488,7 +36566,7 @@ var read = function(data, schema, dateParse) {
   schema = schema || {};
 
   var reader = formats$1(schema.type || 'json');
-  if (!reader) error('Unknown data format type: ' + schema.type);
+  if (!reader) error$1('Unknown data format type: ' + schema.type);
 
   data = reader(data, schema);
   if (schema.parse) parse(data, schema.parse, dateParse);
@@ -42328,7 +42406,7 @@ prototype$11.parameters = function(params, react) {
     if (name === PULSE) {
       array$1(value).forEach(function(op) {
         if (!(op instanceof Operator)) {
-          error('Pulse parameters must be operator instances.');
+          error$1('Pulse parameters must be operator instances.');
         } else if (op !== self) {
           op.targets().add(self);
           deps.push(op);
@@ -42614,8 +42692,13 @@ var events = function(source, type, filter, apply) {
       s = stream(filter, apply),
       send = function(e) {
         e.dataflow = df;
-        s.receive(e);
-        df.run();
+        try {
+          s.receive(e);
+        } catch (error) {
+          df.error(error);
+        } finally {
+          df.run();
+        }
       },
       sources;
 
@@ -43171,9 +43254,10 @@ function update(op, value, options) {
 function pulse(op, changeset, options) {
   this.touch(op, options || NO_OPT);
 
-  var p = new Pulse(this, this._clock + (this._pulse ? 0 : 1));
+  var p = new Pulse(this, this._clock + (this._pulse ? 0 : 1)),
+      t = op.pulse && op.pulse.source || [];
   p.target = op;
-  this._pulses[op.id] = changeset.pulse(p, op.value);
+  this._pulses[op.id] = changeset.pulse(p, t);
 
   return this;
 }
@@ -43221,11 +43305,11 @@ function request$1(target, url, format) {
         df.ingest(target, data, format);
       },
       function(error) {
-        df.warn('Loading failed: ' + url, error);
+        df.error('Loading failed: ' + url, error);
         pending.done();
       })
     .then(pending.done)
-    .catch(function(error) { df.warn(error); });
+    .catch(function(error) { df.error(error); });
 }
 
 /**
@@ -43277,7 +43361,7 @@ var prototype$15 = inherits(MultiPulse, Pulse);
  */
 prototype$15.fork = function() {
   if (arguments.length && (arguments[0] & Pulse.prototype.ALL)) {
-    error('MultiPulse fork does not support tuple change sets.');
+    error$1('MultiPulse fork does not support tuple change sets.');
   }
   return new Pulse(this.dataflow).init(this, 0);
 };
@@ -43294,11 +43378,11 @@ prototype$15.modified = function(_) {
 };
 
 prototype$15.filter = function() {
-  error('MultiPulse does not support filtering.');
+  error$1('MultiPulse does not support filtering.');
 };
 
 prototype$15.materialize = function() {
-  error('MultiPulse does not support materialization.');
+  error$1('MultiPulse does not support materialization.');
 };
 
 prototype$15.visit = function(flags, visitor) {
@@ -43340,19 +43424,20 @@ function run(encode) {
   var df = this,
       count = 0,
       level = df.logLevel(),
-      op, next, dt, error$$1;
+      op, next, dt, error;
+
+  if (df._pending) {
+    df.info('Awaiting requests, delaying dataflow run.');
+    return 0;
+  }
 
   if (df._pulse) {
     df.error('Dataflow invoked recursively. Use the runAfter method to queue invocation.');
+    return 0;
   }
 
   if (!df._touched.length) {
     df.info('Dataflow invoked, but nothing to do.');
-    return 0;
-  }
-
-  if (df._pending) {
-    df.info('Awaiting requests, delaying dataflow run.');
     return 0;
   }
 
@@ -43391,7 +43476,7 @@ function run(encode) {
       ++count;
     }
   } catch (err) {
-    error$$1 = err;
+    error = err;
   }
 
   // reset pulse map
@@ -43403,9 +43488,9 @@ function run(encode) {
     df.info('> Pulse ' + df._clock + ': ' + count + ' operators; ' + dt + 'ms');
   }
 
-  if (error$$1) {
+  if (error) {
     df._postrun = [];
-    df.error(error$$1);
+    df.error(error);
   }
 
   // invoke callbacks queued via runAfter
@@ -43692,6 +43777,13 @@ function logMethod(method) {
 }
 
 /**
+ * Logs an error message. By default, logged messages are written to console
+ * output. The message will only be logged if the current log level is high
+ * enough to permit error messages.
+ */
+prototype$10.error = logMethod('error');
+
+/**
  * Logs a warning message. By default, logged messages are written to console
  * output. The message will only be logged if the current log level is high
  * enough to permit warning messages.
@@ -43719,14 +43811,6 @@ prototype$10.debug = logMethod('debug');
  * @return {number} - The current log level.
  */
 prototype$10.logLevel = logMethod('level');
-
-/**
- * Handle an error. By default, this method re-throws the input error.
- * This method can be overridden for custom error handling.
- */
-prototype$10.error = function(err) {
-  throw err;
-};
 
 /**
  * Abstract class for operators that process data tuples.
@@ -44290,7 +44374,7 @@ prototype$18.init = function(_) {
       field$$1, op, m, mname, outname, i;
 
   if (n !== ops.length) {
-    error('Unmatched number of fields and aggregate ops.');
+    error$1('Unmatched number of fields and aggregate ops.');
   }
 
   for (i=0; i<n; ++i) {
@@ -44298,7 +44382,7 @@ prototype$18.init = function(_) {
     op = ops[i];
 
     if (field$$1 == null && op !== 'count') {
-      error('Null aggregate field specified.');
+      error$1('Null aggregate field specified.');
     }
     mname = accessorName(field$$1);
     outname = measureName(op, mname, as[i]);
@@ -44822,7 +44906,7 @@ var FIELD = 'field';
 function parse$1(def, data) {
   var func = def[FUNCTION];
   if (!Distributions.hasOwnProperty(func)) {
-    error('Unknown distribution function: ' + func);
+    error$1('Unknown distribution function: ' + func);
   }
 
   var d = Distributions[func]();
@@ -44878,10 +44962,10 @@ prototype$24.transform = function(_, pulse) {
         method = _.method || 'pdf';
 
     if (method !== 'pdf' && method !== 'cdf') {
-      error('Invalid density method: ' + method);
+      error$1('Invalid density method: ' + method);
     }
     if (!_.extent && !dist.data) {
-      error('Missing density extent parameter.');
+      error$1('Missing density extent parameter.');
     }
     method = dist[method];
 
@@ -45396,7 +45480,7 @@ function getValue(_) {
   var m = _.method || Methods.value, v;
 
   if (Methods[m] == null) {
-    error('Unrecognized imputation method: ' + m);
+    error$1('Unrecognized imputation method: ' + m);
   } else if (m === Methods.value) {
     v = _.value !== undefined ? _.value : 0;
     return function() { return v; };
@@ -45580,10 +45664,10 @@ prototype$34.transform = function(_, pulse) {
     m = values.length;
 
     if (n > 1 && !as) {
-      error('Multi-field lookup requires explicit "as" parameter.');
+      error$1('Multi-field lookup requires explicit "as" parameter.');
     }
     if (as && as.length !== n * m) {
-      error('The "as" parameter has too few output field names.');
+      error$1('The "as" parameter has too few output field names.');
     }
     as = as || values.map(accessorName);
 
@@ -45596,7 +45680,7 @@ prototype$34.transform = function(_, pulse) {
     };
   } else {
     if (!as) {
-      error('Missing output field names.');
+      error$1('Missing output field names.');
     }
 
     set = function(t) {
@@ -45705,7 +45789,7 @@ prototype$35.transform = function(_, pulse) {
       field$$1 = _.field;
 
   if (_.modified('field') || field$$1 && pulse.modified(accessorFields(field$$1))) {
-    error('PreFacet does not support field modification.');
+    error$1('PreFacet does not support field modification.');
   }
 
   this._targets.active = 0; // reset list of active subflows
@@ -45765,7 +45849,7 @@ var prototype$37 = inherits(Rank, Transform);
 
 prototype$37.transform = function(_, pulse) {
   if (!pulse.source) {
-    error('Rank transform requires an upstream data source.');
+    error$1('Rank transform requires an upstream data source.');
   }
 
   var norm  = _.normalize,
@@ -48737,11 +48821,21 @@ function binOrdinal() {
   }
 
   scale.domain = function(_) {
-    return arguments.length ? (domain = numbers$1(_), scale) : domain.slice();
+    if (arguments.length) {
+      domain = numbers$1(_);
+      return scale;
+    } else {
+      return domain.slice();
+    }
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = slice$3.call(_), scale) : range.slice();
+    if (arguments.length) {
+      range = slice$3.call(_);
+      return scale;
+    } else {
+      return range.slice();
+    }
   };
 
   scale.copy = function() {
@@ -48769,7 +48863,12 @@ function sequential$1(interpolator) {
   }
 
   scale.clamp = function(_) {
-    return arguments.length ? (clamp = !!_, scale) : clamp;
+    if (arguments.length) {
+      clamp = !!_;
+      return scale;
+    } else {
+      return clamp;
+    }
   };
 
   scale.domain = function(_) {
@@ -48777,7 +48876,12 @@ function sequential$1(interpolator) {
   };
 
   scale.interpolator = function(_) {
-    return arguments.length ? (interpolator = _, scale) : interpolator;
+    if (arguments.length) {
+      interpolator = _;
+      return scale;
+    } else {
+      return interpolator;
+    }
   };
 
   scale.copy = function() {
@@ -48818,8 +48922,12 @@ function create(type, constructor) {
 }
 
 function scale$1(type, scale) {
-  return arguments.length > 1 ? (scales[type] = create(type, scale), this)
-    : scales.hasOwnProperty(type) ? scales[type] : undefined;
+  if (arguments.length > 1) {
+    scales[type] = create(type, scale);
+    return this;
+  } else {
+    return scales.hasOwnProperty(type) ? scales[type] : undefined;
+  }
 }
 
 var scales = {
@@ -49381,7 +49489,10 @@ add$2('yelloworangebrown', 'YlOrBr');
 add$2('yelloworangered',   'YlOrRd');
 
 var getScheme = function(name, scheme$$1) {
-  if (arguments.length > 1) return (schemes[name] = scheme$$1, this);
+  if (arguments.length > 1) {
+    schemes[name] = scheme$$1;
+    return this;
+  }
 
   var part = name.split('-');
   name = part[0];
@@ -52544,7 +52655,7 @@ function geoJSON(data) {
 
 function create$2(type) {
   var constructor = projection$$1((type || 'mercator').toLowerCase());
-  if (!constructor) error('Unrecognized projection type: ' + type);
+  if (!constructor) error$1('Unrecognized projection type: ' + type);
   return constructor();
 }
 
@@ -52653,7 +52764,8 @@ function validTicks(scale, ticks) {
   }
 
   return ticks.filter(function(v) {
-    return !((v = scale(v)) < lo || v > hi)
+    v = scale(v);
+    return !(v < lo || v > hi)
   });
 }
 
@@ -52834,7 +52946,7 @@ prototype$51.transform = function(_, pulse) {
   }
 
   if (_.modified('key') || pulse.modified(key$$1)) {
-    error('DataJoin does not support modified key function or fields.');
+    error$1('DataJoin does not support modified key function or fields.');
   }
 
   pulse.visit(pulse.ADD, function(t) {
@@ -53158,7 +53270,7 @@ prototype$54.transform = function(_, pulse) {
       path = Paths.get(shape + '-' + orient) || Paths.get(shape);
 
   if (!path) {
-    error('LinkPath unsupported type: ' + _.shape
+    error$1('LinkPath unsupported type: ' + _.shape
       + (_.orient ? '-' + _.orient : ''));
   }
 
@@ -53441,7 +53553,7 @@ function configureRange(scale, _, count) {
 
 function configureRangeStep(type, _, count) {
   if (type !== Band && type !== Point) {
-    error('Only band and point scales support rangeStep.');
+    error$1('Only band and point scales support rangeStep.');
   }
 
   // calculate full range based on requested step size and padding
@@ -53458,7 +53570,7 @@ function configureScheme(type, _, count) {
       discrete;
 
   if (!scheme) {
-    error('Unrecognized scheme name: ' + _.scheme);
+    error$1('Unrecognized scheme name: ' + _.scheme);
   }
 
   // determine size for potential discrete range
@@ -54946,7 +55058,7 @@ function getForce(_) {
   var f, p;
 
   if (!ForceMap.hasOwnProperty(_.force)) {
-    error('Unrecognized force: ' + _.force);
+    error$1('Unrecognized force: ' + _.force);
   }
   f = ForceMap[_.force]();
 
@@ -56306,7 +56418,7 @@ function children(n) {
 
 prototype$60.transform = function(_, pulse) {
   if (!pulse.source) {
-    error('Nest transform requires an upstream data source.');
+    error$1('Nest transform requires an upstream data source.');
   }
 
   var key$$1 = _.key || tupleid,
@@ -56349,7 +56461,7 @@ var prototype$61 = inherits(Stratify, Transform);
 
 prototype$61.transform = function(_, pulse) {
   if (!pulse.source) {
-    error('Stratify transform requires an upstream data source.');
+    error$1('Stratify transform requires an upstream data source.');
   }
 
   var mod = _.modified(), tree$$1, map,
@@ -56394,7 +56506,7 @@ function parentTuple(node) {
 
 prototype$62.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
-    error('TreeLinks transform requires a backing tree data source.');
+    error$1('TreeLinks transform requires a backing tree data source.');
   }
 
   var root = pulse.source.root,
@@ -56467,7 +56579,7 @@ var Layouts = {
 function treeLayout(method) {
   var m = method || 'tidy';
   if (Layouts.hasOwnProperty(m)) return Layouts[m]();
-  else error('Unrecognized Tree layout method: ' + m);
+  else error$1('Unrecognized Tree layout method: ' + m);
 }
 
 /**
@@ -56482,7 +56594,7 @@ function treemapLayout() {
   };
   x.method = function(_) {
     if (Tiles.hasOwnProperty(_)) x.tile(Tiles[_]);
-    else error('Unrecognized Treemap layout method: ' + _);
+    else error$1('Unrecognized Treemap layout method: ' + _);
   };
   return x;
 }
@@ -56500,7 +56612,7 @@ var prototype$63 = inherits(HierarchyLayout, Transform);
 
 prototype$63.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
-    error(this.constructor.name
+    error$1(this.constructor.name
       + ' transform requires a backing tree data source.');
   }
 
@@ -56516,7 +56628,7 @@ prototype$63.transform = function(_, pulse) {
   try {
     this.value = layout(root);
   } catch (err) {
-    error(err);
+    error$1(err);
   }
   root.each(function(node) { setFields(node, fields, as); });
 
@@ -58156,7 +58268,7 @@ function cloudCanvas() {
       : 0;
     return canvas && canvas.getContext ? canvas : new (require('canvas'))();
   } catch (e) {
-    error('Canvas unavailable. Run in browser or install node-canvas.');
+    error$1('Canvas unavailable. Run in browser or install node-canvas.');
   }
 }
 
@@ -59970,7 +60082,7 @@ function setCursor(cursor) {
 function dataref(view, name) {
   var data = view._runtime.data;
   if (!data.hasOwnProperty(name)) {
-    view.error('Unrecognized data set: ' + name);
+    error$1('Unrecognized data set: ' + name);
   }
   return data[name];
 }
@@ -59981,7 +60093,7 @@ function data(name) {
 
 function change(name, changes) {
   if (!isChangeSet(changes)) {
-    this.error('Second argument to changes must be a changeset.');
+    error$1('Second argument to changes must be a changeset.');
   }
   var dataset = dataref(this, name);
   dataset.modified = true;
@@ -60119,8 +60231,13 @@ var events$1 = function(source, type, filter) {
         if (view.preventDefault() && source === VIEW) {
           e.preventDefault();
         }
-        s.receive(eventExtend(view, e, item));
-        view.run();
+        try {
+          s.receive(eventExtend(view, e, item));
+        } catch (error) {
+          view.error(error);
+        } finally {
+          view.run();
+        }
       },
       sources;
 
@@ -60234,6 +60351,8 @@ var OptionClass = 'vega-option-';
  * @return {View} - This view instance.
  */
 var bind$1 = function(view, el, binding) {
+  if (!el) return;
+
   var param = binding.param,
       bind = binding.state;
 
@@ -60513,6 +60632,7 @@ function lookup$2(view, el) {
       el = document.querySelector(el);
     } else {
       view.error('DOM document instance not found.');
+      return null;
     }
   }
   el.innerHTML = '';
@@ -60603,7 +60723,7 @@ var OUTER = 'outer';
 var OUTER_INVALID = ['value', 'update', 'react', 'bind'];
 
 function outerError(prefix, name) {
-  error(prefix + ' for "outer" push: ' + $(name));
+  error$1(prefix + ' for "outer" push: ' + $(name));
 }
 
 var parseSignal = function(signal, scope) {
@@ -62214,8 +62334,8 @@ var Functions = function(codegen) {
     tan:      'Math.tan',
 
     clamp: function(args) {
-      if (args.length < 3) error('Missing arguments to clamp function.');
-      if (args.length > 3) error('Too many arguments to clamp function.');
+      if (args.length < 3) error$1('Missing arguments to clamp function.');
+      if (args.length > 3) error$1('Too many arguments to clamp function.');
       var a = args.map(codegen);
       return 'Math.max('+a[1]+', Math.min('+a[2]+','+a[0]+'))';
     },
@@ -62263,8 +62383,8 @@ var Functions = function(codegen) {
 
     // Control Flow functions
     if: function(args) {
-        if (args.length < 3) error('Missing arguments to if function.');
-        if (args.length > 3) error('Too many arguments to if function.');
+        if (args.length < 3) error$1('Missing arguments to if function.');
+        if (args.length > 3) error$1('Too many arguments to if function.');
         var a = args.map(codegen);
         return '('+a[0]+'?'+a[1]+':'+a[2]+')';
       }
@@ -62291,7 +62411,7 @@ var codegen = function(opt) {
   function visit(ast) {
     if (isString(ast)) return ast;
     var generator = Generators[ast.type];
-    if (generator == null) error('Unsupported type: ' + ast.type);
+    if (generator == null) error$1('Unsupported type: ' + ast.type);
     return generator(ast);
   }
 
@@ -62305,7 +62425,7 @@ var codegen = function(opt) {
       if (memberDepth > 0) {
         return id$$1;
       } else if (blacklist.hasOwnProperty(id$$1)) {
-        return error('Illegal identifier: ' + id$$1);
+        return error$1('Illegal identifier: ' + id$$1);
       } else if (constants.hasOwnProperty(id$$1)) {
         return constants[id$$1];
       } else if (whitelist.hasOwnProperty(id$$1)) {
@@ -62328,12 +62448,12 @@ var codegen = function(opt) {
 
     CallExpression: function(n) {
         if (n.callee.type !== 'Identifier') {
-          error('Illegal callee type: ' + n.callee.type);
+          error$1('Illegal callee type: ' + n.callee.type);
         }
         var callee = n.callee.name;
         var args = n.arguments;
         var fn = functions.hasOwnProperty(callee) && functions[callee];
-        if (!fn) error('Unrecognized function: ' + callee);
+        if (!fn) error$1('Unrecognized function: ' + callee);
         return isFunction(fn)
           ? fn(args)
           : fn + '(' + args.map(visit).join(',') + ')';
@@ -62391,20 +62511,36 @@ var codegen = function(opt) {
   return codegen;
 };
 
-function formatter(method) {
-  var cache = {};
-  return function(_, specifier) {
-    var f = cache[specifier] || (cache[specifier] = method(specifier));
-    return f(_);
-  };
+var formatCache = {};
+
+function formatter(type, method, specifier) {
+  var k = type + ':' + specifier,
+      e = formatCache[k];
+  if (!e || e[0] !== method) {
+    formatCache[k] = (e = [method, method(specifier)]);
+  }
+  return e[1];
 }
 
-var format$1 = formatter(format);
-var utcFormat$1 = formatter(utcFormat);
-var timeFormat$1 = formatter(timeFormat);
+function format$1(_, specifier) {
+  return formatter('format', format, specifier)(_);
+}
 
-var utcParse$1 = formatter(utcParse);
-var timeParse$1 = formatter(timeParse);
+function timeFormat$1(_, specifier) {
+  return formatter('timeFormat', timeFormat, specifier)(_);
+}
+
+function utcFormat$1(_, specifier) {
+  return formatter('utcFormat', utcFormat, specifier)(_);
+}
+
+function timeParse$1(_, specifier) {
+  return formatter('timeParse', timeParse, specifier)(_);
+}
+
+function utcParse$1(_, specifier) {
+  return formatter('utcParse', utcParse, specifier)(_);
+}
 
 var dateObj = new Date(2000, 0, 1);
 
@@ -62702,7 +62838,7 @@ function data$1(name) {
 
 function dataVisitor(name, args, scope, params) {
   if (args[0].type !== Literal) {
-    error('First argument to data functions must be a string literal.');
+    error$1('First argument to data functions must be a string literal.');
   }
 
   var data = args[0].value,
@@ -62720,8 +62856,8 @@ function indata(name, field$$1, value) {
 }
 
 function indataVisitor(name, args, scope, params) {
-  if (args[0].type !== Literal) error('First argument to indata must be a string literal.');
-  if (args[1].type !== Literal) error('Second argument to indata must be a string literal.');
+  if (args[0].type !== Literal) error$1('First argument to indata must be a string literal.');
+  if (args[1].type !== Literal) error$1('Second argument to indata must be a string literal.');
 
   var data = args[0].value,
       field$$1 = args[1].value,
@@ -63236,7 +63372,7 @@ var parseExpression = function(expr, scope, preamble) {
   try {
     ast = parse$3(expr);
   } catch (err) {
-    error('Expression parse error: ' + $(expr));
+    error$1('Expression parse error: ' + $(expr));
   }
 
   // analyze ast function calls for dependencies
@@ -63283,7 +63419,7 @@ function parseStream$1(stream, scope) {
   var method = stream.merge ? mergeStream
     : stream.stream ? nestedStream
     : stream.type ? eventStream
-    : error('Invalid stream specification: ' + $(stream));
+    : error$1('Invalid stream specification: ' + $(stream));
 
   return method(stream, scope);
 }
@@ -63315,7 +63451,7 @@ function streamParameters(entry, stream, scope) {
 
   if (param) {
     if (param.length !== 2) {
-      error('Stream "between" parameter must have 2 entries: ' + $(stream));
+      error$1('Stream "between" parameter must have 2 entries: ' + $(stream));
     }
     entry.between = [
       parseStream$1(param[0], scope),
@@ -63578,7 +63714,7 @@ var parseUpdate = function(spec, scope, target) {
       value = '', entry;
 
   if (!events) {
-    error('Signal update missing events specification.');
+    error$1('Signal update missing events specification.');
   }
 
   // interpret as an event selector string
@@ -63602,7 +63738,7 @@ var parseUpdate = function(spec, scope, target) {
   }
 
   if (encode != null) {
-    if (update) error('Signal encode and update are mutually exclusive.');
+    if (update) error$1('Signal encode and update are mutually exclusive.');
     update = 'encode(item(),' + $(encode) + ')';
   }
 
@@ -63614,7 +63750,7 @@ var parseUpdate = function(spec, scope, target) {
         $expr:   '_.value',
         $params: {value: scope.signalRef(update.signal)}
       }
-    : error('Invalid signal update specification.');
+    : error$1('Invalid signal update specification.');
 
   entry = {
     target: target,
@@ -63770,7 +63906,7 @@ function initScale(spec, scope) {
   var type = spec.type || 'linear';
 
   if (!allTypes.hasOwnProperty(type)) {
-    error('Unrecognized scale type: ' + $(type));
+    error$1('Unrecognized scale type: ' + $(type));
   }
 
   scope.addScale(spec.name, {
@@ -63802,7 +63938,7 @@ function parseScale(spec, scope) {
 function parseLiteral(v, scope) {
   return !isObject(v) ? v
     : v.signal ? scope.signalRef(v.signal)
-    : error('Unsupported object: ' + $(v));
+    : error$1('Unsupported object: ' + $(v));
 }
 
 function parseArray(v, scope) {
@@ -63812,7 +63948,7 @@ function parseArray(v, scope) {
 }
 
 function dataLookupError(name) {
-  error('Can not find data set: ' + $(name));
+  error$1('Can not find data set: ' + $(name));
 }
 
 // -- SCALE DOMAIN ----
@@ -63820,7 +63956,7 @@ function dataLookupError(name) {
 function parseScaleDomain(domain, spec, scope) {
   if (!domain) {
     if (spec.domainMin != null || spec.domainMax != null) {
-      error('No scale domain defined for domainMin/domainMax to override.');
+      error$1('No scale domain defined for domainMin/domainMax to override.');
     }
     return; // default domain
   }
@@ -63911,11 +64047,11 @@ function parseSort(sort, multidomain) {
       if (isObject(sort)) sort.field = 'key';
       else sort = {field: 'key'};
     } else if (!sort.field && sort.op !== 'count') {
-      error('No field provided for sort aggregate op: ' + sort.op);
+      error$1('No field provided for sort aggregate op: ' + sort.op);
     } else if (multidomain && sort.field) {
-      error('Multiple domain scales can not sort by field.');
+      error$1('Multiple domain scales can not sort by field.');
     } else if (multidomain && sort.op && sort.op !== 'count') {
-      error('Multiple domain scales support op count only.');
+      error$1('Multiple domain scales support op count only.');
     }
   }
   return sort;
@@ -63973,7 +64109,7 @@ function parseScaleRange(spec, scope, params) {
         ? [0, {signal: 'height'}]
         : [{signal: 'height'}, 0];
     } else {
-      error('Unrecognized scale range value: ' + $(range));
+      error$1('Unrecognized scale range value: ' + $(range));
     }
   } else if (range.scheme) {
     params.scheme = parseLiteral(range.scheme, scope);
@@ -63986,7 +64122,7 @@ function parseScaleRange(spec, scope, params) {
   } else if (isOrdinal(spec.type) && !isArray(range)) {
     return parseScaleDomain(range, spec, scope);
   } else if (!isArray(range)) {
-    error('Unsupported range type: ' + $(range));
+    error$1('Unsupported range type: ' + $(range));
   }
 
   return range.map(function(v) {
@@ -64009,7 +64145,7 @@ function parseParameter(_, scope) {
   return isArray(_) ? _.map(function(_) { return parseParameter(_, scope); })
     : !isObject(_) ? _
     : _.signal ? scope.signalRef(_.signal)
-    : error('Unsupported parameter object: ' + $(_));
+    : error$1('Unsupported parameter object: ' + $(_));
 }
 
 var Top = 'top';
@@ -64130,7 +64266,7 @@ function resolve$1(ref, scope, params, fields) {
     object = 'datum';
     field$$1 = ref.datum;
   } else {
-    error('Invalid field reference: ' + $(ref));
+    error$1('Invalid field reference: ' + $(ref));
   }
 
   if (!ref.signal) {
@@ -64489,8 +64625,7 @@ var legendLabels = function(spec, config, userEncode, dataRef) {
       encode = {}, enter, update;
 
   encode.enter = enter = {
-    opacity: zero,
-    text: {field: Label}
+    opacity: zero
   };
   addEncode(enter, 'align', config.labelAlign);
   addEncode(enter, 'baseline', config.labelBaseline);
@@ -64504,7 +64639,8 @@ var legendLabels = function(spec, config, userEncode, dataRef) {
   };
 
   encode.update = update = {
-    opacity: {value: 1}
+    opacity: {value: 1},
+    text: {field: Label}
   };
 
   enter.x = update.x = {
@@ -64642,7 +64778,7 @@ var dataName = function(name) {
  */
 var parseTransform = function(spec, scope) {
   var def = definition(spec.type);
-  if (!def) error('Unrecognized transform type: ' + $(spec.type));
+  if (!def) error$1('Unrecognized transform type: ' + $(spec.type));
 
   var t = entry(def.type, null, parseParameters(def, spec, scope));
   if (spec.signal) scope.addSignal(spec.signal, scope.proxy(t));
@@ -64674,7 +64810,7 @@ function parseParameter$1(def, spec, scope) {
     return parseIndexParameter(def, spec, scope);
   } else if (value === undefined) {
     if (def.required) {
-      error('Missing required ' + $(spec.type)
+      error$1('Missing required ' + $(spec.type)
           + ' parameter: ' + $(def.name));
     }
     return;
@@ -64696,7 +64832,7 @@ function parameterValue(def, value, scope) {
   var type = def.type;
 
   if (isSignal(value)) {
-    return isExpr(type) ? error('Expression references can not be signals.')
+    return isExpr(type) ? error$1('Expression references can not be signals.')
          : isField(type) ? scope.fieldRef(value)
          : isCompare(type) ? scope.compareRef(value)
          : scope.signalRef(value.signal);
@@ -64717,7 +64853,7 @@ function parameterValue(def, value, scope) {
  */
 function parseIndexParameter(def, spec, scope) {
   if (!isString(spec.from)) {
-    error('Lookup "from" parameter must be a string literal.');
+    error$1('Lookup "from" parameter must be a string literal.');
   }
   return scope.getData(spec.from).lookupRef(scope, spec.key);
 }
@@ -64730,7 +64866,7 @@ function parseSubParameters(def, spec, scope) {
 
   if (def.array) {
     if (!isArray(value)) { // signals not allowed!
-      error('Expected an array of sub-parameters. Instead: ' + $(value));
+      error$1('Expected an array of sub-parameters. Instead: ' + $(value));
     }
     return value.map(function(v) {
       return parseSubParameter(def, v, scope);
@@ -64755,7 +64891,7 @@ function parseSubParameter(def, value, scope) {
     if (pdef) break;
   }
   // raise error if matching key not found
-  if (!pdef) error('Unsupported parameter: ' + $(value));
+  if (!pdef) error$1('Unsupported parameter: ' + $(value));
 
   // parse params, create Params transform, return ref
   params = extend(parseParameters(pdef, value, scope), pdef.key);
@@ -64798,7 +64934,7 @@ var parseData = function(from, group, scope) {
 
   // if faceted, process facet specification
   else if (facet = from.facet) {
-    if (!group) error('Only group marks can be faceted.');
+    if (!group) error$1('Only group marks can be faceted.');
 
     // use pre-faceted source data, if available
     if (facet.field != null) {
@@ -64974,10 +65110,10 @@ var parseFacet = function(spec, scope, group) {
       subscope, source, values, op;
 
   if (!facet.name) {
-    error('Facet must have a name: ' + $(facet));
+    error$1('Facet must have a name: ' + $(facet));
   }
   if (!facet.data) {
-    error('Facet must reference a data set: ' + $(facet));
+    error$1('Facet must reference a data set: ' + $(facet));
   }
 
   if (facet.field) {
@@ -64992,7 +65128,7 @@ var parseFacet = function(spec, scope, group) {
       pulse: data
     }));
   } else {
-    error('Facet must specify groupby or field: ' + $(facet));
+    error$1('Facet must specify groupby or field: ' + $(facet));
   }
 
   // initialize facet subscope
@@ -65089,7 +65225,7 @@ var parseMark = function(spec, scope) {
     spec.transform.forEach(function(_) {
       var tx = parseTransform(_, scope);
       if (tx.metadata.generates || tx.metadata.changes) {
-        error('Mark transforms should not generate new data.');
+        error$1('Mark transforms should not generate new data.');
       }
       tx.params.pulse = ref(op);
       scope.add(op = tx);
@@ -65153,7 +65289,7 @@ var parseMark = function(spec, scope) {
     scope.addData(name, new DataScope(scope, store, render, sieve));
     if (spec.on) spec.on.forEach(function(on) {
       if (on.insert || on.remove || on.toggle) {
-        error('Marks only support modify triggers.');
+        error$1('Marks only support modify triggers.');
       }
       parseTrigger(on, scope, name);
     });
@@ -65175,7 +65311,7 @@ var parseLegend = function(spec, scope) {
            || spec.strokeDash || spec.opacity;
 
   if (!scale) {
-    error('Missing valid scale for legend.');
+    error$1('Missing valid scale for legend.');
   }
 
   // single-element data source for axis group
@@ -66074,7 +66210,7 @@ prototype$76.markpath = function() {
 prototype$76.fieldRef = function(field$$1, name) {
   if (isString(field$$1)) return fieldRef$1(field$$1, name);
   if (!field$$1.signal) {
-    error('Unsupported field reference: ' + $(field$$1));
+    error$1('Unsupported field reference: ' + $(field$$1));
   }
 
   var s = field$$1.signal,
@@ -66164,7 +66300,7 @@ prototype$76.event = function(source, type) {
 
 prototype$76.addSignal = function(name, value) {
   if (this.signals.hasOwnProperty(name)) {
-    error('Duplicate signal name: ' + $(name));
+    error$1('Duplicate signal name: ' + $(name));
   }
   var op = value instanceof Entry ? value : this.add(operator(value));
   return this.signals[name] = op;
@@ -66172,7 +66308,7 @@ prototype$76.addSignal = function(name, value) {
 
 prototype$76.getSignal = function(name) {
   if (!this.signals[name]) {
-    error('Unrecognized signal name: ' + $(name));
+    error$1('Unrecognized signal name: ' + $(name));
   }
   return this.signals[name];
 };
@@ -66244,7 +66380,7 @@ function objectLambda(obj) {
 
 prototype$76.addBinding = function(name, bind) {
   if (!this.bindings) {
-    error('Nested signals do not support binding: ' + $(name));
+    error$1('Nested signals do not support binding: ' + $(name));
   }
   this.bindings.push(extend({signal: name}, bind));
 };
@@ -66253,7 +66389,7 @@ prototype$76.addBinding = function(name, bind) {
 
 prototype$76.addScaleProj = function(name, transform) {
   if (this.scales.hasOwnProperty(name)) {
-    error('Duplicate scale or projection name: ' + $(name));
+    error$1('Duplicate scale or projection name: ' + $(name));
   }
   this.scales[name] = this.add(transform);
 };
@@ -66268,7 +66404,7 @@ prototype$76.addProjection = function(name, params) {
 
 prototype$76.getScale = function(name) {
   if (!this.scales[name]) {
-    error('Unrecognized scale name: ' + $(name));
+    error$1('Unrecognized scale name: ' + $(name));
   }
   return this.scales[name];
 };
@@ -66287,21 +66423,21 @@ prototype$76.scaleType = function(name) {
 
 prototype$76.addData = function(name, dataScope) {
   if (this.data.hasOwnProperty(name)) {
-    error('Duplicate data set name: ' + $(name));
+    error$1('Duplicate data set name: ' + $(name));
   }
   return (this.data[name] = dataScope);
 };
 
 prototype$76.getData = function(name) {
   if (!this.data[name]) {
-    error('Undefined data set name: ' + $(name));
+    error$1('Undefined data set name: ' + $(name));
   }
   return this.data[name];
 };
 
 prototype$76.addDataPipeline = function(name, entries) {
   if (this.data.hasOwnProperty(name)) {
-    error('Duplicate data set name: ' + $(name));
+    error$1('Duplicate data set name: ' + $(name));
   }
   return this.addData(name, DataScope.fromEntries(this, entries));
 };
@@ -66505,7 +66641,7 @@ function defaults$1() {
 }
 
 var parse$2 = function(spec, config) {
-  if (!isObject(spec)) error('Input Vega specification must be an object.');
+  if (!isObject(spec)) error$1('Input Vega specification must be an object.');
   return parseView(spec, new Scope(defaults([config, spec.config])))
     .toRuntime();
 };
@@ -66610,7 +66746,7 @@ var PARSERS = [
  * Resolve an operator reference.
  */
 function getOperator(_, ctx) {
-  return ctx.get(_.$ref) || error('Operator not defined: ' + _.$ref);
+  return ctx.get(_.$ref) || error$1('Operator not defined: ' + _.$ref);
 }
 
 /**
@@ -66701,7 +66837,7 @@ function parseOperatorParameters(spec, ctx) {
   var op, params;
   if (spec.params) {
     if (!(op = ctx.get(spec.id))) {
-      error('Invalid operator id: ' + spec.id);
+      error$1('Invalid operator id: ' + spec.id);
     }
     params = parseParameters$1(spec.params, ctx);
     ctx.dataflow.connect(op, op.parameters(params));
@@ -66742,7 +66878,7 @@ var parseStream$3 = function(spec, ctx) {
   }
 
   if (stream == null) {
-    error('Invalid stream definition: ' + JSON.stringify(spec));
+    error$1('Invalid stream definition: ' + JSON.stringify(spec));
   }
 
   if (spec.consume) stream.consume(true);
@@ -66759,7 +66895,7 @@ var parseUpdate$1 = function(spec, ctx) {
       update = spec.update,
       params = undefined;
 
-  if (!source) error('Source not defined: ' + spec.source);
+  if (!source) error$1('Source not defined: ' + spec.source);
 
   if (spec.target && spec.target.$expr) {
     target = eventExpression(spec.target.$expr, ctx);
@@ -67202,7 +67338,7 @@ prototype$74.dirty = function(item) {
 function lookupSignal(view, name) {
   return view._signals.hasOwnProperty(name)
     ? view._signals[name]
-    : view.error('Unrecognized signal name: ' + $(name));
+    : error$1('Unrecognized signal name: ' + $(name));
 }
 
 prototype$74.signal = function(name, value, options) {
@@ -67240,7 +67376,7 @@ prototype$74.padding = function(_) {
 
 prototype$74.renderer = function(type) {
   if (!arguments.length) return this._renderType;
-  if (!renderModule(type)) this.error('Unrecognized renderer type: ' + type);
+  if (!renderModule(type)) error$1('Unrecognized renderer type: ' + type);
   if (type !== this._renderType) {
     this._renderType = type;
     if (this._renderer) {
@@ -67400,6 +67536,7 @@ exports.truthy = truthy;
 exports.falsy = falsy;
 exports.logger = logger;
 exports.None = None;
+exports.Error = Error$1;
 exports.Warn = Warn;
 exports.Info = Info;
 exports.Debug = Debug;
@@ -67407,7 +67544,7 @@ exports.array = array$1;
 exports.compare = compare;
 exports.constant = constant$1;
 exports.debounce = debounce;
-exports.error = error;
+exports.error = error$1;
 exports.extend = extend;
 exports.extentIndex = extentIndex;
 exports.fastmap = fastmap;

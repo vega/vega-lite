@@ -27,6 +27,7 @@ export declare type VgDataRef = {
 export declare type VgSignalRef = {
     signal: string;
 };
+export declare function isVgSignalRef(o: any): o is VgSignalRef;
 export declare type VgEventStream = any;
 export declare type VgValueRef = {
     value?: number | string | boolean;

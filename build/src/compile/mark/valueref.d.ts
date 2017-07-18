@@ -1,11 +1,8 @@
-/**
- * Utility files for producing Vega ValueRef for marks
- */
 import { Channel } from '../../channel';
 import { Config } from '../../config';
 import { ChannelDef, Conditional, FieldDef, FieldRefOption, TextFieldDef, ValueDef } from '../../fielddef';
 import { StackProperties } from '../../stack';
-import { VgValueRef } from '../../vega.schema';
+import { VgSignalRef, VgValueRef } from '../../vega.schema';
 import { ScaleComponent } from '../scale/component';
 /**
  * @return Vega ValueRef for stackable x or y
@@ -29,5 +26,5 @@ export declare function band(scaleName: string, band?: number | boolean): VgValu
  */
 export declare function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef;
 export declare function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, config: Config): VgValueRef;
-export declare function midX(width: number, config: Config): VgValueRef;
-export declare function midY(height: number, config: Config): VgValueRef;
+export declare function midX(width: number | VgSignalRef, config: Config): VgValueRef;
+export declare function midY(height: number | VgSignalRef, config: Config): VgValueRef;

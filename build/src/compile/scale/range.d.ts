@@ -4,6 +4,7 @@ import { Mark } from '../../mark';
 import { Range, Scale, ScaleType, Scheme } from '../../scale';
 import { Type } from '../../type';
 import { VgRange } from '../../vega.schema';
+import { LayoutSize } from '../layout/component';
 import { Model } from '../model';
 import { Explicit } from '../split';
 export declare type RangeMixins = {
@@ -18,5 +19,5 @@ export declare function parseScaleRange(model: Model): void;
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
-export declare function parseRangeForChannel(channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config, zero: boolean, mark: Mark, specifiedSize: number | undefined, xyRangeSteps: number[]): Explicit<VgRange>;
-export declare function defaultRange(channel: Channel, scaleType: ScaleType, type: Type, config: Config, zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[], specifiedRangeStepIsNull: boolean): VgRange;
+export declare function parseRangeForChannel(channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config, zero: boolean, mark: Mark, specifiedSize: LayoutSize, xyRangeSteps: number[]): Explicit<VgRange>;
+export declare function defaultRange(channel: Channel, scaleType: ScaleType, type: Type, config: Config, zero: boolean, mark: Mark, topLevelSize: LayoutSize, xyRangeSteps: number[], specifiedRangeStepIsNull: boolean): VgRange;

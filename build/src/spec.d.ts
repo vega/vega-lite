@@ -38,7 +38,7 @@ export interface BaseSpec {
      */
     transform?: Transform[];
 }
-export interface LayoutSize {
+export interface LayoutSizeMixins {
     /**
      * The width of a visualization.
      *
@@ -63,7 +63,7 @@ export interface LayoutSize {
      */
     height?: number;
 }
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSize {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
     /**
      * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
      * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
@@ -89,7 +89,7 @@ export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark
  * Unit spec that can have a composite mark and row or column channels.
  */
 export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSize {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
     /**
      * Unit specs that will be layered.
      */

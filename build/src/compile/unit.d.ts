@@ -9,7 +9,7 @@ import { Mark, MarkDef } from '../mark';
 import { Domain } from '../scale';
 import { SelectionDef } from '../selection';
 import { SortField, SortOrder } from '../sort';
-import { LayoutSize, UnitSpec } from '../spec';
+import { LayoutSizeMixins, UnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
 import { VgData, VgEncodeEntry, VgLayout, VgSignal } from '../vega.schema';
@@ -30,7 +30,7 @@ export declare class UnitModel extends ModelWithField {
     protected specifiedLegends: LegendIndex;
     readonly selection: Dict<SelectionDef>;
     children: Model[];
-    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config);
+    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config);
     /**
      * Return specified Vega-lite scale domain for a particular channel
      * @param channel
@@ -45,6 +45,7 @@ export declare class UnitModel extends ModelWithField {
     private initAxes(encoding);
     private initLegend(encoding);
     parseData(): void;
+    parseLayoutSize(): void;
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;

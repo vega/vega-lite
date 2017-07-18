@@ -53,3 +53,9 @@ export declare function predicate(model: Model, selections: LogicalOperand<strin
 export declare function isRawSelectionDomain(domainRaw: VgSignalRef): boolean;
 export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;
+export declare function spatialProjections(selCmpt: SelectionComponent): {
+    x: ProjectComponent;
+    xi: number;
+    y: ProjectComponent;
+    yi: number;
+};

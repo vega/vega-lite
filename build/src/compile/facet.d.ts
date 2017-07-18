@@ -17,6 +17,7 @@ export declare class FacetModel extends ModelWithField {
     hasDiscreteDomain(channel: Channel): boolean;
     fieldDef(channel: Channel): FieldDef<string>;
     parseData(): void;
+    parseLayoutSize(): void;
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;

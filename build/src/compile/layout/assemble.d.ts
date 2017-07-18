@@ -1,7 +1,4 @@
 import { VgSignal } from '../../vega.schema';
-import { LayerModel } from '../layer';
-import { UnitModel } from '../unit';
-export declare function assembleLayoutLayerSignals(model: LayerModel): VgSignal[];
-export declare function layerSizeExpr(model: LayerModel, sizeType: 'width' | 'height'): string;
-export declare function assembleLayoutUnitSignals(model: UnitModel): VgSignal[];
-export declare function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string;
+import { Model } from '../model';
+export declare function assembleLayoutSignals(model: Model): VgSignal[];
+export declare function sizeExpr(model: Model, sizeType: 'width' | 'height'): string;
