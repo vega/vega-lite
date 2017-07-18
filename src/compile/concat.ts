@@ -9,11 +9,12 @@ import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {assembleLayoutSignals} from './layout/assemble';
+import {parseConcatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponentIndex} from './scale/component';
-
 
 export class ConcatModel extends Model {
 
@@ -36,6 +37,10 @@ export class ConcatModel extends Model {
     this.children.forEach((child) => {
       child.parseData();
     });
+  }
+
+  public parseLayoutSize() {
+    parseConcatLayoutSize(this);
   }
 
   public parseSelection() {
@@ -98,8 +103,9 @@ export class ConcatModel extends Model {
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
-    }, []);
+    }, assembleLayoutSignals(this));
   }
+
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }

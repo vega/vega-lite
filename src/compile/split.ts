@@ -54,10 +54,8 @@ export class Split<T extends Object> {
   }
 
   public set<K extends keyof T>(key: K, value: T[K], explicit: boolean) {
+    delete this[explicit ? 'implicit' : 'explicit'][key];
     this[explicit ? 'explicit' : 'implicit'][key] = value;
-    if (explicit) {
-      delete this.implicit[key];
-    }
     return this;
   }
 
@@ -133,7 +131,7 @@ export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, proper
 export function mergeValuesWithExplicit<S, T>(
     v1: Explicit<T>, v2: Explicit<T>,
     property: keyof S,
-    propertyOf: 'scale' | 'axis' | 'legend',
+    propertyOf: 'scale' | 'axis' | 'legend' | '',
     tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T> = defaultTieBreaker
   ) {
   if (v1 === undefined || v1.value === undefined) {

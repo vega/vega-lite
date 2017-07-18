@@ -79,7 +79,7 @@ describe('compile/scale', () => {
 
   describe('round', () => {
     it('should return scaleConfig.round for x, y, row, column.', () => {
-      for (const c of ['x', 'y', 'row', 'column'] as Channel[]) {
+      for (const c of ['x', 'y'] as Channel[]) {
         assert(rules.round(c, {round: true}));
         assert(!rules.round(c, {round: false}));
       }

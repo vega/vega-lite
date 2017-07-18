@@ -136,9 +136,9 @@ export function expression(model: Model, filterOp: LogicalOperand<Filter>, node?
         const upper = filter.range[1];
 
         if (lower !== null &&  upper !== null) {
-          return 'inrange(' + fieldExpr + ', ' +
+          return 'inrange(' + fieldExpr + ', [' +
             valueExpr(lower, filter.timeUnit) + ', ' +
-            valueExpr(upper, filter.timeUnit) + ')';
+            valueExpr(upper, filter.timeUnit) + '])';
         } else if (lower !== null) {
           return fieldExpr + ' >= ' + lower;
         } else if (upper !== null) {

@@ -1,28 +1,85 @@
 import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
+import {ConcatModel} from '../concat';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
-import {makeImplicit, Split} from '../split';
+import {RepeatModel} from '../repeat';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit, Split} from '../split';
 import {UnitModel} from '../unit';
-import {LayoutSize, LayoutSizeComponent} from './component';
+import {LayoutSize, LayoutSizeComponent, LayoutSizeIndex} from './component';
 
+export function parseLayerLayoutSize(model: Model) {
+  parseChildrenLayoutSize(model);
 
-export function parseLayoutSize(model: Model) {
-  if (model instanceof UnitModel) {
-    parseUnitLayoutSize(model);
-  } else {
-    parseNonUnitLayoutSize(model);
-  }
+  const layoutSizeCmpt = model.component.layoutSize;
+  layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
+  layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
 
-function parseNonUnitLayoutSize(model: Model) {
+export const parseRepeatLayoutSize = parseLayerLayoutSize;
+
+export function parseConcatLayoutSize(model: ConcatModel) {
+  parseChildrenLayoutSize(model);
+  const layoutSizeCmpt = model.component.layoutSize;
+
+  const sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
+  layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+}
+
+export function parseChildrenLayoutSize(model: Model) {
   for (const child of model.children) {
-    parseLayoutSize(child);
+    child.parseLayoutSize();
   }
-  // TODO(https://github.com/vega/vega-lite/issues/2198): merge size
 }
 
-function parseUnitLayoutSize(model: UnitModel) {
+function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'height'): Explicit<LayoutSize> {
+  const channel = sizeType === 'width' ? 'x' : 'y';
+  const resolve = model.component.resolve;
+
+  let mergedSize: Explicit<LayoutSize>;
+  // Try to merge layout size
+  for (const child of model.children) {
+    const childSize = child.component.layoutSize.getWithExplicit(sizeType);
+    const scaleResolve = resolve[channel] ? resolve[channel].scale : undefined;
+    if (scaleResolve === 'independent' && childSize.value === 'range-step') {
+      // Do not merge independent scales with range-step as their size depends
+      // on the scale domains, which can be different between scales.
+      mergedSize = undefined;
+      break;
+    }
+
+    if (mergedSize) {
+      if (scaleResolve === 'independent' && mergedSize.value !== childSize.value) {
+        // For independent scale, only merge if all the sizes are the same.
+        // If the values are different, abandon the merge!
+        mergedSize = undefined;
+        break;
+      }
+      mergedSize = mergeValuesWithExplicit<LayoutSizeIndex, LayoutSize>(
+        mergedSize, childSize, sizeType, '', defaultTieBreaker
+      );
+    } else {
+      mergedSize = childSize;
+    }
+  }
+
+  if (mergedSize) {
+    // If merged, rename size and set size of all children.
+    for (const child of model.children) {
+      model.renameLayoutSize(child.getSizeSignalRef(sizeType).signal, model.getSizeSignalRef(sizeType).signal);
+      child.component.layoutSize.set(sizeType, 'merged', false);
+    }
+    return mergedSize;
+  } else {
+    // Otherwise, there is no merged size.
+    return {
+      explicit: false,
+      value: undefined
+    };
+  }
+}
+
+export function parseUnitLayoutSize(model: UnitModel) {
   const layoutSizeComponent = model.component.layoutSize;
   if (!layoutSizeComponent.explicit.width) {
     const width = defaultUnitSize(model, 'width');
@@ -35,7 +92,7 @@ function parseUnitLayoutSize(model: UnitModel) {
   }
 }
 
-function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height') {
+function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): LayoutSize {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const config = model.config;
   const scaleComponent = model.getScaleComponent(channel);
@@ -46,7 +103,7 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height') {
 
     if (hasDiscreteDomain(scaleType) && isVgRangeStep(range)) {
       // For discrete domain with range.step, use dynamic width/height
-      return null;
+      return 'range-step';
     } else {
       // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
       // Otherwise, read this from cell config

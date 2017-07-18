@@ -24,6 +24,7 @@ import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
+import {parseChildrenLayoutSize} from './layout/parse';
 import {labels} from './legend/encode';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
@@ -86,6 +87,10 @@ export class FacetModel extends ModelWithField {
   public parseData() {
     this.component.data = parseData(this);
     this.child.parseData();
+  }
+
+  public parseLayoutSize() {
+    parseChildrenLayoutSize(this);
   }
 
   public parseSelection() {

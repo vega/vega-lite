@@ -59,15 +59,11 @@
     ],
     "signals": [
         {
-            "name": "concat_0_width",
+            "name": "width",
             "update": "200"
         },
         {
             "name": "concat_0_height",
-            "update": "200"
-        },
-        {
-            "name": "concat_1_width",
             "update": "200"
         },
         {
@@ -108,7 +104,7 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "concat_0_width"
+                        "signal": "width"
                     },
                     "height": {
                         "signal": "concat_0_height"
@@ -152,7 +148,7 @@
                                     }
                                 ]
                             },
-                            "update": "[brush_x[0], clamp(x(unit), 0, concat_0_width)]"
+                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
                         },
                         {
                             "events": {
@@ -164,13 +160,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, concat_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, concat_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
                         }
                     ]
                 },
@@ -310,6 +306,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -325,6 +322,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -555,7 +553,7 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "concat_1_width"
+                        "signal": "width"
                     },
                     "height": {
                         "signal": "concat_1_height"
@@ -573,7 +571,7 @@
                             "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / concat_1_width)"
+                            "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
                         },
                         {
                             "events": {
@@ -654,7 +652,8 @@
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel"
+                                    "type": "wheel",
+                                    "consume": true
                                 }
                             ],
                             "update": "{x: invert(\"concat_1_x\", x(unit)), y: invert(\"concat_1_y\", y(unit))}"
@@ -668,7 +667,8 @@
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel"
+                                    "type": "wheel",
+                                    "consume": true
                                 }
                             ],
                             "force": true,

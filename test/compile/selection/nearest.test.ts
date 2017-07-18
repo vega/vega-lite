@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import nearest from '../../../src/compile/selection/transforms/nearest';
+import {duplicate} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 function getModel(markType: any) {
@@ -21,10 +22,40 @@ function getModel(markType: any) {
     "three": {"type": "interval", "nearest": true},
     "four": {"type": "single", "nearest": false},
     "five": {"type": "multi"},
-    "six": {"type": "multi", "nearest": null}
+    "six": {"type": "multi", "nearest": null},
+    "seven": {"type": "single", "nearest": true, "encodings": ["x"]},
+    "eight": {"type": "single", "nearest": true, "encodings": ["y"]},
+    "nine": {"type": "single", "nearest": true, "encodings": ["color"]}
   });
 
   return model;
+}
+
+function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}) {
+  return [
+    {hello: "world"},
+    {
+      "name": "voronoi",
+      "type": "path",
+      "from": {"data": "marks"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true}
+        }
+      },
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": x || "datum.x",
+          "y": y || "datum.y",
+          "size": [{"signal": "width"},{"signal": "height"}]
+        }
+      ]
+    }
+  ];
 }
 
 describe('Nearest Selection Transform', function() {
@@ -43,30 +74,8 @@ describe('Nearest Selection Transform', function() {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: "world"}];
 
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['one'], marks, marks), [
-      {hello: "world"},
-      {
-        "name": "voronoi",
-        "type": "path",
-        "from": {"data": "marks"},
-        "encode": {
-          "enter": {
-            "fill": {"value": "transparent"},
-            "strokeWidth": {"value": 0.35},
-            "stroke": {"value": "transparent"},
-            "isVoronoi": {"value": true}
-          }
-        },
-        "transform": [
-          {
-            "type": "voronoi",
-            "x": "datum.x",
-            "y": "datum.y",
-            "size": [{"signal": "width"},{"signal": "height"}]
-          }
-        ]
-      }
-    ]);
+    assert.sameDeepMembers(
+      nearest.marks(model, selCmpts['one'], marks, marks), voronoiMark());
   });
 
   it('adds voronoi for path marks', function() {
@@ -112,30 +121,8 @@ describe('Nearest Selection Transform', function() {
     let marks: any[] = [{hello: "world"}];
 
     let marks2 = nearest.marks(model, selCmpts['one'], marks, marks);
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['two'], marks, marks2), [
-      {hello: "world"},
-      {
-        "name": "voronoi",
-        "type": "path",
-        "from": {"data": "marks"},
-        "encode": {
-          "enter": {
-            "fill": {"value": "transparent"},
-            "strokeWidth": {"value": 0.35},
-            "stroke": {"value": "transparent"},
-            "isVoronoi": {"value": true}
-          }
-        },
-        "transform": [
-          {
-            "type": "voronoi",
-            "x": "datum.x",
-            "y": "datum.y",
-            "size": [{"signal": "width"},{"signal": "height"}]
-          }
-        ]
-      }
-    ]);
+    assert.sameDeepMembers(
+      nearest.marks(model, selCmpts['two'], marks, marks2), voronoiMark());
 
     model = getModel('line');
     selCmpts = model.component.selection;
@@ -171,5 +158,23 @@ describe('Nearest Selection Transform', function() {
         ]
       }
     ]);
+  });
+
+  it('supports 1D voronoi', function() {
+    const model = getModel('circle');
+    const selCmpts = model.component.selection;
+    const marks: any[] = [{hello: "world"}];
+
+    assert.sameDeepMembers(
+      nearest.marks(model, selCmpts['seven'], duplicate(marks), duplicate(marks)),
+      voronoiMark("datum.x", {"expr": "0"}));
+
+    assert.sameDeepMembers(
+      nearest.marks(model, selCmpts['eight'], duplicate(marks), duplicate(marks)),
+      voronoiMark({"expr": "0"}, "datum.y"));
+
+    assert.sameDeepMembers(
+      nearest.marks(model, selCmpts['nine'], duplicate(marks), duplicate(marks)),
+      voronoiMark("datum.x", "datum.y"));
   });
 });

@@ -38,6 +38,10 @@ export type VgSignalRef = {
   signal: string
 };
 
+export function isVgSignalRef(o: any): o is VgSignalRef  {
+  return !!o['signal'];
+}
+
 export type VgEventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})

@@ -4,7 +4,15 @@ import {hasContinuousDomain, isBinScale} from '../../scale';
 import {extend, keys, stringValue} from '../../util';
 import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
+import {
+  channelSignalName,
+  ProjectComponent,
+  SelectionCompiler,
+  SelectionComponent,
+  spatialProjections,
+  STORE,
+  TUPLE,
+} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush';
@@ -81,7 +89,7 @@ const interval:SelectionCompiler = {
 
   marks: function(model, selCmpt, marks) {
     const name = selCmpt.name;
-    const {xi, yi} = projections(selCmpt);
+    const {xi, yi} = spatialProjections(selCmpt);
     const tpl = name + TUPLE;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
@@ -142,24 +150,6 @@ const interval:SelectionCompiler = {
   }
 };
 export {interval as default};
-
-export function projections(selCmpt: SelectionComponent) {
-  let x:ProjectComponent = null;
-  let xi:number = null;
-  let y:ProjectComponent = null;
-  let yi: number = null;
-
-  selCmpt.project.forEach(function(p, i) {
-    if (p.channel === X) {
-      x  = p;
-      xi = i;
-    } else if (p.channel === Y) {
-      y = p;
-      yi = i;
-    }
-  });
-  return {x, xi, y, yi};
-}
 
 /**
  * Returns the visual and data signals for an interval selection.

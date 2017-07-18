@@ -1,3 +1,4 @@
+import {spatialProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
@@ -8,6 +9,7 @@ const nearest:TransformCompiler = {
   },
 
   marks: function(model, selCmpt, marks, selMarks) {
+    const {x, y} = spatialProjections(selCmpt);
     const mark = marks[0];
     const index = selMarks.indexOf(mark);
     const isPathgroup = mark.name === model.getName('pathgroup');
@@ -26,8 +28,8 @@ const nearest:TransformCompiler = {
       },
       transform: [{
         type: 'voronoi',
-        x: 'datum.x',
-        y: 'datum.y',
+        x: (x || (!x && !y)) ? 'datum.x' : {expr: '0'},
+        y: (y || (!x && !y)) ? 'datum.y' : {expr: '0'},
         size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
       }]
     };

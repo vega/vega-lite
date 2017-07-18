@@ -183,7 +183,7 @@ export function paddingOuter(padding: number, channel: Channel, scaleType: Scale
 }
 
 export function round(channel: Channel, scaleConfig: ScaleConfig) {
-  if (util.contains(['x', 'y', 'row', 'column'], channel)) {
+  if (util.contains(['x', 'y'], channel)) {
     return scaleConfig.round;
   }
   return undefined;

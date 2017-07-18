@@ -145,58 +145,10 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width, layer_1_width)"
+            "update": "500"
         },
         {
             "name": "height",
-            "update": "max(layer_0_height, layer_1_height)"
-        },
-        {
-            "name": "layer_0_width",
-            "update": "max(layer_0_layer_0_width, layer_0_layer_1_width, layer_0_layer_2_width, layer_0_layer_3_width)"
-        },
-        {
-            "name": "layer_0_height",
-            "update": "max(layer_0_layer_0_height, layer_0_layer_1_height, layer_0_layer_2_height, layer_0_layer_3_height)"
-        },
-        {
-            "name": "layer_0_layer_0_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_0_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_0_layer_1_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_1_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_0_layer_2_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_2_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_0_layer_3_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_0_layer_3_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_1_width",
-            "update": "500"
-        },
-        {
-            "name": "layer_1_height",
             "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         }
     ],

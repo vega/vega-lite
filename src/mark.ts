@@ -47,6 +47,12 @@ export interface MarkDef {
    * A metadata string indicating the role of the mark.
    * This allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.
    * In addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (`<g>`) element containing the mark instances.
+   *
+   * __Default value:__ For `bar`, `circle`, `point`, `rule`, `square` and `tick` marks, the role is the mark type (e.g., `role: "bar"` for `bar` mark).
+   * For other marks (which use the same marks in the lower-level Vega), the role is `undefined` by default.
+   *
+   * __Note:__ Switching from a default to custom role may alter the plot's appearance
+   * as default [mark-specific configs](config.html#mark-config) will no longer be applied.
    */
   role?: string;
 

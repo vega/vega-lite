@@ -94,7 +94,7 @@ export function parseLayerAxis(model: LayerModel) {
           }
           axisCount[orient]++;
 
-          // TODO: automaticaly add extra offset?
+          // TODO(https://github.com/vega/vega-lite/issues/2634): automaticaly add extra offset?
         });
       }
 

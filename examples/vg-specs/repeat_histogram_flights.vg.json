@@ -170,27 +170,11 @@
     ],
     "signals": [
         {
-            "name": "child_distance_width",
+            "name": "width",
             "update": "200"
         },
         {
-            "name": "child_distance_height",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_width",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_height",
-            "update": "200"
-        },
-        {
-            "name": "child_time_width",
-            "update": "200"
-        },
-        {
-            "name": "child_time_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -211,10 +195,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_distance_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_distance_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -338,10 +322,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_delay_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_delay_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -465,10 +449,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_time_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_time_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"

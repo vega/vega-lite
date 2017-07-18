@@ -93,19 +93,15 @@
     ],
     "signals": [
         {
+            "name": "height",
+            "update": "200"
+        },
+        {
             "name": "concat_0_width",
             "update": "200"
         },
         {
-            "name": "concat_0_height",
-            "update": "200"
-        },
-        {
             "name": "concat_1_width",
-            "update": "200"
-        },
-        {
-            "name": "concat_1_height",
             "update": "200"
         },
         {
@@ -138,7 +134,7 @@
                         "signal": "concat_0_width"
                     },
                     "height": {
-                        "signal": "concat_0_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -271,6 +267,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -286,6 +283,7 @@
                                 {
                                     "source": "scope",
                                     "type": "wheel",
+                                    "consume": true,
                                     "markname": "brush_brush"
                                 }
                             ],
@@ -545,7 +543,7 @@
                         "signal": "concat_1_width"
                     },
                     "height": {
-                        "signal": "concat_1_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"

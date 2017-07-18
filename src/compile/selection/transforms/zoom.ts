@@ -1,8 +1,8 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, ScaleChannel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
-import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
-import {channelSignalName, SelectionComponent} from '../selection';
+import {BRUSH as INTERVAL_BRUSH} from '../interval';
+import {channelSignalName, SelectionComponent, spatialProjections} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
@@ -20,7 +20,7 @@ const zoom:TransformCompiler = {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const delta = name + DELTA;
-    const {x, y} = intervalProjections(selCmpt);
+    const {x, y} = spatialProjections(selCmpt);
     const sx = stringValue(model.scaleName(X));
     const sy = stringValue(model.scaleName(Y));
     let events = parseSelector(selCmpt.zoom, 'scope');

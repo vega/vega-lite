@@ -1,3 +1,4 @@
+import {isNumber} from 'vega-util';
 import {Axis} from '../axis';
 import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
@@ -12,14 +13,14 @@ import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
+import {getFullName} from '../type';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
-import {LayoutSize, LayoutSizeComponent} from './layout/component';
+import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
-import {parseLayoutSize} from './layout/parse';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
@@ -105,7 +106,7 @@ export abstract class Model {
   protected scaleNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
-  protected sizeNameMap: NameMapInterface;
+  protected layoutSizeNameMap: NameMapInterface;
 
 
   public readonly config: Config;
@@ -123,7 +124,7 @@ export abstract class Model {
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
-    this.sizeNameMap = parent ? parent.sizeNameMap : new NameMap();
+    this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
 
     this.data = spec.data;
 
@@ -137,7 +138,7 @@ export abstract class Model {
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
-      layoutSize: new Split<LayoutSize>(),
+      layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders:{row: {}, column: {}},
       mark: null,
       resolve: resolve || {},
@@ -148,26 +149,28 @@ export abstract class Model {
     };
   }
 
-  public get width() {
-    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-    const w = this.component.layoutSize.get('width');
-    if (w !== undefined) {
-      return w;
-    }
-    throw new Error('calling model.width before parseLayoutSize()');
+  public get width(): number | VgSignalRef {
+    return this.getLayoutSize('width');
   }
 
 
-  public get height() {
-    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-    const h = this.component.layoutSize.get('height');
-    if (h !== undefined) {
-      return h;
-    }
-    throw new Error('calling model.height before parseLayoutSize()');
+  public get height(): number | VgSignalRef {
+    return this.getLayoutSize('height');
   }
 
-  protected initSize(size: LayoutSize) {
+  private getLayoutSize(sizeType: 'width' | 'height') {
+    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+    const size = this.component.layoutSize.get(sizeType);
+    if (size !== undefined) {
+      if (isNumber(size)) {
+        return size;
+      }
+      return this.getSizeSignalRef(sizeType);
+    }
+    throw new Error(`calling model.${sizeType} before parseLayoutSize()`);
+  }
+
+  protected initSize(size: LayoutSizeIndex) {
     const {width, height} = size;
     if (width) {
       this.component.layoutSize.set('width', width, true);
@@ -183,7 +186,7 @@ export abstract class Model {
     this.parseMarkDef();
     this.parseLayoutSize(); // depends on scale
     this.parseSelection();
-    this.parseData(); // (pathorder) depends on markDef
+    this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
     this.parseAxisAndHeader(); // depends on scale
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
@@ -198,9 +201,7 @@ export abstract class Model {
     parseScale(this);
   }
 
-  public parseLayoutSize() {
-    parseLayoutSize(this);
-  }
+  public abstract parseLayoutSize(): void;
 
   public parseMarkDef() {
     parseMarkDef(this);
@@ -332,10 +333,9 @@ export abstract class Model {
     return fullName;
   }
 
-  public getSizeSignalRef(sizeType: 'width' | 'height'): {signal: string} {
-    // TODO: this could change in the future once we have sizeSignal merging
+  public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
     return {
-      signal: this.getName(sizeType)
+      signal: this.layoutSizeNameMap.get(this.getName(sizeType))
     };
   }
 
@@ -354,8 +354,8 @@ export abstract class Model {
     return node.getSource();
   }
 
-  public renameSize(oldName: string, newName: string) {
-    this.sizeNameMap.rename(oldName, newName);
+  public renameLayoutSize(oldName: string, newName: string) {
+    this.layoutSizeNameMap.rename(oldName, newName);
   }
 
   public channelSizeName(channel: Channel): string {
@@ -363,7 +363,7 @@ export abstract class Model {
   }
 
   public sizeName(size: string): string {
-     return this.sizeNameMap.get(this.getName(size));
+     return this.layoutSizeNameMap.get(this.getName(size));
   }
 
   public renameScale(oldName: string, newName: string) {
