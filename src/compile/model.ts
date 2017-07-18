@@ -358,14 +358,6 @@ export abstract class Model {
     this.layoutSizeNameMap.rename(oldName, newName);
   }
 
-  public channelSizeName(channel: Channel): string {
-    return this.sizeName(channel === X || channel === COLUMN ? 'width' : 'height');
-  }
-
-  public sizeName(size: string): string {
-     return this.layoutSizeNameMap.get(this.getName(size));
-  }
-
   public renameScale(oldName: string, newName: string) {
     this.scaleNameMap.rename(oldName, newName);
   }
