@@ -1696,10 +1696,6 @@
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
         },
-        "facet": {
-          "$ref": "#/definitions/FacetConfig",
-          "description": "Facet Config "
-        },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
@@ -2265,16 +2261,6 @@
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
           "description": "Vertical facets for trellis plots."
-        }
-      },
-      "type": "object"
-    },
-    "FacetConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "cell": {
-          "$ref": "#/definitions/CellConfig",
-          "description": "Facet Cell Config "
         }
       },
       "type": "object"
@@ -5879,10 +5865,6 @@
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
-        },
-        "facet": {
-          "$ref": "#/definitions/FacetConfig",
-          "description": "Facet Config "
         },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",

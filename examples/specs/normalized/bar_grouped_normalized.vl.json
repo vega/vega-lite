@@ -13,10 +13,8 @@
     }
   ],
   "config": {
-    "facet": {
-      "cell": {
-        "strokeWidth": 0
-      }
+    "cell": {
+      "stroke": "transparent"
     },
     "axis": {
       "domainWidth": 1
