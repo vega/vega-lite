@@ -25,7 +25,7 @@
     }
   },
   "config": {
-    "facet": {"cell": {"strokeWidth": 0}},
-    "axis":{ "domainWidth": 1}
+    "cell": {"stroke": "transparent"},
+    "axis": {"domainWidth": 1}
   }
 }
