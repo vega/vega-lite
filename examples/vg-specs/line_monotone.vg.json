@@ -152,8 +152,8 @@
         },
         {
             "scale": "y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "price",
             "zindex": 1
@@ -168,5 +168,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

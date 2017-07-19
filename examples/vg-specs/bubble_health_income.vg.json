@@ -276,8 +276,8 @@
         {
             "scale": "x",
             "labelOverlap": "greedy",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "income",
@@ -296,8 +296,8 @@
         },
         {
             "scale": "y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "health",
             "zindex": 1
@@ -330,5 +330,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

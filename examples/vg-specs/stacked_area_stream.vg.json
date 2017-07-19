@@ -248,5 +248,10 @@
             "fill": "color",
             "title": "series"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

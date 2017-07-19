@@ -343,18 +343,23 @@
         {
             "title": "Mean Precipitation",
             "scale": "layer_0_y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "zindex": 1
         },
         {
             "title": "Temperature (min and max)",
             "scale": "layer_1_y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "right",
             "zindex": 1
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

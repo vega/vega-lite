@@ -168,8 +168,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "AVERAGE(b)",
@@ -192,5 +192,10 @@
             "title": "a",
             "zindex": 1
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

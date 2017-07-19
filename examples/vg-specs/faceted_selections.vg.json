@@ -162,8 +162,8 @@
             "axes": [
                 {
                     "scale": "y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Y",
                     "zindex": 1
@@ -231,8 +231,8 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "X",
@@ -801,5 +801,10 @@
             "round": true,
             "nice": true
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

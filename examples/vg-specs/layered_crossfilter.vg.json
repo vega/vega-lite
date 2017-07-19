@@ -784,8 +784,8 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(distance)",
                     "values": {
@@ -810,8 +810,8 @@
                 },
                 {
                     "scale": "child_distance_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1251,8 +1251,8 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(delay)",
                     "values": {
@@ -1277,8 +1277,8 @@
                 },
                 {
                     "scale": "child_delay_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1718,8 +1718,8 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(time)",
                     "values": {
@@ -1744,8 +1744,8 @@
                 },
                 {
                     "scale": "child_time_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1762,5 +1762,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

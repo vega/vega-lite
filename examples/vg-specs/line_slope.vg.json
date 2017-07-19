@@ -188,8 +188,8 @@
         },
         {
             "scale": "y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "MEDIAN(yield)",
             "zindex": 1
@@ -210,5 +210,10 @@
             "stroke": "color",
             "title": "site"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

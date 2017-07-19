@@ -182,8 +182,8 @@
     "axes": [
         {
             "scale": "x",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
             "values": {
@@ -208,8 +208,8 @@
         },
         {
             "scale": "y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "BIN(Rotten_Tomatoes_Rating)",
             "values": {
@@ -235,5 +235,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

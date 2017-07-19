@@ -176,5 +176,10 @@
             "title": "MEAN(Horsepower)",
             "type": "gradient"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }
