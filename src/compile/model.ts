@@ -19,6 +19,7 @@ import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale,
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {LayoutAssembleParams} from './layout/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
@@ -238,7 +239,7 @@ export abstract class Model {
 
   public abstract assembleLayout(): VgLayout;
 
-  public abstract assembleLayoutSignals(): VgSignal[];
+  public abstract assembleLayoutSignals(params: LayoutAssembleParams): VgSignal[];
 
   public assembleScales(): VgScale[] {
     return assembleScale(this);

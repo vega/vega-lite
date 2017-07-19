@@ -81,7 +81,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     ),
     ...model.assembleGroup(
       [].concat(
-        model.assembleLayoutSignals(),
+        model.assembleLayoutSignals({mode: 'combined'}),
         model.assembleSelectionTopLevelSignals([])
       )
     ),

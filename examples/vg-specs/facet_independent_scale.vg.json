@@ -77,12 +77,7 @@
     ],
     "signals": [
         {
-            "name": "child_x_step",
-            "value": 17
-        },
-        {
-            "name": "child_width",
-            "update": "bandspace(domain('child_x').length, 0.1, 0.05) * child_x_step"
+            "name": "child_width"
         },
         {
             "name": "child_height",
@@ -223,6 +218,28 @@
                     }
                 }
             },
+            "signals": [
+                {
+                    "name": "child_x_step",
+                    "value": 17
+                },
+                {
+                    "name": "child_width_inner",
+                    "update": "bandspace(domain('child_x').length, 0.1, 0.05) * child_x_step"
+                },
+                {
+                    "name": "child_width",
+                    "push": "outer",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "child_width_inner"
+                            },
+                            "update": "child_width_inner"
+                        }
+                    ]
+                }
+            ],
             "marks": [
                 {
                     "name": "child_marks",
