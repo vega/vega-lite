@@ -19,9 +19,13 @@ export function assembleLayoutSignals(model: Model): VgSignal[] {
 export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSignal[] {
   const channel = sizeType==='width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
-  if (size === 'merged') {
+  if (!size || size === 'merged') {
     return [];
-  } else if (size === 'range-step') {
+  }
+
+  const name = model.getName(sizeType);
+
+  if (size === 'range-step') {
     const scaleComponent = model.getScaleComponent(channel);
 
     if (scaleComponent) {
@@ -34,7 +38,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
         return [
           stepSignal(scaleName, range),
           {
-            name: model.getName(sizeType),
+            name,
             update: sizeExpr(scaleName, scaleComponent)
           }
         ];
@@ -42,11 +46,12 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
     }
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('layout size is range step although there is no rangeStep.');
+  } else {
+    return [{
+      name,
+      update: `${size}`
+    }];
   }
-  return size ? [{
-    name: model.getName(sizeType),
-    update: `${size}`
-  }] : [];
 }
 
 function stepSignal(scaleName: string, range: VgRangeStep) {
