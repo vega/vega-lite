@@ -70,6 +70,12 @@ export declare abstract class Model {
     abstract parseSelection(): void;
     parseScale(): void;
     abstract parseLayoutSize(): void;
+    /**
+     * Rename top-level spec's size to be just width / height, ignoring model name.
+     * This essentially merges the top-level spec's width/height signals with the width/height signals
+     * to help us reduce redundant signals declaration.
+     */
+    private renameTopLevelLayoutSize();
     parseMarkDef(): void;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
@@ -98,9 +104,8 @@ export declare abstract class Model {
      * Lookup the name of the datasource for an output node. You probably want to call this in assemble.
      */
     lookupDataSource(name: string): string;
+    getSizeName(oldSizeName: string): string;
     renameLayoutSize(oldName: string, newName: string): void;
-    channelSizeName(channel: Channel): string;
-    sizeName(size: string): string;
     renameScale(oldName: string, newName: string): void;
     /**
      * @return scale name for a given channel after the scale has been parsed and named.

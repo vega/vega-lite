@@ -36,7 +36,7 @@ export interface MarkDef {
     type: Mark;
     /**
      * A metadata string indicating the role of the mark.
-     * This allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.
+     * This allows users to use `config.<role-name>.*` (e.g., `config.myrolename.fill`) to customize properties of marks with specific roles.
      * In addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (`<g>`) element containing the mark instances.
      *
      * __Default value:__ For `bar`, `circle`, `point`, `rule`, `square` and `tick` marks, the role is the mark type (e.g., `role: "bar"` for `bar` mark).
@@ -111,6 +111,10 @@ export interface MarkConfig extends VgMarkConfig {
      * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
      */
     color?: string;
+    /**
+     * Should a mark be clipped to the enclosing group’s width and height?
+     */
+    clip?: boolean;
 }
 export declare const defaultMarkConfig: MarkConfig;
 export interface MarkConfigMixins {
@@ -167,6 +171,18 @@ export interface TextConfig extends MarkConfig {
      * Whether month names and weekday names should be abbreviated.
      */
     shortTimeLabels?: boolean;
+    /**
+     * The horizontal text alignment.
+     */
+    align?: 'left' | 'center' | 'right';
+    /**
+     * The horizontal offset in pixels (before rotation), between the text and anchor point.
+     */
+    dx?: number;
+    /**
+     * The vertical offset in pixels (before rotation), between the text and anchor point.
+     */
+    dy?: number;
 }
 export interface TickConfig extends MarkConfig {
     /**

@@ -76,6 +76,9 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     fillOpacity?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    clip?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -125,9 +128,6 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
         test?: string;
     })[];
     cursor?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    clip?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {
@@ -210,6 +210,9 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     fillOpacity?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    clip?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -259,9 +262,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
     cursor?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    clip?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {

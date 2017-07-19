@@ -20,6 +20,7 @@ export declare namespace ScaleType {
 }
 export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 export declare const SCALE_TYPES: ScaleType[];
+export declare function getScaleCategory(scaleType: ScaleType): "time" | "linear" | "bin-linear" | "log" | "pow" | "sqrt" | "utc" | "sequential" | "ordinal" | "bin-ordinal" | "point" | "band" | "numeric" | "ordinal-position";
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -207,10 +208,10 @@ export interface ExtendedScheme {
 }
 export declare type SelectionDomain = {
     selection: string;
-    field: string;
+    field?: string;
 } | {
     selection: string;
-    encoding: string;
+    encoding?: string;
 };
 export declare type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export declare type Scheme = string | ExtendedScheme;

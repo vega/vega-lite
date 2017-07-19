@@ -40,7 +40,6 @@ export declare class UnitModel extends ModelWithField {
     sort(channel: Channel): SortField | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
-    private initFacetCellConfig();
     private initScales(mark, encoding);
     private initAxes(encoding);
     private initLegend(encoding);

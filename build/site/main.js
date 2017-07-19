@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.10",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -27,9 +27,8 @@ module.exports={
     "build": "npm run build:only",
     "build:only": "npm run tsc && cp package.json build && browserify src/index.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
     "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
-    "build:examples": "npm run build && npm run build:examples-only",
+    "build:examples": "npm run build:only && npm run build:examples-only",
     "build:examples-only": "./scripts/build-examples.sh && rm -rf examples/specs/normalized/* && scripts/build-normalized-examples",
-    "build:examples-quick": "npm run build:only && npm run build:examples-only",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
     "build:site": "browserify site/static/main.ts -p [tsify -p site] -d | exorcist build/site/main.js.map > build/site/main.js",
@@ -181,6 +180,21 @@ exports.SHARED_DOMAIN_OP_INDEX = util_1.toSet(exports.SHARED_DOMAIN_OPS);
 },{"./util":100}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEFAULT_AXIS_CONFIG = {
+    quantitativeExtent: 30
+};
+/**
+ * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
+ * (Properties not listed are applicable for both)
+ */
+exports.AXIS_PROPERTY_TYPE = {
+    grid: 'grid',
+    labelOverlap: 'main',
+    offset: 'main',
+    maxExtent: 'main',
+    minExtent: 'main',
+    title: 'main'
+};
 exports.AXIS_PROPERTIES = [
     'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'tickExtra', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
@@ -696,7 +710,7 @@ function parseAxis(channel, model, isGridAxis) {
     );
     // 1.2. Add properties
     axis_1.AXIS_PROPERTIES.forEach(function (property) {
-        var value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
+        var value = getProperty(property, axis, channel, model, isGridAxis);
         if (value !== undefined) {
             var explicit = property === 'values' ?
                 !!axis.values :
@@ -730,32 +744,48 @@ function parseAxis(channel, model, isGridAxis) {
     }
     return axisComponent;
 }
-function getSpecifiedOrDefaultValue(property, specifiedAxis, channel, model, isGridAxis) {
+function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
     var fieldDef = model.fieldDef(channel);
+    if ((isGridAxis && axis_1.AXIS_PROPERTY_TYPE[property] === 'main') ||
+        (!isGridAxis && axis_1.AXIS_PROPERTY_TYPE[property] === 'grid')) {
+        // Do not apply unapplicable properties
+        return undefined;
+    }
     switch (property) {
-        case 'labels':
-            return isGridAxis ? false : specifiedAxis.labels;
-        case 'labelOverlap':
-            var scaleType = model.component.scales[channel].get('type');
-            return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
         case 'domain':
             return rules.domain(property, specifiedAxis, isGridAxis, channel);
+        case 'format':
+            return common_1.numberFormat(fieldDef, specifiedAxis.format, model.config);
+        case 'grid': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.grid, rules.grid(scaleType, fieldDef));
+        }
+        case 'labels':
+            return isGridAxis ? false : specifiedAxis.labels;
+        case 'labelOverlap': {
+            var scaleType = model.component.scales[channel].get('type');
+            return rules.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
+        }
+        case 'minExtent': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.minExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+        }
+        case 'maxExtent': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.maxExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+        }
+        case 'orient':
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
+        case 'tickCount':
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef)); // TODO: scaleType
         case 'ticks':
             return rules.ticks(property, specifiedAxis, isGridAxis, channel);
-        case 'format':
-            return rules.format(specifiedAxis, fieldDef, model.config);
-        case 'grid':
-            return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
-        case 'orient':
-            return rules.orient(specifiedAxis, channel);
-        case 'tickCount':
-            return rules.tickCount(specifiedAxis, channel, fieldDef); // TODO: scaleType
         case 'title':
-            return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.title, rules.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
         case 'values':
             return rules.values(specifiedAxis, model, fieldDef);
         case 'zindex':
-            return rules.zindex(specifiedAxis, isGridAxis);
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.zindex, rules.zindex(isGridAxis));
     }
     // Otherwise, return specified property.
     return specifiedAxis[property];
@@ -769,31 +799,25 @@ var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
+var scale_1 = require("../../scale");
 var util_1 = require("../../util");
-var common_1 = require("../common");
 var encode_1 = require("./encode");
-function format(specifiedAxis, fieldDef, config) {
-    return common_1.numberFormat(fieldDef, specifiedAxis.format, config);
+function domainAndTicks(property, specifiedAxis, isGridAxis, channel) {
+    if (isGridAxis) {
+        return false;
+    }
+    return specifiedAxis[property];
 }
-exports.format = format;
+exports.domainAndTicks = domainAndTicks;
+exports.domain = domainAndTicks;
+exports.ticks = domainAndTicks;
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-function gridShow(model, channel) {
-    var grid = model.axis(channel).grid;
-    if (grid !== undefined) {
-        return grid;
-    }
-    return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
-}
-exports.gridShow = gridShow;
-function grid(model, channel, isGridAxis) {
-    if (!isGridAxis) {
-        return undefined;
-    }
-    return gridShow(model, channel);
+function grid(scaleType, fieldDef) {
+    return !scale_1.hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 exports.grid = grid;
 function gridScale(model, channel, isGridAxis) {
@@ -806,18 +830,29 @@ function gridScale(model, channel, isGridAxis) {
     return undefined;
 }
 exports.gridScale = gridScale;
-function orient(specifiedAxis, channel) {
-    var orient = specifiedAxis.orient;
-    if (orient) {
-        return orient;
+function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
+    if (channel === 'x' && !encode_1.labelAngle(specifiedAxis, channel, fieldDef)) {
+        if (scaleType === 'log') {
+            return 'greedy';
+        }
+        return true;
     }
+    return undefined;
+}
+exports.labelOverlap = labelOverlap;
+function minMaxExtent(isGridAxis, scaleType, axisConfig) {
+    // For quantitative scale, set default extent to avoid jumpy axis title
+    // (Fix https://github.com/vega/vega-lite/issues/2282)
+    if (scale_1.getScaleCategory(scaleType) === 'numeric') {
+        return axisConfig.quantitativeExtent;
+    }
+    return undefined;
+}
+exports.minMaxExtent = minMaxExtent;
+function orient(channel) {
     switch (channel) {
-        case channel_1.COLUMN:
-            // FIXME test and decide
-            return 'top';
         case channel_1.X:
             return 'bottom';
-        case channel_1.ROW:
         case channel_1.Y:
             return 'left';
     }
@@ -825,11 +860,7 @@ function orient(specifiedAxis, channel) {
     throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 exports.orient = orient;
-function tickCount(specifiedAxis, channel, fieldDef) {
-    var count = specifiedAxis.tickCount;
-    if (count !== undefined) {
-        return count;
-    }
+function tickCount(channel, fieldDef) {
     // FIXME depends on scale type too
     if (channel === channel_1.X && !fieldDef.bin) {
         // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
@@ -838,19 +869,9 @@ function tickCount(specifiedAxis, channel, fieldDef) {
     return undefined;
 }
 exports.tickCount = tickCount;
-function title(specifiedAxis, fieldDef, config, isGridAxis) {
-    if (isGridAxis) {
-        return undefined;
-    }
-    if (specifiedAxis.title === '') {
-        return undefined;
-    }
-    if (specifiedAxis.title !== undefined) {
-        return specifiedAxis.title;
-    }
+function title(maxLength, fieldDef, config) {
     // if not defined, automatically determine axis title from field def
     var fieldTitle = fielddef_1.title(fieldDef, config);
-    var maxLength = specifiedAxis.titleMaxLength;
     return maxLength ? util_1.truncate(fieldTitle, maxLength) : fieldTitle;
 }
 exports.title = title;
@@ -869,11 +890,7 @@ function values(specifiedAxis, model, fieldDef) {
     return vals;
 }
 exports.values = values;
-function zindex(specifiedAxis, isGridAxis) {
-    var z = specifiedAxis.zindex;
-    if (z !== undefined) {
-        return z;
-    }
+function zindex(isGridAxis) {
     if (isGridAxis) {
         // if grid is true, need to put layer on the back so that grid is behind marks
         return 0;
@@ -881,27 +898,8 @@ function zindex(specifiedAxis, isGridAxis) {
     return 1; // otherwise return undefined and use Vega's default.
 }
 exports.zindex = zindex;
-function domainAndTicks(property, specifiedAxis, isGridAxis, channel) {
-    if (isGridAxis || channel === channel_1.ROW || channel === channel_1.COLUMN) {
-        return false;
-    }
-    return specifiedAxis[property];
-}
-exports.domainAndTicks = domainAndTicks;
-function labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType) {
-    if (!isGridAxis && channel === 'x' && !encode_1.labelAngle(specifiedAxis, channel, fieldDef)) {
-        if (scaleType === 'log') {
-            return 'greedy';
-        }
-        return true;
-    }
-    return undefined;
-}
-exports.labelOverlap = labelOverlap;
-exports.domain = domainAndTicks;
-exports.ticks = domainAndTicks;
 
-},{"../../bin":4,"../../channel":5,"../../datetime":80,"../../fielddef":83,"../../log":88,"../../util":100,"../common":11,"./encode":8}],11:[function(require,module,exports){
+},{"../../bin":4,"../../channel":5,"../../datetime":80,"../../fielddef":83,"../../log":88,"../../scale":91,"../../util":100,"./encode":8}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var fielddef_1 = require("../fielddef");
@@ -1009,6 +1007,13 @@ function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
     }
 }
 exports.formatSignalRef = formatSignalRef;
+function getSpecifiedOrDefaultValue(specifiedValue, defaultValue) {
+    if (specifiedValue !== undefined) {
+        return specifiedValue;
+    }
+    return defaultValue;
+}
+exports.getSpecifiedOrDefaultValue = getSpecifiedOrDefaultValue;
 /**
  * Returns number format for a fieldDef
  *
@@ -1086,8 +1091,6 @@ var log = require("../log");
 var spec_1 = require("../spec");
 var toplevelprops_1 = require("../toplevelprops");
 var common_1 = require("./common");
-var layer_1 = require("./layer");
-var unit_1 = require("./unit");
 function compile(inputSpec, logger) {
     if (logger) {
         // set the singleton logger to the provided logger
@@ -1133,22 +1136,14 @@ function assemble(model, topLevelProperties) {
     }
     var output = tslib_1.__assign({ $schema: 'https://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { 
         // By using Vega layout, we don't support custom autosize
-        autosize: topLevelProperties.autoResize ? { type: 'pad', resize: true } : 'pad' }, topLevelProps, (encode ? { encode: { update: encode } } : {}), { data: [].concat(model.assembleSelectionData([]), model.assembleData()) }, model.assembleGroup([].concat(
-    // TODO(https://github.com/vega/vega-lite/issues/2198):
-    // Merge the top-level's width/height signal with the top-level model
-    // so we can remove this special casing based on model.name
-    ((model.name && ((model instanceof layer_1.LayerModel) || (model instanceof unit_1.UnitModel))) ? [
-        // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
-        { name: 'width', update: model.getName('width') },
-        { name: 'height', update: model.getName('height') }
-    ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}));
+        autosize: topLevelProperties.autoResize ? { type: 'pad', resize: true } : 'pad' }, topLevelProps, (encode ? { encode: { update: encode } } : {}), { data: [].concat(model.assembleSelectionData([]), model.assembleData()) }, model.assembleGroup([].concat(model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}));
     return {
         spec: output
         // TODO: add warning / errors here
     };
 }
 
-},{"../config":78,"../log":88,"../spec":94,"../toplevelprops":97,"./common":11,"./layer":30,"./unit":74,"tslib":294}],13:[function(require,module,exports){
+},{"../config":78,"../log":88,"../spec":94,"../toplevelprops":97,"./common":11,"tslib":294}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2956,7 +2951,7 @@ var StackNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.StackNode = StackNode;
 
-},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../common":11,"./dataflow":17,"tslib":294,"vega-util":306}],27:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../common":11,"./dataflow":17,"tslib":294,"vega-util":307}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3228,7 +3223,7 @@ function parseTransformArray(model) {
 }
 exports.parseTransformArray = parseTransformArray;
 
-},{"../../datetime":80,"../../filter":84,"../../log":88,"../../transform":98,"../../util":100,"./aggregate":14,"./bin":16,"./dataflow":17,"./formatparse":19,"./source":25,"./timeunit":27,"tslib":294,"vega-util":306}],29:[function(require,module,exports){
+},{"../../datetime":80,"../../filter":84,"../../log":88,"../../transform":98,"../../util":100,"./aggregate":14,"./bin":16,"./dataflow":17,"./formatparse":19,"./source":25,"./timeunit":27,"tslib":294,"vega-util":307}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3236,7 +3231,6 @@ var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
 var log = require("../log");
-var mark_1 = require("../mark");
 var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
@@ -3303,22 +3297,15 @@ var FacetModel = (function (_super) {
         // so that we create all groups
         var hasRow = this.channelHasField(channel_1.ROW);
         var hasColumn = this.channelHasField(channel_1.COLUMN);
-        this.component.mark = [{
-                name: this.getName('cell'),
-                type: 'group',
-                from: {
+        var groupProperties = this.child.assembleParentGroupProperties();
+        this.component.mark = [tslib_1.__assign({ name: this.getName('cell'), type: 'group', from: {
                     facet: tslib_1.__assign({ name: this.component.data.facetRoot.name, data: this.component.data.facetRoot.data, groupby: [].concat(hasRow ? [this.field(channel_1.ROW)] : [], hasColumn ? [this.field(channel_1.COLUMN)] : []) }, (hasRow && hasColumn ? { aggregate: {
                             cross: true
                         } } : {}))
-                },
-                sort: {
+                }, sort: {
                     field: [].concat(hasRow ? [this.field(channel_1.ROW, { expr: 'datum' })] : [], hasColumn ? [this.field(channel_1.COLUMN, { expr: 'datum' })] : []),
                     order: [].concat(hasRow ? [(this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [], hasColumn ? [(this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : [])
-                },
-                encode: {
-                    update: getFacetGroupProperties(this)
-                }
-            }];
+                } }, (groupProperties ? { encode: { update: groupProperties } } : {}))];
     };
     FacetModel.prototype.parseAxisAndHeader = function () {
         this.child.parseAxisAndHeader();
@@ -3440,12 +3427,8 @@ var FacetModel = (function (_super) {
     return FacetModel;
 }(model_1.ModelWithField));
 exports.FacetModel = FacetModel;
-function getFacetGroupProperties(model) {
-    var encodeEntry = model.child.assembleParentGroupProperties();
-    return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
-}
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../mark":90,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/header":32,"./layout/parse":33,"./legend/parse":37,"./model":51,"./repeat":52,"./resolve":53,"tslib":294}],30:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/header":32,"./layout/parse":33,"./legend/parse":37,"./model":51,"./repeat":52,"./resolve":53,"tslib":294}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3570,51 +3553,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
 function assembleLayoutSignals(model) {
-    var signals = [];
-    var width = sizeExpr(model, 'width');
-    if (width !== undefined) {
-        signals.push({ name: model.getName('width'), update: width });
-    }
-    var height = sizeExpr(model, 'height');
-    if (height !== undefined) {
-        signals.push({ name: model.getName('height'), update: height });
-    }
-    return signals;
+    return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
 exports.assembleLayoutSignals = assembleLayoutSignals;
-function sizeExpr(model, sizeType) {
+function sizeSignals(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var size = model.component.layoutSize.get(sizeType);
-    if (size === 'merged') {
-        return undefined;
+    if (!size || size === 'merged') {
+        return [];
     }
-    else if (size === 'range-step') {
+    // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
+    var name = model.getSizeSignalRef(sizeType).signal;
+    if (size === 'range-step') {
         var scaleComponent = model.getScaleComponent(channel);
         if (scaleComponent) {
             var type = scaleComponent.get('type');
             var range = scaleComponent.get('range');
             if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
                 var scaleName = model.scaleName(channel);
-                var cardinality = "domain('" + scaleName + "').length";
-                var padding = scaleComponent.get('padding');
-                var paddingOuter = scaleComponent.get('paddingOuter');
-                paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-                var paddingInner = scaleComponent.get('paddingInner');
-                paddingInner = type === 'band' ?
-                    // only band has real paddingInner
-                    (paddingInner !== undefined ? paddingInner : padding) :
-                    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-                    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-                    1;
-                return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
+                return [
+                    stepSignal(scaleName, range),
+                    {
+                        name: name,
+                        update: sizeExpr(scaleName, scaleComponent)
+                    }
+                ];
             }
         }
         /* istanbul ignore next: Condition should not happen -- only for warning in development. */
         throw new Error('layout size is range step although there is no rangeStep.');
     }
-    return size ? "" + size : undefined;
+    else {
+        return [{
+                name: name,
+                update: "" + size
+            }];
+    }
 }
-exports.sizeExpr = sizeExpr;
+exports.sizeSignals = sizeSignals;
+function stepSignal(scaleName, range) {
+    return {
+        name: scaleName + '_step',
+        value: range.step,
+    };
+}
+function sizeExpr(scaleName, scaleComponent) {
+    var type = scaleComponent.get('type');
+    var cardinality = "domain('" + scaleName + "').length";
+    var padding = scaleComponent.get('padding');
+    var paddingOuter = scaleComponent.get('paddingOuter');
+    paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+    var paddingInner = scaleComponent.get('paddingInner');
+    paddingInner = type === 'band' ?
+        // only band has real paddingInner
+        (paddingInner !== undefined ? paddingInner : padding) :
+        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
+    return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + scaleName + "_step";
+}
 
 },{"../../scale":91,"../../vega.schema":102}],32:[function(require,module,exports){
 "use strict";
@@ -3930,6 +3927,7 @@ exports.labels = labels;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
+var fielddef_1 = require("../../fielddef");
 var legend_1 = require("../../legend");
 var util_1 = require("../../util");
 var common_1 = require("../common");
@@ -3968,7 +3966,7 @@ function parseLegendForChannel(model, channel) {
     var legend = model.legend(channel);
     var legendCmpt = new component_1.LegendComponent({}, getLegendDefWithScale(model, channel));
     legend_1.LEGEND_PROPERTIES.forEach(function (property) {
-        var value = getSpecifiedOrDefaultValue(property, legend, channel, model);
+        var value = getProperty(property, legend, channel, model);
         if (value !== undefined) {
             var explicit = property === 'values' ?
                 !!legend.values :
@@ -3993,17 +3991,17 @@ function parseLegendForChannel(model, channel) {
     return legendCmpt;
 }
 exports.parseLegendForChannel = parseLegendForChannel;
-function getSpecifiedOrDefaultValue(property, specifiedLegend, channel, model) {
+function getProperty(property, specifiedLegend, channel, model) {
     var fieldDef = model.fieldDef(channel);
     switch (property) {
         case 'format':
             return common_1.numberFormat(fieldDef, specifiedLegend.format, model.config);
         case 'title':
-            return rules.title(specifiedLegend, fieldDef, model.config);
+            return common_1.getSpecifiedOrDefaultValue(specifiedLegend.title, fielddef_1.title(fieldDef, model.config));
         case 'values':
             return rules.values(specifiedLegend);
         case 'type':
-            return rules.type(specifiedLegend, fieldDef.type, channel, model.getScaleComponent(channel).get('type'));
+            return common_1.getSpecifiedOrDefaultValue(specifiedLegend.type, rules.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
     }
     // Otherwise, return specified property.
     return specifiedLegend[property];
@@ -4082,21 +4080,13 @@ function mergeLegendComponent(mergedLegend, childLegend) {
 }
 exports.mergeLegendComponent = mergeLegendComponent;
 
-},{"../../channel":5,"../../legend":87,"../../util":100,"../common":11,"../resolve":53,"../split":73,"./component":35,"./encode":36,"./rules":38}],38:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":83,"../../legend":87,"../../util":100,"../common":11,"../resolve":53,"../split":73,"./component":35,"./encode":36,"./rules":38}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
-var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
-function title(legend, fieldDef, config) {
-    if (legend.title !== undefined) {
-        return legend.title;
-    }
-    return fielddef_1.title(fieldDef, config);
-}
-exports.title = title;
 function values(legend) {
     var vals = legend.values;
     if (vals && datetime_1.isDateTime(vals[0])) {
@@ -4108,10 +4098,7 @@ function values(legend) {
     return vals;
 }
 exports.values = values;
-function type(legend, type, channel, scaleType) {
-    if (legend.type) {
-        return legend.type;
-    }
+function type(type, channel, scaleType) {
     if (channel === channel_1.COLOR && ((type === 'quantitative' && !scale_1.isBinScale(scaleType)) ||
         (type === 'temporal' && util_1.contains(['time', 'utc'], scaleType)))) {
         return 'gradient';
@@ -4120,7 +4107,7 @@ function type(legend, type, channel, scaleType) {
 }
 exports.type = type;
 
-},{"../../channel":5,"../../datetime":80,"../../fielddef":83,"../../scale":91,"../../util":100}],39:[function(require,module,exports){
+},{"../../channel":5,"../../datetime":80,"../../scale":91,"../../util":100}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4137,6 +4124,7 @@ exports.area = {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
@@ -4211,7 +4199,7 @@ function defaultSizeRef(scaleName, scale, config) {
         var scaleType = scale.get('type');
         if (scaleType === scale_1.ScaleType.POINT) {
             var scaleRange = scale.get('range');
-            if (vega_schema_1.isVgRangeStep(scaleRange)) {
+            if (vega_schema_1.isVgRangeStep(scaleRange) && vega_util_1.isNumber(scaleRange.step)) {
                 return { value: scaleRange.step - 1 };
             }
             log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
@@ -4230,7 +4218,7 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":5,"../../fielddef":83,"../../log":88,"../../scale":91,"../../vega.schema":102,"./mixins":44,"./valueref":50,"tslib":294}],41:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":83,"../../log":88,"../../scale":91,"../../vega.schema":102,"./mixins":44,"./valueref":50,"tslib":294,"vega-util":307}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var encoding_1 = require("../../encoding");
@@ -4519,7 +4507,7 @@ function clip(model) {
         (yScaleDomain && scale_1.isSelectionDomain(yScaleDomain)) ? { clip: true } : {};
 }
 
-},{"../../channel":5,"../../data":79,"../../fielddef":83,"../../mark":90,"../../scale":91,"../../util":100,"../unit":74,"./area":39,"./bar":40,"./init":41,"./line":42,"./point":45,"./rect":46,"./rule":47,"./text":48,"./tick":49,"tslib":294,"vega-util":306}],44:[function(require,module,exports){
+},{"../../channel":5,"../../data":79,"../../fielddef":83,"../../mark":90,"../../scale":91,"../../util":100,"../unit":74,"./area":39,"./bar":40,"./init":41,"./line":42,"./point":45,"./rect":46,"./rule":47,"./text":48,"./tick":49,"tslib":294,"vega-util":307}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5117,7 +5105,7 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../../vega.schema":102,"../common":11,"tslib":294,"vega-util":306}],51:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":83,"../../scale":91,"../../util":100,"../../vega.schema":102,"../common":11,"tslib":294,"vega-util":307}],51:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5148,7 +5136,7 @@ var NameMap = (function () {
     NameMap.prototype.get = function (name) {
         // If the name appears in the _nameMap, we need to read its new name.
         // We have to loop over the dict just in case the new name also gets renamed.
-        while (this.nameMap[name]) {
+        while (this.nameMap[name] && name !== this.nameMap[name]) {
             name = this.nameMap[name];
         }
         return name;
@@ -5240,6 +5228,7 @@ var Model = (function () {
         this.parseScale();
         this.parseMarkDef();
         this.parseLayoutSize(); // depends on scale
+        this.renameTopLevelLayoutSize();
         this.parseSelection();
         this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
         this.parseAxisAndHeader(); // depends on scale
@@ -5248,6 +5237,19 @@ var Model = (function () {
     };
     Model.prototype.parseScale = function () {
         parse_1.parseScale(this);
+    };
+    /**
+     * Rename top-level spec's size to be just width / height, ignoring model name.
+     * This essentially merges the top-level spec's width/height signals with the width/height signals
+     * to help us reduce redundant signals declaration.
+     */
+    Model.prototype.renameTopLevelLayoutSize = function () {
+        if (this.getName('width') !== 'width') {
+            this.renameLayoutSize(this.getName('width'), 'width');
+        }
+        if (this.getName('height') !== 'height') {
+            this.renameLayoutSize(this.getName('height'), 'height');
+        }
     };
     Model.prototype.parseMarkDef = function () {
         mark_1.parseMarkDef(this);
@@ -5361,14 +5363,11 @@ var Model = (function () {
         }
         return node.getSource();
     };
+    Model.prototype.getSizeName = function (oldSizeName) {
+        return this.layoutSizeNameMap.get(oldSizeName);
+    };
     Model.prototype.renameLayoutSize = function (oldName, newName) {
         this.layoutSizeNameMap.rename(oldName, newName);
-    };
-    Model.prototype.channelSizeName = function (channel) {
-        return this.sizeName(channel === channel_1.X || channel === channel_1.COLUMN ? 'width' : 'height');
-    };
-    Model.prototype.sizeName = function (size) {
-        return this.layoutSizeNameMap.get(this.getName(size));
     };
     Model.prototype.renameScale = function (oldName, newName) {
         this.scaleNameMap.rename(oldName, newName);
@@ -5462,7 +5461,7 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../util":100,"./axis/assemble":6,"./layout/header":32,"./legend/assemble":34,"./mark/mark":43,"./scale/assemble":54,"./scale/parse":57,"./split":73,"./unit":74,"tslib":294,"vega-util":306}],52:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../log":88,"../util":100,"./axis/assemble":6,"./layout/header":32,"./legend/assemble":34,"./mark/mark":43,"./scale/assemble":54,"./scale/parse":57,"./split":73,"./unit":74,"tslib":294,"vega-util":307}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5642,7 +5641,7 @@ var RepeatModel = (function (_super) {
 }(model_1.Model));
 exports.RepeatModel = RepeatModel;
 
-},{"../fielddef":83,"../log":88,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./model":51,"tslib":294,"vega-util":306}],53:[function(require,module,exports){
+},{"../fielddef":83,"../log":88,"../util":100,"./common":11,"./data/assemble":15,"./data/parse":23,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./model":51,"tslib":294,"vega-util":307}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../channel");
@@ -5685,13 +5684,15 @@ var util_1 = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
 var selection_1 = require("../selection/selection");
 function assembleScale(model) {
-    return util_1.vals(model.component.scales).reduce(function (scales, scaleComponent) {
+    return util_1.keys(model.component.scales).reduce(function (scales, channel) {
+        var scaleComponent = model.component.scales[channel];
         if (scaleComponent.merged) {
             // Skipped merged scales
             return scales;
         }
         // We need to cast here as combine returns Partial<VgScale> by default.
         var scale = scaleComponent.combine(['name', 'type', 'domain', 'domainRaw', 'range']);
+        scale.range = assembleScaleRange(scale.range, scale.name, model, channel);
         var domainRaw = scaleComponent.get('domainRaw');
         // As scale parsing occurs before selection parsing, a temporary signal
         // is used for domainRaw. Here, we detect if this temporary signal
@@ -5724,8 +5725,33 @@ function assembleScale(model) {
     }, []);
 }
 exports.assembleScale = assembleScale;
+function assembleScaleRange(scaleRange, scaleName, model, channel) {
+    // add signals to x/y range
+    if (channel === 'x' || channel === 'y') {
+        if (vega_schema_1.isVgRangeStep(scaleRange)) {
+            // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+            return {
+                step: { signal: scaleName + '_step' }
+            };
+        }
+        else if (vega_util_1.isArray(scaleRange) && scaleRange.length === 2) {
+            var r0 = scaleRange[0];
+            var r1 = scaleRange[1];
+            if (r0 === 0 && vega_schema_1.isVgSignalRef(r1)) {
+                // Replace width signal just in case it is renamed.
+                return [0, { signal: model.getSizeName(r1.signal) }];
+            }
+            else if (vega_schema_1.isVgSignalRef(r0) && r1 === 0) {
+                // Replace height signal just in case it is renamed.
+                return [{ signal: model.getSizeName(r0.signal) }, 0];
+            }
+        }
+    }
+    return scaleRange;
+}
+exports.assembleScaleRange = assembleScaleRange;
 
-},{"../../util":100,"../../vega.schema":102,"../selection/selection":63,"tslib":294,"vega-util":306}],55:[function(require,module,exports){
+},{"../../util":100,"../../vega.schema":102,"../selection/selection":63,"tslib":294,"vega-util":307}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6430,10 +6456,10 @@ function parseUnitScaleRange(model) {
         var specifiedScale = model.specifiedScales[channel];
         var fieldDef = model.fieldDef(channel);
         // Read if there is a specified width/height
-        var specifiedSize = channel === 'x' ? model.component.layoutSize.get('width') :
-            channel === 'y' ? model.component.layoutSize.get('height') : undefined;
+        var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+        var specifiedSize = sizeType ? model.component.layoutSize.get(sizeType) : undefined;
         var xyRangeSteps = getXYRangeStep(model);
-        var rangeWithExplicit = parseRangeForChannel(channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, xyRangeSteps);
+        var rangeWithExplicit = parseRangeForChannel(channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getSizeSignalRef(sizeType), xyRangeSteps);
         localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
     });
 }
@@ -6441,12 +6467,12 @@ function getXYRangeStep(model) {
     var xyRangeSteps = [];
     var xScale = model.getScaleComponent('x');
     var xRange = xScale && xScale.get('range');
-    if (xRange && vega_schema_1.isVgRangeStep(xRange)) {
+    if (xRange && vega_schema_1.isVgRangeStep(xRange) && vega_util_1.isNumber(xRange.step)) {
         xyRangeSteps.push(xRange.step);
     }
     var yScale = model.getScaleComponent('y');
     var yRange = yScale && yScale.get('range');
-    if (yRange && vega_schema_1.isVgRangeStep(yRange)) {
+    if (yRange && vega_schema_1.isVgRangeStep(yRange) && vega_util_1.isNumber(yRange.step)) {
         xyRangeSteps.push(yRange.step);
     }
     return xyRangeSteps;
@@ -6454,8 +6480,8 @@ function getXYRangeStep(model) {
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
-function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, specifiedSize, xyRangeSteps) {
-    var specifiedRangeStepIsNull = false;
+function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, specifiedSize, sizeSignal, xyRangeSteps) {
+    var noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
     // Check if any of the range properties is specified.
     // If so, check if it is compatible and make sure that we only output one of the properties
     for (var _i = 0, RANGE_PROPERTIES_1 = exports.RANGE_PROPERTIES; _i < RANGE_PROPERTIES_1.length; _i++) {
@@ -6476,18 +6502,15 @@ function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, 
                     case 'scheme':
                         return split_1.makeImplicit(parseScheme(specifiedScale[property]));
                     case 'rangeStep':
-                        if (specifiedSize === undefined) {
-                            var rangeStep = specifiedScale[property];
-                            if (rangeStep !== null) {
+                        var rangeStep = specifiedScale[property];
+                        if (rangeStep !== null) {
+                            if (specifiedSize === undefined) {
                                 return split_1.makeImplicit({ step: rangeStep });
                             }
                             else {
-                                specifiedRangeStepIsNull = true;
+                                // If top-level size is specified, we ignore specified rangeStep.
+                                log.warn(log.message.rangeStepDropped(channel));
                             }
-                        }
-                        else {
-                            // If top-level size is specified, we ignore specified rangeStep.
-                            log.warn(log.message.rangeStepDropped(channel));
                         }
                 }
             }
@@ -6495,7 +6518,7 @@ function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, 
     }
     return {
         explicit: false,
-        value: defaultRange(channel, scaleType, type, config, zero, mark, specifiedSize, xyRangeSteps, specifiedRangeStepIsNull)
+        value: defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep)
     };
 }
 exports.parseRangeForChannel = parseRangeForChannel;
@@ -6512,32 +6535,26 @@ function parseScheme(scheme) {
     }
     return { scheme: scheme };
 }
-function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull) {
+function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep) {
     switch (channel) {
         case channel_1.X:
         case channel_1.Y:
-            var size = void 0;
-            if (vega_util_1.isNumber(topLevelSize)) {
-                size = topLevelSize;
-            }
-            else {
-                if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
-                    if (channel === channel_1.X && mark === 'text') {
-                        if (config.scale.textXRangeStep) {
-                            return { step: config.scale.textXRangeStep };
-                        }
-                    }
-                    else {
-                        if (config.scale.rangeStep) {
-                            return { step: config.scale.rangeStep };
-                        }
+            if (util.contains(['point', 'band'], scaleType) && !noRangeStep) {
+                if (channel === channel_1.X && mark === 'text') {
+                    if (config.scale.textXRangeStep) {
+                        return { step: config.scale.textXRangeStep };
                     }
                 }
-                // If specified range step is null or the range step config is null.
-                // Use default topLevelSize rule/config
-                size = channel === channel_1.X ? config.cell.width : config.cell.height;
+                else {
+                    if (config.scale.rangeStep) {
+                        return { step: config.scale.rangeStep };
+                    }
+                }
             }
-            return channel === channel_1.X ? [0, size] : [size, 0];
+            // If range step is null, assign temporary range signals,
+            // which will be later replaced with proper signals in assemble.
+            // We cannot set the right size signal here since parseLayoutSize() happens after parseScale().
+            return channel === channel_1.X ? [0, sizeSignal] : [sizeSignal, 0];
         case channel_1.SIZE:
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
@@ -6626,7 +6643,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":5,"../../log":88,"../../scale":91,"../../util":100,"../../vega.schema":102,"../split":73,"../unit":74,"./properties":58,"vega-util":306}],60:[function(require,module,exports){
+},{"../../channel":5,"../../log":88,"../../scale":91,"../../util":100,"../../vega.schema":102,"../split":73,"../unit":74,"./properties":58,"vega-util":307}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -6980,6 +6997,7 @@ exports.default = multi;
 },{"../../util":100,"./selection":63,"./transforms/nearest":66}],63:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var vega_event_selector_1 = require("vega-event-selector");
 var channel_1 = require("../../channel");
 var log_1 = require("../../log");
@@ -7012,6 +7030,9 @@ function parseUnitSelection(model, selDefs) {
             // default values for these two values if neither of them is specified.
             if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
                 continue;
+            }
+            if (key === 'mark') {
+                selDef[key] = tslib_1.__assign({}, cfg[key], selDef[key]);
             }
             if (selDef[key] === undefined || selDef[key] === true) {
                 selDef[key] = cfg[key] || selDef[key];
@@ -7176,11 +7197,15 @@ function selectionScaleDomain(model, domainRaw) {
     if (selCmpt) {
         log_1.warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
     }
-    else if (!selDomain.encoding && !selDomain.field) {
-        log_1.warn('A "field" or "encoding" must be specified when using a selection as a scale domain.');
-    }
     else {
         selCmpt = model.getSelectionComponent(name, selDomain.selection);
+        if (!selDomain.encoding && !selDomain.field) {
+            selDomain.field = selCmpt.project[0].field;
+            if (selCmpt.project.length > 1) {
+                log_1.warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
+                    ("Using \"field\": " + util_1.stringValue(selDomain.field) + "."));
+            }
+        }
         return {
             signal: compiler(selCmpt.type).scaleDomain +
                 ("(" + util_1.stringValue(name + exports.STORE) + ", " + util_1.stringValue(selDomain.encoding || null) + ", ") +
@@ -7237,7 +7262,7 @@ function spatialProjections(selCmpt) {
 }
 exports.spatialProjections = spatialProjections;
 
-},{"../../channel":5,"../../log":88,"../../util":100,"../layer":30,"../unit":74,"./interval":61,"./multi":62,"./single":64,"./transforms/transforms":70,"vega-event-selector":298}],64:[function(require,module,exports){
+},{"../../channel":5,"../../log":88,"../../util":100,"../layer":30,"../unit":74,"./interval":61,"./multi":62,"./single":64,"./transforms/transforms":70,"tslib":294,"vega-event-selector":299}],64:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -7596,7 +7621,7 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":5,"../interval":61,"../selection":63,"./scales":68,"vega-event-selector":298}],72:[function(require,module,exports){
+},{"../../../channel":5,"../interval":61,"../selection":63,"./scales":68,"vega-event-selector":299}],72:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
@@ -7671,7 +7696,7 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":5,"../../../util":100,"../interval":61,"../selection":63,"./scales":68,"vega-event-selector":298}],73:[function(require,module,exports){
+},{"../../../channel":5,"../../../util":100,"../interval":61,"../selection":63,"./scales":68,"vega-event-selector":299}],73:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -7821,7 +7846,6 @@ var parse_1 = require("./axis/parse");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_2 = require("./data/parse");
-var facet_1 = require("./facet");
 var layer_1 = require("./layer");
 var assemble_2 = require("./layout/assemble");
 var parse_3 = require("./layout/parse");
@@ -7845,8 +7869,6 @@ var UnitModel = (function (_super) {
         _this.selection = {};
         _this.children = [];
         _this.initSize(tslib_1.__assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {})));
-        // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
-        _this.initFacetCellConfig();
         _this.markDef = mark_1.isMarkDef(spec.mark) ? tslib_1.__assign({}, spec.mark) : { type: spec.mark };
         var mark = _this.markDef.type;
         var encoding = _this.encoding = encoding_1.normalizeEncoding(repeat_1.replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
@@ -7884,21 +7906,6 @@ var UnitModel = (function (_super) {
     };
     UnitModel.prototype.legend = function (channel) {
         return this.specifiedLegends[channel];
-    };
-    UnitModel.prototype.initFacetCellConfig = function () {
-        var config = this.config;
-        var ancestor = this.parent;
-        var hasFacetAncestor = false;
-        while (ancestor !== null) {
-            if (ancestor instanceof facet_1.FacetModel) {
-                hasFacetAncestor = true;
-                break;
-            }
-            ancestor = ancestor.parent;
-        }
-        if (hasFacetAncestor) {
-            config.cell = util_1.extend({}, config.cell, config.facet.cell);
-        }
     };
     UnitModel.prototype.initScales = function (mark, encoding) {
         return channel_1.SCALE_CHANNELS.reduce(function (scales, channel) {
@@ -8055,7 +8062,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":5,"../encoding":81,"../fielddef":83,"../mark":90,"../scale":91,"../stack":95,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./facet":29,"./layer":30,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./mark/init":41,"./mark/mark":43,"./model":51,"./repeat":52,"./selection/selection":63,"tslib":294}],75:[function(require,module,exports){
+},{"../channel":5,"../encoding":81,"../fielddef":83,"../mark":90,"../scale":91,"../stack":95,"../util":100,"./axis/parse":9,"./common":11,"./data/assemble":15,"./data/parse":23,"./layer":30,"./layout/assemble":31,"./layout/parse":33,"./legend/parse":37,"./mark/init":41,"./mark/mark":43,"./model":51,"./repeat":52,"./selection/selection":63,"tslib":294}],75:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -8317,7 +8324,7 @@ function boxParams(spec, orient, kIQRScalar) {
     };
 }
 
-},{"../encoding":81,"./../encoding":81,"./../fielddef":83,"./../log":88,"tslib":294,"vega-util":306}],76:[function(require,module,exports){
+},{"../encoding":81,"./../encoding":81,"./../fielddef":83,"./../log":88,"tslib":294,"vega-util":307}],76:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -8388,6 +8395,7 @@ exports.normalize = normalize;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var axis_1 = require("./axis");
 var compositemark_1 = require("./compositemark");
 var index_1 = require("./compositemark/index");
 var guide_1 = require("./guide");
@@ -8400,14 +8408,8 @@ var util_1 = require("./util");
 exports.defaultCellConfig = {
     width: 200,
     height: 200,
-    fill: 'transparent'
-};
-exports.defaultFacetCellConfig = {
-    stroke: '#ccc',
-    strokeWidth: 1
-};
-exports.defaultFacetConfig = {
-    cell: exports.defaultFacetCellConfig
+    fill: 'transparent',
+    stroke: '#ccc'
 };
 exports.defaultConfig = {
     padding: 5,
@@ -8430,7 +8432,7 @@ exports.defaultConfig = {
     boxWhisker: {},
     boxMid: { color: 'white' },
     scale: scale_1.defaultScaleConfig,
-    axis: {},
+    axis: axis_1.DEFAULT_AXIS_CONFIG,
     axisX: {},
     axisY: {},
     axisLeft: {},
@@ -8439,7 +8441,6 @@ exports.defaultConfig = {
     axisBottom: {},
     axisBand: {},
     legend: legend_1.defaultLegendConfig,
-    facet: exports.defaultFacetConfig,
     selection: selection_1.defaultConfig,
     title: {},
 };
@@ -8448,7 +8449,7 @@ function initConfig(config) {
 }
 exports.initConfig = initConfig;
 var MARK_ROLES = [].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_ROLES);
-var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'invalidValues'];
+var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'selection', 'invalidValues'];
 var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
 function stripConfig(config) {
     config = util_1.duplicate(config);
@@ -8501,7 +8502,7 @@ function stripConfig(config) {
 }
 exports.stripConfig = stripConfig;
 
-},{"./compositemark":77,"./compositemark/index":77,"./guide":85,"./legend":87,"./mark":90,"./scale":91,"./selection":92,"./util":100,"tslib":294}],79:[function(require,module,exports){
+},{"./axis":3,"./compositemark":77,"./compositemark/index":77,"./guide":85,"./legend":87,"./mark":90,"./scale":91,"./selection":92,"./util":100,"tslib":294}],79:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for data.
@@ -9484,7 +9485,7 @@ var message;
     message.droppedDay = droppedDay;
 })(message = exports.message || (exports.message = {}));
 
-},{"vega-util":306}],89:[function(require,module,exports){
+},{"vega-util":307}],89:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isLogicalOr(op) {
@@ -9614,6 +9615,10 @@ var SCALE_CATEGORY_INDEX = {
     point: 'ordinal-position',
     band: 'ordinal-position'
 };
+function getScaleCategory(scaleType) {
+    return SCALE_CATEGORY_INDEX[scaleType];
+}
+exports.getScaleCategory = getScaleCategory;
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -10773,7 +10778,7 @@ function logicalExpr(op, cb) {
 }
 exports.logicalExpr = logicalExpr;
 
-},{"./logical":89,"json-stable-stringify":290,"vega-util":306}],101:[function(require,module,exports){
+},{"./logical":89,"json-stable-stringify":290,"vega-util":307}],101:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mark_1 = require("./mark");
@@ -10886,7 +10891,7 @@ exports.isSignalRefDomain = isSignalRefDomain;
 },{"./util":100}],103:[function(require,module,exports){
 
 },{}],104:[function(require,module,exports){
-// https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
+// https://d3js.org/d3-collection/ Version 1.0.4. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -10975,10 +10980,10 @@ var nest = function() {
       nest;
 
   function apply(array, depth, createResult, setResult) {
-    if (depth >= keys.length) return rollup != null
-        ? rollup(array) : (sortValues != null
-        ? array.sort(sortValues)
-        : array);
+    if (depth >= keys.length) {
+      if (sortValues != null) array.sort(sortValues);
+      return rollup != null ? rollup(array) : array;
+    }
 
     var i = -1,
         n = array.length,
@@ -13492,7 +13497,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-time":111}],111:[function(require,module,exports){
-// https://d3js.org/d3-time/ Version 1.0.6. Copyright 2017 Mike Bostock.
+// https://d3js.org/d3-time/ Version 1.0.7. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -13537,7 +13542,13 @@ function newInterval(floori, offseti, count, field) {
     return newInterval(function(date) {
       if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
     }, function(date, step) {
-      if (date >= date) while (--step >= 0) while (offseti(date, 1), !test(date)) {} // eslint-disable-line no-empty
+      if (date >= date) {
+        if (step < 0) while (++step <= 0) {
+          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
+        } else while (--step >= 0) {
+          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
+        }
+      }
     });
   };
 
@@ -31439,1900 +31450,6 @@ var __asyncValues;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],295:[function(require,module,exports){
-var d3 = require('d3-selection');
-var vega = require('vega');
-var vl = require('vega-lite');
-var post = require('./post');
-var versionCompare = require('./version');
-var schemaParser = require('vega-schema-url-parser').default;
-
-
-var MODES = {
-  'vega':      'vega',
-  'vega-lite': 'vega-lite'
-};
-
-var VERSION = {
-  'vega':      vega.version,
-  'vega-lite': vl ? vl.version : -1
-};
-
-var PREPROCESSOR = {
-  'vega':      function(vgjson) { return vgjson; },
-  'vega-lite': function(vljson) { return vl.compile(vljson).spec; }
-};
-
-function load(url, arg, prop, el) {
-  return vega.loader().load(url).then(function (data) {
-    if (!data) {
-      throw new Error('No data found at ' + url);
-    }
-    if (prop === 'config') {
-      arg.opt['config'] = JSON.parse(data);
-      return embed(el, arg.spec, arg.opt);
-    }
-    return embed(el, JSON.parse(data), arg);
-  });
-}
-
-/**
- * Embed a Vega visualization component in a web page.
- * This function will either throw an exception, or return a promise
- *
- * @param el        DOM element in which to place component (DOM node or CSS selector)
- * @param spec      String : A URL string from which to load the Vega specification.
-                    Object : The Vega/Vega-Lite specification as a parsed JSON object.
- * @param opt       A JavaScript object containing options for embedding.
- */
-function embed(el, spec, opt) {
-  opt = opt || {};
-  var renderer = opt.renderer || 'canvas';
-  var actions  = opt.actions !== undefined ? opt.actions : true;
-
-  // Load the visualization specification.
-  if (vega.isString(spec)) {
-    return load(spec, opt, 'url', el);
-  }
-
-  // Load Vega theme/configuration.
-  if (vega.isString(opt.config)) {
-    return load(opt.config, {spec: spec, opt: opt}, 'config', el);
-  }
-
-  // Decide mode
-  var parsed, parsedVersion, mode, vgSpec;
-  if (spec.$schema) {
-    parsed = schemaParser(spec.$schema);
-    if (opt.mode && opt.mode !== MODES[parsed.library]) {
-      console.warn("The given visualization spec is written in \"" + parsed.library + "\", "
-                 + "but mode argument is assigned as \"" + opt.mode + "\".");
-    }
-    mode = MODES[parsed.library];
-
-    parsedVersion = parsed.version.replace(/^v/g,'');
-    if (versionCompare(parsedVersion, VERSION[mode]) !== 0 ){
-      console.warn("The input spec uses \"" + mode + "\" " + parsedVersion + ", "
-                 + "but current version of \"" + mode + "\" is " + VERSION[mode] + ".");
-    }
-  } else {
-    mode = MODES[opt.mode] || MODES.vega;
-  }
-
-  vgSpec = PREPROCESSOR[mode](spec);
-  if (mode === MODES['vega-lite']) {
-    if (vgSpec.$schema) {
-      parsed = schemaParser(vgSpec.$schema);
-
-      parsedVersion = parsed.version.replace(/^v/g,'');
-      if (versionCompare(parsedVersion, VERSION['vega']) !== 0 ){
-        console.warn("The compiled spec uses \"vega\" " + parsedVersion + ", "
-                   + "but current version of \"vega\" is " + VERSION['vega'] + ".");
-      }
-    }
-  }
-
-
-  // ensure container div has class 'vega-embed'
-  var div = d3.select(el)
-    .classed('vega-embed', true)
-    .html(''); // clear container
-
-  if (opt.onBeforeParse) {
-    // Allow Vega spec to be modified before being used
-    vgSpec = opt.onBeforeParse(vgSpec);
-  }
-
-
-  var runtime = vega.parse(vgSpec, opt.config); // may throw an Error if parsing fails
-
-  var view = new vega.View(runtime, opt.viewConfig)
-    .logLevel(opt.logLevel | vega.Warn)
-    .initialize(el)
-    .renderer(renderer);
-
-  // Vega-Lite does not need hover so we can improve perf by not activating it
-  if (mode !== MODES['vega-lite']) {
-    view.hover();
-  }
-
-  if (opt) {
-    if (opt.width) {
-      view.width(opt.width)
-    }
-    if (opt.height) {
-      view.height(opt.height)
-    }
-    if (opt.padding) {
-      view.padding(opt.padding)
-    }
-  }
-
-  view.run();
-
-  if (actions !== false) {
-    // add child div to house action links
-    var ctrl = div.append('div')
-      .attr('class', 'vega-actions');
-
-    // add 'Export' action
-    if (actions.export !== false) {
-      var ext = (renderer==='canvas' ? 'png' : 'svg');
-      ctrl.append('a')
-        .text('Export as ' + ext.toUpperCase())
-        .attr('href', '#')
-        .attr('target', '_blank')
-        .attr('download', (spec.name || 'vega') + '.' + ext)
-        .on('mousedown', function() {
-          var that = this;
-          view.toImageURL(ext).then(function(url) {
-            that.href =  url;
-          }).catch(function(error) { throw error; });
-          d3.event.preventDefault();
-        });
-    }
-
-    // add 'View Source' action
-    if (actions.source !== false) {
-      ctrl.append('a')
-        .text('View Source')
-        .attr('href', '#')
-        .on('click', function() {
-          viewSource(JSON.stringify(spec, null, 2), opt.sourceHeader || '', opt.sourceFooter || '');
-          d3.event.preventDefault();
-        });
-    }
-
-    // add 'Open in Vega Editor' action
-    if (actions.editor !== false) {
-      var editorUrl = opt.editorUrl || 'https://vega.github.io/editor/'
-      ctrl.append('a')
-        .text('Open in Vega Editor')
-        .attr('href', '#')
-        .on('click', function() {
-          post(window, editorUrl, {
-            spec: JSON.stringify(spec, null, 2),
-            mode: mode
-          });
-          d3.event.preventDefault();
-        });
-    }
-  }
-
-  return Promise.resolve({view: view, spec: spec});
-}
-
-function viewSource(source, sourceHeader, sourceFooter) {
-  var header = '<html><head>' + sourceHeader + '</head>' + '<body><pre><code class="json">';
-  var footer = '</code></pre>' + sourceFooter + '</body></html>';
-  var win = window.open('');
-  win.document.write(header + source + footer);
-  win.document.title = 'Vega JSON Source';
-}
-
-/**
- * Embed a Vega visualization component in a web page.
- *
- * @param el        DOM element in which to place component (DOM node or CSS selector)
- * @param spec      String : A URL string from which to load the Vega specification.
- Object : The Vega/Vega-Lite specification as a parsed JSON object.
- * @param opt       A JavaScript object containing options for embedding.
- */
-function embedMain(el, spec, opt) {
-  // Ensure any exceptions will be properly handled
-  return new Promise((accept, reject) => {
-    embed(el, spec, opt).then(accept, reject);
-  });
-}
-
-// expose Vega and Vega-Lite libs
-embedMain.vega = vega;
-embedMain.vegalite = vl;
-
-// for es5
-module.exports = embedMain;
-// for es 6
-module.exports.default = embedMain;
-
-},{"./post":296,"./version":297,"d3-selection":109,"vega":307,"vega-lite":86,"vega-schema-url-parser":299}],296:[function(require,module,exports){
-// open editor url in a new window, and pass a message
-module.exports = function(window, url, data) {
-  var editor = window.open(url),
-      wait = 10000,
-      step = 250,
-      count = ~~(wait/step);
-
-  function listen(evt) {
-    if (evt.source === editor) {
-      count = 0;
-      window.removeEventListener('message', listen, false);
-    }
-  }
-  window.addEventListener('message', listen, false);
-
-  // send message
-  // periodically resend until ack received or timeout
-  function send() {
-    if (count <= 0) return;
-    editor.postMessage(data, '*');
-    setTimeout(send, step);
-    count -= 1;
-  }
-  setTimeout(send, step);
-};
-
-},{}],297:[function(require,module,exports){
-module.exports = function(v1, v2, options) {
-    var lexicographical = options && options.lexicographical || true,
-        zeroExtend = options && options.zeroExtend || true,
-        depth = options && options.depth || 2,
-        v1parts = v1.split('.').splice(0, depth),
-        v2parts = v2.split('.').splice(0, depth);
-
-    function isValidPart(x) {
-        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
-    }
-
-    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-        return NaN;
-    }
-
-    if (zeroExtend) {
-        while (v1parts.length < v2parts.length) v1parts.push("0");
-        while (v2parts.length < v1parts.length) v2parts.push("0");
-    }
-
-    if (!lexicographical) {
-        v1parts = v1parts.map(Number);
-        v2parts = v2parts.map(Number);
-    }
-
-    for (var i = 0; i < v1parts.length; ++i) {
-        if (v2parts.length === i) {
-            return 1;
-        }
-
-        if (v1parts[i] === v2parts[i]) {
-            continue;
-        }
-        else if (v1parts[i] > v2parts[i]) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
-
-    if (v1parts.length !== v2parts.length) {
-        return -1;
-    }
-
-    return 0;
-};
-
-},{}],298:[function(require,module,exports){
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.vega = global.vega || {})));
-}(this, (function (exports) { 'use strict';
-
-/**
- * Parse an event selector string.
- * Returns an array of event stream definitions.
- */
-var eventSelector = function(selector, source, marks) {
-  DEFAULT_SOURCE = source || VIEW;
-  MARKS = marks || DEFAULT_MARKS;
-  return parseMerge(selector.trim()).map(parseSelector);
-};
-
-var VIEW    = 'view';
-var LBRACK  = '[';
-var RBRACK  = ']';
-var LBRACE  = '{';
-var RBRACE  = '}';
-var COLON   = ':';
-var COMMA   = ',';
-var NAME    = '@';
-var GT      = '>';
-var ILLEGAL = /[[\]{}]/;
-var DEFAULT_SOURCE;
-var MARKS;
-var DEFAULT_MARKS = {
-      '*': 1,
-      arc: 1,
-      area: 1,
-      group: 1,
-      image: 1,
-      line: 1,
-      path: 1,
-      rect: 1,
-      rule: 1,
-      shape: 1,
-      symbol: 1,
-      text: 1,
-      trail: 1
-    };
-
-function isMarkType(type) {
-  return MARKS.hasOwnProperty(type);
-}
-
-function find(s, i, endChar, pushChar, popChar) {
-  var count = 0,
-      n = s.length,
-      c;
-  for (; i<n; ++i) {
-    c = s[i];
-    if (!count && c === endChar) return i;
-    else if (popChar && popChar.indexOf(c) >= 0) --count;
-    else if (pushChar && pushChar.indexOf(c) >= 0) ++count;
-  }
-  return i;
-}
-
-function parseMerge(s) {
-  var output = [],
-      start = 0,
-      n = s.length,
-      i = 0;
-
-  while (i < n) {
-    i = find(s, i, COMMA, LBRACK + LBRACE, RBRACK + RBRACE);
-    output.push(s.substring(start, i).trim());
-    start = ++i;
-  }
-
-  if (output.length === 0) {
-    throw 'Empty event selector: ' + s;
-  }
-  return output;
-}
-
-function parseSelector(s) {
-  return s[0] === '['
-    ? parseBetween(s)
-    : parseStream(s);
-}
-
-function parseBetween(s) {
-  var n = s.length,
-      i = 1,
-      b, stream;
-
-  i = find(s, i, RBRACK, LBRACK, RBRACK);
-  if (i === n) {
-    throw 'Empty between selector: ' + s;
-  }
-
-  b = parseMerge(s.substring(1, i));
-  if (b.length !== 2) {
-    throw 'Between selector must have two elements: ' + s;
-  }
-
-  s = s.slice(i + 1).trim();
-  if (s[0] !== GT) {
-    throw 'Expected \'>\' after between selector: ' + s;
-  }
-
-  b = b.map(parseSelector);
-
-  stream = parseSelector(s.slice(1).trim());
-  if (stream.between) {
-    return {
-      between: b,
-      stream: stream
-    };
-  } else {
-    stream.between = b;
-  }
-
-  return stream;
-}
-
-function parseStream(s) {
-  var stream = {source: DEFAULT_SOURCE},
-      source = [],
-      throttle = [0, 0],
-      markname = 0,
-      start = 0,
-      n = s.length,
-      i = 0, j,
-      filter;
-
-  // extract throttle from end
-  if (s[n-1] === RBRACE) {
-    i = s.lastIndexOf(LBRACE);
-    if (i >= 0) {
-      try {
-        throttle = parseThrottle(s.substring(i+1, n-1));
-      } catch (e) {
-        throw 'Invalid throttle specification: ' + s;
-      }
-      s = s.slice(0, i).trim();
-      n = s.length;
-    } else throw 'Unmatched right brace: ' + s;
-    i = 0;
-  }
-
-  if (!n) throw s;
-
-  // set name flag based on first char
-  if (s[0] === NAME) markname = ++i;
-
-  // extract first part of multi-part stream selector
-  j = find(s, i, COLON);
-  if (j < n) {
-    source.push(s.substring(start, j).trim());
-    start = i = ++j;
-  }
-
-  // extract remaining part of stream selector
-  i = find(s, i, LBRACK);
-  if (i === n) {
-    source.push(s.substring(start, n).trim());
-  } else {
-    source.push(s.substring(start, i).trim());
-    filter = [];
-    start = ++i;
-    if (start === n) throw 'Unmatched left bracket: ' + s;
-  }
-
-  // extract filters
-  while (i < n) {
-    i = find(s, i, RBRACK);
-    if (i === n) throw 'Unmatched left bracket: ' + s;
-    filter.push(s.substring(start, i).trim());
-    if (i < n-1 && s[++i] !== LBRACK) throw 'Expected left bracket: ' + s;
-    start = ++i;
-  }
-
-  // marshall event stream specification
-  if (!(n = source.length) || ILLEGAL.test(source[n-1])) {
-    throw 'Invalid event selector: ' + s;
-  }
-
-  if (n > 1) {
-    stream.type = source[1];
-    if (markname) {
-      stream.markname = source[0].slice(1);
-    } else if (isMarkType(source[0])) {
-      stream.marktype = source[0];
-    } else {
-      stream.source = source[0];
-    }
-  } else {
-    stream.type = source[0];
-  }
-  if (stream.type.slice(-1) === '!') {
-    stream.consume = true;
-    stream.type = stream.type.slice(0, -1);
-  }
-  if (filter != null) stream.filter = filter;
-  if (throttle[0]) stream.throttle = throttle[0];
-  if (throttle[1]) stream.debounce = throttle[1];
-
-  return stream;
-}
-
-function parseThrottle(s) {
-  var a = s.split(COMMA);
-  if (!s.length || a.length > 2) throw s;
-  return a.map(function(_) {
-    var x = +_;
-    if (x !== x) throw s;
-    return x;
-  });
-}
-
-exports.selector = eventSelector;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-
-},{}],299:[function(require,module,exports){
-"use strict";
-/**
- * Parse a vega schema url into library and version.
- */
-function default_1(url) {
-    var regex = /\/schema\/([\w-]+)\/([\w\.\-]+)\.json$/g;
-    var _a = regex.exec(url).slice(1, 3), library = _a[0], version = _a[1];
-    return { library: library, version: version };
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = default_1;
-
-},{}],300:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var d3_format_1 = require("d3-format");
-var d3_time_1 = require("d3-time");
-var d3_time_format_1 = require("d3-time-format");
-/**
- * Format value using formatType and format
- * @param value - a field value to be formatted
- * @param formatType - the formatType can be: "time", "number", or "string"
- * @param format - a time time format specifier, or a time number format specifier, or undefined
- * @return the formatted value, or undefined if value or formatType is missing
- */
-function customFormat(value, formatType, format) {
-    if (value === undefined || value === null) {
-        return undefined;
-    }
-    if (!formatType) {
-        return undefined;
-    }
-    switch (formatType) {
-        case 'time':
-            return format ? d3_time_format_1.timeFormat(format)(value) : autoTimeFormat(value);
-        case 'number':
-            return format ? d3_format_1.format(format)(value) : autoNumberFormat(value);
-        case 'string':
-        default:
-            return value;
-    }
-}
-exports.customFormat = customFormat;
-/**
- * Automatically format a time, number or string value
- * @return the formatted time, number or string value
- */
-function autoFormat(value) {
-    if (typeof value === 'number') {
-        return autoNumberFormat(value);
-    }
-    else if (value instanceof Date) {
-        return autoTimeFormat(value);
-    }
-    else {
-        return value;
-    }
-}
-exports.autoFormat = autoFormat;
-/**
- * Automatically format a number based on its decimal.
- * @param value number to be formatted
- * @return If it's a decimal number, return a fixed two points precision.
- * If it's a whole number, return the original value without any format.
- */
-function autoNumberFormat(value) {
-    return value % 1 === 0 ? d3_format_1.format(',')(value) : d3_format_1.format(',.2f')(value);
-}
-exports.autoNumberFormat = autoNumberFormat;
-/**
- * Automatically format a time based on its date.
- * @param date object to be formatted
- * @return a formatted time string depending on the time. For example,
- * the start of February is formatted as "February", while February second is formatted as "Feb 2".
- */
-function autoTimeFormat(date) {
-    var formatMillisecond = d3_time_format_1.timeFormat('.%L'), formatSecond = d3_time_format_1.timeFormat(':%S'), formatMinute = d3_time_format_1.timeFormat('%I:%M'), formatHour = d3_time_format_1.timeFormat('%I %p'), formatDay = d3_time_format_1.timeFormat('%a %d'), formatWeek = d3_time_format_1.timeFormat('%b %d'), formatMonth = d3_time_format_1.timeFormat('%B'), formatYear = d3_time_format_1.timeFormat('%Y');
-    return (d3_time_1.timeSecond(date) < date ? formatMillisecond
-        : d3_time_1.timeMinute(date) < date ? formatSecond
-            : d3_time_1.timeHour(date) < date ? formatMinute
-                : d3_time_1.timeDay(date) < date ? formatHour
-                    : d3_time_1.timeMonth(date) < date ? (d3_time_1.timeWeek(date) < date ? formatDay : formatWeek)
-                        : d3_time_1.timeYear(date) < date ? formatMonth
-                            : formatYear)(date);
-}
-exports.autoTimeFormat = autoTimeFormat;
-
-},{"d3-format":107,"d3-time":111,"d3-time-format":110}],301:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var d3_selection_1 = require("d3-selection");
-var options_1 = require("./options");
-var parseOption_1 = require("./parseOption");
-var supplementField_1 = require("./supplementField");
-var tooltipDisplay_1 = require("./tooltipDisplay");
-var tooltipPromise = undefined;
-var tooltipActive = false;
-/**
- * Export API for Vega visualizations: vg.tooltip(vgView, options)
- * options can specify whether to show all fields or to show only custom fields
- * It can also provide custom title and format for fields
- */
-function vega(vgView, options) {
-    if (options === void 0) { options = { showAllFields: true }; }
-    start(vgView, copyOptions(options));
-    return {
-        destroy: function () {
-            // remove event listeners
-            vgView.removeEventListener('mouseover.tooltipInit');
-            vgView.removeEventListener('mousemove.tooltipUpdate');
-            vgView.removeEventListener('mouseout.tooltipRemove');
-            cancelPromise(); // clear tooltip promise
-        }
-    };
-}
-exports.vega = vega;
-function vegaLite(vgView, vlSpec, options) {
-    if (options === void 0) { options = { showAllFields: true }; }
-    options = supplementField_1.supplementOptions(copyOptions(options), vlSpec);
-    start(vgView, options);
-    return {
-        destroy: function () {
-            // remove event listeners
-            vgView.removeEventListener('mouseover.tooltipInit');
-            vgView.removeEventListener('mousemove.tooltipUpdate');
-            vgView.removeEventListener('mouseout.tooltipRemove');
-            cancelPromise(); // clear tooltip promise
-        }
-    };
-}
-exports.vegaLite = vegaLite;
-function start(vgView, options) {
-    // initialize tooltip with item data and options on mouse over
-    vgView.addEventListener('mouseover.tooltipInit', function (event, item) {
-        if (shouldShowTooltip(item)) {
-            // clear existing promise because mouse can only point at one thing at a time
-            cancelPromise();
-            // make a new promise with time delay for tooltip
-            tooltipPromise = window.setTimeout(function () {
-                init(event, item, options);
-            }, options.delay || options_1.DELAY);
-        }
-    });
-    // update tooltip position on mouse move
-    // (important for large marks e.g. bars)
-    vgView.addEventListener('mousemove.tooltipUpdate', function (event, item) {
-        if (shouldShowTooltip(item) && tooltipActive) {
-            update(event, item, options);
-        }
-    });
-    // clear tooltip on mouse out
-    vgView.addEventListener('mouseout.tooltipRemove', function (event, item) {
-        if (shouldShowTooltip(item)) {
-            cancelPromise();
-            if (tooltipActive) {
-                clear(event, item, options);
-            }
-        }
-    });
-}
-/* Cancel tooltip promise */
-function cancelPromise() {
-    /* We don't check if tooltipPromise is valid because passing
-     an invalid ID to clearTimeout does not have any effect
-     (and doesn't throw an exception). */
-    window.clearTimeout(tooltipPromise);
-    tooltipPromise = undefined;
-}
-/* Initialize tooltip with data */
-function init(event, item, options) {
-    // get tooltip HTML placeholder
-    var tooltipPlaceholder = tooltipDisplay_1.getTooltipPlaceholder();
-    // prepare data for tooltip
-    var tooltipData = parseOption_1.getTooltipData(item, options);
-    if (!tooltipData || tooltipData.length === 0) {
-        return undefined;
-    }
-    // bind data to tooltip HTML placeholder
-    tooltipDisplay_1.bindData(tooltipPlaceholder, tooltipData);
-    tooltipDisplay_1.updatePosition(event, options);
-    tooltipDisplay_1.updateColorTheme(options);
-    d3_selection_1.select('#vis-tooltip').style('visibility', 'visible');
-    tooltipActive = true;
-    // invoke user-provided callback
-    if (options.onAppear) {
-        options.onAppear(event, item);
-    }
-}
-/* Update tooltip position on mousemove */
-function update(event, item, options) {
-    if (!shouldShowTooltip(item)) {
-        return undefined;
-    }
-    tooltipDisplay_1.updatePosition(event, options);
-    // invoke user-provided callback
-    if (options.onMove) {
-        options.onMove(event, item);
-    }
-}
-/* Clear tooltip */
-function clear(event, item, options) {
-    if (!shouldShowTooltip(item)) {
-        return undefined;
-    }
-    // visibility hidden instead of display none
-    // because we need computed tooltip width and height to best position it
-    d3_selection_1.select('#vis-tooltip').style('visibility', 'hidden');
-    tooltipActive = false;
-    tooltipDisplay_1.clearData();
-    tooltipDisplay_1.clearColorTheme();
-    tooltipDisplay_1.clearPosition();
-    // invoke user-provided callback
-    if (options.onDisappear) {
-        options.onDisappear(event, item);
-    }
-}
-/* Decide if a Scenegraph item deserves tooltip */
-function shouldShowTooltip(item) {
-    // no data, no show
-    if (!item || !item.datum) {
-        return false;
-    }
-    // (small multiples) avoid showing tooltip for a facet's background
-    if (item.datum._facetID) {
-        return false;
-    }
-    return true;
-}
-/**
- * Copy options into new objects to prevent causing side-effect to original object
- */
-function copyOptions(options) {
-    var newOptions = {};
-    for (var field in options) {
-        if (options.hasOwnProperty(field)) {
-            newOptions[field] = options[field];
-        }
-    }
-    return newOptions;
-}
-
-},{"./options":302,"./parseOption":303,"./supplementField":304,"./tooltipDisplay":305,"d3-selection":109}],302:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DELAY = 100;
-
-},{}],303:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var formatFieldValue_1 = require("./formatFieldValue");
-/**
- * Prepare data for the tooltip
- * @return An array of tooltip data [{ title: ..., value: ...}]
- */
-// TODO: add marktype
-function getTooltipData(item, options) {
-    // ignore the data for group type that represents white space
-    if (item.mark.marktype === 'group' && item.mark.name === 'nested_main_group') {
-        return undefined;
-    }
-    // this array will be bind to the tooltip element
-    var tooltipData;
-    var itemData = {};
-    for (var field in item.datum) {
-        if (item.datum.hasOwnProperty(field)) {
-            itemData[field] = item.datum[field];
-        }
-    }
-    var removeKeys = [
-        '_id', '_prev', 'width', 'height',
-        'count_start', 'count_end',
-        'layout_start', 'layout_mid', 'layout_end', 'layout_path', 'layout_x', 'layout_y'
-    ];
-    removeFields(itemData, removeKeys);
-    // remove duplicate time fields (if any)
-    removeDuplicateTimeFields(itemData, options.fields);
-    // combine multiple rows of a binned field into a single row
-    combineBinFields(itemData, options.fields);
-    // TODO(zening): use Vega-Lite layering to support tooltip on line and area charts (#1)
-    dropFieldsForLineArea(item.mark.marktype, itemData);
-    if (options.showAllFields === true) {
-        tooltipData = prepareAllFieldsData(itemData, options);
-    }
-    else {
-        tooltipData = prepareCustomFieldsData(itemData, options);
-    }
-    return tooltipData;
-}
-exports.getTooltipData = getTooltipData;
-/**
- * Prepare custom fields data for tooltip. This function formats
- * field titles and values and returns an array of formatted fields.
- *
- * @param {time.map} itemData - a map of item.datum
- * @param {Object} options - user-provided options
- * @return An array of formatted fields specified by options [{ title: ..., value: ...}]
- */
-function prepareCustomFieldsData(itemData, options) {
-    var tooltipData = [];
-    options.fields.forEach(function (fieldOption) {
-        // prepare field title
-        var title = fieldOption.title ? fieldOption.title : fieldOption.field;
-        // get (raw) field value
-        var value = getValue(itemData, fieldOption.field);
-        if (value === undefined) {
-            return undefined;
-        }
-        // format value
-        var formattedValue = formatFieldValue_1.customFormat(value, fieldOption.formatType, fieldOption.format) || formatFieldValue_1.autoFormat(value);
-        // add formatted data to tooltipData
-        tooltipData.push({ title: title, value: formattedValue });
-    });
-    return tooltipData;
-}
-exports.prepareCustomFieldsData = prepareCustomFieldsData;
-/**
- * Get a field value from a data map.
- * @param {time.map} itemData - a map of item.datum
- * @param {string} field - the name of the field. It can contain "." to specify
- * that the field is not a direct child of item.datum
- * @return the field value on success, undefined otherwise
- */
-// TODO(zening): Mute "Cannot find field" warnings for composite vis (issue #39)
-function getValue(itemData, field) {
-    var value;
-    var accessors = field.split('.');
-    // get the first accessor and remove it from the array
-    var firstAccessor = accessors[0];
-    accessors.shift();
-    if (itemData[firstAccessor]) {
-        value = itemData[firstAccessor];
-        // if we still have accessors, use them to get the value
-        accessors.forEach(function (a) {
-            value = value;
-            if (value[a]) {
-                value = value[a];
-            }
-        });
-    }
-    if (value === undefined) {
-        console.warn('[Tooltip] Cannot find field ' + field + ' in data.');
-        return undefined;
-    }
-    else {
-        return value;
-    }
-}
-exports.getValue = getValue;
-/**
- * Prepare data for all fields in itemData for tooltip. This function
- * formats field titles and values and returns an array of formatted fields.
- *
- * @param {time.map} itemData - a map of item.datum
- * @param {Object} options - user-provided options
- * @return All fields in itemData, formatted, in the form of an array: [{ title: ..., value: ...}]
- *
- * Please note that this function expects itemData to be simple {field:value} pairs.
- * It will not try to parse value if it is an object. If value is an object, please
- * use prepareCustomFieldsData() instead.
- */
-function prepareAllFieldsData(itemData, options) {
-    var tooltipData = [];
-    // here, fieldOptions still provides format
-    var fieldOptions = {};
-    if (options && options.fields) {
-        for (var _i = 0, _a = options.fields; _i < _a.length; _i++) {
-            var optionField = _a[_i];
-            fieldOptions[optionField.field] = optionField;
-        }
-    }
-    for (var field in itemData) {
-        if (itemData.hasOwnProperty(field)) {
-            var value = itemData[field];
-            var title = void 0;
-            if (fieldOptions[field] && fieldOptions[field].title) {
-                title = fieldOptions[field].title;
-            }
-            else {
-                title = field;
-            }
-            var formatType = void 0;
-            var format = void 0;
-            // format value
-            if (fieldOptions[field]) {
-                formatType = fieldOptions[field].formatType;
-                format = fieldOptions[field].format;
-            }
-            var formattedValue = formatFieldValue_1.customFormat(value, formatType, format) || formatFieldValue_1.autoFormat(value);
-            // add formatted data to tooltipData
-            tooltipData.push({ title: title, value: formattedValue });
-        }
-    }
-    return tooltipData;
-}
-exports.prepareAllFieldsData = prepareAllFieldsData;
-/**
- * Remove multiple fields from a tooltip data map, using removeKeys
- *
- * Certain meta data fields (e.g. "_id", "_prev") should be hidden in the tooltip
- * by default. This function can be used to remove these fields from tooltip data.
- * @param {time.map} dataMap - the data map that contains tooltip data.
- * @param {string[]} removeKeys - the fields that should be removed from dataMap.
- */
-function removeFields(dataMap, removeKeys) {
-    removeKeys.forEach(function (key) {
-        delete dataMap[key];
-    });
-}
-exports.removeFields = removeFields;
-/**
- * When a temporal field has timeUnit, itemData will give us duplicated fields
- * (e.g., Year and YEAR(Year)). In tooltip want to display the field WITH the
- * timeUnit and remove the field that doesn't have timeUnit.
- */
-function removeDuplicateTimeFields(itemData, optFields) {
-    if (!optFields) {
-        return undefined;
-    }
-    optFields.forEach(function (optField) {
-        if (optField.removeOriginalTemporalField) {
-            removeFields(itemData, [optField.removeOriginalTemporalField]);
-        }
-    });
-}
-exports.removeDuplicateTimeFields = removeDuplicateTimeFields;
-/**
- * Combine multiple binned fields in itemData into one field. The value of the field
- * is a string that describes the bin range.
- *
- * @param {Object} itemData - an object of item.datum
- * @param {Object[]} fieldOptions - a list of field options (i.e. options.fields[])
- * @return itemData with combined bin fields
- */
-function combineBinFields(itemData, fieldOptions) {
-    if (!fieldOptions) {
-        return undefined;
-    }
-    fieldOptions.forEach(function (fieldOption) {
-        if (fieldOption.bin === true) {
-            // get binned field names
-            var binFieldRange = fieldOption.field;
-            var binFieldStart = binFieldRange.concat('_start');
-            var binFieldMid = binFieldRange.concat('_mid');
-            var binFieldEnd = binFieldRange.concat('_end');
-            // use start value and end value to compute range
-            // save the computed range in binFieldStart
-            var startValue = itemData[binFieldStart];
-            var endValue = itemData[binFieldEnd];
-            if ((startValue !== undefined) && (endValue !== undefined)) {
-                var range = startValue + '-' + endValue;
-                itemData[binFieldRange] = range;
-            }
-            // remove binFieldMid, binFieldEnd, and binFieldRange from itemData
-            var binRemoveKeys = [];
-            binRemoveKeys.push(binFieldStart, binFieldMid, binFieldEnd);
-            removeFields(itemData, binRemoveKeys);
-        }
-    });
-    return itemData;
-}
-exports.combineBinFields = combineBinFields;
-/**
- * Drop fields for line and area marks.
- *
- * Lines and areas are defined by a series of datum. We overlay point marks
- * on top of lines and areas to allow tooltip to show all data in the series.
- * For the line marks and area marks underneath, we only show nominal fields
- * in tooltip. This is because line / area marks only give us the last datum
- * in their series. It only make sense to show the nominal fields (e.g., symbol
- * = APPL, AMZN, GOOG, IBM, MSFT) because these fields don't tend to change along
- * the line / area border.
- */
-function dropFieldsForLineArea(marktype, itemData) {
-    if (marktype === 'line' || marktype === 'area') {
-        var quanKeys = [];
-        for (var key in itemData) {
-            if (itemData.hasOwnProperty(key)) {
-                var value = itemData[key];
-                if (value instanceof Date) {
-                    quanKeys.push(key);
-                }
-            }
-        }
-        removeFields(itemData, quanKeys);
-    }
-}
-exports.dropFieldsForLineArea = dropFieldsForLineArea;
-
-},{"./formatFieldValue":300}],304:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vl = require("vega-lite");
-var type_1 = require("vega-lite/build/src/type");
-/* mapping from fieldDef.type to formatType */
-var formatTypeMap = {
-    'quantitative': 'number',
-    'temporal': 'time',
-    'ordinal': undefined,
-    'nominal': undefined
-};
-/**
- * (Vega-Lite only) Supplement options with vlSpec
- *
- * @param options - user-provided options
- * @param vlSpec - vega-lite spec
- * @return the vlSpec-supplemented options object
- *
- * if options.showAllFields is true or undefined, vlSpec will supplement
- * options.fields with all fields in the spec
- * if options.showAllFields is false, vlSpec will only supplement existing fields
- * in options.fields
- */
-function supplementOptions(options, vlSpec) {
-    // fields to be supplemented by vlSpec
-    var supplementedFields = [];
-    // if showAllFields is true or undefined, supplement all fields in vlSpec
-    if (options.showAllFields !== false) {
-        vl.spec.fieldDefs(vlSpec).forEach(function (fieldDef) {
-            // get a fieldOption in options that matches the fieldDef
-            var fieldOption = getFieldOption(options.fields, fieldDef);
-            // supplement the fieldOption with fieldDef and config
-            var supplementedFieldOption = supplementFieldOption(fieldOption, fieldDef, vlSpec);
-            supplementedFields.push(supplementedFieldOption);
-        });
-    }
-    else {
-        if (options.fields) {
-            options.fields.forEach(function (fieldOption) {
-                // get the fieldDef in vlSpec that matches the fieldOption
-                var fieldDef = getFieldDef(vl.spec.fieldDefs(vlSpec), fieldOption);
-                // supplement the fieldOption with fieldDef and config
-                var supplementedFieldOption = supplementFieldOption(fieldOption, fieldDef, vlSpec);
-                supplementedFields.push(supplementedFieldOption);
-            });
-        }
-    }
-    options.fields = supplementedFields;
-    return options;
-}
-exports.supplementOptions = supplementOptions;
-/**
- * Find a fieldOption in fieldOptions that matches a fieldDef
- *
- * @param {Object[]} fieldOptionss - a list of field options (i.e. options.fields[])
- * @param {Object} fieldDef - from vlSpec
- * @return the matching fieldOption, or undefined if no match was found
- *
- * If the fieldDef is aggregated, find a fieldOption that matches the field name and
- * the aggregation of the fieldDef.
- * If the fieldDef is not aggregated, find a fieldOption that matches the field name.
- */
-function getFieldOption(fieldOptions, fieldDef) {
-    if (!fieldDef || !fieldOptions || fieldOptions.length <= 0) {
-        return undefined;
-    }
-    // if aggregate, match field name and aggregate operation
-    if (fieldDef.aggregate) {
-        // try find the perfect match: field name equals, aggregate operation equals
-        for (var _i = 0, fieldOptions_1 = fieldOptions; _i < fieldOptions_1.length; _i++) {
-            var item = fieldOptions_1[_i];
-            if (item.field === fieldDef.field && item.aggregate === fieldDef.aggregate) {
-                return item;
-            }
-        }
-        // try find the second-best match: field name equals, field.aggregate is not specified
-        for (var _a = 0, fieldOptions_2 = fieldOptions; _a < fieldOptions_2.length; _a++) {
-            var item = fieldOptions_2[_a];
-            if (item.field === fieldDef.field && !item.aggregate) {
-                return item;
-            }
-        }
-        // return undefined if no match was found
-        return undefined;
-    }
-    else {
-        for (var _b = 0, fieldOptions_3 = fieldOptions; _b < fieldOptions_3.length; _b++) {
-            var item = fieldOptions_3[_b];
-            if (item.field === fieldDef.field) {
-                return item;
-            }
-        }
-        // return undefined if no match was found
-        return undefined;
-    }
-}
-exports.getFieldOption = getFieldOption;
-/**
- * Find a fieldDef that matches a fieldOption
- *
- * @param {Object} fieldOption - a field option (a member in options.fields[])
- * @return the matching fieldDef, or undefined if no match was found
- *
- * A matching fieldDef should have the same field name as fieldOption.
- * If the matching fieldDef is aggregated, the aggregation should not contradict
- * with that of the fieldOption.
- */
-function getFieldDef(fieldDefs, fieldOption) {
-    if (!fieldOption || !fieldOption.field || !fieldDefs) {
-        return undefined;
-    }
-    // field name should match, aggregation should not disagree
-    for (var _i = 0, fieldDefs_1 = fieldDefs; _i < fieldDefs_1.length; _i++) {
-        var item = fieldDefs_1[_i];
-        if (item.field === fieldOption.field) {
-            if (item.aggregate) {
-                if (item.aggregate === fieldOption.aggregate || !fieldOption.aggregate) {
-                    return item;
-                }
-            }
-            else {
-                return item;
-            }
-        }
-    }
-    // return undefined if no match was found
-    return undefined;
-}
-exports.getFieldDef = getFieldDef;
-/**
- * Supplement a fieldOption (from options.fields[]) with a fieldDef, config
- * (which provides timeFormat, numberFormat, countTitle)
- * Either fieldOption or fieldDef can be undefined, but they cannot both be undefined.
- * config (and its members timeFormat, numberFormat and countTitle) can be undefined.
- * @return the supplemented fieldOption, or undefined on error
- */
-function supplementFieldOption(fieldOption, fieldDef, vlSpec) {
-    // many specs don't have config
-    var config = vl.util.extend({}, vlSpec.config);
-    // at least one of fieldOption and fieldDef should exist
-    if (!fieldOption && !fieldDef) {
-        console.error('[Tooltip] Cannot supplement a field when field and fieldDef are both empty.');
-        return undefined;
-    }
-    // if either one of fieldOption and fieldDef is undefined, make it an empty object
-    if (!fieldOption && fieldDef) {
-        fieldOption = {};
-    }
-    if (fieldOption && !fieldDef) {
-        fieldDef = {};
-    }
-    // the supplemented field option
-    var supplementedFieldOption = {};
-    // supplement a user-provided field name with underscore prefixes and suffixes to
-    // match the field names in item.datum
-    // for aggregation, this will add prefix "mean_" etc.
-    // for timeUnit, this will add prefix "yearmonth_" etc.
-    // for bin, this will add prefix "bin_" and suffix "_start". Later we will replace "_start" with "_range".
-    supplementedFieldOption.field = fieldDef.field ?
-        vl.fieldDef.field(fieldDef) : fieldOption.field;
-    // If a fieldDef is a (TIMEUNIT)T, we check if the original T is present in the vlSpec.
-    // If only (TIMEUNIT)T is present in vlSpec, we set `removeOriginalTemporalField` to T,
-    // which will cause function removeDuplicateTimeFields() to remove T and only keep (TIMEUNIT)T
-    // in item data.
-    // If both (TIMEUNIT)T and T are in vlSpec, we set `removeOriginalTemporalField` to undefined,
-    // which will leave both T and (TIMEUNIT)T in item data.
-    // Note: user should never have to provide this boolean in options
-    if (fieldDef.type === type_1.TEMPORAL && fieldDef.timeUnit) {
-        // in most cases, if it's a (TIMEUNIT)T, we remove original T
-        var originalTemporalField = fieldDef.field;
-        supplementedFieldOption.removeOriginalTemporalField = originalTemporalField;
-        // handle corner case: if T is present in vlSpec, then we keep both T and (TIMEUNIT)T
-        var fieldDefs = vl.spec.fieldDefs(vlSpec);
-        for (var _i = 0, fieldDefs_2 = fieldDefs; _i < fieldDefs_2.length; _i++) {
-            var items = fieldDefs_2[_i];
-            if (items.field === originalTemporalField && !items.timeUnit) {
-                supplementedFieldOption.removeOriginalTemporalField = undefined;
-                break;
-            }
-        }
-    }
-    // supplement title
-    if (!config.countTitle) {
-        config.countTitle = vl.config.defaultConfig.countTitle; // use vl default countTitle
-    }
-    supplementedFieldOption.title = fieldOption.title ?
-        fieldOption.title : vl.fieldDef.title(fieldDef, config);
-    // supplement formatType
-    supplementedFieldOption.formatType = fieldOption.formatType ?
-        fieldOption.formatType : formatTypeMap[fieldDef.type];
-    // supplement format
-    if (fieldOption.format) {
-        supplementedFieldOption.format = fieldOption.format;
-    }
-    else {
-        switch (supplementedFieldOption.formatType) {
-            case 'time':
-                supplementedFieldOption.format = fieldDef.timeUnit ?
-                    // TODO(zening): use template for all time fields, to be consistent with Vega-Lite
-                    vl.timeUnit.formatExpression(fieldDef.timeUnit, '', false, false).split("'")[1]
-                    : config.timeFormat || vl.config.defaultConfig.timeFormat;
-                break;
-            case 'number':
-                supplementedFieldOption.format = config.numberFormat;
-                break;
-            case 'string':
-            default:
-        }
-    }
-    // supplement bin from fieldDef, user should never have to provide bin in options
-    if (fieldDef.bin) {
-        supplementedFieldOption.field = supplementedFieldOption.field.replace('_start', '_range'); // replace suffix
-        supplementedFieldOption.bin = true;
-        supplementedFieldOption.formatType = 'string'; // we show bin range as string (e.g. "5-10")
-    }
-    return supplementedFieldOption;
-}
-exports.supplementFieldOption = supplementFieldOption;
-
-},{"vega-lite":86,"vega-lite/build/src/type":99}],305:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var d3_selection_1 = require("d3-selection");
-/**
- * Get the tooltip HTML placeholder by id selector "#vis-tooltip"
- * If none exists, create a placeholder.
- * @returns the HTML placeholder for tooltip
- */
-function getTooltipPlaceholder() {
-    var tooltipPlaceholder;
-    if (d3_selection_1.select('#vis-tooltip').empty()) {
-        tooltipPlaceholder = d3_selection_1.select('body').append('div')
-            .attr('id', 'vis-tooltip')
-            .attr('class', 'vg-tooltip');
-    }
-    else {
-        tooltipPlaceholder = d3_selection_1.select('#vis-tooltip');
-    }
-    return tooltipPlaceholder;
-}
-exports.getTooltipPlaceholder = getTooltipPlaceholder;
-/**
- * Bind tooltipData to the tooltip placeholder
- */
-function bindData(tooltipPlaceholder, tooltipData) {
-    tooltipPlaceholder.selectAll('table').remove();
-    var tooltipRows = tooltipPlaceholder.append('table').selectAll('.tooltip-row')
-        .data(tooltipData);
-    tooltipRows.exit().remove();
-    var row = tooltipRows.enter().append('tr')
-        .attr('class', 'tooltip-row');
-    row.append('td').attr('class', 'key').text(function (d) { return d.title + ':'; });
-    row.append('td').attr('class', 'value').text(function (d) { return d.value; });
-}
-exports.bindData = bindData;
-/**
- * Clear tooltip data
- */
-function clearData() {
-    d3_selection_1.select('#vis-tooltip').selectAll('.tooltip-row').data([])
-        .exit().remove();
-}
-exports.clearData = clearData;
-/**
- * Update tooltip position
- * Default position is 10px right of and 10px below the cursor. This can be
- * overwritten by options.offset
- */
-function updatePosition(event, options) {
-    // determine x and y offsets, defaults are 10px
-    var offsetX = 10;
-    var offsetY = 10;
-    if (options && options.offset && (options.offset.x !== undefined) && (options.offset.x !== null)) {
-        offsetX = options.offset.x;
-    }
-    if (options && options.offset && (options.offset.y !== undefined) && (options.offset.y !== null)) {
-        offsetY = options.offset.y;
-    }
-    // TODO: use the correct time type
-    d3_selection_1.select('#vis-tooltip')
-        .style('top', function () {
-        // by default: put tooltip 10px below cursor
-        // if tooltip is close to the bottom of the window, put tooltip 10px above cursor
-        var tooltipHeight = this.getBoundingClientRect().height;
-        if (event.clientY + tooltipHeight + offsetY < window.innerHeight) {
-            return '' + (event.clientY + offsetY) + 'px';
-        }
-        else {
-            return '' + (event.clientY - tooltipHeight - offsetY) + 'px';
-        }
-    })
-        .style('left', function () {
-        // by default: put tooltip 10px to the right of cursor
-        // if tooltip is close to the right edge of the window, put tooltip 10 px to the left of cursor
-        var tooltipWidth = this.getBoundingClientRect().width;
-        if (event.clientX + tooltipWidth + offsetX < window.innerWidth) {
-            return '' + (event.clientX + offsetX) + 'px';
-        }
-        else {
-            return '' + (event.clientX - tooltipWidth - offsetX) + 'px';
-        }
-    });
-}
-exports.updatePosition = updatePosition;
-/* Clear tooltip position */
-function clearPosition() {
-    d3_selection_1.select('#vis-tooltip')
-        .style('top', '-9999px')
-        .style('left', '-9999px');
-}
-exports.clearPosition = clearPosition;
-/**
- * Update tooltip color theme according to options.colorTheme
- *
- * If colorTheme === "dark", apply dark theme to tooltip.
- * Otherwise apply light color theme.
- */
-function updateColorTheme(options) {
-    clearColorTheme();
-    if (options && options.colorTheme === 'dark') {
-        d3_selection_1.select('#vis-tooltip').classed('dark-theme', true);
-    }
-    else {
-        d3_selection_1.select('#vis-tooltip').classed('light-theme', true);
-    }
-}
-exports.updateColorTheme = updateColorTheme;
-/* Clear color themes */
-function clearColorTheme() {
-    d3_selection_1.select('#vis-tooltip').classed('dark-theme light-theme', false);
-}
-exports.clearColorTheme = clearColorTheme;
-
-},{"d3-selection":109}],306:[function(require,module,exports){
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.vega = global.vega || {})));
-}(this, (function (exports) { 'use strict';
-
-var accessor = function(fn, fields, name) {
-  fn.fields = fields || [];
-  fn.fname = name;
-  return fn;
-};
-
-function accessorName(fn) {
-  return fn == null ? null : fn.fname;
-}
-
-function accessorFields(fn) {
-  return fn == null ? null : fn.fields;
-}
-
-var error = function(message) {
-  throw Error(message);
-};
-
-var splitAccessPath = function(p) {
-  var path = [],
-      q = null,
-      b = 0,
-      n = p.length,
-      s = '',
-      i, j, c;
-
-  p = p + '';
-
-  function push() {
-    path.push(s + p.substring(i, j));
-    s = '';
-    i = j + 1;
-  }
-
-  for (i=j=0; j<n; ++j) {
-    c = p[j];
-    if (c === '\\') {
-      s += p.substring(i, j);
-      i = ++j;
-    } else if (c === q) {
-      push();
-      q = null;
-      b = -1;
-    } else if (q) {
-      continue;
-    } else if (i === b && c === '"') {
-      i = j + 1;
-      q = c;
-    } else if (i === b && c === "'") {
-      i = j + 1;
-      q = c;
-    } else if (c === '.' && !b) {
-      if (j > i) {
-        push();
-      } else {
-        i = j + 1;
-      }
-    } else if (c === '[') {
-      if (j > i) push();
-      b = i = j + 1;
-    } else if (c === ']') {
-      if (!b) error('Access path missing open bracket: ' + p);
-      if (b > 0) push();
-      b = 0;
-      i = j + 1;
-    }
-  }
-
-  if (b) error('Access path missing closing bracket: ' + p);
-  if (q) error('Access path missing closing quote: ' + p);
-
-  if (j > i) {
-    j++;
-    push();
-  }
-
-  return path;
-};
-
-var isArray = Array.isArray;
-
-var isObject = function(_) {
-  return _ === Object(_);
-};
-
-var isString = function(_) {
-  return typeof _ === 'string';
-};
-
-function $(x) {
-  return isArray(x) ? '[' + x.map($) + ']'
-    : isObject(x) || isString(x) ?
-      // Output valid JSON and JS source strings.
-      // See http://timelessrepo.com/json-isnt-a-javascript-subset
-      JSON.stringify(x).replace('\u2028','\\u2028').replace('\u2029', '\\u2029')
-    : x;
-}
-
-var field = function(field, name) {
-  var path = splitAccessPath(field),
-      code = 'return _[' + path.map($).join('][') + '];';
-
-  return accessor(
-    Function('_', code),
-    [(field = path.length===1 ? path[0] : field)],
-    name || field
-  );
-};
-
-var empty = [];
-
-var id = field('id');
-
-var identity = accessor(function(_) { return _; }, empty, 'identity');
-
-var zero = accessor(function() { return 0; }, empty, 'zero');
-
-var one = accessor(function() { return 1; }, empty, 'one');
-
-var truthy = accessor(function() { return true; }, empty, 'true');
-
-var falsy = accessor(function() { return false; }, empty, 'false');
-
-function log(method, level, input) {
-  var args = [level].concat([].slice.call(input));
-  console[method].apply(console, args); // eslint-disable-line no-console
-}
-
-var None  = 0;
-var Error$1 = 1;
-var Warn  = 2;
-var Info  = 3;
-var Debug = 4;
-
-var logger = function(_) {
-  var level = _ || None;
-  return {
-    level: function(_) {
-      if (arguments.length) {
-        level = +_;
-        return this;
-      } else {
-        return level;
-      }
-    },
-    error: function() {
-      if (level >= Error$1) log('error', 'ERROR', arguments);
-      return this;
-    },
-    warn: function() {
-      if (level >= Warn) log('warn', 'WARN', arguments);
-      return this;
-    },
-    info: function() {
-      if (level >= Info) log('log', 'INFO', arguments);
-      return this;
-    },
-    debug: function() {
-      if (level >= Debug) log('log', 'DEBUG', arguments);
-      return this;
-    }
-  }
-};
-
-var array = function(_) {
-  return _ != null ? (isArray(_) ? _ : [_]) : [];
-};
-
-var compare = function(fields, orders) {
-  var idx = [],
-      cmp = (fields = array(fields)).map(function(f, i) {
-        if (f == null) {
-          return null;
-        } else {
-          idx.push(i);
-          return splitAccessPath(f).map($).join('][');
-        }
-      }),
-      n = idx.length - 1,
-      ord = array(orders),
-      code = 'var u,v;return ',
-      i, j, f, u, v, d, lt, gt;
-
-  if (n < 0) return null;
-
-  for (j=0; j<=n; ++j) {
-    i = idx[j];
-    f = cmp[i];
-    u = '(u=a['+f+'])';
-    v = '(v=b['+f+'])';
-    d = '((v=v instanceof Date?+v:v),(u=u instanceof Date?+u:u))';
-    if (ord[i] !== 'descending') {
-      gt = 1;
-      lt = -1;
-    } else {
-      gt = -1;
-      lt = 1;
-    }
-    code += '(' + u+'<'+v+'||u==null)&&v!=null?' + lt
-      + ':(u>v||v==null)&&u!=null?' + gt
-      + ':'+d+'!==u&&v===v?' + lt
-      + ':v!==v&&u===u?' + gt
-      + (i < n ? ':' : ':0');
-  }
-
-  return accessor(
-    Function('a', 'b', code + ';'),
-    fields.filter(function(_) { return _ != null; })
-  );
-};
-
-var isFunction = function(_) {
-  return typeof _ === 'function';
-};
-
-var constant = function(_) {
-  return isFunction(_) ? _ : function() { return _; };
-};
-
-var debounce = function(delay, handler) {
-  var tid, evt;
-
-  function callback() {
-    handler(evt);
-    tid = evt = null;
-  }
-
-  return function(e) {
-    evt = e;
-    if (tid) clearTimeout(tid);
-    tid = setTimeout(callback, delay);
-  };
-};
-
-var extend = function(_) {
-  for (var x, k, i=1, len=arguments.length; i<len; ++i) {
-    x = arguments[i];
-    for (k in x) { _[k] = x[k]; }
-  }
-  return _;
-};
-
-var extentIndex = function(array, f) {
-  var i = -1,
-      n = array.length,
-      a, b, c, u, v;
-
-  if (f == null) {
-    while (++i < n) {
-      b = array[i];
-      if (b != null && b >= b) {
-        a = c = b;
-        break;
-      }
-    }
-    u = v = i;
-    while (++i < n) {
-      b = array[i];
-      if (b != null) {
-        if (a > b) {
-          a = b;
-          u = i;
-        }
-        if (c < b) {
-          c = b;
-          v = i;
-        }
-      }
-    }
-  } else {
-    while (++i < n) {
-      b = f(array[i], i, array);
-      if (b != null && b >= b) {
-        a = c = b;
-        break;
-      }
-    }
-    u = v = i;
-    while (++i < n) {
-      b = f(array[i], i, array);
-      if (b != null) {
-        if (a > b) {
-          a = b;
-          u = i;
-        }
-        if (c < b) {
-          c = b;
-          v = i;
-        }
-      }
-    }
-  }
-
-  return [u, v];
-};
-
-var NULL = {};
-
-var fastmap = function(input) {
-  var obj = {},
-      map,
-      test;
-
-  function has(key) {
-    return obj.hasOwnProperty(key) && obj[key] !== NULL;
-  }
-
-  map = {
-    size: 0,
-    empty: 0,
-    object: obj,
-    has: has,
-    get: function(key) {
-      return has(key) ? obj[key] : undefined;
-    },
-    set: function(key, value) {
-      if (!has(key)) {
-        ++map.size;
-        if (obj[key] === NULL) --map.empty;
-      }
-      obj[key] = value;
-      return this;
-    },
-    delete: function(key) {
-      if (has(key)) {
-        --map.size;
-        ++map.empty;
-        obj[key] = NULL;
-      }
-      return this;
-    },
-    clear: function() {
-      map.size = map.empty = 0;
-      map.object = obj = {};
-    },
-    test: function(_) {
-      if (arguments.length) {
-        test = _;
-        return map;
-      } else {
-        return test;
-      }
-    },
-    clean: function() {
-      var next = {},
-          size = 0,
-          key, value;
-      for (key in obj) {
-        value = obj[key];
-        if (value !== NULL && (!test || !test(value))) {
-          next[key] = value;
-          ++size;
-        }
-      }
-      map.size = size;
-      map.empty = 0;
-      map.object = (obj = next);
-    }
-  };
-
-  if (input) Object.keys(input).forEach(function(key) {
-    map.set(key, input[key]);
-  });
-
-  return map;
-};
-
-var inherits = function(child, parent) {
-  var proto = (child.prototype = Object.create(parent.prototype));
-  proto.constructor = child;
-  return proto;
-};
-
-var isBoolean = function(_) {
-  return typeof _ === 'boolean';
-};
-
-var isDate = function(_) {
-  return Object.prototype.toString.call(_) === '[object Date]';
-};
-
-var isNumber = function(_) {
-  return typeof _ === 'number';
-};
-
-var isRegExp = function(_) {
-  return Object.prototype.toString.call(_) === '[object RegExp]';
-};
-
-var key = function(fields) {
-  fields = fields ? array(fields) : fields;
-  var fn = !(fields && fields.length)
-    ? function() { return ''; }
-    : Function('_', 'return \'\'+' +
-        fields.map(function(f) {
-          return '_[' + splitAccessPath(f).map($).join('][') + ']';
-        }).join('+\'|\'+') + ';');
-  return accessor(fn, fields, 'key');
-};
-
-var merge = function(compare, array0, array1, output) {
-  var n0 = array0.length,
-      n1 = array1.length;
-
-  if (!n1) return array0;
-  if (!n0) return array1;
-
-  var merged = output || new array0.constructor(n0 + n1),
-      i0 = 0, i1 = 0, i = 0;
-
-  for (; i0<n0 && i1<n1; ++i) {
-    merged[i] = compare(array0[i0], array1[i1]) > 0
-       ? array1[i1++]
-       : array0[i0++];
-  }
-
-  for (; i0<n0; ++i0, ++i) {
-    merged[i] = array0[i0];
-  }
-
-  for (; i1<n1; ++i1, ++i) {
-    merged[i] = array1[i1];
-  }
-
-  return merged;
-};
-
-var repeat = function(str, reps) {
-  var s = '';
-  while (--reps >= 0) s += str;
-  return s;
-};
-
-var pad = function(str, length, padchar, align) {
-  var c = padchar || ' ',
-      s = str + '',
-      n = length - s.length;
-
-  return n <= 0 ? s
-    : align === 'left' ? repeat(c, n) + s
-    : align === 'center' ? repeat(c, ~~(n/2)) + s + repeat(c, Math.ceil(n/2))
-    : s + repeat(c, n);
-};
-
-var peek = function(array) {
-  return array[array.length - 1];
-};
-
-var toBoolean = function(_) {
-  return _ == null || _ === '' ? null : !_ || _ === 'false' || _ === '0' ? false : !!_;
-};
-
-function defaultParser(_) {
-  return isNumber(_) ? _ : isDate(_) ? _ : Date.parse(_);
-}
-
-var toDate = function(_, parser) {
-  parser = parser || defaultParser;
-  return _ == null || _ === '' ? null : parser(_);
-};
-
-var toNumber = function(_) {
-  return _ == null || _ === '' ? null : +_;
-};
-
-var toString = function(_) {
-  return _ == null || _ === '' ? null : _ + '';
-};
-
-var toSet = function(_) {
-  for (var s={}, i=0, n=_.length; i<n; ++i) s[_[i]] = 1;
-  return s;
-};
-
-var truncate = function(str, length, align, ellipsis) {
-  var e = ellipsis != null ? ellipsis : '\u2026',
-      s = str + '',
-      n = s.length,
-      l = Math.max(0, length - e.length);
-
-  return n <= length ? s
-    : align === 'left' ? e + s.slice(n - l)
-    : align === 'center' ? s.slice(0, Math.ceil(l/2)) + e + s.slice(n - ~~(l/2))
-    : s.slice(0, l) + e;
-};
-
-var visitArray = function(array, filter, visitor) {
-  if (array) {
-    var i = 0, n = array.length, t;
-    if (filter) {
-      for (; i<n; ++i) {
-        if (t = filter(array[i])) visitor(t, i, array);
-      }
-    } else {
-      array.forEach(visitor);
-    }
-  }
-};
-
-exports.accessor = accessor;
-exports.accessorName = accessorName;
-exports.accessorFields = accessorFields;
-exports.id = id;
-exports.identity = identity;
-exports.zero = zero;
-exports.one = one;
-exports.truthy = truthy;
-exports.falsy = falsy;
-exports.logger = logger;
-exports.None = None;
-exports.Error = Error$1;
-exports.Warn = Warn;
-exports.Info = Info;
-exports.Debug = Debug;
-exports.array = array;
-exports.compare = compare;
-exports.constant = constant;
-exports.debounce = debounce;
-exports.error = error;
-exports.extend = extend;
-exports.extentIndex = extentIndex;
-exports.fastmap = fastmap;
-exports.field = field;
-exports.inherits = inherits;
-exports.isArray = isArray;
-exports.isBoolean = isBoolean;
-exports.isDate = isDate;
-exports.isFunction = isFunction;
-exports.isNumber = isNumber;
-exports.isObject = isObject;
-exports.isRegExp = isRegExp;
-exports.isString = isString;
-exports.key = key;
-exports.merge = merge;
-exports.pad = pad;
-exports.peek = peek;
-exports.repeat = repeat;
-exports.splitAccessPath = splitAccessPath;
-exports.stringValue = $;
-exports.toBoolean = toBoolean;
-exports.toDate = toDate;
-exports.toNumber = toNumber;
-exports.toString = toString;
-exports.toSet = toSet;
-exports.truncate = truncate;
-exports.visitArray = visitArray;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-
-},{}],307:[function(require,module,exports){
 (function (Buffer){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -33340,7 +31457,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 	(factory((global.vega = global.vega || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "3.0.0-rc2";
+var version = "3.0.0-rc1";
 
 var bin$1 = function(_) {
   // determine range
@@ -34153,7 +32270,7 @@ function accessorFields(fn) {
   return fn == null ? null : fn.fields;
 }
 
-var error$1 = function(message) {
+var error = function(message) {
   throw Error(message);
 };
 
@@ -34200,15 +32317,15 @@ var splitAccessPath = function(p) {
       if (j > i) push();
       b = i = j + 1;
     } else if (c === ']') {
-      if (!b) error$1('Access path missing open bracket: ' + p);
+      if (!b) error('Access path missing open bracket: ' + p);
       if (b > 0) push();
       b = 0;
       i = j + 1;
     }
   }
 
-  if (b) error$1('Access path missing closing bracket: ' + p);
-  if (q) error$1('Access path missing closing quote: ' + p);
+  if (b) error('Access path missing closing bracket: ' + p);
+  if (q) error('Access path missing closing quote: ' + p);
 
   if (j > i) {
     j++;
@@ -34268,10 +32385,9 @@ function log(method, level, input) {
 }
 
 var None  = 0;
-var Error$1 = 1;
-var Warn  = 2;
-var Info  = 3;
-var Debug = 4;
+var Warn  = 1;
+var Info  = 2;
+var Debug = 3;
 
 var logger = function(_) {
   var level = _ || None;
@@ -34283,10 +32399,6 @@ var logger = function(_) {
       } else {
         return level;
       }
-    },
-    error: function() {
-      if (level >= Error$1) log('error', 'ERROR', arguments);
-      return this;
     },
     warn: function() {
       if (level >= Warn) log('warn', 'WARN', arguments);
@@ -35315,8 +33427,8 @@ function http(url, options) {
       if (options[name]) req[name](options[name]);
     });
 
-    req.on('error', function(error) {
-        reject(error || 'Error loading URL: ' + url);
+    req.on('error', function(error$$1) {
+        reject(error$$1 || 'Error loading URL: ' + url);
       })
       .on('load', function(result) {
         var text$$1 = result && result.responseText;
@@ -35336,8 +33448,8 @@ function http(url, options) {
 function file(filename) {
   return new Promise(function(accept, reject) {
     var f = fs();
-    f ? f.readFile(filename, function(error, data) {
-          if (error) reject(error);
+    f ? f.readFile(filename, function(error$$1, data) {
+          if (error$$1) reject(error$$1);
           else accept(data);
         })
       : reject('No file system access for ' + filename);
@@ -35688,16 +33800,16 @@ var topojson = function(data, format) {
   if (format && (property = format.feature)) {
     return (object = data.objects[property])
       ? feature(data, object).features
-      : error$1('Invalid TopoJSON object: ' + property);
+      : error('Invalid TopoJSON object: ' + property);
   }
 
   else if (format && (property = format.mesh)) {
     return (object = data.objects[property])
       ? [mesh(data, object)]
-      : error$1('Invalid TopoJSON object: ' + property);
+      : error('Invalid TopoJSON object: ' + property);
   }
 
-  error$1('Missing TopoJSON feature or mesh parameter.');
+  error('Missing TopoJSON feature or mesh parameter.');
 };
 
 var formats = {
@@ -36566,7 +34678,7 @@ var read = function(data, schema, dateParse) {
   schema = schema || {};
 
   var reader = formats$1(schema.type || 'json');
-  if (!reader) error$1('Unknown data format type: ' + schema.type);
+  if (!reader) error('Unknown data format type: ' + schema.type);
 
   data = reader(data, schema);
   if (schema.parse) parse(data, schema.parse, dateParse);
@@ -42406,7 +40518,7 @@ prototype$11.parameters = function(params, react) {
     if (name === PULSE) {
       array$1(value).forEach(function(op) {
         if (!(op instanceof Operator)) {
-          error$1('Pulse parameters must be operator instances.');
+          error('Pulse parameters must be operator instances.');
         } else if (op !== self) {
           op.targets().add(self);
           deps.push(op);
@@ -42692,13 +40804,8 @@ var events = function(source, type, filter, apply) {
       s = stream(filter, apply),
       send = function(e) {
         e.dataflow = df;
-        try {
-          s.receive(e);
-        } catch (error) {
-          df.error(error);
-        } finally {
-          df.run();
-        }
+        s.receive(e);
+        df.run();
       },
       sources;
 
@@ -43254,10 +41361,9 @@ function update(op, value, options) {
 function pulse(op, changeset, options) {
   this.touch(op, options || NO_OPT);
 
-  var p = new Pulse(this, this._clock + (this._pulse ? 0 : 1)),
-      t = op.pulse && op.pulse.source || [];
+  var p = new Pulse(this, this._clock + (this._pulse ? 0 : 1));
   p.target = op;
-  this._pulses[op.id] = changeset.pulse(p, t);
+  this._pulses[op.id] = changeset.pulse(p, op.value);
 
   return this;
 }
@@ -43305,11 +41411,11 @@ function request$1(target, url, format) {
         df.ingest(target, data, format);
       },
       function(error) {
-        df.error('Loading failed: ' + url, error);
+        df.warn('Loading failed: ' + url, error);
         pending.done();
       })
     .then(pending.done)
-    .catch(function(error) { df.error(error); });
+    .catch(function(error) { df.warn(error); });
 }
 
 /**
@@ -43361,7 +41467,7 @@ var prototype$15 = inherits(MultiPulse, Pulse);
  */
 prototype$15.fork = function() {
   if (arguments.length && (arguments[0] & Pulse.prototype.ALL)) {
-    error$1('MultiPulse fork does not support tuple change sets.');
+    error('MultiPulse fork does not support tuple change sets.');
   }
   return new Pulse(this.dataflow).init(this, 0);
 };
@@ -43378,11 +41484,11 @@ prototype$15.modified = function(_) {
 };
 
 prototype$15.filter = function() {
-  error$1('MultiPulse does not support filtering.');
+  error('MultiPulse does not support filtering.');
 };
 
 prototype$15.materialize = function() {
-  error$1('MultiPulse does not support materialization.');
+  error('MultiPulse does not support materialization.');
 };
 
 prototype$15.visit = function(flags, visitor) {
@@ -43424,20 +41530,19 @@ function run(encode) {
   var df = this,
       count = 0,
       level = df.logLevel(),
-      op, next, dt, error;
-
-  if (df._pending) {
-    df.info('Awaiting requests, delaying dataflow run.');
-    return 0;
-  }
+      op, next, dt, error$$1;
 
   if (df._pulse) {
     df.error('Dataflow invoked recursively. Use the runAfter method to queue invocation.');
-    return 0;
   }
 
   if (!df._touched.length) {
     df.info('Dataflow invoked, but nothing to do.');
+    return 0;
+  }
+
+  if (df._pending) {
+    df.info('Awaiting requests, delaying dataflow run.');
     return 0;
   }
 
@@ -43476,7 +41581,7 @@ function run(encode) {
       ++count;
     }
   } catch (err) {
-    error = err;
+    error$$1 = err;
   }
 
   // reset pulse map
@@ -43488,9 +41593,9 @@ function run(encode) {
     df.info('> Pulse ' + df._clock + ': ' + count + ' operators; ' + dt + 'ms');
   }
 
-  if (error) {
+  if (error$$1) {
     df._postrun = [];
-    df.error(error);
+    df.error(error$$1);
   }
 
   // invoke callbacks queued via runAfter
@@ -43777,13 +41882,6 @@ function logMethod(method) {
 }
 
 /**
- * Logs an error message. By default, logged messages are written to console
- * output. The message will only be logged if the current log level is high
- * enough to permit error messages.
- */
-prototype$10.error = logMethod('error');
-
-/**
  * Logs a warning message. By default, logged messages are written to console
  * output. The message will only be logged if the current log level is high
  * enough to permit warning messages.
@@ -43811,6 +41909,14 @@ prototype$10.debug = logMethod('debug');
  * @return {number} - The current log level.
  */
 prototype$10.logLevel = logMethod('level');
+
+/**
+ * Handle an error. By default, this method re-throws the input error.
+ * This method can be overridden for custom error handling.
+ */
+prototype$10.error = function(err) {
+  throw err;
+};
 
 /**
  * Abstract class for operators that process data tuples.
@@ -44374,7 +42480,7 @@ prototype$18.init = function(_) {
       field$$1, op, m, mname, outname, i;
 
   if (n !== ops.length) {
-    error$1('Unmatched number of fields and aggregate ops.');
+    error('Unmatched number of fields and aggregate ops.');
   }
 
   for (i=0; i<n; ++i) {
@@ -44382,7 +42488,7 @@ prototype$18.init = function(_) {
     op = ops[i];
 
     if (field$$1 == null && op !== 'count') {
-      error$1('Null aggregate field specified.');
+      error('Null aggregate field specified.');
     }
     mname = accessorName(field$$1);
     outname = measureName(op, mname, as[i]);
@@ -44906,7 +43012,7 @@ var FIELD = 'field';
 function parse$1(def, data) {
   var func = def[FUNCTION];
   if (!Distributions.hasOwnProperty(func)) {
-    error$1('Unknown distribution function: ' + func);
+    error('Unknown distribution function: ' + func);
   }
 
   var d = Distributions[func]();
@@ -44962,10 +43068,10 @@ prototype$24.transform = function(_, pulse) {
         method = _.method || 'pdf';
 
     if (method !== 'pdf' && method !== 'cdf') {
-      error$1('Invalid density method: ' + method);
+      error('Invalid density method: ' + method);
     }
     if (!_.extent && !dist.data) {
-      error$1('Missing density extent parameter.');
+      error('Missing density extent parameter.');
     }
     method = dist[method];
 
@@ -45480,7 +43586,7 @@ function getValue(_) {
   var m = _.method || Methods.value, v;
 
   if (Methods[m] == null) {
-    error$1('Unrecognized imputation method: ' + m);
+    error('Unrecognized imputation method: ' + m);
   } else if (m === Methods.value) {
     v = _.value !== undefined ? _.value : 0;
     return function() { return v; };
@@ -45664,10 +43770,10 @@ prototype$34.transform = function(_, pulse) {
     m = values.length;
 
     if (n > 1 && !as) {
-      error$1('Multi-field lookup requires explicit "as" parameter.');
+      error('Multi-field lookup requires explicit "as" parameter.');
     }
     if (as && as.length !== n * m) {
-      error$1('The "as" parameter has too few output field names.');
+      error('The "as" parameter has too few output field names.');
     }
     as = as || values.map(accessorName);
 
@@ -45680,7 +43786,7 @@ prototype$34.transform = function(_, pulse) {
     };
   } else {
     if (!as) {
-      error$1('Missing output field names.');
+      error('Missing output field names.');
     }
 
     set = function(t) {
@@ -45789,7 +43895,7 @@ prototype$35.transform = function(_, pulse) {
       field$$1 = _.field;
 
   if (_.modified('field') || field$$1 && pulse.modified(accessorFields(field$$1))) {
-    error$1('PreFacet does not support field modification.');
+    error('PreFacet does not support field modification.');
   }
 
   this._targets.active = 0; // reset list of active subflows
@@ -45849,7 +43955,7 @@ var prototype$37 = inherits(Rank, Transform);
 
 prototype$37.transform = function(_, pulse) {
   if (!pulse.source) {
-    error$1('Rank transform requires an upstream data source.');
+    error('Rank transform requires an upstream data source.');
   }
 
   var norm  = _.normalize,
@@ -48821,21 +46927,11 @@ function binOrdinal() {
   }
 
   scale.domain = function(_) {
-    if (arguments.length) {
-      domain = numbers$1(_);
-      return scale;
-    } else {
-      return domain.slice();
-    }
+    return arguments.length ? (domain = numbers$1(_), scale) : domain.slice();
   };
 
   scale.range = function(_) {
-    if (arguments.length) {
-      range = slice$3.call(_);
-      return scale;
-    } else {
-      return range.slice();
-    }
+    return arguments.length ? (range = slice$3.call(_), scale) : range.slice();
   };
 
   scale.copy = function() {
@@ -48863,12 +46959,7 @@ function sequential$1(interpolator) {
   }
 
   scale.clamp = function(_) {
-    if (arguments.length) {
-      clamp = !!_;
-      return scale;
-    } else {
-      return clamp;
-    }
+    return arguments.length ? (clamp = !!_, scale) : clamp;
   };
 
   scale.domain = function(_) {
@@ -48876,12 +46967,7 @@ function sequential$1(interpolator) {
   };
 
   scale.interpolator = function(_) {
-    if (arguments.length) {
-      interpolator = _;
-      return scale;
-    } else {
-      return interpolator;
-    }
+    return arguments.length ? (interpolator = _, scale) : interpolator;
   };
 
   scale.copy = function() {
@@ -48922,12 +47008,8 @@ function create(type, constructor) {
 }
 
 function scale$1(type, scale) {
-  if (arguments.length > 1) {
-    scales[type] = create(type, scale);
-    return this;
-  } else {
-    return scales.hasOwnProperty(type) ? scales[type] : undefined;
-  }
+  return arguments.length > 1 ? (scales[type] = create(type, scale), this)
+    : scales.hasOwnProperty(type) ? scales[type] : undefined;
 }
 
 var scales = {
@@ -49489,10 +47571,7 @@ add$2('yelloworangebrown', 'YlOrBr');
 add$2('yelloworangered',   'YlOrRd');
 
 var getScheme = function(name, scheme$$1) {
-  if (arguments.length > 1) {
-    schemes[name] = scheme$$1;
-    return this;
-  }
+  if (arguments.length > 1) return (schemes[name] = scheme$$1, this);
 
   var part = name.split('-');
   name = part[0];
@@ -52655,7 +50734,7 @@ function geoJSON(data) {
 
 function create$2(type) {
   var constructor = projection$$1((type || 'mercator').toLowerCase());
-  if (!constructor) error$1('Unrecognized projection type: ' + type);
+  if (!constructor) error('Unrecognized projection type: ' + type);
   return constructor();
 }
 
@@ -52764,8 +50843,7 @@ function validTicks(scale, ticks) {
   }
 
   return ticks.filter(function(v) {
-    v = scale(v);
-    return !(v < lo || v > hi)
+    return !((v = scale(v)) < lo || v > hi)
   });
 }
 
@@ -52946,7 +51024,7 @@ prototype$51.transform = function(_, pulse) {
   }
 
   if (_.modified('key') || pulse.modified(key$$1)) {
-    error$1('DataJoin does not support modified key function or fields.');
+    error('DataJoin does not support modified key function or fields.');
   }
 
   pulse.visit(pulse.ADD, function(t) {
@@ -53270,7 +51348,7 @@ prototype$54.transform = function(_, pulse) {
       path = Paths.get(shape + '-' + orient) || Paths.get(shape);
 
   if (!path) {
-    error$1('LinkPath unsupported type: ' + _.shape
+    error('LinkPath unsupported type: ' + _.shape
       + (_.orient ? '-' + _.orient : ''));
   }
 
@@ -53553,7 +51631,7 @@ function configureRange(scale, _, count) {
 
 function configureRangeStep(type, _, count) {
   if (type !== Band && type !== Point) {
-    error$1('Only band and point scales support rangeStep.');
+    error('Only band and point scales support rangeStep.');
   }
 
   // calculate full range based on requested step size and padding
@@ -53570,7 +51648,7 @@ function configureScheme(type, _, count) {
       discrete;
 
   if (!scheme) {
-    error$1('Unrecognized scheme name: ' + _.scheme);
+    error('Unrecognized scheme name: ' + _.scheme);
   }
 
   // determine size for potential discrete range
@@ -55058,7 +53136,7 @@ function getForce(_) {
   var f, p;
 
   if (!ForceMap.hasOwnProperty(_.force)) {
-    error$1('Unrecognized force: ' + _.force);
+    error('Unrecognized force: ' + _.force);
   }
   f = ForceMap[_.force]();
 
@@ -56418,7 +54496,7 @@ function children(n) {
 
 prototype$60.transform = function(_, pulse) {
   if (!pulse.source) {
-    error$1('Nest transform requires an upstream data source.');
+    error('Nest transform requires an upstream data source.');
   }
 
   var key$$1 = _.key || tupleid,
@@ -56461,7 +54539,7 @@ var prototype$61 = inherits(Stratify, Transform);
 
 prototype$61.transform = function(_, pulse) {
   if (!pulse.source) {
-    error$1('Stratify transform requires an upstream data source.');
+    error('Stratify transform requires an upstream data source.');
   }
 
   var mod = _.modified(), tree$$1, map,
@@ -56506,7 +54584,7 @@ function parentTuple(node) {
 
 prototype$62.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
-    error$1('TreeLinks transform requires a backing tree data source.');
+    error('TreeLinks transform requires a backing tree data source.');
   }
 
   var root = pulse.source.root,
@@ -56579,7 +54657,7 @@ var Layouts = {
 function treeLayout(method) {
   var m = method || 'tidy';
   if (Layouts.hasOwnProperty(m)) return Layouts[m]();
-  else error$1('Unrecognized Tree layout method: ' + m);
+  else error('Unrecognized Tree layout method: ' + m);
 }
 
 /**
@@ -56594,7 +54672,7 @@ function treemapLayout() {
   };
   x.method = function(_) {
     if (Tiles.hasOwnProperty(_)) x.tile(Tiles[_]);
-    else error$1('Unrecognized Treemap layout method: ' + _);
+    else error('Unrecognized Treemap layout method: ' + _);
   };
   return x;
 }
@@ -56612,7 +54690,7 @@ var prototype$63 = inherits(HierarchyLayout, Transform);
 
 prototype$63.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
-    error$1(this.constructor.name
+    error(this.constructor.name
       + ' transform requires a backing tree data source.');
   }
 
@@ -56628,7 +54706,7 @@ prototype$63.transform = function(_, pulse) {
   try {
     this.value = layout(root);
   } catch (err) {
-    error$1(err);
+    error(err);
   }
   root.each(function(node) { setFields(node, fields, as); });
 
@@ -58268,7 +56346,7 @@ function cloudCanvas() {
       : 0;
     return canvas && canvas.getContext ? canvas : new (require('canvas'))();
   } catch (e) {
-    error$1('Canvas unavailable. Run in browser or install node-canvas.');
+    error('Canvas unavailable. Run in browser or install node-canvas.');
   }
 }
 
@@ -60082,7 +58160,7 @@ function setCursor(cursor) {
 function dataref(view, name) {
   var data = view._runtime.data;
   if (!data.hasOwnProperty(name)) {
-    error$1('Unrecognized data set: ' + name);
+    view.error('Unrecognized data set: ' + name);
   }
   return data[name];
 }
@@ -60093,7 +58171,7 @@ function data(name) {
 
 function change(name, changes) {
   if (!isChangeSet(changes)) {
-    error$1('Second argument to changes must be a changeset.');
+    this.error('Second argument to changes must be a changeset.');
   }
   var dataset = dataref(this, name);
   dataset.modified = true;
@@ -60231,13 +58309,8 @@ var events$1 = function(source, type, filter) {
         if (view.preventDefault() && source === VIEW) {
           e.preventDefault();
         }
-        try {
-          s.receive(eventExtend(view, e, item));
-        } catch (error) {
-          view.error(error);
-        } finally {
-          view.run();
-        }
+        s.receive(eventExtend(view, e, item));
+        view.run();
       },
       sources;
 
@@ -60351,8 +58424,6 @@ var OptionClass = 'vega-option-';
  * @return {View} - This view instance.
  */
 var bind$1 = function(view, el, binding) {
-  if (!el) return;
-
   var param = binding.param,
       bind = binding.state;
 
@@ -60632,7 +58703,6 @@ function lookup$2(view, el) {
       el = document.querySelector(el);
     } else {
       view.error('DOM document instance not found.');
-      return null;
     }
   }
   el.innerHTML = '';
@@ -60723,7 +58793,7 @@ var OUTER = 'outer';
 var OUTER_INVALID = ['value', 'update', 'react', 'bind'];
 
 function outerError(prefix, name) {
-  error$1(prefix + ' for "outer" push: ' + $(name));
+  error(prefix + ' for "outer" push: ' + $(name));
 }
 
 var parseSignal = function(signal, scope) {
@@ -62334,8 +60404,8 @@ var Functions = function(codegen) {
     tan:      'Math.tan',
 
     clamp: function(args) {
-      if (args.length < 3) error$1('Missing arguments to clamp function.');
-      if (args.length > 3) error$1('Too many arguments to clamp function.');
+      if (args.length < 3) error('Missing arguments to clamp function.');
+      if (args.length > 3) error('Too many arguments to clamp function.');
       var a = args.map(codegen);
       return 'Math.max('+a[1]+', Math.min('+a[2]+','+a[0]+'))';
     },
@@ -62383,8 +60453,8 @@ var Functions = function(codegen) {
 
     // Control Flow functions
     if: function(args) {
-        if (args.length < 3) error$1('Missing arguments to if function.');
-        if (args.length > 3) error$1('Too many arguments to if function.');
+        if (args.length < 3) error('Missing arguments to if function.');
+        if (args.length > 3) error('Too many arguments to if function.');
         var a = args.map(codegen);
         return '('+a[0]+'?'+a[1]+':'+a[2]+')';
       }
@@ -62411,7 +60481,7 @@ var codegen = function(opt) {
   function visit(ast) {
     if (isString(ast)) return ast;
     var generator = Generators[ast.type];
-    if (generator == null) error$1('Unsupported type: ' + ast.type);
+    if (generator == null) error('Unsupported type: ' + ast.type);
     return generator(ast);
   }
 
@@ -62425,7 +60495,7 @@ var codegen = function(opt) {
       if (memberDepth > 0) {
         return id$$1;
       } else if (blacklist.hasOwnProperty(id$$1)) {
-        return error$1('Illegal identifier: ' + id$$1);
+        return error('Illegal identifier: ' + id$$1);
       } else if (constants.hasOwnProperty(id$$1)) {
         return constants[id$$1];
       } else if (whitelist.hasOwnProperty(id$$1)) {
@@ -62448,12 +60518,12 @@ var codegen = function(opt) {
 
     CallExpression: function(n) {
         if (n.callee.type !== 'Identifier') {
-          error$1('Illegal callee type: ' + n.callee.type);
+          error('Illegal callee type: ' + n.callee.type);
         }
         var callee = n.callee.name;
         var args = n.arguments;
         var fn = functions.hasOwnProperty(callee) && functions[callee];
-        if (!fn) error$1('Unrecognized function: ' + callee);
+        if (!fn) error('Unrecognized function: ' + callee);
         return isFunction(fn)
           ? fn(args)
           : fn + '(' + args.map(visit).join(',') + ')';
@@ -62511,36 +60581,20 @@ var codegen = function(opt) {
   return codegen;
 };
 
-var formatCache = {};
-
-function formatter(type, method, specifier) {
-  var k = type + ':' + specifier,
-      e = formatCache[k];
-  if (!e || e[0] !== method) {
-    formatCache[k] = (e = [method, method(specifier)]);
-  }
-  return e[1];
+function formatter(method) {
+  var cache = {};
+  return function(_, specifier) {
+    var f = cache[specifier] || (cache[specifier] = method(specifier));
+    return f(_);
+  };
 }
 
-function format$1(_, specifier) {
-  return formatter('format', format, specifier)(_);
-}
+var format$1 = formatter(format);
+var utcFormat$1 = formatter(utcFormat);
+var timeFormat$1 = formatter(timeFormat);
 
-function timeFormat$1(_, specifier) {
-  return formatter('timeFormat', timeFormat, specifier)(_);
-}
-
-function utcFormat$1(_, specifier) {
-  return formatter('utcFormat', utcFormat, specifier)(_);
-}
-
-function timeParse$1(_, specifier) {
-  return formatter('timeParse', timeParse, specifier)(_);
-}
-
-function utcParse$1(_, specifier) {
-  return formatter('utcParse', utcParse, specifier)(_);
-}
+var utcParse$1 = formatter(utcParse);
+var timeParse$1 = formatter(timeParse);
 
 var dateObj = new Date(2000, 0, 1);
 
@@ -62838,7 +60892,7 @@ function data$1(name) {
 
 function dataVisitor(name, args, scope, params) {
   if (args[0].type !== Literal) {
-    error$1('First argument to data functions must be a string literal.');
+    error('First argument to data functions must be a string literal.');
   }
 
   var data = args[0].value,
@@ -62856,8 +60910,8 @@ function indata(name, field$$1, value) {
 }
 
 function indataVisitor(name, args, scope, params) {
-  if (args[0].type !== Literal) error$1('First argument to indata must be a string literal.');
-  if (args[1].type !== Literal) error$1('Second argument to indata must be a string literal.');
+  if (args[0].type !== Literal) error('First argument to indata must be a string literal.');
+  if (args[1].type !== Literal) error('Second argument to indata must be a string literal.');
 
   var data = args[0].value,
       field$$1 = args[1].value,
@@ -63372,7 +61426,7 @@ var parseExpression = function(expr, scope, preamble) {
   try {
     ast = parse$3(expr);
   } catch (err) {
-    error$1('Expression parse error: ' + $(expr));
+    error('Expression parse error: ' + $(expr));
   }
 
   // analyze ast function calls for dependencies
@@ -63419,7 +61473,7 @@ function parseStream$1(stream, scope) {
   var method = stream.merge ? mergeStream
     : stream.stream ? nestedStream
     : stream.type ? eventStream
-    : error$1('Invalid stream specification: ' + $(stream));
+    : error('Invalid stream specification: ' + $(stream));
 
   return method(stream, scope);
 }
@@ -63451,7 +61505,7 @@ function streamParameters(entry, stream, scope) {
 
   if (param) {
     if (param.length !== 2) {
-      error$1('Stream "between" parameter must have 2 entries: ' + $(stream));
+      error('Stream "between" parameter must have 2 entries: ' + $(stream));
     }
     entry.between = [
       parseStream$1(param[0], scope),
@@ -63714,7 +61768,7 @@ var parseUpdate = function(spec, scope, target) {
       value = '', entry;
 
   if (!events) {
-    error$1('Signal update missing events specification.');
+    error('Signal update missing events specification.');
   }
 
   // interpret as an event selector string
@@ -63738,7 +61792,7 @@ var parseUpdate = function(spec, scope, target) {
   }
 
   if (encode != null) {
-    if (update) error$1('Signal encode and update are mutually exclusive.');
+    if (update) error('Signal encode and update are mutually exclusive.');
     update = 'encode(item(),' + $(encode) + ')';
   }
 
@@ -63750,7 +61804,7 @@ var parseUpdate = function(spec, scope, target) {
         $expr:   '_.value',
         $params: {value: scope.signalRef(update.signal)}
       }
-    : error$1('Invalid signal update specification.');
+    : error('Invalid signal update specification.');
 
   entry = {
     target: target,
@@ -63906,7 +61960,7 @@ function initScale(spec, scope) {
   var type = spec.type || 'linear';
 
   if (!allTypes.hasOwnProperty(type)) {
-    error$1('Unrecognized scale type: ' + $(type));
+    error('Unrecognized scale type: ' + $(type));
   }
 
   scope.addScale(spec.name, {
@@ -63938,7 +61992,7 @@ function parseScale(spec, scope) {
 function parseLiteral(v, scope) {
   return !isObject(v) ? v
     : v.signal ? scope.signalRef(v.signal)
-    : error$1('Unsupported object: ' + $(v));
+    : error('Unsupported object: ' + $(v));
 }
 
 function parseArray(v, scope) {
@@ -63948,7 +62002,7 @@ function parseArray(v, scope) {
 }
 
 function dataLookupError(name) {
-  error$1('Can not find data set: ' + $(name));
+  error('Can not find data set: ' + $(name));
 }
 
 // -- SCALE DOMAIN ----
@@ -63956,7 +62010,7 @@ function dataLookupError(name) {
 function parseScaleDomain(domain, spec, scope) {
   if (!domain) {
     if (spec.domainMin != null || spec.domainMax != null) {
-      error$1('No scale domain defined for domainMin/domainMax to override.');
+      error('No scale domain defined for domainMin/domainMax to override.');
     }
     return; // default domain
   }
@@ -64047,11 +62101,11 @@ function parseSort(sort, multidomain) {
       if (isObject(sort)) sort.field = 'key';
       else sort = {field: 'key'};
     } else if (!sort.field && sort.op !== 'count') {
-      error$1('No field provided for sort aggregate op: ' + sort.op);
+      error('No field provided for sort aggregate op: ' + sort.op);
     } else if (multidomain && sort.field) {
-      error$1('Multiple domain scales can not sort by field.');
+      error('Multiple domain scales can not sort by field.');
     } else if (multidomain && sort.op && sort.op !== 'count') {
-      error$1('Multiple domain scales support op count only.');
+      error('Multiple domain scales support op count only.');
     }
   }
   return sort;
@@ -64109,7 +62163,7 @@ function parseScaleRange(spec, scope, params) {
         ? [0, {signal: 'height'}]
         : [{signal: 'height'}, 0];
     } else {
-      error$1('Unrecognized scale range value: ' + $(range));
+      error('Unrecognized scale range value: ' + $(range));
     }
   } else if (range.scheme) {
     params.scheme = parseLiteral(range.scheme, scope);
@@ -64122,7 +62176,7 @@ function parseScaleRange(spec, scope, params) {
   } else if (isOrdinal(spec.type) && !isArray(range)) {
     return parseScaleDomain(range, spec, scope);
   } else if (!isArray(range)) {
-    error$1('Unsupported range type: ' + $(range));
+    error('Unsupported range type: ' + $(range));
   }
 
   return range.map(function(v) {
@@ -64145,7 +62199,7 @@ function parseParameter(_, scope) {
   return isArray(_) ? _.map(function(_) { return parseParameter(_, scope); })
     : !isObject(_) ? _
     : _.signal ? scope.signalRef(_.signal)
-    : error$1('Unsupported parameter object: ' + $(_));
+    : error('Unsupported parameter object: ' + $(_));
 }
 
 var Top = 'top';
@@ -64266,7 +62320,7 @@ function resolve$1(ref, scope, params, fields) {
     object = 'datum';
     field$$1 = ref.datum;
   } else {
-    error$1('Invalid field reference: ' + $(ref));
+    error('Invalid field reference: ' + $(ref));
   }
 
   if (!ref.signal) {
@@ -64625,7 +62679,8 @@ var legendLabels = function(spec, config, userEncode, dataRef) {
       encode = {}, enter, update;
 
   encode.enter = enter = {
-    opacity: zero
+    opacity: zero,
+    text: {field: Label}
   };
   addEncode(enter, 'align', config.labelAlign);
   addEncode(enter, 'baseline', config.labelBaseline);
@@ -64639,8 +62694,7 @@ var legendLabels = function(spec, config, userEncode, dataRef) {
   };
 
   encode.update = update = {
-    opacity: {value: 1},
-    text: {field: Label}
+    opacity: {value: 1}
   };
 
   enter.x = update.x = {
@@ -64778,7 +62832,7 @@ var dataName = function(name) {
  */
 var parseTransform = function(spec, scope) {
   var def = definition(spec.type);
-  if (!def) error$1('Unrecognized transform type: ' + $(spec.type));
+  if (!def) error('Unrecognized transform type: ' + $(spec.type));
 
   var t = entry(def.type, null, parseParameters(def, spec, scope));
   if (spec.signal) scope.addSignal(spec.signal, scope.proxy(t));
@@ -64810,7 +62864,7 @@ function parseParameter$1(def, spec, scope) {
     return parseIndexParameter(def, spec, scope);
   } else if (value === undefined) {
     if (def.required) {
-      error$1('Missing required ' + $(spec.type)
+      error('Missing required ' + $(spec.type)
           + ' parameter: ' + $(def.name));
     }
     return;
@@ -64832,7 +62886,7 @@ function parameterValue(def, value, scope) {
   var type = def.type;
 
   if (isSignal(value)) {
-    return isExpr(type) ? error$1('Expression references can not be signals.')
+    return isExpr(type) ? error('Expression references can not be signals.')
          : isField(type) ? scope.fieldRef(value)
          : isCompare(type) ? scope.compareRef(value)
          : scope.signalRef(value.signal);
@@ -64853,7 +62907,7 @@ function parameterValue(def, value, scope) {
  */
 function parseIndexParameter(def, spec, scope) {
   if (!isString(spec.from)) {
-    error$1('Lookup "from" parameter must be a string literal.');
+    error('Lookup "from" parameter must be a string literal.');
   }
   return scope.getData(spec.from).lookupRef(scope, spec.key);
 }
@@ -64866,7 +62920,7 @@ function parseSubParameters(def, spec, scope) {
 
   if (def.array) {
     if (!isArray(value)) { // signals not allowed!
-      error$1('Expected an array of sub-parameters. Instead: ' + $(value));
+      error('Expected an array of sub-parameters. Instead: ' + $(value));
     }
     return value.map(function(v) {
       return parseSubParameter(def, v, scope);
@@ -64891,7 +62945,7 @@ function parseSubParameter(def, value, scope) {
     if (pdef) break;
   }
   // raise error if matching key not found
-  if (!pdef) error$1('Unsupported parameter: ' + $(value));
+  if (!pdef) error('Unsupported parameter: ' + $(value));
 
   // parse params, create Params transform, return ref
   params = extend(parseParameters(pdef, value, scope), pdef.key);
@@ -64934,7 +62988,7 @@ var parseData = function(from, group, scope) {
 
   // if faceted, process facet specification
   else if (facet = from.facet) {
-    if (!group) error$1('Only group marks can be faceted.');
+    if (!group) error('Only group marks can be faceted.');
 
     // use pre-faceted source data, if available
     if (facet.field != null) {
@@ -65110,10 +63164,10 @@ var parseFacet = function(spec, scope, group) {
       subscope, source, values, op;
 
   if (!facet.name) {
-    error$1('Facet must have a name: ' + $(facet));
+    error('Facet must have a name: ' + $(facet));
   }
   if (!facet.data) {
-    error$1('Facet must reference a data set: ' + $(facet));
+    error('Facet must reference a data set: ' + $(facet));
   }
 
   if (facet.field) {
@@ -65128,7 +63182,7 @@ var parseFacet = function(spec, scope, group) {
       pulse: data
     }));
   } else {
-    error$1('Facet must specify groupby or field: ' + $(facet));
+    error('Facet must specify groupby or field: ' + $(facet));
   }
 
   // initialize facet subscope
@@ -65225,7 +63279,7 @@ var parseMark = function(spec, scope) {
     spec.transform.forEach(function(_) {
       var tx = parseTransform(_, scope);
       if (tx.metadata.generates || tx.metadata.changes) {
-        error$1('Mark transforms should not generate new data.');
+        error('Mark transforms should not generate new data.');
       }
       tx.params.pulse = ref(op);
       scope.add(op = tx);
@@ -65289,7 +63343,7 @@ var parseMark = function(spec, scope) {
     scope.addData(name, new DataScope(scope, store, render, sieve));
     if (spec.on) spec.on.forEach(function(on) {
       if (on.insert || on.remove || on.toggle) {
-        error$1('Marks only support modify triggers.');
+        error('Marks only support modify triggers.');
       }
       parseTrigger(on, scope, name);
     });
@@ -65311,7 +63365,7 @@ var parseLegend = function(spec, scope) {
            || spec.strokeDash || spec.opacity;
 
   if (!scale) {
-    error$1('Missing valid scale for legend.');
+    error('Missing valid scale for legend.');
   }
 
   // single-element data source for axis group
@@ -66210,7 +64264,7 @@ prototype$76.markpath = function() {
 prototype$76.fieldRef = function(field$$1, name) {
   if (isString(field$$1)) return fieldRef$1(field$$1, name);
   if (!field$$1.signal) {
-    error$1('Unsupported field reference: ' + $(field$$1));
+    error('Unsupported field reference: ' + $(field$$1));
   }
 
   var s = field$$1.signal,
@@ -66300,7 +64354,7 @@ prototype$76.event = function(source, type) {
 
 prototype$76.addSignal = function(name, value) {
   if (this.signals.hasOwnProperty(name)) {
-    error$1('Duplicate signal name: ' + $(name));
+    error('Duplicate signal name: ' + $(name));
   }
   var op = value instanceof Entry ? value : this.add(operator(value));
   return this.signals[name] = op;
@@ -66308,7 +64362,7 @@ prototype$76.addSignal = function(name, value) {
 
 prototype$76.getSignal = function(name) {
   if (!this.signals[name]) {
-    error$1('Unrecognized signal name: ' + $(name));
+    error('Unrecognized signal name: ' + $(name));
   }
   return this.signals[name];
 };
@@ -66380,7 +64434,7 @@ function objectLambda(obj) {
 
 prototype$76.addBinding = function(name, bind) {
   if (!this.bindings) {
-    error$1('Nested signals do not support binding: ' + $(name));
+    error('Nested signals do not support binding: ' + $(name));
   }
   this.bindings.push(extend({signal: name}, bind));
 };
@@ -66389,7 +64443,7 @@ prototype$76.addBinding = function(name, bind) {
 
 prototype$76.addScaleProj = function(name, transform) {
   if (this.scales.hasOwnProperty(name)) {
-    error$1('Duplicate scale or projection name: ' + $(name));
+    error('Duplicate scale or projection name: ' + $(name));
   }
   this.scales[name] = this.add(transform);
 };
@@ -66404,7 +64458,7 @@ prototype$76.addProjection = function(name, params) {
 
 prototype$76.getScale = function(name) {
   if (!this.scales[name]) {
-    error$1('Unrecognized scale name: ' + $(name));
+    error('Unrecognized scale name: ' + $(name));
   }
   return this.scales[name];
 };
@@ -66423,21 +64477,21 @@ prototype$76.scaleType = function(name) {
 
 prototype$76.addData = function(name, dataScope) {
   if (this.data.hasOwnProperty(name)) {
-    error$1('Duplicate data set name: ' + $(name));
+    error('Duplicate data set name: ' + $(name));
   }
   return (this.data[name] = dataScope);
 };
 
 prototype$76.getData = function(name) {
   if (!this.data[name]) {
-    error$1('Undefined data set name: ' + $(name));
+    error('Undefined data set name: ' + $(name));
   }
   return this.data[name];
 };
 
 prototype$76.addDataPipeline = function(name, entries) {
   if (this.data.hasOwnProperty(name)) {
-    error$1('Duplicate data set name: ' + $(name));
+    error('Duplicate data set name: ' + $(name));
   }
   return this.addData(name, DataScope.fromEntries(this, entries));
 };
@@ -66641,7 +64695,7 @@ function defaults$1() {
 }
 
 var parse$2 = function(spec, config) {
-  if (!isObject(spec)) error$1('Input Vega specification must be an object.');
+  if (!isObject(spec)) error('Input Vega specification must be an object.');
   return parseView(spec, new Scope(defaults([config, spec.config])))
     .toRuntime();
 };
@@ -66746,7 +64800,7 @@ var PARSERS = [
  * Resolve an operator reference.
  */
 function getOperator(_, ctx) {
-  return ctx.get(_.$ref) || error$1('Operator not defined: ' + _.$ref);
+  return ctx.get(_.$ref) || error('Operator not defined: ' + _.$ref);
 }
 
 /**
@@ -66837,7 +64891,7 @@ function parseOperatorParameters(spec, ctx) {
   var op, params;
   if (spec.params) {
     if (!(op = ctx.get(spec.id))) {
-      error$1('Invalid operator id: ' + spec.id);
+      error('Invalid operator id: ' + spec.id);
     }
     params = parseParameters$1(spec.params, ctx);
     ctx.dataflow.connect(op, op.parameters(params));
@@ -66878,7 +64932,7 @@ var parseStream$3 = function(spec, ctx) {
   }
 
   if (stream == null) {
-    error$1('Invalid stream definition: ' + JSON.stringify(spec));
+    error('Invalid stream definition: ' + JSON.stringify(spec));
   }
 
   if (spec.consume) stream.consume(true);
@@ -66895,7 +64949,7 @@ var parseUpdate$1 = function(spec, ctx) {
       update = spec.update,
       params = undefined;
 
-  if (!source) error$1('Source not defined: ' + spec.source);
+  if (!source) error('Source not defined: ' + spec.source);
 
   if (spec.target && spec.target.$expr) {
     target = eventExpression(spec.target.$expr, ctx);
@@ -67338,7 +65392,7 @@ prototype$74.dirty = function(item) {
 function lookupSignal(view, name) {
   return view._signals.hasOwnProperty(name)
     ? view._signals[name]
-    : error$1('Unrecognized signal name: ' + $(name));
+    : view.error('Unrecognized signal name: ' + $(name));
 }
 
 prototype$74.signal = function(name, value, options) {
@@ -67376,7 +65430,7 @@ prototype$74.padding = function(_) {
 
 prototype$74.renderer = function(type) {
   if (!arguments.length) return this._renderType;
-  if (!renderModule(type)) error$1('Unrecognized renderer type: ' + type);
+  if (!renderModule(type)) this.error('Unrecognized renderer type: ' + type);
   if (type !== this._renderType) {
     this._renderType = type;
     if (this._renderer) {
@@ -67536,7 +65590,6 @@ exports.truthy = truthy;
 exports.falsy = falsy;
 exports.logger = logger;
 exports.None = None;
-exports.Error = Error$1;
 exports.Warn = Warn;
 exports.Info = Info;
 exports.Debug = Debug;
@@ -67544,7 +65597,7 @@ exports.array = array$1;
 exports.compare = compare;
 exports.constant = constant$1;
 exports.debounce = debounce;
-exports.error = error$1;
+exports.error = error;
 exports.extend = extend;
 exports.extentIndex = extentIndex;
 exports.fastmap = fastmap;
@@ -67629,7 +65682,1901 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":103,"canvas":103,"fs":103}],308:[function(require,module,exports){
+},{"buffer":103,"canvas":103,"fs":103}],296:[function(require,module,exports){
+var d3 = require('d3-selection');
+var vega = require('vega');
+var vl = require('vega-lite');
+var post = require('./post');
+var versionCompare = require('./version');
+var schemaParser = require('vega-schema-url-parser').default;
+
+
+var MODES = {
+  'vega':      'vega',
+  'vega-lite': 'vega-lite'
+};
+
+var VERSION = {
+  'vega':      vega.version,
+  'vega-lite': vl ? vl.version : -1
+};
+
+var PREPROCESSOR = {
+  'vega':      function(vgjson) { return vgjson; },
+  'vega-lite': function(vljson) { return vl.compile(vljson).spec; }
+};
+
+function load(url, arg, prop, el) {
+  return vega.loader().load(url).then(function (data) {
+    if (!data) {
+      throw new Error('No data found at ' + url);
+    }
+    if (prop === 'config') {
+      arg.opt['config'] = JSON.parse(data);
+      return embed(el, arg.spec, arg.opt);
+    }
+    return embed(el, JSON.parse(data), arg);
+  });
+}
+
+/**
+ * Embed a Vega visualization component in a web page.
+ * This function will either throw an exception, or return a promise
+ *
+ * @param el        DOM element in which to place component (DOM node or CSS selector)
+ * @param spec      String : A URL string from which to load the Vega specification.
+                    Object : The Vega/Vega-Lite specification as a parsed JSON object.
+ * @param opt       A JavaScript object containing options for embedding.
+ */
+function embed(el, spec, opt) {
+  opt = opt || {};
+  var renderer = opt.renderer || 'canvas';
+  var actions  = opt.actions !== undefined ? opt.actions : true;
+
+  // Load the visualization specification.
+  if (vega.isString(spec)) {
+    return load(spec, opt, 'url', el);
+  }
+
+  // Load Vega theme/configuration.
+  if (vega.isString(opt.config)) {
+    return load(opt.config, {spec: spec, opt: opt}, 'config', el);
+  }
+
+  // Decide mode
+  var parsed, parsedVersion, mode, vgSpec;
+  if (spec.$schema) {
+    parsed = schemaParser(spec.$schema);
+    if (opt.mode && opt.mode !== MODES[parsed.library]) {
+      console.warn("The given visualization spec is written in \"" + parsed.library + "\", "
+                 + "but mode argument is assigned as \"" + opt.mode + "\".");
+    }
+    mode = MODES[parsed.library];
+
+    parsedVersion = parsed.version.replace(/^v/g,'');
+    if (versionCompare(parsedVersion, VERSION[mode]) !== 0 ){
+      console.warn("The input spec uses \"" + mode + "\" " + parsedVersion + ", "
+                 + "but current version of \"" + mode + "\" is " + VERSION[mode] + ".");
+    }
+  } else {
+    mode = MODES[opt.mode] || MODES.vega;
+  }
+
+  vgSpec = PREPROCESSOR[mode](spec);
+  if (mode === MODES['vega-lite']) {
+    if (vgSpec.$schema) {
+      parsed = schemaParser(vgSpec.$schema);
+
+      parsedVersion = parsed.version.replace(/^v/g,'');
+      if (versionCompare(parsedVersion, VERSION['vega']) !== 0 ){
+        console.warn("The compiled spec uses \"vega\" " + parsedVersion + ", "
+                   + "but current version of \"vega\" is " + VERSION['vega'] + ".");
+      }
+    }
+  }
+
+
+  // ensure container div has class 'vega-embed'
+  var div = d3.select(el)
+    .classed('vega-embed', true)
+    .html(''); // clear container
+
+  if (opt.onBeforeParse) {
+    // Allow Vega spec to be modified before being used
+    vgSpec = opt.onBeforeParse(vgSpec);
+  }
+
+
+  var runtime = vega.parse(vgSpec, opt.config); // may throw an Error if parsing fails
+
+  var view = new vega.View(runtime, opt.viewConfig)
+    .logLevel(opt.logLevel | vega.Warn)
+    .initialize(el)
+    .renderer(renderer);
+
+  // Vega-Lite does not need hover so we can improve perf by not activating it
+  if (mode !== MODES['vega-lite']) {
+    view.hover();
+  }
+
+  if (opt) {
+    if (opt.width) {
+      view.width(opt.width)
+    }
+    if (opt.height) {
+      view.height(opt.height)
+    }
+    if (opt.padding) {
+      view.padding(opt.padding)
+    }
+  }
+
+  view.run();
+
+  if (actions !== false) {
+    // add child div to house action links
+    var ctrl = div.append('div')
+      .attr('class', 'vega-actions');
+
+    // add 'Export' action
+    if (actions.export !== false) {
+      var ext = (renderer==='canvas' ? 'png' : 'svg');
+      ctrl.append('a')
+        .text('Export as ' + ext.toUpperCase())
+        .attr('href', '#')
+        .attr('target', '_blank')
+        .attr('download', (spec.name || 'vega') + '.' + ext)
+        .on('mousedown', function() {
+          var that = this;
+          view.toImageURL(ext).then(function(url) {
+            that.href =  url;
+          }).catch(function(error) { throw error; });
+          d3.event.preventDefault();
+        });
+    }
+
+    // add 'View Source' action
+    if (actions.source !== false) {
+      ctrl.append('a')
+        .text('View Source')
+        .attr('href', '#')
+        .on('click', function() {
+          viewSource(JSON.stringify(spec, null, 2), opt.sourceHeader || '', opt.sourceFooter || '');
+          d3.event.preventDefault();
+        });
+    }
+
+    // add 'Open in Vega Editor' action
+    if (actions.editor !== false) {
+      var editorUrl = opt.editorUrl || 'https://vega.github.io/editor/'
+      ctrl.append('a')
+        .text('Open in Vega Editor')
+        .attr('href', '#')
+        .on('click', function() {
+          post(window, editorUrl, {
+            spec: JSON.stringify(spec, null, 2),
+            mode: mode
+          });
+          d3.event.preventDefault();
+        });
+    }
+  }
+
+  return Promise.resolve({view: view, spec: spec});
+}
+
+function viewSource(source, sourceHeader, sourceFooter) {
+  var header = '<html><head>' + sourceHeader + '</head>' + '<body><pre><code class="json">';
+  var footer = '</code></pre>' + sourceFooter + '</body></html>';
+  var win = window.open('');
+  win.document.write(header + source + footer);
+  win.document.title = 'Vega JSON Source';
+}
+
+/**
+ * Embed a Vega visualization component in a web page.
+ *
+ * @param el        DOM element in which to place component (DOM node or CSS selector)
+ * @param spec      String : A URL string from which to load the Vega specification.
+ Object : The Vega/Vega-Lite specification as a parsed JSON object.
+ * @param opt       A JavaScript object containing options for embedding.
+ */
+function embedMain(el, spec, opt) {
+  // Ensure any exceptions will be properly handled
+  return new Promise((accept, reject) => {
+    embed(el, spec, opt).then(accept, reject);
+  });
+}
+
+// expose Vega and Vega-Lite libs
+embedMain.vega = vega;
+embedMain.vegalite = vl;
+
+// for es5
+module.exports = embedMain;
+// for es 6
+module.exports.default = embedMain;
+
+},{"./post":297,"./version":298,"d3-selection":109,"vega":295,"vega-lite":86,"vega-schema-url-parser":300}],297:[function(require,module,exports){
+// open editor url in a new window, and pass a message
+module.exports = function(window, url, data) {
+  var editor = window.open(url),
+      wait = 10000,
+      step = 250,
+      count = ~~(wait/step);
+
+  function listen(evt) {
+    if (evt.source === editor) {
+      count = 0;
+      window.removeEventListener('message', listen, false);
+    }
+  }
+  window.addEventListener('message', listen, false);
+
+  // send message
+  // periodically resend until ack received or timeout
+  function send() {
+    if (count <= 0) return;
+    editor.postMessage(data, '*');
+    setTimeout(send, step);
+    count -= 1;
+  }
+  setTimeout(send, step);
+};
+
+},{}],298:[function(require,module,exports){
+module.exports = function(v1, v2, options) {
+    var lexicographical = options && options.lexicographical || true,
+        zeroExtend = options && options.zeroExtend || true,
+        depth = options && options.depth || 2,
+        v1parts = v1.split('.').splice(0, depth),
+        v2parts = v2.split('.').splice(0, depth);
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length === i) {
+            return 1;
+        }
+
+        if (v1parts[i] === v2parts[i]) {
+            continue;
+        }
+        else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length !== v2parts.length) {
+        return -1;
+    }
+
+    return 0;
+};
+
+},{}],299:[function(require,module,exports){
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.vega = global.vega || {})));
+}(this, (function (exports) { 'use strict';
+
+/**
+ * Parse an event selector string.
+ * Returns an array of event stream definitions.
+ */
+var eventSelector = function(selector, source, marks) {
+  DEFAULT_SOURCE = source || VIEW;
+  MARKS = marks || DEFAULT_MARKS;
+  return parseMerge(selector.trim()).map(parseSelector);
+};
+
+var VIEW    = 'view';
+var LBRACK  = '[';
+var RBRACK  = ']';
+var LBRACE  = '{';
+var RBRACE  = '}';
+var COLON   = ':';
+var COMMA   = ',';
+var NAME    = '@';
+var GT      = '>';
+var ILLEGAL = /[[\]{}]/;
+var DEFAULT_SOURCE;
+var MARKS;
+var DEFAULT_MARKS = {
+      '*': 1,
+      arc: 1,
+      area: 1,
+      group: 1,
+      image: 1,
+      line: 1,
+      path: 1,
+      rect: 1,
+      rule: 1,
+      shape: 1,
+      symbol: 1,
+      text: 1,
+      trail: 1
+    };
+
+function isMarkType(type) {
+  return MARKS.hasOwnProperty(type);
+}
+
+function find(s, i, endChar, pushChar, popChar) {
+  var count = 0,
+      n = s.length,
+      c;
+  for (; i<n; ++i) {
+    c = s[i];
+    if (!count && c === endChar) return i;
+    else if (popChar && popChar.indexOf(c) >= 0) --count;
+    else if (pushChar && pushChar.indexOf(c) >= 0) ++count;
+  }
+  return i;
+}
+
+function parseMerge(s) {
+  var output = [],
+      start = 0,
+      n = s.length,
+      i = 0;
+
+  while (i < n) {
+    i = find(s, i, COMMA, LBRACK + LBRACE, RBRACK + RBRACE);
+    output.push(s.substring(start, i).trim());
+    start = ++i;
+  }
+
+  if (output.length === 0) {
+    throw 'Empty event selector: ' + s;
+  }
+  return output;
+}
+
+function parseSelector(s) {
+  return s[0] === '['
+    ? parseBetween(s)
+    : parseStream(s);
+}
+
+function parseBetween(s) {
+  var n = s.length,
+      i = 1,
+      b, stream;
+
+  i = find(s, i, RBRACK, LBRACK, RBRACK);
+  if (i === n) {
+    throw 'Empty between selector: ' + s;
+  }
+
+  b = parseMerge(s.substring(1, i));
+  if (b.length !== 2) {
+    throw 'Between selector must have two elements: ' + s;
+  }
+
+  s = s.slice(i + 1).trim();
+  if (s[0] !== GT) {
+    throw 'Expected \'>\' after between selector: ' + s;
+  }
+
+  b = b.map(parseSelector);
+
+  stream = parseSelector(s.slice(1).trim());
+  if (stream.between) {
+    return {
+      between: b,
+      stream: stream
+    };
+  } else {
+    stream.between = b;
+  }
+
+  return stream;
+}
+
+function parseStream(s) {
+  var stream = {source: DEFAULT_SOURCE},
+      source = [],
+      throttle = [0, 0],
+      markname = 0,
+      start = 0,
+      n = s.length,
+      i = 0, j,
+      filter;
+
+  // extract throttle from end
+  if (s[n-1] === RBRACE) {
+    i = s.lastIndexOf(LBRACE);
+    if (i >= 0) {
+      try {
+        throttle = parseThrottle(s.substring(i+1, n-1));
+      } catch (e) {
+        throw 'Invalid throttle specification: ' + s;
+      }
+      s = s.slice(0, i).trim();
+      n = s.length;
+    } else throw 'Unmatched right brace: ' + s;
+    i = 0;
+  }
+
+  if (!n) throw s;
+
+  // set name flag based on first char
+  if (s[0] === NAME) markname = ++i;
+
+  // extract first part of multi-part stream selector
+  j = find(s, i, COLON);
+  if (j < n) {
+    source.push(s.substring(start, j).trim());
+    start = i = ++j;
+  }
+
+  // extract remaining part of stream selector
+  i = find(s, i, LBRACK);
+  if (i === n) {
+    source.push(s.substring(start, n).trim());
+  } else {
+    source.push(s.substring(start, i).trim());
+    filter = [];
+    start = ++i;
+    if (start === n) throw 'Unmatched left bracket: ' + s;
+  }
+
+  // extract filters
+  while (i < n) {
+    i = find(s, i, RBRACK);
+    if (i === n) throw 'Unmatched left bracket: ' + s;
+    filter.push(s.substring(start, i).trim());
+    if (i < n-1 && s[++i] !== LBRACK) throw 'Expected left bracket: ' + s;
+    start = ++i;
+  }
+
+  // marshall event stream specification
+  if (!(n = source.length) || ILLEGAL.test(source[n-1])) {
+    throw 'Invalid event selector: ' + s;
+  }
+
+  if (n > 1) {
+    stream.type = source[1];
+    if (markname) {
+      stream.markname = source[0].slice(1);
+    } else if (isMarkType(source[0])) {
+      stream.marktype = source[0];
+    } else {
+      stream.source = source[0];
+    }
+  } else {
+    stream.type = source[0];
+  }
+  if (stream.type.slice(-1) === '!') {
+    stream.consume = true;
+    stream.type = stream.type.slice(0, -1);
+  }
+  if (filter != null) stream.filter = filter;
+  if (throttle[0]) stream.throttle = throttle[0];
+  if (throttle[1]) stream.debounce = throttle[1];
+
+  return stream;
+}
+
+function parseThrottle(s) {
+  var a = s.split(COMMA);
+  if (!s.length || a.length > 2) throw s;
+  return a.map(function(_) {
+    var x = +_;
+    if (x !== x) throw s;
+    return x;
+  });
+}
+
+exports.selector = eventSelector;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+},{}],300:[function(require,module,exports){
+"use strict";
+/**
+ * Parse a vega schema url into library and version.
+ */
+function default_1(url) {
+    var regex = /\/schema\/([\w-]+)\/([\w\.\-]+)\.json$/g;
+    var _a = regex.exec(url).slice(1, 3), library = _a[0], version = _a[1];
+    return { library: library, version: version };
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
+
+},{}],301:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_format_1 = require("d3-format");
+var d3_time_1 = require("d3-time");
+var d3_time_format_1 = require("d3-time-format");
+/**
+ * Format value using formatType and format
+ * @param value - a field value to be formatted
+ * @param formatType - the formatType can be: "time", "number", or "string"
+ * @param format - a time time format specifier, or a time number format specifier, or undefined
+ * @return the formatted value, or undefined if value or formatType is missing
+ */
+function customFormat(value, formatType, format) {
+    if (value === undefined || value === null) {
+        return undefined;
+    }
+    if (!formatType) {
+        return undefined;
+    }
+    switch (formatType) {
+        case 'time':
+            return format ? d3_time_format_1.timeFormat(format)(value) : autoTimeFormat(value);
+        case 'number':
+            return format ? d3_format_1.format(format)(value) : autoNumberFormat(value);
+        case 'string':
+        default:
+            return value;
+    }
+}
+exports.customFormat = customFormat;
+/**
+ * Automatically format a time, number or string value
+ * @return the formatted time, number or string value
+ */
+function autoFormat(value) {
+    if (typeof value === 'number') {
+        return autoNumberFormat(value);
+    }
+    else if (value instanceof Date) {
+        return autoTimeFormat(value);
+    }
+    else {
+        return value;
+    }
+}
+exports.autoFormat = autoFormat;
+/**
+ * Automatically format a number based on its decimal.
+ * @param value number to be formatted
+ * @return If it's a decimal number, return a fixed two points precision.
+ * If it's a whole number, return the original value without any format.
+ */
+function autoNumberFormat(value) {
+    return value % 1 === 0 ? d3_format_1.format(',')(value) : d3_format_1.format(',.2f')(value);
+}
+exports.autoNumberFormat = autoNumberFormat;
+/**
+ * Automatically format a time based on its date.
+ * @param date object to be formatted
+ * @return a formatted time string depending on the time. For example,
+ * the start of February is formatted as "February", while February second is formatted as "Feb 2".
+ */
+function autoTimeFormat(date) {
+    var formatMillisecond = d3_time_format_1.timeFormat('.%L'), formatSecond = d3_time_format_1.timeFormat(':%S'), formatMinute = d3_time_format_1.timeFormat('%I:%M'), formatHour = d3_time_format_1.timeFormat('%I %p'), formatDay = d3_time_format_1.timeFormat('%a %d'), formatWeek = d3_time_format_1.timeFormat('%b %d'), formatMonth = d3_time_format_1.timeFormat('%B'), formatYear = d3_time_format_1.timeFormat('%Y');
+    return (d3_time_1.timeSecond(date) < date ? formatMillisecond
+        : d3_time_1.timeMinute(date) < date ? formatSecond
+            : d3_time_1.timeHour(date) < date ? formatMinute
+                : d3_time_1.timeDay(date) < date ? formatHour
+                    : d3_time_1.timeMonth(date) < date ? (d3_time_1.timeWeek(date) < date ? formatDay : formatWeek)
+                        : d3_time_1.timeYear(date) < date ? formatMonth
+                            : formatYear)(date);
+}
+exports.autoTimeFormat = autoTimeFormat;
+
+},{"d3-format":107,"d3-time":111,"d3-time-format":110}],302:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_selection_1 = require("d3-selection");
+var options_1 = require("./options");
+var parseOption_1 = require("./parseOption");
+var supplementField_1 = require("./supplementField");
+var tooltipDisplay_1 = require("./tooltipDisplay");
+var tooltipPromise = undefined;
+var tooltipActive = false;
+/**
+ * Export API for Vega visualizations: vg.tooltip(vgView, options)
+ * options can specify whether to show all fields or to show only custom fields
+ * It can also provide custom title and format for fields
+ */
+function vega(vgView, options) {
+    if (options === void 0) { options = { showAllFields: true }; }
+    start(vgView, copyOptions(options));
+    return {
+        destroy: function () {
+            // remove event listeners
+            vgView.removeEventListener('mouseover.tooltipInit');
+            vgView.removeEventListener('mousemove.tooltipUpdate');
+            vgView.removeEventListener('mouseout.tooltipRemove');
+            cancelPromise(); // clear tooltip promise
+        }
+    };
+}
+exports.vega = vega;
+function vegaLite(vgView, vlSpec, options) {
+    if (options === void 0) { options = { showAllFields: true }; }
+    options = supplementField_1.supplementOptions(copyOptions(options), vlSpec);
+    start(vgView, options);
+    return {
+        destroy: function () {
+            // remove event listeners
+            vgView.removeEventListener('mouseover.tooltipInit');
+            vgView.removeEventListener('mousemove.tooltipUpdate');
+            vgView.removeEventListener('mouseout.tooltipRemove');
+            cancelPromise(); // clear tooltip promise
+        }
+    };
+}
+exports.vegaLite = vegaLite;
+function start(vgView, options) {
+    // initialize tooltip with item data and options on mouse over
+    vgView.addEventListener('mouseover.tooltipInit', function (event, item) {
+        if (shouldShowTooltip(item)) {
+            // clear existing promise because mouse can only point at one thing at a time
+            cancelPromise();
+            // make a new promise with time delay for tooltip
+            tooltipPromise = window.setTimeout(function () {
+                init(event, item, options);
+            }, options.delay || options_1.DELAY);
+        }
+    });
+    // update tooltip position on mouse move
+    // (important for large marks e.g. bars)
+    vgView.addEventListener('mousemove.tooltipUpdate', function (event, item) {
+        if (shouldShowTooltip(item) && tooltipActive) {
+            update(event, item, options);
+        }
+    });
+    // clear tooltip on mouse out
+    vgView.addEventListener('mouseout.tooltipRemove', function (event, item) {
+        if (shouldShowTooltip(item)) {
+            cancelPromise();
+            if (tooltipActive) {
+                clear(event, item, options);
+            }
+        }
+    });
+}
+/* Cancel tooltip promise */
+function cancelPromise() {
+    /* We don't check if tooltipPromise is valid because passing
+     an invalid ID to clearTimeout does not have any effect
+     (and doesn't throw an exception). */
+    window.clearTimeout(tooltipPromise);
+    tooltipPromise = undefined;
+}
+/* Initialize tooltip with data */
+function init(event, item, options) {
+    // get tooltip HTML placeholder
+    var tooltipPlaceholder = tooltipDisplay_1.getTooltipPlaceholder();
+    // prepare data for tooltip
+    var tooltipData = parseOption_1.getTooltipData(item, options);
+    if (!tooltipData || tooltipData.length === 0) {
+        return undefined;
+    }
+    // bind data to tooltip HTML placeholder
+    tooltipDisplay_1.bindData(tooltipPlaceholder, tooltipData);
+    tooltipDisplay_1.updatePosition(event, options);
+    tooltipDisplay_1.updateColorTheme(options);
+    d3_selection_1.select('#vis-tooltip').style('visibility', 'visible');
+    tooltipActive = true;
+    // invoke user-provided callback
+    if (options.onAppear) {
+        options.onAppear(event, item);
+    }
+}
+/* Update tooltip position on mousemove */
+function update(event, item, options) {
+    if (!shouldShowTooltip(item)) {
+        return undefined;
+    }
+    tooltipDisplay_1.updatePosition(event, options);
+    // invoke user-provided callback
+    if (options.onMove) {
+        options.onMove(event, item);
+    }
+}
+/* Clear tooltip */
+function clear(event, item, options) {
+    if (!shouldShowTooltip(item)) {
+        return undefined;
+    }
+    // visibility hidden instead of display none
+    // because we need computed tooltip width and height to best position it
+    d3_selection_1.select('#vis-tooltip').style('visibility', 'hidden');
+    tooltipActive = false;
+    tooltipDisplay_1.clearData();
+    tooltipDisplay_1.clearColorTheme();
+    tooltipDisplay_1.clearPosition();
+    // invoke user-provided callback
+    if (options.onDisappear) {
+        options.onDisappear(event, item);
+    }
+}
+/* Decide if a Scenegraph item deserves tooltip */
+function shouldShowTooltip(item) {
+    // no data, no show
+    if (!item || !item.datum) {
+        return false;
+    }
+    // (small multiples) avoid showing tooltip for a facet's background
+    if (item.datum._facetID) {
+        return false;
+    }
+    return true;
+}
+/**
+ * Copy options into new objects to prevent causing side-effect to original object
+ */
+function copyOptions(options) {
+    var newOptions = {};
+    for (var field in options) {
+        if (options.hasOwnProperty(field)) {
+            newOptions[field] = options[field];
+        }
+    }
+    return newOptions;
+}
+
+},{"./options":303,"./parseOption":304,"./supplementField":305,"./tooltipDisplay":306,"d3-selection":109}],303:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DELAY = 100;
+
+},{}],304:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var formatFieldValue_1 = require("./formatFieldValue");
+/**
+ * Prepare data for the tooltip
+ * @return An array of tooltip data [{ title: ..., value: ...}]
+ */
+// TODO: add marktype
+function getTooltipData(item, options) {
+    // ignore the data for group type that represents white space
+    if (item.mark.marktype === 'group' && item.mark.name === 'nested_main_group') {
+        return undefined;
+    }
+    // this array will be bind to the tooltip element
+    var tooltipData;
+    var itemData = {};
+    for (var field in item.datum) {
+        if (item.datum.hasOwnProperty(field)) {
+            itemData[field] = item.datum[field];
+        }
+    }
+    var removeKeys = [
+        '_id', '_prev', 'width', 'height',
+        'count_start', 'count_end',
+        'layout_start', 'layout_mid', 'layout_end', 'layout_path', 'layout_x', 'layout_y'
+    ];
+    removeFields(itemData, removeKeys);
+    // remove duplicate time fields (if any)
+    removeDuplicateTimeFields(itemData, options.fields);
+    // combine multiple rows of a binned field into a single row
+    combineBinFields(itemData, options.fields);
+    // TODO(zening): use Vega-Lite layering to support tooltip on line and area charts (#1)
+    dropFieldsForLineArea(item.mark.marktype, itemData);
+    if (options.showAllFields === true) {
+        tooltipData = prepareAllFieldsData(itemData, options);
+    }
+    else {
+        tooltipData = prepareCustomFieldsData(itemData, options);
+    }
+    return tooltipData;
+}
+exports.getTooltipData = getTooltipData;
+/**
+ * Prepare custom fields data for tooltip. This function formats
+ * field titles and values and returns an array of formatted fields.
+ *
+ * @param {time.map} itemData - a map of item.datum
+ * @param {Object} options - user-provided options
+ * @return An array of formatted fields specified by options [{ title: ..., value: ...}]
+ */
+function prepareCustomFieldsData(itemData, options) {
+    var tooltipData = [];
+    options.fields.forEach(function (fieldOption) {
+        // prepare field title
+        var title = fieldOption.title ? fieldOption.title : fieldOption.field;
+        // get (raw) field value
+        var value = getValue(itemData, fieldOption.field);
+        if (value === undefined) {
+            return undefined;
+        }
+        // format value
+        var formattedValue = formatFieldValue_1.customFormat(value, fieldOption.formatType, fieldOption.format) || formatFieldValue_1.autoFormat(value);
+        // add formatted data to tooltipData
+        tooltipData.push({ title: title, value: formattedValue });
+    });
+    return tooltipData;
+}
+exports.prepareCustomFieldsData = prepareCustomFieldsData;
+/**
+ * Get a field value from a data map.
+ * @param {time.map} itemData - a map of item.datum
+ * @param {string} field - the name of the field. It can contain "." to specify
+ * that the field is not a direct child of item.datum
+ * @return the field value on success, undefined otherwise
+ */
+// TODO(zening): Mute "Cannot find field" warnings for composite vis (issue #39)
+function getValue(itemData, field) {
+    var value;
+    var accessors = field.split('.');
+    // get the first accessor and remove it from the array
+    var firstAccessor = accessors[0];
+    accessors.shift();
+    if (itemData[firstAccessor]) {
+        value = itemData[firstAccessor];
+        // if we still have accessors, use them to get the value
+        accessors.forEach(function (a) {
+            value = value;
+            if (value[a]) {
+                value = value[a];
+            }
+        });
+    }
+    if (value === undefined) {
+        console.warn('[Tooltip] Cannot find field ' + field + ' in data.');
+        return undefined;
+    }
+    else {
+        return value;
+    }
+}
+exports.getValue = getValue;
+/**
+ * Prepare data for all fields in itemData for tooltip. This function
+ * formats field titles and values and returns an array of formatted fields.
+ *
+ * @param {time.map} itemData - a map of item.datum
+ * @param {Object} options - user-provided options
+ * @return All fields in itemData, formatted, in the form of an array: [{ title: ..., value: ...}]
+ *
+ * Please note that this function expects itemData to be simple {field:value} pairs.
+ * It will not try to parse value if it is an object. If value is an object, please
+ * use prepareCustomFieldsData() instead.
+ */
+function prepareAllFieldsData(itemData, options) {
+    var tooltipData = [];
+    // here, fieldOptions still provides format
+    var fieldOptions = {};
+    if (options && options.fields) {
+        for (var _i = 0, _a = options.fields; _i < _a.length; _i++) {
+            var optionField = _a[_i];
+            fieldOptions[optionField.field] = optionField;
+        }
+    }
+    for (var field in itemData) {
+        if (itemData.hasOwnProperty(field)) {
+            var value = itemData[field];
+            var title = void 0;
+            if (fieldOptions[field] && fieldOptions[field].title) {
+                title = fieldOptions[field].title;
+            }
+            else {
+                title = field;
+            }
+            var formatType = void 0;
+            var format = void 0;
+            // format value
+            if (fieldOptions[field]) {
+                formatType = fieldOptions[field].formatType;
+                format = fieldOptions[field].format;
+            }
+            var formattedValue = formatFieldValue_1.customFormat(value, formatType, format) || formatFieldValue_1.autoFormat(value);
+            // add formatted data to tooltipData
+            tooltipData.push({ title: title, value: formattedValue });
+        }
+    }
+    return tooltipData;
+}
+exports.prepareAllFieldsData = prepareAllFieldsData;
+/**
+ * Remove multiple fields from a tooltip data map, using removeKeys
+ *
+ * Certain meta data fields (e.g. "_id", "_prev") should be hidden in the tooltip
+ * by default. This function can be used to remove these fields from tooltip data.
+ * @param {time.map} dataMap - the data map that contains tooltip data.
+ * @param {string[]} removeKeys - the fields that should be removed from dataMap.
+ */
+function removeFields(dataMap, removeKeys) {
+    removeKeys.forEach(function (key) {
+        delete dataMap[key];
+    });
+}
+exports.removeFields = removeFields;
+/**
+ * When a temporal field has timeUnit, itemData will give us duplicated fields
+ * (e.g., Year and YEAR(Year)). In tooltip want to display the field WITH the
+ * timeUnit and remove the field that doesn't have timeUnit.
+ */
+function removeDuplicateTimeFields(itemData, optFields) {
+    if (!optFields) {
+        return undefined;
+    }
+    optFields.forEach(function (optField) {
+        if (optField.removeOriginalTemporalField) {
+            removeFields(itemData, [optField.removeOriginalTemporalField]);
+        }
+    });
+}
+exports.removeDuplicateTimeFields = removeDuplicateTimeFields;
+/**
+ * Combine multiple binned fields in itemData into one field. The value of the field
+ * is a string that describes the bin range.
+ *
+ * @param {Object} itemData - an object of item.datum
+ * @param {Object[]} fieldOptions - a list of field options (i.e. options.fields[])
+ * @return itemData with combined bin fields
+ */
+function combineBinFields(itemData, fieldOptions) {
+    if (!fieldOptions) {
+        return undefined;
+    }
+    fieldOptions.forEach(function (fieldOption) {
+        if (fieldOption.bin === true) {
+            // get binned field names
+            var binFieldRange = fieldOption.field;
+            var binFieldStart = binFieldRange.concat('_start');
+            var binFieldMid = binFieldRange.concat('_mid');
+            var binFieldEnd = binFieldRange.concat('_end');
+            // use start value and end value to compute range
+            // save the computed range in binFieldStart
+            var startValue = itemData[binFieldStart];
+            var endValue = itemData[binFieldEnd];
+            if ((startValue !== undefined) && (endValue !== undefined)) {
+                var range = startValue + '-' + endValue;
+                itemData[binFieldRange] = range;
+            }
+            // remove binFieldMid, binFieldEnd, and binFieldRange from itemData
+            var binRemoveKeys = [];
+            binRemoveKeys.push(binFieldStart, binFieldMid, binFieldEnd);
+            removeFields(itemData, binRemoveKeys);
+        }
+    });
+    return itemData;
+}
+exports.combineBinFields = combineBinFields;
+/**
+ * Drop fields for line and area marks.
+ *
+ * Lines and areas are defined by a series of datum. We overlay point marks
+ * on top of lines and areas to allow tooltip to show all data in the series.
+ * For the line marks and area marks underneath, we only show nominal fields
+ * in tooltip. This is because line / area marks only give us the last datum
+ * in their series. It only make sense to show the nominal fields (e.g., symbol
+ * = APPL, AMZN, GOOG, IBM, MSFT) because these fields don't tend to change along
+ * the line / area border.
+ */
+function dropFieldsForLineArea(marktype, itemData) {
+    if (marktype === 'line' || marktype === 'area') {
+        var quanKeys = [];
+        for (var key in itemData) {
+            if (itemData.hasOwnProperty(key)) {
+                var value = itemData[key];
+                if (value instanceof Date) {
+                    quanKeys.push(key);
+                }
+            }
+        }
+        removeFields(itemData, quanKeys);
+    }
+}
+exports.dropFieldsForLineArea = dropFieldsForLineArea;
+
+},{"./formatFieldValue":301}],305:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var vl = require("vega-lite");
+var type_1 = require("vega-lite/build/src/type");
+/* mapping from fieldDef.type to formatType */
+var formatTypeMap = {
+    'quantitative': 'number',
+    'temporal': 'time',
+    'ordinal': undefined,
+    'nominal': undefined
+};
+/**
+ * (Vega-Lite only) Supplement options with vlSpec
+ *
+ * @param options - user-provided options
+ * @param vlSpec - vega-lite spec
+ * @return the vlSpec-supplemented options object
+ *
+ * if options.showAllFields is true or undefined, vlSpec will supplement
+ * options.fields with all fields in the spec
+ * if options.showAllFields is false, vlSpec will only supplement existing fields
+ * in options.fields
+ */
+function supplementOptions(options, vlSpec) {
+    // fields to be supplemented by vlSpec
+    var supplementedFields = [];
+    // if showAllFields is true or undefined, supplement all fields in vlSpec
+    if (options.showAllFields !== false) {
+        vl.spec.fieldDefs(vlSpec).forEach(function (fieldDef) {
+            // get a fieldOption in options that matches the fieldDef
+            var fieldOption = getFieldOption(options.fields, fieldDef);
+            // supplement the fieldOption with fieldDef and config
+            var supplementedFieldOption = supplementFieldOption(fieldOption, fieldDef, vlSpec);
+            supplementedFields.push(supplementedFieldOption);
+        });
+    }
+    else {
+        if (options.fields) {
+            options.fields.forEach(function (fieldOption) {
+                // get the fieldDef in vlSpec that matches the fieldOption
+                var fieldDef = getFieldDef(vl.spec.fieldDefs(vlSpec), fieldOption);
+                // supplement the fieldOption with fieldDef and config
+                var supplementedFieldOption = supplementFieldOption(fieldOption, fieldDef, vlSpec);
+                supplementedFields.push(supplementedFieldOption);
+            });
+        }
+    }
+    options.fields = supplementedFields;
+    return options;
+}
+exports.supplementOptions = supplementOptions;
+/**
+ * Find a fieldOption in fieldOptions that matches a fieldDef
+ *
+ * @param {Object[]} fieldOptionss - a list of field options (i.e. options.fields[])
+ * @param {Object} fieldDef - from vlSpec
+ * @return the matching fieldOption, or undefined if no match was found
+ *
+ * If the fieldDef is aggregated, find a fieldOption that matches the field name and
+ * the aggregation of the fieldDef.
+ * If the fieldDef is not aggregated, find a fieldOption that matches the field name.
+ */
+function getFieldOption(fieldOptions, fieldDef) {
+    if (!fieldDef || !fieldOptions || fieldOptions.length <= 0) {
+        return undefined;
+    }
+    // if aggregate, match field name and aggregate operation
+    if (fieldDef.aggregate) {
+        // try find the perfect match: field name equals, aggregate operation equals
+        for (var _i = 0, fieldOptions_1 = fieldOptions; _i < fieldOptions_1.length; _i++) {
+            var item = fieldOptions_1[_i];
+            if (item.field === fieldDef.field && item.aggregate === fieldDef.aggregate) {
+                return item;
+            }
+        }
+        // try find the second-best match: field name equals, field.aggregate is not specified
+        for (var _a = 0, fieldOptions_2 = fieldOptions; _a < fieldOptions_2.length; _a++) {
+            var item = fieldOptions_2[_a];
+            if (item.field === fieldDef.field && !item.aggregate) {
+                return item;
+            }
+        }
+        // return undefined if no match was found
+        return undefined;
+    }
+    else {
+        for (var _b = 0, fieldOptions_3 = fieldOptions; _b < fieldOptions_3.length; _b++) {
+            var item = fieldOptions_3[_b];
+            if (item.field === fieldDef.field) {
+                return item;
+            }
+        }
+        // return undefined if no match was found
+        return undefined;
+    }
+}
+exports.getFieldOption = getFieldOption;
+/**
+ * Find a fieldDef that matches a fieldOption
+ *
+ * @param {Object} fieldOption - a field option (a member in options.fields[])
+ * @return the matching fieldDef, or undefined if no match was found
+ *
+ * A matching fieldDef should have the same field name as fieldOption.
+ * If the matching fieldDef is aggregated, the aggregation should not contradict
+ * with that of the fieldOption.
+ */
+function getFieldDef(fieldDefs, fieldOption) {
+    if (!fieldOption || !fieldOption.field || !fieldDefs) {
+        return undefined;
+    }
+    // field name should match, aggregation should not disagree
+    for (var _i = 0, fieldDefs_1 = fieldDefs; _i < fieldDefs_1.length; _i++) {
+        var item = fieldDefs_1[_i];
+        if (item.field === fieldOption.field) {
+            if (item.aggregate) {
+                if (item.aggregate === fieldOption.aggregate || !fieldOption.aggregate) {
+                    return item;
+                }
+            }
+            else {
+                return item;
+            }
+        }
+    }
+    // return undefined if no match was found
+    return undefined;
+}
+exports.getFieldDef = getFieldDef;
+/**
+ * Supplement a fieldOption (from options.fields[]) with a fieldDef, config
+ * (which provides timeFormat, numberFormat, countTitle)
+ * Either fieldOption or fieldDef can be undefined, but they cannot both be undefined.
+ * config (and its members timeFormat, numberFormat and countTitle) can be undefined.
+ * @return the supplemented fieldOption, or undefined on error
+ */
+function supplementFieldOption(fieldOption, fieldDef, vlSpec) {
+    // many specs don't have config
+    var config = vl.util.extend({}, vlSpec.config);
+    // at least one of fieldOption and fieldDef should exist
+    if (!fieldOption && !fieldDef) {
+        console.error('[Tooltip] Cannot supplement a field when field and fieldDef are both empty.');
+        return undefined;
+    }
+    // if either one of fieldOption and fieldDef is undefined, make it an empty object
+    if (!fieldOption && fieldDef) {
+        fieldOption = {};
+    }
+    if (fieldOption && !fieldDef) {
+        fieldDef = {};
+    }
+    // the supplemented field option
+    var supplementedFieldOption = {};
+    // supplement a user-provided field name with underscore prefixes and suffixes to
+    // match the field names in item.datum
+    // for aggregation, this will add prefix "mean_" etc.
+    // for timeUnit, this will add prefix "yearmonth_" etc.
+    // for bin, this will add prefix "bin_" and suffix "_start". Later we will replace "_start" with "_range".
+    supplementedFieldOption.field = fieldDef.field ?
+        vl.fieldDef.field(fieldDef) : fieldOption.field;
+    // If a fieldDef is a (TIMEUNIT)T, we check if the original T is present in the vlSpec.
+    // If only (TIMEUNIT)T is present in vlSpec, we set `removeOriginalTemporalField` to T,
+    // which will cause function removeDuplicateTimeFields() to remove T and only keep (TIMEUNIT)T
+    // in item data.
+    // If both (TIMEUNIT)T and T are in vlSpec, we set `removeOriginalTemporalField` to undefined,
+    // which will leave both T and (TIMEUNIT)T in item data.
+    // Note: user should never have to provide this boolean in options
+    if (fieldDef.type === type_1.TEMPORAL && fieldDef.timeUnit) {
+        // in most cases, if it's a (TIMEUNIT)T, we remove original T
+        var originalTemporalField = fieldDef.field;
+        supplementedFieldOption.removeOriginalTemporalField = originalTemporalField;
+        // handle corner case: if T is present in vlSpec, then we keep both T and (TIMEUNIT)T
+        var fieldDefs = vl.spec.fieldDefs(vlSpec);
+        for (var _i = 0, fieldDefs_2 = fieldDefs; _i < fieldDefs_2.length; _i++) {
+            var items = fieldDefs_2[_i];
+            if (items.field === originalTemporalField && !items.timeUnit) {
+                supplementedFieldOption.removeOriginalTemporalField = undefined;
+                break;
+            }
+        }
+    }
+    // supplement title
+    if (!config.countTitle) {
+        config.countTitle = vl.config.defaultConfig.countTitle; // use vl default countTitle
+    }
+    supplementedFieldOption.title = fieldOption.title ?
+        fieldOption.title : vl.fieldDef.title(fieldDef, config);
+    // supplement formatType
+    supplementedFieldOption.formatType = fieldOption.formatType ?
+        fieldOption.formatType : formatTypeMap[fieldDef.type];
+    // supplement format
+    if (fieldOption.format) {
+        supplementedFieldOption.format = fieldOption.format;
+    }
+    else {
+        switch (supplementedFieldOption.formatType) {
+            case 'time':
+                supplementedFieldOption.format = fieldDef.timeUnit ?
+                    // TODO(zening): use template for all time fields, to be consistent with Vega-Lite
+                    vl.timeUnit.formatExpression(fieldDef.timeUnit, '', false, false).split("'")[1]
+                    : config.timeFormat || vl.config.defaultConfig.timeFormat;
+                break;
+            case 'number':
+                supplementedFieldOption.format = config.numberFormat;
+                break;
+            case 'string':
+            default:
+        }
+    }
+    // supplement bin from fieldDef, user should never have to provide bin in options
+    if (fieldDef.bin) {
+        supplementedFieldOption.field = supplementedFieldOption.field.replace('_start', '_range'); // replace suffix
+        supplementedFieldOption.bin = true;
+        supplementedFieldOption.formatType = 'string'; // we show bin range as string (e.g. "5-10")
+    }
+    return supplementedFieldOption;
+}
+exports.supplementFieldOption = supplementFieldOption;
+
+},{"vega-lite":86,"vega-lite/build/src/type":99}],306:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_selection_1 = require("d3-selection");
+/**
+ * Get the tooltip HTML placeholder by id selector "#vis-tooltip"
+ * If none exists, create a placeholder.
+ * @returns the HTML placeholder for tooltip
+ */
+function getTooltipPlaceholder() {
+    var tooltipPlaceholder;
+    if (d3_selection_1.select('#vis-tooltip').empty()) {
+        tooltipPlaceholder = d3_selection_1.select('body').append('div')
+            .attr('id', 'vis-tooltip')
+            .attr('class', 'vg-tooltip');
+    }
+    else {
+        tooltipPlaceholder = d3_selection_1.select('#vis-tooltip');
+    }
+    return tooltipPlaceholder;
+}
+exports.getTooltipPlaceholder = getTooltipPlaceholder;
+/**
+ * Bind tooltipData to the tooltip placeholder
+ */
+function bindData(tooltipPlaceholder, tooltipData) {
+    tooltipPlaceholder.selectAll('table').remove();
+    var tooltipRows = tooltipPlaceholder.append('table').selectAll('.tooltip-row')
+        .data(tooltipData);
+    tooltipRows.exit().remove();
+    var row = tooltipRows.enter().append('tr')
+        .attr('class', 'tooltip-row');
+    row.append('td').attr('class', 'key').text(function (d) { return d.title + ':'; });
+    row.append('td').attr('class', 'value').text(function (d) { return d.value; });
+}
+exports.bindData = bindData;
+/**
+ * Clear tooltip data
+ */
+function clearData() {
+    d3_selection_1.select('#vis-tooltip').selectAll('.tooltip-row').data([])
+        .exit().remove();
+}
+exports.clearData = clearData;
+/**
+ * Update tooltip position
+ * Default position is 10px right of and 10px below the cursor. This can be
+ * overwritten by options.offset
+ */
+function updatePosition(event, options) {
+    // determine x and y offsets, defaults are 10px
+    var offsetX = 10;
+    var offsetY = 10;
+    if (options && options.offset && (options.offset.x !== undefined) && (options.offset.x !== null)) {
+        offsetX = options.offset.x;
+    }
+    if (options && options.offset && (options.offset.y !== undefined) && (options.offset.y !== null)) {
+        offsetY = options.offset.y;
+    }
+    // TODO: use the correct time type
+    d3_selection_1.select('#vis-tooltip')
+        .style('top', function () {
+        // by default: put tooltip 10px below cursor
+        // if tooltip is close to the bottom of the window, put tooltip 10px above cursor
+        var tooltipHeight = this.getBoundingClientRect().height;
+        if (event.clientY + tooltipHeight + offsetY < window.innerHeight) {
+            return '' + (event.clientY + offsetY) + 'px';
+        }
+        else {
+            return '' + (event.clientY - tooltipHeight - offsetY) + 'px';
+        }
+    })
+        .style('left', function () {
+        // by default: put tooltip 10px to the right of cursor
+        // if tooltip is close to the right edge of the window, put tooltip 10 px to the left of cursor
+        var tooltipWidth = this.getBoundingClientRect().width;
+        if (event.clientX + tooltipWidth + offsetX < window.innerWidth) {
+            return '' + (event.clientX + offsetX) + 'px';
+        }
+        else {
+            return '' + (event.clientX - tooltipWidth - offsetX) + 'px';
+        }
+    });
+}
+exports.updatePosition = updatePosition;
+/* Clear tooltip position */
+function clearPosition() {
+    d3_selection_1.select('#vis-tooltip')
+        .style('top', '-9999px')
+        .style('left', '-9999px');
+}
+exports.clearPosition = clearPosition;
+/**
+ * Update tooltip color theme according to options.colorTheme
+ *
+ * If colorTheme === "dark", apply dark theme to tooltip.
+ * Otherwise apply light color theme.
+ */
+function updateColorTheme(options) {
+    clearColorTheme();
+    if (options && options.colorTheme === 'dark') {
+        d3_selection_1.select('#vis-tooltip').classed('dark-theme', true);
+    }
+    else {
+        d3_selection_1.select('#vis-tooltip').classed('light-theme', true);
+    }
+}
+exports.updateColorTheme = updateColorTheme;
+/* Clear color themes */
+function clearColorTheme() {
+    d3_selection_1.select('#vis-tooltip').classed('dark-theme light-theme', false);
+}
+exports.clearColorTheme = clearColorTheme;
+
+},{"d3-selection":109}],307:[function(require,module,exports){
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.vega = global.vega || {})));
+}(this, (function (exports) { 'use strict';
+
+var accessor = function(fn, fields, name) {
+  fn.fields = fields || [];
+  fn.fname = name;
+  return fn;
+};
+
+function accessorName(fn) {
+  return fn == null ? null : fn.fname;
+}
+
+function accessorFields(fn) {
+  return fn == null ? null : fn.fields;
+}
+
+var error = function(message) {
+  throw Error(message);
+};
+
+var splitAccessPath = function(p) {
+  var path = [],
+      q = null,
+      b = 0,
+      n = p.length,
+      s = '',
+      i, j, c;
+
+  p = p + '';
+
+  function push() {
+    path.push(s + p.substring(i, j));
+    s = '';
+    i = j + 1;
+  }
+
+  for (i=j=0; j<n; ++j) {
+    c = p[j];
+    if (c === '\\') {
+      s += p.substring(i, j);
+      i = ++j;
+    } else if (c === q) {
+      push();
+      q = null;
+      b = -1;
+    } else if (q) {
+      continue;
+    } else if (i === b && c === '"') {
+      i = j + 1;
+      q = c;
+    } else if (i === b && c === "'") {
+      i = j + 1;
+      q = c;
+    } else if (c === '.' && !b) {
+      if (j > i) {
+        push();
+      } else {
+        i = j + 1;
+      }
+    } else if (c === '[') {
+      if (j > i) push();
+      b = i = j + 1;
+    } else if (c === ']') {
+      if (!b) error('Access path missing open bracket: ' + p);
+      if (b > 0) push();
+      b = 0;
+      i = j + 1;
+    }
+  }
+
+  if (b) error('Access path missing closing bracket: ' + p);
+  if (q) error('Access path missing closing quote: ' + p);
+
+  if (j > i) {
+    j++;
+    push();
+  }
+
+  return path;
+};
+
+var isArray = Array.isArray;
+
+var isObject = function(_) {
+  return _ === Object(_);
+};
+
+var isString = function(_) {
+  return typeof _ === 'string';
+};
+
+function $(x) {
+  return isArray(x) ? '[' + x.map($) + ']'
+    : isObject(x) || isString(x) ?
+      // Output valid JSON and JS source strings.
+      // See http://timelessrepo.com/json-isnt-a-javascript-subset
+      JSON.stringify(x).replace('\u2028','\\u2028').replace('\u2029', '\\u2029')
+    : x;
+}
+
+var field = function(field, name) {
+  var path = splitAccessPath(field),
+      code = 'return _[' + path.map($).join('][') + '];';
+
+  return accessor(
+    Function('_', code),
+    [(field = path.length===1 ? path[0] : field)],
+    name || field
+  );
+};
+
+var empty = [];
+
+var id = field('id');
+
+var identity = accessor(function(_) { return _; }, empty, 'identity');
+
+var zero = accessor(function() { return 0; }, empty, 'zero');
+
+var one = accessor(function() { return 1; }, empty, 'one');
+
+var truthy = accessor(function() { return true; }, empty, 'true');
+
+var falsy = accessor(function() { return false; }, empty, 'false');
+
+function log(method, level, input) {
+  var args = [level].concat([].slice.call(input));
+  console[method].apply(console, args); // eslint-disable-line no-console
+}
+
+var None  = 0;
+var Error$1 = 1;
+var Warn  = 2;
+var Info  = 3;
+var Debug = 4;
+
+var logger = function(_) {
+  var level = _ || None;
+  return {
+    level: function(_) {
+      if (arguments.length) {
+        level = +_;
+        return this;
+      } else {
+        return level;
+      }
+    },
+    error: function() {
+      if (level >= Error$1) log('error', 'ERROR', arguments);
+      return this;
+    },
+    warn: function() {
+      if (level >= Warn) log('warn', 'WARN', arguments);
+      return this;
+    },
+    info: function() {
+      if (level >= Info) log('log', 'INFO', arguments);
+      return this;
+    },
+    debug: function() {
+      if (level >= Debug) log('log', 'DEBUG', arguments);
+      return this;
+    }
+  }
+};
+
+var array = function(_) {
+  return _ != null ? (isArray(_) ? _ : [_]) : [];
+};
+
+var compare = function(fields, orders) {
+  var idx = [],
+      cmp = (fields = array(fields)).map(function(f, i) {
+        if (f == null) {
+          return null;
+        } else {
+          idx.push(i);
+          return splitAccessPath(f).map($).join('][');
+        }
+      }),
+      n = idx.length - 1,
+      ord = array(orders),
+      code = 'var u,v;return ',
+      i, j, f, u, v, d, lt, gt;
+
+  if (n < 0) return null;
+
+  for (j=0; j<=n; ++j) {
+    i = idx[j];
+    f = cmp[i];
+    u = '(u=a['+f+'])';
+    v = '(v=b['+f+'])';
+    d = '((v=v instanceof Date?+v:v),(u=u instanceof Date?+u:u))';
+    if (ord[i] !== 'descending') {
+      gt = 1;
+      lt = -1;
+    } else {
+      gt = -1;
+      lt = 1;
+    }
+    code += '(' + u+'<'+v+'||u==null)&&v!=null?' + lt
+      + ':(u>v||v==null)&&u!=null?' + gt
+      + ':'+d+'!==u&&v===v?' + lt
+      + ':v!==v&&u===u?' + gt
+      + (i < n ? ':' : ':0');
+  }
+
+  return accessor(
+    Function('a', 'b', code + ';'),
+    fields.filter(function(_) { return _ != null; })
+  );
+};
+
+var isFunction = function(_) {
+  return typeof _ === 'function';
+};
+
+var constant = function(_) {
+  return isFunction(_) ? _ : function() { return _; };
+};
+
+var debounce = function(delay, handler) {
+  var tid, evt;
+
+  function callback() {
+    handler(evt);
+    tid = evt = null;
+  }
+
+  return function(e) {
+    evt = e;
+    if (tid) clearTimeout(tid);
+    tid = setTimeout(callback, delay);
+  };
+};
+
+var extend = function(_) {
+  for (var x, k, i=1, len=arguments.length; i<len; ++i) {
+    x = arguments[i];
+    for (k in x) { _[k] = x[k]; }
+  }
+  return _;
+};
+
+var extentIndex = function(array, f) {
+  var i = -1,
+      n = array.length,
+      a, b, c, u, v;
+
+  if (f == null) {
+    while (++i < n) {
+      b = array[i];
+      if (b != null && b >= b) {
+        a = c = b;
+        break;
+      }
+    }
+    u = v = i;
+    while (++i < n) {
+      b = array[i];
+      if (b != null) {
+        if (a > b) {
+          a = b;
+          u = i;
+        }
+        if (c < b) {
+          c = b;
+          v = i;
+        }
+      }
+    }
+  } else {
+    while (++i < n) {
+      b = f(array[i], i, array);
+      if (b != null && b >= b) {
+        a = c = b;
+        break;
+      }
+    }
+    u = v = i;
+    while (++i < n) {
+      b = f(array[i], i, array);
+      if (b != null) {
+        if (a > b) {
+          a = b;
+          u = i;
+        }
+        if (c < b) {
+          c = b;
+          v = i;
+        }
+      }
+    }
+  }
+
+  return [u, v];
+};
+
+var NULL = {};
+
+var fastmap = function(input) {
+  var obj = {},
+      map,
+      test;
+
+  function has(key) {
+    return obj.hasOwnProperty(key) && obj[key] !== NULL;
+  }
+
+  map = {
+    size: 0,
+    empty: 0,
+    object: obj,
+    has: has,
+    get: function(key) {
+      return has(key) ? obj[key] : undefined;
+    },
+    set: function(key, value) {
+      if (!has(key)) {
+        ++map.size;
+        if (obj[key] === NULL) --map.empty;
+      }
+      obj[key] = value;
+      return this;
+    },
+    delete: function(key) {
+      if (has(key)) {
+        --map.size;
+        ++map.empty;
+        obj[key] = NULL;
+      }
+      return this;
+    },
+    clear: function() {
+      map.size = map.empty = 0;
+      map.object = obj = {};
+    },
+    test: function(_) {
+      if (arguments.length) {
+        test = _;
+        return map;
+      } else {
+        return test;
+      }
+    },
+    clean: function() {
+      var next = {},
+          size = 0,
+          key, value;
+      for (key in obj) {
+        value = obj[key];
+        if (value !== NULL && (!test || !test(value))) {
+          next[key] = value;
+          ++size;
+        }
+      }
+      map.size = size;
+      map.empty = 0;
+      map.object = (obj = next);
+    }
+  };
+
+  if (input) Object.keys(input).forEach(function(key) {
+    map.set(key, input[key]);
+  });
+
+  return map;
+};
+
+var inherits = function(child, parent) {
+  var proto = (child.prototype = Object.create(parent.prototype));
+  proto.constructor = child;
+  return proto;
+};
+
+var isBoolean = function(_) {
+  return typeof _ === 'boolean';
+};
+
+var isDate = function(_) {
+  return Object.prototype.toString.call(_) === '[object Date]';
+};
+
+var isNumber = function(_) {
+  return typeof _ === 'number';
+};
+
+var isRegExp = function(_) {
+  return Object.prototype.toString.call(_) === '[object RegExp]';
+};
+
+var key = function(fields) {
+  fields = fields ? array(fields) : fields;
+  var fn = !(fields && fields.length)
+    ? function() { return ''; }
+    : Function('_', 'return \'\'+' +
+        fields.map(function(f) {
+          return '_[' + splitAccessPath(f).map($).join('][') + ']';
+        }).join('+\'|\'+') + ';');
+  return accessor(fn, fields, 'key');
+};
+
+var merge = function(compare, array0, array1, output) {
+  var n0 = array0.length,
+      n1 = array1.length;
+
+  if (!n1) return array0;
+  if (!n0) return array1;
+
+  var merged = output || new array0.constructor(n0 + n1),
+      i0 = 0, i1 = 0, i = 0;
+
+  for (; i0<n0 && i1<n1; ++i) {
+    merged[i] = compare(array0[i0], array1[i1]) > 0
+       ? array1[i1++]
+       : array0[i0++];
+  }
+
+  for (; i0<n0; ++i0, ++i) {
+    merged[i] = array0[i0];
+  }
+
+  for (; i1<n1; ++i1, ++i) {
+    merged[i] = array1[i1];
+  }
+
+  return merged;
+};
+
+var repeat = function(str, reps) {
+  var s = '';
+  while (--reps >= 0) s += str;
+  return s;
+};
+
+var pad = function(str, length, padchar, align) {
+  var c = padchar || ' ',
+      s = str + '',
+      n = length - s.length;
+
+  return n <= 0 ? s
+    : align === 'left' ? repeat(c, n) + s
+    : align === 'center' ? repeat(c, ~~(n/2)) + s + repeat(c, Math.ceil(n/2))
+    : s + repeat(c, n);
+};
+
+var peek = function(array) {
+  return array[array.length - 1];
+};
+
+var toBoolean = function(_) {
+  return _ == null || _ === '' ? null : !_ || _ === 'false' || _ === '0' ? false : !!_;
+};
+
+function defaultParser(_) {
+  return isNumber(_) ? _ : isDate(_) ? _ : Date.parse(_);
+}
+
+var toDate = function(_, parser) {
+  parser = parser || defaultParser;
+  return _ == null || _ === '' ? null : parser(_);
+};
+
+var toNumber = function(_) {
+  return _ == null || _ === '' ? null : +_;
+};
+
+var toString = function(_) {
+  return _ == null || _ === '' ? null : _ + '';
+};
+
+var toSet = function(_) {
+  for (var s={}, i=0, n=_.length; i<n; ++i) s[_[i]] = 1;
+  return s;
+};
+
+var truncate = function(str, length, align, ellipsis) {
+  var e = ellipsis != null ? ellipsis : '\u2026',
+      s = str + '',
+      n = s.length,
+      l = Math.max(0, length - e.length);
+
+  return n <= length ? s
+    : align === 'left' ? e + s.slice(n - l)
+    : align === 'center' ? s.slice(0, Math.ceil(l/2)) + e + s.slice(n - ~~(l/2))
+    : s.slice(0, l) + e;
+};
+
+var visitArray = function(array, filter, visitor) {
+  if (array) {
+    var i = 0, n = array.length, t;
+    if (filter) {
+      for (; i<n; ++i) {
+        if (t = filter(array[i])) visitor(t, i, array);
+      }
+    } else {
+      array.forEach(visitor);
+    }
+  }
+};
+
+exports.accessor = accessor;
+exports.accessorName = accessorName;
+exports.accessorFields = accessorFields;
+exports.id = id;
+exports.identity = identity;
+exports.zero = zero;
+exports.one = one;
+exports.truthy = truthy;
+exports.falsy = falsy;
+exports.logger = logger;
+exports.None = None;
+exports.Error = Error$1;
+exports.Warn = Warn;
+exports.Info = Info;
+exports.Debug = Debug;
+exports.array = array;
+exports.compare = compare;
+exports.constant = constant;
+exports.debounce = debounce;
+exports.error = error;
+exports.extend = extend;
+exports.extentIndex = extentIndex;
+exports.fastmap = fastmap;
+exports.field = field;
+exports.inherits = inherits;
+exports.isArray = isArray;
+exports.isBoolean = isBoolean;
+exports.isDate = isDate;
+exports.isFunction = isFunction;
+exports.isNumber = isNumber;
+exports.isObject = isObject;
+exports.isRegExp = isRegExp;
+exports.isString = isString;
+exports.key = key;
+exports.merge = merge;
+exports.pad = pad;
+exports.peek = peek;
+exports.repeat = repeat;
+exports.splitAccessPath = splitAccessPath;
+exports.stringValue = $;
+exports.toBoolean = toBoolean;
+exports.toDate = toDate;
+exports.toNumber = toNumber;
+exports.toString = toString;
+exports.toSet = toSet;
+exports.truncate = truncate;
+exports.visitArray = visitArray;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+},{}],308:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var d3_request_1 = require("d3-request");
@@ -67654,8 +67601,10 @@ function renderExample($target, text) {
     $target.classed('example', true);
     $target.text('');
     var vis = $target.append('div').attr('class', 'example-vis');
+    // Decrease visual noise by removing $schema and description from code examples.
+    var textClean = text.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
     var code = $target.append('pre').attr('class', 'example-code')
-        .append('code').attr('class', 'json').text(text);
+        .append('code').attr('class', 'json').text(textClean);
     hljs.highlightBlock(code.node());
     var spec = JSON.parse(text);
     if (spec.data.url) {
@@ -67675,8 +67624,8 @@ function renderExample($target, text) {
         }
     }).catch(console.error);
 }
-d3_selection_1.selectAll('.vl-example').each(function () {
-    var sel = d3_selection_1.select(this);
+function getSpec(el) {
+    var sel = d3_selection_1.select(el);
     var name = sel.attr('data-name');
     if (name) {
         var dir = sel.attr('data-dir');
@@ -67693,9 +67642,27 @@ d3_selection_1.selectAll('.vl-example').each(function () {
     else {
         console.error('No "data-name" specified to import examples from');
     }
+}
+window['changeSpec'] = function (elId, newSpec) {
+    var el = document.getElementById(elId);
+    d3_selection_1.select(el).attr('data-name', newSpec);
+    getSpec(el);
+};
+window['buildSpecOpts'] = function (id, baseName) {
+    var oldName = d3_selection_1.select('#' + id).attr('data-name');
+    var prefixSel = d3_selection_1.select('select[name=' + id + ']');
+    var inputsSel = d3_selection_1.selectAll('input[name=' + id + ']:checked');
+    var prefix = prefixSel.empty() ? id : prefixSel.property('value');
+    var values = inputsSel.nodes().map(function (n) { return n.value; }).sort().join('_');
+    var newName = baseName + prefix + (values ? '_' + values : '');
+    if (oldName !== newName)
+        window['changeSpec'](id, newName);
+};
+d3_selection_1.selectAll('.vl-example').each(function () {
+    getSpec(this);
 });
 
-},{"./streaming":309,"d3-request":108,"d3-selection":109,"highlight.js":113,"vega-embed":295,"vega-tooltip":301}],309:[function(require,module,exports){
+},{"./streaming":309,"d3-request":108,"d3-selection":109,"highlight.js":113,"vega-embed":296,"vega-tooltip":302}],309:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_embed_1 = require("vega-embed");
@@ -67746,5 +67713,5 @@ function runStreamingExample(eleId) {
 }
 exports.runStreamingExample = runStreamingExample;
 
-},{"vega-embed":295}]},{},[308])
+},{"vega-embed":296}]},{},[308])
 //# sourceMappingURL=main.js.map

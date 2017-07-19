@@ -1517,7 +1517,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.10",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1542,9 +1542,8 @@ module.exports={
     "build": "npm run build:only",
     "build:only": "npm run tsc && cp package.json build && browserify src/index.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
     "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
-    "build:examples": "npm run build && npm run build:examples-only",
+    "build:examples": "npm run build:only && npm run build:examples-only",
     "build:examples-only": "./scripts/build-examples.sh && rm -rf examples/specs/normalized/* && scripts/build-normalized-examples",
-    "build:examples-quick": "npm run build:only && npm run build:examples-only",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
     "build:site": "browserify site/static/main.ts -p [tsify -p site] -d | exorcist build/site/main.js.map > build/site/main.js",
@@ -1696,6 +1695,21 @@ exports.SHARED_DOMAIN_OP_INDEX = util_1.toSet(exports.SHARED_DOMAIN_OPS);
 },{"./util":107}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEFAULT_AXIS_CONFIG = {
+    quantitativeExtent: 30
+};
+/**
+ * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
+ * (Properties not listed are applicable for both)
+ */
+exports.AXIS_PROPERTY_TYPE = {
+    grid: 'grid',
+    labelOverlap: 'main',
+    offset: 'main',
+    maxExtent: 'main',
+    minExtent: 'main',
+    title: 'main'
+};
 exports.AXIS_PROPERTIES = [
     'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'tickExtra', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
@@ -2211,7 +2225,7 @@ function parseAxis(channel, model, isGridAxis) {
     );
     // 1.2. Add properties
     axis_1.AXIS_PROPERTIES.forEach(function (property) {
-        var value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
+        var value = getProperty(property, axis, channel, model, isGridAxis);
         if (value !== undefined) {
             var explicit = property === 'values' ?
                 !!axis.values :
@@ -2245,32 +2259,48 @@ function parseAxis(channel, model, isGridAxis) {
     }
     return axisComponent;
 }
-function getSpecifiedOrDefaultValue(property, specifiedAxis, channel, model, isGridAxis) {
+function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
     var fieldDef = model.fieldDef(channel);
+    if ((isGridAxis && axis_1.AXIS_PROPERTY_TYPE[property] === 'main') ||
+        (!isGridAxis && axis_1.AXIS_PROPERTY_TYPE[property] === 'grid')) {
+        // Do not apply unapplicable properties
+        return undefined;
+    }
     switch (property) {
-        case 'labels':
-            return isGridAxis ? false : specifiedAxis.labels;
-        case 'labelOverlap':
-            var scaleType = model.component.scales[channel].get('type');
-            return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType);
         case 'domain':
             return rules.domain(property, specifiedAxis, isGridAxis, channel);
+        case 'format':
+            return common_1.numberFormat(fieldDef, specifiedAxis.format, model.config);
+        case 'grid': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.grid, rules.grid(scaleType, fieldDef));
+        }
+        case 'labels':
+            return isGridAxis ? false : specifiedAxis.labels;
+        case 'labelOverlap': {
+            var scaleType = model.component.scales[channel].get('type');
+            return rules.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
+        }
+        case 'minExtent': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.minExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+        }
+        case 'maxExtent': {
+            var scaleType = model.component.scales[channel].get('type');
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.maxExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+        }
+        case 'orient':
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
+        case 'tickCount':
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef)); // TODO: scaleType
         case 'ticks':
             return rules.ticks(property, specifiedAxis, isGridAxis, channel);
-        case 'format':
-            return rules.format(specifiedAxis, fieldDef, model.config);
-        case 'grid':
-            return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
-        case 'orient':
-            return rules.orient(specifiedAxis, channel);
-        case 'tickCount':
-            return rules.tickCount(specifiedAxis, channel, fieldDef); // TODO: scaleType
         case 'title':
-            return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.title, rules.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
         case 'values':
             return rules.values(specifiedAxis, model, fieldDef);
         case 'zindex':
-            return rules.zindex(specifiedAxis, isGridAxis);
+            return common_1.getSpecifiedOrDefaultValue(specifiedAxis.zindex, rules.zindex(isGridAxis));
     }
     // Otherwise, return specified property.
     return specifiedAxis[property];
@@ -2284,31 +2314,25 @@ var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
+var scale_1 = require("../../scale");
 var util_1 = require("../../util");
-var common_1 = require("../common");
 var encode_1 = require("./encode");
-function format(specifiedAxis, fieldDef, config) {
-    return common_1.numberFormat(fieldDef, specifiedAxis.format, config);
+function domainAndTicks(property, specifiedAxis, isGridAxis, channel) {
+    if (isGridAxis) {
+        return false;
+    }
+    return specifiedAxis[property];
 }
-exports.format = format;
+exports.domainAndTicks = domainAndTicks;
+exports.domain = domainAndTicks;
+exports.ticks = domainAndTicks;
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-function gridShow(model, channel) {
-    var grid = model.axis(channel).grid;
-    if (grid !== undefined) {
-        return grid;
-    }
-    return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
-}
-exports.gridShow = gridShow;
-function grid(model, channel, isGridAxis) {
-    if (!isGridAxis) {
-        return undefined;
-    }
-    return gridShow(model, channel);
+function grid(scaleType, fieldDef) {
+    return !scale_1.hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 exports.grid = grid;
 function gridScale(model, channel, isGridAxis) {
@@ -2321,18 +2345,29 @@ function gridScale(model, channel, isGridAxis) {
     return undefined;
 }
 exports.gridScale = gridScale;
-function orient(specifiedAxis, channel) {
-    var orient = specifiedAxis.orient;
-    if (orient) {
-        return orient;
+function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
+    if (channel === 'x' && !encode_1.labelAngle(specifiedAxis, channel, fieldDef)) {
+        if (scaleType === 'log') {
+            return 'greedy';
+        }
+        return true;
     }
+    return undefined;
+}
+exports.labelOverlap = labelOverlap;
+function minMaxExtent(isGridAxis, scaleType, axisConfig) {
+    // For quantitative scale, set default extent to avoid jumpy axis title
+    // (Fix https://github.com/vega/vega-lite/issues/2282)
+    if (scale_1.getScaleCategory(scaleType) === 'numeric') {
+        return axisConfig.quantitativeExtent;
+    }
+    return undefined;
+}
+exports.minMaxExtent = minMaxExtent;
+function orient(channel) {
     switch (channel) {
-        case channel_1.COLUMN:
-            // FIXME test and decide
-            return 'top';
         case channel_1.X:
             return 'bottom';
-        case channel_1.ROW:
         case channel_1.Y:
             return 'left';
     }
@@ -2340,11 +2375,7 @@ function orient(specifiedAxis, channel) {
     throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 exports.orient = orient;
-function tickCount(specifiedAxis, channel, fieldDef) {
-    var count = specifiedAxis.tickCount;
-    if (count !== undefined) {
-        return count;
-    }
+function tickCount(channel, fieldDef) {
     // FIXME depends on scale type too
     if (channel === channel_1.X && !fieldDef.bin) {
         // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
@@ -2353,19 +2384,9 @@ function tickCount(specifiedAxis, channel, fieldDef) {
     return undefined;
 }
 exports.tickCount = tickCount;
-function title(specifiedAxis, fieldDef, config, isGridAxis) {
-    if (isGridAxis) {
-        return undefined;
-    }
-    if (specifiedAxis.title === '') {
-        return undefined;
-    }
-    if (specifiedAxis.title !== undefined) {
-        return specifiedAxis.title;
-    }
+function title(maxLength, fieldDef, config) {
     // if not defined, automatically determine axis title from field def
     var fieldTitle = fielddef_1.title(fieldDef, config);
-    var maxLength = specifiedAxis.titleMaxLength;
     return maxLength ? util_1.truncate(fieldTitle, maxLength) : fieldTitle;
 }
 exports.title = title;
@@ -2384,11 +2405,7 @@ function values(specifiedAxis, model, fieldDef) {
     return vals;
 }
 exports.values = values;
-function zindex(specifiedAxis, isGridAxis) {
-    var z = specifiedAxis.zindex;
-    if (z !== undefined) {
-        return z;
-    }
+function zindex(isGridAxis) {
     if (isGridAxis) {
         // if grid is true, need to put layer on the back so that grid is behind marks
         return 0;
@@ -2396,27 +2413,8 @@ function zindex(specifiedAxis, isGridAxis) {
     return 1; // otherwise return undefined and use Vega's default.
 }
 exports.zindex = zindex;
-function domainAndTicks(property, specifiedAxis, isGridAxis, channel) {
-    if (isGridAxis || channel === channel_1.ROW || channel === channel_1.COLUMN) {
-        return false;
-    }
-    return specifiedAxis[property];
-}
-exports.domainAndTicks = domainAndTicks;
-function labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis, scaleType) {
-    if (!isGridAxis && channel === 'x' && !encode_1.labelAngle(specifiedAxis, channel, fieldDef)) {
-        if (scaleType === 'log') {
-            return 'greedy';
-        }
-        return true;
-    }
-    return undefined;
-}
-exports.labelOverlap = labelOverlap;
-exports.domain = domainAndTicks;
-exports.ticks = domainAndTicks;
 
-},{"../../bin":11,"../../channel":12,"../../datetime":87,"../../fielddef":90,"../../log":95,"../../util":107,"../common":18,"./encode":15}],18:[function(require,module,exports){
+},{"../../bin":11,"../../channel":12,"../../datetime":87,"../../fielddef":90,"../../log":95,"../../scale":98,"../../util":107,"./encode":15}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var fielddef_1 = require("../fielddef");
@@ -2524,6 +2522,13 @@ function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
     }
 }
 exports.formatSignalRef = formatSignalRef;
+function getSpecifiedOrDefaultValue(specifiedValue, defaultValue) {
+    if (specifiedValue !== undefined) {
+        return specifiedValue;
+    }
+    return defaultValue;
+}
+exports.getSpecifiedOrDefaultValue = getSpecifiedOrDefaultValue;
 /**
  * Returns number format for a fieldDef
  *
@@ -2601,8 +2606,6 @@ var log = require("../log");
 var spec_1 = require("../spec");
 var toplevelprops_1 = require("../toplevelprops");
 var common_1 = require("./common");
-var layer_1 = require("./layer");
-var unit_1 = require("./unit");
 function compile(inputSpec, logger) {
     if (logger) {
         // set the singleton logger to the provided logger
@@ -2648,22 +2651,14 @@ function assemble(model, topLevelProperties) {
     }
     var output = tslib_1.__assign({ $schema: 'https://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { 
         // By using Vega layout, we don't support custom autosize
-        autosize: topLevelProperties.autoResize ? { type: 'pad', resize: true } : 'pad' }, topLevelProps, (encode ? { encode: { update: encode } } : {}), { data: [].concat(model.assembleSelectionData([]), model.assembleData()) }, model.assembleGroup([].concat(
-    // TODO(https://github.com/vega/vega-lite/issues/2198):
-    // Merge the top-level's width/height signal with the top-level model
-    // so we can remove this special casing based on model.name
-    ((model.name && ((model instanceof layer_1.LayerModel) || (model instanceof unit_1.UnitModel))) ? [
-        // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
-        { name: 'width', update: model.getName('width') },
-        { name: 'height', update: model.getName('height') }
-    ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}));
+        autosize: topLevelProperties.autoResize ? { type: 'pad', resize: true } : 'pad' }, topLevelProps, (encode ? { encode: { update: encode } } : {}), { data: [].concat(model.assembleSelectionData([]), model.assembleData()) }, model.assembleGroup([].concat(model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}));
     return {
         spec: output
         // TODO: add warning / errors here
     };
 }
 
-},{"../config":85,"../log":95,"../spec":101,"../toplevelprops":104,"./common":18,"./layer":37,"./unit":81,"tslib":5}],20:[function(require,module,exports){
+},{"../config":85,"../log":95,"../spec":101,"../toplevelprops":104,"./common":18,"tslib":5}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4751,7 +4746,6 @@ var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
 var log = require("../log");
-var mark_1 = require("../mark");
 var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
@@ -4818,22 +4812,15 @@ var FacetModel = (function (_super) {
         // so that we create all groups
         var hasRow = this.channelHasField(channel_1.ROW);
         var hasColumn = this.channelHasField(channel_1.COLUMN);
-        this.component.mark = [{
-                name: this.getName('cell'),
-                type: 'group',
-                from: {
+        var groupProperties = this.child.assembleParentGroupProperties();
+        this.component.mark = [tslib_1.__assign({ name: this.getName('cell'), type: 'group', from: {
                     facet: tslib_1.__assign({ name: this.component.data.facetRoot.name, data: this.component.data.facetRoot.data, groupby: [].concat(hasRow ? [this.field(channel_1.ROW)] : [], hasColumn ? [this.field(channel_1.COLUMN)] : []) }, (hasRow && hasColumn ? { aggregate: {
                             cross: true
                         } } : {}))
-                },
-                sort: {
+                }, sort: {
                     field: [].concat(hasRow ? [this.field(channel_1.ROW, { expr: 'datum' })] : [], hasColumn ? [this.field(channel_1.COLUMN, { expr: 'datum' })] : []),
                     order: [].concat(hasRow ? [(this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [], hasColumn ? [(this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : [])
-                },
-                encode: {
-                    update: getFacetGroupProperties(this)
-                }
-            }];
+                } }, (groupProperties ? { encode: { update: groupProperties } } : {}))];
     };
     FacetModel.prototype.parseAxisAndHeader = function () {
         this.child.parseAxisAndHeader();
@@ -4955,12 +4942,8 @@ var FacetModel = (function (_super) {
     return FacetModel;
 }(model_1.ModelWithField));
 exports.FacetModel = FacetModel;
-function getFacetGroupProperties(model) {
-    var encodeEntry = model.child.assembleParentGroupProperties();
-    return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
-}
 
-},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../mark":97,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/header":39,"./layout/parse":40,"./legend/parse":44,"./model":58,"./repeat":59,"./resolve":60,"tslib":5}],37:[function(require,module,exports){
+},{"../channel":12,"../encoding":88,"../fielddef":90,"../log":95,"../util":107,"./common":18,"./data/assemble":22,"./data/parse":30,"./layout/header":39,"./layout/parse":40,"./legend/parse":44,"./model":58,"./repeat":59,"./resolve":60,"tslib":5}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5085,51 +5068,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
 function assembleLayoutSignals(model) {
-    var signals = [];
-    var width = sizeExpr(model, 'width');
-    if (width !== undefined) {
-        signals.push({ name: model.getName('width'), update: width });
-    }
-    var height = sizeExpr(model, 'height');
-    if (height !== undefined) {
-        signals.push({ name: model.getName('height'), update: height });
-    }
-    return signals;
+    return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
 exports.assembleLayoutSignals = assembleLayoutSignals;
-function sizeExpr(model, sizeType) {
+function sizeSignals(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var size = model.component.layoutSize.get(sizeType);
-    if (size === 'merged') {
-        return undefined;
+    if (!size || size === 'merged') {
+        return [];
     }
-    else if (size === 'range-step') {
+    // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
+    var name = model.getSizeSignalRef(sizeType).signal;
+    if (size === 'range-step') {
         var scaleComponent = model.getScaleComponent(channel);
         if (scaleComponent) {
             var type = scaleComponent.get('type');
             var range = scaleComponent.get('range');
             if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
                 var scaleName = model.scaleName(channel);
-                var cardinality = "domain('" + scaleName + "').length";
-                var padding = scaleComponent.get('padding');
-                var paddingOuter = scaleComponent.get('paddingOuter');
-                paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-                var paddingInner = scaleComponent.get('paddingInner');
-                paddingInner = type === 'band' ?
-                    // only band has real paddingInner
-                    (paddingInner !== undefined ? paddingInner : padding) :
-                    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-                    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-                    1;
-                return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + range.step;
+                return [
+                    stepSignal(scaleName, range),
+                    {
+                        name: name,
+                        update: sizeExpr(scaleName, scaleComponent)
+                    }
+                ];
             }
         }
         /* istanbul ignore next: Condition should not happen -- only for warning in development. */
         throw new Error('layout size is range step although there is no rangeStep.');
     }
-    return size ? "" + size : undefined;
+    else {
+        return [{
+                name: name,
+                update: "" + size
+            }];
+    }
 }
-exports.sizeExpr = sizeExpr;
+exports.sizeSignals = sizeSignals;
+function stepSignal(scaleName, range) {
+    return {
+        name: scaleName + '_step',
+        value: range.step,
+    };
+}
+function sizeExpr(scaleName, scaleComponent) {
+    var type = scaleComponent.get('type');
+    var cardinality = "domain('" + scaleName + "').length";
+    var padding = scaleComponent.get('padding');
+    var paddingOuter = scaleComponent.get('paddingOuter');
+    paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+    var paddingInner = scaleComponent.get('paddingInner');
+    paddingInner = type === 'band' ?
+        // only band has real paddingInner
+        (paddingInner !== undefined ? paddingInner : padding) :
+        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
+    return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + scaleName + "_step";
+}
 
 },{"../../scale":98,"../../vega.schema":109}],39:[function(require,module,exports){
 "use strict";
@@ -5445,6 +5442,7 @@ exports.labels = labels;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
+var fielddef_1 = require("../../fielddef");
 var legend_1 = require("../../legend");
 var util_1 = require("../../util");
 var common_1 = require("../common");
@@ -5483,7 +5481,7 @@ function parseLegendForChannel(model, channel) {
     var legend = model.legend(channel);
     var legendCmpt = new component_1.LegendComponent({}, getLegendDefWithScale(model, channel));
     legend_1.LEGEND_PROPERTIES.forEach(function (property) {
-        var value = getSpecifiedOrDefaultValue(property, legend, channel, model);
+        var value = getProperty(property, legend, channel, model);
         if (value !== undefined) {
             var explicit = property === 'values' ?
                 !!legend.values :
@@ -5508,17 +5506,17 @@ function parseLegendForChannel(model, channel) {
     return legendCmpt;
 }
 exports.parseLegendForChannel = parseLegendForChannel;
-function getSpecifiedOrDefaultValue(property, specifiedLegend, channel, model) {
+function getProperty(property, specifiedLegend, channel, model) {
     var fieldDef = model.fieldDef(channel);
     switch (property) {
         case 'format':
             return common_1.numberFormat(fieldDef, specifiedLegend.format, model.config);
         case 'title':
-            return rules.title(specifiedLegend, fieldDef, model.config);
+            return common_1.getSpecifiedOrDefaultValue(specifiedLegend.title, fielddef_1.title(fieldDef, model.config));
         case 'values':
             return rules.values(specifiedLegend);
         case 'type':
-            return rules.type(specifiedLegend, fieldDef.type, channel, model.getScaleComponent(channel).get('type'));
+            return common_1.getSpecifiedOrDefaultValue(specifiedLegend.type, rules.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
     }
     // Otherwise, return specified property.
     return specifiedLegend[property];
@@ -5597,21 +5595,13 @@ function mergeLegendComponent(mergedLegend, childLegend) {
 }
 exports.mergeLegendComponent = mergeLegendComponent;
 
-},{"../../channel":12,"../../legend":94,"../../util":107,"../common":18,"../resolve":60,"../split":80,"./component":42,"./encode":43,"./rules":45}],45:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":90,"../../legend":94,"../../util":107,"../common":18,"../resolve":60,"../split":80,"./component":42,"./encode":43,"./rules":45}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
-var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
-function title(legend, fieldDef, config) {
-    if (legend.title !== undefined) {
-        return legend.title;
-    }
-    return fielddef_1.title(fieldDef, config);
-}
-exports.title = title;
 function values(legend) {
     var vals = legend.values;
     if (vals && datetime_1.isDateTime(vals[0])) {
@@ -5623,10 +5613,7 @@ function values(legend) {
     return vals;
 }
 exports.values = values;
-function type(legend, type, channel, scaleType) {
-    if (legend.type) {
-        return legend.type;
-    }
+function type(type, channel, scaleType) {
     if (channel === channel_1.COLOR && ((type === 'quantitative' && !scale_1.isBinScale(scaleType)) ||
         (type === 'temporal' && util_1.contains(['time', 'utc'], scaleType)))) {
         return 'gradient';
@@ -5635,7 +5622,7 @@ function type(legend, type, channel, scaleType) {
 }
 exports.type = type;
 
-},{"../../channel":12,"../../datetime":87,"../../fielddef":90,"../../scale":98,"../../util":107}],46:[function(require,module,exports){
+},{"../../channel":12,"../../datetime":87,"../../scale":98,"../../util":107}],46:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5652,6 +5639,7 @@ exports.area = {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
@@ -5726,7 +5714,7 @@ function defaultSizeRef(scaleName, scale, config) {
         var scaleType = scale.get('type');
         if (scaleType === scale_1.ScaleType.POINT) {
             var scaleRange = scale.get('range');
-            if (vega_schema_1.isVgRangeStep(scaleRange)) {
+            if (vega_schema_1.isVgRangeStep(scaleRange) && vega_util_1.isNumber(scaleRange.step)) {
                 return { value: scaleRange.step - 1 };
             }
             log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
@@ -5745,7 +5733,7 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":12,"../../fielddef":90,"../../log":95,"../../scale":98,"../../vega.schema":109,"./mixins":51,"./valueref":57,"tslib":5}],48:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":90,"../../log":95,"../../scale":98,"../../vega.schema":109,"./mixins":51,"./valueref":57,"tslib":5,"vega-util":7}],48:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var encoding_1 = require("../../encoding");
@@ -6663,7 +6651,7 @@ var NameMap = (function () {
     NameMap.prototype.get = function (name) {
         // If the name appears in the _nameMap, we need to read its new name.
         // We have to loop over the dict just in case the new name also gets renamed.
-        while (this.nameMap[name]) {
+        while (this.nameMap[name] && name !== this.nameMap[name]) {
             name = this.nameMap[name];
         }
         return name;
@@ -6755,6 +6743,7 @@ var Model = (function () {
         this.parseScale();
         this.parseMarkDef();
         this.parseLayoutSize(); // depends on scale
+        this.renameTopLevelLayoutSize();
         this.parseSelection();
         this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
         this.parseAxisAndHeader(); // depends on scale
@@ -6763,6 +6752,19 @@ var Model = (function () {
     };
     Model.prototype.parseScale = function () {
         parse_1.parseScale(this);
+    };
+    /**
+     * Rename top-level spec's size to be just width / height, ignoring model name.
+     * This essentially merges the top-level spec's width/height signals with the width/height signals
+     * to help us reduce redundant signals declaration.
+     */
+    Model.prototype.renameTopLevelLayoutSize = function () {
+        if (this.getName('width') !== 'width') {
+            this.renameLayoutSize(this.getName('width'), 'width');
+        }
+        if (this.getName('height') !== 'height') {
+            this.renameLayoutSize(this.getName('height'), 'height');
+        }
     };
     Model.prototype.parseMarkDef = function () {
         mark_1.parseMarkDef(this);
@@ -6876,14 +6878,11 @@ var Model = (function () {
         }
         return node.getSource();
     };
+    Model.prototype.getSizeName = function (oldSizeName) {
+        return this.layoutSizeNameMap.get(oldSizeName);
+    };
     Model.prototype.renameLayoutSize = function (oldName, newName) {
         this.layoutSizeNameMap.rename(oldName, newName);
-    };
-    Model.prototype.channelSizeName = function (channel) {
-        return this.sizeName(channel === channel_1.X || channel === channel_1.COLUMN ? 'width' : 'height');
-    };
-    Model.prototype.sizeName = function (size) {
-        return this.layoutSizeNameMap.get(this.getName(size));
     };
     Model.prototype.renameScale = function (oldName, newName) {
         this.scaleNameMap.rename(oldName, newName);
@@ -7200,13 +7199,15 @@ var util_1 = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
 var selection_1 = require("../selection/selection");
 function assembleScale(model) {
-    return util_1.vals(model.component.scales).reduce(function (scales, scaleComponent) {
+    return util_1.keys(model.component.scales).reduce(function (scales, channel) {
+        var scaleComponent = model.component.scales[channel];
         if (scaleComponent.merged) {
             // Skipped merged scales
             return scales;
         }
         // We need to cast here as combine returns Partial<VgScale> by default.
         var scale = scaleComponent.combine(['name', 'type', 'domain', 'domainRaw', 'range']);
+        scale.range = assembleScaleRange(scale.range, scale.name, model, channel);
         var domainRaw = scaleComponent.get('domainRaw');
         // As scale parsing occurs before selection parsing, a temporary signal
         // is used for domainRaw. Here, we detect if this temporary signal
@@ -7239,6 +7240,31 @@ function assembleScale(model) {
     }, []);
 }
 exports.assembleScale = assembleScale;
+function assembleScaleRange(scaleRange, scaleName, model, channel) {
+    // add signals to x/y range
+    if (channel === 'x' || channel === 'y') {
+        if (vega_schema_1.isVgRangeStep(scaleRange)) {
+            // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+            return {
+                step: { signal: scaleName + '_step' }
+            };
+        }
+        else if (vega_util_1.isArray(scaleRange) && scaleRange.length === 2) {
+            var r0 = scaleRange[0];
+            var r1 = scaleRange[1];
+            if (r0 === 0 && vega_schema_1.isVgSignalRef(r1)) {
+                // Replace width signal just in case it is renamed.
+                return [0, { signal: model.getSizeName(r1.signal) }];
+            }
+            else if (vega_schema_1.isVgSignalRef(r0) && r1 === 0) {
+                // Replace height signal just in case it is renamed.
+                return [{ signal: model.getSizeName(r0.signal) }, 0];
+            }
+        }
+    }
+    return scaleRange;
+}
+exports.assembleScaleRange = assembleScaleRange;
 
 },{"../../util":107,"../../vega.schema":109,"../selection/selection":70,"tslib":5,"vega-util":7}],62:[function(require,module,exports){
 "use strict";
@@ -7945,10 +7971,10 @@ function parseUnitScaleRange(model) {
         var specifiedScale = model.specifiedScales[channel];
         var fieldDef = model.fieldDef(channel);
         // Read if there is a specified width/height
-        var specifiedSize = channel === 'x' ? model.component.layoutSize.get('width') :
-            channel === 'y' ? model.component.layoutSize.get('height') : undefined;
+        var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+        var specifiedSize = sizeType ? model.component.layoutSize.get(sizeType) : undefined;
         var xyRangeSteps = getXYRangeStep(model);
-        var rangeWithExplicit = parseRangeForChannel(channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, xyRangeSteps);
+        var rangeWithExplicit = parseRangeForChannel(channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getSizeSignalRef(sizeType), xyRangeSteps);
         localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
     });
 }
@@ -7956,12 +7982,12 @@ function getXYRangeStep(model) {
     var xyRangeSteps = [];
     var xScale = model.getScaleComponent('x');
     var xRange = xScale && xScale.get('range');
-    if (xRange && vega_schema_1.isVgRangeStep(xRange)) {
+    if (xRange && vega_schema_1.isVgRangeStep(xRange) && vega_util_1.isNumber(xRange.step)) {
         xyRangeSteps.push(xRange.step);
     }
     var yScale = model.getScaleComponent('y');
     var yRange = yScale && yScale.get('range');
-    if (yRange && vega_schema_1.isVgRangeStep(yRange)) {
+    if (yRange && vega_schema_1.isVgRangeStep(yRange) && vega_util_1.isNumber(yRange.step)) {
         xyRangeSteps.push(yRange.step);
     }
     return xyRangeSteps;
@@ -7969,8 +7995,8 @@ function getXYRangeStep(model) {
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
-function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, specifiedSize, xyRangeSteps) {
-    var specifiedRangeStepIsNull = false;
+function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, specifiedSize, sizeSignal, xyRangeSteps) {
+    var noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
     // Check if any of the range properties is specified.
     // If so, check if it is compatible and make sure that we only output one of the properties
     for (var _i = 0, RANGE_PROPERTIES_1 = exports.RANGE_PROPERTIES; _i < RANGE_PROPERTIES_1.length; _i++) {
@@ -7991,18 +8017,15 @@ function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, 
                     case 'scheme':
                         return split_1.makeImplicit(parseScheme(specifiedScale[property]));
                     case 'rangeStep':
-                        if (specifiedSize === undefined) {
-                            var rangeStep = specifiedScale[property];
-                            if (rangeStep !== null) {
+                        var rangeStep = specifiedScale[property];
+                        if (rangeStep !== null) {
+                            if (specifiedSize === undefined) {
                                 return split_1.makeImplicit({ step: rangeStep });
                             }
                             else {
-                                specifiedRangeStepIsNull = true;
+                                // If top-level size is specified, we ignore specified rangeStep.
+                                log.warn(log.message.rangeStepDropped(channel));
                             }
-                        }
-                        else {
-                            // If top-level size is specified, we ignore specified rangeStep.
-                            log.warn(log.message.rangeStepDropped(channel));
                         }
                 }
             }
@@ -8010,7 +8033,7 @@ function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, 
     }
     return {
         explicit: false,
-        value: defaultRange(channel, scaleType, type, config, zero, mark, specifiedSize, xyRangeSteps, specifiedRangeStepIsNull)
+        value: defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep)
     };
 }
 exports.parseRangeForChannel = parseRangeForChannel;
@@ -8027,32 +8050,26 @@ function parseScheme(scheme) {
     }
     return { scheme: scheme };
 }
-function defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull) {
+function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep) {
     switch (channel) {
         case channel_1.X:
         case channel_1.Y:
-            var size = void 0;
-            if (vega_util_1.isNumber(topLevelSize)) {
-                size = topLevelSize;
-            }
-            else {
-                if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
-                    if (channel === channel_1.X && mark === 'text') {
-                        if (config.scale.textXRangeStep) {
-                            return { step: config.scale.textXRangeStep };
-                        }
-                    }
-                    else {
-                        if (config.scale.rangeStep) {
-                            return { step: config.scale.rangeStep };
-                        }
+            if (util.contains(['point', 'band'], scaleType) && !noRangeStep) {
+                if (channel === channel_1.X && mark === 'text') {
+                    if (config.scale.textXRangeStep) {
+                        return { step: config.scale.textXRangeStep };
                     }
                 }
-                // If specified range step is null or the range step config is null.
-                // Use default topLevelSize rule/config
-                size = channel === channel_1.X ? config.cell.width : config.cell.height;
+                else {
+                    if (config.scale.rangeStep) {
+                        return { step: config.scale.rangeStep };
+                    }
+                }
             }
-            return channel === channel_1.X ? [0, size] : [size, 0];
+            // If range step is null, assign temporary range signals,
+            // which will be later replaced with proper signals in assemble.
+            // We cannot set the right size signal here since parseLayoutSize() happens after parseScale().
+            return channel === channel_1.X ? [0, sizeSignal] : [sizeSignal, 0];
         case channel_1.SIZE:
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
@@ -8495,6 +8512,7 @@ exports.default = multi;
 },{"../../util":107,"./selection":70,"./transforms/nearest":73}],70:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var vega_event_selector_1 = require("vega-event-selector");
 var channel_1 = require("../../channel");
 var log_1 = require("../../log");
@@ -8527,6 +8545,9 @@ function parseUnitSelection(model, selDefs) {
             // default values for these two values if neither of them is specified.
             if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
                 continue;
+            }
+            if (key === 'mark') {
+                selDef[key] = tslib_1.__assign({}, cfg[key], selDef[key]);
             }
             if (selDef[key] === undefined || selDef[key] === true) {
                 selDef[key] = cfg[key] || selDef[key];
@@ -8691,11 +8712,15 @@ function selectionScaleDomain(model, domainRaw) {
     if (selCmpt) {
         log_1.warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
     }
-    else if (!selDomain.encoding && !selDomain.field) {
-        log_1.warn('A "field" or "encoding" must be specified when using a selection as a scale domain.');
-    }
     else {
         selCmpt = model.getSelectionComponent(name, selDomain.selection);
+        if (!selDomain.encoding && !selDomain.field) {
+            selDomain.field = selCmpt.project[0].field;
+            if (selCmpt.project.length > 1) {
+                log_1.warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
+                    ("Using \"field\": " + util_1.stringValue(selDomain.field) + "."));
+            }
+        }
         return {
             signal: compiler(selCmpt.type).scaleDomain +
                 ("(" + util_1.stringValue(name + exports.STORE) + ", " + util_1.stringValue(selDomain.encoding || null) + ", ") +
@@ -8752,7 +8777,7 @@ function spatialProjections(selCmpt) {
 }
 exports.spatialProjections = spatialProjections;
 
-},{"../../channel":12,"../../log":95,"../../util":107,"../layer":37,"../unit":81,"./interval":68,"./multi":69,"./single":71,"./transforms/transforms":77,"vega-event-selector":6}],71:[function(require,module,exports){
+},{"../../channel":12,"../../log":95,"../../util":107,"../layer":37,"../unit":81,"./interval":68,"./multi":69,"./single":71,"./transforms/transforms":77,"tslib":5,"vega-event-selector":6}],71:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -9336,7 +9361,6 @@ var parse_1 = require("./axis/parse");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_2 = require("./data/parse");
-var facet_1 = require("./facet");
 var layer_1 = require("./layer");
 var assemble_2 = require("./layout/assemble");
 var parse_3 = require("./layout/parse");
@@ -9360,8 +9384,6 @@ var UnitModel = (function (_super) {
         _this.selection = {};
         _this.children = [];
         _this.initSize(tslib_1.__assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {})));
-        // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
-        _this.initFacetCellConfig();
         _this.markDef = mark_1.isMarkDef(spec.mark) ? tslib_1.__assign({}, spec.mark) : { type: spec.mark };
         var mark = _this.markDef.type;
         var encoding = _this.encoding = encoding_1.normalizeEncoding(repeat_1.replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
@@ -9399,21 +9421,6 @@ var UnitModel = (function (_super) {
     };
     UnitModel.prototype.legend = function (channel) {
         return this.specifiedLegends[channel];
-    };
-    UnitModel.prototype.initFacetCellConfig = function () {
-        var config = this.config;
-        var ancestor = this.parent;
-        var hasFacetAncestor = false;
-        while (ancestor !== null) {
-            if (ancestor instanceof facet_1.FacetModel) {
-                hasFacetAncestor = true;
-                break;
-            }
-            ancestor = ancestor.parent;
-        }
-        if (hasFacetAncestor) {
-            config.cell = util_1.extend({}, config.cell, config.facet.cell);
-        }
     };
     UnitModel.prototype.initScales = function (mark, encoding) {
         return channel_1.SCALE_CHANNELS.reduce(function (scales, channel) {
@@ -9570,7 +9577,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":12,"../encoding":88,"../fielddef":90,"../mark":97,"../scale":98,"../stack":102,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./facet":36,"./layer":37,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./mark/init":48,"./mark/mark":50,"./model":58,"./repeat":59,"./selection/selection":70,"tslib":5}],82:[function(require,module,exports){
+},{"../channel":12,"../encoding":88,"../fielddef":90,"../mark":97,"../scale":98,"../stack":102,"../util":107,"./axis/parse":16,"./common":18,"./data/assemble":22,"./data/parse":30,"./layer":37,"./layout/assemble":38,"./layout/parse":40,"./legend/parse":44,"./mark/init":48,"./mark/mark":50,"./model":58,"./repeat":59,"./selection/selection":70,"tslib":5}],82:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -9903,6 +9910,7 @@ exports.normalize = normalize;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var axis_1 = require("./axis");
 var compositemark_1 = require("./compositemark");
 var index_1 = require("./compositemark/index");
 var guide_1 = require("./guide");
@@ -9915,14 +9923,8 @@ var util_1 = require("./util");
 exports.defaultCellConfig = {
     width: 200,
     height: 200,
-    fill: 'transparent'
-};
-exports.defaultFacetCellConfig = {
-    stroke: '#ccc',
-    strokeWidth: 1
-};
-exports.defaultFacetConfig = {
-    cell: exports.defaultFacetCellConfig
+    fill: 'transparent',
+    stroke: '#ccc'
 };
 exports.defaultConfig = {
     padding: 5,
@@ -9945,7 +9947,7 @@ exports.defaultConfig = {
     boxWhisker: {},
     boxMid: { color: 'white' },
     scale: scale_1.defaultScaleConfig,
-    axis: {},
+    axis: axis_1.DEFAULT_AXIS_CONFIG,
     axisX: {},
     axisY: {},
     axisLeft: {},
@@ -9954,7 +9956,6 @@ exports.defaultConfig = {
     axisBottom: {},
     axisBand: {},
     legend: legend_1.defaultLegendConfig,
-    facet: exports.defaultFacetConfig,
     selection: selection_1.defaultConfig,
     title: {},
 };
@@ -9963,7 +9964,7 @@ function initConfig(config) {
 }
 exports.initConfig = initConfig;
 var MARK_ROLES = [].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_ROLES);
-var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'invalidValues'];
+var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'selection', 'invalidValues'];
 var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
 function stripConfig(config) {
     config = util_1.duplicate(config);
@@ -10016,7 +10017,7 @@ function stripConfig(config) {
 }
 exports.stripConfig = stripConfig;
 
-},{"./compositemark":84,"./compositemark/index":84,"./guide":92,"./legend":94,"./mark":97,"./scale":98,"./selection":99,"./util":107,"tslib":5}],86:[function(require,module,exports){
+},{"./axis":10,"./compositemark":84,"./compositemark/index":84,"./guide":92,"./legend":94,"./mark":97,"./scale":98,"./selection":99,"./util":107,"tslib":5}],86:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for data.
@@ -11129,6 +11130,10 @@ var SCALE_CATEGORY_INDEX = {
     point: 'ordinal-position',
     band: 'ordinal-position'
 };
+function getScaleCategory(scaleType) {
+    return SCALE_CATEGORY_INDEX[scaleType];
+}
+exports.getScaleCategory = getScaleCategory;
 /**
  * Whether the two given scale types can be merged together.
  */

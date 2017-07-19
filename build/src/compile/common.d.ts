@@ -19,6 +19,7 @@ export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark:
 export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean): {
     signal: string;
 };
+export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T): T;
 /**
  * Returns number format for a fieldDef
  *

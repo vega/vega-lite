@@ -77,12 +77,6 @@ export interface CellConfig {
     strokeDashOffset?: number;
 }
 export declare const defaultCellConfig: CellConfig;
-export declare const defaultFacetCellConfig: CellConfig;
-export interface FacetConfig {
-    /** Facet Cell Config */
-    cell?: CellConfig;
-}
-export declare const defaultFacetConfig: FacetConfig;
 export declare type RangeConfig = (number | string)[] | VgRangeScheme | {
     step: number;
 };
@@ -117,8 +111,6 @@ export interface VLOnlyConfig {
     timeFormat?: string;
     /** Cell Config */
     cell?: CellConfig;
-    /** Facet Config */
-    facet?: FacetConfig;
     /** Scale Config */
     scale?: ScaleConfig;
     /** Selection Config */

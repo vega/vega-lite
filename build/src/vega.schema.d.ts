@@ -60,9 +60,9 @@ export declare type VgRangeScheme = {
     extent?: number[];
     count?: number;
 };
-export declare type VgRange = string | VgDataRef | (number | string | VgDataRef)[] | VgRangeScheme | VgRangeStep;
+export declare type VgRange = string | VgDataRef | (number | string | VgDataRef | VgSignalRef)[] | VgRangeScheme | VgRangeStep;
 export declare type VgRangeStep = {
-    step: number;
+    step: number | VgSignalRef;
 };
 export declare function isVgRangeStep(range: VgRange): range is VgRangeStep;
 export declare type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
@@ -113,7 +113,8 @@ export declare function isDataRefDomain(domain: VgDomain): domain is VgDataRef;
 export declare function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef;
 export declare type VgSignal = {
     name: string;
-    update: string;
+    value?: any;
+    update?: string;
 };
 export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle';
 export declare type VgEncodeEntry = {
@@ -354,10 +355,24 @@ export interface VgAxisBase {
     titlePadding?: number;
     /**
      * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
+     *
+     * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
+     *
+     * __Default value:__
+     * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
+     * to avoid jumpy axis title during pan and zoom interactions.
+     * For other scales, the default value is `undefined`.
      */
     minExtent?: number;
     /**
      * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
+     *
+     * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
+     *
+     * __Default value:__
+     * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
+     * to avoid jumpy axis title during pan and zoom interactions.
+     * For other scales, the default value is `undefined`.
      */
     maxExtent?: number;
 }
