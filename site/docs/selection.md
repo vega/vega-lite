@@ -48,7 +48,7 @@ _Note:_ the two intervals do not have any effect on the visualization yet (we'll
 
 <div class="vl-example" data-name="interval_mark_style"></div>
 
-Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include: [bind](selection-bind.html), [nearest](selection-nearest.html), [project](selection-project.html), [toggle](selection-toggle.html), [translate](#), and [zoom](#).
+Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include: [bind](selection-bind.html), [nearest](selection-nearest.html), [project](selection-project.html), [toggle](selection-toggle.html), [translate](selection-translate.html), and [zoom](selection-zoom.html).
 
 ## Using Selections
 
@@ -91,7 +91,7 @@ If the selection is [projected](selection-project.html) over _multiple_ fields o
   * `"scale": {"domain": {"selection": "brush", "encoding": "x"}}` or
   * `"scale": {"domain": {"selection": "brush", "field": "date"}}`
 
-_Note:_ For a selection to manipulate the scales of its own view, use the [bind](#) operator instead.
+_Note:_ For a selection to manipulate the scales of its own view, use the [bind](selection-bind.html#scale-binding) operator instead.
 
 ### Composing Multiple Selections
 
