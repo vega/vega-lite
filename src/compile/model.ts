@@ -184,7 +184,10 @@ export abstract class Model {
   public parse() {
     this.parseScale();
     this.parseMarkDef();
+
     this.parseLayoutSize(); // depends on scale
+    this.renameTopLevelLayoutSize();
+
     this.parseSelection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
     this.parseAxisAndHeader(); // depends on scale
@@ -202,6 +205,20 @@ export abstract class Model {
   }
 
   public abstract parseLayoutSize(): void;
+
+  /**
+   * Rename top-level spec's size to be just width / height, ignoring model name.
+   * This essentially merges the top-level spec's width/height signals with the width/height signals
+   * to help us reduce redundant signals declaration.
+   */
+  private renameTopLevelLayoutSize() {
+    if (this.getName('width') !== 'width') {
+      this.renameLayoutSize(this.getName('width'), 'width');
+    }
+    if (this.getName('height') !== 'height') {
+      this.renameLayoutSize(this.getName('height'), 'height');
+    }
+  }
 
   public parseMarkDef() {
     parseMarkDef(this);
