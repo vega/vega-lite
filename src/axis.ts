@@ -71,6 +71,8 @@ export const AXIS_PROPERTY_TYPE: {[k in keyof Axis]: 'main' | 'grid'} = {
   grid: 'grid',
   labelOverlap: 'main',
   offset: 'main',
+  maxExtent: 'main',
+  minExtent: 'main',
   title: 'main'
 };
 
