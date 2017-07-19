@@ -288,11 +288,11 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     }
     case 'minExtent': {
       const scaleType = model.component.scales[channel].get('type');
-      return rules.minMaxExtent(specifiedAxis.minExtent, isGridAxis, scaleType);
+      return getSpecifiedOrDefaultValue(specifiedAxis.minExtent, rules.minMaxExtent(isGridAxis, scaleType));
     }
     case 'maxExtent': {
       const scaleType = model.component.scales[channel].get('type');
-      return rules.minMaxExtent(specifiedAxis.maxExtent, isGridAxis, scaleType);
+      return getSpecifiedOrDefaultValue(specifiedAxis.maxExtent, rules.minMaxExtent(isGridAxis, scaleType));
     }
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
