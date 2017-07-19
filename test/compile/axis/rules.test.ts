@@ -5,6 +5,7 @@ import {assert} from 'chai';
 import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
 import {parseUnitModelWithScale} from '../../util';
+import {DEFAULT_AXIS_CONFIG} from '../../../src/axis';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
@@ -25,12 +26,12 @@ describe('compile/axis', ()=> {
   });
 
   describe('minMaxExtent', () => {
-    it('returns 25 for a non-grid quantitative axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'linear'), 25);
+    it('returns config.axis.quantitativeExtent for a non-grid quantitative axis by default', () => {
+      assert.equal(rules.minMaxExtent(false, 'linear', DEFAULT_AXIS_CONFIG), DEFAULT_AXIS_CONFIG.quantitativeExtent);
     });
 
     it('returns undefined for a non-grid ordinal axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'ordinal'), undefined);
+      assert.equal(rules.minMaxExtent(false, 'ordinal', DEFAULT_AXIS_CONFIG), undefined);
     });
   });
 
