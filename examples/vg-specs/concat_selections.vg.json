@@ -520,8 +520,8 @@
                 {
                     "scale": "concat_0_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -540,8 +540,8 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -786,8 +786,8 @@
                 {
                     "scale": "concat_1_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Displacement",
@@ -806,8 +806,8 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Acceleration",
                     "zindex": 1
@@ -824,5 +824,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

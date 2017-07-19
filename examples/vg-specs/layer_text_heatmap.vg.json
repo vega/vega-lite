@@ -251,6 +251,9 @@
     "config": {
         "text": {
             "baseline": "middle"
+        },
+        "axis": {
+            "quantitativeExtent": 30
         }
     }
 }

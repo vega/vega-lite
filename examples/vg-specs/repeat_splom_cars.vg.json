@@ -198,8 +198,8 @@
                 {
                     "scale": "child_Displacement_Horsepower_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -218,8 +218,8 @@
                 },
                 {
                     "scale": "child_Displacement_Horsepower_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Displacement",
                     "zindex": 1
@@ -327,8 +327,8 @@
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -347,8 +347,8 @@
                 },
                 {
                     "scale": "child_Displacement_Miles_per_Gallon_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Displacement",
                     "zindex": 1
@@ -456,8 +456,8 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -476,8 +476,8 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -585,8 +585,8 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                     "labelOverlap": true,
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -605,8 +605,8 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -657,5 +657,10 @@
             "stroke": "color",
             "title": "Origin"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -93,8 +93,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "IMDB_Rating",
@@ -110,5 +110,10 @@
             "ticks": false,
             "zindex": 0
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

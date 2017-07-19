@@ -124,8 +124,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "MEAN(Horsepower)",
@@ -144,8 +144,8 @@
         },
         {
             "scale": "y",
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "MEAN(Displacement)",
             "zindex": 1
@@ -160,5 +160,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -123,8 +123,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
-            "maxExtent": 25,
-            "minExtent": 25,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "MEAN(temp)",
@@ -155,5 +155,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

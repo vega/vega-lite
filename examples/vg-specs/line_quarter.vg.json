@@ -142,8 +142,8 @@
             "axes": [
                 {
                     "scale": "y",
-                    "maxExtent": 25,
-                    "minExtent": 25,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "MEAN(price)",
                     "zindex": 1
@@ -364,5 +364,10 @@
             "stroke": "color",
             "title": "symbol"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }
