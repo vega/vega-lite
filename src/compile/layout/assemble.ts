@@ -2,7 +2,7 @@ import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {MAIN} from '../../data';
 import {hasDiscreteDomain, scaleCompatible} from '../../scale';
 import {extend, isArray, keys, StringSet} from '../../util';
-import {isVgRangeStep, VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
+import {isVgRangeStep, VgData, VgFormulaTransform, VgRangeStep, VgSignal, VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model, ModelWithField} from '../model';
@@ -31,26 +31,12 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
       if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
         const scaleName = model.scaleName(channel);
 
-        const cardinality = `domain('${scaleName}').length`;
-        const padding = scaleComponent.get('padding');
-        let paddingOuter = scaleComponent.get('paddingOuter');
-        paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-
-        let paddingInner = scaleComponent.get('paddingInner');
-        paddingInner = type === 'band' ?
-          // only band has real paddingInner
-          (paddingInner !== undefined ? paddingInner : padding) :
-          // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-          // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-          1;
-
-        return [{
-          name: scaleName + '_step',
-          value: range.step,
-        }, {
-          name: model.getName(sizeType),
-          update: `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`
-        }
+        return [
+          stepSignal(scaleName, range),
+          {
+            name: model.getName(sizeType),
+            update: sizeExpr(scaleName, scaleComponent)
+          }
         ];
       }
     }
@@ -62,4 +48,29 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
     update: `${size}`
   }] : [];
 }
+
+function stepSignal(scaleName: string, range: VgRangeStep) {
+  return {
+    name: scaleName + '_step',
+    value: range.step,
+  };
+}
+
+function sizeExpr(scaleName: string, scaleComponent: ScaleComponent) {
+  const type = scaleComponent.get('type');
+  const cardinality = `domain('${scaleName}').length`;
+  const padding = scaleComponent.get('padding');
+  let paddingOuter = scaleComponent.get('paddingOuter');
+  paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+
+  let paddingInner = scaleComponent.get('paddingInner');
+  paddingInner = type === 'band' ?
+    // only band has real paddingInner
+    (paddingInner !== undefined ? paddingInner : padding) :
+    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+    1;
+  return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`;
+}
+
 
