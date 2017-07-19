@@ -490,7 +490,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"concat_0_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_0_y\", brush_y)"
                         }
                     ]
                 },
@@ -889,7 +889,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"concat_1_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_1_y\", brush_y)"
                         }
                     ]
                 },
@@ -1288,7 +1288,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"concat_2_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_2_x\", brush_x)"
                         }
                     ]
                 },
@@ -1354,7 +1354,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"concat_2_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_2_y\", brush_y)"
                         }
                     ]
                 },

@@ -69,7 +69,7 @@ describe('Interval Selections', function() {
         "name": "one_Horsepower",
         "on": [{
           "events": {"signal": "one_x"},
-          "update": "invert(\"x\", one_x)"
+          "update": "one_x[0] === one_x[1] ? null : invert(\"x\", one_x)"
         }]
       }, {
         "name": "one_scale_trigger",
@@ -114,7 +114,7 @@ describe('Interval Selections', function() {
           "name": "thr_ee_Horsepower",
           "on": [{
             "events": {"signal": "thr_ee_x"},
-            "update": "invert(\"x\", thr_ee_x)"
+            "update": "thr_ee_x[0] === thr_ee_x[1] ? null : invert(\"x\", thr_ee_x)"
           }]
         },
         {
@@ -147,7 +147,7 @@ describe('Interval Selections', function() {
           "name": "thr_ee_Miles_per_Gallon",
           "on": [{
             "events": {"signal": "thr_ee_y"},
-            "update": "invert(\"y\", thr_ee_y)"
+            "update": "thr_ee_y[0] === thr_ee_y[1] ? null : invert(\"y\", thr_ee_y)"
           }]
         },
         {
