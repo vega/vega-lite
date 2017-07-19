@@ -150,6 +150,11 @@ export interface MarkConfig extends VgMarkConfig {
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    */
   color?: string;
+
+  /**
+   * Should a mark be clipped to the enclosing group’s width and height?
+   */
+  clip?: boolean;
 }
 
 export const defaultMarkConfig: MarkConfig = {
@@ -228,6 +233,18 @@ export interface TextConfig extends MarkConfig {
    * Whether month names and weekday names should be abbreviated.
    */
   shortTimeLabels?: boolean;
+  /**
+   * The horizontal text alignment.
+   */
+  align?: 'left' | 'center' | 'right';
+  /**
+   * The horizontal offset in pixels (before rotation), between the text and anchor point.
+   */
+  dx?: number;
+  /**
+   * The vertical offset in pixels (before rotation), between the text and anchor point.
+   */
+  dy?: number;
 }
 
 export interface TickConfig extends MarkConfig {

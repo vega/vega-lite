@@ -482,6 +482,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -811,6 +815,10 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -3721,6 +3729,10 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -4991,8 +5003,13 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "$ref": "#/definitions/HorizontalAlign",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal text alignment.",
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ],
+          "type": "string"
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -5004,16 +5021,20 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "dx": {
-          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "description": "The horizontal offset in pixels (before rotation), between the text and anchor point.",
           "type": "number"
         },
         "dy": {
-          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "description": "The vertical offset in pixels (before rotation), between the text and anchor point.",
           "type": "number"
         },
         "fill": {
@@ -5198,6 +5219,10 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
