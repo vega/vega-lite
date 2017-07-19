@@ -69,23 +69,15 @@
     ],
     "signals": [
         {
-            "name": "width",
-            "update": "plotname_width"
-        },
-        {
-            "name": "height",
-            "update": "plotname_height"
-        },
-        {
             "name": "plotname_x_step",
             "value": 21
         },
         {
-            "name": "plotname_width",
+            "name": "width",
             "update": "bandspace(domain('plotname_x').length, 1, 0.5) * plotname_x_step"
         },
         {
-            "name": "plotname_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -146,7 +138,7 @@
             },
             "range": [
                 {
-                    "signal": "plotname_height"
+                    "signal": "height"
                 },
                 0
             ],

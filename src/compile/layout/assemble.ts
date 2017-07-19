@@ -23,7 +23,8 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
     return [];
   }
 
-  const name = model.getName(sizeType);
+  // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
+  const name = model.getSizeSignalRef(sizeType).signal;
 
   if (size === 'range-step') {
     const scaleComponent = model.getScaleComponent(channel);

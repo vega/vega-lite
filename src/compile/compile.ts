@@ -81,16 +81,6 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     ),
     ...model.assembleGroup(
       [].concat(
-        // TODO(https://github.com/vega/vega-lite/issues/2198):
-        // Merge the top-level's width/height signal with the top-level model
-        // so we can remove this special casing based on model.name
-        (
-          (model.name && ((model instanceof LayerModel) || (model instanceof UnitModel))) ? [
-            // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
-            {name: 'width', update: model.getName('width')},
-            {name: 'height', update: model.getName('height')}
-          ] : []
-        ),
         model.assembleLayoutSignals(),
         model.assembleSelectionTopLevelSignals([])
       )
