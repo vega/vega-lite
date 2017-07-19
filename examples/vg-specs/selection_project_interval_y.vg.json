@@ -131,7 +131,7 @@
                     "events": {
                         "signal": "pts_y"
                     },
-                    "update": "invert(\"y\", pts_y)"
+                    "update": "pts_y[0] === pts_y[1] ? null : invert(\"y\", pts_y)"
                 }
             ]
         },

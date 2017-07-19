@@ -135,7 +135,7 @@
                     "events": {
                         "signal": "alex_x"
                     },
-                    "update": "invert(\"x\", alex_x)"
+                    "update": "alex_x[0] === alex_x[1] ? null : invert(\"x\", alex_x)"
                 }
             ]
         },
@@ -202,7 +202,7 @@
                     "events": {
                         "signal": "alex_y"
                     },
-                    "update": "invert(\"y\", alex_y)"
+                    "update": "alex_y[0] === alex_y[1] ? null : invert(\"y\", alex_y)"
                 }
             ]
         },
@@ -364,7 +364,7 @@
                     "events": {
                         "signal": "morgan_x"
                     },
-                    "update": "invert(\"x\", morgan_x)"
+                    "update": "morgan_x[0] === morgan_x[1] ? null : invert(\"x\", morgan_x)"
                 }
             ]
         },
@@ -431,7 +431,7 @@
                     "events": {
                         "signal": "morgan_y"
                     },
-                    "update": "invert(\"y\", morgan_y)"
+                    "update": "morgan_y[0] === morgan_y[1] ? null : invert(\"y\", morgan_y)"
                 }
             ]
         },

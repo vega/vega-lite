@@ -443,7 +443,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_distance_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_distance_x\", brush_x)"
                         }
                     ]
                 },
@@ -910,7 +910,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_delay_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_delay_x\", brush_x)"
                         }
                     ]
                 },
@@ -1377,7 +1377,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_time_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_time_x\", brush_x)"
                         }
                     ]
                 },

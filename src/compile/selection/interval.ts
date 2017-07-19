@@ -185,7 +185,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     name: vname, value: [], on: on
   }, {
     name: dname,
-    on: [{events: {signal: vname}, update: `invert(${scaleStr}, ${vname})`}]
+    on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
   }];
 }
 

@@ -116,7 +116,7 @@
                     "events": {
                         "signal": "brush_x"
                     },
-                    "update": "invert(\"x\", brush_x)"
+                    "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
                 }
             ]
         },
@@ -182,7 +182,7 @@
                     "events": {
                         "signal": "brush_y"
                     },
-                    "update": "invert(\"y\", brush_y)"
+                    "update": "brush_y[0] === brush_y[1] ? null : invert(\"y\", brush_y)"
                 }
             ]
         },

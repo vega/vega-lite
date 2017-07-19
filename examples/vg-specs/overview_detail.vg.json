@@ -322,7 +322,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"concat_1_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_1_x\", brush_x)"
                         }
                     ]
                 },

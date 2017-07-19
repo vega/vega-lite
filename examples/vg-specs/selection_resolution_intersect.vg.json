@@ -292,7 +292,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Horsepower_Horsepower_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Horsepower_Horsepower_y\", brush_y)"
                         }
                     ]
                 },
@@ -649,7 +649,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Horsepower_Acceleration_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Horsepower_Acceleration_x\", brush_x)"
                         }
                     ]
                 },
@@ -715,7 +715,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Horsepower_Acceleration_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Horsepower_Acceleration_y\", brush_y)"
                         }
                     ]
                 },
@@ -1068,7 +1068,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Horsepower_Miles_per_Gallon_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Horsepower_Miles_per_Gallon_x\", brush_x)"
                         }
                     ]
                 },
@@ -1134,7 +1134,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Horsepower_Miles_per_Gallon_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Horsepower_Miles_per_Gallon_y\", brush_y)"
                         }
                     ]
                 },
@@ -1487,7 +1487,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Acceleration_Horsepower_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Acceleration_Horsepower_x\", brush_x)"
                         }
                     ]
                 },
@@ -1553,7 +1553,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Acceleration_Horsepower_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Acceleration_Horsepower_y\", brush_y)"
                         }
                     ]
                 },
@@ -1906,7 +1906,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Acceleration_Acceleration_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Acceleration_Acceleration_y\", brush_y)"
                         }
                     ]
                 },
@@ -2263,7 +2263,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Acceleration_Miles_per_Gallon_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Acceleration_Miles_per_Gallon_x\", brush_x)"
                         }
                     ]
                 },
@@ -2329,7 +2329,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Acceleration_Miles_per_Gallon_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Acceleration_Miles_per_Gallon_y\", brush_y)"
                         }
                     ]
                 },
@@ -2682,7 +2682,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Miles_per_Gallon_Horsepower_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Miles_per_Gallon_Horsepower_x\", brush_x)"
                         }
                     ]
                 },
@@ -2748,7 +2748,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Miles_per_Gallon_Horsepower_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Miles_per_Gallon_Horsepower_y\", brush_y)"
                         }
                     ]
                 },
@@ -3101,7 +3101,7 @@
                             "events": {
                                 "signal": "brush_x"
                             },
-                            "update": "invert(\"child_Miles_per_Gallon_Acceleration_x\", brush_x)"
+                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Miles_per_Gallon_Acceleration_x\", brush_x)"
                         }
                     ]
                 },
@@ -3167,7 +3167,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Miles_per_Gallon_Acceleration_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Miles_per_Gallon_Acceleration_y\", brush_y)"
                         }
                     ]
                 },
@@ -3520,7 +3520,7 @@
                             "events": {
                                 "signal": "brush_y"
                             },
-                            "update": "invert(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_y)"
+                            "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_y)"
                         }
                     ]
                 },
