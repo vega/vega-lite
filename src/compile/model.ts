@@ -1,7 +1,7 @@
 import {isNumber} from 'vega-util';
 import {Axis} from '../axis';
 import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
-import {CellConfig, Config} from '../config';
+import {Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';

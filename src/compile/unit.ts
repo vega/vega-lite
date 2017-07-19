@@ -111,6 +111,7 @@ export class UnitModel extends ModelWithField {
   public legend(channel: Channel): Legend {
     return this.specifiedLegends[channel];
   }
+
   private initFacetCellConfig() {
     const config = this.config;
     let ancestor = this.parent;
