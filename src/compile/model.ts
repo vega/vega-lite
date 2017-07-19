@@ -86,7 +86,7 @@ export class NameMap implements NameMapInterface {
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case the new name also gets renamed.
-    while (this.nameMap[name]) {
+    while (this.nameMap[name] && name !== this.nameMap[name]) {
       name = this.nameMap[name];
     }
 
