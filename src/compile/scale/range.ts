@@ -6,7 +6,7 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, VgRange, VgRangeScheme} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgRangeScheme, VgSignalRef} from '../../vega.schema';
 import {LayoutSize} from '../layout/component';
 import {Model} from '../model';
 import {Explicit, makeImplicit, Split} from '../split';
@@ -42,30 +42,32 @@ function parseUnitScaleRange(model: UnitModel) {
     const fieldDef = model.fieldDef(channel);
 
     // Read if there is a specified width/height
-    const specifiedSize = channel === 'x' ? model.component.layoutSize.get('width') :
-      channel === 'y' ? model.component.layoutSize.get('height') : undefined;
+    const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+    const specifiedSize = sizeType ? model.component.layoutSize.get(sizeType) : undefined;
 
     const xyRangeSteps = getXYRangeStep(model);
 
     const rangeWithExplicit = parseRangeForChannel(
-      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,  localScaleCmpt.get('zero'), model.mark(), specifiedSize, xyRangeSteps);
+      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,
+      localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getSizeSignalRef(sizeType), xyRangeSteps
+    );
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
   });
 }
 
 function getXYRangeStep(model: UnitModel) {
-  const xyRangeSteps = [];
+  const xyRangeSteps: number[] = [];
 
   const xScale = model.getScaleComponent('x');
   const xRange = xScale && xScale.get('range');
-  if (xRange && isVgRangeStep(xRange)) {
+  if (xRange && isVgRangeStep(xRange) && isNumber(xRange.step)) {
     xyRangeSteps.push(xRange.step);
   }
 
   const yScale = model.getScaleComponent('y');
   const yRange = yScale && yScale.get('range');
-  if (yRange && isVgRangeStep(yRange)) {
+  if (yRange && isVgRangeStep(yRange) && isNumber(yRange.step)) {
     xyRangeSteps.push(yRange.step);
   }
 
@@ -77,10 +79,10 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, specifiedSize: LayoutSize, xyRangeSteps: number[]
+    zero: boolean, mark: Mark, specifiedSize: LayoutSize, sizeSignal: VgSignalRef, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
-  let specifiedRangeStepIsNull = false;
+  const noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
@@ -99,16 +101,14 @@ export function parseRangeForChannel(
           case 'scheme':
             return makeImplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
-            if (specifiedSize === undefined) {
-              const rangeStep = specifiedScale[property];
-              if (rangeStep !== null) {
+            const rangeStep = specifiedScale[property];
+            if (rangeStep !== null) {
+              if (specifiedSize === undefined) {
                 return makeImplicit({step: rangeStep});
               } else {
-                specifiedRangeStepIsNull = true;
+                // If top-level size is specified, we ignore specified rangeStep.
+                log.warn(log.message.rangeStepDropped(channel));
               }
-            } else {
-              // If top-level size is specified, we ignore specified rangeStep.
-              log.warn(log.message.rangeStepDropped(channel));
             }
         }
       }
@@ -116,7 +116,10 @@ export function parseRangeForChannel(
   }
   return {
     explicit: false,
-    value: defaultRange(channel, scaleType, type, config, zero, mark, specifiedSize, xyRangeSteps, specifiedRangeStepIsNull)
+    value: defaultRange(
+      channel, scaleType, type, config,
+      zero, mark, sizeSignal, xyRangeSteps, noRangeStep
+    )
   };
 }
 
@@ -134,32 +137,28 @@ function parseScheme(scheme: Scheme) {
   return {scheme: scheme};
 }
 
-export function defaultRange(channel: Channel, scaleType: ScaleType, type: Type, config: Config,
-  zero: boolean, mark: Mark, topLevelSize: LayoutSize, xyRangeSteps: number[],
-  specifiedRangeStepIsNull: boolean): VgRange {
+export function defaultRange(
+  channel: Channel, scaleType: ScaleType, type: Type, config: Config, zero: boolean, mark: Mark,
+  sizeSignal: VgSignalRef, xyRangeSteps: number[], noRangeStep: boolean
+): VgRange {
   switch (channel) {
     case X:
     case Y:
-      let size: number;
-      if (isNumber(topLevelSize)) {
-        size = topLevelSize;
-      } else {
-        if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
-          if (channel === X && mark === 'text') {
-            if (config.scale.textXRangeStep) {
-              return {step: config.scale.textXRangeStep};
-            }
-          } else {
-            if (config.scale.rangeStep) {
-              return {step: config.scale.rangeStep};
-            }
+      if (util.contains(['point', 'band'], scaleType) && !noRangeStep) {
+        if (channel === X && mark === 'text') {
+          if (config.scale.textXRangeStep) {
+            return {step: config.scale.textXRangeStep};
+          }
+        } else {
+          if (config.scale.rangeStep) {
+            return {step: config.scale.rangeStep};
           }
         }
-        // If specified range step is null or the range step config is null.
-        // Use default topLevelSize rule/config
-        size = channel === X ? config.cell.width : config.cell.height;
       }
-      return channel === X ? [0, size] : [size, 0];
+      // If range step is null, assign temporary range signals,
+      // which will be later replaced with proper signals in assemble.
+      // We cannot set the right size signal here since parseLayoutSize() happens after parseScale().
+      return channel === X ? [0, sizeSignal] : [sizeSignal, 0];
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);

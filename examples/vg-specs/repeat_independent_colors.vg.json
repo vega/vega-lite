@@ -83,6 +83,9 @@
                     "height": {
                         "signal": "height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -130,7 +133,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -144,7 +149,9 @@
                         "field": "Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -166,6 +173,8 @@
                 {
                     "scale": "child_Origin_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -184,6 +193,8 @@
                 },
                 {
                     "scale": "child_Origin_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -216,6 +227,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -264,7 +278,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -278,7 +294,9 @@
                         "field": "Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -300,6 +318,8 @@
                 {
                     "scale": "child_Cylinders_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -318,6 +338,8 @@
                 },
                 {
                     "scale": "child_Cylinders_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -340,5 +362,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

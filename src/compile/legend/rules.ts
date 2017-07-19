@@ -8,15 +8,6 @@ import {isBinScale, ScaleType} from '../../scale';
 import {Type} from '../../type';
 import {contains} from '../../util';
 
-
-export function title(legend: Legend, fieldDef: FieldDef<string>, config: Config) {
-  if (legend.title !== undefined) {
-    return legend.title;
-  }
-
-  return fieldTitle(fieldDef, config);
-}
-
 export function values(legend: Legend) {
   const vals = legend.values;
   if (vals && isDateTime(vals[0])) {
@@ -28,10 +19,7 @@ export function values(legend: Legend) {
   return vals;
 }
 
-export function type(legend: Legend, type: Type, channel: Channel, scaleType: ScaleType) {
-  if (legend.type) {
-    return legend.type;
-  }
+export function type(type: Type, channel: Channel, scaleType: ScaleType) {
   if (
       channel === COLOR && (
         (type === 'quantitative' && !isBinScale(scaleType)) ||

@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -403,7 +406,9 @@
             },
             "range": [
                 0,
-                500
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": "year"
@@ -435,7 +440,9 @@
                 "sort": true
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -482,6 +489,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "population",
             "zindex": 1
@@ -502,5 +511,10 @@
             "fill": "color",
             "title": "event"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

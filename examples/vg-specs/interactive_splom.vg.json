@@ -143,6 +143,9 @@
                     "height": {
                         "signal": "height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -552,7 +555,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -569,7 +574,9 @@
                         "signal": "grid_Horsepower"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -581,6 +588,8 @@
                 {
                     "scale": "child_Horsepower_Horsepower_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -599,6 +608,8 @@
                 },
                 {
                     "scale": "child_Horsepower_Horsepower_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -625,6 +636,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1120,7 +1134,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -1137,7 +1153,9 @@
                         "signal": "grid_Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1149,6 +1167,8 @@
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -1167,6 +1187,8 @@
                 },
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -1193,6 +1215,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1688,7 +1713,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -1705,7 +1732,9 @@
                         "signal": "grid_Horsepower"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -1717,6 +1746,8 @@
                 {
                     "scale": "child_Acceleration_Horsepower_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Acceleration",
@@ -1735,6 +1766,8 @@
                 },
                 {
                     "scale": "child_Acceleration_Horsepower_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -1761,6 +1794,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -2256,7 +2292,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "nice": true,
@@ -2273,7 +2311,9 @@
                         "signal": "grid_Miles_per_Gallon"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -2285,6 +2325,8 @@
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Acceleration",
@@ -2303,6 +2345,8 @@
                 },
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -2353,5 +2397,10 @@
             "stroke": "color",
             "title": "Origin"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

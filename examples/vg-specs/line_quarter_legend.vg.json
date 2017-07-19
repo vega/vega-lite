@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -136,7 +139,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": "year"
@@ -149,7 +154,9 @@
                 "field": "mean_price"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -206,6 +213,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "MEAN(price)",
             "zindex": 1
@@ -235,5 +244,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

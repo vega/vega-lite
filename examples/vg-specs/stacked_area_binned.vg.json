@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -189,7 +192,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "zero": false
@@ -205,7 +210,9 @@
                 ]
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -226,6 +233,8 @@
     "axes": [
         {
             "scale": "x",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "title": "BIN(Acceleration)",
             "values": {
@@ -250,6 +259,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "SUM(Horsepower)",
             "zindex": 1
@@ -270,5 +281,10 @@
             "fill": "color",
             "title": "Cylinders"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

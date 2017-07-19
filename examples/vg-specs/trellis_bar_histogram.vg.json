@@ -167,6 +167,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -187,6 +189,8 @@
             "axes": [
                 {
                     "scale": "x",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {
@@ -241,9 +245,6 @@
                     },
                     "stroke": {
                         "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
                     },
                     "fill": {
                         "value": "transparent"
@@ -311,7 +312,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "round": true,
             "zero": false
@@ -324,12 +327,19 @@
                 "field": "count_*"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,
             "nice": true,
             "zero": true
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

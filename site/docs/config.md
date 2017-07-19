@@ -225,14 +225,6 @@ For a full list of axis configuration, please see the [Axis Config section in th
 
 Legend configuration determines default properties for [legends](legend.html). Please see [legend config](legend.html#legend-config) for each property name and default values.
 
-{:#facet-config}
-## Facet Configuration  (`config.facet.*`)
-
-{:#facet-cell-config}
-### Cell Configuration (`config.facet.cell.*`)
-
-Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
-
 {:#title-config}
 ## Title Configuration  (`config.title.*`)
 

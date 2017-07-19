@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -168,7 +171,9 @@
             },
             "range": [
                 0,
-                300
+                {
+                    "signal": "width"
+                }
             ],
             "nice": "month",
             "round": true
@@ -184,7 +189,9 @@
                 ]
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -235,6 +242,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "SUM(count)",
             "zindex": 1
@@ -255,5 +264,10 @@
             "fill": "color",
             "title": "series"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

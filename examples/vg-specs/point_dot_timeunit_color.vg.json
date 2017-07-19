@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -96,7 +99,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -118,6 +123,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "MEAN(temp)",
@@ -148,5 +155,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

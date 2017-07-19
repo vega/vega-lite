@@ -1,41 +1,35 @@
-import {Axis} from '../../axis';
+import {Axis, AxisConfig} from '../../axis';
 import {binToString} from '../../bin';
-import {Channel, COLUMN, ROW, SpatialScaleChannel, X, Y} from '../../channel';
+import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {ScaleType} from '../../scale';
+import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 import {labelAngle} from './encode';
 
-export function format(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config) {
-  return numberFormat(fieldDef, specifiedAxis.format, config);
+
+export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
+  if (isGridAxis) {
+    return false;
+  }
+  return specifiedAxis[property];
 }
+
+export const domain = domainAndTicks;
+export const ticks = domainAndTicks;
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: UnitModel, channel: SpatialScaleChannel) {
-  const grid = model.axis(channel).grid;
-  if (grid !== undefined) {
-    return grid;
-  }
-
-  return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
-}
-
-export function grid(model: UnitModel, channel: SpatialScaleChannel, isGridAxis: boolean) {
-  if (!isGridAxis) {
-    return undefined;
-  }
-
-  return gridShow(model, channel);
+export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
+  return !hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 
 export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
@@ -48,19 +42,31 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
   return undefined;
 }
 
-export function orient(specifiedAxis: Axis, channel: Channel) {
-  const orient = specifiedAxis.orient;
-  if (orient) {
-    return orient;
+
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, scaleType: ScaleType) {
+  if (channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+    if (scaleType === 'log') {
+      return 'greedy';
+    }
+    return true;
+  }
+  return undefined;
+}
+
+export function minMaxExtent(isGridAxis: boolean, scaleType: ScaleType, axisConfig: AxisConfig) {
+  // For quantitative scale, set default extent to avoid jumpy axis title
+  // (Fix https://github.com/vega/vega-lite/issues/2282)
+  if (getScaleCategory(scaleType) === 'numeric') {
+    return axisConfig.quantitativeExtent;
   }
 
+  return undefined;
+}
+
+export function orient(channel: Channel) {
   switch (channel) {
-    case COLUMN:
-      // FIXME test and decide
-      return 'top';
     case X:
       return 'bottom';
-    case ROW:
     case Y:
       return 'left';
   }
@@ -68,12 +74,7 @@ export function orient(specifiedAxis: Axis, channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
-  const count = specifiedAxis.tickCount;
-  if (count !== undefined) {
-    return count;
-  }
-
+export function tickCount(channel: Channel, fieldDef: FieldDef<string>) {
   // FIXME depends on scale type too
   if (channel === X && !fieldDef.bin) {
     // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
@@ -83,23 +84,9 @@ export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: Field
   return undefined;
 }
 
-export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean) {
-  if (isGridAxis) {
-    return undefined;
-  }
-
-  if (specifiedAxis.title === '') {
-    return undefined;
-  }
-
-  if (specifiedAxis.title !== undefined) {
-    return specifiedAxis.title;
-  }
-
+export function title(maxLength: number, fieldDef: FieldDef<string>, config: Config) {
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(fieldDef, config);
-
-  const maxLength: number = specifiedAxis.titleMaxLength;
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
@@ -118,34 +105,10 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
   return vals;
 }
 
-export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
-  const z = specifiedAxis.zindex;
-  if (z !== undefined) {
-    return z;
-  }
+export function zindex(isGridAxis: boolean) {
   if (isGridAxis) {
     // if grid is true, need to put layer on the back so that grid is behind marks
     return 0;
   }
   return 1; // otherwise return undefined and use Vega's default.
 }
-
-export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
-  if (isGridAxis || channel === ROW || channel === COLUMN) {
-    return false;
-  }
-  return specifiedAxis[property];
-}
-
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean, scaleType: ScaleType) {
-  if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
-    if (scaleType === 'log') {
-      return 'greedy';
-    }
-    return true;
-  }
-  return undefined;
-}
-
-export const domain = domainAndTicks;
-export const ticks = domainAndTicks;

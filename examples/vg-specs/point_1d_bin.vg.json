@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -97,7 +100,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "zero": false
@@ -106,6 +111,8 @@
     "axes": [
         {
             "scale": "x",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
             "values": {
@@ -128,5 +135,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

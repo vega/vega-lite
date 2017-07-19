@@ -1,4 +1,4 @@
-import {AxisConfig, AxisConfigMixins} from './axis';
+import {AxisConfig, AxisConfigMixins, DEFAULT_AXIS_CONFIG} from './axis';
 import {BoxPlotConfig, COMPOSITE_MARK_ROLES} from './compositemark';
 import {CompositeMarkConfigMixins, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
@@ -96,22 +96,8 @@ export interface CellConfig {
 export const defaultCellConfig: CellConfig = {
   width: 200,
   height: 200,
-  fill: 'transparent'
-};
-
-export const defaultFacetCellConfig: CellConfig = {
-  stroke: '#ccc',
-  strokeWidth: 1
-};
-
-export interface FacetConfig {
-  /** Facet Cell Config */
-  cell?: CellConfig;
-}
-
-
-export const defaultFacetConfig: FacetConfig = {
-  cell: defaultFacetCellConfig
+  fill: 'transparent',
+  stroke: '#ccc'
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
@@ -152,10 +138,6 @@ export interface VLOnlyConfig {
 
   /** Cell Config */
   cell?: CellConfig;
-
-
-  /** Facet Config */
-  facet?: FacetConfig;
 
   /** Scale Config */
   scale?: ScaleConfig;
@@ -217,7 +199,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
-  axis: {},
+  axis: DEFAULT_AXIS_CONFIG,
   axisX: {},
   axisY: {},
   axisLeft: {},
@@ -226,8 +208,6 @@ export const defaultConfig: Config = {
   axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
-
-  facet: defaultFacetConfig,
 
   selection: defaultSelectionConfig,
 
@@ -240,7 +220,7 @@ export function initConfig(config: Config) {
 
 const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
 
-const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'invalidValues'];
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'selection', 'invalidValues'];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,

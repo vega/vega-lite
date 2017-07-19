@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -110,7 +113,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -124,7 +129,9 @@
                 "field": "year_Year"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -135,6 +142,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "SUM(Weight_in_lbs)",
@@ -176,5 +185,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

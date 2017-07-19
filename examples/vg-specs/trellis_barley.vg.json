@@ -56,8 +56,12 @@
             "update": "200"
         },
         {
+            "name": "trellis_barley_y_step",
+            "value": 12
+        },
+        {
             "name": "trellis_barley_child_height",
-            "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * 12"
+            "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * trellis_barley_y_step"
         }
     ],
     "layout": {
@@ -171,6 +175,8 @@
                 {
                     "scale": "trellis_barley_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "MEDIAN(yield)",
@@ -233,9 +239,6 @@
                     "stroke": {
                         "value": "#ccc"
                     },
-                    "strokeWidth": {
-                        "value": 1
-                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -295,7 +298,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "trellis_barley_child_width"
+                }
             ],
             "zero": false,
             "round": true,
@@ -314,7 +319,9 @@
                 }
             },
             "range": {
-                "step": 12
+                "step": {
+                    "signal": "trellis_barley_y_step"
+                }
             },
             "round": true,
             "padding": 0.5
@@ -335,5 +342,10 @@
             "stroke": "trellis_barley_color",
             "title": "year"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

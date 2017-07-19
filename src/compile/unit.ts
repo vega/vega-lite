@@ -61,9 +61,6 @@ export class UnitModel extends ModelWithField {
       ...(spec.height ? {height: spec.height} : {})
     });
 
-    // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
-    this.initFacetCellConfig();
-
     this.markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
     const mark = this.markDef.type;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
@@ -110,22 +107,6 @@ export class UnitModel extends ModelWithField {
 
   public legend(channel: Channel): Legend {
     return this.specifiedLegends[channel];
-  }
-  private initFacetCellConfig() {
-    const config = this.config;
-    let ancestor = this.parent;
-    let hasFacetAncestor = false;
-    while (ancestor !== null) {
-      if (ancestor instanceof FacetModel) {
-        hasFacetAncestor = true;
-        break;
-      }
-      ancestor = ancestor.parent;
-    }
-
-    if (hasFacetAncestor) {
-      config.cell = extend({}, config.cell, config.facet.cell);
-    }
   }
 
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {

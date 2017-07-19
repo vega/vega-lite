@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -42,8 +45,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 21
+        },
+        {
             "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "height",
@@ -96,7 +103,9 @@
                 }
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "x_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
@@ -110,7 +119,9 @@
                 "field": "count_*"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -143,6 +154,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1
@@ -157,5 +170,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

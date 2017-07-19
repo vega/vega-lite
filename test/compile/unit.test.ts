@@ -56,7 +56,7 @@ describe('UnitModel', function() {
   });
 
   describe('initAxes', () => {
-    it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
+    it('should not include properties of non-VlOnlyAxisConfig in config.axis', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {

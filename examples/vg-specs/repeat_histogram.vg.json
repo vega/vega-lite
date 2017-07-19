@@ -256,6 +256,9 @@
                     "height": {
                         "signal": "height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -309,7 +312,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "zero": false
@@ -325,7 +330,9 @@
                         ]
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -336,6 +343,8 @@
             "axes": [
                 {
                     "scale": "child_Horsepower_x",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {
@@ -360,6 +369,8 @@
                 },
                 {
                     "scale": "child_Horsepower_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -386,6 +397,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -440,7 +454,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "zero": false
@@ -456,7 +472,9 @@
                         ]
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -467,6 +485,8 @@
             "axes": [
                 {
                     "scale": "child_Miles_per_Gallon_x",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(Miles_per_Gallon)",
                     "values": {
@@ -491,6 +511,8 @@
                 },
                 {
                     "scale": "child_Miles_per_Gallon_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -517,6 +539,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -571,7 +596,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "round": true,
                     "zero": false
@@ -587,7 +614,9 @@
                         ]
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "round": true,
@@ -598,6 +627,8 @@
             "axes": [
                 {
                     "scale": "child_Acceleration_x",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(Acceleration)",
                     "values": {
@@ -622,6 +653,8 @@
                 },
                 {
                     "scale": "child_Acceleration_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -677,5 +710,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

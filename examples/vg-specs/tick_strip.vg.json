@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -34,8 +37,12 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 21
+        },
+        {
             "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
         }
     ],
     "marks": [
@@ -82,7 +89,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -97,7 +106,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "padding": 0.5
@@ -107,6 +118,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "Horsepower",
@@ -129,5 +142,10 @@
             "title": "Cylinders",
             "zindex": 1
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

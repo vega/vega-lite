@@ -1,11 +1,12 @@
+import {isNumber} from 'vega-util';
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 import {VgValueRef} from '../../vega.schema';
+import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 import {ScaleComponent} from '../scale/component';
 import {Split} from '../split';
 import {UnitModel} from '../unit';
@@ -102,7 +103,7 @@ function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config
     const scaleType = scale.get('type');
     if (scaleType === ScaleType.POINT) {
       const scaleRange = scale.get('range');
-      if (isVgRangeStep(scaleRange)) {
+      if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
         return {value: scaleRange.step - 1};
       }
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);

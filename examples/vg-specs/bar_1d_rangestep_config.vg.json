@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -91,7 +94,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -103,6 +108,8 @@
             "title": "population",
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "zindex": 1
@@ -117,5 +124,10 @@
             "ticks": false,
             "zindex": 0
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -118,7 +121,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "zero": false
@@ -131,7 +136,9 @@
                 "field": "count_*"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -142,6 +149,8 @@
     "axes": [
         {
             "scale": "x",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "title": "BIN(precipitation)",
             "values": {
@@ -166,6 +175,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1
@@ -180,5 +191,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -167,7 +170,9 @@
             },
             "range": [
                 0,
-                300
+                {
+                    "signal": "width"
+                }
             ],
             "nice": "month",
             "round": true
@@ -183,7 +188,9 @@
                 ]
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -241,5 +248,10 @@
             "fill": "color",
             "title": "series"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

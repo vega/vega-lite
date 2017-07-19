@@ -91,8 +91,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 12
+        },
+        {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * 12"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "child_height",
@@ -156,6 +160,8 @@
                 {
                     "title": "population",
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "zindex": 1
                 }
@@ -220,6 +226,7 @@
             },
             "axes": [
                 {
+                    "title": "",
                     "scale": "x",
                     "orient": "bottom",
                     "tickCount": 5,
@@ -271,10 +278,7 @@
                         "signal": "child_height"
                     },
                     "stroke": {
-                        "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 0
+                        "value": "transparent"
                     },
                     "fill": {
                         "value": "transparent"
@@ -327,7 +331,9 @@
                 "sort": true
             },
             "range": {
-                "step": 12
+                "step": {
+                    "signal": "x_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
@@ -344,7 +350,9 @@
                 ]
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,
@@ -382,6 +390,7 @@
     ],
     "config": {
         "axis": {
+            "quantitativeExtent": 30,
             "domainWidth": 1
         }
     }

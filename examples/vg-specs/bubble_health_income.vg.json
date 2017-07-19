@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -227,7 +230,9 @@
             },
             "range": [
                 0,
-                500
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true
@@ -243,7 +248,9 @@
                 "signal": "view_health"
             },
             "range": [
-                300,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "zero": false,
@@ -269,6 +276,8 @@
         {
             "scale": "x",
             "labelOverlap": "greedy",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "income",
@@ -287,6 +296,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "health",
             "zindex": 1
@@ -319,5 +330,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -87,8 +87,12 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 21
+        },
+        {
             "name": "child_height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "layout": {
@@ -214,6 +218,8 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "SUM(yield)",
@@ -251,9 +257,6 @@
                     },
                     "stroke": {
                         "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
                     },
                     "fill": {
                         "value": "transparent"
@@ -322,7 +325,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -337,7 +342,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
@@ -368,5 +375,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

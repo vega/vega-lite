@@ -81,8 +81,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 21
+        },
+        {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
         },
         {
             "name": "child_height",
@@ -145,6 +149,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "MEAN(price)",
                     "zindex": 1
@@ -267,9 +273,6 @@
                     "stroke": {
                         "value": "#ccc"
                     },
-                    "strokeWidth": {
-                        "value": 1
-                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -353,7 +356,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "x_step"
+                }
             },
             "round": true,
             "padding": 0.5
@@ -366,7 +371,9 @@
                 "field": "mean_price"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,
@@ -389,5 +396,10 @@
             "stroke": "color",
             "title": "symbol"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

@@ -29,8 +29,10 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
+  // Decrease visual noise by removing $schema and description from code examples.
+  const textClean = text.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
   const code = $target.append('pre').attr('class', 'example-code')
-    .append('code').attr('class', 'json').text(text);
+    .append('code').attr('class', 'json').text(textClean);
   hljs.highlightBlock(code.node() as any);
 
   const spec = JSON.parse(text);
@@ -53,8 +55,8 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
   }).catch(console.error);
 }
 
-selectAll('.vl-example').each(function(this: Element) {
-  const sel = select(this);
+function getSpec(el: Element) {
+  const sel = select(el);
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
@@ -70,4 +72,24 @@ selectAll('.vl-example').each(function(this: Element) {
   } else {
     console.error('No "data-name" specified to import examples from');
   }
+}
+
+window['changeSpec'] = function(elId: string, newSpec: string) {
+  const el = document.getElementById(elId);
+  select(el).attr('data-name', newSpec);
+  getSpec(el);
+};
+
+window['buildSpecOpts'] = function(id: string, baseName: string) {
+  const oldName = select('#' + id).attr('data-name');
+  const prefixSel = select('select[name=' + id + ']');
+  const inputsSel = selectAll('input[name=' + id + ']:checked');
+  const prefix = prefixSel.empty() ? id : prefixSel.property('value');
+  const values = inputsSel.nodes().map((n: any) => n.value).sort().join('_');
+  const newName = baseName + prefix + (values ? '_' + values : '');
+  if (oldName !== newName) window['changeSpec'](id, newName);
+};
+
+selectAll('.vl-example').each(function(this: Element) {
+  getSpec(this);
 });

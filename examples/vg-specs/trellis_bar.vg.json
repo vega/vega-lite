@@ -77,8 +77,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 17
+        },
+        {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * 17"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "child_height",
@@ -176,6 +180,8 @@
                 {
                     "title": "population",
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "zindex": 1
                 }
@@ -248,9 +254,6 @@
                     "stroke": {
                         "value": "#ccc"
                     },
-                    "strokeWidth": {
-                        "value": 1
-                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -314,7 +317,9 @@
                 "sort": true
             },
             "range": {
-                "step": 17
+                "step": {
+                    "signal": "x_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
@@ -331,7 +336,9 @@
                 ]
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,
@@ -366,5 +373,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

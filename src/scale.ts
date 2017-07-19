@@ -66,6 +66,10 @@ const SCALE_CATEGORY_INDEX: {[k in ScaleType]: ScaleType | 'numeric' | 'ordinal-
   band: 'ordinal-position'
 };
 
+export function getScaleCategory(scaleType: ScaleType) {
+  return SCALE_CATEGORY_INDEX[scaleType];
+}
+
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -340,7 +344,7 @@ export interface ExtendedScheme {
   count?: number;
 }
 
-export type SelectionDomain = {selection: string, field: string} | {selection: string, encoding: string};
+export type SelectionDomain = {selection: string, field?: string} | {selection: string, encoding?: string};
 export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | ExtendedScheme;
 

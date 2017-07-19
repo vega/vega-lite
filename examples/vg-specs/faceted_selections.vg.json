@@ -162,6 +162,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "Y",
                     "zindex": 1
@@ -229,6 +231,8 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "X",
@@ -266,9 +270,6 @@
                     },
                     "stroke": {
                         "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
                     },
                     "fill": {
                         "value": "transparent"
@@ -772,7 +773,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "zero": false,
             "round": true,
@@ -789,12 +792,19 @@
                 "signal": "grid_Y"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "zero": false,
             "round": true,
             "nice": true
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

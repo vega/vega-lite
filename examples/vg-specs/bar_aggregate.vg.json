@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -49,8 +52,12 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 17
+        },
+        {
             "name": "height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * 17"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
@@ -96,7 +103,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -111,7 +120,9 @@
                 "sort": true
             },
             "range": {
-                "step": 17
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "paddingInner": 0.1,
@@ -123,6 +134,8 @@
             "title": "population",
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "zindex": 1
@@ -144,5 +157,10 @@
             "title": "age",
             "zindex": 1
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

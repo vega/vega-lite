@@ -343,6 +343,9 @@
                     "height": {
                         "signal": "height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -390,7 +393,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -404,7 +409,9 @@
                         "field": "petalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -416,6 +423,8 @@
                 {
                     "scale": "child_petalWidth_sepalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -434,6 +443,8 @@
                 },
                 {
                     "scale": "child_petalWidth_sepalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalWidth",
                     "zindex": 1
@@ -460,6 +471,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -508,7 +522,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -522,7 +538,9 @@
                         "field": "petalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -534,6 +552,8 @@
                 {
                     "scale": "child_petalWidth_sepalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -552,6 +572,8 @@
                 },
                 {
                     "scale": "child_petalWidth_sepalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalWidth",
                     "zindex": 1
@@ -578,6 +600,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -626,7 +651,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -640,7 +667,9 @@
                         "field": "petalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -652,6 +681,8 @@
                 {
                     "scale": "child_petalWidth_petalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -670,6 +701,8 @@
                 },
                 {
                     "scale": "child_petalWidth_petalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalWidth",
                     "zindex": 1
@@ -696,6 +729,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -744,7 +780,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -758,7 +796,9 @@
                         "field": "petalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -770,6 +810,8 @@
                 {
                     "scale": "child_petalWidth_petalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -788,6 +830,8 @@
                 },
                 {
                     "scale": "child_petalWidth_petalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalWidth",
                     "zindex": 1
@@ -814,6 +858,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -862,7 +909,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -876,7 +925,9 @@
                         "field": "petalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -888,6 +939,8 @@
                 {
                     "scale": "child_petalLength_sepalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -906,6 +959,8 @@
                 },
                 {
                     "scale": "child_petalLength_sepalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalLength",
                     "zindex": 1
@@ -932,6 +987,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -980,7 +1038,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -994,7 +1054,9 @@
                         "field": "petalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1006,6 +1068,8 @@
                 {
                     "scale": "child_petalLength_sepalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -1024,6 +1088,8 @@
                 },
                 {
                     "scale": "child_petalLength_sepalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalLength",
                     "zindex": 1
@@ -1050,6 +1116,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1098,7 +1167,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1112,7 +1183,9 @@
                         "field": "petalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1124,6 +1197,8 @@
                 {
                     "scale": "child_petalLength_petalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -1142,6 +1217,8 @@
                 },
                 {
                     "scale": "child_petalLength_petalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalLength",
                     "zindex": 1
@@ -1168,6 +1245,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1216,7 +1296,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1230,7 +1312,9 @@
                         "field": "petalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1242,6 +1326,8 @@
                 {
                     "scale": "child_petalLength_petalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -1260,6 +1346,8 @@
                 },
                 {
                     "scale": "child_petalLength_petalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "petalLength",
                     "zindex": 1
@@ -1286,6 +1374,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1334,7 +1425,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1348,7 +1441,9 @@
                         "field": "sepalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1360,6 +1455,8 @@
                 {
                     "scale": "child_sepalWidth_sepalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -1378,6 +1475,8 @@
                 },
                 {
                     "scale": "child_sepalWidth_sepalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalWidth",
                     "zindex": 1
@@ -1404,6 +1503,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1452,7 +1554,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1466,7 +1570,9 @@
                         "field": "sepalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1478,6 +1584,8 @@
                 {
                     "scale": "child_sepalWidth_sepalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -1496,6 +1604,8 @@
                 },
                 {
                     "scale": "child_sepalWidth_sepalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalWidth",
                     "zindex": 1
@@ -1522,6 +1632,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1570,7 +1683,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1584,7 +1699,9 @@
                         "field": "sepalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1596,6 +1713,8 @@
                 {
                     "scale": "child_sepalWidth_petalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -1614,6 +1733,8 @@
                 },
                 {
                     "scale": "child_sepalWidth_petalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalWidth",
                     "zindex": 1
@@ -1640,6 +1761,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1688,7 +1812,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1702,7 +1828,9 @@
                         "field": "sepalWidth"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1714,6 +1842,8 @@
                 {
                     "scale": "child_sepalWidth_petalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -1732,6 +1862,8 @@
                 },
                 {
                     "scale": "child_sepalWidth_petalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalWidth",
                     "zindex": 1
@@ -1758,6 +1890,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1806,7 +1941,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1820,7 +1957,9 @@
                         "field": "sepalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1832,6 +1971,8 @@
                 {
                     "scale": "child_sepalLength_sepalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -1850,6 +1991,8 @@
                 },
                 {
                     "scale": "child_sepalLength_sepalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalLength",
                     "zindex": 1
@@ -1876,6 +2019,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1924,7 +2070,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -1938,7 +2086,9 @@
                         "field": "sepalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -1950,6 +2100,8 @@
                 {
                     "scale": "child_sepalLength_sepalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -1968,6 +2120,8 @@
                 },
                 {
                     "scale": "child_sepalLength_sepalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalLength",
                     "zindex": 1
@@ -1994,6 +2148,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -2042,7 +2199,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -2056,7 +2215,9 @@
                         "field": "sepalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -2068,6 +2229,8 @@
                 {
                     "scale": "child_sepalLength_petalLength_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -2086,6 +2249,8 @@
                 },
                 {
                     "scale": "child_sepalLength_petalLength_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalLength",
                     "zindex": 1
@@ -2112,6 +2277,9 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"
@@ -2160,7 +2328,9 @@
                     },
                     "range": [
                         0,
-                        200
+                        {
+                            "signal": "width"
+                        }
                     ],
                     "zero": false,
                     "round": true,
@@ -2174,7 +2344,9 @@
                         "field": "sepalLength"
                     },
                     "range": [
-                        200,
+                        {
+                            "signal": "height"
+                        },
                         0
                     ],
                     "zero": false,
@@ -2186,6 +2358,8 @@
                 {
                     "scale": "child_sepalLength_petalWidth_x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -2204,6 +2378,8 @@
                 },
                 {
                     "scale": "child_sepalLength_petalWidth_y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "sepalLength",
                     "zindex": 1
@@ -2302,5 +2478,10 @@
             "stroke": "color",
             "title": "species"
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

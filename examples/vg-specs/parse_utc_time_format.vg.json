@@ -5,6 +5,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -45,8 +48,12 @@
             "update": "21"
         },
         {
+            "name": "y_step",
+            "value": 21
+        },
+        {
             "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
         }
     ],
     "marks": [
@@ -89,7 +96,9 @@
                 "sort": true
             },
             "range": {
-                "step": 21
+                "step": {
+                    "signal": "y_step"
+                }
             },
             "round": true,
             "padding": 0.5
@@ -111,5 +120,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

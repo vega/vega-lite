@@ -109,6 +109,8 @@ export class FacetModel extends ModelWithField {
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
 
+    const groupProperties = this.child.assembleParentGroupProperties();
+
     this.component.mark = [{
       name: this.getName('cell'),
       type: 'group',
@@ -135,9 +137,7 @@ export class FacetModel extends ModelWithField {
           hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
         )
       },
-      encode: {
-        update: getFacetGroupProperties(this)
-      }
+      ...(groupProperties ? {encode: {update: groupProperties}} : {})
     }];
   }
 
@@ -295,13 +295,4 @@ export class FacetModel extends ModelWithField {
   protected getMapping() {
     return this.facet;
   }
-}
-
-function getFacetGroupProperties(model: FacetModel) {
-  const encodeEntry = model.child.assembleParentGroupProperties();
-
-  return {
-    ...(encodeEntry ? encodeEntry : {}),
-    ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
-  };
 }

@@ -114,6 +114,8 @@
             "axes": [
                 {
                     "scale": "y",
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "left",
                     "title": "US_DVD_Sales",
                     "zindex": 1
@@ -181,6 +183,8 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
+                    "maxExtent": 30,
+                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Worldwide_Gross",
@@ -218,9 +222,6 @@
                     },
                     "stroke": {
                         "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
                     },
                     "fill": {
                         "value": "transparent"
@@ -293,7 +294,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -307,12 +310,19 @@
                 "field": "US_DVD_Sales"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_height"
+                },
                 0
             ],
             "round": true,
             "nice": true,
             "zero": true
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

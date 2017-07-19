@@ -4,6 +4,9 @@
     "padding": 5,
     "encode": {
         "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
             "fill": {
                 "value": "transparent"
             }
@@ -138,7 +141,10 @@
                         {
                             "source": "scope",
                             "type": "wheel",
-                            "consume": true
+                            "consume": true,
+                            "filter": [
+                                "event.shiftKey"
+                            ]
                         }
                     ],
                     "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
@@ -153,7 +159,10 @@
                         {
                             "source": "scope",
                             "type": "wheel",
-                            "consume": true
+                            "consume": true,
+                            "filter": [
+                                "event.shiftKey"
+                            ]
                         }
                     ],
                     "force": true,
@@ -222,7 +231,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -239,7 +250,9 @@
                 "signal": "grid_Miles_per_Gallon"
             },
             "range": [
-                200,
+                {
+                    "signal": "height"
+                },
                 0
             ],
             "round": true,
@@ -265,6 +278,8 @@
         {
             "scale": "x",
             "labelOverlap": true,
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "Horsepower",
@@ -283,6 +298,8 @@
         },
         {
             "scale": "y",
+            "maxExtent": 30,
+            "minExtent": 30,
             "orient": "left",
             "title": "Miles_per_Gallon",
             "zindex": 1
@@ -315,5 +332,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "quantitativeExtent": 30
+        }
+    }
 }

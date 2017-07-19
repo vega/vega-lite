@@ -1,7 +1,7 @@
 import {isNumber} from 'vega-util';
 import {Axis} from '../axis';
 import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
-import {CellConfig, Config} from '../config';
+import {Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
@@ -86,7 +86,7 @@ export class NameMap implements NameMapInterface {
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case the new name also gets renamed.
-    while (this.nameMap[name]) {
+    while (this.nameMap[name] && name !== this.nameMap[name]) {
       name = this.nameMap[name];
     }
 
@@ -184,7 +184,10 @@ export abstract class Model {
   public parse() {
     this.parseScale();
     this.parseMarkDef();
+
     this.parseLayoutSize(); // depends on scale
+    this.renameTopLevelLayoutSize();
+
     this.parseSelection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
     this.parseAxisAndHeader(); // depends on scale
@@ -202,6 +205,20 @@ export abstract class Model {
   }
 
   public abstract parseLayoutSize(): void;
+
+  /**
+   * Rename top-level spec's size to be just width / height, ignoring model name.
+   * This essentially merges the top-level spec's width/height signals with the width/height signals
+   * to help us reduce redundant signals declaration.
+   */
+  private renameTopLevelLayoutSize() {
+    if (this.getName('width') !== 'width') {
+      this.renameLayoutSize(this.getName('width'), 'width');
+    }
+    if (this.getName('height') !== 'height') {
+      this.renameLayoutSize(this.getName('height'), 'height');
+    }
+  }
 
   public parseMarkDef() {
     parseMarkDef(this);
@@ -354,16 +371,12 @@ export abstract class Model {
     return node.getSource();
   }
 
+  public getSizeName(oldSizeName: string): string {
+     return this.layoutSizeNameMap.get(oldSizeName);
+  }
+
   public renameLayoutSize(oldName: string, newName: string) {
     this.layoutSizeNameMap.rename(oldName, newName);
-  }
-
-  public channelSizeName(channel: Channel): string {
-    return this.sizeName(channel === X || channel === COLUMN ? 'width' : 'height');
-  }
-
-  public sizeName(size: string): string {
-     return this.layoutSizeNameMap.get(this.getName(size));
   }
 
   public renameScale(oldName: string, newName: string) {
