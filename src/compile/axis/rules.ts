@@ -54,18 +54,14 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
 }
 
 export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean, scaleType: ScaleType) {
-  if (!isGridAxis) {
-    // Only apply extent to non-grid axes as grid axes do not have labels and title.
-    // Otherwise, we would add unnecessary extent to faceted plots.
-    if (specifiedExtent) {
-      return specifiedExtent;
-    }
+  if (specifiedExtent) {
+    return specifiedExtent;
+  }
 
-    // For quantitative scale, set extent to 25 by default to avoid jumpy axis title
-    // (Fix https://github.com/vega/vega-lite/issues/2282)
-    if (getScaleCategory(scaleType) === 'numeric') {
-      return 25;
-    }
+  // For quantitative scale, set extent to 25 by default to avoid jumpy axis title
+  // (Fix https://github.com/vega/vega-lite/issues/2282)
+  if (getScaleCategory(scaleType) === 'numeric') {
+    return 25;
   }
 
   return undefined;
