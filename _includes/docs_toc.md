@@ -88,7 +88,6 @@
     - [Scale Configuration  (config.scale.*)]({{site.baseurl}}/docs/config.html#scale-config)
     - [Axis Configuration  (config.axis.*)]({{site.baseurl}}/docs/config.html#axis-config)
     - [Legend Configuration  (config.legend.*)]({{site.baseurl}}/docs/config.html#legend-config)
-    - [Facet Configuration  (config.facet.*)]({{site.baseurl}}/docs/config.html#facet-config)
     - [Title Configuration  (config.title.*)]({{site.baseurl}}/docs/config.html#title-config)
 - [Customizing Size]({{site.baseurl}}/docs/size.html)
     - [Width and Height of a Single Plot]({{site.baseurl}}/docs/size.html#width-and-height-of-a-single-plot)
