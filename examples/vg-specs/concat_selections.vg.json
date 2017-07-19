@@ -109,6 +109,9 @@
                     "height": {
                         "signal": "concat_0_height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
@@ -561,6 +564,9 @@
                     },
                     "height": {
                         "signal": "concat_1_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
                     },
                     "fill": {
                         "value": "transparent"

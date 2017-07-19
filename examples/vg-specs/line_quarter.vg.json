@@ -261,6 +261,9 @@
                     "height": {
                         "signal": "child_height"
                     },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
                     "fill": {
                         "value": "transparent"
                     }
