@@ -60,7 +60,7 @@ function parsePathMark(model: UnitModel) {
   const details = detailFields(model);
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
-  const clip = model.markDef.clip != null ? model.markDef.clip : scaleClip(model);
+  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
   const pathMarks: any = [
     {
       name: model.getName('marks'),
@@ -104,7 +104,7 @@ function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
-  const clip = model.markDef.clip != null ? model.markDef.clip : scaleClip(model);
+  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
 
   const marks: any[] = []; // TODO: vgMarks
 
@@ -148,9 +148,14 @@ function detailFields(model: UnitModel): string[] {
   }, []);
 }
 
+/**
+ * If scales are bound to interval selections, we want to automatically clip
+ * marks to account for panning/zooming interactions. We identify bound scales
+ * by the domainRaw property, which gets added during scale parsing.
+ */
 function scaleClip(model: UnitModel) {
-  const xScaleDomain = model.scaleDomain(X);
-  const yScaleDomain = model.scaleDomain(Y);
-  return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
-    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? true : false;
+  const xScale = model.getScaleComponent('x');
+  const yScale = model.getScaleComponent('y');
+  return (xScale && xScale.get('domainRaw')) ||
+    (yScale && yScale.get('domainRaw')) ? true : false;
 }

@@ -318,7 +318,9 @@
     ],
     "marks": [
         {
+            "name": "brush_brush_bg",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -368,8 +370,7 @@
                         }
                     ]
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_0_marks",
@@ -401,8 +402,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
@@ -434,12 +434,12 @@
                         "value": "goldenrod"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "brush_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -489,8 +489,7 @@
                         }
                     ]
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

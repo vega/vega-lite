@@ -136,8 +136,7 @@
                         }
                     }
                 }
-            ],
-            "clip": true
+            ]
         },
         {
             "name": "layer_1_marks",
@@ -167,8 +166,7 @@
                         "value": 2
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

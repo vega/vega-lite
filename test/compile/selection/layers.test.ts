@@ -39,9 +39,9 @@ describe('Layered Selections', function() {
   });
 
   // Selections should augment layered marks together, rather than each
-  // mark individually. This ensures correct interleaving of brush and
-  // clipping marks (e.g., that the brush mark appears above all layers
-  // and thus can be moved around).
+  // mark individually. This ensures correct interleaving of brush marks
+  // (i.e., that the brush mark appears above all layers and thus can be
+  // moved around).
   it('should pass through unit mark assembly', function() {
     assert.sameDeepMembers(layers.children[0].assembleMarks(), [{
       "name": "layer_0_marks",
@@ -50,6 +50,7 @@ describe('Layered Selections', function() {
       "from": {
         "data": "layer_0_main"
       },
+      "clip": true,
       "encode": {
         "update": {
           "x": {
@@ -81,6 +82,7 @@ describe('Layered Selections', function() {
       "from": {
         "data": "layer_1_main"
       },
+      "clip": true,
       "encode": {
         "update": {
           "x": {
@@ -113,6 +115,7 @@ describe('Layered Selections', function() {
     assert.sameDeepMembers(layers.assembleMarks(), [
       // Background brush mark for "brush" selection.
       {
+        "name": "brush_brush_bg",
         "type": "rect",
         "clip": true,
         "encode": {

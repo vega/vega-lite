@@ -230,8 +230,7 @@
                         }
                     ]
                 }
-            ],
-            "clip": true
+            ]
         },
         {
             "name": "layer_1_marks",
@@ -257,8 +256,7 @@
                         "value": "black"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_2_marks",
@@ -282,8 +280,7 @@
                         "value": "black"
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

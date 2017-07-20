@@ -465,7 +465,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -491,12 +493,12 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_Horsepower_Horsepower_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_0"
@@ -528,12 +530,12 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -559,8 +561,7 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1069,7 +1070,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1093,12 +1096,12 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_Horsepower_Miles_per_Gallon_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_1"
@@ -1130,12 +1133,12 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1159,8 +1162,7 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1672,7 +1674,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1696,12 +1700,12 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_Acceleration_Horsepower_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_2"
@@ -1733,12 +1737,12 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1762,8 +1766,7 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -2275,7 +2278,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2299,12 +2304,12 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_Acceleration_Miles_per_Gallon_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_3"
@@ -2336,12 +2341,12 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2365,8 +2370,7 @@
                                 "signal": "brush_y[1]"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [

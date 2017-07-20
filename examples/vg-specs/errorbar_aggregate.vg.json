@@ -174,8 +174,7 @@
                         "value": "black"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
@@ -204,8 +203,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_2_marks",
@@ -234,8 +232,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_3_marks",
@@ -264,8 +261,7 @@
                         "value": 2
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

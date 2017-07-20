@@ -113,8 +113,7 @@
                         "field": "count_*"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
@@ -144,8 +143,7 @@
                         "value": "center"
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [
