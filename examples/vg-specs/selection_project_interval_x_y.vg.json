@@ -312,6 +312,7 @@
     "marks": [
         {
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -364,6 +365,7 @@
         {
             "name": "marks",
             "type": "rect",
+            "clip": true,
             "from": {
                 "data": "source_0"
             },
@@ -401,6 +403,7 @@
         {
             "name": "pts_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {

@@ -8,8 +8,6 @@ import {TransformCompiler} from './transforms';
 
 
 const scaleBindings:TransformCompiler = {
-  clipGroup: true,
-
   has: function(selCmpt) {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
       selCmpt.bind && selCmpt.bind === 'scales';

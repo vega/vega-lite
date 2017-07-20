@@ -268,6 +268,7 @@
                 {
                     "name": "child_Horsepower_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_0"
@@ -410,6 +411,7 @@
                 {
                     "name": "child_Miles_per_Gallon_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_1"
@@ -552,6 +554,7 @@
                 {
                     "name": "child_Acceleration_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_2"

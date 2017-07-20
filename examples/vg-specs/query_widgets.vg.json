@@ -161,6 +161,7 @@
         {
             "name": "layer_0_marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "data_0"
@@ -192,12 +193,12 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "data_1"
@@ -226,8 +227,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

@@ -50,6 +50,7 @@ describe('Layered Selections', function() {
       "from": {
         "data": "layer_0_main"
       },
+      "clip": true,
       "encode": {
         "update": {
           "x": {
@@ -81,6 +82,7 @@ describe('Layered Selections', function() {
       "from": {
         "data": "layer_1_main"
       },
+      "clip": true,
       "encode": {
         "update": {
           "x": {

@@ -87,6 +87,7 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
+            "clip": true,
             "from": {
                 "data": "data_0"
             },
@@ -113,12 +114,12 @@
                         "field": "count_*"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "text",
+            "clip": true,
             "from": {
                 "data": "data_1"
             },
@@ -144,8 +145,7 @@
                         "value": "center"
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

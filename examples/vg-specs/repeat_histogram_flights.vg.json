@@ -212,6 +212,7 @@
                 {
                     "name": "child_distance_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_0"
@@ -350,6 +351,7 @@
                 {
                     "name": "child_delay_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_1"
@@ -488,6 +490,7 @@
                 {
                     "name": "child_time_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_2"

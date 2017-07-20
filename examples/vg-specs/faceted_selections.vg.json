@@ -627,6 +627,7 @@
             "marks": [
                 {
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -652,12 +653,12 @@
                                 }
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "circle",
                     "from": {
                         "data": "facet"
@@ -697,8 +698,7 @@
                                 "value": 1
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_voronoi",
@@ -736,12 +736,12 @@
                                 }
                             ]
                         }
-                    ],
-                    "clip": true
+                    ]
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -767,8 +767,7 @@
                                 }
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "axes": [

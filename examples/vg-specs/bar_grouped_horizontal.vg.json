@@ -240,6 +240,7 @@
                 {
                     "name": "child_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "facet"

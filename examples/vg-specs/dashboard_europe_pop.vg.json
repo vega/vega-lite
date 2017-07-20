@@ -602,6 +602,7 @@
             "marks": [
                 {
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -656,6 +657,7 @@
                 {
                     "name": "concat_0_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_1"
@@ -693,6 +695,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1010,6 +1013,7 @@
             "marks": [
                 {
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1064,6 +1068,7 @@
                 {
                     "name": "concat_1_marks",
                     "type": "rect",
+                    "clip": true,
                     "role": "bar",
                     "from": {
                         "data": "data_2"
@@ -1101,6 +1106,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1487,6 +1493,7 @@
             "marks": [
                 {
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1539,6 +1546,7 @@
                 {
                     "name": "concat_2_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_3"
@@ -1574,6 +1582,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {

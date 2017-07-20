@@ -79,6 +79,7 @@
                 {
                     "name": "layer_0_marks",
                     "type": "line",
+                    "clip": true,
                     "from": {
                         "data": "faceted_path_layer_0_main"
                     },
@@ -99,8 +100,7 @@
                         }
                     }
                 }
-            ],
-            "clip": true
+            ]
         }
     ],
     "scales": [

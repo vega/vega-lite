@@ -116,6 +116,7 @@
                 {
                     "name": "layer_0_marks",
                     "type": "line",
+                    "clip": true,
                     "from": {
                         "data": "faceted_path_layer_0_main"
                     },
@@ -136,12 +137,12 @@
                         }
                     }
                 }
-            ],
-            "clip": true
+            ]
         },
         {
             "name": "layer_1_marks",
             "type": "rule",
+            "clip": true,
             "from": {
                 "data": "data_1"
             },
@@ -167,8 +168,7 @@
                         "value": 2
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

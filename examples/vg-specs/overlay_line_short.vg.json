@@ -89,6 +89,7 @@
         {
             "name": "layer_0_marks",
             "type": "line",
+            "clip": true,
             "from": {
                 "data": "data_0"
             },
@@ -106,12 +107,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "symbol",
+            "clip": true,
             "role": "pointOverlay",
             "from": {
                 "data": "data_1"
@@ -133,8 +134,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

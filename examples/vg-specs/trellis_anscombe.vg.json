@@ -233,6 +233,7 @@
                 {
                     "name": "child_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "circle",
                     "from": {
                         "data": "facet"

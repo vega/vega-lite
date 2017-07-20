@@ -52,6 +52,7 @@
         {
             "name": "marks",
             "type": "rect",
+            "clip": true,
             "role": "bar",
             "from": {
                 "data": "source_0"

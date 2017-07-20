@@ -303,6 +303,7 @@
     "marks": [
         {
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -355,6 +356,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "source_0"
@@ -395,6 +397,7 @@
         {
             "name": "brush_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {

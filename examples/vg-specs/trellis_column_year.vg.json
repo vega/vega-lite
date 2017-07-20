@@ -309,6 +309,7 @@
                         {
                             "name": "child_marks",
                             "type": "line",
+                            "clip": true,
                             "from": {
                                 "data": "faceted_path_child_main"
                             },
