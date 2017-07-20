@@ -9,7 +9,7 @@ import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layout/assemble';
+import {assembleLayoutSignals, LayoutAssembleParams} from './layout/assemble';
 import {parseConcatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
@@ -100,10 +100,10 @@ export class ConcatModel extends Model {
     return [];
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(params: LayoutAssembleParams): VgSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
-    }, assembleLayoutSignals(this));
+      return signals.concat(child.assembleLayoutSignals(params));
+    }, assembleLayoutSignals(this, params));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

@@ -23,6 +23,7 @@ import {
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
+import {assembleLayoutSignals, LayoutAssembleParams} from './layout/assemble';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layout/parse';
 import {labels} from './legend/encode';
@@ -258,9 +259,11 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
-    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
-    return this.child.assembleLayoutSignals();
+  public assembleLayoutSignals(params: LayoutAssembleParams): VgSignal[] {
+    if (params.mode !== 'inner') {
+      return this.child.assembleLayoutSignals({mode: 'outer', resolve: this.component.resolve});
+    }
+    return [];
   }
 
   private columnDistinctSignal() {
@@ -283,9 +286,12 @@ export class FacetModel extends ModelWithField {
       data: facetRoot.data
     };
 
+    const innerSignals = this.child.assembleLayoutSignals({mode: 'inner', resolve: this.component.resolve});
+
     const marks = [{
       ...(data.length > 0 ? {data: data} : {}),
       ...mark,
+      ...(innerSignals.length ? {signals: innerSignals} : {}),
       ...this.child.assembleGroup()
     }];
 

@@ -11,7 +11,7 @@ import {parseLayerAxis} from './axis/parse';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layout/assemble';
+import {assembleLayoutSignals, LayoutAssembleParams} from './layout/assemble';
 import {parseLayerLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
@@ -114,10 +114,10 @@ export class LayerModel extends Model {
   }
 
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(params: LayoutAssembleParams): VgSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
-    }, assembleLayoutSignals(this));
+      return signals.concat(child.assembleLayoutSignals(params));
+    }, assembleLayoutSignals(this, params));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

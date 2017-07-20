@@ -17,7 +17,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{
         name: 'x_step',
         value: 21
@@ -35,7 +35,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{
         name: 'x_step',
         value: 21
@@ -53,7 +53,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{
         name: 'x_step',
         value: 21
@@ -71,7 +71,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'width', update: '200'}]);
     });
 
@@ -84,7 +84,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'height');
+      const size = sizeSignals(model, 'height', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'height', update: '200'}]);
     });
 
@@ -97,7 +97,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'width', update: '205'}]);
     });
 
@@ -111,7 +111,7 @@ describe('compile/layout', () => {
           }
         });
 
-        const size = sizeSignals(model, 'width');
+        const size = sizeSignals(model, 'width', {mode: 'combined'});
         assert.deepEqual(size, [{name: 'width', update: '205'}]);
         assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
       });
@@ -125,7 +125,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'width', update: '200'}]);
     });
 
@@ -138,7 +138,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const size = sizeSignals(model, 'height');
+      const size = sizeSignals(model, 'height', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'height', update: '200'}]);
     });
 
@@ -148,7 +148,7 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {rangeStep: 17}}
       });
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'width', update: '17'}]);
     });
 
@@ -158,7 +158,7 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {textXRangeStep: 91}}
       });
-      const size = sizeSignals(model, 'width');
+      const size = sizeSignals(model, 'width', {mode: 'combined'});
       assert.deepEqual(size, [{name: 'width', update: '91'}]);
     });
   });
