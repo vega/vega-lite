@@ -50,6 +50,7 @@
         {
             "name": "marks",
             "type": "text",
+            "clip": true,
             "from": {
                 "data": "source_0"
             },

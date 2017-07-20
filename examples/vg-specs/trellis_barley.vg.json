@@ -248,6 +248,7 @@
                 {
                     "name": "trellis_barley_child_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_0"

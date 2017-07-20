@@ -65,7 +65,7 @@ function parsePathMark(model: UnitModel) {
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
-      ...(clip(model)),
+      clip: true,
       ...(role? {role} : {}),
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
@@ -112,7 +112,7 @@ function parseNonPathMark(model: UnitModel) {
   marks.push({
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
-    ...(clip(model)),
+    clip: true,
     ...(role? {role} : {}),
     from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
@@ -147,11 +147,4 @@ function detailFields(model: UnitModel): string[] {
     }
     return details;
   }, []);
-}
-
-function clip(model: UnitModel) {
-  const xScaleDomain = model.scaleDomain(X);
-  const yScaleDomain = model.scaleDomain(Y);
-  return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
-    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? {clip: true} : {};
 }

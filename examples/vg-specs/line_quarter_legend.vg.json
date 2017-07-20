@@ -106,6 +106,7 @@
                 {
                     "name": "marks",
                     "type": "line",
+                    "clip": true,
                     "from": {
                         "data": "faceted_path_main"
                     },

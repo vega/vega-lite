@@ -144,6 +144,7 @@
         {
             "name": "layer_0_marks",
             "type": "rule",
+            "clip": true,
             "role": "boxWhisker",
             "from": {
                 "data": "data_0"
@@ -167,12 +168,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "rule",
+            "clip": true,
             "role": "boxWhisker",
             "from": {
                 "data": "data_1"
@@ -196,12 +197,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_2_marks",
             "type": "rect",
+            "clip": true,
             "role": "box",
             "from": {
                 "data": "data_2"
@@ -228,12 +229,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_3_marks",
             "type": "rect",
+            "clip": true,
             "role": "boxMid",
             "from": {
                 "data": "data_3"
@@ -262,8 +263,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

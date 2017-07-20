@@ -64,6 +64,7 @@
         {
             "name": "marks",
             "type": "rect",
+            "clip": true,
             "from": {
                 "data": "source_0"
             },

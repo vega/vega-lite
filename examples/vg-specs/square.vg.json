@@ -45,6 +45,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "square",
             "from": {
                 "data": "source_0"

@@ -502,6 +502,7 @@
     "marks": [
         {
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -549,12 +550,12 @@
                         }
                     ]
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_0_marks",
             "type": "symbol",
+            "clip": true,
             "role": "point",
             "from": {
                 "data": "data_0"
@@ -589,12 +590,12 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "symbol",
+            "clip": true,
             "role": "square",
             "from": {
                 "data": "data_1"
@@ -635,12 +636,12 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "brush_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -688,8 +689,7 @@
                         }
                     ]
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

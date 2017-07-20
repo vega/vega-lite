@@ -129,6 +129,7 @@ const interval:SelectionCompiler = {
 
     return [{
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: fill},
@@ -139,6 +140,7 @@ const interval:SelectionCompiler = {
     } as any].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: 'transparent'},

@@ -186,6 +186,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "source_0"
@@ -214,8 +215,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

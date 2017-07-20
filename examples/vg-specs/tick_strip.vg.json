@@ -49,6 +49,7 @@
         {
             "name": "marks",
             "type": "rect",
+            "clip": true,
             "role": "tick",
             "from": {
                 "data": "source_0"

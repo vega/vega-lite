@@ -100,6 +100,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "point",
             "from": {
                 "data": "source_0"

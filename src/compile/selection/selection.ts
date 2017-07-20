@@ -175,38 +175,27 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  let clipGroup = false;
   let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, (txCompiler) => {
-      clipGroup = clipGroup || txCompiler.clipGroup;
       if (txCompiler.marks) {
         selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
       }
     });
   });
 
-  // In a layered spec, we want to clip all layers together rather than
-  // only the layer within which the selection is defined. Propagate
-  // our assembled state up and let the LayerModel make the right call.
-  if (model.parent && model.parent instanceof LayerModel) {
-    return [selMarks, clipMarks];
-  } else {
-    return clipGroup ? clipMarks(selMarks) : selMarks;
-  }
+  return selMarks;
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
-  let clipGroup = false;
   model.children.forEach(child => {
     if (child instanceof UnitModel) {
-      const unit = assembleUnitSelectionMarks(child, marks);
-      marks = unit[0];
-      clipGroup = clipGroup || unit[1];
+      marks = assembleUnitSelectionMarks(child, marks);
     }
   });
-  return clipGroup ? clipMarks(marks) : marks;
+
+  return marks;
 }
 
 const PREDICATES_OPS = {
@@ -303,10 +292,6 @@ function compiler(type: SelectionTypes): SelectionCompiler {
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
   return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
-}
-
-function clipMarks(marks: any[]): any[] {
-  return marks.map((m) => (m.clip = true, m));
 }
 
 export function spatialProjections(selCmpt: SelectionComponent) {

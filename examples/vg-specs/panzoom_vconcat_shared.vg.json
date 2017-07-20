@@ -243,6 +243,7 @@
                 {
                     "name": "concat_0_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_0"
@@ -267,8 +268,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -358,6 +358,7 @@
                 {
                     "name": "concat_1_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_1"

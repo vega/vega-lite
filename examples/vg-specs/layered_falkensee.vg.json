@@ -299,6 +299,7 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
+            "clip": true,
             "from": {
                 "data": "data_3"
             },
@@ -325,12 +326,12 @@
                         "field": "event"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_0_marks",
             "type": "line",
+            "clip": true,
             "from": {
                 "data": "data_1"
             },
@@ -348,12 +349,12 @@
                         "value": "#333"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
+            "clip": true,
             "role": "pointOverlay",
             "from": {
                 "data": "data_2"
@@ -375,8 +376,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

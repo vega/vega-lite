@@ -231,6 +231,7 @@ describe('Interval Selections', function() {
     assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
       {
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
@@ -282,6 +283,7 @@ describe('Interval Selections', function() {
       {
         "name": "one_brush",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
@@ -337,6 +339,7 @@ describe('Interval Selections', function() {
     assert.sameDeepMembers(interval.marks(model, selCmpts['thr_ee'], marks), [
       {
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "red"},
@@ -362,6 +365,7 @@ describe('Interval Selections', function() {
       {
         "name": "thr_ee_brush",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},

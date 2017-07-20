@@ -57,6 +57,7 @@
         {
             "name": "marks",
             "type": "line",
+            "clip": true,
             "from": {
                 "data": "source_0"
             },

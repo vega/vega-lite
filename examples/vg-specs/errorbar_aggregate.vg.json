@@ -153,6 +153,7 @@
         {
             "name": "layer_0_marks",
             "type": "rule",
+            "clip": true,
             "from": {
                 "data": "data_0"
             },
@@ -174,12 +175,12 @@
                         "value": "black"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "rect",
+            "clip": true,
             "role": "tick",
             "from": {
                 "data": "data_1"
@@ -204,12 +205,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_2_marks",
             "type": "rect",
+            "clip": true,
             "role": "tick",
             "from": {
                 "data": "data_2"
@@ -234,12 +235,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_3_marks",
             "type": "symbol",
+            "clip": true,
             "role": "point",
             "from": {
                 "data": "data_3"
@@ -264,8 +265,7 @@
                         "value": 2
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

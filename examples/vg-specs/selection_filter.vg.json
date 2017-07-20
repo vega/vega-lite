@@ -344,6 +344,7 @@
             "marks": [
                 {
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -396,6 +397,7 @@
                 {
                     "name": "concat_0_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_0"
@@ -425,6 +427,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -576,6 +579,7 @@
                 {
                     "name": "concat_1_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_1"

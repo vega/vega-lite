@@ -99,6 +99,7 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
+            "clip": true,
             "role": "bar",
             "from": {
                 "data": "data_0"
@@ -125,12 +126,12 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
             "type": "rule",
+            "clip": true,
             "from": {
                 "data": "data_1"
             },
@@ -155,8 +156,7 @@
                         "value": 3
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

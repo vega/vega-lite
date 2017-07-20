@@ -75,6 +75,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "source_0"
