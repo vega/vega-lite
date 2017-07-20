@@ -153,7 +153,19 @@
                 },
                 {
                     "name": "region_tuple",
-                    "update": "{unit: \"concat_0_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "region_Horsepower"
+                                },
+                                {
+                                    "signal": "region_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "region_translate_anchor",

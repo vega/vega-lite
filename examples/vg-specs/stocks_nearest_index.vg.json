@@ -61,7 +61,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (vlPoint(\"index_store\", \"layer_1_\", datum, \"union\", \"all\"))"
+                    "expr": "(index.date) && (vlPoint(\"index_store\", \"layer_1\", datum, \"union\", \"all\"))"
                 },
                 {
                     "type": "filter",
@@ -80,7 +80,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (vlPoint(\"index_store\", \"layer_2_\", datum, \"union\", \"all\"))"
+                    "expr": "(index.date) && (vlPoint(\"index_store\", \"layer_2\", datum, \"union\", \"all\"))"
                 },
                 {
                     "type": "filter",
@@ -123,7 +123,7 @@
                             "type": "mousemove"
                         }
                     ],
-                    "update": "datum && {unit: \"layer_0_\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]}"
+                    "update": "datum && {unit: \"layer_0\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]}"
                 }
             ]
         },

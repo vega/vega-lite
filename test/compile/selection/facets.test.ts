@@ -1,0 +1,56 @@
+/* tslint:disable quotemark */
+
+import {assert} from 'chai';
+import multi from '../../../src/compile/selection/multi';
+import * as selection from '../../../src/compile/selection/selection';
+import {UnitModel} from '../../../src/compile/unit';
+import {parseModel} from '../../util';
+
+describe('Faceted Selections', function() {
+  const model = parseModel({
+    "data": {"url": "data/anscombe.json"},
+    "facet": {
+      "column": {"field": "Series", "type": "nominal"},
+      "row": {"field": "X", "type": "nominal", "bin": true},
+    },
+    "spec": {
+      "layer": [{
+        "mark": "rule",
+        "encoding": {"y": {"value": 10}}
+      }, {
+        "selection": {
+          "one": {"type": "single"},
+          "twp": {"type": "multi"},
+          "three": {"type": "interval"}
+        },
+        "mark": "rule",
+        "encoding": {
+          "x": {"value": 10}
+        }
+      }]
+    }
+  });
+
+  model.parse();
+  const unit = model.children[0].children[1] as UnitModel;
+
+  it('should assemble a facet signal', function() {
+    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(unit, []), [
+      {
+        "name": "facet",
+        "value": {},
+        "on": [
+          {
+            "events": [{"source": "scope","type": "mousemove"}],
+            "update": "facet._id ? facet : group(\"cell\").datum"
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('should name the unit with the facet keys', function() {
+    assert.equal(selection.unitName(unit),
+      `"child_layer_1" + '_' + facet["bin_maxbins_6_X_range"] + '_' + facet["Series"]`);
+  });
+});

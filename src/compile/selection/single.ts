@@ -1,6 +1,6 @@
 import {stringValue} from '../../util';
 import multi from './multi';
-import {SelectionCompiler, STORE, TUPLE} from './selection';
+import {SelectionCompiler, STORE, TUPLE, unitName} from './selection';
 
 
 const single:SelectionCompiler = {
@@ -23,7 +23,7 @@ const single:SelectionCompiler = {
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
   }
 };
 

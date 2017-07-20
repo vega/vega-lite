@@ -49,7 +49,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(datum.Weight_in_lbs > 3000) && (vlInterval(\"brush_store\", \"concat_1_\", datum, \"union\", \"all\"))"
+                    "expr": "(datum.Weight_in_lbs > 3000) && (vlInterval(\"brush_store\", \"concat_1\", datum, \"union\", \"all\"))"
                 },
                 {
                     "type": "filter",
@@ -251,7 +251,19 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_0_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Horsepower"
+                                },
+                                {
+                                    "signal": "brush_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -356,7 +368,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -365,7 +377,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -374,7 +386,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -383,7 +395,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -437,7 +449,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -446,7 +458,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -455,7 +467,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -464,7 +476,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {

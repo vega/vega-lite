@@ -226,7 +226,16 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"child_Horsepower_Horsepower_\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Horsepower"
+                                }
+                            ],
+                            "update": "{unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -323,7 +332,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower_\"})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower\"})"
                         }
                     ]
                 },
@@ -347,7 +356,16 @@
                 },
                 {
                     "name": "grid_tuple",
-                    "update": "{unit: \"child_Horsepower_Horsepower_\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "grid_Horsepower"
+                                }
+                            ],
+                            "update": "{unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -495,7 +513,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Horsepower\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -788,7 +806,19 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"child_Horsepower_Miles_per_Gallon_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Horsepower"
+                                },
+                                {
+                                    "signal": "brush_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -885,7 +915,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon_\"})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon\"})"
                         }
                     ]
                 },
@@ -927,7 +957,19 @@
                 },
                 {
                     "name": "grid_tuple",
-                    "update": "{unit: \"child_Horsepower_Miles_per_Gallon_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "grid_Horsepower"
+                                },
+                                {
+                                    "signal": "grid_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -1073,7 +1115,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1367,7 +1409,19 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"child_Acceleration_Horsepower_\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Acceleration"
+                                },
+                                {
+                                    "signal": "brush_Horsepower"
+                                }
+                            ],
+                            "update": "{unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -1464,7 +1518,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower_\"})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower\"})"
                         }
                     ]
                 },
@@ -1506,7 +1560,19 @@
                 },
                 {
                     "name": "grid_tuple",
-                    "update": "{unit: \"child_Acceleration_Horsepower_\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "grid_Acceleration"
+                                },
+                                {
+                                    "signal": "grid_Horsepower"
+                                }
+                            ],
+                            "update": "{unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -1652,7 +1718,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Horsepower\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1946,7 +2012,19 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"child_Acceleration_Miles_per_Gallon_\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Acceleration"
+                                },
+                                {
+                                    "signal": "brush_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -2043,7 +2121,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon_\"})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon\"})"
                         }
                     ]
                 },
@@ -2085,7 +2163,19 @@
                 },
                 {
                     "name": "grid_tuple",
-                    "update": "{unit: \"child_Acceleration_Miles_per_Gallon_\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "grid_Acceleration"
+                                },
+                                {
+                                    "signal": "grid_Miles_per_Gallon"
+                                }
+                            ],
+                            "update": "{unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -2231,7 +2321,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
                                 },

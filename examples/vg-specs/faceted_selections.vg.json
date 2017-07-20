@@ -278,6 +278,21 @@
             },
             "signals": [
                 {
+                    "name": "facet",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mousemove"
+                                }
+                            ],
+                            "update": "facet._id ? facet : group(\"cell\").datum"
+                        }
+                    ]
+                },
+                {
                     "name": "brush_x",
                     "value": [],
                     "on": [
@@ -350,7 +365,16 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"child_\", intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_X"
+                                }
+                            ],
+                            "update": "{unit: \"child\" + '_' + facet[\"Series\"], intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -440,7 +464,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_\"})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '_' + facet[\"Series\"]})"
                         }
                     ]
                 },
@@ -482,7 +506,19 @@
                 },
                 {
                     "name": "grid_tuple",
-                    "update": "{unit: \"child_\", intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "grid_X"
+                                },
+                                {
+                                    "signal": "grid_Y"
+                                }
+                            ],
+                            "update": "{unit: \"child\" + '_' + facet[\"Series\"], intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -638,7 +674,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "vlPoint(\"xenc_store\", \"child_\", datum, \"union\", \"all\")",
+                                    "test": "vlPoint(\"xenc_store\", \"child\" + '_' + facet[\"Series\"], datum, \"union\", \"all\")",
                                     "value": "red"
                                 },
                                 {
@@ -647,7 +683,7 @@
                             ],
                             "size": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child_\", datum, \"intersect\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", \"child\" + '_' + facet[\"Series\"], datum, \"intersect\", \"all\")",
                                     "value": 250
                                 },
                                 {

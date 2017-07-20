@@ -67,7 +67,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlPoint(\"CylYr_store\", \"layer_1_\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"CylYr_store\", \"layer_1\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -177,7 +177,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlPoint(\"CylYr_store\", \"layer_0_\", datum, \"union\", \"all\")",
+                            "test": "vlPoint(\"CylYr_store\", \"layer_0\", datum, \"union\", \"all\")",
                             "scale": "color",
                             "field": "Origin"
                         },
