@@ -456,10 +456,8 @@ export interface VgAxisBase {
   /**
    * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
    *
-   * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-   *
    * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
+   * For quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default
    * to avoid jumpy axis title during pan and zoom interactions.
    * For other scales, the default value is `undefined`.
    */
@@ -468,10 +466,8 @@ export interface VgAxisBase {
   /**
    * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
    *
-   * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-   *
    * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
+   * For quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default
    * to avoid jumpy axis title during pan and zoom interactions.
    * For other scales, the default value is `undefined`.
    */

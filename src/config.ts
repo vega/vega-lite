@@ -1,4 +1,4 @@
-import {AxisConfig, AxisConfigMixins, DEFAULT_AXIS_CONFIG} from './axis';
+import {AxisConfig, AxisConfigMixins} from './axis';
 import {BoxPlotConfig, COMPOSITE_MARK_ROLES} from './compositemark';
 import {CompositeMarkConfigMixins, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
@@ -199,7 +199,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
-  axis: DEFAULT_AXIS_CONFIG,
+  axis: {},
   axisX: {},
   axisY: {},
   axisLeft: {},

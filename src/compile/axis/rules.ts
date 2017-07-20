@@ -1,4 +1,4 @@
-import {Axis, AxisConfig} from '../../axis';
+import {Axis} from '../../axis';
 import {binToString} from '../../bin';
 import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
@@ -53,11 +53,11 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
   return undefined;
 }
 
-export function minMaxExtent(isGridAxis: boolean, scaleType: ScaleType, axisConfig: AxisConfig) {
-  // For quantitative scale, set default extent to avoid jumpy axis title
+export function minMaxExtent(isGridAxis: boolean, scaleType: ScaleType) {
+  // For quantitative scale, set extent to 25 by default to avoid jumpy axis title
   // (Fix https://github.com/vega/vega-lite/issues/2282)
   if (getScaleCategory(scaleType) === 'numeric') {
-    return axisConfig.quantitativeExtent;
+    return 25;
   }
 
   return undefined;

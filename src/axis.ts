@@ -4,18 +4,7 @@ import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega
 
 
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {
-  /**
-   * Default `minExtent` and `maxExtent` for axes of quantitative scales.
-   *
-   * __Default value__: `30`
-   */
-  quantitativeExtent?: number;
-}
-
-export const DEFAULT_AXIS_CONFIG = {
-  quantitativeExtent: 30
-};
+export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
 export interface Axis extends VgAxisBase, Guide {
   /**
