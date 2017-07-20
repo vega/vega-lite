@@ -103,42 +103,6 @@ export class FacetModel extends ModelWithField {
 
   public parseMarkGroup() {
     this.child.parseMarkGroup();
-
-    // if we facet by two dimensions, we need to add a cross operator to the aggregation
-    // so that we create all groups
-    const hasRow = this.channelHasField(ROW);
-    const hasColumn = this.channelHasField(COLUMN);
-
-    const groupProperties = this.child.assembleParentGroupProperties();
-
-    this.component.mark = [{
-      name: this.getName('cell'),
-      type: 'group',
-      from: {
-        facet: {
-          name: this.component.data.facetRoot.name,
-          data: this.component.data.facetRoot.data,
-          groupby: [].concat(
-            hasRow ? [this.field(ROW)] : [],
-            hasColumn ? [this.field(COLUMN)] : []
-          ),
-          ...(hasRow && hasColumn ? {aggregate: {
-            cross: true
-          }}: {})
-        }
-      },
-      sort: {
-        field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
-          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
-        ),
-        order: [].concat(
-          hasRow ? [ (this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [],
-          hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
-        )
-      },
-      ...(groupProperties ? {encode: {update: groupProperties}} : {})
-    }];
   }
 
   public parseAxisAndHeader() {
@@ -274,22 +238,45 @@ export class FacetModel extends ModelWithField {
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
 
-    const mark = this.component.mark[0];
+    // If we facet by two dimensions, we need to add a cross operator to the aggregation
+    // so that we create all groups
+    const hasRow = this.channelHasField(ROW);
+    const hasColumn = this.channelHasField(COLUMN);
 
-    // correct the name of the faceted data source
-    mark.from.facet = {
-      ...mark.from.facet,
-      name: facetRoot.name,
-      data: facetRoot.data
+    const groupProperties = this.child.assembleParentGroupProperties();
+
+    const markGroup = {
+      ...(data.length > 0 ? {data: data} : {}),
+      name: this.getName('cell'),
+      type: 'group',
+      from: {
+        facet: {
+          name: facetRoot.name,
+          data: facetRoot.data,
+          groupby: [].concat(
+            hasRow ? [this.field(ROW)] : [],
+            hasColumn ? [this.field(COLUMN)] : []
+          ),
+          ...(hasRow && hasColumn ? {aggregate: {
+            cross: true
+          }}: {})
+        }
+      },
+      sort: {
+        field: [].concat(
+          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
+          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+        ),
+        order: [].concat(
+          hasRow ? [ (this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [],
+          hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
+        )
+      },
+      ...(groupProperties ? {encode: {update: groupProperties}} : {}),
+      ...this.child.assembleGroup()
     };
 
-    const marks = [{
-      ...(data.length > 0 ? {data: data} : {}),
-      ...mark,
-      ...this.child.assembleGroup()
-    }];
-
-    return marks;
+    return [markGroup];
   }
 
   protected getMapping() {
