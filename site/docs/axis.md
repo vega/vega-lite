@@ -79,10 +79,6 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 {% include table.html props="bandPosition,domain,domainColor,domainWidth,titleX,titleY" source="AxisConfig" %}
 
-### Extent
-
-{% include table.html props="maxExtent,minExtent,quantitativeExtent" source="AxisConfig" %}
-
 ### Grid
 
 {% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="AxisConfig" %}
@@ -97,5 +93,5 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### Title
 
-{% include table.html props="titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleMaxLength,titlePadding" source="AxisConfig" %}
+{% include table.html props="titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleMaxLength,titlePadding,maxExtent,minExtent" source="AxisConfig" %}
 

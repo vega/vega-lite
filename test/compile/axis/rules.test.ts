@@ -26,12 +26,12 @@ describe('compile/axis', ()=> {
   });
 
   describe('minMaxExtent', () => {
-    it('returns config.axis.quantitativeExtent for a non-grid quantitative axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'linear', DEFAULT_AXIS_CONFIG), DEFAULT_AXIS_CONFIG.quantitativeExtent);
+    it('returns 25 for a non-grid quantitative axis by default', () => {
+      assert.equal(rules.minMaxExtent(false, 'linear'), 25);
     });
 
     it('returns undefined for a non-grid ordinal axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'ordinal', DEFAULT_AXIS_CONFIG), undefined);
+      assert.equal(rules.minMaxExtent(false, 'ordinal'), undefined);
     });
   });
 
