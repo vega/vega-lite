@@ -1,5 +1,5 @@
 import {keys, stringValue} from '../../util';
-import {SelectionCompiler, TUPLE} from './selection';
+import {SelectionCompiler, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
 
 
@@ -30,7 +30,7 @@ const multi:SelectionCompiler = {
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `datum && {unit: ${stringValue(model.getName(''))}, ` +
+        update: `datum && {unit: ${unitName(model)}, ` +
           `encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
           (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
       }]
@@ -40,7 +40,7 @@ const multi:SelectionCompiler = {
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'null' : `{unit: ${stringValue(model.getName(''))}}`);
+      (selCmpt.resolve === 'global' ? 'null' : `{unit: ${unitName(model)}}`);
   }
 };
 

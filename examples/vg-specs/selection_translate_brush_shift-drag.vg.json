@@ -192,7 +192,19 @@
         },
         {
             "name": "brush_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "brush_Horsepower"
+                        },
+                        {
+                            "signal": "brush_Miles_per_Gallon"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                }
+            ]
         },
         {
             "name": "brush_translate_anchor",

@@ -12,6 +12,7 @@ import {
   spatialProjections,
   STORE,
   TUPLE,
+  unitName,
 } from './selection';
 import scales from './transforms/scales';
 
@@ -26,7 +27,8 @@ const interval:SelectionCompiler = {
     const name = selCmpt.name;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
-    const intervals:any[] = [];
+    const intervals: any[] = [];
+    const tupleTriggers: string[] = [];
     const scaleTriggers: any[] = [];
 
     if (selCmpt.translate && !hasScales) {
@@ -54,6 +56,7 @@ const interval:SelectionCompiler = {
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
       signals.push.apply(signals, cs);
+      tupleTriggers.push(dname);
       intervals.push(`{encoding: ${stringValue(channel)}, ` +
         `field: ${stringValue(p.field)}, extent: ${dname}}`);
 
@@ -77,14 +80,17 @@ const interval:SelectionCompiler = {
 
     return signals.concat({
       name: name + TUPLE,
-      update: `{unit: ${stringValue(model.getName(''))}, intervals: [${intervals.join(', ')}]}`
+      on: [{
+        events: tupleTriggers.map((t) => ({signal: t})),
+        update: `{unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]}`
+      }]
     });
   },
 
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
   },
 
   marks: function(model, selCmpt, marks) {
@@ -112,7 +118,7 @@ const interval:SelectionCompiler = {
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{
-          test: `${store}.length && ${store}[0].unit === ${stringValue(model.getName(''))}`,
+          test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
           ...update[key]
         }, {value: 0}];
       });

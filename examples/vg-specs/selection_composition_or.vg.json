@@ -212,7 +212,19 @@
         },
         {
             "name": "alex_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: alex_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: alex_Origin}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "alex_Cylinders"
+                        },
+                        {
+                            "signal": "alex_Origin"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: alex_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: alex_Origin}]}"
+                }
+            ]
         },
         {
             "name": "alex_translate_anchor",
@@ -441,7 +453,19 @@
         },
         {
             "name": "morgan_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: morgan_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: morgan_Origin}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "morgan_Cylinders"
+                        },
+                        {
+                            "signal": "morgan_Origin"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: morgan_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: morgan_Origin}]}"
+                }
+            ]
         },
         {
             "name": "morgan_translate_anchor",

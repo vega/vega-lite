@@ -141,7 +141,16 @@
         },
         {
             "name": "pts_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "pts_Origin"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+                }
+            ]
         },
         {
             "name": "pts_translate_anchor",

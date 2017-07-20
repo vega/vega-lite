@@ -332,7 +332,16 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_1_\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_date"
+                                }
+                            ],
+                            "update": "{unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -437,7 +446,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -446,7 +455,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "value": 0
                                 },
                                 {
@@ -455,7 +464,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -464,7 +473,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "field": {
                                         "group": "height"
                                     }
@@ -520,7 +529,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -529,7 +538,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "value": 0
                                 },
                                 {
@@ -538,7 +547,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -547,7 +556,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "field": {
                                         "group": "height"
                                     }

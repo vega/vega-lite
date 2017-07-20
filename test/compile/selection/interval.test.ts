@@ -162,7 +162,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(oneSg, [
         {
           "name": "one_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]}"
+          "on": [{
+            "events": [{"signal": "one_Horsepower"}],
+            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]}"
+          }]
         }
       ]);
 
@@ -170,7 +173,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(twoSg, [
         {
           "name": "two_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]}"
+          "on": [{
+            "events": [{"signal": "two_Miles_per_Gallon"}],
+            "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]}"
+          }]
         }
       ]);
 
@@ -178,7 +184,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(threeSg, [
         {
           "name": "thr_ee_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]}"
+          "on": [{
+            "events": [{"signal": "thr_ee_Horsepower"}, {"signal": "thr_ee_Miles_per_Gallon"}],
+            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]}"
+          }]
         }
       ]);
     });

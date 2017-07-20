@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import multi from '../../../src/compile/selection/multi';
 import * as selection from '../../../src/compile/selection/selection';
+import {UnitModel} from '../../../src/compile/unit';
 import {parseLayerModel} from '../../util';
 
 describe('Layered Selections', function() {
@@ -30,11 +31,12 @@ describe('Layered Selections', function() {
     }]
   });
 
-  layers.parseScale();
-  layers.parseMarkDef();
-  layers.parseLayoutSize();
-  layers.parseSelection();
-  layers.parseMarkGroup();
+  layers.parse();
+
+  it('should appropriately name the unit', function() {
+    const unit = layers.children[0] as UnitModel;
+    assert.equal(selection.unitName(unit), '"layer_0"');
+  });
 
   // Selections should augment layered marks together, rather than each
   // mark individually. This ensures correct interleaving of brush and
@@ -121,7 +123,7 @@ describe('Layered Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_x[0]"
               },
               {
@@ -130,7 +132,7 @@ describe('Layered Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_y[0]"
               },
               {
@@ -139,7 +141,7 @@ describe('Layered Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_x[1]"
               },
               {
@@ -148,7 +150,7 @@ describe('Layered Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_y[1]"
               },
               {
@@ -173,7 +175,7 @@ describe('Layered Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_x[0]"
               },
               {
@@ -182,7 +184,7 @@ describe('Layered Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_y[0]"
               },
               {
@@ -191,7 +193,7 @@ describe('Layered Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_x[1]"
               },
               {
@@ -200,7 +202,7 @@ describe('Layered Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                 "signal": "brush_y[1]"
               },
               {

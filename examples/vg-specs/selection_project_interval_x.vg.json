@@ -141,7 +141,16 @@
         },
         {
             "name": "pts_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "pts_Cylinders"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}]}"
+                }
+            ]
         },
         {
             "name": "pts_translate_anchor",

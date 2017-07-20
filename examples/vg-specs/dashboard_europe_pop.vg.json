@@ -500,7 +500,16 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_0_\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Country"
+                                }
+                            ],
+                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -605,7 +614,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "value": 0
                                 },
                                 {
@@ -614,7 +623,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -623,7 +632,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "field": {
                                         "group": "width"
                                     }
@@ -634,7 +643,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -671,7 +680,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"concat_0_\", datum, \"union\", \"all\"))",
+                                    "test": "!(vlInterval(\"brush_store\", \"concat_0\", datum, \"union\", \"all\"))",
                                     "value": "steelblue"
                                 },
                                 {
@@ -696,7 +705,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "value": 0
                                 },
                                 {
@@ -705,7 +714,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -714,7 +723,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "field": {
                                         "group": "width"
                                     }
@@ -725,7 +734,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -899,7 +908,16 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_1_\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Country"
+                                }
+                            ],
+                            "update": "{unit: \"concat_1\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -1004,7 +1022,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "value": 0
                                 },
                                 {
@@ -1013,7 +1031,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -1022,7 +1040,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "field": {
                                         "group": "width"
                                     }
@@ -1033,7 +1051,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -1070,7 +1088,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"concat_1_\", datum, \"union\", \"all\"))",
+                                    "test": "!(vlInterval(\"brush_store\", \"concat_1\", datum, \"union\", \"all\"))",
                                     "value": "steelblue"
                                 },
                                 {
@@ -1095,7 +1113,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "value": 0
                                 },
                                 {
@@ -1104,7 +1122,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -1113,7 +1131,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "field": {
                                         "group": "width"
                                     }
@@ -1124,7 +1142,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -1364,7 +1382,19 @@
                 },
                 {
                     "name": "brush_tuple",
-                    "update": "{unit: \"concat_2_\", intervals: [{encoding: \"x\", field: \"Population_ages_65_and_above_of_total\", extent: brush_Population_ages_65_and_above_of_total}, {encoding: \"y\", field: \"Population_ages_15_64_of_total\", extent: brush_Population_ages_15_64_of_total}]}"
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "signal": "brush_Population_ages_65_and_above_of_total"
+                                },
+                                {
+                                    "signal": "brush_Population_ages_15_64_of_total"
+                                }
+                            ],
+                            "update": "{unit: \"concat_2\", intervals: [{encoding: \"x\", field: \"Population_ages_65_and_above_of_total\", extent: brush_Population_ages_65_and_above_of_total}, {encoding: \"y\", field: \"Population_ages_15_64_of_total\", extent: brush_Population_ages_15_64_of_total}]}"
+                        }
+                    ]
                 },
                 {
                     "name": "brush_translate_anchor",
@@ -1469,7 +1499,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -1478,7 +1508,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -1487,7 +1517,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -1496,7 +1526,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -1525,7 +1555,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"concat_2_\", datum, \"union\", \"all\"))",
+                                    "test": "!(vlInterval(\"brush_store\", \"concat_2\", datum, \"union\", \"all\"))",
                                     "value": "steelblue"
                                 },
                                 {
@@ -1556,7 +1586,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -1565,7 +1595,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -1574,7 +1604,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -1583,7 +1613,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2_\"",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {

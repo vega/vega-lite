@@ -159,7 +159,19 @@
         },
         {
             "name": "grid_tuple",
-            "update": "{unit: \"layer_0_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "grid_Horsepower"
+                        },
+                        {
+                            "signal": "grid_Miles_per_Gallon"
+                        }
+                    ],
+                    "update": "{unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                }
+            ]
         },
         {
             "name": "grid_translate_anchor",
@@ -404,7 +416,19 @@
         },
         {
             "name": "brush_tuple",
-            "update": "{unit: \"layer_1_\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "brush_Horsepower"
+                        },
+                        {
+                            "signal": "brush_Miles_per_Gallon"
+                        }
+                    ],
+                    "update": "{unit: \"layer_1\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                }
+            ]
         },
         {
             "name": "brush_translate_anchor",
@@ -514,7 +538,7 @@
                 "update": {
                     "x": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_x[0]"
                         },
                         {
@@ -523,7 +547,7 @@
                     ],
                     "y": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_y[0]"
                         },
                         {
@@ -532,7 +556,7 @@
                     ],
                     "x2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_x[1]"
                         },
                         {
@@ -541,7 +565,7 @@
                     ],
                     "y2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_y[1]"
                         },
                         {
@@ -571,7 +595,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "vlInterval(\"brush_store\", \"layer_0_\", datum, \"union\", \"all\")",
+                            "test": "vlInterval(\"brush_store\", \"layer_0\", datum, \"union\", \"all\")",
                             "value": "grey"
                         },
                         {
@@ -611,7 +635,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\")",
+                            "test": "vlInterval(\"brush_store\", \"layer_1\", datum, \"union\", \"all\")",
                             "scale": "color",
                             "field": "Cylinders"
                         },
@@ -621,7 +645,7 @@
                     ],
                     "size": [
                         {
-                            "test": "vlPoint(\"cyl_store\", \"layer_1_\", datum, \"union\", \"all\")",
+                            "test": "vlPoint(\"cyl_store\", \"layer_1\", datum, \"union\", \"all\")",
                             "value": 150
                         },
                         {
@@ -653,7 +677,7 @@
                 "update": {
                     "x": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_x[0]"
                         },
                         {
@@ -662,7 +686,7 @@
                     ],
                     "y": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_y[0]"
                         },
                         {
@@ -671,7 +695,7 @@
                     ],
                     "x2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_x[1]"
                         },
                         {
@@ -680,7 +704,7 @@
                     ],
                     "y2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
                             "signal": "brush_y[1]"
                         },
                         {

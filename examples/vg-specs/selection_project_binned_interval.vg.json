@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\")"
+                    "expr": "vlInterval(\"brush_store\", \"layer_1\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -217,7 +217,16 @@
         },
         {
             "name": "brush_tuple",
-            "update": "{unit: \"layer_0_\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "brush_Acceleration"
+                        }
+                    ],
+                    "update": "{unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]}"
+                }
+            ]
         },
         {
             "name": "brush_translate_anchor",
@@ -322,7 +331,7 @@
                 "update": {
                     "x": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "signal": "brush_x[0]"
                         },
                         {
@@ -331,7 +340,7 @@
                     ],
                     "y": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "value": 0
                         },
                         {
@@ -340,7 +349,7 @@
                     ],
                     "x2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "signal": "brush_x[1]"
                         },
                         {
@@ -349,7 +358,7 @@
                     ],
                     "y2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "field": {
                                 "group": "height"
                             }
@@ -443,7 +452,7 @@
                 "update": {
                     "x": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "signal": "brush_x[0]"
                         },
                         {
@@ -452,7 +461,7 @@
                     ],
                     "y": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "value": 0
                         },
                         {
@@ -461,7 +470,7 @@
                     ],
                     "x2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "signal": "brush_x[1]"
                         },
                         {
@@ -470,7 +479,7 @@
                     ],
                     "y2": [
                         {
-                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0_\"",
+                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
                             "field": {
                                 "group": "height"
                             }

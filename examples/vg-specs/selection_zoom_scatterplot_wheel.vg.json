@@ -90,7 +90,19 @@
         },
         {
             "name": "grid_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "grid_Horsepower"
+                        },
+                        {
+                            "signal": "grid_Miles_per_Gallon"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                }
+            ]
         },
         {
             "name": "grid_translate_anchor",

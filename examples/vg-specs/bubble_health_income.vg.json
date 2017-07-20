@@ -95,7 +95,19 @@
         },
         {
             "name": "view_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"income\", extent: view_income}, {encoding: \"y\", field: \"health\", extent: view_health}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "view_income"
+                        },
+                        {
+                            "signal": "view_health"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"income\", extent: view_income}, {encoding: \"y\", field: \"health\", extent: view_health}]}"
+                }
+            ]
         },
         {
             "name": "view_translate_anchor",

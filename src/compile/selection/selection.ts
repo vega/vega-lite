@@ -8,6 +8,7 @@ import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../u
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
+import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -130,6 +131,19 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     });
   });
 
+  const facetModel = getFacetModel(model);
+  if (signals.length && facetModel) {
+    const name = stringValue(facetModel.getName('cell'));
+    signals.unshift({
+      name: 'facet',
+      value: {},
+      on: [{
+        events: parseSelector('mousemove', 'scope'),
+        update: `facet._id ? facet : group(${name}).datum`
+      }]
+    });
+  }
+
   return signals;
 }
 
@@ -236,7 +250,7 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
     }
 
     return compiler(selCmpt.type).predicate +
-      `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
+      `(${store}, ${unitName(model)}, datum, ${op})`;
   }
 
   return logicalExpr(selections, expr);
@@ -299,6 +313,29 @@ function compiler(type: SelectionTypes): SelectionCompiler {
       return intervalCompiler;
   }
   return null;
+}
+
+function getFacetModel(model: Model): FacetModel {
+  let parent = model.parent;
+  while (parent) {
+    if (parent instanceof FacetModel) {
+      break;
+    }
+    parent = parent.parent;
+  }
+
+  return parent as FacetModel;
+}
+
+export function unitName(model: Model) {
+  let name = stringValue(model.name);
+  const facet = getFacetModel(model);
+  if (facet) {
+    name += (facet.facet.row ? ` + '_' + facet[${stringValue(facet.field('row'))}]` : '')
+      + (facet.facet.column ? ` + '_' + facet[${stringValue(facet.field('column'))}]` : '');
+  }
+
+  return name;
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {

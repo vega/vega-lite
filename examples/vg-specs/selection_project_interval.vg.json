@@ -207,7 +207,19 @@
         },
         {
             "name": "pts_tuple",
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+            "on": [
+                {
+                    "events": [
+                        {
+                            "signal": "pts_Cylinders"
+                        },
+                        {
+                            "signal": "pts_Origin"
+                        }
+                    ],
+                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+                }
+            ]
         },
         {
             "name": "pts_translate_anchor",
