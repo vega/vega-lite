@@ -6,7 +6,7 @@
       "type": "interval"
     }
   },
-  "mark": "circle",
+  "mark": {"type": "circle", "clip": true},
   "encoding": {
     "x": {
       "field": "Horsepower", "type": "quantitative",
@@ -24,6 +24,5 @@
       },
       "value": "grey"
     }
-  },
-  "config": {"mark": {"clip": true}}
+  }
 }

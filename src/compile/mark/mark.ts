@@ -60,12 +60,12 @@ function parsePathMark(model: UnitModel) {
   const details = detailFields(model);
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
-
+  const clip = model.markDef.clip != null ? model.markDef.clip : scaleClip(model);
   const pathMarks: any = [
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
-      ...(clip(model)),
+      ...(clip ? {clip: true} : {}),
       ...(role? {role} : {}),
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
@@ -104,6 +104,7 @@ function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
+  const clip = model.markDef.clip != null ? model.markDef.clip : scaleClip(model);
 
   const marks: any[] = []; // TODO: vgMarks
 
@@ -112,7 +113,7 @@ function parseNonPathMark(model: UnitModel) {
   marks.push({
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
-    ...(clip(model)),
+    ...(clip ? {clip: true} : {}),
     ...(role? {role} : {}),
     from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
@@ -120,8 +121,6 @@ function parseNonPathMark(model: UnitModel) {
 
   return marks;
 }
-
-
 
 /**
  * Returns list of detail (group-by) fields
@@ -149,9 +148,9 @@ function detailFields(model: UnitModel): string[] {
   }, []);
 }
 
-function clip(model: UnitModel) {
+function scaleClip(model: UnitModel) {
   const xScaleDomain = model.scaleDomain(X);
   const yScaleDomain = model.scaleDomain(Y);
   return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
-    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? {clip: true} : {};
+    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? true : false;
 }

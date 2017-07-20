@@ -478,10 +478,6 @@
           "minimum": 0,
           "type": "number"
         },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
-        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -811,10 +807,6 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -3725,10 +3717,6 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
-        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -3904,6 +3892,10 @@
     "MarkDef": {
       "additionalProperties": false,
       "properties": {
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
+        },
         "filled": {
           "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ All marks except `\"point\"`, `\"line\"`, and `\"rule\"` are filled by default.",
           "type": "boolean"
@@ -5017,10 +5009,6 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
-        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -5215,10 +5203,6 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",

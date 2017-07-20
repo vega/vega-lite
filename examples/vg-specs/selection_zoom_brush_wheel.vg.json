@@ -349,6 +349,7 @@
         {
             "name": "marks",
             "type": "symbol",
+            "clip": true,
             "role": "circle",
             "from": {
                 "data": "source_0"
@@ -579,9 +580,6 @@
         }
     ],
     "config": {
-        "mark": {
-            "clip": true
-        },
         "axis": {
             "minExtent": 30
         }
