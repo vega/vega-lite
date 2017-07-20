@@ -66,9 +66,9 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('parseMarkGroup', () => {
+  describe('assembleMarks', () => {
     it('should add cross and sort if we facet my multiple dimensions', () => {
-      const model = parseFacetModelWithScale({
+      const model: FacetModel = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal'},
           column: {field: 'b', type: 'ordinal'}
@@ -80,13 +80,12 @@ describe('FacetModel', function() {
           }
         }
       });
-      model.parseData();
-      model.parseLayoutSize();
-      model.parseMarkGroup();
+      model.parse();
 
+      const marks = model.assembleMarks();
 
-      assert(model.component.mark[0].from.facet.aggregate.cross);
-      assert.deepEqual(model.component.mark[0].sort, {
+      assert(marks[0].from.facet.aggregate.cross);
+      assert.deepEqual(marks[0].sort, {
         field: [
           'datum["a"]',
           'datum["b"]'
