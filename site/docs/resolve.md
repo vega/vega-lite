@@ -24,6 +24,6 @@ Vega-Lite determines whether scale domains should be unioned. If the scale domai
 
 For `x` and `y` (positional channels), the resolution can be defined for scales and axes. For `color`, `opacity`, `shape`, and `size` (non-positional channels), the resolution can be defined for scales and legends.
 
-The two options to resole a scale, axis, or legend are `shared` and `independent`. Independent scales imply independent axes and legends.
+There are two options to resolve a scale, axis, or legend: `shared` and `independent`. Independent scales imply independent axes and legends.
 
-The defaults documented on the [faceting](facet.html#combined-scales-and-guides), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.
+The defaults are documented on the [faceting](facet.html#combined-scales-and-guides), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.
