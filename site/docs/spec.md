@@ -7,7 +7,7 @@ permalink: /docs/spec.html
 
 {:#spec}
 
-Vega-Lite specifications are JSON objects that describe a diverge range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single-view-spec), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
+Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single-view-spec), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
 These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
 
 * TOC
