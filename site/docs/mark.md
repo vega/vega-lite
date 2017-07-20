@@ -41,7 +41,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 A mark definition object can contains the following values.
 
-{% include table.html props="type,role,filled,orient,interpolate,tension" source="MarkDef" %}
+{% include table.html props="type,role,filled,clip,orient,interpolate,tension" source="MarkDef" %}
 
 ## Supported Mark Types
 {:#mark-type}
