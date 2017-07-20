@@ -136,8 +136,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
@@ -160,8 +159,7 @@
                         "value": "red"
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

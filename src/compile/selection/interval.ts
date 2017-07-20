@@ -134,7 +134,9 @@ const interval:SelectionCompiler = {
     }, {});
 
     return [{
+      name: name + BRUSH + '_bg',
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: fill},
@@ -145,6 +147,7 @@ const interval:SelectionCompiler = {
     } as any].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: 'transparent'},

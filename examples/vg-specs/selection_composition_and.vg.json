@@ -557,7 +557,9 @@
     ],
     "marks": [
         {
+            "name": "morgan_brush_bg",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -608,7 +610,9 @@
             }
         },
         {
+            "name": "alex_brush_bg",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -698,6 +702,7 @@
         {
             "name": "alex_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {
@@ -750,6 +755,7 @@
         {
             "name": "morgan_brush",
             "type": "rect",
+            "clip": true,
             "encode": {
                 "enter": {
                     "fill": {

@@ -554,7 +554,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -604,8 +606,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_distance_layer_0_marks",
@@ -637,8 +638,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_distance_layer_1_marks",
@@ -670,12 +670,12 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -725,8 +725,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1028,7 +1027,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1078,8 +1079,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_delay_layer_0_marks",
@@ -1111,8 +1111,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_delay_layer_1_marks",
@@ -1144,12 +1143,12 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1199,8 +1198,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1502,7 +1500,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1552,8 +1552,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_time_layer_0_marks",
@@ -1585,8 +1584,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_time_layer_1_marks",
@@ -1618,12 +1616,12 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1673,8 +1671,7 @@
                                 }
                             ]
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [

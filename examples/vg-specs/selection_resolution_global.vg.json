@@ -403,7 +403,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -494,6 +496,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -886,7 +889,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -975,6 +980,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1365,7 +1371,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1454,6 +1462,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1844,7 +1853,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -1933,6 +1944,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2254,7 +2266,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2345,6 +2359,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2737,7 +2752,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -2826,6 +2843,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -3216,7 +3234,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -3305,6 +3325,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -3695,7 +3716,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -3784,6 +3807,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -4105,7 +4129,9 @@
             ],
             "marks": [
                 {
+                    "name": "brush_brush_bg",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {
@@ -4196,6 +4222,7 @@
                 {
                     "name": "brush_brush",
                     "type": "rect",
+                    "clip": true,
                     "encode": {
                         "enter": {
                             "fill": {

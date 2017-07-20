@@ -358,6 +358,7 @@
                 {
                     "name": "child_Horsepower_Horsepower_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_0"
@@ -383,8 +384,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -628,6 +628,7 @@
                 {
                     "name": "child_Horsepower_Acceleration_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_1"
@@ -653,8 +654,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -901,6 +901,7 @@
                 {
                     "name": "child_Horsepower_Miles_per_Gallon_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_2"
@@ -926,8 +927,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1174,6 +1174,7 @@
                 {
                     "name": "child_Acceleration_Horsepower_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_3"
@@ -1199,8 +1200,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1426,6 +1426,7 @@
                 {
                     "name": "child_Acceleration_Acceleration_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_4"
@@ -1451,8 +1452,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1696,6 +1696,7 @@
                 {
                     "name": "child_Acceleration_Miles_per_Gallon_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_5"
@@ -1721,8 +1722,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -1969,6 +1969,7 @@
                 {
                     "name": "child_Miles_per_Gallon_Horsepower_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_6"
@@ -1994,8 +1995,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -2242,6 +2242,7 @@
                 {
                     "name": "child_Miles_per_Gallon_Acceleration_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_7"
@@ -2267,8 +2268,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -2494,6 +2494,7 @@
                 {
                     "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
                     "type": "symbol",
+                    "clip": true,
                     "role": "point",
                     "from": {
                         "data": "data_8"
@@ -2519,8 +2520,7 @@
                                 "value": 0.7
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [

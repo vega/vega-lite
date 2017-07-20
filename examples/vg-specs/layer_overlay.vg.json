@@ -186,8 +186,7 @@
                         "value": "darkred"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_0_layer_1_marks",
@@ -210,8 +209,7 @@
                         "value": "darkred"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_0_marks",
@@ -233,8 +231,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_1_marks",
@@ -257,8 +254,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

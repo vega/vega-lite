@@ -325,8 +325,7 @@
                         "field": "event"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_0_marks",
@@ -348,8 +347,7 @@
                         "value": "#333"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_layer_1_marks",
@@ -375,8 +373,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [

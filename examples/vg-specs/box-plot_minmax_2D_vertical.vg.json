@@ -167,8 +167,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_1_marks",
@@ -196,8 +195,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_2_marks",
@@ -228,8 +226,7 @@
                         "value": "#4c78a8"
                     }
                 }
-            },
-            "clip": true
+            }
         },
         {
             "name": "layer_3_marks",
@@ -262,8 +259,7 @@
                         "value": 0.7
                     }
                 }
-            },
-            "clip": true
+            }
         }
     ],
     "scales": [
