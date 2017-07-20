@@ -456,20 +456,14 @@ export interface VgAxisBase {
   /**
    * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
    *
-   * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default
-   * to avoid jumpy axis title during pan and zoom interactions.
-   * For other scales, the default value is `undefined`.
+   * __Default value:__ `30`
    */
   minExtent?: number;
 
   /**
    * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
    *
-   * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default
-   * to avoid jumpy axis title during pan and zoom interactions.
-   * For other scales, the default value is `undefined`.
+   * __Default value:__ `undefined`.
    */
   maxExtent?: number;
 }

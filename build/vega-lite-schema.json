@@ -99,11 +99,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "offset": {
@@ -280,11 +280,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "shortTimeLabels": {
@@ -6080,11 +6080,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "tickExtra": {
@@ -6218,11 +6218,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to `25` by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "tickColor": {

@@ -532,8 +532,6 @@
                 {
                     "scale": "concat_0_x",
                     "labelOverlap": true,
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -544,6 +542,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "bottom",
                     "tickCount": 5,
                     "ticks": false,
@@ -552,8 +552,6 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -563,6 +561,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "left",
                     "ticks": false,
                     "zindex": 0,
@@ -810,8 +810,6 @@
                 {
                     "scale": "concat_1_x",
                     "labelOverlap": true,
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Displacement",
@@ -822,6 +820,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "bottom",
                     "tickCount": 5,
                     "ticks": false,
@@ -830,8 +830,6 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "title": "Acceleration",
                     "zindex": 1
@@ -841,6 +839,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "left",
                     "ticks": false,
                     "zindex": 0,
@@ -851,7 +851,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

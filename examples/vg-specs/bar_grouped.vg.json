@@ -160,8 +160,6 @@
                 {
                     "title": "population",
                     "scale": "y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "zindex": 1
                 }
@@ -390,7 +388,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30,
+            "minExtent": 30,
             "domainWidth": 1
         }
     }

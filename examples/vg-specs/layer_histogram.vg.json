@@ -265,8 +265,6 @@
     "axes": [
         {
             "scale": "x",
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "bottom",
             "title": "BIN(distance)",
             "values": {
@@ -291,8 +289,6 @@
         },
         {
             "scale": "y",
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1
@@ -302,6 +298,8 @@
             "domain": false,
             "grid": true,
             "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "orient": "left",
             "ticks": false,
             "zindex": 0,
@@ -310,7 +308,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

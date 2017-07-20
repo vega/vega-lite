@@ -793,8 +793,6 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(distance)",
                     "values": {
@@ -819,8 +817,6 @@
                 },
                 {
                     "scale": "child_distance_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -830,6 +826,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "left",
                     "ticks": false,
                     "zindex": 0,
@@ -1269,8 +1267,6 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(delay)",
                     "values": {
@@ -1295,8 +1291,6 @@
                 },
                 {
                     "scale": "child_delay_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1306,6 +1300,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "left",
                     "ticks": false,
                     "zindex": 0,
@@ -1745,8 +1741,6 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "title": "BIN(time)",
                     "values": {
@@ -1771,8 +1765,6 @@
                 },
                 {
                     "scale": "child_time_y",
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1782,6 +1774,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "left",
                     "ticks": false,
                     "zindex": 0,
@@ -1792,7 +1786,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

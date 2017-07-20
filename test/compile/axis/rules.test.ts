@@ -2,7 +2,6 @@ import {UnitModel} from '../../../src/compile/unit';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {DEFAULT_AXIS_CONFIG} from '../../../src/axis';
 import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
 import {parseUnitModelWithScale} from '../../util';
@@ -26,12 +25,12 @@ describe('compile/axis', ()=> {
   });
 
   describe('minMaxExtent', () => {
-    it('returns 25 for a non-grid quantitative axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'linear'), 25);
+    it('returns specified extent for a non-grid axis', () => {
+      assert.equal(rules.minMaxExtent(25, false), 25);
     });
 
-    it('returns undefined for a non-grid ordinal axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'ordinal'), undefined);
+    it('returns 0 for a grid axis', () => {
+      assert.equal(rules.minMaxExtent(0, true), 0);
     });
   });
 

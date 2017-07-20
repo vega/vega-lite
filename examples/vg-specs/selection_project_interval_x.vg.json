@@ -472,7 +472,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

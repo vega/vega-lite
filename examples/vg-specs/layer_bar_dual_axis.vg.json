@@ -261,16 +261,12 @@
         },
         {
             "scale": "layer_0_y",
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "left",
             "title": "MEAN(precipitation)",
             "zindex": 1
         },
         {
             "scale": "layer_1_y",
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "right",
             "title": "MEAN(temp_max)",
             "zindex": 1
@@ -278,7 +274,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

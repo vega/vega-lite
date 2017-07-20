@@ -253,7 +253,7 @@
             "baseline": "middle"
         },
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }
