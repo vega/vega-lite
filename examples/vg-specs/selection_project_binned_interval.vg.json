@@ -224,7 +224,7 @@
                             "signal": "brush_Acceleration"
                         }
                     ],
-                    "update": "{unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]}"
+                    "update": "brush_Acceleration ? {unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]} : null"
                 }
             ]
         },

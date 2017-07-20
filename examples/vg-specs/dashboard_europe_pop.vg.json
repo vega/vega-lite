@@ -507,7 +507,7 @@
                                     "signal": "brush_Country"
                                 }
                             ],
-                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                            "update": "brush_Country ? {unit: \"concat_0\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]} : null"
                         }
                     ]
                 },
@@ -918,7 +918,7 @@
                                     "signal": "brush_Country"
                                 }
                             ],
-                            "update": "{unit: \"concat_1\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]}"
+                            "update": "brush_Country ? {unit: \"concat_1\", intervals: [{encoding: \"y\", field: \"Country\", extent: brush_Country}]} : null"
                         }
                     ]
                 },
@@ -1398,7 +1398,7 @@
                                     "signal": "brush_Population_ages_15_64_of_total"
                                 }
                             ],
-                            "update": "{unit: \"concat_2\", intervals: [{encoding: \"x\", field: \"Population_ages_65_and_above_of_total\", extent: brush_Population_ages_65_and_above_of_total}, {encoding: \"y\", field: \"Population_ages_15_64_of_total\", extent: brush_Population_ages_15_64_of_total}]}"
+                            "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", intervals: [{encoding: \"x\", field: \"Population_ages_65_and_above_of_total\", extent: brush_Population_ages_65_and_above_of_total}, {encoding: \"y\", field: \"Population_ages_15_64_of_total\", extent: brush_Population_ages_15_64_of_total}]} : null"
                         }
                     ]
                 },

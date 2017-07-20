@@ -68,7 +68,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && {unit: \"\", encodings: [], fields: [\"Cylinders\"], values: [datum[\"Cylinders\"]]}"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\"], values: [datum[\"Cylinders\"]]} : null"
                 }
             ]
         },

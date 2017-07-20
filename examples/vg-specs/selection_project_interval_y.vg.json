@@ -148,7 +148,7 @@
                             "signal": "pts_Origin"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+                    "update": "pts_Origin ? {unit: \"\", intervals: [{encoding: \"y\", field: \"Origin\", extent: pts_Origin}]} : null"
                 }
             ]
         },

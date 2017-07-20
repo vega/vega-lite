@@ -82,7 +82,8 @@ const interval:SelectionCompiler = {
       name: name + TUPLE,
       on: [{
         events: tupleTriggers.map((t) => ({signal: t})),
-        update: `{unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]}`
+        update: tupleTriggers.join(' && ') +
+          ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
       }]
     });
   },

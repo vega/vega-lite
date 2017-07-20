@@ -65,7 +65,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "datum && {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]}"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
                 }
             ]
         },

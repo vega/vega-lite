@@ -217,7 +217,7 @@
                             "signal": "pts_Origin"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: pts_Origin}]}"
+                    "update": "pts_Cylinders && pts_Origin ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: pts_Origin}]} : null"
                 }
             ]
         },

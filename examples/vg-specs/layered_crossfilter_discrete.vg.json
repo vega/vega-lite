@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", \"child_distance_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", \"child_distance_layer_1\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", \"child_delay_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", \"child_delay_layer_1\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -305,7 +305,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", \"child_time_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", \"child_time_layer_1\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -382,161 +382,32 @@
             },
             "signals": [
                 {
-                    "name": "brush_x",
-                    "value": [],
-                    "on": [
-                        {
-                            "events": {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"brush_brush\""
-                                ]
-                            },
-                            "update": "[x(unit), x(unit)]"
-                        },
-                        {
-                            "events": {
-                                "source": "window",
-                                "type": "mousemove",
-                                "consume": true,
-                                "between": [
-                                    {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || event.item.mark.name !== \"brush_brush\""
-                                        ]
-                                    },
-                                    {
-                                        "source": "window",
-                                        "type": "mouseup"
-                                    }
-                                ]
-                            },
-                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_scale_trigger"
-                            },
-                            "update": "[scale(\"child_distance_x\", brush_distance[0]), scale(\"child_distance_x\", brush_distance[1])]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_translate_delta"
-                            },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_zoom_delta"
-                            },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_distance",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "brush_x"
-                            },
-                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_distance_x\", brush_x)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_scale_trigger",
-                    "update": "(!isArray(brush_distance) || (+invert(\"child_distance_x\", brush_x)[0] === +brush_distance[0] && +invert(\"child_distance_x\", brush_x)[1] === +brush_distance[1])) ? brush_scale_trigger : {}"
-                },
-                {
                     "name": "brush_tuple",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "signal": "brush_distance"
-                                }
-                            ],
-                            "update": "brush_distance ? {unit: \"child_distance_layer_0\", intervals: [{encoding: \"x\", field: \"distance\", extent: brush_distance}]} : null"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_translate_anchor",
                     "value": {},
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", encodings: [\"x\"], fields: [\"distance\"], values: [[datum[\"bin_maxbins_20_distance_start\"], datum[\"bin_maxbins_20_distance_end\"]]], bins: {\"distance\":1}} : null"
                         }
                     ]
                 },
                 {
-                    "name": "brush_translate_delta",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "window",
-                                    "type": "mousemove",
-                                    "consume": true,
-                                    "between": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "brush_brush"
-                                        },
-                                        {
-                                            "source": "window",
-                                            "type": "mouseup"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_anchor",
+                    "name": "brush_toggle",
+                    "value": false,
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_delta",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "force": true,
-                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                            "update": "event.shiftKey"
                         }
                     ]
                 },
@@ -547,67 +418,12 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, true)"
+                            "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
                         }
                     ]
                 }
             ],
             "marks": [
-                {
-                    "name": "brush_brush_bg",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "#333"
-                            },
-                            "fillOpacity": {
-                                "value": 0.125
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
-                },
                 {
                     "name": "child_distance_layer_0_marks",
                     "type": "rect",
@@ -638,7 +454,8 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    }
+                    },
+                    "clip": true
                 },
                 {
                     "name": "child_distance_layer_1_marks",
@@ -670,62 +487,8 @@
                                 "value": "goldenrod"
                             }
                         }
-                    }
-                },
-                {
-                    "name": "brush_brush",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_distance_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
+                    },
+                    "clip": true
                 }
             ],
             "scales": [
@@ -855,161 +618,32 @@
             },
             "signals": [
                 {
-                    "name": "brush_x",
-                    "value": [],
-                    "on": [
-                        {
-                            "events": {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"brush_brush\""
-                                ]
-                            },
-                            "update": "[x(unit), x(unit)]"
-                        },
-                        {
-                            "events": {
-                                "source": "window",
-                                "type": "mousemove",
-                                "consume": true,
-                                "between": [
-                                    {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || event.item.mark.name !== \"brush_brush\""
-                                        ]
-                                    },
-                                    {
-                                        "source": "window",
-                                        "type": "mouseup"
-                                    }
-                                ]
-                            },
-                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_scale_trigger"
-                            },
-                            "update": "[scale(\"child_delay_x\", brush_delay[0]), scale(\"child_delay_x\", brush_delay[1])]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_translate_delta"
-                            },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_zoom_delta"
-                            },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_delay",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "brush_x"
-                            },
-                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_delay_x\", brush_x)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_scale_trigger",
-                    "update": "(!isArray(brush_delay) || (+invert(\"child_delay_x\", brush_x)[0] === +brush_delay[0] && +invert(\"child_delay_x\", brush_x)[1] === +brush_delay[1])) ? brush_scale_trigger : {}"
-                },
-                {
                     "name": "brush_tuple",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "signal": "brush_delay"
-                                }
-                            ],
-                            "update": "brush_delay ? {unit: \"child_delay_layer_0\", intervals: [{encoding: \"x\", field: \"delay\", extent: brush_delay}]} : null"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_translate_anchor",
                     "value": {},
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", encodings: [\"x\"], fields: [\"delay\"], values: [[datum[\"bin_maxbins_20_delay_start\"], datum[\"bin_maxbins_20_delay_end\"]]], bins: {\"delay\":1}} : null"
                         }
                     ]
                 },
                 {
-                    "name": "brush_translate_delta",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "window",
-                                    "type": "mousemove",
-                                    "consume": true,
-                                    "between": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "brush_brush"
-                                        },
-                                        {
-                                            "source": "window",
-                                            "type": "mouseup"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_anchor",
+                    "name": "brush_toggle",
+                    "value": false,
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_delta",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "force": true,
-                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                            "update": "event.shiftKey"
                         }
                     ]
                 },
@@ -1020,67 +654,12 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, true)"
+                            "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
                         }
                     ]
                 }
             ],
             "marks": [
-                {
-                    "name": "brush_brush_bg",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "#333"
-                            },
-                            "fillOpacity": {
-                                "value": 0.125
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
-                },
                 {
                     "name": "child_delay_layer_0_marks",
                     "type": "rect",
@@ -1111,7 +690,8 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    }
+                    },
+                    "clip": true
                 },
                 {
                     "name": "child_delay_layer_1_marks",
@@ -1143,62 +723,8 @@
                                 "value": "goldenrod"
                             }
                         }
-                    }
-                },
-                {
-                    "name": "brush_brush",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_delay_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
+                    },
+                    "clip": true
                 }
             ],
             "scales": [
@@ -1328,161 +854,32 @@
             },
             "signals": [
                 {
-                    "name": "brush_x",
-                    "value": [],
-                    "on": [
-                        {
-                            "events": {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"brush_brush\""
-                                ]
-                            },
-                            "update": "[x(unit), x(unit)]"
-                        },
-                        {
-                            "events": {
-                                "source": "window",
-                                "type": "mousemove",
-                                "consume": true,
-                                "between": [
-                                    {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || event.item.mark.name !== \"brush_brush\""
-                                        ]
-                                    },
-                                    {
-                                        "source": "window",
-                                        "type": "mouseup"
-                                    }
-                                ]
-                            },
-                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_scale_trigger"
-                            },
-                            "update": "[scale(\"child_time_x\", brush_time[0]), scale(\"child_time_x\", brush_time[1])]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_translate_delta"
-                            },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_zoom_delta"
-                            },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_time",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "brush_x"
-                            },
-                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_time_x\", brush_x)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_scale_trigger",
-                    "update": "(!isArray(brush_time) || (+invert(\"child_time_x\", brush_x)[0] === +brush_time[0] && +invert(\"child_time_x\", brush_x)[1] === +brush_time[1])) ? brush_scale_trigger : {}"
-                },
-                {
                     "name": "brush_tuple",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "signal": "brush_time"
-                                }
-                            ],
-                            "update": "brush_time ? {unit: \"child_time_layer_0\", intervals: [{encoding: \"x\", field: \"time\", extent: brush_time}]} : null"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_translate_anchor",
                     "value": {},
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", encodings: [\"x\"], fields: [\"time\"], values: [[datum[\"bin_maxbins_20_time_start\"], datum[\"bin_maxbins_20_time_end\"]]], bins: {\"time\":1}} : null"
                         }
                     ]
                 },
                 {
-                    "name": "brush_translate_delta",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "window",
-                                    "type": "mousemove",
-                                    "consume": true,
-                                    "between": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "brush_brush"
-                                        },
-                                        {
-                                            "source": "window",
-                                            "type": "mouseup"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_anchor",
+                    "name": "brush_toggle",
+                    "value": false,
                     "on": [
                         {
                             "events": [
                                 {
                                     "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
+                                    "type": "click"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_delta",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "force": true,
-                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                            "update": "event.shiftKey"
                         }
                     ]
                 },
@@ -1493,67 +890,12 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, true)"
+                            "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
                         }
                     ]
                 }
             ],
             "marks": [
-                {
-                    "name": "brush_brush_bg",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "#333"
-                            },
-                            "fillOpacity": {
-                                "value": 0.125
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
-                },
                 {
                     "name": "child_time_layer_0_marks",
                     "type": "rect",
@@ -1584,7 +926,8 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    }
+                    },
+                    "clip": true
                 },
                 {
                     "name": "child_time_layer_1_marks",
@@ -1616,62 +959,8 @@
                                 "value": "goldenrod"
                             }
                         }
-                    }
-                },
-                {
-                    "name": "brush_brush",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_time_layer_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
+                    },
+                    "clip": true
                 }
             ],
             "scales": [

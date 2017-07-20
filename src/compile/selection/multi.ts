@@ -18,7 +18,6 @@ const multi:SelectionCompiler = {
       const channel = p.channel;
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
-      // FIXME: Arvind -- please log proper warning when the specified encoding channel has no field
       return (fieldDef && fieldDef.bin) ? (bins[p.field] = 1,
         `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
             `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
@@ -30,9 +29,11 @@ const multi:SelectionCompiler = {
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `datum && {unit: ${unitName(model)}, ` +
-          `encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
-          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
+        update: `datum && item().mark.marktype !== 'group' ? ` +
+          `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
+          `fields: [${fields}], values: [${values}]` +
+          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}` : '') +
+          '} : null'
       }]
     }];
   },

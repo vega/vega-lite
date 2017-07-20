@@ -341,7 +341,7 @@
                                     "signal": "brush_date"
                                 }
                             ],
-                            "update": "{unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]}"
+                            "update": "brush_date ? {unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]} : null"
                         }
                     ]
                 },

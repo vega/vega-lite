@@ -105,7 +105,7 @@
                             "signal": "view_health"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"income\", extent: view_income}, {encoding: \"y\", field: \"health\", extent: view_health}]}"
+                    "update": "view_income && view_health ? {unit: \"\", intervals: [{encoding: \"x\", field: \"income\", extent: view_income}, {encoding: \"y\", field: \"health\", extent: view_health}]} : null"
                 }
             ]
         },
