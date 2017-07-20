@@ -218,8 +218,6 @@
                 {
                     "scale": "x",
                     "labelOverlap": true,
-                    "maxExtent": 30,
-                    "minExtent": 30,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "SUM(yield)",
@@ -303,6 +301,8 @@
                     "domain": false,
                     "grid": true,
                     "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "orient": "bottom",
                     "tickCount": 5,
                     "ticks": false,
@@ -378,7 +378,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

@@ -53,14 +53,14 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
   return undefined;
 }
 
-export function minMaxExtent(isGridAxis: boolean, scaleType: ScaleType) {
-  // For quantitative scale, set extent to 25 by default to avoid jumpy axis title
-  // (Fix https://github.com/vega/vega-lite/issues/2282)
-  if (getScaleCategory(scaleType) === 'numeric') {
-    return 25;
+export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean) {
+  if (isGridAxis) {
+    // Always return 0 to make sure that `config.axis*.minExtent` and `config.axis*.maxExtent`
+    // would not affect gridAxis
+    return 0;
+  } else {
+    return specifiedExtent;
   }
-
-  return undefined;
 }
 
 export function orient(channel: Channel) {

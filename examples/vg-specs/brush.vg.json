@@ -485,8 +485,6 @@
         {
             "scale": "x",
             "labelOverlap": true,
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "bottom",
             "tickCount": 5,
             "title": "Horsepower",
@@ -497,6 +495,8 @@
             "domain": false,
             "grid": true,
             "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "orient": "bottom",
             "tickCount": 5,
             "ticks": false,
@@ -505,8 +505,6 @@
         },
         {
             "scale": "y",
-            "maxExtent": 30,
-            "minExtent": 30,
             "orient": "left",
             "title": "Miles_per_Gallon",
             "zindex": 1
@@ -516,6 +514,8 @@
             "domain": false,
             "grid": true,
             "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "orient": "left",
             "ticks": false,
             "zindex": 0,
@@ -530,7 +530,7 @@
     ],
     "config": {
         "axis": {
-            "quantitativeExtent": 30
+            "minExtent": 30
         }
     }
 }

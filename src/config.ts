@@ -199,7 +199,9 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
-  axis: {},
+  axis: {
+    minExtent: 30
+  },
   axisX: {},
   axisY: {},
   axisLeft: {},
