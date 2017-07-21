@@ -28,6 +28,7 @@ import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
+import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 import {Split} from './split';
@@ -204,6 +205,10 @@ export class UnitModel extends ModelWithField {
       return assembleData(this.component.data);
     }
     return [];
+  }
+
+  public assembleScales(): VgScale[] {
+    return assembleScalesForModel(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {

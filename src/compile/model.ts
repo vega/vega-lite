@@ -241,9 +241,7 @@ export abstract class Model {
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
-  public assembleScales(): VgScale[] {
-    return assembleScalesForModel(this);
-  }
+  public abstract assembleScales(): VgScale[];
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;

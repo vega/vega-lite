@@ -30,6 +30,7 @@ import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {parseGuideResolve} from './resolve';
+import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 
 
@@ -190,6 +191,10 @@ export class FacetModel extends ModelWithField {
 
   public assembleParentGroupProperties(): any {
     return null;
+  }
+
+  public assembleScales(): VgScale[] {
+    return assembleScalesForModel(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
