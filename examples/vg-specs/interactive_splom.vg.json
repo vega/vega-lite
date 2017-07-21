@@ -233,7 +233,7 @@
                                     "signal": "brush_Horsepower"
                                 }
                             ],
-                            "update": "{unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                            "update": "brush_Horsepower ? {unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
                         }
                     ]
                 },
@@ -363,7 +363,7 @@
                                     "signal": "grid_Horsepower"
                                 }
                             ],
-                            "update": "{unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                            "update": "grid_Horsepower ? {unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]} : null"
                         }
                     ]
                 },
@@ -817,7 +817,7 @@
                                     "signal": "brush_Miles_per_Gallon"
                                 }
                             ],
-                            "update": "{unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                            "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
                         }
                     ]
                 },
@@ -968,7 +968,7 @@
                                     "signal": "grid_Miles_per_Gallon"
                                 }
                             ],
-                            "update": "{unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                            "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
                         }
                     ]
                 },
@@ -1421,7 +1421,7 @@
                                     "signal": "brush_Horsepower"
                                 }
                             ],
-                            "update": "{unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                            "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
                         }
                     ]
                 },
@@ -1572,7 +1572,7 @@
                                     "signal": "grid_Horsepower"
                                 }
                             ],
-                            "update": "{unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]}"
+                            "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]} : null"
                         }
                     ]
                 },
@@ -2025,7 +2025,7 @@
                                     "signal": "brush_Miles_per_Gallon"
                                 }
                             ],
-                            "update": "{unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                            "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
                         }
                     ]
                 },
@@ -2176,7 +2176,7 @@
                                     "signal": "grid_Miles_per_Gallon"
                                 }
                             ],
-                            "update": "{unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                            "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
                         }
                     ]
                 },

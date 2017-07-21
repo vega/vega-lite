@@ -266,7 +266,7 @@
                                     "signal": "brush_Horsepower"
                                 }
                             ],
-                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]}"
+                            "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
                         }
                     ]
                 },
@@ -641,7 +641,7 @@
                                     "signal": "grid_Acceleration"
                                 }
                             ],
-                            "update": "{unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"Displacement\", extent: grid_Displacement}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]}"
+                            "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"Displacement\", extent: grid_Displacement}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]} : null"
                         }
                     ]
                 },

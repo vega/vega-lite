@@ -100,7 +100,7 @@
                             "signal": "grid_Miles_per_Gallon"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]}"
+                    "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
                 }
             ]
         },

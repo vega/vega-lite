@@ -163,7 +163,7 @@
                                     "signal": "region_Miles_per_Gallon"
                                 }
                             ],
-                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]}"
+                            "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]} : null"
                         }
                     ]
                 },

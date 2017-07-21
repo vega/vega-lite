@@ -224,7 +224,7 @@
                                     "signal": "brush_seconds_date"
                                 }
                             ],
-                            "update": "{unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"seconds_date\", extent: brush_seconds_date}]}"
+                            "update": "brush_seconds_date ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"seconds_date\", extent: brush_seconds_date}]} : null"
                         }
                     ]
                 },

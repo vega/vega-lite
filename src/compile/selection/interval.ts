@@ -78,11 +78,15 @@ const interval:SelectionCompiler = {
       });
     }
 
+    // Only add an interval to the store if it has valid data extents. Data extents
+    // are set to null if pixel extents are equal to account for intervals over
+    // ordinal/nominal domains which, when inverted, will still produce a valid datum.
     return signals.concat({
       name: name + TUPLE,
       on: [{
         events: tupleTriggers.map((t) => ({signal: t})),
-        update: `{unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]}`
+        update: tupleTriggers.join(' && ') +
+          ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
       }]
     });
   },

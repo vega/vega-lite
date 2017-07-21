@@ -18,21 +18,26 @@ const multi:SelectionCompiler = {
       const channel = p.channel;
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
-      // FIXME: Arvind -- please log proper warning when the specified encoding channel has no field
       return (fieldDef && fieldDef.bin) ? (bins[p.field] = 1,
         `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
             `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
         `${datum}[${stringValue(p.field)}]`;
     }).join(', ');
 
+    // Only add a discrete selection to the store if a datum is present _and_
+    // the interaction isn't occuring on a group mark. This guards against
+    // polluting interactive state with invalid values in faceted displays
+    // as the group marks are also data-driven.
     return [{
       name: selCmpt.name + TUPLE,
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `datum && {unit: ${unitName(model)}, ` +
-          `encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
-          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
+        update: `datum && item().mark.marktype !== 'group' ? ` +
+          `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
+          `fields: [${fields}], values: [${values}]` +
+          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}` : '') +
+          '} : null'
       }]
     }];
   },

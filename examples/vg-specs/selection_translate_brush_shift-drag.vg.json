@@ -202,7 +202,7 @@
                             "signal": "brush_Miles_per_Gallon"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]}"
+                    "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
                 }
             ]
         },

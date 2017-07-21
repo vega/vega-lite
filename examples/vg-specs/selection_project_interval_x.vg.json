@@ -148,7 +148,7 @@
                             "signal": "pts_Cylinders"
                         }
                     ],
-                    "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}]}"
+                    "update": "pts_Cylinders ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}]} : null"
                 }
             ]
         },

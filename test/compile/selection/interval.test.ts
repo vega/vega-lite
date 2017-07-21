@@ -164,7 +164,7 @@ describe('Interval Selections', function() {
           "name": "one_tuple",
           "on": [{
             "events": [{"signal": "one_Horsepower"}],
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]}"
+            "update": "one_Horsepower ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]} : null"
           }]
         }
       ]);
@@ -175,7 +175,7 @@ describe('Interval Selections', function() {
           "name": "two_tuple",
           "on": [{
             "events": [{"signal": "two_Miles_per_Gallon"}],
-            "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]}"
+            "update": "two_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]} : null"
           }]
         }
       ]);
@@ -186,7 +186,7 @@ describe('Interval Selections', function() {
           "name": "thr_ee_tuple",
           "on": [{
             "events": [{"signal": "thr_ee_Horsepower"}, {"signal": "thr_ee_Miles_per_Gallon"}],
-            "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]}"
+            "update": "thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]} : null"
           }]
         }
       ]);
