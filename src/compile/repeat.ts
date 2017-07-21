@@ -210,7 +210,9 @@ export class RepeatModel extends Model {
             update: encodeEntry
           }
         } : {}),
-        ...child.assembleGroup()
+        ...child.assembleGroup({
+          scales: child.assembleScales()
+        })
       };
     });
   }

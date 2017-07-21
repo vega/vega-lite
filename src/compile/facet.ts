@@ -235,6 +235,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleMarks(): VgMarkGroup[] {
+    const {child, facet} = this;
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
 
@@ -242,8 +243,7 @@ export class FacetModel extends ModelWithField {
     // so that we create all groups
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
-
-    const groupProperties = this.child.assembleParentGroupProperties();
+    const groupProperties = child.assembleParentGroupProperties();
 
     const markGroup = {
       ...(data.length > 0 ? {data: data} : {}),
@@ -268,12 +268,14 @@ export class FacetModel extends ModelWithField {
           hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
-          hasRow ? [ (this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [],
-          hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
+          hasRow ? [ (facet.row.header && facet.row.header.sort) || 'ascending'] : [],
+          hasColumn ? [ (facet.column.header && facet.column.header.sort) || 'ascending'] : []
         )
       },
       ...(groupProperties ? {encode: {update: groupProperties}} : {}),
-      ...this.child.assembleGroup()
+      ...child.assembleGroup({
+        scales: child.assembleScales()
+      })
     };
 
     return [markGroup];

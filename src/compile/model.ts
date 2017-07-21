@@ -280,10 +280,10 @@ export abstract class Model {
     return assembleLegends(this);
   }
 
-  public assembleGroup(signals: VgSignal[] = []) {
+  public assembleGroup(mixins: {signals?: VgSignal[], scales: VgScale[]}) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    const signals = (mixins.signals || []).concat(this.assembleSelectionSignals());
     if (signals.length > 0) {
       group.signals = signals;
     }
@@ -297,7 +297,8 @@ export abstract class Model {
       this.assembleHeaderMarks(),
       this.assembleMarks()
     );
-    const scales = this.assembleScales();
+
+    const scales = mixins.scales;
     if (scales.length > 0) {
       group.scales = scales;
     }
