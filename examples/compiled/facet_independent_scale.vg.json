@@ -70,6 +70,12 @@
                     "type": "aggregate",
                     "groupby": [
                         "gender"
+                    ],
+                    "fields": [
+                        "age"
+                    ],
+                    "ops": [
+                        "distinct"
                     ]
                 }
             ]

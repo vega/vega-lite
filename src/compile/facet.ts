@@ -11,11 +11,11 @@ import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
-import {isVgRangeStep} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
+  isVgRangeStep,
   VgAxis,
   VgData,
   VgDataRef,

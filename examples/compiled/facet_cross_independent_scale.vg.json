@@ -33,13 +33,43 @@
             ]
         },
         {
-            "name": "column",
+            "name": "cross_column_row",
             "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
+                        "c",
+                        "r"
+                    ],
+                    "fields": [
+                        "a",
+                        "b"
+                    ],
+                    "ops": [
+                        "distinct",
+                        "distinct"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column",
+            "source": "cross_column_row",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
                         "c"
+                    ],
+                    "fields": [
+                        "distinct_a"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "as": [
+                        "distinct_a"
                     ]
                 }
             ]
@@ -61,12 +91,21 @@
         },
         {
             "name": "row",
-            "source": "source_0",
+            "source": "cross_column_row",
             "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
                         "r"
+                    ],
+                    "fields": [
+                        "distinct_b"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "as": [
+                        "distinct_b"
                     ]
                 }
             ]
