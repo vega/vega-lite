@@ -6,7 +6,7 @@ import {LayerSpec} from '../../src/spec';
 import {parseLayerModel} from '../util';
 
 describe('Layer', function() {
-  describe('merge scale domains', () => {
+  describe('parseScale', () => {
     it('should merge domains', () => {
       const model = parseLayerModel({
         layer: [{

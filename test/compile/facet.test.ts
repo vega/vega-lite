@@ -66,131 +66,6 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('assembleMarks', () => {
-    it('should add cross and sort if we facet my multiple dimensions', () => {
-      const model: FacetModel = parseFacetModelWithScale({
-        facet: {
-          row: {field: 'a', type: 'ordinal'},
-          column: {field: 'b', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      model.parse();
-
-      const marks = model.assembleMarks();
-
-      assert(marks[0].from.facet.aggregate.cross);
-      assert.deepEqual(marks[0].sort, {
-        field: [
-          'datum["a"]',
-          'datum["b"]'
-        ],
-        order: [
-          'ascending',
-          'ascending'
-        ]
-      });
-    });
-  });
-
-  describe('parseScale', () => {
-    it('should correctly set scale component for a model', () => {
-      const model = parseFacetModelWithScale({
-        facet: {
-          row: {field: 'a', type: 'quantitative'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
-      });
-
-
-      assert(model.component.scales['x']);
-    });
-
-    it('should create independent scales if resolve is set to independent', () => {
-      const model = parseFacetModelWithScale({
-        facet: {
-          row: {field: 'a', type: 'quantitative'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        },
-        resolve: {
-          x: {
-            scale: 'independent'
-          }
-        }
-      });
-
-      assert(!model.component.scales['x']);
-    });
-  });
-
-  describe('assembleLayout', () => {
-    it('returns a layout with only one column', () => {
-      const model = parseFacetModelWithScale({
-        facet: {
-          column: {field: 'a', type: 'quantitative'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
-      });
-      const layout = model.assembleLayout();
-      assert.deepEqual<VgLayout>(layout, {
-        padding: {row: 10, column: 10},
-        offset: 10,
-        columns: {
-          signal: "data('column_layout')[0][\"distinct_a\"]"
-        },
-        bounds: 'full'
-      });
-    });
-  });
-
-  describe('assembleHeaderMarks', () => {
-    it('should sort headers in ascending order', () => {
-      const model = parseFacetModelWithScale({
-        facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      model.parseAxisAndHeader();
-
-      const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(function(d){
-        return d.name === "column_header";
-      })[0];
-
-      assert.deepEqual(columnHeader.sort, {field: 'datum["a"]', order: 'ascending'});
-    });
-
-  });
-
-
-
   describe('parseAxisAndHeader', () => {
     // TODO: add more tests
     // - correctly join title for nested facet
@@ -261,6 +136,128 @@ describe('FacetModel', function() {
       })[0];
 
       assert(columnHeader.title.text.signal, "parent[\"a\"]");
+    });
+  });
+
+  describe('parseScale', () => {
+    it('should correctly set scale component for a model', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        }
+      });
+
+
+      assert(model.component.scales['x']);
+    });
+
+    it('should create independent scales if resolve is set to independent', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        },
+        resolve: {
+          x: {
+            scale: 'independent'
+          }
+        }
+      });
+
+      assert(!model.component.scales['x']);
+    });
+  });
+
+  describe('assembleHeaderMarks', () => {
+    it('should sort headers in ascending order', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative', format: 'd'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseAxisAndHeader();
+
+      const headerMarks = model.assembleHeaderMarks();
+      const columnHeader = headerMarks.filter(function(d){
+        return d.name === "column_header";
+      })[0];
+
+      assert.deepEqual(columnHeader.sort, {field: 'datum["a"]', order: 'ascending'});
+    });
+  });
+
+  describe('assembleLayout', () => {
+    it('returns a layout with only one column', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        }
+      });
+      const layout = model.assembleLayout();
+      assert.deepEqual<VgLayout>(layout, {
+        padding: {row: 10, column: 10},
+        offset: 10,
+        columns: {
+          signal: "data('column_layout')[0][\"distinct_a\"]"
+        },
+        bounds: 'full'
+      });
+    });
+  });
+
+  describe('assembleMarks', () => {
+    it('should add cross and sort if we facet my multiple dimensions', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal'},
+          column: {field: 'b', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      assert(marks[0].from.facet.aggregate.cross);
+      assert.deepEqual(marks[0].sort, {
+        field: [
+          'datum["a"]',
+          'datum["b"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
+      });
     });
   });
 });
