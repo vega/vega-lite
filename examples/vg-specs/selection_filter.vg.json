@@ -490,42 +490,6 @@
                     }
                 }
             ],
-            "scales": [
-                {
-                    "name": "concat_0_x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Horsepower"
-                    },
-                    "range": [
-                        0,
-                        {
-                            "signal": "width"
-                        }
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "concat_0_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "range": [
-                        {
-                            "signal": "concat_0_height"
-                        },
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
             "axes": [
                 {
                     "scale": "concat_0_x",
@@ -618,42 +582,6 @@
                     }
                 }
             ],
-            "scales": [
-                {
-                    "name": "concat_1_x",
-                    "type": "linear",
-                    "domain": [
-                        0,
-                        25
-                    ],
-                    "range": [
-                        0,
-                        {
-                            "signal": "width"
-                        }
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false
-                },
-                {
-                    "name": "concat_1_y",
-                    "type": "linear",
-                    "domain": [
-                        0,
-                        500
-                    ],
-                    "range": [
-                        {
-                            "signal": "concat_1_height"
-                        },
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false
-                }
-            ],
             "axes": [
                 {
                     "scale": "concat_1_x",
@@ -695,6 +623,76 @@
                     "gridScale": "concat_1_x"
                 }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "concat_0_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_0_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Miles_per_Gallon"
+            },
+            "range": [
+                {
+                    "signal": "concat_0_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_1_x",
+            "type": "linear",
+            "domain": [
+                0,
+                25
+            ],
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "concat_1_y",
+            "type": "linear",
+            "domain": [
+                0,
+                500
+            ],
+            "range": [
+                {
+                    "signal": "concat_1_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
         }
     ],
     "config": {

@@ -17,6 +17,7 @@ import {assembleLayoutSignals} from './layout/assemble';
 import {parseRepeatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
+import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
 
@@ -166,6 +167,10 @@ export class RepeatModel extends Model {
     return null;
   }
 
+  public assembleScales(): VgScale[] {
+    return assembleScaleForModelAndChildren(this);
+  }
+
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
@@ -211,7 +216,8 @@ export class RepeatModel extends Model {
           }
         } : {}),
         ...child.assembleGroup({
-          scales: child.assembleScales()
+          // Do not nest scales so children's layout signals can refer to them
+          scales: []
         })
       };
     });

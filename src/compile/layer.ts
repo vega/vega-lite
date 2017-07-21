@@ -134,7 +134,6 @@ export class LayerModel extends Model {
   }
 
   public assembleScales(): VgScale[] {
-    // combine with scales from children
     return assembleScaleForModelAndChildren(this);
   }
 

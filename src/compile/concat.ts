@@ -14,6 +14,7 @@ import {parseConcatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponentIndex} from './scale/component';
 
 export class ConcatModel extends Model {
@@ -91,6 +92,10 @@ export class ConcatModel extends Model {
     return null;
   }
 
+  public assembleScales(): VgScale[] {
+    return assembleScaleForModelAndChildren(this);
+  }
+
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
@@ -134,7 +139,8 @@ export class ConcatModel extends Model {
           }
         } : {}),
         ...child.assembleGroup({
-          scales: child.assembleScales()
+          // Do not nest scales so children's layout signals can refer to them
+          scales: []
         })
       };
     });

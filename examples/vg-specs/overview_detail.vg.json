@@ -154,43 +154,6 @@
                     }
                 }
             ],
-            "scales": [
-                {
-                    "name": "concat_0_x",
-                    "type": "time",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "date"
-                    },
-                    "domainRaw": {
-                        "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
-                    },
-                    "range": [
-                        0,
-                        {
-                            "signal": "width"
-                        }
-                    ],
-                    "round": true
-                },
-                {
-                    "name": "concat_0_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    "range": [
-                        {
-                            "signal": "concat_0_height"
-                        },
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
             "axes": [
                 {
                     "title": "",
@@ -574,40 +537,6 @@
                     }
                 }
             ],
-            "scales": [
-                {
-                    "name": "concat_1_x",
-                    "type": "time",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "date"
-                    },
-                    "range": [
-                        0,
-                        {
-                            "signal": "width"
-                        }
-                    ],
-                    "round": true
-                },
-                {
-                    "name": "concat_1_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "price"
-                    },
-                    "range": [
-                        {
-                            "signal": "concat_1_height"
-                        },
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
             "axes": [
                 {
                     "scale": "concat_1_x",
@@ -647,6 +576,75 @@
                     "zindex": 1
                 }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "concat_0_x",
+            "type": "time",
+            "domain": {
+                "data": "data_0",
+                "field": "date"
+            },
+            "domainRaw": {
+                "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true
+        },
+        {
+            "name": "concat_0_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "price"
+            },
+            "range": [
+                {
+                    "signal": "concat_0_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_1_x",
+            "type": "time",
+            "domain": {
+                "data": "data_1",
+                "field": "date"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true
+        },
+        {
+            "name": "concat_1_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "price"
+            },
+            "range": [
+                {
+                    "signal": "concat_1_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         }
     ],
     "config": {
