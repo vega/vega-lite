@@ -15,11 +15,12 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {getFullName} from '../type';
 import {Dict, extend, vals, varName} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {FacetModel} from './facet';
+import {sizeExpr} from './layout/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
@@ -28,6 +29,7 @@ import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
@@ -358,6 +360,25 @@ export abstract class Model {
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
+    if (this.parent instanceof FacetModel) {
+      const channel = sizeType === 'width' ? 'x' : 'y';
+      const scaleComponent = this.component.scales[channel];
+
+      if (scaleComponent && !scaleComponent.merged) { // independent scale
+        const type = scaleComponent.get('type');
+        const range = scaleComponent.get('range');
+
+        if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+          const scaleName = scaleComponent.get('name');
+          const fieldName = getFieldFromDomains(scaleComponent.domains);
+          const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
+          return {
+            signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+          };
+        }
+      }
+    }
+
     return {
       signal: this.layoutSizeNameMap.get(this.getName(sizeType))
     };

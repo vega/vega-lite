@@ -96,10 +96,6 @@
             "value": 17
         },
         {
-            "name": "child_width",
-            "update": "bandspace(domain('child_x').length, 0.1, 0.05) * child_x_step"
-        },
-        {
             "name": "child_height",
             "update": "200"
         }
@@ -198,7 +194,7 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "bandspace(datum[\"distinct_age\"], 0.1, 0.05) * child_x_step"
                     }
                 }
             }
@@ -212,7 +208,15 @@
                     "data": "source_0",
                     "groupby": [
                         "gender"
-                    ]
+                    ],
+                    "aggregate": {
+                        "fields": [
+                            "age"
+                        ],
+                        "ops": [
+                            "distinct"
+                        ]
+                    }
                 }
             },
             "sort": {
@@ -226,7 +230,7 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "bandspace(datum[\"distinct_age\"], 0.1, 0.05) * child_x_step"
                     },
                     "height": {
                         "signal": "child_height"

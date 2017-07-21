@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import {X, Y} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layout/assemble';
@@ -60,6 +60,32 @@ describe('compile/layout', () => {
       },{
         name: 'width',
         update: 'bandspace(domain(\'x\').length, 0.3, 0.15) * x_step'
+      }]);
+    });
+
+
+    it('should return only step if parent is facet', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'nominal'}
+          }
+        },
+        resolve: {
+          x: {scale: 'independent'}
+        }
+      });
+      model.parseScale();
+      model.parseLayoutSize();
+
+      const size = sizeSignals(model.child, 'width');
+      assert.deepEqual(size, [{
+        name: 'child_x_step',
+        value: 21
       }]);
     });
 

@@ -78,16 +78,8 @@
             "value": 21
         },
         {
-            "name": "child_width",
-            "update": "bandspace(domain('child_x').length, 0.1, 0.05) * child_x_step"
-        },
-        {
             "name": "child_y_step",
             "value": 21
-        },
-        {
-            "name": "child_height",
-            "update": "bandspace(domain('child_y').length, 0.1, 0.05) * child_y_step"
         }
     ],
     "layout": {
@@ -199,7 +191,7 @@
             "encode": {
                 "update": {
                     "height": {
-                        "signal": "child_height"
+                        "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
                     }
                 }
             }
@@ -238,7 +230,7 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
                     }
                 }
             }
@@ -255,7 +247,15 @@
                         "c"
                     ],
                     "aggregate": {
-                        "cross": true
+                        "cross": true,
+                        "fields": [
+                            "a",
+                            "b"
+                        ],
+                        "ops": [
+                            "distinct",
+                            "distinct"
+                        ]
                     }
                 }
             },
@@ -272,10 +272,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
                     },
                     "height": {
-                        "signal": "child_height"
+                        "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
                     },
                     "stroke": {
                         "value": "#ccc"

@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModel} from '../util';
+import {paddingInner, paddingOuter} from '../../src/compile/scale/properties';
+import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('Model', () => {
   describe('NameMap', function () {
@@ -90,6 +91,31 @@ describe('Model', () => {
         }
       });
       assert(!model.hasDescendantWithFieldOnChannel('x'));
+    });
+  });
+
+  describe('getSizeSignalRef', () => {
+    it('returns formula for step if parent is facet', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'nominal', scale: {
+              padding: 0.345
+            }}
+          }
+        },
+        resolve: {
+          x: {scale: 'independent'}
+        }
+      });
+
+      assert.deepEqual(model.child.getSizeSignalRef('width'), {
+        signal: `bandspace(datum[\"distinct_b\"], 1, 0.345) * child_x_step`
+      });
     });
   });
 });

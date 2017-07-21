@@ -1,3 +1,4 @@
+import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -402,4 +403,17 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   }
 
   return {fields: uniqueDomains, sort};
+}
+
+/**
+ * Return a field if a scale single field.
+ * Return `undefined` otherwise.
+ *
+ */
+export function getFieldFromDomains(domains: VgNonUnionDomain[]): string {
+  const domain = mergeDomains(domains);
+  if (isDataRefDomain(domain) && isString(domain.field)) {
+    return domain.field;
+  }
+  return undefined;
 }

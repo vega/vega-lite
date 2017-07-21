@@ -1,3 +1,5 @@
+import {isString} from 'vega-util';
+import {AggregateOp} from '../aggregate';
 import {Channel, COLUMN, NonspatialScaleChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -6,20 +8,24 @@ import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {ResolveMapping} from '../resolve';
-import {Scale} from '../scale';
+import {hasDiscreteDomain, Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
-import {VgAxis} from '../vega.schema';
-import {VgDomain, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
+import {isVgRangeStep} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
+  VgAxis,
   VgData,
   VgDataRef,
   VgEncodeEntry,
-  VgLayout
+  VgLayout,
+  VgMarkGroup,
+  VgScale,
+  VgSignal
 } from '../vega.schema';
+import {domain} from './axis/rules';
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
@@ -32,6 +38,8 @@ import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {getFieldFromDomains} from './scale/domain';
+import {UnitModel} from './unit';
 
 
 export class FacetModel extends ModelWithField {
@@ -239,6 +247,32 @@ export class FacetModel extends ModelWithField {
     return `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`;
   }
 
+  /**
+   * Aggregate cardinality for calculating size
+   */
+  private getCardinalityAggregateForChild() {
+    const fields: string[] = [];
+    const ops: AggregateOp[] = [];
+    for (const channel of ['x', 'y'] as ScaleChannel[]) {
+      const childScaleComponent = this.child.component.scales[channel];
+      if (childScaleComponent && !childScaleComponent.merged) {
+        const type = childScaleComponent.get('type');
+        const range = childScaleComponent.get('range');
+
+        if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+          const field = getFieldFromDomains(childScaleComponent.domains);
+          if (field) {
+            fields.push(field);
+            ops.push('distinct');
+          } else {
+            throw new Error('We do not yet support calculation of size for faceted union domain.');
+          }
+        }
+      }
+    }
+    return fields.length ? {fields, ops} : undefined;
+  }
+
   public assembleMarks(): VgMarkGroup[] {
     const {child, facet} = this;
     const facetRoot = this.component.data.facetRoot;
@@ -249,6 +283,18 @@ export class FacetModel extends ModelWithField {
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
     const groupProperties = child.assembleParentGroupProperties();
+
+    const aggregateMixins: any = {};
+    if (hasRow && hasColumn) {
+      aggregateMixins.aggregate = {cross: true};
+    }
+    const cardinalityAggregateForChild = this.getCardinalityAggregateForChild();
+    if (cardinalityAggregateForChild) {
+      aggregateMixins.aggregate = {
+        ...aggregateMixins.aggregate,
+        ...cardinalityAggregateForChild
+      };
+    }
 
     const markGroup = {
       ...(data.length > 0 ? {data: data} : {}),
@@ -262,9 +308,7 @@ export class FacetModel extends ModelWithField {
             hasRow ? [this.field(ROW)] : [],
             hasColumn ? [this.field(COLUMN)] : []
           ),
-          ...(hasRow && hasColumn ? {aggregate: {
-            cross: true
-          }}: {})
+          ...aggregateMixins
         }
       },
       sort: {

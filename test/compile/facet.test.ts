@@ -254,7 +254,7 @@ describe('FacetModel', function() {
   });
 
   describe('assembleMarks', () => {
-    it('should add cross and sort if we facet my multiple dimensions', () => {
+    it('should add cross and sort if we facet by multiple dimensions', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal'},
@@ -281,6 +281,33 @@ describe('FacetModel', function() {
           'ascending',
           'ascending'
         ]
+      });
+    });
+
+    it('should add calculate cardinality for independent scales', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'rect',
+          encoding: {
+            x: {field: 'b', type: 'nominal'},
+            y: {field: 'c', type: 'nominal'}
+          }
+        },
+        resolve: {
+          x: {scale: 'independent'},
+          y: {scale: 'independent'}
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      assert.deepEqual(marks[0].from.facet.aggregate, {
+        fields: ['b', 'c'],
+        ops: ['distinct', 'distinct']
       });
     });
   });
