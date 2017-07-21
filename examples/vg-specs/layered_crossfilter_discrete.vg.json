@@ -454,8 +454,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_distance_layer_1_marks",
@@ -487,8 +486,7 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -690,8 +688,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_delay_layer_1_marks",
@@ -723,8 +720,7 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [
@@ -926,8 +922,7 @@
                                 "value": "#4c78a8"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 },
                 {
                     "name": "child_time_layer_1_marks",
@@ -959,8 +954,7 @@
                                 "value": "goldenrod"
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ],
             "scales": [

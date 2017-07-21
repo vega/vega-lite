@@ -24,6 +24,10 @@ const multi:SelectionCompiler = {
         `${datum}[${stringValue(p.field)}]`;
     }).join(', ');
 
+    // Only add a discrete selection to the store if a datum is present _and_
+    // the interaction isn't occuring on a group mark. This guards against
+    // polluting interactive state with invalid values in faceted displays
+    // as the group marks are also data-driven.
     return [{
       name: selCmpt.name + TUPLE,
       value: {},
