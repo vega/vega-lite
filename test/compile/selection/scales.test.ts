@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {assembleScale} from '../../../src/compile/scale/assemble';
+import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel} from '../../util';
 
@@ -54,7 +54,7 @@ describe('Selection + Scales', function() {
     model.parseScale();
     model.parseSelection();
 
-    const scales = assembleScale(model.children[1]);
+    const scales = assembleScalesForModel(model.children[1]);
     const xscale = scales[0];
     const yscale = scales[1];
     const cscale = scales[2];

@@ -25,7 +25,7 @@ import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
-import {assembleScale} from './scale/assemble';
+import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
@@ -241,7 +241,7 @@ export abstract class Model {
   public abstract assembleLayoutSignals(): VgSignal[];
 
   public assembleScales(): VgScale[] {
-    return assembleScale(this);
+    return assembleScalesForModel(this);
   }
 
   public assembleHeaderMarks(): VgMarkGroup[] {

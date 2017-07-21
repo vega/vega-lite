@@ -7,8 +7,13 @@ import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignal
 import {Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 
+export function assembleScaleForModelAndChildren(model: Model) {
+  return model.children.reduce((scales, child) => {
+    return scales.concat(child.assembleScales());
+  }, assembleScalesForModel(model));
+}
 
-export function assembleScale(model: Model): VgScale[] {
+export function assembleScalesForModel(model: Model): VgScale[] {
     return keys(model.component.scales).reduce((scales: VgScale[], channel: Channel) => {
       const scaleComponent= model.component.scales[channel];
       if (scaleComponent.merged) {

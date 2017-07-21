@@ -16,6 +16,7 @@ import {parseLayerLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
 import {assembleLayerSelectionMarks} from './selection/selection';
@@ -134,9 +135,7 @@ export class LayerModel extends Model {
 
   public assembleScales(): VgScale[] {
     // combine with scales from children
-    return this.children.reduce((scales, c) => {
-      return scales.concat(c.assembleScales());
-    }, super.assembleScales());
+    return assembleScaleForModelAndChildren(this);
   }
 
   public assembleLayout(): VgLayout {
