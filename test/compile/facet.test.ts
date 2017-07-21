@@ -179,6 +179,30 @@ describe('FacetModel', function() {
     });
   });
 
+  describe('assembleScales', () => {
+    it('includes shared scales, but not independent scales (as they are nested).', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative', format: 'd'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        },
+        resolve: {
+          x: {scale: 'independent'}
+        }
+      });
+
+      const scales = model.assembleScales();
+      assert.equal(scales.length, 1);
+      assert.equal(scales[0].name, 'y');
+    });
+  });
+
   describe('assembleHeaderMarks', () => {
     it('should sort headers in ascending order', () => {
       const model = parseFacetModelWithScale({
