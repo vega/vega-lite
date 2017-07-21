@@ -19,6 +19,7 @@ import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale,
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {FacetModel} from './facet';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
@@ -280,10 +281,13 @@ export abstract class Model {
     return assembleLegends(this);
   }
 
-  public assembleGroup(mixins: {signals?: VgSignal[], scales: VgScale[]}) {
+  /**
+   * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
+   */
+  public assembleGroup(signals: VgSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    const signals = (mixins.signals || []).concat(this.assembleSelectionSignals());
+    signals = signals.concat(this.assembleSelectionSignals());
     if (signals.length > 0) {
       group.signals = signals;
     }
@@ -298,7 +302,9 @@ export abstract class Model {
       this.assembleMarks()
     );
 
-    const scales = mixins.scales;
+    // Only include scales if this spec is top-level or if parent is facet.
+    // (Otherwise, it will be merged with upper-level's scope.)
+    const scales = (!this.parent || this.parent instanceof FacetModel) ? this.assembleScales() : [];
     if (scales.length > 0) {
       group.scales = scales;
     }

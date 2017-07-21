@@ -215,10 +215,7 @@ export class RepeatModel extends Model {
             update: encodeEntry
           }
         } : {}),
-        ...child.assembleGroup({
-          // Do not nest scales so children's layout signals can refer to them
-          scales: []
-        })
+        ...child.assembleGroup()
       };
     });
   }

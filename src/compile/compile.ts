@@ -79,13 +79,10 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
       model.assembleSelectionData([]),
       model.assembleData()
     ),
-    ...model.assembleGroup({
-      scales: model.assembleScales(),
-      signals: [
-        ...model.assembleLayoutSignals(),
-        ...model.assembleSelectionTopLevelSignals([])
-      ]
-    }),
+    ...model.assembleGroup([
+      ...model.assembleLayoutSignals(),
+      ...model.assembleSelectionTopLevelSignals([])
+    ]),
     ...(vgConfig ? {config: vgConfig} : {})
   };
 

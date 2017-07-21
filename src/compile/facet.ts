@@ -273,9 +273,7 @@ export class FacetModel extends ModelWithField {
         )
       },
       ...(groupProperties ? {encode: {update: groupProperties}} : {}),
-      ...child.assembleGroup({
-        scales: child.assembleScales()
-      })
+      ...child.assembleGroup()
     };
 
     return [markGroup];
