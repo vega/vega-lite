@@ -106,6 +106,11 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         return 'bin-linear';
       }
       return 'linear';
+
+    case 'latitude':
+    case 'longitude':
+    case 'geojson':
+      return undefined;
   }
 
   /* istanbul ignore next: should never reach this */

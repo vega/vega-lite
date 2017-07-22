@@ -116,9 +116,10 @@ export interface FieldDefBase<F> {
  */
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
-   * The encoded field's type of measurement. This can be either a full type
+   * The encoded field's type of measurement. This can be either a full basic type
    * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
-   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+   * or an initial character of the basic type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when applicable.
    * This property is case-insensitive.
    */
   type: Type;
@@ -266,6 +267,11 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
     case 'temporal':
       // TODO: deal with custom scale type case.
       return isDiscreteByDefault(fieldDef.timeUnit);
+    case 'latitude':
+    case 'longitude':
+      return false;
+    case 'geojson':
+      return true;
   }
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
@@ -434,10 +440,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal') {
+      if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data only'
+          warning: 'Shape channel should be used with nominal data or geojson only'
         };
       }
       return COMPATIBLE;
