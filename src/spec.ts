@@ -211,13 +211,13 @@ export function normalize(spec: TopLevelExtendedSpec, config: Config): Spec {
     return normalizeLayer(spec, config);
   }
   if (isRepeatSpec(spec)) {
-    return normalizeRepeat(spec, spec.config);
+    return normalizeRepeat(spec, config);
   }
   if (isVConcatSpec(spec)) {
-    return normalizeVConcat(spec, spec.config);
+    return normalizeVConcat(spec, config);
   }
   if (isHConcatSpec(spec)) {
-    return normalizeHConcat(spec, spec.config);
+    return normalizeHConcat(spec, config);
   }
   if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
