@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 500,
+  "height": 300,
+  "projection": {
+    "type": "albersUsa"
+  },
+  "data": {
+    "url": "data/zipcodes.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [{"calculate": "substring(datum.zip_code, 0, 1)", "as": "digit"}],
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "longitude",
+      "type": "longitude"
+    },
+    "y": {
+      "field": "latitude",
+      "type": "latitude"
+    },
+    "size": {"value": 1},
+    "color": {"field": "digit", "type": "nominal"}
+  }
+}
