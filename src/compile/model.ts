@@ -36,8 +36,10 @@ import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
- * compilations.  These composable components will be assembled in the last
- * compilation step.
+ * compilations.  The components represents parts of the specification in a form that
+ * can be easily merged (during parsing for composite specs).
+ * In addition, these components are easily transformed into Vega specifications
+ * during the "assemble" phase, which is the last phase of the compilation step.
  */
 export interface Component {
   data: DataComponent;

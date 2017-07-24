@@ -26,13 +26,15 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     // (Decompose all extended unit specs into composition of unit spec.)
     const spec = normalize(inputSpec, config);
 
-    // 3. Instantiate the model with default config
+    // 3. Instantiate the models with default config by doing a top-down traversal.
     const model = buildModel(spec, null, '', undefined, undefined, config);
 
-    // 4. Parse each part of the model to produce components that will be assembled later
-    // We traverse the whole tree to parse once for each type of components
-    // (e.g., data, layout, mark, scale).
-    // Please see inside model.parse() for order for compilation.
+    // 4. Parse each part of the model to produce components that can be merged and assembled easily.
+    // We do a bottom-up traversal over the whole tree to
+    // parse once for each type of components (e.g., data, layout, mark, scale).
+    // By doing bottom-up, we starting parsing components of unit specs and
+    // then parse their parent composite specs (if applicable) to merge components.
+    // Please see inside model.parse() for order of different components parsed.
     model.parse();
 
     // 5. Assemble a Vega Spec from the parsed components in 3.
