@@ -5,7 +5,10 @@ import {Scale} from '../scale';
 import {duplicate} from '../util';
 
 /**
- * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
+ * Generic class for storing properties that are explicitly specified
+ * and implicitly determined by the compiler.
+ * This is important for scale/axis/legend merging as
+ * we want to prioritize properties that users explicitly specified.
  */
 export class Split<T extends Object> {
   constructor(public readonly explicit: T = {} as T, public readonly implicit: T = {} as T) {}
