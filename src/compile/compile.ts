@@ -22,7 +22,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     // 1. initialize config
     const config = initConfig(inputSpec.config);
 
-    // 2. Convert input spec into a normal form
+    // 2. Convert input spec into a normalized form
     // (Decompose all extended unit specs into composition of unit spec.)
     const spec = normalize(inputSpec, config);
 
@@ -38,7 +38,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     model.parse();
 
     // 5. Assemble a Vega Spec from the parsed components in 3.
-    return assemble(model, getTopLevelProperties(inputSpec, config));
+    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config));
   } finally {
     // Reset the singleton logger if a logger is provided
     if (logger) {
@@ -55,7 +55,12 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
   };
 }
 
-function assemble(model: Model, topLevelProperties: TopLevelProperties) {
+/*
+ * Assemble the top-level model.
+ * (This couldn't be `model.assemble()` since the top-level model needs some special treatment
+ * to generate top-level properties.)
+ */
+function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
 
   // Config with Vega-Lite only config removed.
