@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="/node_modules/vega/build/vega.js"></script>
+  <script src="/build/vega-lite.js"></script>
+</head>
+<body>
+
+  <div id="vis"></div>
+
+  <script type="text/javascript">
+    function embed(vlSpec) {
+      var vgSpec = vl.compile(vlSpec).spec;
+      view = new vega.View(vega.parse(vgSpec))
+        .renderer('canvas')  // set renderer (canvas or svg)
+        .initialize('#vis') // initialize view within parent DOM container
+        .run();
+    }
+
+    var srcWindow = ['mousemove', 'mouseup'];
+    function mouseEvt(type, opts) {
+      var target = srcWindow.indexOf(type) < 0 ? document.querySelector('canvas') : window,
+          evt;
+
+      target.dispatchEvent(new MouseEvent('mousemove',
+        vega.extend({}, opts, {clientX: opts.clientX - 10, clientY: opts.clientY - 10})));
+
+      target.dispatchEvent(new MouseEvent('mousemove', opts));
+
+      if(type === 'wheel') {
+        evt = document.createEvent('SVGZoomEvent');
+        evt.initUIEvent('wheel', true, true, window, opts.delta);
+      } else {
+        evt = new MouseEvent(type, opts);
+      }
+
+      target.dispatchEvent(evt);
+
+      target.dispatchEvent(new MouseEvent('mousemove',
+        vega.extend({}, opts, {clientX: opts.clientX + 10, clientY: opts.clientY + 10})));
+    }
+  </script>
+</body>
+</html>
