@@ -52,13 +52,12 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       // domains is an array that has to be merged into a single vega domain
       const domain = mergeDomains(domains);
 
-
       scales.push({
         name,
         type,
         domain: domain,
-        range: range,
         ...(domainRaw ? {domainRaw} : {}),
+        range: range,
         ...otherScaleProps
       });
 
