@@ -1,9 +1,12 @@
+import {SelectionResolutions} from '../src/selection';
 import {TopLevelExtendedSpec} from '../src/spec';
 import {Type} from '../src/type';
 
 export type TestSpec = 'unit' | 'repeat' | 'facet';
+export const compositeTypes: TestSpec[] = ['repeat', 'facet'];
+export const resolutions: SelectionResolutions[] = ['independent', 'union', 'intersect', 'union_others', 'intersect_others'];
 
-export const values = [
+export const data = [
   {a: 0, b: 28, c: 0}, {a: 0, b: 55, c: 1}, {a: 0, b: 23, c: 2},
   {a: 1, b: 43, c: 0}, {a: 1, b: 91, c: 1}, {a: 1, b: 54, c: 2},
   {a: 2, b: 81, c: 0}, {a: 2, b: 53, c: 1}, {a: 2, b: 76, c: 2},
@@ -27,22 +30,28 @@ export function unit(xdef?: any, ydef?: any, cdef?: any): TopLevelExtendedSpec {
   };
 }
 
-export function spec(type: TestSpec, data: object[], unit: TopLevelExtendedSpec, selection: any) {
+export function spec(type: TestSpec, values: object[], unitSpec: TopLevelExtendedSpec, selection: any) {
+  unitSpec = unitSpec || unit();
   return {
-    data: {values: data},
+    data: {values: values || data},
 
-    ...(type === 'unit' ? {...unit, selection} : {}),
+    ...(type === 'unit' ? {...unitSpec, selection} : {}),
     ...(type === 'facet' ? {
       facet: {row: {field: 'c', type: 'nominal'}},
-      spec: {...unit, selection}
+      spec: {...unitSpec, selection}
     } : {}),
     ...(type === 'repeat' ? {
       repeat: {row: ['d', 'e', 'f']},
-      spec: {...unit, selection}
+      spec: {...unitSpec, selection}
     } : {})
   };
 }
 
-export function embed(browser: WebdriverIO.Client<void>, type: TestSpec, data: object[], unitSpec: TopLevelExtendedSpec, selection: any) {
-  browser.execute((_) => window['embed'](_), spec(type, data || values, unitSpec || unit(), selection));
+export const unitNames = {
+  repeat: ['child_d', 'child_e', 'child_f'],
+  facet: ['child_0', 'child_1', 'child_2']
+};
+
+export function embed(browser: WebdriverIO.Client<void>, type: TestSpec, values: object[], unit: TopLevelExtendedSpec, selection: any) {
+  browser.execute((_) => window['embed'](_), spec(type, values, unit, selection));
 }

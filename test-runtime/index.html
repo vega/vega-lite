@@ -46,6 +46,13 @@
       mouseEvt('mouseup', {clientX: muX, clientY: muY});
       return view.data('brush_store');
     }
+
+    function pt(clientX, clientY) {
+      mouseEvt('mousedown', {clientX, clientY});
+      mouseEvt('mouseup', {clientX, clientY});
+      mouseEvt('click', {clientX, clientY});
+      return view.data('pts_store');
+    }
   </script>
 </body>
 </html>
