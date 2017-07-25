@@ -672,7 +672,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "vlPoint(\"xenc_store\", datum)",
+                                    "test": "!(length(data(\"xenc_store\"))) || (vlPoint(\"xenc_store\", datum))",
                                     "value": "red"
                                 },
                                 {
@@ -681,7 +681,7 @@
                             ],
                             "size": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "value": 250
                                 },
                                 {

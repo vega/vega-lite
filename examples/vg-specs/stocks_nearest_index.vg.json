@@ -61,7 +61,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (vlPoint(\"index_store\", datum))"
+                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlPoint(\"index_store\", datum)))"
                 },
                 {
                     "type": "filter",
@@ -80,7 +80,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (vlPoint(\"index_store\", datum))"
+                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlPoint(\"index_store\", datum)))"
                 },
                 {
                     "type": "filter",

@@ -115,7 +115,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlPoint(\"paintbrush_store\", datum)",
+                            "test": "!(length(data(\"paintbrush_store\"))) || (vlPoint(\"paintbrush_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },

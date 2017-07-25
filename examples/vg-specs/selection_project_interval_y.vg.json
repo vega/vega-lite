@@ -322,7 +322,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlInterval(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlInterval(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "count_*"
                         },

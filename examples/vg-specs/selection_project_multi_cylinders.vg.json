@@ -115,7 +115,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "vlPoint(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },
@@ -128,7 +128,7 @@
                     },
                     "size": [
                         {
-                            "test": "vlPoint(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                             "value": 200
                         },
                         {

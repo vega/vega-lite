@@ -67,7 +67,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlPoint(\"CylYr_store\", datum)"
+                    "expr": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -177,7 +177,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlPoint(\"CylYr_store\", datum)",
+                            "test": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))",
                             "scale": "color",
                             "field": "Origin"
                         },

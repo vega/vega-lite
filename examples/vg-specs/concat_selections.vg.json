@@ -714,7 +714,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "value": "steelblue"
                                 },
                                 {
