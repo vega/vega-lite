@@ -349,7 +349,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
       }
       return {
         ...domain,
-        sort: sort
+        sort
       };
     }
     return domain;
