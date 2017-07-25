@@ -1,5 +1,18 @@
 exports.config = {
-
+    //
+    // =====================
+    // Server Configurations
+    // =====================
+    // Host address of the running Selenium server. This information is usually obsolete as
+    // WebdriverIO automatically connects to localhost. Also, if you are using one of the
+    // supported cloud services like Sauce Labs, Browserstack, or Testing Bot you don't
+    // need to define host and port information because WebdriverIO can figure that out
+    // according to your user and key information. However, if you are using a private Selenium
+    // backend you should define the host address, port, and path here.
+    //
+    host: '0.0.0.0',
+    port: 9515,
+    path: '/',
     //
     // ==================
     // Specify Test Files
@@ -42,9 +55,10 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
-        //
-        browserName: 'firefox'
+        browserName: 'chrome',
+        chromeOptions: {
+          args: ['--headless']
+        }
     }],
     //
     // ===================
@@ -106,7 +120,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone', 'static-server'],
+    services: ['chromedriver', 'static-server'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -120,7 +134,6 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
     reporters: ['dot'],
-
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -129,7 +142,8 @@ exports.config = {
         compilers: ['ts:ts-node/register'],
         timeout: 10000000
     },
-
+    //
+    // Options to be passed to static-server-service.
     staticServerFolders: [
       {mount: '/', path: './test-runtime'},
       {mount: '/build', path: './build'},
