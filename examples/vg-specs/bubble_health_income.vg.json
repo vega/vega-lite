@@ -237,15 +237,15 @@
                 "data": "source_0",
                 "field": "income"
             },
+            "domainRaw": {
+                "signal": "view_income"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "view_income"
-            },
             "round": true,
             "nice": true
         },
@@ -256,15 +256,15 @@
                 "data": "source_0",
                 "field": "health"
             },
+            "domainRaw": {
+                "signal": "view_health"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "view_health"
-            },
             "zero": false,
             "round": true,
             "nice": true

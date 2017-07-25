@@ -2307,15 +2307,15 @@
                 "data": "data_0",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2327,15 +2327,15 @@
                 "data": "data_1",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2347,15 +2347,15 @@
                 "data": "data_1",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2367,15 +2367,15 @@
                 "data": "data_2",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2387,15 +2387,15 @@
                 "data": "data_2",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2407,15 +2407,15 @@
                 "data": "data_3",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2427,15 +2427,15 @@
                 "data": "data_3",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2464,15 +2464,15 @@
                 "data": "data_4",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2484,15 +2484,15 @@
                 "data": "data_5",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2504,15 +2504,15 @@
                 "data": "data_5",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2524,15 +2524,15 @@
                 "data": "data_6",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2544,15 +2544,15 @@
                 "data": "data_6",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2564,15 +2564,15 @@
                 "data": "data_7",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2584,15 +2584,15 @@
                 "data": "data_7",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -2621,15 +2621,15 @@
                 "data": "data_8",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true

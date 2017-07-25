@@ -436,15 +436,15 @@
                 ],
                 "sort": true
             },
+            "domainRaw": {
+                "signal": "region_Horsepower"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "region_Horsepower"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -456,15 +456,15 @@
                 "data": "data_0",
                 "field": "Miles_per_Gallon"
             },
+            "domainRaw": {
+                "signal": "region_Miles_per_Gallon"
+            },
             "range": [
                 {
                     "signal": "concat_0_height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "region_Miles_per_Gallon"
-            },
             "round": true,
             "nice": true,
             "zero": true

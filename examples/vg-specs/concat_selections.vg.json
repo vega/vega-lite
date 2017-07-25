@@ -816,15 +816,15 @@
                 "data": "data_1",
                 "field": "Displacement"
             },
+            "domainRaw": {
+                "signal": "grid_Displacement"
+            },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_Displacement"
-            },
             "round": true,
             "nice": true,
             "zero": true
@@ -836,15 +836,15 @@
                 "data": "data_1",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 {
                     "signal": "concat_1_height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Acceleration"
-            },
             "round": true,
             "nice": true,
             "zero": true

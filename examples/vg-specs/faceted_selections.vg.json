@@ -804,15 +804,15 @@
                 "data": "source_0",
                 "field": "X"
             },
+            "domainRaw": {
+                "signal": "grid_X"
+            },
             "range": [
                 0,
                 {
                     "signal": "child_width"
                 }
             ],
-            "domainRaw": {
-                "signal": "grid_X"
-            },
             "zero": false,
             "round": true,
             "nice": true
@@ -824,15 +824,15 @@
                 "data": "source_0",
                 "field": "Y"
             },
+            "domainRaw": {
+                "signal": "grid_Y"
+            },
             "range": [
                 {
                     "signal": "child_height"
                 },
                 0
             ],
-            "domainRaw": {
-                "signal": "grid_Y"
-            },
             "zero": false,
             "round": true,
             "nice": true
