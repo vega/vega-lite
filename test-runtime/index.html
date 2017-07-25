@@ -39,6 +39,13 @@
       target.dispatchEvent(new MouseEvent('mousemove',
         vega.extend({}, opts, {clientX: opts.clientX + 10, clientY: opts.clientY + 10})));
     }
+
+    function brush(mdX, mdY, muX, muY) {
+      mouseEvt('mousedown', {clientX: mdX, clientY: mdY});
+      mouseEvt('mousemove', {clientX: (muX - mdX) / 2, clientY: (muY - muY) / 2});
+      mouseEvt('mouseup', {clientX: muX, clientY: muY});
+      return view.data('brush_store');
+    }
   </script>
 </body>
 </html>
