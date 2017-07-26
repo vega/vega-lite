@@ -44,12 +44,14 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
 
 
 export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, scaleType: ScaleType) {
-  if (channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+  // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
+  if ((channel === 'x' || channel === 'y') && fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
       return 'greedy';
     }
     return true;
   }
+
   return undefined;
 }
 
@@ -74,13 +76,7 @@ export function orient(channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: Channel, fieldDef: FieldDef<string>) {
-  // FIXME depends on scale type too
-  if (channel === X && !fieldDef.bin) {
-    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
-    return 5;
-  }
-
+export function tickCount(): number {
   return undefined;
 }
 

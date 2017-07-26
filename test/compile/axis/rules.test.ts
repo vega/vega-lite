@@ -47,14 +47,9 @@ describe('compile/axis', ()=> {
   });
 
   describe('tickCount', function() {
-    it('should return undefined by default for non-x', function () {
-      const tickCount = rules.tickCount('y', {field: 'a', type: 'quantitative'});
+    it('should return undefined by default', function () {
+      const tickCount = rules.tickCount();
       assert.deepEqual(tickCount, undefined);
-    });
-
-    it('should return 5 by default for x', function () {
-      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'});
-      assert.deepEqual(tickCount, 5);
     });
   });
 
