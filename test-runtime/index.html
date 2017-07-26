@@ -24,7 +24,7 @@
       opts.bubbles = true;
 
       target.dispatchEvent(new MouseEvent('mousemove',
-        vega.extend({}, opts, {clientX: opts.clientX - 10, clientY: opts.clientY - 10})));
+        vega.extend({}, opts, {clientX: opts.clientX - 5, clientY: opts.clientY - 5})));
 
       target.dispatchEvent(new MouseEvent('mousemove', opts));
 
@@ -38,7 +38,7 @@
       target.dispatchEvent(evt);
 
       target.dispatchEvent(new MouseEvent('mousemove',
-        vega.extend({}, opts, {clientX: opts.clientX + 10, clientY: opts.clientY + 10})));
+        vega.extend({}, opts, {clientX: opts.clientX + 5, clientY: opts.clientY + 5})));
     }
 
     function mark(id, parent) {
@@ -48,7 +48,7 @@
 
     function coords(el) {
       var rect = el.getBoundingClientRect();
-      return [Math.ceil(rect.left), Math.ceil(rect.top)];
+      return [Math.ceil(rect.left + rect.width/2), Math.ceil(rect.top + rect.height/2)];
     }
 
     function click(el, evt) {
@@ -63,7 +63,6 @@
       var [mdX, mdY] = coords(el0);
       var [muX, muY] = coords(el1);
       mouseEvt('mousedown', el0, {clientX: mdX, clientY: mdY});
-      mouseEvt('mousemove', window, {clientX: (muX - mdX) / 2, clientY: (muY - muY) / 2});
       mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
       return view.data('sel_store');
     }

@@ -1,8 +1,13 @@
+import {assert} from 'chai';
+import * as fs from 'fs';
+import {sync as mkdirp} from 'mkdirp';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {LayerSpec, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 import {Type} from '../src/type';
 
+export const generate = process.env.VL_GENERATE_TESTS;
+export const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['single', 'multi', 'interval'];
@@ -22,7 +27,7 @@ export const tuples = [
   {a: 9, b: 49, c: 0}, {a: 9, b: 15, c: 1}, {a: 9, b: 48, 'c': 2}
 ];
 
-export const unitNames = {
+const unitNames = {
   repeat: ['child_d', 'child_e', 'child_f'],
   facet: ['child_0', 'child_1', 'child_2']
 };
@@ -46,7 +51,10 @@ export const hits = {
     drag: [[5, 14], [18, 26]],
     drag_clear: [[5], [16]],
 
-    repeat: [[5, 10], [18, 26], [7, 21]],
+    bins: [[4, 8], [2, 7]],
+    bins_clear: [[5], [9]],
+
+    repeat: [[8, 29], [11, 26], [7, 21]],
     repeat_clear: [[8], [11], [17]],
 
     facet: [[1, 9], [2, 8], [4, 10]],
@@ -54,18 +62,19 @@ export const hits = {
   }
 };
 
-function base(sel: any, type: 'cond' | 'filter' = 'cond', opts: any = {}): UnitSpec | LayerSpec {
+function base(iter: number, sel: any, opts: any = {}): UnitSpec | LayerSpec {
   const data = {values: opts.values || tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
   const y = {field: 'b',type: 'quantitative', ...opts.y};
   const color = {field: 'c', type: 'nominal', ...opts.color};
+  const size = {value: 100, ...opts.size};
   const selection = {sel};
   const mark = 'circle';
 
-  return type === 'cond' ? {
+  return iter % 2 === 0 ? {
     data, selection, mark,
     encoding: {
-      x, y,
+      x, y, size,
       color: {
         condition: {selection: 'sel', ...color},
         value: 'grey'
@@ -76,19 +85,19 @@ function base(sel: any, type: 'cond' | 'filter' = 'cond', opts: any = {}): UnitS
     layer: [{
       selection, mark,
       encoding: {
-        x, y,
-        color: {value: 'grey'}
+        x, y, size, color,
+        opacity: {value: 0.25}
       }
     }, {
       transform: [{filter: {selection: 'sel'}}],
       mark,
-      encoding: {x, y, color}
+      encoding: {x, y, size, color}
     }]
   };
 }
 
-export function spec(compose: ComposeType, sel: any, type: 'cond' | 'filter' = 'cond', opts: any = {}): TopLevelExtendedSpec {
-  const {data, ...spec} = base(sel, type, opts);
+export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelExtendedSpec {
+  const {data, ...spec} = base(iter, sel, opts);
   switch (compose) {
     case 'unit':
       return {data, ...spec};
@@ -109,6 +118,11 @@ export function spec(compose: ComposeType, sel: any, type: 'cond' | 'filter' = '
   return null;
 }
 
+export function unitNameRegex(specType: ComposeType, idx: number) {
+  const name = unitNames[specType][idx].replace('child_', '');
+  return new RegExp(`child(.*?)_${name}`);
+}
+
 export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` :
      unitNames.repeat[index] + '_group';
@@ -127,5 +141,26 @@ export function pt(key: string, idx: number, parent?: string) {
 export function embedFn(browser: WebdriverIO.Client<void>) {
   return function(spec: TopLevelExtendedSpec) {
     browser.execute((_) => window['embed'](_), spec);
+  };
+}
+
+export function svg(browser: WebdriverIO.Client<void>, path: string, filename: string) {
+  const xml = browser.executeAsync((done) => {
+    window['view'].runAfter((view: any) => view.toSVG().then((_: string) => done(_)));
+  });
+
+  if (generate) {
+    mkdirp(path = `${output}/${path}`);
+    fs.writeFileSync(`${path}/${filename}.svg`, xml.value);
+  }
+
+  return xml.value;
+}
+
+export function testRenderFn(browser: WebdriverIO.Client<void>, path: string) {
+  return function(filename: string) {
+    const render = svg(browser, path, filename);
+    const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
+    assert.equal(render, file);
   };
 }

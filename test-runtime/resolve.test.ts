@@ -9,7 +9,8 @@ import {
   resolutions,
   selectionTypes,
   spec,
-  unitNames,
+  testRenderFn,
+  unitNameRegex,
 } from './util';
 
 selectionTypes.forEach(function(type) {
@@ -20,35 +21,51 @@ selectionTypes.forEach(function(type) {
 
   describe(`${type} selections at runtime`, function() {
     compositeTypes.forEach(function(specType) {
+      const testRender = testRenderFn(browser, `${type}/${specType}`);
       describe(`in ${specType} views`, function() {
         // Loop through the views, click to add a selection instance.
         // Store size should stay constant, but unit names should vary.
         it('should have one global selection instance', function() {
-          embed(spec(specType, {type, resolve: 'global'}));
+          const selection = {type, resolve: 'global',
+            ...(specType === 'facet' ? {encodings: ['y']}: {})};
+
           for (let i = 0; i < hits[specType].length; i++) {
+            embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
             const store = browser.execute(fn(specType, i, parent)).value;
             assert.lengthOf(store, 1);
-            assert.equal(store[0].unit, unitNames[specType][i]);
+            assert.match(store[0].unit, unitNameRegex(specType, i));
+            testRender(`global_${i}`);
 
             if (i === hits[specType].length - 1) {
               const cleared = browser.execute(fn(`${specType}_clear`, 0, parent)).value;
               assert.lengthOf(cleared, 0);
+              testRender(`global_clear_${i}`);
             }
           }
         });
 
         resolutions.forEach(function(resolve) {
+          const selection = {type, resolve,
+            ...(specType === 'facet' ? {encodings: ['x']}: {})};
+
           // Loop through the views, click to add selection instance and observe
           // incrementing store size. Then, loop again but click to clear and
           // observe decrementing store size. Check unit names in each case.
           it(`should have one selection instance per ${resolve} view`, function() {
-            embed(spec(specType, {type, resolve}));
+            embed(spec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
               const store = browser.execute(fn(specType, i, parent)).value;
               assert.lengthOf(store, i + 1);
-              assert.equal(store[i].unit, unitNames[specType][i]);
+              assert.match(store[i].unit, unitNameRegex(specType, i));
+              testRender(`${resolve}_${i}`);
+            }
+
+            embed(spec(specType, 1, {type, resolve, encodings: ['x']}));
+            for (let i = 0; i < hits[specType].length; i++) {
+              const parent = parentSelector(specType, i);
+              browser.execute(fn(specType, i, parent));
             }
 
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
@@ -56,8 +73,9 @@ selectionTypes.forEach(function(type) {
               const store = browser.execute(fn(`${specType}_clear`, i, parent)).value;
               assert.lengthOf(store, i);
               if (i > 0) {
-                assert.equal(store[i - 1].unit, unitNames[specType][i - 1]);
+                assert.match(store[i - 1].unit, unitNameRegex(specType, i - 1));
               }
+              testRender(`${resolve}_clear_${i}`);
             }
           });
         });
