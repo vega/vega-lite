@@ -156,7 +156,6 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "x",
             "zindex": 1
         },
@@ -168,13 +167,13 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
-            "tickCount": 5,
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
         },
         {
             "scale": "y",
+            "labelOverlap": "greedy",
             "orient": "left",
             "title": "y",
             "zindex": 1

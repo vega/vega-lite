@@ -160,6 +160,7 @@
                 {
                     "title": "population",
                     "scale": "y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "zindex": 1
                 }
@@ -227,7 +228,6 @@
                     "title": "",
                     "scale": "x",
                     "orient": "bottom",
-                    "tickCount": 5,
                     "zindex": 1,
                     "encode": {
                         "labels": {

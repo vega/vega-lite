@@ -218,8 +218,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "a",
             "zindex": 1,
             "encode": {
@@ -240,6 +240,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "b",
             "zindex": 1

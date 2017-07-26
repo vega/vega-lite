@@ -183,8 +183,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "age",
             "zindex": 1,
             "encode": {
@@ -206,6 +206,7 @@
         {
             "title": "population",
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "zindex": 1
         },

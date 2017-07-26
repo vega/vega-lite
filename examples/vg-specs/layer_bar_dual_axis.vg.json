@@ -234,8 +234,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "MONTH(date)",
             "zindex": 1,
             "encode": {
@@ -259,12 +259,14 @@
         },
         {
             "scale": "layer_0_y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "MEAN(precipitation)",
             "zindex": 1
         },
         {
             "scale": "layer_1_y",
+            "labelOverlap": true,
             "orient": "right",
             "title": "MEAN(temp_max)",
             "zindex": 1

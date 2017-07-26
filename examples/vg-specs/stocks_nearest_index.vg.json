@@ -343,6 +343,7 @@
     "axes": [
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "price",
             "zindex": 1

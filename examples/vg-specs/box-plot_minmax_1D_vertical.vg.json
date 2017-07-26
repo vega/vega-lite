@@ -304,6 +304,7 @@
         {
             "title": "population",
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "zindex": 1
         },

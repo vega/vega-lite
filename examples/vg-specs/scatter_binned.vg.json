@@ -182,6 +182,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
             "values": {
@@ -206,6 +207,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "BIN(Rotten_Tomatoes_Rating)",
             "values": {

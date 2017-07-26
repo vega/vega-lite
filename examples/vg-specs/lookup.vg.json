@@ -148,8 +148,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "group",
             "zindex": 1,
             "encode": {
@@ -170,6 +170,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "MEAN(age)",
             "zindex": 1

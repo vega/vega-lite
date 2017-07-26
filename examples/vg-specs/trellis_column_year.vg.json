@@ -149,6 +149,7 @@
             "axes": [
                 {
                     "scale": "y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "MEAN(price)",
                     "zindex": 1
@@ -215,8 +216,8 @@
             "axes": [
                 {
                     "scale": "x",
+                    "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "QUARTER(date)",
                     "zindex": 1,
                     "encode": {

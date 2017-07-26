@@ -731,6 +731,7 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "title": "BIN(distance)",
                     "values": {
@@ -755,6 +756,7 @@
                 },
                 {
                     "scale": "child_distance_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1143,6 +1145,7 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "title": "BIN(delay)",
                     "values": {
@@ -1167,6 +1170,7 @@
                 },
                 {
                     "scale": "child_delay_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1555,6 +1559,7 @@
             "axes": [
                 {
                     "scale": "child_time_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "title": "BIN(time)",
                     "values": {
@@ -1579,6 +1584,7 @@
                 },
                 {
                     "scale": "child_time_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1

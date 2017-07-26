@@ -466,8 +466,8 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "SECONDS(date)",
                     "zindex": 1,
                     "encode": {
@@ -497,13 +497,13 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_y"
                 },
                 {
                     "scale": "concat_0_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "price",
                     "zindex": 1
@@ -575,8 +575,8 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "MINUTES(date)",
                     "zindex": 1,
                     "encode": {
@@ -606,13 +606,13 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_1_y"
                 },
                 {
                     "scale": "concat_1_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "price",
                     "zindex": 1

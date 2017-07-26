@@ -111,6 +111,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
             "values": {
