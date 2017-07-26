@@ -57,7 +57,7 @@
     "posttest": "npm run schema && npm run data && npm run mocha:examples",
     "test:nocompile": "npm run test:only && npm run test:runtime && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
-    "test:runtime": "wdio wdio.conf.js",
+    "test:runtime": "TZ=America/Los_Angeles wdio wdio.conf.js",
     "test:debug": "npm run tsc && mocha --recursive --debug-brk --inspect build/test",
     "test:debug-examples": "npm run tsc && npm run schema && mocha --recursive --debug-brk --inspect build/examples",
     "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
