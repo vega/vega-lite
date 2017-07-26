@@ -3,18 +3,19 @@ import {InlineData} from '../src/data';
 import {
   brush,
   compositeTypes,
-  data,
-  embed as embedFn,
+  embedFn,
   hits as hitsMaster,
-  unit
+  spec,
+  tuples
 } from './util';
 
 describe('interval selections at runtime in unit views', function() {
-  const embed = embedFn.bind(null, browser);
+  const embed = embedFn(browser);
   const hits = hitsMaster.interval;
+  const type = 'interval';
 
   it('should add extents to the store', function() {
-    embed('unit', null, null, {sel: {type: 'interval'}});
+    embed(spec('unit', {type}));
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
@@ -29,7 +30,7 @@ describe('interval selections at runtime in unit views', function() {
   });
 
   it('should respect projections', function() {
-    embed('unit', null, null, {sel: {type: 'interval', encodings: ['x']}});
+    embed(spec('unit', {type, encodings: ['x']}));
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
@@ -40,7 +41,7 @@ describe('interval selections at runtime in unit views', function() {
     }
 
     for (let i = 0; i < hits.drag.length; i++) {
-      embed('unit', null, null, {sel: {type: 'interval', encodings: ['y']}});
+      embed(spec('unit', {type, encodings: ['y']}));
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].intervals, 1);
@@ -51,7 +52,7 @@ describe('interval selections at runtime in unit views', function() {
   });
 
   it('should clear out stored extents', function() {
-    embed('unit', null, null, {sel: {type: 'interval'}});
+    embed(spec('unit', {type}));
     let store = browser.execute(brush('drag', 0)).value;
     assert.lengthOf(store, 1);
 
@@ -63,8 +64,7 @@ describe('interval selections at runtime in unit views', function() {
   });
 
   it('should brush over binned domains', function() {
-    embed('unit', null, unit({bin: true}, {bin: true}),
-      {sel: {type: 'interval'}});
+    embed(spec('unit', {type}, 'cond', {x: {bin: true}, y: {bin: true}}));
 
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
@@ -80,8 +80,8 @@ describe('interval selections at runtime in unit views', function() {
   });
 
   it('should brush over ordinal/nominal domains', function() {
-    embed('unit', null, unit({type: 'ordinal'}, {type: 'nominal'}),
-      {sel: {type: 'interval'}});
+    embed(spec('unit', {type}, 'cond',
+      {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
 
     const xextents = [[1, 2, 3], [5, 6, 7]];
     const yextents = [[48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87],
@@ -100,25 +100,24 @@ describe('interval selections at runtime in unit views', function() {
   });
 
   it('should brush over temporal domains', function() {
-    const values = data.map((d) => ({...d, a: new Date(2017, d.a)}));
-    const drag = brush('drag', 0) + '[0].intervals[0].extent.map((d) => +d)';
+    const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
+    const toNumber = '[0].intervals[0].extent.map((d) => +d)';
 
-    embed('unit', values, unit({type: 'temporal'}), {sel: {type: 'interval', encodings: ['x']}});
-    let extents = [[1485733878000, 1493398548000], [1485733878000, 1493398548000]];
+    embed(spec('unit', {type, encodings: ['x']}, 'cond', {values, x: {type: 'temporal'}}));
+    let extents = [[1485733878000, 1493398548000], [1496110662000, 1504011168000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(drag).value;
+      const store = browser.execute(brush('drag', i) + toNumber).value;
       assert.sameMembers(store, extents[i]);
     }
 
     let cleared = browser.execute(brush('drag_clear', 0)).value;
     assert.lengthOf(cleared, 0);
 
-    embed('unit', values, unit({type: 'temporal', timeUnit: 'day'}),
-      {sel: {type: 'interval', encodings: ['x']}});
+    embed(spec('unit', {type, encodings: ['x']}, 'cond', {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
-    extents = [[1136188800000, 1136275200000], [1136188800000, 1136275200000]];
+    extents = [[1136188800000, 1136275200000], [1136448000000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(drag).value;
+      const store = browser.execute(brush('drag', i) + toNumber).value;
       assert.sameMembers(store, extents[i]);
     }
 

@@ -1,19 +1,19 @@
 import {assert} from 'chai';
 import {stringValue} from 'vega-util';
 import {
-  embed as embedFn,
+  embedFn,
   hits as hitsMaster,
   pt,
-  unit
+  spec
 } from './util';
 
 ['single', 'multi'].forEach(function(type) {
   describe(`${type} selections at runtime in unit views`, function() {
-    const embed = embedFn.bind(null, browser);
+    const embed = embedFn(browser);
     const hits = hitsMaster.discrete;
 
     it('should add values to the store', function() {
-      embed('unit', null, null, {sel: {type}});
+      embed(spec('unit', {type}));
       for (let i = 0; i < hits.qq.length; i++) {
         const store = browser.execute(pt('qq', i)).value;
         assert.lengthOf(store, 1);
@@ -40,18 +40,18 @@ import {
       encodings = ['x', 'color'];
       fields = ['a', 'c'];
       values = [[2, 1], [6, 0]];
-      embed('unit', null, null, {sel: {type, encodings}});
+      embed(spec('unit', {type, encodings}));
       test();
 
       encodings = [];
       fields = ['c', 'a', 'b'];
       values = [[1, 2, 53], [0, 6, 87]];
-      embed('unit', null, null, {sel: {type, fields}});
+      embed(spec('unit', {type, fields}));
       test();
     });
 
     it('should clear out the store', function() {
-      embed('unit', null, null, {sel: {type}});
+      embed(spec('unit', {type}));
       let store = browser.execute(pt('qq', 0)).value;
       assert.lengthOf(store, 1);
 
@@ -70,7 +70,7 @@ import {
       const fields = ['a', 'c', 'b'];
       const values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
 
-      embed('unit', null, unit({bin: true}, {bin: true}), {sel: {type, encodings}});
+      embed(spec('unit', {type, encodings}, 'cond', {x: {bin: true}, y: {bin: true}}));
 
       for (let i = 0; i < hits.bins.length; i++) {
         const store = browser.execute(pt('bins', i)).value;

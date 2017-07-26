@@ -2,17 +2,18 @@ import {assert} from 'chai';
 import {
   brush,
   compositeTypes,
-  embed as embedFn,
+  embedFn,
   hits as hitsMaster,
   parentSelector,
   pt,
   resolutions,
   selectionTypes,
+  spec,
   unitNames,
 } from './util';
 
 selectionTypes.forEach(function(type) {
-  const embed = embedFn.bind(null, browser);
+  const embed = embedFn(browser);
   const isInterval = type === 'interval';
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
@@ -23,7 +24,7 @@ selectionTypes.forEach(function(type) {
         // Loop through the views, click to add a selection instance.
         // Store size should stay constant, but unit names should vary.
         it('should have one global selection instance', function() {
-          embed(specType, null, null, {sel: {type, resolve: 'global'}});
+          embed(spec(specType, {type, resolve: 'global'}));
           for (let i = 0; i < hits[specType].length; i++) {
             const parent = parentSelector(specType, i);
             const store = browser.execute(fn(specType, i, parent)).value;
@@ -42,7 +43,7 @@ selectionTypes.forEach(function(type) {
           // incrementing store size. Then, loop again but click to clear and
           // observe decrementing store size. Check unit names in each case.
           it(`should have one selection instance per ${resolve} view`, function() {
-            embed(specType, null, null, {sel: {type, resolve}});
+            embed(spec(specType, {type, resolve}));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
               const store = browser.execute(fn(specType, i, parent)).value;

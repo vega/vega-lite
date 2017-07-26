@@ -1,14 +1,15 @@
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
-import {TopLevelExtendedSpec} from '../src/spec';
+import {LayerSpec, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 import {Type} from '../src/type';
 
-export type TestSpec = 'unit' | 'repeat' | 'facet';
+
+export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['single', 'multi', 'interval'];
-export const compositeTypes: TestSpec[] = ['repeat', 'facet'];
+export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
-export const data = [
+export const tuples = [
   {a: 0, b: 28, c: 0}, {a: 0, b: 55, c: 1}, {a: 0, b: 23, c: 2},
   {a: 1, b: 43, c: 0}, {a: 1, b: 91, c: 1}, {a: 1, b: 54, c: 2},
   {a: 2, b: 81, c: 0}, {a: 2, b: 53, c: 1}, {a: 2, b: 76, c: 2},
@@ -53,41 +54,64 @@ export const hits = {
   }
 };
 
-export function unit(xdef?: any, ydef?: any, cdef?: any): TopLevelExtendedSpec {
-  return {
-    mark: 'circle',
+function base(sel: any, type: 'cond' | 'filter' = 'cond', opts: any = {}): UnitSpec | LayerSpec {
+  const data = {values: opts.values || tuples};
+  const x = {field: 'a', type: 'quantitative', ...opts.x};
+  const y = {field: 'b',type: 'quantitative', ...opts.y};
+  const color = {field: 'c', type: 'nominal', ...opts.color};
+  const selection = {sel};
+  const mark = 'circle';
+
+  return type === 'cond' ? {
+    data, selection, mark,
     encoding: {
-      x: {field: 'a', type: 'quantitative', ...xdef},
-      y: {field: 'b',type: 'quantitative', ...ydef},
-      color: {field: 'c', type: 'nominal', ...cdef}
+      x, y,
+      color: {
+        condition: {selection: 'sel', ...color},
+        value: 'grey'
+      }
     }
+  } : {
+    data,
+    layer: [{
+      selection, mark,
+      encoding: {
+        x, y,
+        color: {value: 'grey'}
+      }
+    }, {
+      transform: [{filter: {selection: 'sel'}}],
+      mark,
+      encoding: {x, y, color}
+    }]
   };
 }
 
-export function spec(type: TestSpec, values: object[], unitSpec: TopLevelExtendedSpec, selection: any) {
-  unitSpec = unitSpec || unit();
-  return {
-    data: {values: values || data},
+export function spec(compose: ComposeType, sel: any, type: 'cond' | 'filter' = 'cond', opts: any = {}): TopLevelExtendedSpec {
+  const {data, ...spec} = base(sel, type, opts);
+  switch (compose) {
+    case 'unit':
+      return {data, ...spec};
+    case 'facet':
+      return {
+        data,
+        facet: {row: {field: 'c', type: 'nominal'}},
+        spec
+      };
+    case 'repeat':
+      return {
+        data,
+        repeat: {row: ['d', 'e', 'f']},
+        spec
+      };
+  }
 
-    ...(type === 'unit' ? {...unitSpec, selection} : {}),
-    ...(type === 'facet' ? {
-      facet: {row: {field: 'c', type: 'nominal'}},
-      spec: {...unitSpec, selection}
-    } : {}),
-    ...(type === 'repeat' ? {
-      repeat: {row: ['d', 'e', 'f']},
-      spec: {...unitSpec, selection}
-    } : {})
-  };
+  return null;
 }
 
-export function parentSelector(compositeType: TestSpec, index: number) {
+export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` :
      unitNames.repeat[index] + '_group';
-}
-
-export function embed(browser: WebdriverIO.Client<void>, type: TestSpec, values: object[], unit: TopLevelExtendedSpec, selection: any) {
-  browser.execute((_) => window['embed'](_), spec(type, values, unit, selection));
 }
 
 export function brush(key: string, idx: number, parent?: string) {
@@ -98,4 +122,10 @@ export function brush(key: string, idx: number, parent?: string) {
 export function pt(key: string, idx: number, parent?: string) {
   const fn = key.match('_clear') ? 'clear' : 'pt';
   return `return ${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
+}
+
+export function embedFn(browser: WebdriverIO.Client<void>) {
+  return function(spec: TopLevelExtendedSpec) {
+    browser.execute((_) => window['embed'](_), spec);
+  };
 }
