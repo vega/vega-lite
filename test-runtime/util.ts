@@ -52,6 +52,11 @@ export const unitNames = {
   facet: ['child_0', 'child_1', 'child_2']
 };
 
+export function parentSelector(compositeType: TestSpec, index: number) {
+  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` :
+     unitNames.repeat[index] + '_group';
+}
+
 export function embed(browser: WebdriverIO.Client<void>, type: TestSpec, values: object[], unit: TopLevelExtendedSpec, selection: any) {
   browser.execute((_) => window['embed'](_), spec(type, values, unit, selection));
 }

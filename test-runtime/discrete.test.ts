@@ -1,22 +1,26 @@
 import {assert} from 'chai';
+import {stringValue} from 'vega-util';
 import {InlineData} from '../src/data';
-import {compositeTypes, data, embed as embedFn, resolutions, spec, TestSpec, unit, unitNames} from './util';
+import {compositeTypes, data, embed as embedFn, parentSelector, resolutions, spec, TestSpec, unit, unitNames} from './util';
 
-const coords = {
-  qq: [[103, 114], [190, 46]],
-  qq_clear: [[113, 124], [195, 40]],
+const hits = {
+  qq: [8, 19],
+  qq_clear: [5, 16],
 
-  bins: [[92, 143], [246, 208]],
-  bins_clear: [[98, 157]],
+  bins: [4, 29],
+  bins_clear: [18, 7],
 
-  repeat: [[103, 114], [169, 436], [127, 707]],
-  repeat_clear: [[113, 124], [159, 426], [157, 690]],
+  repeat: [5, 10, 17],
+  repeat_clear: [13, 14, 2],
 
-  facet: [[158, 135], [248, 365], [314, 570]],
-  facet_clear: [[148, 145], [258, 346], [303, 575]]
+  facet: [2, 6, 9],
+  facet_clear: [3, 4, 8]
 };
 
-const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', ')})`;
+function pt(key: string, idx: number, parent?: string) {
+  const fn = key.match('_clear') ? 'clear' : 'pt';
+  return `return ${fn}(${hits[key][idx]}, ${stringValue(parent)})`;
+}
 
 ['single', 'multi'].forEach(function(type) {
   describe(`${type} selections at runtime`, function() {
@@ -24,8 +28,8 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
 
     describe('in unit views', function() {
       it('should add values to the store', function() {
-        embed('unit', null, null, {pts: {type}});
-        for (let i = 0; i < coords.qq.length; i++) {
+        embed('unit', null, null, {sel: {type}});
+        for (let i = 0; i < hits.qq.length; i++) {
           const store = browser.execute(pt('qq', i)).value;
           assert.lengthOf(store, 1);
           assert.lengthOf(store[0].encodings, 0);
@@ -39,7 +43,7 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
         let encodings: string[] = [];
         let fields: string[] = [];
         const test = () => {
-          for (let i = 0; i < coords.qq.length; i++) {
+          for (let i = 0; i < hits.qq.length; i++) {
             const store = browser.execute(pt('qq', i)).value;
             assert.lengthOf(store, 1);
             assert.deepEqual(store[0].encodings, encodings);
@@ -51,18 +55,18 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
         encodings = ['x', 'color'];
         fields = ['a', 'c'];
         values = [[2, 1], [6, 0]];
-        embed('unit', null, null, {pts: {type, encodings}});
+        embed('unit', null, null, {sel: {type, encodings}});
         test();
 
         encodings = [];
         fields = ['c', 'a', 'b'];
         values = [[1, 2, 53], [0, 6, 87]];
-        embed('unit', null, null, {pts: {type, fields}});
+        embed('unit', null, null, {sel: {type, fields}});
         test();
       });
 
       it('should clear out the store', function() {
-        embed('unit', null, null, {pts: {type}});
+        embed('unit', null, null, {sel: {type}});
         let store = browser.execute(pt('qq', 0)).value;
         assert.lengthOf(store, 1);
 
@@ -81,9 +85,9 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
         const fields = ['a', 'c', 'b'];
         const values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
 
-        embed('unit', null, unit({bin: true}, {bin: true}), {pts: {type, encodings}});
+        embed('unit', null, unit({bin: true}, {bin: true}), {sel: {type, encodings}});
 
-        for (let i = 0; i < coords.bins.length; i++) {
+        for (let i = 0; i < hits.bins.length; i++) {
           const store = browser.execute(pt('bins', i)).value;
           assert.lengthOf(store, 1);
           assert.sameMembers(store[0].encodings, encodings);
@@ -101,15 +105,18 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
         // Loop through the views, click to add a selection instance.
         // Store size should stay constant, but unit names should vary.
         it('should have one global selection instance', function() {
-          embed(specType, null, null, {pts: {type, resolve: 'global'}});
-          for (let i = 0; i < coords[specType].length; i++) {
-            const store = browser.execute(pt(specType, i)).value;
+          embed(specType, null, null, {sel: {type, resolve: 'global'}});
+          for (let i = 0; i < hits[specType].length; i++) {
+            const parent = parentSelector(specType, i);
+            const store = browser.execute(pt(specType, i, parent)).value;
             assert.lengthOf(store, 1);
             assert.equal(store[0].unit, unitNames[specType][i]);
-          }
 
-          const store = browser.execute(pt(`${specType}_clear`, 0)).value;
-          assert.lengthOf(store, 0);
+            if (i === hits[specType].length - 1) {
+              const cleared = browser.execute(pt(`${specType}_clear`, 0, parent)).value;
+              assert.lengthOf(cleared, 0);
+            }
+          }
         });
 
         resolutions.forEach(function(resolve) {
@@ -117,15 +124,17 @@ const pt = (key: string, idx: number) => `return pt(${coords[key][idx].join(', '
           // incrementing store size. Then, loop again but click to clear and
           // observe decrementing store size. Check unit names in each case.
           it(`should have one selection instance per ${resolve} view`, function() {
-            embed(specType, null, null, {pts: {type, resolve}});
-            for (let i = 0; i < coords[specType].length; i++) {
-              const store = browser.execute(pt(specType, i)).value;
+            embed(specType, null, null, {sel: {type, resolve}});
+            for (let i = 0; i < hits[specType].length; i++) {
+              const parent = parentSelector(specType, i);
+              const store = browser.execute(pt(specType, i, parent)).value;
               assert.lengthOf(store, i + 1);
               assert.equal(store[i].unit, unitNames[specType][i]);
             }
 
-            for (let i = coords[specType].length - 1; i >= 0; i--) {
-              const store = browser.execute(pt(`${specType}_clear`, i)).value;
+            for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
+              const parent = parentSelector(specType, i);
+              const store = browser.execute(pt(`${specType}_clear`, i, parent)).value;
               assert.lengthOf(store, i);
               if (i > 0) {
                 assert.equal(store[i - 1].unit, unitNames[specType][i - 1]);

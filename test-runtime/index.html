@@ -12,15 +12,16 @@
     function embed(vlSpec) {
       var vgSpec = vl.compile(vlSpec).spec;
       view = new vega.View(vega.parse(vgSpec))
-        .renderer('canvas')  // set renderer (canvas or svg)
+        .renderer('svg')    // set renderer (canvas or svg)
         .initialize('#vis') // initialize view within parent DOM container
         .run();
     }
 
-    var srcWindow = ['mousemove', 'mouseup'];
-    function mouseEvt(type, opts) {
-      var target = srcWindow.indexOf(type) < 0 ? document.querySelector('canvas') : window,
-          evt;
+    var winSrc = ['mousemove', 'mouseup'];
+    function mouseEvt(type, target, opts) {
+      var evt;
+      target = winSrc.indexOf(type) < 0 ? target : window;
+      opts.bubbles = true;
 
       target.dispatchEvent(new MouseEvent('mousemove',
         vega.extend({}, opts, {clientX: opts.clientX - 10, clientY: opts.clientY - 10})));
@@ -40,18 +41,48 @@
         vega.extend({}, opts, {clientX: opts.clientX + 10, clientY: opts.clientY + 10})));
     }
 
-    function brush(mdX, mdY, muX, muY) {
-      mouseEvt('mousedown', {clientX: mdX, clientY: mdY});
-      mouseEvt('mousemove', {clientX: (muX - mdX) / 2, clientY: (muY - muY) / 2});
-      mouseEvt('mouseup', {clientX: muX, clientY: muY});
-      return view.data('brush_store');
+    function mark(id, parent) {
+      return document.querySelector((parent ? `g.${parent} ` : '') +
+        `g.role-circle path:nth-child(${id})`);
     }
 
-    function pt(clientX, clientY) {
-      mouseEvt('mousedown', {clientX, clientY});
-      mouseEvt('mouseup', {clientX, clientY});
-      mouseEvt('click', {clientX, clientY});
-      return view.data('pts_store');
+    function coords(el) {
+      var rect = el.getBoundingClientRect();
+      return [Math.ceil(rect.left), Math.ceil(rect.top)];
+    }
+
+    function click(el, evt) {
+      mouseEvt('mousedown', el, evt);
+      mouseEvt('mouseup', window, evt);
+      mouseEvt('click', el, evt);
+    }
+
+    function brush(id0, id1, parent) {
+      var el0 = mark(id0, parent);
+      var el1 = mark(id1, parent);
+      var [mdX, mdY] = coords(el0);
+      var [muX, muY] = coords(el1);
+      mouseEvt('mousedown', el0, {clientX: mdX, clientY: mdY});
+      mouseEvt('mousemove', window, {clientX: (muX - mdX) / 2, clientY: (muY - muY) / 2});
+      mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
+      return view.data('sel_store');
+    }
+
+    function pt(id, parent) {
+      var el = mark(id, parent);
+      var [clientX, clientY] = coords(el);
+      click(el, {clientX, clientY});
+      return view.data('sel_store');
+    }
+
+    function clear(id, parent) {
+      var bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
+      var el = mark(id, parent);
+      var [clientX, clientY] = coords(el);
+      clientX += 10;
+      clientY -= 10;
+      click(bg, {clientX, clientY});
+      return view.data('sel_store');
     }
   </script>
 </body>
