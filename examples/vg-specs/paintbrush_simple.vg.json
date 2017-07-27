@@ -121,7 +121,7 @@
                     },
                     "size": [
                         {
-                            "test": "vlPoint(\"paintbrush_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "vlPoint(\"paintbrush_store\", datum)",
                             "value": 300
                         },
                         {

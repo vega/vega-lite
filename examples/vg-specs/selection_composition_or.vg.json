@@ -688,7 +688,7 @@
                     },
                     "fill": [
                         {
-                            "test": "(vlInterval(\"alex_store\", \"\", datum, \"union\", \"all\")) || (vlInterval(\"morgan_store\", \"\", datum, \"union\", \"all\"))",
+                            "test": "(vlInterval(\"alex_store\", datum)) || (vlInterval(\"morgan_store\", datum))",
                             "scale": "color",
                             "field": "count_*"
                         },

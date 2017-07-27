@@ -368,7 +368,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "vlInterval(\"brush_store\", datum)",
                             "scale": "color",
                             "field": "Origin"
                         },
@@ -569,7 +569,7 @@
                         },
                         "fill": [
                             {
-                                "test": "vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\")",
+                                "test": "vlInterval(\"brush_store\", datum)",
                                 "scale": "color",
                                 "field": "Origin"
                             },

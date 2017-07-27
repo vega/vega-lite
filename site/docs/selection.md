@@ -127,9 +127,4 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
   * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect')">`intersect`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
 
-
-  * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_union_others')">`union_others`</a> -- each cell contains its own brush, and points are highlighted if they lie within _any_ of the brushes of _other_ cells (i.e., a cell's brush is not considered when highlighting its own points).
-
-  * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect_others')">`intersect_others`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of the brushes of _other_ cells (i.e., a cell's brush is not considered when highlighting its own points).
-
 <div id="selection_resolution" class="vl-example" data-name="selection_resolution_global"></div>

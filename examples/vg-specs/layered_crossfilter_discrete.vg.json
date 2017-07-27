@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlPoint(\"brush_store\", \"child_distance_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", datum)"
                 },
                 {
                     "type": "filter",
@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlPoint(\"brush_store\", \"child_delay_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", datum)"
                 },
                 {
                     "type": "filter",
@@ -305,7 +305,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlPoint(\"brush_store\", \"child_time_layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlPoint(\"brush_store\", datum)"
                 },
                 {
                     "type": "filter",

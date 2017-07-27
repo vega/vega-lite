@@ -63,17 +63,17 @@ describe('Selection + Scales', function() {
     assert.isObject(xscale.domain);
     assert.property(xscale, 'domainRaw');
     assert.propertyVal(xscale.domainRaw, 'signal',
-      "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")");
+      "vlIntervalDomain(\"brush_store\", \"x\", null)");
 
     assert.isObject(yscale.domain);
     assert.property(yscale, 'domainRaw');
     assert.deepPropertyVal(yscale.domainRaw, 'signal',
-      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\", \"all\")");
+      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
 
     assert.isObject(cscale.domain);
     assert.property(cscale, 'domainRaw');
     assert.propertyVal(cscale.domainRaw, 'signal',
-      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\", \"all\")");
+      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
 
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');

@@ -587,7 +587,7 @@
                 "field": "date"
             },
             "domainRaw": {
-                "signal": "vlIntervalDomain(\"brush_store\", null, \"date\", \"union\", \"all\")"
+                "signal": "vlIntervalDomain(\"brush_store\", null, \"date\")"
             },
             "range": [
                 0,

@@ -116,7 +116,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "vlPoint(\"org_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "vlPoint(\"org_store\", datum)",
                             "scale": "color",
                             "field": "Cylinders"
                         },

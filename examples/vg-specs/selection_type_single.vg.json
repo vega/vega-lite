@@ -127,7 +127,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlPoint(\"pts_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "vlPoint(\"pts_store\", datum)",
                             "scale": "color",
                             "field": "count_*"
                         },
