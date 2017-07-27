@@ -672,7 +672,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "vlPoint(\"xenc_store\", \"child\" + '_' + facet[\"Series\"], datum, \"union\", \"all\")",
+                                    "test": "vlPoint(\"xenc_store\", datum)",
                                     "value": "red"
                                 },
                                 {
@@ -681,7 +681,7 @@
                             ],
                             "size": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", \"child\" + '_' + facet[\"Series\"], datum, \"intersect\", \"all\")",
+                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
                                     "value": 250
                                 },
                                 {

@@ -389,7 +389,7 @@
                     },
                     "fill": [
                         {
-                            "test": "vlInterval(\"pts_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "vlInterval(\"pts_store\", datum)",
                             "scale": "color",
                             "field": "count_*"
                         },

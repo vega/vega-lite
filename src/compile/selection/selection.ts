@@ -3,7 +3,7 @@ import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
-import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
+import {BrushConfig, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
@@ -26,11 +26,11 @@ export const SELECTION_DOMAIN = '_selection_domain_';
 
 export interface SelectionComponent {
   name: string;
-  type: SelectionTypes;
+  type: SelectionType;
   events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
-  resolve: SelectionResolutions;
+  resolve: SelectionResolution;
   mark?: BrushConfig;
 
   // Transforms
@@ -212,21 +212,11 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-const PREDICATES_OPS = {
-  global: '"union", "all"',
-  independent: '"intersect", "unit"',
-  union: '"union", "all"',
-  union_others: '"union", "others"',
-  intersect: '"intersect", "all"',
-  intersect_others: '"intersect", "others"'
-};
-
 export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
   function expr(name: string): string {
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
-    const op = PREDICATES_OPS[selCmpt.resolve];
 
     if (selCmpt.timeUnit) {
       const child = dfnode || model.component.data.main;
@@ -238,8 +228,8 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
       }
     }
 
-    return compiler(selCmpt.type).predicate +
-      `(${store}, ${unitName(model)}, datum, ${op})`;
+    return compiler(selCmpt.type).predicate + `(${store}, datum` +
+      (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
   }
 
   return logicalExpr(selections, expr);
@@ -273,7 +263,8 @@ export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSi
     return {
       signal: compiler(selCmpt.type).scaleDomain +
         `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
-          `${stringValue(selDomain.field || null)}, ${PREDICATES_OPS[selCmpt.resolve]})`
+          stringValue(selDomain.field || null) +
+          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     };
   }
 
@@ -292,7 +283,7 @@ function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCom
   }
 }
 
-function compiler(type: SelectionTypes): SelectionCompiler {
+function compiler(type: SelectionType): SelectionCompiler {
   switch (type) {
     case 'single':
       return singleCompiler;

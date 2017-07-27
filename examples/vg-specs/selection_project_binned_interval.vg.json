@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", \"layer_1\", datum, \"union\", \"all\")"
+                    "expr": "vlInterval(\"brush_store\", datum)"
                 },
                 {
                     "type": "filter",
