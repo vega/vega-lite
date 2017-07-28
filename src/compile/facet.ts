@@ -6,7 +6,7 @@ import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FacetSpec} from '../spec';
 import {contains, stringValue} from '../util';
-import {VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
