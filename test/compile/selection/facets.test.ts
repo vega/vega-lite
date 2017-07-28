@@ -42,7 +42,7 @@ describe('Faceted Selections', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "mousemove"}],
-            "update": "facet._id ? facet : group(\"cell\").datum"
+            "update": "isTuple(facet) ? facet : group(\"cell\").datum"
           }
         ]
       }

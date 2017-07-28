@@ -91,7 +91,7 @@
             "on": [
                 {
                     "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
+                    "update": "isTuple(group()) ? group() : unit"
                 }
             ]
         },

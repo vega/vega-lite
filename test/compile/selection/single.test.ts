@@ -94,7 +94,7 @@ describe('Single Selection', function() {
       {
         name: 'unit',
         value: {},
-        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
       }
     ].concat(oneSg, twoSg));
   });
