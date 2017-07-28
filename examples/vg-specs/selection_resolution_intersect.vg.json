@@ -452,7 +452,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -852,7 +852,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1250,7 +1250,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1648,7 +1648,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1979,7 +1979,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -2379,7 +2379,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -2777,7 +2777,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -3175,7 +3175,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -3506,7 +3506,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum, \"intersect\")",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },

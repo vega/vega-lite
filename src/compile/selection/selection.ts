@@ -213,6 +213,7 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 }
 
 export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
+  const stores: string[] = [];
   function expr(name: string): string {
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
@@ -228,11 +229,14 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
       }
     }
 
+    stores.push(store);
     return compiler(selCmpt.type).predicate + `(${store}, datum` +
       (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
   }
 
-  return logicalExpr(selections, expr);
+  const predicateStr = logicalExpr(selections, expr);
+  return '!(' + stores.map((s) => `length(data(${s}))`).join(' || ') +
+    `) || (${predicateStr})`;
 }
 
 // Selections are parsed _after_ scales. If a scale domain is set to

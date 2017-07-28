@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", datum)"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", datum)"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -305,7 +305,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", datum)"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",

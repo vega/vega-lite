@@ -476,7 +476,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -924,7 +924,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1370,7 +1370,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -1816,7 +1816,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -2195,7 +2195,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -2643,7 +2643,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -3089,7 +3089,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -3535,7 +3535,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },
@@ -3914,7 +3914,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "scale": "color",
                                     "field": "Origin"
                                 },

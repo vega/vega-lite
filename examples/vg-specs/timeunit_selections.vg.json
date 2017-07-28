@@ -77,7 +77,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "vlInterval(\"brush_store\", datum)"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -391,7 +391,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"brush_store\", datum)",
+                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                                     "value": "goldenrod"
                                 },
                                 {

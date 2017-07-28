@@ -115,7 +115,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "vlPoint(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },
@@ -128,7 +128,7 @@
                     },
                     "size": [
                         {
-                            "test": "vlPoint(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                             "value": 200
                         },
                         {
@@ -137,7 +137,7 @@
                     ],
                     "shape": [
                         {
-                            "test": "vlPoint(\"pts_store\", datum)",
+                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                             "scale": "shape",
                             "field": "Origin"
                         },
@@ -277,7 +277,7 @@
                     "update": {
                         "stroke": [
                             {
-                                "test": "vlPoint(\"pts_store\", datum)",
+                                "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
                                 "scale": "color",
                                 "field": "Cylinders"
                             },
