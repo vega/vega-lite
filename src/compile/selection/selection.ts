@@ -139,7 +139,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
       value: {},
       on: [{
         events: parseSelector('mousemove', 'scope'),
-        update: `facet._id ? facet : group(${name}).datum`
+        update: `isTuple(facet) ? facet : group(${name}).datum`
       }]
     });
   }
@@ -169,7 +169,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
       signals.unshift({
         name: 'unit',
         value: {},
-        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
       });
     }
   }
