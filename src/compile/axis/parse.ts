@@ -297,7 +297,7 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
     case 'tickCount':
-      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount());
+      return specifiedAxis.tickCount;
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':

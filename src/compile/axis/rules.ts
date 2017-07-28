@@ -76,10 +76,6 @@ export function orient(channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(): number {
-  return undefined;
-}
-
 export function title(maxLength: number, fieldDef: FieldDef<string>, config: Config) {
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(fieldDef, config);
