@@ -164,7 +164,6 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "tickCount": 5,
             "title": "variety",
             "zindex": 1,
             "encode": {
@@ -185,6 +184,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "SUM(yield)",
             "zindex": 1

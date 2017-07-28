@@ -177,8 +177,8 @@
         {
             "title": "Month of the year",
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -201,6 +201,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1

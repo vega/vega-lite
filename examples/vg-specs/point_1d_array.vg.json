@@ -121,7 +121,6 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "tickCount": 5,
             "title": "a",
             "zindex": 1,
             "encode": {

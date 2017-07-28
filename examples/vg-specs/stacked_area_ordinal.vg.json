@@ -215,8 +215,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "YEAR(Year)",
             "zindex": 1,
             "encode": {
@@ -246,13 +246,13 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
-            "tickCount": 5,
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "SUM(Weight_in_lbs)",
             "zindex": 1

@@ -122,7 +122,6 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "tickCount": 5,
             "title": "Origin",
             "zindex": 1,
             "encode": {
@@ -143,6 +142,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1

@@ -235,6 +235,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "title": "BIN(Acceleration)",
             "values": {
@@ -259,6 +260,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "SUM(Horsepower)",
             "zindex": 1

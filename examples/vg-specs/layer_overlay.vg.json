@@ -328,8 +328,8 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "Cylinders",
             "zindex": 1,
             "encode": {
@@ -350,6 +350,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "MAX(Horsepower), MIN(Horsepower)",
             "zindex": 1

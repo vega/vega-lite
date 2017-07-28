@@ -289,7 +289,6 @@
             "scale": "x",
             "labelOverlap": "greedy",
             "orient": "bottom",
-            "tickCount": 5,
             "title": "income",
             "zindex": 1
         },
@@ -301,13 +300,13 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
-            "tickCount": 5,
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "health",
             "zindex": 1

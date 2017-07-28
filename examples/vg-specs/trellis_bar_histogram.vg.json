@@ -167,6 +167,7 @@
             "axes": [
                 {
                     "scale": "y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -187,6 +188,7 @@
             "axes": [
                 {
                     "scale": "x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {

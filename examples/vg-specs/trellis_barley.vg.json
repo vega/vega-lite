@@ -154,6 +154,7 @@
             "axes": [
                 {
                     "scale": "trellis_barley_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "variety",
                     "zindex": 1
@@ -176,7 +177,6 @@
                     "scale": "trellis_barley_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "MEDIAN(yield)",
                     "zindex": 1
                 }
@@ -280,7 +280,6 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "trellis_barley_y"

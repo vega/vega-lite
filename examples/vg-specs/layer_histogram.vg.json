@@ -263,6 +263,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "title": "BIN(distance)",
             "values": {
@@ -287,6 +288,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "Number of Records",
             "zindex": 1

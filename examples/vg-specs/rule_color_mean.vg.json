@@ -116,6 +116,7 @@
     "axes": [
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "MEAN(price)",
             "zindex": 1

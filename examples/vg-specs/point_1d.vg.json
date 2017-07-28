@@ -94,7 +94,6 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": 5,
             "title": "IMDB_Rating",
             "zindex": 1
         },
@@ -106,7 +105,6 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
-            "tickCount": 5,
             "ticks": false,
             "zindex": 0
         }

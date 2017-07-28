@@ -500,7 +500,6 @@
                     "scale": "concat_0_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "Miles_per_Gallon",
                     "zindex": 1
                 },
@@ -512,13 +511,13 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_y"
                 },
                 {
                     "scale": "concat_0_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -736,7 +735,6 @@
                     "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "title": "Displacement",
                     "zindex": 1
                 },
@@ -748,13 +746,13 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
-                    "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_1_y"
                 },
                 {
                     "scale": "concat_1_y",
+                    "labelOverlap": true,
                     "orient": "left",
                     "title": "Acceleration",
                     "zindex": 1

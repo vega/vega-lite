@@ -168,7 +168,6 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "tickCount": 5,
             "title": "a",
             "zindex": 1,
             "encode": {
@@ -189,6 +188,7 @@
         },
         {
             "scale": "y",
+            "labelOverlap": true,
             "orient": "left",
             "title": "AVERAGE(b)",
             "zindex": 1
