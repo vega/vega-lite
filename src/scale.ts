@@ -1,4 +1,5 @@
 import {Channel} from './channel';
+import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, toSet} from './util';
@@ -479,7 +480,7 @@ export interface Scale {
 }
 
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[] = [
   'reverse', 'round',
   // quantitative / time
   'clamp', 'nice',

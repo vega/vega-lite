@@ -1,3 +1,4 @@
+import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
 import {OutputNode} from './compile/data/dataflow';
 import {NiceTime, ScaleType, SelectionDomain} from './scale';
@@ -24,7 +25,15 @@ export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
 export type VgSortField = boolean | {
   field?: VgFieldRef,
-  op: string,
+  op: AggregateOp,
+  order?: SortOrder
+};
+
+/**
+ * Unioned domains can only be sorted by count aggregate.
+ */
+export type VgUnionSortField = boolean | {
+  op: 'count'
   order?: SortOrder
 };
 
@@ -62,18 +71,14 @@ export type VgValueRef = {
 // TODO: add vg prefix
 export type DataRefUnionDomain = {
   fields: (any[] | VgDataRef | VgSignalRef)[],
-  sort?: boolean | {
-    op: 'count'
-  }
+  sort?: VgUnionSortField
 };
 
 // TODO: add vg prefix
 export type FieldRefUnionDomain = {
   data: string,
   fields: VgFieldRef[],
-  sort?: boolean | {
-    op: 'count'
-  }
+  sort?: VgUnionSortField
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
@@ -84,7 +89,9 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
-export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
+// Domains that are not a union of domains
+export type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
+export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
 
 export type VgMarkGroup = any;
 
@@ -267,7 +274,7 @@ export interface VgAggregateTransform {
   type: 'aggregate';
   groupby?: VgFieldRef[];
   fields?: VgFieldRef[];
-  ops?: string[];
+  ops?: AggregateOp[];
   as?: string[];
   cross?: boolean;
   drop?: boolean;

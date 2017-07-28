@@ -19,7 +19,6 @@ import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {unionDomains} from './scale/domain';
 
 
 export type RepeaterValue = {

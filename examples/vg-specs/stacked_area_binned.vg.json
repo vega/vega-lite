@@ -188,7 +188,8 @@
                 "fields": [
                     "bin_maxbins_10_Acceleration_start",
                     "bin_maxbins_10_Acceleration_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -207,7 +208,8 @@
                 "fields": [
                     "sum_Horsepower_start",
                     "sum_Horsepower_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 {

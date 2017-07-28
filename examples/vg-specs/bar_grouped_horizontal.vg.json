@@ -279,7 +279,8 @@
                 "fields": [
                     "sum_people_start",
                     "sum_people_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,

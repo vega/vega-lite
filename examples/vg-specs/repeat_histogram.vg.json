@@ -574,7 +574,8 @@
                 "fields": [
                     "bin_maxbins_10_Horsepower_start",
                     "bin_maxbins_10_Horsepower_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -593,7 +594,8 @@
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 {
@@ -613,7 +615,8 @@
                 "fields": [
                     "bin_maxbins_10_Miles_per_Gallon_start",
                     "bin_maxbins_10_Miles_per_Gallon_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -632,7 +635,8 @@
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 {
@@ -652,7 +656,8 @@
                 "fields": [
                     "bin_maxbins_10_Acceleration_start",
                     "bin_maxbins_10_Acceleration_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -671,7 +676,8 @@
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 {

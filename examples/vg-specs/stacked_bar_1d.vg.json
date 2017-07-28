@@ -110,7 +110,8 @@
                 "fields": [
                     "sum_Acceleration_start",
                     "sum_Acceleration_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,

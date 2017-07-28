@@ -9,11 +9,11 @@ import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, Split, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
+import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
 
-export function parseScaleProperty(model: Model, property: keyof (Scale | VgScale)) {
+export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
   if (model instanceof UnitModel) {
     parseUnitScaleProperty(model, property);
   } else {
@@ -21,7 +21,7 @@ export function parseScaleProperty(model: Model, property: keyof (Scale | VgScal
   }
 }
 
-function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgScale)) {
+function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | ScaleComponentProps)) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
@@ -81,7 +81,7 @@ function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleCo
   return scaleConfig[property];
 }
 
-export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | VgScale)) {
+export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   for (const child of model.children) {

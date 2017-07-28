@@ -306,7 +306,8 @@
                 "fields": [
                     "bin_maxbins_15_Horsepower_start",
                     "bin_maxbins_15_Horsepower_end"
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,
