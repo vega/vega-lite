@@ -169,16 +169,6 @@
                     "ascending"
                 ]
             },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
-                    }
-                }
-            },
             "layout": {
                 "padding": {
                     "row": 10,
@@ -236,6 +226,7 @@
                     "axes": [
                         {
                             "scale": "y",
+                            "labelOverlap": true,
                             "orient": "left",
                             "title": "Acceleration",
                             "zindex": 1
@@ -258,7 +249,6 @@
                             "scale": "x",
                             "labelOverlap": true,
                             "orient": "bottom",
-                            "tickCount": 5,
                             "title": "Horsepower",
                             "zindex": 1
                         }
@@ -307,9 +297,6 @@
                             "stroke": {
                                 "value": "#ccc"
                             },
-                            "strokeWidth": {
-                                "value": 1
-                            },
                             "fill": {
                                 "value": "transparent"
                             }
@@ -352,8 +339,9 @@
                             "domain": false,
                             "grid": true,
                             "labels": false,
+                            "maxExtent": 0,
+                            "minExtent": 0,
                             "orient": "bottom",
-                            "tickCount": 5,
                             "ticks": false,
                             "zindex": 0,
                             "gridScale": "y"
@@ -363,6 +351,8 @@
                             "domain": false,
                             "grid": true,
                             "labels": false,
+                            "maxExtent": 0,
+                            "minExtent": 0,
                             "orient": "left",
                             "ticks": false,
                             "zindex": 0,
@@ -383,7 +373,9 @@
             },
             "range": [
                 0,
-                200
+                {
+                    "signal": "child_child_width"
+                }
             ],
             "round": true,
             "nice": true,
@@ -397,12 +389,19 @@
                 "field": "Acceleration"
             },
             "range": [
-                200,
+                {
+                    "signal": "child_child_height"
+                },
                 0
             ],
             "round": true,
             "nice": true,
             "zero": true
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "minExtent": 30
+        }
+    }
 }

@@ -15,27 +15,12 @@
             }
         },
         {
-            "name": "column",
+            "name": "row",
             "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "Origin"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
                         "Origin"
                     ]
                 }
@@ -68,36 +53,35 @@
             "column": 10
         },
         "offset": 10,
-        "columns": {
-            "signal": "data('column_layout')[0][\"distinct_Origin\"]"
-        },
-        "bounds": "full"
+        "columns": 1,
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "row_title",
+            "role": "row-title",
             "type": "group",
             "marks": [
                 {
                     "type": "text",
-                    "role": "column-title-text",
+                    "role": "row-title-text",
                     "encode": {
                         "update": {
-                            "x": {
-                                "signal": "0.5 * width"
-                            },
                             "align": {
-                                "value": "center"
+                                "value": "right"
                             },
                             "text": {
-                                "value": "Origin"
+                                "value": "Origin / Cylinders"
                             },
                             "fill": {
                                 "value": "black"
                             },
                             "fontWeight": {
                                 "value": "bold"
+                            },
+                            "angle": {
+                                "value": 270
                             }
                         }
                     }
@@ -105,11 +89,11 @@
             ]
         },
         {
-            "name": "column_header",
+            "name": "row_header",
             "type": "group",
-            "role": "column-header",
+            "role": "row-header",
             "from": {
-                "data": "column"
+                "data": "row"
             },
             "sort": {
                 "field": "datum[\"Origin\"]",
@@ -120,7 +104,7 @@
                     "signal": "parent[\"Origin\"]"
                 },
                 "offset": 10,
-                "orient": "top",
+                "orient": "left",
                 "encode": {
                     "update": {
                         "fontWeight": {
@@ -131,33 +115,25 @@
                         },
                         "fontSize": {
                             "value": 10
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
                         }
                     }
                 }
             },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "child_child_width"
+                    "height": {
+                        "signal": "child_child_height"
                     }
                 }
             }
         },
         {
-            "data": [
-                {
-                    "name": "child_row",
-                    "source": "facet",
-                    "transform": [
-                        {
-                            "type": "aggregate",
-                            "groupby": [
-                                "Cylinders"
-                            ]
-                        }
-                    ]
-                }
-            ],
             "name": "cell",
             "type": "group",
             "from": {
@@ -177,6 +153,20 @@
                     "ascending"
                 ]
             },
+            "data": [
+                {
+                    "name": "child_row",
+                    "source": "facet",
+                    "transform": [
+                        {
+                            "type": "aggregate",
+                            "groupby": [
+                                "Cylinders"
+                            ]
+                        }
+                    ]
+                }
+            ],
             "layout": {
                 "padding": {
                     "row": 10,
@@ -184,42 +174,10 @@
                 },
                 "offset": 10,
                 "columns": 1,
-                "bounds": "full"
+                "bounds": "full",
+                "align": "all"
             },
             "marks": [
-                {
-                    "name": "child_row_title",
-                    "role": "row-title",
-                    "type": "group",
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "row-title-text",
-                            "encode": {
-                                "update": {
-                                    "y": {
-                                        "signal": "0.5 * height"
-                                    },
-                                    "align": {
-                                        "value": "right"
-                                    },
-                                    "text": {
-                                        "value": "Cylinders"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
-                                    },
-                                    "angle": {
-                                        "value": 270
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
                 {
                     "name": "child_row_header",
                     "type": "group",
@@ -269,6 +227,9 @@
                             "scale": "y",
                             "labelOverlap": true,
                             "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
                             "title": "Acceleration",
                             "zindex": 1
                         }
@@ -290,24 +251,15 @@
                             "scale": "x",
                             "labelOverlap": true,
                             "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
                             "title": "Horsepower",
                             "zindex": 1
                         }
                     ]
                 },
                 {
-                    "data": [
-                        {
-                            "source": "child_facet",
-                            "name": "data_0",
-                            "transform": [
-                                {
-                                    "type": "filter",
-                                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                                }
-                            ]
-                        }
-                    ],
                     "name": "child_cell",
                     "type": "group",
                     "from": {
@@ -327,6 +279,18 @@
                             "ascending"
                         ]
                     },
+                    "data": [
+                        {
+                            "source": "child_facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "filter",
+                                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                                }
+                            ]
+                        }
+                    ],
                     "encode": {
                         "update": {
                             "width": {
@@ -383,6 +347,9 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
                             "ticks": false,
                             "zindex": 0,
                             "gridScale": "y"
@@ -395,6 +362,9 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
                             "ticks": false,
                             "zindex": 0,
                             "gridScale": "x"
@@ -442,7 +412,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

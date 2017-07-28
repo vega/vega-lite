@@ -71,7 +71,8 @@
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_Origin\"]"
         },
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {
@@ -84,9 +85,6 @@
                     "role": "column-title-text",
                     "encode": {
                         "update": {
-                            "x": {
-                                "signal": "0.5 * width"
-                            },
                             "align": {
                                 "value": "center"
                             },
@@ -144,20 +142,6 @@
             }
         },
         {
-            "data": [
-                {
-                    "name": "child_row",
-                    "source": "facet",
-                    "transform": [
-                        {
-                            "type": "aggregate",
-                            "groupby": [
-                                "Cylinders"
-                            ]
-                        }
-                    ]
-                }
-            ],
             "name": "cell",
             "type": "group",
             "from": {
@@ -177,6 +161,20 @@
                     "ascending"
                 ]
             },
+            "data": [
+                {
+                    "name": "child_row",
+                    "source": "facet",
+                    "transform": [
+                        {
+                            "type": "aggregate",
+                            "groupby": [
+                                "Cylinders"
+                            ]
+                        }
+                    ]
+                }
+            ],
             "layout": {
                 "padding": {
                     "row": 10,
@@ -184,7 +182,8 @@
                 },
                 "offset": 10,
                 "columns": 1,
-                "bounds": "full"
+                "bounds": "full",
+                "align": "all"
             },
             "marks": [
                 {
@@ -197,9 +196,6 @@
                             "role": "row-title-text",
                             "encode": {
                                 "update": {
-                                    "y": {
-                                        "signal": "0.5 * height"
-                                    },
                                     "align": {
                                         "value": "right"
                                     },
@@ -269,6 +265,9 @@
                             "scale": "y",
                             "labelOverlap": true,
                             "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
                             "title": "Acceleration",
                             "zindex": 1
                         }
@@ -290,24 +289,15 @@
                             "scale": "x",
                             "labelOverlap": true,
                             "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
                             "title": "Horsepower",
                             "zindex": 1
                         }
                     ]
                 },
                 {
-                    "data": [
-                        {
-                            "source": "child_facet",
-                            "name": "data_0",
-                            "transform": [
-                                {
-                                    "type": "filter",
-                                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                                }
-                            ]
-                        }
-                    ],
                     "name": "child_cell",
                     "type": "group",
                     "from": {
@@ -327,6 +317,18 @@
                             "ascending"
                         ]
                     },
+                    "data": [
+                        {
+                            "source": "child_facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "filter",
+                                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                                }
+                            ]
+                        }
+                    ],
                     "encode": {
                         "update": {
                             "width": {
@@ -383,6 +385,9 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
                             "ticks": false,
                             "zindex": 0,
                             "gridScale": "y"
@@ -395,6 +400,9 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
                             "ticks": false,
                             "zindex": 0,
                             "gridScale": "x"
@@ -442,7 +450,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }
