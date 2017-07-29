@@ -64,7 +64,8 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Origin\"], values: [datum[\"Origin\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Origin\"], values: [datum[\"Origin\"]]} : null",
+                    "force": true
                 }
             ]
         },

@@ -64,7 +64,8 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\"], values: [datum[\"Cylinders\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\"], values: [datum[\"Cylinders\"]]} : null",
+                    "force": true
                 }
             ]
         },

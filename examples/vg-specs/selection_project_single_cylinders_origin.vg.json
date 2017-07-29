@@ -68,7 +68,8 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\", \"Origin\"], values: [datum[\"Cylinders\"], datum[\"Origin\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\", \"Origin\"], values: [datum[\"Cylinders\"], datum[\"Origin\"]]} : null",
+                    "force": true
                 }
             ]
         },
