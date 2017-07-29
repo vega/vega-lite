@@ -67,20 +67,20 @@
       return view.data('sel_store');
     }
 
-    function pt(id, parent) {
+    function pt(id, parent, shiftKey) {
       var el = mark(id, parent);
       var [clientX, clientY] = coords(el);
-      click(el, {clientX, clientY});
+      click(el, {clientX, clientY, shiftKey});
       return view.data('sel_store');
     }
 
-    function clear(id, parent) {
+    function clear(id, parent, shiftKey) {
       var bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
       var el = mark(id, parent);
       var [clientX, clientY] = coords(el);
       clientX += 10;
       clientY -= 10;
-      click(bg, {clientX, clientY});
+      click(bg, {clientX, clientY, shiftKey});
       return view.data('sel_store');
     }
   </script>

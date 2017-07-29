@@ -71,9 +71,9 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
         assert.sameMembers(store[0].encodings, encodings);
         assert.sameMembers(store[0].fields, fields);
         assert.sameDeepMembers(store[0].values, values[i]);
-        assert.property(store[0].bins, 'a');
-        assert.property(store[0].bins, 'b');
-        assert.notProperty(store[0].bins, 'c');
+        assert.property(store[0], 'bin_a');
+        assert.property(store[0], 'bin_b');
+        assert.notProperty(store[0], 'bin_c');
         testRender(`bins_${i}`);
       }
     });
