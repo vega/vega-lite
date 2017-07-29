@@ -123,7 +123,8 @@
                             "type": "mousemove"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null"
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+                    "force": true
                 }
             ]
         },

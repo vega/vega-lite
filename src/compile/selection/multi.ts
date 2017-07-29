@@ -27,7 +27,10 @@ const multi:SelectionCompiler = {
     // Only add a discrete selection to the store if a datum is present _and_
     // the interaction isn't occuring on a group mark. This guards against
     // polluting interactive state with invalid values in faceted displays
-    // as the group marks are also data-driven.
+    // as the group marks are also data-driven. We force the update to account
+    // for constant null states but varying toggles (e.g., shift-click in
+    // whitespace followed by a click in whitespace; the store should only
+    // be cleared on the second click).
     return [{
       name: selCmpt.name + TUPLE,
       value: {},
@@ -37,7 +40,8 @@ const multi:SelectionCompiler = {
           `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
           `fields: [${fields}], values: [${values}]` +
           (keys(bins).length ? `, bins: ${JSON.stringify(bins)}` : '') +
-          '} : null'
+          '} : null',
+        force: true
       }]
     }];
   },
