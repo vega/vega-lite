@@ -64,7 +64,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && datum[\"Origin\"]"
+                    "update": "datum && item().mark.marktype !== 'group' ? datum[\"Origin\"] : null"
                 }
             ],
             "bind": {
@@ -82,7 +82,7 @@
         },
         {
             "name": "org_tuple",
-            "update": "{fields: [\"Origin\"], values: [org_Origin]}"
+            "update": "org_Origin ? {fields: [\"Origin\"], values: [org_Origin]} : null"
         },
         {
             "name": "org_modify",

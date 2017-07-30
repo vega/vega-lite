@@ -88,7 +88,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"X\"]"
+                    "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
                 }
             ],
             "bind": {
@@ -606,7 +606,7 @@
                 },
                 {
                     "name": "xenc_tuple",
-                    "update": "{fields: [\"X\"], values: [xenc_X]}"
+                    "update": "xenc_X ? {fields: [\"X\"], values: [xenc_X]} : null"
                 },
                 {
                     "name": "xenc_modify",

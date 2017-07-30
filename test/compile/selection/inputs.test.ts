@@ -56,7 +56,7 @@ describe('Inputs Selection Transform', function() {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "one_tuple",
-        "update": "{fields: [\"_vgsid_\"], values: [one__vgsid_]}"
+        "update": "one__vgsid_ ? {fields: [\"_vgsid_\"], values: [one__vgsid_]} : null"
       }
     ]);
 
@@ -67,7 +67,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && datum[\"_vgsid_\"]"
+            "update": "datum && item().mark.marktype !== 'group' ? datum[\"_vgsid_\"] : null"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -80,7 +80,7 @@ describe('Inputs Selection Transform', function() {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "two_tuple",
-        "update": "{fields: [\"Cylinders\", \"Horsepower\"], values: [two_Cylinders, two_Horsepower]}"
+        "update": "two_Cylinders && two_Horsepower ? {fields: [\"Cylinders\", \"Horsepower\"], values: [two_Cylinders, two_Horsepower]} : null"
       }
     ]);
 
@@ -91,7 +91,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && datum[\"Horsepower\"]"
+            "update": "datum && item().mark.marktype !== 'group' ? datum[\"Horsepower\"] : null"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -102,7 +102,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && datum[\"Cylinders\"]"
+            "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -115,7 +115,7 @@ describe('Inputs Selection Transform', function() {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "three_tuple",
-        "update": "{fields: [\"Cylinders\", \"Origin\"], values: [three_Cylinders, three_Origin]}"
+        "update": "three_Cylinders && three_Origin ? {fields: [\"Cylinders\", \"Origin\"], values: [three_Cylinders, three_Origin]} : null"
       }
     ]);
 
@@ -126,7 +126,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"Origin\"]"
+            "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"Origin\"] : null"
           }
         ],
         "bind": {
@@ -140,7 +140,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
+            "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"Cylinders\"] : null"
           }
         ],
         "bind": {
