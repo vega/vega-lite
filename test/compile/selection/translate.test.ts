@@ -217,7 +217,7 @@ describe('Translate Selection Transform', function() {
       assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
         {
           "events": {"signal": "six_translate_delta"},
-          "update": "panPow(six_translate_anchor.extent_y, six_translate_delta.y / height)"
+          "update": "panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 1)"
         }
       ]);
     });

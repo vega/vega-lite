@@ -69,14 +69,16 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleCh
     return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
   })[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
-  const scaleType = model.getScaleComponent(channel).get('type');
+  const scaleCmpt = model.getScaleComponent(channel);
+  const scaleType = scaleCmpt.get('type');
   const base = hasScales ? domain(model, channel) : signal.name;
   const delta  = name + DELTA;
   const anchor = `${name}${ANCHOR}.${channel}`;
   const zoomFn = !hasScales ? 'zoomLinear' :
     scaleType === 'log' ? 'zoomLog' :
     scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
-  const update = `${zoomFn}(${base}, ${anchor}, ${delta})`;
+  const update = `${zoomFn}(${base}, ${anchor}, ${delta}` +
+    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') + ')';
 
   signal.on.push({
     events: {signal: delta},
