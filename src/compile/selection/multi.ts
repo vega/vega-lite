@@ -11,14 +11,14 @@ const multi:SelectionCompiler = {
     const proj = selCmpt.project;
     const datum = nearest.has(selCmpt) ?
       '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-    const bins = {};
+    const bins: string[] = [];
     const encodings = proj.map((p) => stringValue(p.channel)).filter((e) => e).join(', ');
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => {
       const channel = p.channel;
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
-      return (fieldDef && fieldDef.bin) ? (bins[p.field] = 1,
+      return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
         `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
             `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
         `${datum}[${stringValue(p.field)}]`;
@@ -39,7 +39,7 @@ const multi:SelectionCompiler = {
         update: `datum && item().mark.marktype !== 'group' ? ` +
           `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
           `fields: [${fields}], values: [${values}]` +
-          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}` : '') +
+          (bins.length ? ', ' + bins.map((b) => `${stringValue('bin_' + b)}: 1`).join(', ') : '') +
           '} : null',
         force: true
       }]
