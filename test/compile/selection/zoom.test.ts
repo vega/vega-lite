@@ -217,7 +217,7 @@ describe('Zoom Selection Transform', function() {
       assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
         {
           "events": {"signal": "six_zoom_delta"},
-          "update": "zoomPow(domain(\"y\"), six_zoom_anchor.y, six_zoom_delta)"
+          "update": "zoomPow(domain(\"y\"), six_zoom_anchor.y, six_zoom_delta, 1)"
         }
       ]);
     });
