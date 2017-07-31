@@ -1,7 +1,7 @@
 import {text} from 'd3-request';
 import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
-import embed from 'vega-embed';
+import embed, {vega} from 'vega-embed';
 import {vegaLite} from 'vega-tooltip';
 import {runStreamingExample} from './streaming';
 
@@ -36,10 +36,6 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
   hljs.highlightBlock(code.node() as any);
 
   const spec = JSON.parse(text);
-  if (spec.data.url) {
-    // make url absolute
-    spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
-  }
 
   embed(vis.node(), spec, {
     mode: 'vega-lite',
@@ -47,6 +43,11 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
     actions: {
       source: false,
       export: false
+    },
+    viewConfig: {
+      loader: new vega.loader({
+        baseURL: window.location.origin + BASEURL
+      })
     }
   }).then(result => {
     if ($target.classed('tooltip')) {
@@ -87,7 +88,9 @@ window['buildSpecOpts'] = function(id: string, baseName: string) {
   const prefix = prefixSel.empty() ? id : prefixSel.property('value');
   const values = inputsSel.nodes().map((n: any) => n.value).sort().join('_');
   const newName = baseName + prefix + (values ? '_' + values : '');
-  if (oldName !== newName) window['changeSpec'](id, newName);
+  if (oldName !== newName) {
+    window['changeSpec'](id, newName);
+  }
 };
 
 selectAll('.vl-example').each(function(this: Element) {
