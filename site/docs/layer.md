@@ -50,5 +50,5 @@ In the chart below, we set the y-scales of the different layers to be independen
 
 ### Advanced Layering Example
 
-The population of the German city of Falkensee over time. Based on a [visualization built using Vega]((https://vega.github.io/vega/examples/falkensee-population/)).
+The population of the German city of Falkensee over time. Based on a [visualization built using Vega](https://vega.github.io/vega/examples/falkensee-population/).
 <div class="vl-example" data-name="layered_falkensee">
