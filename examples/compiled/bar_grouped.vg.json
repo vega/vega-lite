@@ -125,9 +125,6 @@
                     "role": "column-title-text",
                     "encode": {
                         "update": {
-                            "x": {
-                                "signal": "0.5 * width"
-                            },
                             "align": {
                                 "value": "center"
                             },

@@ -88,9 +88,6 @@
                     "role": "row-title-text",
                     "encode": {
                         "update": {
-                            "y": {
-                                "signal": "0.5 * height"
-                            },
                             "align": {
                                 "value": "right"
                             },
