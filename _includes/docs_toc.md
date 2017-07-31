@@ -52,7 +52,7 @@
     - [Resolution]({{site.baseurl}}/docs/composition.html#resolution)
     - [Facet]({{site.baseurl}}/docs/facet.html)
         - [Facet Operator]({{site.baseurl}}/docs/facet.html#facet-operator)
-        - [Facet Channels]({{site.baseurl}}/docs/facet.html#facet-channels)
+        - [row / column Encoding Channels]({{site.baseurl}}/docs/facet.html#row--column-encoding-channels)
         - [Resolve]({{site.baseurl}}/docs/facet.html#resolve)
     - [Layer]({{site.baseurl}}/docs/layer.html)
         - [Example]({{site.baseurl}}/docs/layer.html#example)
