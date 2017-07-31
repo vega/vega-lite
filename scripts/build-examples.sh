@@ -1,7 +1,7 @@
 #!/bin/bash
 # script for npm run x-compile
 
-dir=${dir-"examples/vg-specs"}
+dir=${dir-"examples/compiled"}
 
 echo "compiling examples to $dir"
 
@@ -11,7 +11,7 @@ mkdir $dir
 if type parallel >/dev/null 2>&1
 then
   echo "Using parallel to generate vega specs from examples in parallel."
-  ls examples/specs/*.vl.json | parallel --no-notice --plus --halt 1 "bin/vl2vg -p {} > examples/vg-specs/{/..}.vg.json"
+  ls examples/specs/*.vl.json | parallel --no-notice --plus --halt 1 "bin/vl2vg -p {} > examples/compiled/{/..}.vg.json"
 else
   echo "Parallel not found! Sequentially generate vega specs from examples."
   for file in examples/specs/*.vl.json; do
