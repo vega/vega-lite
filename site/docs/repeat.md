@@ -7,7 +7,7 @@ permalink: /docs/repeat.html
 
 The `repeat` operator is part of Vega-Lite's [view compostion](compositon.html). It provides a shortcut that creates a view for each entry in an array of fields. This operator generates multiple plots like [`facet`](facet.html). However, unlike `facet` it allows full replication of a data set in each view.
 
-To repeat a view, define what fields should be used for each entry in the row or columns. The define the repeated view in `spec`.
+To repeat a view, define what fields should be used for each entry in the row or columns. Then define the repeated view in `spec`.
 
 {: .suppress-error}
 ```json
