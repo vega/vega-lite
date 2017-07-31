@@ -57,12 +57,16 @@
       mouseEvt('click', el, evt);
     }
 
-    function brush(id0, id1, parent) {
+    function brush(id0, id1, parent, targetBrush) {
       var el0 = mark(id0, parent);
       var el1 = mark(id1, parent);
       var [mdX, mdY] = coords(el0);
       var [muX, muY] = coords(el1);
-      mouseEvt('mousedown', el0, {clientX: mdX, clientY: mdY});
+      mouseEvt('mousedown',
+        targetBrush ?
+          document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path') :
+          el0,
+        {clientX: mdX, clientY: mdY});
       mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
       return view.data('sel_store');
     }

@@ -126,4 +126,19 @@ describe('interval selections at runtime in unit views', function() {
     cleared = browser.execute(brush('drag_clear', 0)).value;
     assert.lengthOf(cleared, 0);
   });
+
+  it('should brush over log/pow scales', function() {
+    for (let i = 0; i < hits.drag.length; i++) {
+      embed(spec('unit', i, {type}, {
+        x: {scale: {type: 'pow', exponent: 1.5}},
+        y: {scale: {type: 'log'}}
+      }));
+      const store = browser.execute(brush('drag', i)).value;
+      assert.lengthOf(store, 1);
+      assert.lengthOf(store[0].intervals, 2);
+      assert.lengthOf(store[0].intervals[0].extent, 2);
+      assert.lengthOf(store[0].intervals[1].extent, 2);
+      testRender(`logpow_${i}`);
+    }
+  });
 });

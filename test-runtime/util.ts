@@ -14,6 +14,9 @@ export const selectionTypes: SelectionType[] = ['single', 'multi', 'interval'];
 export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
+export const bound = 'bound';
+export const unbound = 'unbound';
+
 export const tuples = [
   {a: 0, b: 28, c: 0}, {a: 0, b: 55, c: 1}, {a: 0, b: 23, c: 2},
   {a: 1, b: 43, c: 0}, {a: 1, b: 91, c: 1}, {a: 1, b: 54, c: 2},
@@ -50,9 +53,11 @@ export const hits = {
   interval: {
     drag: [[5, 14], [18, 26]],
     drag_clear: [[5], [16]],
+    translate: [[6, 16], [24, 8]],
 
     bins: [[4, 8], [2, 7]],
     bins_clear: [[5], [9]],
+    bins_translate: [[5, 7], [1, 8]],
 
     repeat: [[8, 29], [11, 26], [7, 21]],
     repeat_clear: [[8], [11], [17]],
@@ -98,6 +103,7 @@ function base(iter: number, sel: any, opts: any = {}): UnitSpec | LayerSpec {
 
 export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelExtendedSpec {
   const {data, ...spec} = base(iter, sel, opts);
+  const resolve = opts.resolve;
   switch (compose) {
     case 'unit':
       return {data, ...spec};
@@ -105,13 +111,15 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
       return {
         data,
         facet: {row: {field: 'c', type: 'nominal'}},
-        spec
+        spec,
+        resolve
       };
     case 'repeat':
       return {
         data,
         repeat: {row: ['d', 'e', 'f']},
-        spec
+        spec,
+        resolve
       };
   }
 
@@ -128,9 +136,9 @@ export function parentSelector(compositeType: ComposeType, index: number) {
      unitNames.repeat[index] + '_group';
 }
 
-export function brush(key: string, idx: number, parent?: string) {
+export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
   const fn = key.match('_clear') ? 'clear' : 'brush';
-  return `return ${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)})`;
+  return `return ${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
 export function pt(key: string, idx: number, parent?: string) {
