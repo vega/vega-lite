@@ -196,16 +196,7 @@
             "stroke": "color",
             "title": "Miles_per_Gallon",
             "type": "symbol",
-            "size": "size",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        }
-                    }
-                }
-            }
+            "size": "size"
         }
     ],
     "config": {

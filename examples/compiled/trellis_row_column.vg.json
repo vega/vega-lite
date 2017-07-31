@@ -442,16 +442,7 @@
         },
         {
             "shape": "shape",
-            "title": "Origin",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        }
-                    }
-                }
-            }
+            "title": "Origin"
         }
     ],
     "config": {

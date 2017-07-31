@@ -190,16 +190,7 @@
         {
             "stroke": "color",
             "title": "Origin",
-            "shape": "shape",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        }
-                    }
-                }
-            }
+            "shape": "shape"
         }
     ],
     "config": {
