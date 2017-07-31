@@ -74,7 +74,7 @@ To name the example file:
 - For composite views, please begin the file with the operator name (e.g., `layer`).
 - Finally, please make sure any interactive example begins with `interactive`.
 
-After adding a new example, make sure to run `yarn run build:examples` so that your pull request includes a new compiled Vega specs in `examples/vg-specs`.
+After adding a new example, make sure to run `yarn run build:examples` so that your pull request includes a new compiled Vega specs in `examples/compiled`.
 
 # Development Guide
 
@@ -121,7 +121,7 @@ After adding a new example, make sure to run `yarn run build:examples` so that y
 - `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specifications.
   - `specs` Vega-Lite examples.
-  - `vg-specs` The generated Vega of the Vega-Lite examples.
+  - `compiled` The generated Vega of the Vega-Lite examples.
 
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery
@@ -224,7 +224,7 @@ Now all the changes you make in vega-util are reflected in your Vega-Lite automa
 
 ## Pull Requests and Travis
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/vg-specs/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
 
 ### Code Coverage
 
