@@ -13,6 +13,7 @@ before_install:
 script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
+  - npm run data
   - npm run build:examples-only
   - npm run check:schema
   - npm run check:examples
