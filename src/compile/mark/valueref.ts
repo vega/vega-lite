@@ -158,22 +158,8 @@ export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, 
   return undefined;
 }
 
-export function midX(width: number | VgSignalRef, config: Config): VgValueRef {
-  if (isNumber(width)) {
-    return {value: width / 2};
-  } else if (isVgSignalRef(width)) { // signal name
-    return {...width, mult: 0.5};
-  }
-  return {value: config.scale.rangeStep / 2};
-}
-
-export function midY(height: number | VgSignalRef, config: Config): VgValueRef {
-  if (isNumber(height)) {
-    return {value: height / 2};
-  } else if (isVgSignalRef(height)) { // signal name
-    return {...height, mult: 0.5};
-  }
-  return {value: config.scale.rangeStep / 2};
+export function mid(sizeRef: VgSignalRef): VgValueRef {
+  return {...sizeRef, mult: 0.5};
 }
 
 function zeroOrMinX(scaleName: string, scale: ScaleComponent): VgValueRef {

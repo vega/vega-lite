@@ -12,8 +12,8 @@ export const rule: MarkCompiler = {
     const orient = markDef.orient;
 
     return {
-      ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.midX(width, config)),
-      ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.midY(height, config)),
+      ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)),
+      ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)),
       ...mixins.pointPosition2(model, 'zeroOrMax'),
 
       ...mixins.color(model),

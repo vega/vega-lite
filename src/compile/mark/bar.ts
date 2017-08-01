@@ -59,7 +59,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
     return mixins.centeredBandPosition('x', model,
-      {...ref.midX(width, config)},
+      {...ref.mid(width)},
       defaultSizeRef(xScaleName, xScale, config)
     );
   }
@@ -88,7 +88,7 @@ function y(model: UnitModel, stack: StackProperties) {
         return mixins.bandPosition(yDef, 'y', model);
       }
     }
-    return mixins.centeredBandPosition('y', model, ref.midY(height, config),
+    return mixins.centeredBandPosition('y', model, ref.mid(height),
       defaultSizeRef(yScaleName, yScale, config)
     );
   }
