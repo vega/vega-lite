@@ -101,6 +101,12 @@ dd {
   margin-bottom: 0;
 }
 
+/* Table with proeprty definitons */
+
+.doc-table td:nth-child(2), .doc-table th:nth-child(2) {
+  text-align: center;
+}
+
 /* Headers */
 
 h1, h2, h3, h4 {
