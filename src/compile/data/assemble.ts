@@ -307,8 +307,8 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleData(dataCompomponent: DataComponent): VgData[] {
-  let roots: SourceNode[] = vals(dataCompomponent.sources);
+export function assembleData(dataComponent: DataComponent): VgData[] {
+  let roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
@@ -354,7 +354,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   for (const d of data) {
     for (const t of d.transform || []) {
       if (t.type === 'lookup') {
-        t.from = dataCompomponent.outputNodes[t.from].getSource();
+        t.from = dataComponent.outputNodes[t.from].getSource();
       }
     }
   }
