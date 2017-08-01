@@ -174,16 +174,13 @@
     {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
-<<<<<<< HEAD:_data/examples.json
     },{
       "name": "layer_text_heatmap",
       "title": "Layering text over heatmap"
-=======
     },
     {
       "name": "layer_candlestick",
       "title": "Candlestick Chart"
->>>>>>> Added a candlestick example:examples/vl-examples.json
     }
   ],
   "Interactive": [

@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "width": 600,
+  "width": 320,
+  "description":"A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
   "data": {
     "values": [
       {
@@ -200,204 +201,6 @@
         "close": 26.35,
         "signal": "long",
         "ret": 6.73758865248228
-      },
-      {
-        "date": "01-Jul-2009",
-        "open": 25.73,
-        "high": 26.31,
-        "low": 24.8,
-        "close": 26.22,
-        "signal": "long",
-        "ret": 7.83645655877341
-      },
-      {
-        "date": "02-Jul-2009",
-        "open": 26.22,
-        "high": 28.62,
-        "low": 26.22,
-        "close": 27.95,
-        "signal": "long",
-        "ret": 2.76422764227643
-      },
-      {
-        "date": "06-Jul-2009",
-        "open": 30.32,
-        "high": 30.6,
-        "low": 28.99,
-        "close": 29,
-        "signal": "short",
-        "ret": -2.14521452145214
-      },
-      {
-        "date": "07-Jul-2009",
-        "open": 29,
-        "high": 30.94,
-        "low": 28.9,
-        "close": 30.85,
-        "signal": "short",
-        "ret": 3.03514376996805
-      },
-      {
-        "date": "08-Jul-2009",
-        "open": 30.85,
-        "high": 33.05,
-        "low": 30.43,
-        "close": 31.3,
-        "signal": "short",
-        "ret": 5.68720379146919
-      },
-      {
-        "date": "09-Jul-2009",
-        "open": 30.23,
-        "high": 30.49,
-        "low": 29.28,
-        "close": 29.78,
-        "signal": "short",
-        "ret": 8.22784810126583
-      },
-      {
-        "date": "10-Jul-2009",
-        "open": 29.78,
-        "high": 30.34,
-        "low": 28.82,
-        "close": 29.02,
-        "signal": "short",
-        "ret": 8.64779874213836
-      },
-      {
-        "date": "13-Jul-2009",
-        "open": 28.36,
-        "high": 29.24,
-        "low": 25.42,
-        "close": 26.31,
-        "signal": "short",
-        "ret": 7.32899022801303
-      },
-      {
-        "date": "14-Jul-2009",
-        "open": 26.31,
-        "high": 26.84,
-        "low": 24.99,
-        "close": 25.02,
-        "signal": "short",
-        "ret": 7.30897009966778
-      },
-      {
-        "date": "15-Jul-2009",
-        "open": 25.05,
-        "high": 26.06,
-        "low": 23.83,
-        "close": 25.89,
-        "signal": "neutral",
-        "ret": 0
-      },
-      {
-        "date": "16-Jul-2009",
-        "open": 25.96,
-        "high": 26.18,
-        "low": 24.51,
-        "close": 25.42,
-        "signal": "long",
-        "ret": -9.82758620689656
-      },
-      {
-        "date": "17-Jul-2009",
-        "open": 25.42,
-        "high": 25.55,
-        "low": 23.88,
-        "close": 24.34,
-        "signal": "long",
-        "ret": -10.8433734939759
-      },
-      {
-        "date": "20-Jul-2009",
-        "open": 25.06,
-        "high": 25.42,
-        "low": 24.26,
-        "close": 24.4,
-        "signal": "long",
-        "ret": -7.55711775043936
-      },
-      {
-        "date": "21-Jul-2009",
-        "open": 24.28,
-        "high": 25.14,
-        "low": 23.81,
-        "close": 23.87,
-        "signal": "long",
-        "ret": -2.5089605734767
-      },
-      {
-        "date": "22-Jul-2009",
-        "open": 24.05,
-        "high": 24.14,
-        "low": 23.24,
-        "close": 23.47,
-        "signal": "long",
-        "ret": 0.915750915750916
-      },
-      {
-        "date": "23-Jul-2009",
-        "open": 23.71,
-        "high": 24.05,
-        "low": 23.21,
-        "close": 23.43,
-        "signal": "long",
-        "ret": 2.47148288973383
-      },
-      {
-        "date": "24-Jul-2009",
-        "open": 23.87,
-        "high": 23.87,
-        "low": 23,
-        "close": 23.09,
-        "signal": "long",
-        "ret": 4.22264875239922
-      },
-      {
-        "date": "27-Jul-2009",
-        "open": 24.06,
-        "high": 24.86,
-        "low": 24.02,
-        "close": 24.28,
-        "signal": "long",
-        "ret": -0.189393939393929
-      },
-      {
-        "date": "28-Jul-2009",
-        "open": 24.28,
-        "high": 25.61,
-        "low": 24.28,
-        "close": 25.01,
-        "signal": "long",
-        "ret": -4.37956204379562
-      },
-      {
-        "date": "29-Jul-2009",
-        "open": 25.47,
-        "high": 26.18,
-        "low": 25.41,
-        "close": 25.61,
-        "signal": "long",
-        "ret": -4.48504983388705
-      },
-      {
-        "date": "30-Jul-2009",
-        "open": 25.4,
-        "high": 25.76,
-        "low": 24.85,
-        "close": 25.4,
-        "signal": "long",
-        "ret": -1.70357751277683
-      },
-      {
-        "date": "31-Jul-2009",
-        "open": 25.4,
-        "high": 26.22,
-        "low": 24.93,
-        "close": 25.92,
-        "signal": "short",
-        "ret": 5.06756756756757
       }
     ]
   },
@@ -432,10 +235,11 @@
           "field": "date",
           "type": "temporal",
           "timeUnit": "yearmonthdate",
+          "scale": {"domain": [{"month": 5, "date": 31, "year": 2009},{"month": 7, "date": 1, "year": 2009}]},
           "axis": {
             "format": "%m/%d",
             "labelAngle": 0,
-            "title": "Date"
+            "title": "Date in 2009"
           }
         },
         "y": {"field": "low","type": "quantitative"},
