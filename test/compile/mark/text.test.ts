@@ -147,7 +147,10 @@ describe('Mark: Text', function() {
     });
 
     it('should center on y', function() {
-      assert.deepEqual(props.y, {value: 10.5});
+      assert.deepEqual(props.y, {
+        mult: 0.5,
+        signal: 'child_height'
+      });
     });
 
     it('should map text to expression', function() {

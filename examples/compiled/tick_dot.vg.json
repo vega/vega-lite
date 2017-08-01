@@ -55,7 +55,8 @@
                         "field": "precipitation"
                     },
                     "yc": {
-                        "value": 10.5
+                        "signal": "height",
+                        "mult": 0.5
                     },
                     "height": {
                         "value": 14

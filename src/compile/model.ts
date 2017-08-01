@@ -152,21 +152,23 @@ export abstract class Model {
     };
   }
 
-  public get width(): number | VgSignalRef {
-    return this.getLayoutSize('width');
+  public get width(): VgSignalRef {
+    return this.getSizeSignalRef('width');
   }
 
 
-  public get height(): number | VgSignalRef {
-    return this.getLayoutSize('height');
+  public get height(): VgSignalRef {
+    return this.getSizeSignalRef('height');
   }
 
-  private getLayoutSize(sizeType: 'width' | 'height') {
+  public getLayoutSize(sizeType: 'width' | 'height'): number | VgSignalRef {
     /* istanbul ignore else: Condition should not happen -- only for warning in development. */
     const size = this.component.layoutSize.get(sizeType);
     if (size !== undefined) {
       if (isNumber(size)) {
         return size;
+      } else if (size === 'merged') {
+        return this.parent.getLayoutSize(sizeType);
       }
       return this.getSizeSignalRef(sizeType);
     }
