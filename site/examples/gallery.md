@@ -13,7 +13,7 @@ To see example code for embedding visualization in a webpage, please refer to [t
 
 {% for group in site.data.examples %}
 ## {{ group[0] }}
-<span class="gallery">{% for spec in group[1] %}{% include preview spec=spec.name title=spec.title %}{% endfor %}</span>
+<span class="gallery">{% for spec in group[1] %}{% include preview.html spec=spec.name title=spec.title %}{% endfor %}</span>
 {% endfor %}
 
 ## Community Examples
