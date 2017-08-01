@@ -79,7 +79,8 @@
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_Origin\"]"
         },
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {

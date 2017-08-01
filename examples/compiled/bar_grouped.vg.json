@@ -112,7 +112,8 @@
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_age\"]"
         },
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {

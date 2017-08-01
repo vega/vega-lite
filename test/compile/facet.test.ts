@@ -248,7 +248,8 @@ describe('FacetModel', function() {
         columns: {
           signal: "data('column_layout')[0][\"distinct_a\"]"
         },
-        bounds: 'full'
+        bounds: 'full',
+        align: 'all'
       });
     });
   });

@@ -231,7 +231,8 @@ export class FacetModel extends ModelWithField {
       // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
       offset: 10,
       columns,
-      bounds: 'full'
+      bounds: 'full',
+      align: 'all'
     };
   }
 

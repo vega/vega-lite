@@ -102,7 +102,8 @@
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_year_date\"]"
         },
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {

@@ -95,7 +95,8 @@
         },
         "offset": 10,
         "columns": 1,
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {

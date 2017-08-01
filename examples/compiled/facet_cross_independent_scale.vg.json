@@ -130,7 +130,8 @@
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_c\"]"
         },
-        "bounds": "full"
+        "bounds": "full",
+        "align": "all"
     },
     "marks": [
         {
