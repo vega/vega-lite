@@ -19,7 +19,7 @@ export function values(legend: Legend) {
   return vals;
 }
 
-export function type(type: Type, channel: Channel, scaleType: ScaleType) {
+export function type(type: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
   if (
       channel === COLOR && (
         (type === 'quantitative' && !isBinScale(scaleType)) ||

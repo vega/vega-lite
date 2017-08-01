@@ -296,8 +296,13 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     }
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
-    case 'tickCount':
-      return specifiedAxis.tickCount;
+    case 'tickCount': {
+      const scaleType = model.component.scales[channel].get('type');
+      const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+      const size = sizeType ? model.getSizeSignalRef(sizeType)
+       : undefined;
+      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef, scaleType, size));
+    }
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':

@@ -159,6 +159,9 @@
                     "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "zindex": 1
                 }
             ]

@@ -46,6 +46,28 @@ describe('compile/axis', ()=> {
     });
   });
 
+  describe('tickCount', function() {
+    it('should return undefined by default for binned field', function () {
+      const tickCount = rules.tickCount('x', {bin: true, field: 'a', type: 'quantitative'}, 'linear', undefined);
+      assert.deepEqual(tickCount, undefined);
+    });
+
+    it('should return 5 by default for linear scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
+    });
+
+    it('should return undefined by default for log scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined);
+      assert.deepEqual(tickCount, undefined);
+    });
+
+    it('should return undefined by default for point scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined);
+      assert.deepEqual(tickCount, undefined);
+    });
+  });
+
   describe('title()', function () {
     it('should add return fieldTitle by default', function () {
       const title = rules.title(3, {field: 'a', type: "quantitative"}, {});

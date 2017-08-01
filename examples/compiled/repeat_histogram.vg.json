@@ -329,6 +329,9 @@
                     "scale": "child_Horsepower_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "title": "Number of Records",
                     "zindex": 1
                 },
@@ -340,6 +343,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "child_Horsepower_x"
@@ -430,6 +436,9 @@
                     "scale": "child_Miles_per_Gallon_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "title": "Number of Records",
                     "zindex": 1
                 },
@@ -441,6 +450,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "child_Miles_per_Gallon_x"
@@ -531,6 +543,9 @@
                     "scale": "child_Acceleration_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "title": "Number of Records",
                     "zindex": 1
                 },
@@ -542,6 +557,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "child_Acceleration_x"

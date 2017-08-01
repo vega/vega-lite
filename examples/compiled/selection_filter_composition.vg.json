@@ -495,6 +495,9 @@
                     "scale": "concat_0_x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "title": "Horsepower",
                     "zindex": 1
                 },
@@ -506,6 +509,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_y"
@@ -514,6 +520,9 @@
                     "scale": "concat_0_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_0_height/40)"
+                    },
                     "title": "Miles_per_Gallon",
                     "zindex": 1
                 },
@@ -525,6 +534,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_0_height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_x"
@@ -586,6 +598,9 @@
                     "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "title": "Acceleration",
                     "zindex": 1
                 },
@@ -597,6 +612,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_1_y"
@@ -605,6 +623,9 @@
                     "scale": "concat_1_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_1_height/40)"
+                    },
                     "title": "Displacement",
                     "zindex": 1
                 },
@@ -616,6 +637,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_1_height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_1_x"

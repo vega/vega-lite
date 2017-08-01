@@ -141,6 +141,9 @@
                     "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "title": "MEAN(price)",
                     "zindex": 1
                 }
@@ -305,6 +308,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "x"
