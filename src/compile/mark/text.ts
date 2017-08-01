@@ -22,7 +22,7 @@ export const text: MarkCompiler = {
 
     return {
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
-      ...mixins.pointPosition('y', model, ref.midY(height, config)),
+      ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
