@@ -24,7 +24,6 @@ export const AGGREGATE_OPS: AggregateOp[] = [
     'q3',
     'ci0',
     'ci1',
-    'modeskew',
     'min',
     'max',
     'argmin',
