@@ -2,7 +2,7 @@
   <div class="examples">
   {% for image in page.images %}
     <a class="preview" href="https://vega.github.io/editor/#/examples/vega-lite/{{image.spec}}"
-      style="background-image: url('build/examples/images/{{image.spec}}.vl.svg')">
+      style="background-image: url('{{site.baseurl}}/examples/compiled/{{image.spec}}.svg')">
     </a>
   {% endfor %}
   </div>
