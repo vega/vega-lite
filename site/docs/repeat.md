@@ -29,6 +29,7 @@ A repeat specification has the following properties:
 
 The `repeat` property is an object with two optional properties. They define the list of fields that should be repeated into a row or column.
 
+{: #repeat}
 {% include table.html props="column,row" source="Repeat" %}
 
 Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows a different 2D projection of the same data table.

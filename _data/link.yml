@@ -1,42 +1,111 @@
-TopLevelFacetedUnitSpec:
-  data: data.html
-  transform: transform.html
-  selection: interaction.html
-  mark: mark.html
-  encoding: encoding.html
-  config: config.html
+# Use "" if there is a # in the url
 
-type:
-  aggregateop: aggregate.html#supported-aggregation-operations
-  config: config.html
-  data: data.html
-  datetime: transform.html#datetime
-  dataformat: data.html#format
-  dataurlformat: data.html#format
-  filter:   transform.html#filter
-  equalfilter: transform.html#equalfilter
-  rangefilter: transform.html#rangefilter
-  oneoffilter: transform.html#oneoffilter
-  scaletype: scale.html#type
-  selection: selection.html
-  timeunit: timeunit.html
+# Data
+Data:
+  link: data.html
+DataFormat:
+  link: data.html#format
+DataUrlFormat:
+  name: DataFormat
+  link: "data.html#format"
 
-# Please use "" if # exists in url
+# Transform
+Transform:
+  link: transform.html
 
-UrlData:
-  url: "#url"
-  format: "#format"
+AggregateOp:
+  link: "aggregate.html#supported-aggregation-operations"
+Bin:
+  link: bin.html
+FilterOperand:
+  name: Filter
+  link: "transform.html#filter"
+Summarize:
+  link: "transform.html#aggregated-field-definition-for-summarize-transform"
+TimeUnit:
+  link: timeunit.html
 
-InlineData:
-  values: "#inline"
-  format: "#format"
+# Transform - Time Unit
+Month:
+  name: Number
+Day:
+  name: Number
 
-NamedData:
-  values: "#inline"
-  format: "#format"
+# Mark
+AnyMark:
+  name: Mark
+  link: mark.html
+Interpolate:
+  name: String
+Orient:
+  name: String
+Mark:
+  name: String
 
+# Encoding
+DateTime:
+  link: "transform.html#datetime"
+Config:
+  link: config.html
+EncodingWithFacet:
+  name: Encoding
+  link: encoding.html
+Type:
+  link: "encoding.html#data-type"
+
+# Channel Definitions
+ConditionalStringLegendDef:
+  name: FieldDef
+  link: "encoding.html#def"
+ConditionalNumberLegendDef:
+  name: FieldDef
+  link: "encoding.html#def"
+ConditionalTextDef:
+  name: FieldDef
+  link: "encoding.html#def"
+FieldDef:
+  link: "encoding.html#def"
+FacetFieldDef:
+  link: "facet.html#facet-field-definition"
+OrderFieldDef:
+  name: FieldDef
+  link: "encoding.html#def"
 PositionFieldDef:
-  bin: bin.html
-  timeUnit: timeunit.html
-  aggregate: aggregate.html
-  sort: sort.html
+  name: FieldDef
+  link: "encoding.html#def"
+NumberValueDef:
+  name: ValueDef
+  link: "encoding.html#value"
+
+# Scale / Axis / Legend
+
+ScaleType:
+  name: String
+AxisOrient:
+  name: String
+LegendOrient:
+  name: String
+ResolveMapping:
+  name: Resolve
+  link: resolve.html
+
+# Others
+HorizontalAlign:
+  name: String
+VerticalAlign:
+  name: String
+FontStyle:
+  name: String
+FontWeight:
+  name: String
+FontWeightNumber:
+  name: Number
+Repeat:
+  link: "repeat.html#repeat"
+Padding:
+  name: "Number | Object"
+SelectionDef:
+  name: Selection
+  link: selection.html
+
+
