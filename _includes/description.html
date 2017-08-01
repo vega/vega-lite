@@ -1,12 +1,8 @@
 {% if include.source.description != nil %}
-  {% comment %}
-    for normal case description is for all specified types
-  {% endcomment %}
   {% if include.required contains include.param %}
-    {% assign desWithPrefix =  "***Required.*** " | append: include.source.description %}
-    {{ desWithPrefix | markdownify}}
+    {{ "***Required.*** " | append: include.source.description | markdownify }}
   {% else %}
-    {{include.source.description | markdownify}}
+    {{ include.source.description | markdownify }}
   {% endif %}
 {% else %}
   {% comment %}
