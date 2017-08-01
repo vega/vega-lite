@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! git diff --exit-code HEAD -- ./examples/compiled/*
+if ! git diff --word-diff=color --exit-code HEAD -- ./examples/compiled/*
 then
   echo "Output examples vega specs are outdated."
   exit 1
