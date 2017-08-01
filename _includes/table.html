@@ -15,11 +15,11 @@
       for prop in props %}{%
         assign source = schema[prop] %}{%
         capture type %}{%
-          include type.html src=source %}{%
+          include type.html source=source %}{%
         endcapture %}
       <tr>
-        <td>{% include checkLink.html check="prop" channel=include.source param=prop %}</td>
-        <td>{% include checkLink.html check="type" channel=include.source param=type %}</td>
+        <td>{{ prop }}</td>
+        <td>{% include lookupLink.html channel=include.source param=type %}</td>
         <td>{% include description.html source=source param=prop required=required %}</td>
       </tr>{% endfor %}
   </tbody>

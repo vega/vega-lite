@@ -1,42 +1,95 @@
-TopLevelFacetedUnitSpec:
-  data: data.html
-  transform: transform.html
-  selection: interaction.html
-  mark: mark.html
-  encoding: encoding.html
-  config: config.html
+# Use "" if there is a # in the url
 
-type:
-  aggregateop: aggregate.html#supported-aggregation-operations
-  config: config.html
-  data: data.html
-  datetime: transform.html#datetime
-  dataformat: data.html#format
-  dataurlformat: data.html#format
-  filter:   transform.html#filter
-  equalfilter: transform.html#equalfilter
-  rangefilter: transform.html#rangefilter
-  oneoffilter: transform.html#oneoffilter
-  scaletype: scale.html#type
-  selection: selection.html
-  timeunit: timeunit.html
-
-# Please use "" if # exists in url
-
-UrlData:
-  url: "#url"
-  format: "#format"
-
-InlineData:
-  values: "#inline"
-  format: "#format"
-
-NamedData:
-  values: "#inline"
-  format: "#format"
+AggregateOp:
+  link: "aggregate.html#supported-aggregation-operations"
+DataFormat:
+  link: data.html#format
+DataUrlFormat:
+  name: DataFormat
+  link: "data.html#format"
+FilterOperand:
+  name: Filter
+  link: "transform.html#filter"
+Bin:
+  link: bin.html
+TimeUnit:
+  link: timeunit.html
+DateTime:
+  link: "transform.html#datetime"
+Config:
+  link: config.html
+Data:
+  link: data.html
+AnyMark:
+  name: Mark
+  link: mark.html
+EncodingWithFacet:
+  name: Enocding
+  link: encoding.html
+Month:
+  name: Number
+Day:
+  name: Number
+Interpolate:
+  name: String
+Orient:
+  name: String
+Mark:
+  name: String
+ScaleType:
+  name: String
+AxisOrient:
+  name: String
+LegendOrient:
+  name: String
+ResolveMapping:
+  name: Resolve
+  link: resolve.html
+Type:
+  link: "encoding.html#data-type"
+Repeat:
+  link: "repeat.html#repeat"
+Padding:
+  name: Number
+HorizontalAlign:
+  name: String
+VerticalAlign:
+  name: String
+FontStyle:
+  name: String
+FontWeight:
+  name: String
+FontWeightNumber:
+  name: Number
+SelectionDef:
+  name: Selection
+  link: selection.html
 
 PositionFieldDef:
-  bin: bin.html
-  timeUnit: timeunit.html
-  aggregate: aggregate.html
-  sort: sort.html
+  name: FieldDef
+  link: "encoding.html#def"
+ConditionalStringLegendDef:
+  name: FieldDef
+  link: "encoding.html#def"
+ConditionalNumberLegendDef:
+  name: FieldDef
+  link: "encoding.html#def"
+ConditionalTextDef:
+  name: FieldDef
+  link: "encoding.html#def"
+OrderFieldDef:
+  name: FieldDef
+  link: "encoding.html#def"
+FieldDef:
+  link: "encoding.html#def"
+Transform:
+  link: transform.html
+Summarize:
+  link: "transform.html#aggregated-field-definition-for-summarize-transform"
+
+FacetFieldDef:
+  link: "facet.html#facet-field-definition"
+
+NumberValueDef:
+  name: ValueDef
+  link: "encoding.html#value"
