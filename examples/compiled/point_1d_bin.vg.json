@@ -72,7 +72,8 @@
                         "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                     },
                     "y": {
-                        "value": 10.5
+                        "signal": "height",
+                        "mult": 0.5
                     },
                     "stroke": {
                         "value": "#4c78a8"

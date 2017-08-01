@@ -63,7 +63,10 @@ describe('Mark: Tick', function() {
 
     const props = tick.encodeEntry(model);
     it('should be centered on y', function() {
-      assert.deepEqual(props.yc, {value: 10.5});
+      assert.deepEqual(props.yc, {
+        mult: 0.5,
+        signal: 'height'
+      });
     });
 
     it('should scale on x', function() {
@@ -84,7 +87,10 @@ describe('Mark: Tick', function() {
 
     const props = tick.encodeEntry(model);
     it('should be centered on x', function() {
-      assert.deepEqual(props.xc, {value: 10.5});
+      assert.deepEqual(props.xc, {
+        mult: 0.5,
+        signal: 'width'
+      });
     });
 
     it('should scale on y', function() {

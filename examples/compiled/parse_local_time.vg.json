@@ -67,7 +67,8 @@
             "encode": {
                 "update": {
                     "x": {
-                        "value": 10.5
+                        "signal": "width",
+                        "mult": 0.5
                     },
                     "y": {
                         "scale": "y",

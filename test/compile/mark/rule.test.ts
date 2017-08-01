@@ -51,7 +51,10 @@ describe('Mark: Rule', function() {
     it('should create horizontal rule on the axis', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, {value: 10.5});
+      assert.deepEqual(props.y, {
+        mult: 0.5,
+        signal: 'height'
+      });
     });
   });
 
@@ -69,7 +72,10 @@ describe('Mark: Rule', function() {
     it('should create horizontal rules on the axis', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
       assert.deepEqual(props.y2, {scale: Y, field: 'a2'});
-      assert.deepEqual(props.x, {value: 10.5});
+      assert.deepEqual(props.x, {
+        mult: 0.5,
+        signal: 'width'
+      });
     });
   });
 

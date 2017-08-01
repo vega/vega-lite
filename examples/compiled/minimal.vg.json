@@ -41,10 +41,12 @@
             "encode": {
                 "update": {
                     "x": {
-                        "value": 10.5
+                        "signal": "width",
+                        "mult": 0.5
                     },
                     "y": {
-                        "value": 10.5
+                        "signal": "height",
+                        "mult": 0.5
                     },
                     "stroke": {
                         "value": "#4c78a8"
