@@ -74,7 +74,7 @@ export function parseLayerAxis(model: LayerModel) {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis
-        return;
+        continue;
       }
 
       if (resolve[channel].axis === 'independent') {

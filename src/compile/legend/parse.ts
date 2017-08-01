@@ -123,7 +123,7 @@ export function parseNonUnitLegend(model: Model) {
     for (const child of model.children) {
       if (!child.component.legends[channel]) {
         // skip if the child does not have a particular legend
-        return;
+        continue;
       }
 
       if (resolve[channel].legend === 'shared') {
