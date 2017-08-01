@@ -119,6 +119,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "Horsepower",
             "zindex": 1
         },
@@ -130,6 +133,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"

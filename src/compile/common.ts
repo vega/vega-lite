@@ -113,7 +113,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   }
 }
 
-export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T) {
+export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {signal: string}) {
   if (specifiedValue !== undefined) {
     return specifiedValue;
   }

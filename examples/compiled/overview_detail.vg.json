@@ -160,6 +160,9 @@
                     "scale": "concat_0_x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -179,6 +182,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_y"
@@ -187,6 +193,9 @@
                     "scale": "concat_0_y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_0_height/40)"
+                    },
                     "title": "price",
                     "zindex": 1
                 },
@@ -198,6 +207,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(concat_0_height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_0_x"
@@ -541,6 +553,9 @@
                     "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "title": "date",
                     "zindex": 1,
                     "encode": {
@@ -561,6 +576,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "concat_1_y"

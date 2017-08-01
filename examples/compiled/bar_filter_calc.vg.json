@@ -185,6 +185,9 @@
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "title": "b2",
             "zindex": 1
         },
@@ -196,6 +199,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "x"

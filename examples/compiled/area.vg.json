@@ -139,6 +139,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "YEARMONTH(date)",
             "zindex": 1,
             "encode": {
@@ -159,6 +162,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
@@ -167,6 +173,9 @@
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "title": "SUM(count)",
             "zindex": 1
         },
@@ -178,6 +187,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "x"

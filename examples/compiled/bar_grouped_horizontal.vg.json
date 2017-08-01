@@ -190,6 +190,9 @@
                     "scale": "x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
                     "zindex": 1
                 }
             ]

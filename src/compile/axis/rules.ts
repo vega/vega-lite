@@ -7,7 +7,7 @@ import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
 import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
-import {VgAxis} from '../../vega.schema';
+import {VgAxis, VgSignalRef} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 import {labelAngle} from './encode';
@@ -74,6 +74,19 @@ export function orient(channel: Channel) {
   }
   /* istanbul ignore next: This should never happen. */
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
+}
+
+export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+
+  if (!fieldDef.bin && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
+    // Thus, we set it to 5 for width = 200
+    // and set the same value for y for consistency.
+
+    return {signal: `ceil(${size.signal}/40)`};
+  }
+
+  return undefined;
 }
 
 export function title(maxLength: number, fieldDef: FieldDef<string>, config: Config) {
