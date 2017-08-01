@@ -8,11 +8,7 @@
   </thead>
   <tbody>
 
-    {% comment %}
-      This file will display a table of all provided properties from a schema file.
-      First we will extract each property/type/description. For type property and
-      type, we will look them up to see if there's a link assigned in link.yml
-    {% endcomment %}{%
+    {%
       assign schema = site.data.vega-lite-schema.definitions[include.source].properties %}{%
       assign required = site.data.vega-lite-schema.definitions[include.source].required %}{%
       assign props = include.props | split: ","  %}{%
