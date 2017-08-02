@@ -1,11 +1,14 @@
 import {isArray} from 'vega-util';
-import {X, Y} from '../../channel';
 import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
+import {X, Y} from '../../channel';
 import {MAIN} from '../../data';
+import {isAggregate} from '../../encoding';
 import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
 import {isSelectionDomain} from '../../scale';
+import {isSortField} from '../../sort';
 import {contains} from '../../util';
+import {sortParams} from '../common';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -59,14 +62,17 @@ function parsePathMark(model: UnitModel) {
   // FIXME: replace this with more general case for composition
   const details = detailFields(model);
 
-  const role = model.markDef.role || markCompiler[mark].defaultRole;
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
+  const role = model.markDef.role || markCompiler[mark].defaultRole;
+  const sort = getPathSort(model);
+
   const pathMarks: any = [
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
       ...(clip ? {clip: true} : {}),
       ...(role? {role} : {}),
+      ...(sort? {sort} : {}),
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
@@ -97,6 +103,30 @@ function parsePathMark(model: UnitModel) {
     }];
   } else {
     return pathMarks;
+  }
+}
+
+export function getPathSort(model: UnitModel) {
+  if (model.mark() === 'line' && model.channelHasField('order')) {
+    // For only line, sort by the order field if it is specified.
+    return sortParams(model.encoding.order, {expr: 'datum'});
+  } else {
+    // For both line and area, we sort values based on dimension by default
+    const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
+    const s = model.sort(dimensionChannel);
+    const sortField = isSortField(s) ?
+      field({
+        // FIXME: this op might not already exist?
+        // FIXME: what if dimensionChannel (x or y) contains custom domain?
+        aggregate: isAggregate(model.encoding) ? s.op : undefined,
+        field: s.field
+      }, {expr: 'datum'}) :
+      model.field(dimensionChannel, {binSuffix: 'start', expr: 'datum'});
+
+    return {
+      field: sortField,
+      order: 'descending'
+    };
   }
 }
 

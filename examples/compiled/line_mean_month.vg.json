@@ -43,13 +43,6 @@
                     "as": [
                         "mean_precipitation"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "month_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -72,6 +65,10 @@
         {
             "name": "marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"month_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "source_0"
             },

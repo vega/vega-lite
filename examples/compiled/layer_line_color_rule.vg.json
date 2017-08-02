@@ -38,13 +38,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "date",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -116,6 +109,10 @@
                 {
                     "name": "layer_0_marks",
                     "type": "line",
+                    "sort": {
+                        "field": "datum[\"date\"]",
+                        "order": "descending"
+                    },
                     "from": {
                         "data": "faceted_path_layer_0_main"
                     },

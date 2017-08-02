@@ -61,13 +61,6 @@
                     "type": "formula",
                     "as": "utcyearmonthdatehoursminutes_date",
                     "expr": "datetime(utcyear(datum[\"date\"]), utcmonth(datum[\"date\"]), utcdate(datum[\"date\"]), utchours(datum[\"date\"]), utcminutes(datum[\"date\"]), 0, 0)"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "utcyearmonthdatehoursminutes_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -86,6 +79,10 @@
         {
             "name": "marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"utcyearmonthdatehoursminutes_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_0"
             },

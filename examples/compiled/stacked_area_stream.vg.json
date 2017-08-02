@@ -78,13 +78,6 @@
                         "sum_count_end"
                     ],
                     "offset": "center"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "yearmonth_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -130,6 +123,10 @@
                 {
                     "name": "marks",
                     "type": "area",
+                    "sort": {
+                        "field": "datum[\"yearmonth_date\"]",
+                        "order": "descending"
+                    },
                     "from": {
                         "data": "faceted_path_main"
                     },

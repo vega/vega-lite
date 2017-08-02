@@ -89,13 +89,6 @@
                     "as": [
                         "mean_temp_max"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "month_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -149,6 +142,10 @@
         {
             "name": "layer_1_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"month_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_1"
             },

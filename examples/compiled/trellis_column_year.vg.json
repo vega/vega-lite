@@ -41,13 +41,6 @@
                     "as": [
                         "mean_price"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "quarter_date",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -309,6 +302,10 @@
                         {
                             "name": "child_marks",
                             "type": "line",
+                            "sort": {
+                                "field": "datum[\"quarter_date\"]",
+                                "order": "descending"
+                            },
                             "from": {
                                 "data": "faceted_path_child_main"
                             },

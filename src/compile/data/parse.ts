@@ -12,7 +12,6 @@ import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -173,14 +172,6 @@ export function parseData(model: Model): DataComponent {
     if (nonPosFilter) {
       nonPosFilter.parent = head;
       head = nonPosFilter;
-    }
-  }
-
-  if (model instanceof UnitModel) {
-    const order = OrderNode.make(model);
-    if (order) {
-      order.parent = head;
-      head = order;
     }
   }
 

@@ -98,13 +98,6 @@
                         "sum_Horsepower_end"
                     ],
                     "offset": "zero"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "bin_maxbins_10_Acceleration_start",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -150,6 +143,10 @@
                 {
                     "name": "marks",
                     "type": "area",
+                    "sort": {
+                        "field": "datum[\"bin_maxbins_10_Acceleration_start\"]",
+                        "order": "descending"
+                    },
                     "from": {
                         "data": "faceted_path_main"
                     },

@@ -47,13 +47,6 @@
                     "as": [
                         "max_temp_max"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "yearmonth_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -72,6 +65,10 @@
         {
             "name": "marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"yearmonth_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "source_0"
             },

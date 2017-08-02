@@ -219,13 +219,6 @@
                     "type": "formula",
                     "as": "year_year",
                     "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_year",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -330,6 +323,10 @@
         {
             "name": "layer_1_layer_0_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"year_year\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_1"
             },
