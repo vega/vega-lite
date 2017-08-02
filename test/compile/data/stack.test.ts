@@ -28,7 +28,8 @@ describe('compile/data/stack', () => {
     });
 
     assert.deepEqual<StackComponent>(parse(model), {
-      groupby: ['b'],
+      dimensionFieldDef: {field: 'b', type: 'nominal'},
+      facetby: [],
       field: 'sum_a',
       stackby: ['c'],
       sort: {
@@ -51,7 +52,8 @@ describe('compile/data/stack', () => {
     });
 
     assert.deepEqual<StackComponent>(parse(model), {
-      groupby: ["bin_maxbins_10_b_start", "bin_maxbins_10_b_end"],
+      dimensionFieldDef: {"bin": {maxbins: 10}, "field": "b", "type": "quantitative"},
+      facetby: [],
       field: 'sum_a',
       stackby: ['c'],
       sort: {
@@ -73,7 +75,8 @@ describe('compile/data/stack', () => {
     });
 
     assert.deepEqual<StackComponent>(parse(model), {
-      groupby: [],
+      dimensionFieldDef: undefined,
+      facetby: [],
       field: 'sum_a',
       stackby: ['c'],
       sort: {
@@ -110,7 +113,8 @@ describe('compile/data/stack', () => {
     });
 
     assert.deepEqual<StackComponent>(parse(model), {
-      groupby: ['b'],
+      dimensionFieldDef: {field: 'b', type: 'nominal'},
+      facetby: [],
       field: 'sum_a',
       stackby: ['c'],
       sort: {
@@ -137,6 +141,57 @@ describe('compile/data/stack', () => {
         sort: {
           field: ['mean_d'],
           order: ['ascending']
+        },
+        as: ['sum_a_start', 'sum_a_end'],
+        offset: 'zero'
+      }
+    ]);
+  });
+
+  it('should produce correct stack component for area with color and binned dimension', function() {
+    const model = parseUnitModelWithScale({
+      "mark": "area",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "y": {"bin": true, "field": "b", "type": "quantitative"},
+        "color": {"field": "c", "type": "nominal"}
+      }
+    });
+
+    assert.deepEqual<StackComponent>(parse(model), {
+      dimensionFieldDef: {"bin": {maxbins: 10}, "field": "b", "type": "quantitative"},
+      facetby: [],
+      field: 'sum_a',
+      stackby: ['c'],
+      sort: {
+        field: ['c'],
+        order: ['descending']
+      },
+      offset: 'zero',
+      impute: true
+    });
+
+    assert.deepEqual<VgTransform[]>(assemble(model), [
+      {
+        type: 'formula',
+        expr: '(datum[\"bin_maxbins_10_b_start\"]+datum[\"bin_maxbins_10_b_end\"])/2',
+        as: 'bin_maxbins_10_b_mid'
+      },
+      {
+        type: 'impute',
+        field: 'sum_a',
+        groupby: ['c'],
+        key: 'bin_maxbins_10_b_mid',
+        method: "value",
+        value: 0
+      },
+      {
+        type: 'stack',
+        groupby: ['bin_maxbins_10_b_mid'],
+        field: 'sum_a',
+        sort: {
+          field: ['c'],
+          order: ['descending']
         },
         as: ['sum_a_start', 'sum_a_end'],
         offset: 'zero'
