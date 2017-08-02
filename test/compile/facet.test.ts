@@ -229,7 +229,7 @@ describe('FacetModel', function() {
   });
 
   describe('assembleLayout', () => {
-    it('returns a layout with only one column', () => {
+    it('returns a layout with a column signal', () => {
       const model = parseFacetModelWithScale({
         facet: {
           column: {field: 'a', type: 'quantitative'}
@@ -251,6 +251,28 @@ describe('FacetModel', function() {
         bounds: 'full',
         align: 'all'
       });
+    });
+
+    it('returns a layout with header band if child spec is also a facet', () => {
+      const model = parseFacetModelWithScale({
+        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+        "data": {"url": "data/cars.json"},
+        "facet": {"row": {"field": "Origin","type": "ordinal"}},
+        "spec": {
+          "facet": {"row": {"field": "Cylinders","type": "ordinal"}},
+          "spec": {
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "Horsepower","type": "quantitative"},
+              "y": {"field": "Acceleration","type": "quantitative"}
+            }
+          }
+        }
+      });
+      model.parseLayoutSize();
+      model.parseAxisAndHeader();
+      const layout = model.assembleLayout();
+      assert.deepEqual(layout.headerBand, {row: 0.5});
     });
   });
 

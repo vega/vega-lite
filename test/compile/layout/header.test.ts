@@ -75,7 +75,7 @@ describe('compile/layout/header', () => {
               text: {value: 'a'},
               angle: {value: 270},
               fontWeight: {value: 'bold'},
-              align: {value: 'right'},
+              align: {value: 'center'},
               fill: {value: 'black'}
             }
           }

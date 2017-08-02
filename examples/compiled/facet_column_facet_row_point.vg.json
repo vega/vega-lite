@@ -67,6 +67,9 @@
             "row": 10,
             "column": 10
         },
+        "headerBand": {
+            "column": 0.5
+        },
         "offset": 10,
         "columns": {
             "signal": "data('column_layout')[0][\"distinct_Origin\"]"
@@ -132,13 +135,6 @@
                         }
                     }
                 }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_child_width"
-                    }
-                }
             }
         },
         {
@@ -197,7 +193,7 @@
                             "encode": {
                                 "update": {
                                     "align": {
-                                        "value": "right"
+                                        "value": "center"
                                     },
                                     "text": {
                                         "value": "Cylinders"

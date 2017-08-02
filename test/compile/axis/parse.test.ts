@@ -95,7 +95,9 @@ describe('Axis', function() {
       ]
     });
     globalRuleOverlay.parseScale();
+    globalRuleOverlay.parseLayoutSize();
     parseLayerAxis(globalRuleOverlay);
+
 
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;

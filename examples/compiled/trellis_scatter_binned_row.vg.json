@@ -90,7 +90,7 @@
                     "encode": {
                         "update": {
                             "align": {
-                                "value": "right"
+                                "value": "center"
                             },
                             "text": {
                                 "value": "BIN(Acceleration)"

@@ -25,6 +25,7 @@ import {
   VgScale,
   VgSignal
 } from '../vega.schema';
+import {RowCol} from '../vega.schema';
 import {domain} from './axis/rules';
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
@@ -148,17 +149,9 @@ export class FacetModel extends ModelWithField {
   private makeHeaderComponent(channel: HeaderChannel, labels: boolean): HeaderComponent {
     const sizeType = channel === 'row' ? 'height' : 'width';
 
-    let descendant = this.child;
-    // FIXME this is not always correct as we need a way
-    // to properly read inner layout's actual width/height
-    // in order to correctly center the plot.
-    while (descendant instanceof FacetModel) {
-      descendant = descendant.child;
-    }
-
     return {
       labels,
-      sizeSignal: descendant.getSizeSignalRef(sizeType),
+      sizeSignal: this.child.component.layoutSize.get(sizeType) ? this.child.getSizeSignalRef(sizeType) : undefined,
       axes: []
     };
   }
@@ -225,15 +218,43 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionData(data);
   }
 
+  private getLayoutBandMixins(headerType: 'header' | 'footer'): {
+    headerBand?: RowCol<number>,
+    footerBand?: RowCol<number>
+  } {
+    const bandMixins = {};
+
+    const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+
+    for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
+      const layoutHeaderComponent = this.component.layoutHeaders[channel];
+      const headerComponent = layoutHeaderComponent[headerType];
+      if (headerComponent && headerComponent[0]) {
+        const sizeType = channel === 'row' ? 'height' : 'width';
+
+        if (!this.child.component.layoutSize.get(sizeType)) {
+          // If facet child does not have size signal, then apply headerBand
+          bandMixins[bandType] = bandMixins[bandType] || {};
+          bandMixins[bandType][channel] = 0.5;
+        }
+      }
+    }
+    return bandMixins;
+  }
+
   public assembleLayout(): VgLayout {
     const columns = this.channelHasField('column') ? {
       signal: this.columnDistinctSignal()
     } : 1;
 
+
+
     // TODO: determine default align based on shared / independent scales
 
     return {
       padding: {row: 10, column: 10},
+      ...this.getLayoutBandMixins('header'),
+      ...this.getLayoutBandMixins('footer'),
 
       // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
       offset: 10,

@@ -111,7 +111,7 @@
                     "encode": {
                         "update": {
                             "align": {
-                                "value": "right"
+                                "value": "center"
                             },
                             "text": {
                                 "value": "gender"

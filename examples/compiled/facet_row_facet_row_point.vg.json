@@ -52,6 +52,9 @@
             "row": 10,
             "column": 10
         },
+        "headerBand": {
+            "row": 0.5
+        },
         "offset": 10,
         "columns": 1,
         "bounds": "full",
@@ -69,7 +72,7 @@
                     "encode": {
                         "update": {
                             "align": {
-                                "value": "right"
+                                "value": "center"
                             },
                             "text": {
                                 "value": "Origin / Cylinders"
@@ -122,13 +125,6 @@
                         "baseline": {
                             "value": "middle"
                         }
-                    }
-                }
-            },
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "child_child_height"
                     }
                 }
             }

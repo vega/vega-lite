@@ -116,11 +116,15 @@ export type VgScale = {
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
+export type RowCol<T> = {
+  row?: T,
+  column?: T
+};
+
 export type VgLayout = {
-  padding: number | {
-    row?: number,
-    column?: number
-  },
+  padding: number | RowCol<number>,
+  headerBand?: number | RowCol<number>,
+  footerBand?: number | RowCol<number>,
   offset: number | {
     rowHeader: number,
     rowFooter: number,
