@@ -105,7 +105,7 @@
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
     "uglify-js": "^3.0.24",
     "vega": "^3.0.0-rc2",
-    "vega-datasets": "vega/vega-datasets#gh-pages",
+    "vega-datasets": "vega/vega-datasets#v1.9.0",
     "vega-embed": "^3.0.0-beta.19",
     "vega-tooltip": "^0.4.2",
     "watchify": "^3.9.0",
