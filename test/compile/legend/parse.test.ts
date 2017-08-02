@@ -71,5 +71,34 @@ describe('compile/legend', function() {
       model.parseLegend();
       assert.equal(model.component.legends.color.explicit.orient, 'left');
     });
+
+    it('should correctly merge legend that exists only on one plot', () => {
+      const model = parseLayerModel({
+        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+        "description": "Google's stock price over time.",
+        "data": {"url": "data/stocks.csv"},
+        "layer": [
+          {
+            "mark": "line",
+            "encoding": {
+              "x": {"field": "date", "type": "temporal"},
+              "y": {"field": "price", "type": "quantitative"}
+            }
+          },{
+            "mark": {"type":"point", "filled": true},
+            "encoding": {
+              "x": {"field": "date", "type": "temporal"},
+              "y": {"field": "price", "type": "quantitative"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          }
+        ]
+      });
+      model.parseScale();
+      model.parseLegend();
+      assert.isOk(model.component.legends.color);
+      assert.isUndefined(model.children[0].component.legends.color);
+      assert.isUndefined(model.children[1].component.legends.color);
+    });
   });
 });

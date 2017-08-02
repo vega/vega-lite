@@ -161,6 +161,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "a b",
             "zindex": 1
         },
@@ -172,6 +175,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
@@ -180,6 +186,9 @@
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "title": "c d",
             "zindex": 1
         },
@@ -191,6 +200,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "x"
@@ -198,7 +210,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

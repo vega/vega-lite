@@ -114,6 +114,9 @@
                     "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "title": "US_DVD_Sales",
                     "zindex": 1
                 }
@@ -181,6 +184,9 @@
                     "scale": "x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
                     "title": "Worldwide_Gross",
                     "zindex": 1
                 }
@@ -262,6 +268,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "y"
@@ -274,6 +283,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "x"
@@ -319,7 +331,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

@@ -160,6 +160,9 @@
                     "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
                     "zindex": 1
                 }
             ]
@@ -388,6 +391,8 @@
     "config": {
         "axis": {
             "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888",
             "domainWidth": 1
         }
     }

@@ -217,6 +217,9 @@
                     "scale": "x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
                     "title": "SUM(yield)",
                     "zindex": 1
                 }
@@ -301,6 +304,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "y"
@@ -375,7 +381,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

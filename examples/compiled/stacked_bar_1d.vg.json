@@ -88,7 +88,8 @@
                         "field": "sum_Acceleration_start"
                     },
                     "yc": {
-                        "value": 10.5
+                        "signal": "height",
+                        "mult": 0.5
                     },
                     "height": {
                         "value": 20
@@ -139,6 +140,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "SUM(Acceleration)",
             "zindex": 1
         },
@@ -150,6 +154,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0
         }
@@ -171,7 +178,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

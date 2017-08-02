@@ -175,12 +175,34 @@
                     "scale": "trellis_barley_x",
                     "labelOverlap": true,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(trellis_barley_child_width/40)"
+                    },
                     "title": "MEDIAN(yield)",
                     "zindex": 1
                 }
             ]
         },
         {
+            "name": "trellis_barley_cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "trellis_barley_facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "site"
+                    ]
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"site\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
             "data": [
                 {
                     "source": "trellis_barley_facet",
@@ -205,25 +227,6 @@
                     ]
                 }
             ],
-            "name": "trellis_barley_cell",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "trellis_barley_facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "site"
-                    ]
-                }
-            },
-            "sort": {
-                "field": [
-                    "datum[\"site\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
             "encode": {
                 "update": {
                     "width": {
@@ -278,6 +281,9 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "orient": "bottom",
+                    "tickCount": {
+                        "signal": "ceil(trellis_barley_child_width/40)"
+                    },
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "trellis_barley_y"
@@ -342,7 +348,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

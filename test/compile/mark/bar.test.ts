@@ -356,7 +356,8 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
       assert.isUndefined(props.height);
       assert.deepEqual(props.xc, {
-        value: 10.5
+        mult: 0.5,
+        signal: 'width'
       });
     });
   });
@@ -407,7 +408,10 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'sum_US_Gross'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
-      assert.deepEqual(props.yc, {value: 10.5});
+      assert.deepEqual(props.yc, {
+        mult: 0.5,
+        signal: 'height'
+      });
     });
   });
 

@@ -252,7 +252,9 @@
             "baseline": "middle"
         },
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

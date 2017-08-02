@@ -11,8 +11,8 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;
 
   return {
-    ...mixins.pointPosition('x', model, ref.midX(width, config)),
-    ...mixins.pointPosition('y', model, ref.midY(height, config)),
+    ...mixins.pointPosition('x', model, ref.mid(width)),
+    ...mixins.pointPosition('y', model, ref.mid(height)),
 
     ...mixins.color(model),
     ...mixins.text(model, 'tooltip'),

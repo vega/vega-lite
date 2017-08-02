@@ -67,7 +67,8 @@
             "encode": {
                 "update": {
                     "x": {
-                        "value": 10.5
+                        "signal": "width",
+                        "mult": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -124,7 +125,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

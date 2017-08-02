@@ -342,6 +342,9 @@
             "scale": "layer_0_y",
             "labelOverlap": true,
             "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "zindex": 1
         },
         {
@@ -349,12 +352,17 @@
             "scale": "layer_1_y",
             "labelOverlap": true,
             "orient": "right",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
             "zindex": 1
         }
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

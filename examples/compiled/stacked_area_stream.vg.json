@@ -218,6 +218,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "YEARMONTH(date)",
             "zindex": 1,
             "encode": {
@@ -239,6 +242,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
@@ -252,7 +258,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }

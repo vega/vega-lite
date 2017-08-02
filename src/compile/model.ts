@@ -154,25 +154,13 @@ export abstract class Model {
     };
   }
 
-  public get width(): number | VgSignalRef {
-    return this.getLayoutSize('width');
+  public get width(): VgSignalRef {
+    return this.getSizeSignalRef('width');
   }
 
 
-  public get height(): number | VgSignalRef {
-    return this.getLayoutSize('height');
-  }
-
-  private getLayoutSize(sizeType: 'width' | 'height') {
-    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-    const size = this.component.layoutSize.get(sizeType);
-    if (size !== undefined) {
-      if (isNumber(size)) {
-        return size;
-      }
-      return this.getSizeSignalRef(sizeType);
-    }
-    throw new Error(`calling model.${sizeType} before parseLayoutSize()`);
+  public get height(): VgSignalRef {
+    return this.getSizeSignalRef('height');
   }
 
   protected initSize(size: LayoutSizeIndex) {

@@ -27,7 +27,7 @@ permalink: /docs/aggregate.html
 
 `aggregate` property of the channel definition can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
 
-If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process. Additional summary and group-by fields can be specified using the `detail` channel. 
+If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process. Additional summary and group-by fields can be specified using the `detail` channel.
 
 Otherwise, if none of the specified encoding channel contains `aggregate`, the resulting visualization shows raw data without aggregation.
 
@@ -37,25 +37,30 @@ Otherwise, if none of the specified encoding channel contains `aggregate`, the r
 
 The supported **aggregation operations** are:
 
-| Operation       | Description  |
-| :---------------| :------------|
-| count           | Count the total number of elements in the group. <span class="note-line">__Note:__ _'count'_ operates directly on the input objects and return the same value regardless of the provided field. Similar to SQL's `count(*)`, count can be specified with a `field` `"*"`.|
-| valid           | Count values that are not `null`, `undefined` or `NaN`.|
-| missing         | Count the number of `null` or `undefined` values.|
-| distinct        | Count the number distinct values.|
-| sum             | Compute the sum of values in a group.|
-| mean            | Compute the mean (average) of values in a group.|
-| average         | Compute the mean (average) of values in a group. Identical to _mean_.|
-| variance        | Compute the sample variance of values in a group.|
-| variancep       | Compute the population variance of values in a group.|
-| stdev           | Compute the sample standard deviation of values in a group.|
-| stdevp          | Compute the population standard deviation of values in a group.|
-| median          | Compute the median of values in a group.|
-| q1              | Compute the lower quartile boundary of values in a group.|
-| q3              | Compute the upper quartile boundary of values in a group.|
-| modeskew        | Compute the mode skewness of values in a group.|
-| min             | Compute the minimum value in a group.|
-| max             | Compute the maximum value in a group.|
+| Operation | Description  |
+| :-------- | :------------|
+| count     | The total count of data objects in the group. <span class="note-line">__Note:__ _'count'_ operates directly on the input objects and return the same value regardless of the provided field. Similar to SQL's `count(*)`, count can be specified with a `field` `"*"`.|
+| valid     | The count of field values that are not `null`, `undefined` or `NaN`.|
+| missing   | The count of `null` or `undefined` field values.|
+| distinct  | The count of distinct field values.|
+| sum       | The sum of field values.|
+| mean      | The mean (average) field value.|
+| average   | The mean (average) field value. Identical to _mean_.|
+| variance  | The sample variance of field values.|
+| variancep | The population variance of field values.|
+| stdev     | The sample standard deviation of field values.|
+| stdevp    | The population standard deviation of field values.|
+| stderr    | The standard error of field values.|
+| median    | The median field value.|
+| q1        | The lower quartile boundary of field values.|
+| q3        | The upper quartile boundary of field values.|
+| ci0       | The lower boundary of the bootstrapped 95% confidence interval of the mean field value.|
+| ci1       | The upper boundary of the bootstrapped 95% confidence interval of the mean field value.|
+| min       | The minimum field value.|
+| max       | The maximum field value.|
+| argmin    | An input data object containing the minimum field value.|
+| argmax    | An input data object containing the maximum field value.|
+
 
 #### Example
 

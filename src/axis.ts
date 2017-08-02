@@ -13,9 +13,9 @@ export interface Axis extends VgAxisBase, Guide {
   labelPadding?: number;
 
   /**
-   * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
-   * __Default value:__ `"x"` axis is placed on the bottom, `"y"` axis is placed on the left, `"column"`"s x-axis is placed on the top, `"row"`s y-axis is placed on the right.
+   * __Default value:__ x-axis is placed on the bottom, y-axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right.
    */
   orient?: AxisOrient;
 

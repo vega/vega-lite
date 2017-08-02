@@ -76,7 +76,8 @@
                         "field": "mean_temp"
                     },
                     "y": {
-                        "value": 10.5
+                        "signal": "height",
+                        "mult": 0.5
                     },
                     "stroke": {
                         "scale": "color",
@@ -124,6 +125,9 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "title": "MEAN(temp)",
             "zindex": 1
         },
@@ -135,6 +139,9 @@
             "maxExtent": 0,
             "minExtent": 0,
             "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
             "ticks": false,
             "zindex": 0
         }
@@ -156,7 +163,9 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
         }
     }
 }
