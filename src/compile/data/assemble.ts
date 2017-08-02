@@ -51,7 +51,7 @@ function cloneSubtree(facet: FacetNode) {
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
-        const newName = FACET_SCALE_PREFIX + facet.model.getName(copy.getSource());
+        const newName = FACET_SCALE_PREFIX + copy.getSource();
         copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;

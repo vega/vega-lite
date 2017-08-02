@@ -296,7 +296,7 @@
             "name": "trellis_barley_x",
             "type": "linear",
             "domain": {
-                "data": "scale_trellis_barley_child_main",
+                "data": "data_1",
                 "field": "median_yield"
             },
             "range": [
@@ -313,7 +313,7 @@
             "name": "trellis_barley_y",
             "type": "point",
             "domain": {
-                "data": "scale_trellis_barley_child_raw",
+                "data": "source_0",
                 "field": "variety",
                 "sort": {
                     "field": "yield",
@@ -333,7 +333,7 @@
             "name": "trellis_barley_color",
             "type": "ordinal",
             "domain": {
-                "data": "scale_trellis_barley_child_main",
+                "data": "data_1",
                 "field": "year",
                 "sort": true
             },
