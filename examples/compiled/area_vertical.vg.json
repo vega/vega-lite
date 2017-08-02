@@ -48,13 +48,6 @@
                     "as": [
                         "sum_Weight_in_lbs"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_Year",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -73,6 +66,10 @@
         {
             "name": "marks",
             "type": "area",
+            "sort": {
+                "field": "datum[\"year_Year\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "source_0"
             },

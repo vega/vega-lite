@@ -90,13 +90,6 @@
                     "as": [
                         "max_temp_max"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "month_date",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -133,13 +126,6 @@
                     "as": [
                         "min_temp_min"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "month_date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -193,6 +179,10 @@
         {
             "name": "layer_1_layer_0_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"month_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_1"
             },
@@ -216,6 +206,10 @@
         {
             "name": "layer_1_layer_1_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"month_date\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_2"
             },

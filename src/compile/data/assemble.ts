@@ -11,7 +11,6 @@ import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
-import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -199,7 +198,6 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
-      node instanceof OrderNode ||
       node instanceof LookupNode) {
       dataSource.transform.push(node.assemble());
     }

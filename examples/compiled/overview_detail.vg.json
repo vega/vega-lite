@@ -30,13 +30,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "date",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -57,13 +50,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "date",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -127,6 +113,10 @@
                     "name": "concat_0_marks",
                     "type": "area",
                     "clip": true,
+                    "sort": {
+                        "field": "datum[\"date\"]",
+                        "order": "descending"
+                    },
                     "from": {
                         "data": "data_0"
                     },
@@ -466,6 +456,10 @@
                 {
                     "name": "concat_1_marks",
                     "type": "area",
+                    "sort": {
+                        "field": "datum[\"date\"]",
+                        "order": "descending"
+                    },
                     "from": {
                         "data": "data_1"
                     },

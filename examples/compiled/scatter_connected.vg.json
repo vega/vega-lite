@@ -42,17 +42,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": [
-                            "year"
-                        ],
-                        "order": [
-                            "ascending"
-                        ]
-                    }
                 }
             ]
         },
@@ -96,6 +85,14 @@
         {
             "name": "layer_0_marks",
             "type": "line",
+            "sort": {
+                "field": [
+                    "datum[\"year\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
             "from": {
                 "data": "data_0"
             },

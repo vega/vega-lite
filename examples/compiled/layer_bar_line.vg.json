@@ -81,13 +81,6 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "a",
-                        "order": "descending"
-                    }
                 }
             ]
         }
@@ -141,6 +134,10 @@
         {
             "name": "layer_1_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"a\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_2"
             },

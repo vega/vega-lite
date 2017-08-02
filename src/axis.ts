@@ -67,7 +67,10 @@ export interface Axis extends VgAxisBase, Guide {
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
-export const AXIS_PROPERTY_TYPE: {[k in keyof Axis]: 'main' | 'grid'} = {
+export const AXIS_PROPERTY_TYPE: {
+  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+  [k in keyof Axis]: 'main' | 'grid'
+} = {
   grid: 'grid',
   labelOverlap: 'main',
   offset: 'main',

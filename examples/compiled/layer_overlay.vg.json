@@ -49,13 +49,6 @@
                     "as": [
                         "min_Horsepower"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "Cylinders",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -114,13 +107,6 @@
                     "as": [
                         "max_Horsepower"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "Cylinders",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -169,6 +155,10 @@
         {
             "name": "layer_0_layer_0_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"Cylinders\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_5"
             },
@@ -214,6 +204,10 @@
         {
             "name": "layer_1_layer_0_marks",
             "type": "line",
+            "sort": {
+                "field": "datum[\"Cylinders\"]",
+                "order": "descending"
+            },
             "from": {
                 "data": "data_2"
             },
