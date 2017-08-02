@@ -161,20 +161,6 @@ export abstract class Model {
     return this.getSizeSignalRef('height');
   }
 
-  public getLayoutSize(sizeType: 'width' | 'height'): number | VgSignalRef {
-    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-    const size = this.component.layoutSize.get(sizeType);
-    if (size !== undefined) {
-      if (isNumber(size)) {
-        return size;
-      } else if (size === 'merged') {
-        return this.parent.getLayoutSize(sizeType);
-      }
-      return this.getSizeSignalRef(sizeType);
-    }
-    throw new Error(`calling model.${sizeType} before parseLayoutSize()`);
-  }
-
   protected initSize(size: LayoutSizeIndex) {
     const {width, height} = size;
     if (width) {
