@@ -183,6 +183,25 @@
             ]
         },
         {
+            "name": "trellis_barley_cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "trellis_barley_facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "site"
+                    ]
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"site\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
             "data": [
                 {
                     "source": "trellis_barley_facet",
@@ -207,25 +226,6 @@
                     ]
                 }
             ],
-            "name": "trellis_barley_cell",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "trellis_barley_facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "site"
-                    ]
-                }
-            },
-            "sort": {
-                "field": [
-                    "datum[\"site\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
             "encode": {
                 "update": {
                     "width": {
