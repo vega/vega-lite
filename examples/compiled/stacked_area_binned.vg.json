@@ -64,9 +64,14 @@
                     ]
                 },
                 {
-                    "type": "formula",
-                    "expr": "datum[\"bin_maxbins_10_Acceleration_start\"] + '_' + datum[\"bin_maxbins_10_Acceleration_end\"]",
-                    "as": "key_bin_maxbins_10_Acceleration_start_bin_maxbins_10_Acceleration_end"
+                    "type": "impute",
+                    "field": "sum_Horsepower",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "key": "bin_maxbins_10_Acceleration_start",
+                    "method": "value",
+                    "value": 0
                 },
                 {
                     "type": "impute",
@@ -74,7 +79,7 @@
                     "groupby": [
                         "Cylinders"
                     ],
-                    "key": "key_bin_maxbins_10_Acceleration_start_bin_maxbins_10_Acceleration_end",
+                    "key": "bin_maxbins_10_Acceleration_end",
                     "method": "value",
                     "value": 0
                 },

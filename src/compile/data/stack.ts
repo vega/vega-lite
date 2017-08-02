@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {isScaleChannel} from '../../channel';
-import {field} from '../../fielddef';
+import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains, duplicate, stringValue} from '../../util';
@@ -28,9 +28,11 @@ function getStackByFields(model: UnitModel): string[] {
 
 export interface StackComponent {
   /**
-   * Grouping fields for stacked charts.  This includes one of x- or 'y-field and may include faceted field.
+   * Faceted field.
    */
-  groupby: string[];
+  facetby: string[];
+
+  groupbyFieldDef: FieldDef<string>;
 
   /**
    * Stack measure's field
@@ -77,17 +79,9 @@ export class StackNode extends DataFlowNode {
       return null;
     }
 
-    const groupby = [];
+    let groupbyFieldDef: FieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      const groupbyFieldDef = model.fieldDef(stackProperties.groupbyChannel);
-      if (groupbyFieldDef.bin) {
-        // For Bin, we need to add both start and end to ensure that both get imputed
-        // and included in the stack output (https://github.com/vega/vega-lite/issues/1805).
-        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'start'}));
-        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'end'}));
-      } else {
-        groupby.push(model.field(stackProperties.groupbyChannel));
-      }
+      groupbyFieldDef = model.fieldDef(stackProperties.groupbyChannel);
     }
 
     const stackby = getStackByFields(model);
@@ -107,8 +101,9 @@ export class StackNode extends DataFlowNode {
     }
 
     return new StackNode({
-      groupby,
+      groupbyFieldDef,
       field: model.field(stackProperties.fieldChannel),
+      facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
@@ -121,14 +116,16 @@ export class StackNode extends DataFlowNode {
   }
 
   public addDimensions(fields: string[]) {
-    this._stack.groupby = this._stack.groupby.concat(fields);
+    this._stack.facetby = this._stack.facetby.concat(fields);
   }
 
   public dependentFields() {
     const out = {};
 
     out[this._stack.field] = true;
-    this._stack.groupby.forEach(f => out[f] = true);
+
+    this.getGroupbyFields().forEach(f => out[f] = true);
+    this._stack.facetby.forEach(f => out[f] = true);
     const field = this._stack.sort.field;
     isArray(field) ? field.forEach(f => out[f] = true) : out[field] = true;
 
@@ -144,45 +141,55 @@ export class StackNode extends DataFlowNode {
     return out;
   }
 
+  private getGroupbyFields() {
+    const {groupbyFieldDef} = this._stack;
+    if (groupbyFieldDef) {
+      if (groupbyFieldDef.bin) {
+        return [
+          // For binned group by field, we need both bin_start and bin_end
+          field(groupbyFieldDef, {binSuffix: 'start'}),
+          field(groupbyFieldDef, {binSuffix: 'end'})
+        ];
+      }
+      return [field(groupbyFieldDef)];
+    }
+    return [];
+  }
+
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
 
-    const stack = this._stack;
+    const {facetby, field, groupbyFieldDef, impute, offset, sort, stackby} = this._stack;
+    const groupbyFields = this.getGroupbyFields();
 
     // Impute
-    if (stack.impute) {
-      const order = stack.groupby.length === 1 ? stack.groupby[0] : 'key_' + stack.groupby.join('_');
+    if (impute) {
 
-      // Impute only takes a single key so we might have to create one
-      if (stack.groupby.length > 1) {
-        transform.push({
-          type: 'formula',
-          expr: stack.groupby.map(f => `datum[${stringValue(f)}]`).join(` + '_' + `),
-          as: order
-        });
+      if (groupbyFieldDef) {
+        for (const key of groupbyFields) {
+          transform.push({
+            type: 'impute',
+            field: field,
+            groupby: stackby,
+            key,
+            method: 'value',
+            value: 0
+          });
+        }
       }
-
-      transform.push({
-        type: 'impute',
-        field: stack.field,
-        groupby: stack.stackby,
-        key: order,
-        method: 'value',
-        value: 0
-      });
     }
 
     // Stack
     transform.push({
       type: 'stack',
-      groupby: stack.groupby,
-      field: stack.field,
-      sort: stack.sort,
+      groupby: groupbyFields.concat(facetby),
+      field,
+      sort,
       as: [
-        stack.field + '_start',
-        stack.field + '_end'
+        field + '_start',
+        field + '_end'
       ],
-      offset: stack.offset
+      offset
     });
 
     return transform;
