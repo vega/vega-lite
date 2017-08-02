@@ -251,7 +251,6 @@ export class FacetModel extends ModelWithField {
     const groupProperties = child.assembleParentGroupProperties();
 
     const markGroup = {
-      ...(data.length > 0 ? {data: data} : {}),
       name: this.getName('cell'),
       type: 'group',
       from: {
@@ -277,6 +276,7 @@ export class FacetModel extends ModelWithField {
           hasColumn ? [ (facet.column.header && facet.column.header.sort) || 'ascending'] : []
         )
       },
+      ...(data.length > 0 ? {data: data} : {}),
       ...(groupProperties ? {encode: {update: groupProperties}} : {}),
       ...child.assembleGroup()
     };
