@@ -25,6 +25,9 @@
       "heatmap": {
         "scheme": "greenblue"
       }
+    },
+    "cell": {
+      "stroke": "transparent"
     }
   }
 }
