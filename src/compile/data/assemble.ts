@@ -14,7 +14,7 @@ import * as optimizers from './optimizers';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode, LookupNode} from './transforms';
+import {CalculateNode, FilterNode, IdentifierNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';
@@ -198,7 +198,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
-      node instanceof LookupNode) {
+      node instanceof LookupNode ||
+      node instanceof IdentifierNode) {
       dataSource.transform.push(node.assemble());
     }
 

@@ -91,7 +91,7 @@
             "on": [
                 {
                     "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
+                    "update": "isTuple(group()) ? group() : unit"
                 }
             ]
         },
@@ -106,7 +106,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && datum[\"Year\"]"
+                    "update": "datum && item().mark.marktype !== 'group' ? datum[\"Year\"] : null"
                 }
             ],
             "bind": {
@@ -127,7 +127,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && datum[\"Cylinders\"]"
+                    "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
                 }
             ],
             "bind": {
@@ -143,7 +143,7 @@
         },
         {
             "name": "CylYr_tuple",
-            "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
+            "update": "CylYr_Cylinders && CylYr_Year ? {fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]} : null"
         },
         {
             "name": "CylYr_modify",

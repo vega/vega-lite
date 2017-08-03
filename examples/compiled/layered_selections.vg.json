@@ -86,7 +86,7 @@
             "on": [
                 {
                     "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
+                    "update": "isTuple(group()) ? group() : unit"
                 }
             ]
         },
@@ -101,7 +101,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "datum && datum[\"Cylinders\"]"
+                    "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
                 }
             ],
             "bind": {
@@ -263,7 +263,7 @@
         },
         {
             "name": "cyl_tuple",
-            "update": "{fields: [\"Cylinders\"], values: [cyl_Cylinders]}"
+            "update": "cyl_Cylinders ? {fields: [\"Cylinders\"], values: [cyl_Cylinders]} : null"
         },
         {
             "name": "cyl_modify",

@@ -11,14 +11,14 @@ const multi:SelectionCompiler = {
     const proj = selCmpt.project;
     const datum = nearest.has(selCmpt) ?
       '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-    const bins = {};
+    const bins: string[] = [];
     const encodings = proj.map((p) => stringValue(p.channel)).filter((e) => e).join(', ');
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => {
       const channel = p.channel;
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
-      return (fieldDef && fieldDef.bin) ? (bins[p.field] = 1,
+      return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
         `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
             `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
         `${datum}[${stringValue(p.field)}]`;
@@ -27,7 +27,10 @@ const multi:SelectionCompiler = {
     // Only add a discrete selection to the store if a datum is present _and_
     // the interaction isn't occuring on a group mark. This guards against
     // polluting interactive state with invalid values in faceted displays
-    // as the group marks are also data-driven.
+    // as the group marks are also data-driven. We force the update to account
+    // for constant null states but varying toggles (e.g., shift-click in
+    // whitespace followed by a click in whitespace; the store should only
+    // be cleared on the second click).
     return [{
       name: selCmpt.name + TUPLE,
       value: {},
@@ -36,8 +39,9 @@ const multi:SelectionCompiler = {
         update: `datum && item().mark.marktype !== 'group' ? ` +
           `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
           `fields: [${fields}], values: [${values}]` +
-          (keys(bins).length ? `, bins: ${JSON.stringify(bins)}` : '') +
-          '} : null'
+          (bins.length ? ', ' + bins.map((b) => `${stringValue('bin_' + b)}: 1`).join(', ') : '') +
+          '} : null',
+        force: true
       }]
     }];
   },

@@ -41,7 +41,6 @@ import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
 import {UnitModel} from './unit';
 
-
 export class FacetModel extends ModelWithField {
   public readonly facet: Facet<string>;
 

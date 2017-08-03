@@ -345,7 +345,7 @@
             "on": [
                 {
                     "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
+                    "update": "isTuple(group()) ? group() : unit"
                 }
             ]
         }
@@ -392,7 +392,8 @@
                                     "type": "click"
                                 }
                             ],
-                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", encodings: [\"x\"], fields: [\"distance\"], values: [[datum[\"bin_maxbins_20_distance_start\"], datum[\"bin_maxbins_20_distance_end\"]]], bins: {\"distance\":1}} : null"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", encodings: [\"x\"], fields: [\"distance\"], values: [[datum[\"bin_maxbins_20_distance_start\"], datum[\"bin_maxbins_20_distance_end\"]]], \"bin_distance\": 1} : null",
+                            "force": true
                         }
                     ]
                 },
@@ -573,7 +574,8 @@
                                     "type": "click"
                                 }
                             ],
-                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", encodings: [\"x\"], fields: [\"delay\"], values: [[datum[\"bin_maxbins_20_delay_start\"], datum[\"bin_maxbins_20_delay_end\"]]], bins: {\"delay\":1}} : null"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", encodings: [\"x\"], fields: [\"delay\"], values: [[datum[\"bin_maxbins_20_delay_start\"], datum[\"bin_maxbins_20_delay_end\"]]], \"bin_delay\": 1} : null",
+                            "force": true
                         }
                     ]
                 },
@@ -754,7 +756,8 @@
                                     "type": "click"
                                 }
                             ],
-                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", encodings: [\"x\"], fields: [\"time\"], values: [[datum[\"bin_maxbins_20_time_start\"], datum[\"bin_maxbins_20_time_end\"]]], bins: {\"time\":1}} : null"
+                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", encodings: [\"x\"], fields: [\"time\"], values: [[datum[\"bin_maxbins_20_time_start\"], datum[\"bin_maxbins_20_time_end\"]]], \"bin_time\": 1} : null",
+                            "force": true
                         }
                     ]
                 },

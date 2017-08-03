@@ -30,7 +30,8 @@ describe('Single Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]} : null"
+        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null",
+        force: true
       }]
     }]);
 
@@ -40,7 +41,8 @@ describe('Single Selection', function() {
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}} : null"
+        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], \"bin_Miles_per_Gallon\": 1} : null",
+        force: true
       }]
     }]);
 
@@ -81,7 +83,7 @@ describe('Single Selection', function() {
   it('builds top-level signals', function() {
     const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
-      name: 'one', update: 'data(\"one_store\").length && {_id: data(\"one_store\")[0].values[0]}'
+      name: 'one', update: 'data(\"one_store\").length && {_vgsid_: data(\"one_store\")[0].values[0]}'
     }]);
 
     const twoSg = single.topLevelSignals(model, selCmpts['two'], []);
@@ -94,7 +96,7 @@ describe('Single Selection', function() {
       {
         name: 'unit',
         value: {},
-        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
       }
     ].concat(oneSg, twoSg));
   });

@@ -177,6 +177,10 @@
     },{
       "name": "layer_text_heatmap",
       "title": "Layering text over heatmap"
+    },
+    {
+      "name": "layer_candlestick",
+      "title": "Candlestick Chart"
     }
   ],
   "Interactive": [
