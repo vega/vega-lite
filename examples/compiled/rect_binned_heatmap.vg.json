@@ -5,7 +5,7 @@
     "encode": {
         "update": {
             "stroke": {
-                "value": "#ccc"
+                "value": "transparent"
             },
             "fill": {
                 "value": "transparent"
