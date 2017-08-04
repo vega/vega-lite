@@ -138,20 +138,6 @@ export class FacetNode extends DataFlowNode {
 
     if (this.columnName) {
       data.push(this.assembleRowColumnData('column', crossedDataName));
-
-      if (!this.parent || !(this.parent instanceof FacetModel)) {
-        // Unless this facet's parent is a facet model,
-        // column needs another data source to calculate cardinality as input to layout
-        data.push({
-          name: this.columnName + '_layout',
-          source: this.columnName,
-          transform: [{
-            type: 'aggregate',
-            ops: ['distinct'],
-            fields: [this.columnField]
-          }]
-        });
-      }
     }
 
     if (this.rowName) {

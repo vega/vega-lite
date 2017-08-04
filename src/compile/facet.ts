@@ -269,9 +269,8 @@ export class FacetModel extends ModelWithField {
       return undefined;
     } else {
       // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
-      const facetLayoutDataName = this.getName('column') + '_layout';
-      const columnDistinct = this.field('column',  {prefix: 'distinct'});
-      return {signal: `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`};
+      const facetLayoutDataName = this.getName('column');
+      return {signal: `length(data('${facetLayoutDataName}'))`};
     }
   }
 

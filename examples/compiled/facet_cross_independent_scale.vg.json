@@ -75,21 +75,6 @@
             ]
         },
         {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "c"
-                    ]
-                }
-            ]
-        },
-        {
             "name": "row",
             "source": "cross_column_row",
             "transform": [
@@ -128,7 +113,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_c\"]"
+            "signal": "length(data('column'))"
         },
         "bounds": "full",
         "align": "all"

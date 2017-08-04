@@ -106,7 +106,7 @@ describe('compile/data/facet', function() {
         }]
       });
 
-      assert.deepEqual(data[3], {
+      assert.deepEqual(data[2], {
         name: 'row',
         source: 'cross_column_row',
         transform:[{

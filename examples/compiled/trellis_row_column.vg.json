@@ -33,21 +33,6 @@
             ]
         },
         {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "Origin"
-                    ]
-                }
-            ]
-        },
-        {
             "name": "row",
             "source": "source_0",
             "transform": [
@@ -77,7 +62,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_Origin\"]"
+            "signal": "length(data('column'))"
         },
         "bounds": "full",
         "align": "all"

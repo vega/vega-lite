@@ -27,21 +27,6 @@
             ]
         },
         {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "Origin"
-                    ]
-                }
-            ]
-        },
-        {
             "name": "data_1",
             "source": "source_0",
             "transform": [
@@ -72,7 +57,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_Origin\"]"
+            "signal": "length(data('column'))"
         },
         "bounds": "full",
         "align": "all"
@@ -173,21 +158,6 @@
                         {
                             "type": "aggregate",
                             "groupby": [
-                                "Cylinders"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "child_column_layout",
-                    "source": "child_column",
-                    "transform": [
-                        {
-                            "type": "aggregate",
-                            "ops": [
-                                "distinct"
-                            ],
-                            "fields": [
                                 "Cylinders"
                             ]
                         }

@@ -79,21 +79,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "gender"
-                    ]
-                }
-            ]
         }
     ],
     "signals": [
@@ -113,7 +98,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_gender\"]"
+            "signal": "length(data('column'))"
         },
         "bounds": "full",
         "align": "all"
