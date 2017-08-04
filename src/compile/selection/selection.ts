@@ -3,11 +3,12 @@ import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
-import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
+import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
+import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -25,11 +26,11 @@ export const SELECTION_DOMAIN = '_selection_domain_';
 
 export interface SelectionComponent {
   name: string;
-  type: SelectionTypes;
+  type: SelectionType;
   events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
-  resolve: SelectionResolutions;
+  resolve: SelectionResolution;
   mark?: BrushConfig;
 
   // Transforms
@@ -130,6 +131,19 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     });
   });
 
+  const facetModel = getFacetModel(model);
+  if (signals.length && facetModel) {
+    const name = stringValue(facetModel.getName('cell'));
+    signals.unshift({
+      name: 'facet',
+      value: {},
+      on: [{
+        events: parseSelector('mousemove', 'scope'),
+        update: `isTuple(facet) ? facet : group(${name}).datum`
+      }]
+    });
+  }
+
   return signals;
 }
 
@@ -155,7 +169,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
       signals.unshift({
         name: 'unit',
         value: {},
-        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
       });
     }
   }
@@ -175,55 +189,35 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  let clipGroup = false;
   let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, (txCompiler) => {
-      clipGroup = clipGroup || txCompiler.clipGroup;
       if (txCompiler.marks) {
         selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
       }
     });
   });
 
-  // In a layered spec, we want to clip all layers together rather than
-  // only the layer within which the selection is defined. Propagate
-  // our assembled state up and let the LayerModel make the right call.
-  if (model.parent && model.parent instanceof LayerModel) {
-    return [selMarks, clipMarks];
-  } else {
-    return clipGroup ? clipMarks(selMarks) : selMarks;
-  }
+  return selMarks;
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
-  let clipGroup = false;
   model.children.forEach(child => {
     if (child instanceof UnitModel) {
-      const unit = assembleUnitSelectionMarks(child, marks);
-      marks = unit[0];
-      clipGroup = clipGroup || unit[1];
+      marks = assembleUnitSelectionMarks(child, marks);
     }
   });
-  return clipGroup ? clipMarks(marks) : marks;
+
+  return marks;
 }
 
-const PREDICATES_OPS = {
-  global: '"union", "all"',
-  independent: '"intersect", "unit"',
-  union: '"union", "all"',
-  union_others: '"union", "others"',
-  intersect: '"intersect", "all"',
-  intersect_others: '"intersect", "others"'
-};
-
 export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
+  const stores: string[] = [];
   function expr(name: string): string {
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
-    const op = PREDICATES_OPS[selCmpt.resolve];
 
     if (selCmpt.timeUnit) {
       const child = dfnode || model.component.data.main;
@@ -235,11 +229,14 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
       }
     }
 
-    return compiler(selCmpt.type).predicate +
-      `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
+    stores.push(store);
+    return compiler(selCmpt.type).predicate + `(${store}, datum` +
+      (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
   }
 
-  return logicalExpr(selections, expr);
+  const predicateStr = logicalExpr(selections, expr);
+  return '!(' + stores.map((s) => `length(data(${s}))`).join(' || ') +
+    `) || (${predicateStr})`;
 }
 
 // Selections are parsed _after_ scales. If a scale domain is set to
@@ -270,7 +267,8 @@ export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSi
     return {
       signal: compiler(selCmpt.type).scaleDomain +
         `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
-          `${stringValue(selDomain.field || null)}, ${PREDICATES_OPS[selCmpt.resolve]})`
+          stringValue(selDomain.field || null) +
+          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     };
   }
 
@@ -289,7 +287,7 @@ function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCom
   }
 }
 
-function compiler(type: SelectionTypes): SelectionCompiler {
+function compiler(type: SelectionType): SelectionCompiler {
   switch (type) {
     case 'single':
       return singleCompiler;
@@ -301,12 +299,38 @@ function compiler(type: SelectionTypes): SelectionCompiler {
   return null;
 }
 
-export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
-  return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
+function getFacetModel(model: Model): FacetModel {
+  let parent = model.parent;
+  while (parent) {
+    if (parent instanceof FacetModel) {
+      break;
+    }
+    parent = parent.parent;
+  }
+
+  return parent as FacetModel;
 }
 
-function clipMarks(marks: any[]): any[] {
-  return marks.map((m) => (m.clip = true, m));
+export function unitName(model: Model) {
+  let name = stringValue(model.name);
+  const facet = getFacetModel(model);
+  if (facet) {
+    name += (facet.facet.row ? ` + '_' + facet[${stringValue(facet.field('row'))}]` : '')
+      + (facet.facet.column ? ` + '_' + facet[${stringValue(facet.field('column'))}]` : '');
+  }
+  return name;
+}
+
+export function requiresSelectionId(model: Model) {
+  let identifier = false;
+  forEachSelection(model, (selCmpt) => {
+    identifier = identifier || selCmpt.project.some((proj) => proj.field === SELECTION_ID);
+  });
+  return identifier;
+}
+
+export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
+  return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
 }
 
 export function spatialProjections(selCmpt: SelectionComponent) {

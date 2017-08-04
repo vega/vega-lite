@@ -1,4 +1,4 @@
-import {Axis, AxisConfig} from '../../axis';
+import {Axis} from '../../axis';
 import {binToString} from '../../bin';
 import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
@@ -7,7 +7,7 @@ import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
 import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
-import {VgAxis} from '../../vega.schema';
+import {VgAxis, VgSignalRef} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 import {labelAngle} from './encode';
@@ -44,23 +44,25 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
 
 
 export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, scaleType: ScaleType) {
-  if (channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+  // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
+  if ((channel === 'x' || channel === 'y') && fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
       return 'greedy';
     }
     return true;
   }
+
   return undefined;
 }
 
-export function minMaxExtent(isGridAxis: boolean, scaleType: ScaleType, axisConfig: AxisConfig) {
-  // For quantitative scale, set default extent to avoid jumpy axis title
-  // (Fix https://github.com/vega/vega-lite/issues/2282)
-  if (getScaleCategory(scaleType) === 'numeric') {
-    return axisConfig.quantitativeExtent;
+export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean) {
+  if (isGridAxis) {
+    // Always return 0 to make sure that `config.axis*.minExtent` and `config.axis*.maxExtent`
+    // would not affect gridAxis
+    return 0;
+  } else {
+    return specifiedExtent;
   }
-
-  return undefined;
 }
 
 export function orient(channel: Channel) {
@@ -74,11 +76,14 @@ export function orient(channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: Channel, fieldDef: FieldDef<string>) {
-  // FIXME depends on scale type too
-  if (channel === X && !fieldDef.bin) {
+export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+
+  if (!fieldDef.bin && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
-    return 5;
+    // Thus, we set it to 5 for width = 200
+    // and set the same value for y for consistency.
+
+    return {signal: `ceil(${size.signal}/40)`};
   }
 
   return undefined;

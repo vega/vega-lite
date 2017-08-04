@@ -36,11 +36,21 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
       if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
         const scaleName = model.scaleName(channel);
 
+        if (model.parent instanceof FacetModel) {
+          // If parent is facet and this is an independent scale, return only signal signal
+          // as the width/height will be calculated using the cardinality from
+          // facet's aggregate rather than reading from scale domain
+          const parentChannelResolve = model.parent.component.resolve[channel];
+          if (parentChannelResolve.scale === 'independent') {
+            return [stepSignal(scaleName, range)];
+          }
+        }
+
         return [
           stepSignal(scaleName, range),
           {
             name,
-            update: sizeExpr(scaleName, scaleComponent)
+            update: sizeExpr(scaleName, scaleComponent, `domain('${scaleName}').length`)
           }
         ];
       }
@@ -62,9 +72,8 @@ function stepSignal(scaleName: string, range: VgRangeStep) {
   };
 }
 
-function sizeExpr(scaleName: string, scaleComponent: ScaleComponent) {
+export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, cardinality: string) {
   const type = scaleComponent.get('type');
-  const cardinality = `domain('${scaleName}').length`;
   const padding = scaleComponent.get('padding');
   let paddingOuter = scaleComponent.get('paddingOuter');
   paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;

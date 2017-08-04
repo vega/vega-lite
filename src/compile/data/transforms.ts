@@ -3,11 +3,23 @@ import {DateTime, isDateTime} from '../../datetime';
 import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {LogicalOperand} from '../../logical';
-import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit, LookupTransform} from '../../transform';
+import {SELECTION_ID} from '../../selection';
+import {
+  CalculateTransform,
+  FilterTransform,
+  isBin,
+  isCalculate,
+  isFilter,
+  isLookup,
+  isSummarize,
+  isTimeUnit,
+  LookupTransform,
+} from '../../transform';
 import {duplicate, keys, StringSet, toSet} from '../../util';
-import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {VgFilterTransform, VgFormulaTransform, VgIdentifierTransform, VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
+import {ModelWithField} from '../model';
+import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -123,6 +135,24 @@ export class LookupNode extends DataFlowNode {
   }
 }
 
+export class IdentifierNode extends DataFlowNode {
+  public clone() {
+    return new IdentifierNode();
+  }
+
+  constructor() {
+    super();
+  }
+
+  public producedFields() {
+    return {[SELECTION_ID]: true};
+  }
+
+  public assemble(): VgIdentifierTransform {
+    return {type: 'identifier', as: SELECTION_ID};
+  }
+}
+
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
@@ -187,6 +217,11 @@ export function parseTransformArray(model: Model) {
       node = TimeUnitNode.makeFromTransform(model, t);
     } else if (isSummarize(t)) {
       node = AggregateNode.makeFromTransform(model, t);
+
+      if (requiresSelectionId(model)) {
+        insert(node);
+        node = new IdentifierNode();
+      }
     } else if (isLookup(t)) {
       node = LookupNode.make(model, t, lookupCounter++);
     } else {

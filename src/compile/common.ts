@@ -1,6 +1,6 @@
 import {Channel, TEXT} from '../channel';
 import {CellConfig, Config} from '../config';
-import {field, FieldDef, isScaleFieldDef, OrderFieldDef} from '../fielddef';
+import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '../fielddef';
 import * as log from '../log';
 import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
@@ -113,7 +113,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   }
 }
 
-export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T) {
+export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {signal: string}) {
   if (specifiedValue !== undefined) {
     return specifiedValue;
   }
@@ -168,9 +168,9 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[]): VgSort {
+export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
+    s.field.push(field(orderChannelDef, {binSuffix: 'start', ...fieldRefOption}));
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});

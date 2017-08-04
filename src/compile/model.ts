@@ -15,18 +15,21 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {getFullName} from '../type';
 import {Dict, extend, vals, varName} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {FacetModel} from './facet';
+import {sizeExpr} from './layout/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
-import {assembleScale} from './scale/assemble';
+import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
@@ -35,8 +38,10 @@ import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
- * compilations.  These composable components will be assembled in the last
- * compilation step.
+ * compilations.  The components represents parts of the specification in a form that
+ * can be easily merged (during parsing for composite specs).
+ * In addition, these components are easily transformed into Vega specifications
+ * during the "assemble" phase, which is the last phase of the compilation step.
  */
 export interface Component {
   data: DataComponent;
@@ -149,25 +154,13 @@ export abstract class Model {
     };
   }
 
-  public get width(): number | VgSignalRef {
-    return this.getLayoutSize('width');
+  public get width(): VgSignalRef {
+    return this.getSizeSignalRef('width');
   }
 
 
-  public get height(): number | VgSignalRef {
-    return this.getLayoutSize('height');
-  }
-
-  private getLayoutSize(sizeType: 'width' | 'height') {
-    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
-    const size = this.component.layoutSize.get(sizeType);
-    if (size !== undefined) {
-      if (isNumber(size)) {
-        return size;
-      }
-      return this.getSizeSignalRef(sizeType);
-    }
-    throw new Error(`calling model.${sizeType} before parseLayoutSize()`);
+  public get height(): VgSignalRef {
+    return this.getSizeSignalRef('height');
   }
 
   protected initSize(size: LayoutSizeIndex) {
@@ -190,9 +183,9 @@ export abstract class Model {
 
     this.parseSelection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
-    this.parseAxisAndHeader(); // depends on scale
+    this.parseAxisAndHeader(); // depends on scale and layout size
     this.parseLegend(); // depends on scale, markDef
-    this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
+    this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -240,9 +233,7 @@ export abstract class Model {
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
-  public assembleScales(): VgScale[] {
-    return assembleScale(this);
-  }
+  public abstract assembleScales(): VgScale[];
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
@@ -280,6 +271,9 @@ export abstract class Model {
     return assembleLegends(this);
   }
 
+  /**
+   * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
+   */
   public assembleGroup(signals: VgSignal[] = []) {
     const group: VgMarkGroup = {};
 
@@ -297,7 +291,10 @@ export abstract class Model {
       this.assembleHeaderMarks(),
       this.assembleMarks()
     );
-    const scales = this.assembleScales();
+
+    // Only include scales if this spec is top-level or if parent is facet.
+    // (Otherwise, it will be merged with upper-level's scope.)
+    const scales = (!this.parent || this.parent instanceof FacetModel) ? this.assembleScales() : [];
     if (scales.length > 0) {
       group.scales = scales;
     }
@@ -351,6 +348,25 @@ export abstract class Model {
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
+    if (this.parent instanceof FacetModel) {
+      const channel = sizeType === 'width' ? 'x' : 'y';
+      const scaleComponent = this.component.scales[channel];
+
+      if (scaleComponent && !scaleComponent.merged) { // independent scale
+        const type = scaleComponent.get('type');
+        const range = scaleComponent.get('range');
+
+        if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+          const scaleName = scaleComponent.get('name');
+          const fieldName = getFieldFromDomains(scaleComponent.domains);
+          const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
+          return {
+            signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+          };
+        }
+      }
+    }
+
     return {
       signal: this.layoutSizeNameMap.get(this.getName(sizeType))
     };

@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {isScaleChannel} from '../../channel';
-import {field} from '../../fielddef';
+import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains, duplicate, stringValue} from '../../util';
@@ -28,9 +28,11 @@ function getStackByFields(model: UnitModel): string[] {
 
 export interface StackComponent {
   /**
-   * Grouping fields for stacked charts.  This includes one of x- or 'y-field and may include faceted field.
+   * Faceted field.
    */
-  groupby: string[];
+  facetby: string[];
+
+  dimensionFieldDef: FieldDef<string>;
 
   /**
    * Stack measure's field
@@ -77,17 +79,9 @@ export class StackNode extends DataFlowNode {
       return null;
     }
 
-    const groupby = [];
+    let dimensionFieldDef: FieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      const groupbyFieldDef = model.fieldDef(stackProperties.groupbyChannel);
-      if (groupbyFieldDef.bin) {
-        // For Bin, we need to add both start and end to ensure that both get imputed
-        // and included in the stack output (https://github.com/vega/vega-lite/issues/1805).
-        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'start'}));
-        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'end'}));
-      } else {
-        groupby.push(model.field(stackProperties.groupbyChannel));
-      }
+      dimensionFieldDef = model.fieldDef(stackProperties.groupbyChannel);
     }
 
     const stackby = getStackByFields(model);
@@ -107,12 +101,13 @@ export class StackNode extends DataFlowNode {
     }
 
     return new StackNode({
-      groupby,
+      dimensionFieldDef,
       field: model.field(stackProperties.fieldChannel),
+      facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
-      impute: contains(['area', 'line'], model.mark()),
+      impute: stackProperties.impute,
     });
   }
 
@@ -121,14 +116,16 @@ export class StackNode extends DataFlowNode {
   }
 
   public addDimensions(fields: string[]) {
-    this._stack.groupby = this._stack.groupby.concat(fields);
+    this._stack.facetby = this._stack.facetby.concat(fields);
   }
 
   public dependentFields() {
     const out = {};
 
     out[this._stack.field] = true;
-    this._stack.groupby.forEach(f => out[f] = true);
+
+    this.getGroupbyFields().forEach(f => out[f] = true);
+    this._stack.facetby.forEach(f => out[f] = true);
     const field = this._stack.sort.field;
     isArray(field) ? field.forEach(f => out[f] = true) : out[field] = true;
 
@@ -144,29 +141,54 @@ export class StackNode extends DataFlowNode {
     return out;
   }
 
+  private getGroupbyFields() {
+    const {dimensionFieldDef, impute} = this._stack;
+    if (dimensionFieldDef) {
+      if (dimensionFieldDef.bin) {
+        if (impute) {
+          // For binned group by field with impute, we calculate bin_mid
+          // as we cannot impute two fields simultaneously
+          return [field(dimensionFieldDef, {binSuffix: 'mid'})];
+        }
+        return [
+          // For binned group by field without impute, we need both bin_start and bin_end
+          field(dimensionFieldDef, {binSuffix: 'start'}),
+          field(dimensionFieldDef, {binSuffix: 'end'})
+        ];
+      }
+      return [field(dimensionFieldDef)];
+    }
+    return [];
+  }
+
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
 
-    const stack = this._stack;
+    const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
 
     // Impute
-    if (stack.impute) {
-      const order = stack.groupby.length === 1 ? stack.groupby[0] : 'key_' + stack.groupby.join('_');
+    if (impute && dimensionFieldDef) {
+      const dimensionField = dimensionFieldDef ? field(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
 
-      // Impute only takes a single key so we might have to create one
-      if (stack.groupby.length > 1) {
+      if (dimensionFieldDef.bin) {
+        // As we can only impute one field at a time, we need to calculate
+        // mid point for a binned field
         transform.push({
           type: 'formula',
-          expr: stack.groupby.map(f => `datum[${stringValue(f)}]`).join(` + '_' + `),
-          as: order
+          expr: '(' +
+            field(dimensionFieldDef, {expr: 'datum', binSuffix: 'start'}) +
+            '+' +
+            field(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
+            ')/2',
+          as: dimensionField
         });
       }
 
       transform.push({
         type: 'impute',
-        field: stack.field,
-        groupby: stack.stackby,
-        key: order,
+        field: stackField,
+        groupby: stackby,
+        key: dimensionField,
         method: 'value',
         value: 0
       });
@@ -175,14 +197,14 @@ export class StackNode extends DataFlowNode {
     // Stack
     transform.push({
       type: 'stack',
-      groupby: stack.groupby,
-      field: stack.field,
-      sort: stack.sort,
+      groupby: this.getGroupbyFields().concat(facetby),
+      field: stackField,
+      sort,
       as: [
-        stack.field + '_start',
-        stack.field + '_end'
+        stackField + '_start',
+        stackField + '_end'
       ],
-      offset: stack.offset
+      offset
     });
 
     return transform;

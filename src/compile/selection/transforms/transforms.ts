@@ -13,7 +13,6 @@ export interface TransformCompiler {
   // tupleExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[], selMarks: any[]) => any[];
-  clipGroup?: boolean;
 }
 
 import inputs from './inputs';

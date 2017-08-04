@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 
-import {parseMarkGroup} from '../../../src/compile/mark/mark';
+import {getPathSort, parseMarkGroup} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
-import {parseFacetModel, parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark', function() {
   describe('parseMarkGroup', function() {
@@ -120,5 +120,51 @@ describe('Mark', function() {
         assert.equal(markGroup[0].encode.update.tooltip.value, 'foo');
       });
     });
+  });
+
+  describe('getPathSort', () => {
+    describe('compileUnit', function() {
+    it('should order by order field for line with order (connected scatterplot)', function () {
+      const model = parseUnitModel({
+        "data": {"url": "data/driving.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
+          "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
+          "order": {"field": "year","type": "temporal"}
+        }
+      });
+      assert.deepEqual(getPathSort(model), {
+        field: ['datum[\"year\"]'],
+        order: ['ascending']
+      });
+    });
+
+    it('should order by x by default if x is the dimension', function () {
+      const model = parseUnitModelWithScale({
+        "data": {"url": "data/movies.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {
+            "bin": {"maxbins": 10},
+            "field": "IMDB_Rating",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.deepEqual(getPathSort(model), {
+        field: 'datum[\"bin_maxbins_10_IMDB_Rating_start\"]',
+        order: 'descending'
+      });
+    });
+  });
   });
 });

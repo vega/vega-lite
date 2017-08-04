@@ -14,6 +14,7 @@ import {Mark} from './mark';
 import {Scale, ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
+import {VgSortField} from './vega.schema';
 
 
 export {LoggerInterface} from 'vega-util';
@@ -241,9 +242,13 @@ export namespace message {
     return `Cannot set ${channel}-scale's "domain" as it is binned. Please use "bin"'s "extent" instead.`;
   }
 
-  export const INVAID_DOMAIN = 'Invalid scale domain';
+  export function domainSortDropped(sort: VgSortField) {
+    return `Dropping sort property ${JSON.stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+  }
 
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
+
+  export const MORE_THAN_ONE_SORT = 'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
 
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';

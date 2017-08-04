@@ -42,7 +42,6 @@ describe('compile/layout/header', () => {
           role: 'column-title-text',
           encode: {
             update: {
-              x: {signal: `0.5 * width`},
               text: {value: 'a'},
               fontWeight: {value: 'bold'},
               align: {value: 'center'},
@@ -73,11 +72,10 @@ describe('compile/layout/header', () => {
           role: 'row-title-text',
           encode: {
             update: {
-              y: {signal: `0.5 * height`},
               text: {value: 'a'},
               angle: {value: 270},
               fontWeight: {value: 'bold'},
-              align: {value: 'right'},
+              align: {value: 'center'},
               fill: {value: 'black'}
             }
           }

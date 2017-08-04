@@ -1,4 +1,5 @@
 import {Channel} from './channel';
+import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, toSet} from './util';
@@ -51,7 +52,10 @@ export const SCALE_TYPES: ScaleType[] = [
  * Index for scale categories -- only scale of the same categories can be merged together.
  * Current implementation is trying to be conservative and avoid merging scale type that might not work together
  */
-const SCALE_CATEGORY_INDEX: {[k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position'} = {
+const SCALE_CATEGORY_INDEX: {
+  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position'
+} = {
   linear: 'numeric',
   log: 'numeric',
   pow: 'numeric',
@@ -81,7 +85,10 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
 /**
  * Index for scale predecence -- high score = higher priority for merging.
  */
-const SCALE_PRECEDENCE_INDEX: {[k in ScaleType]: number} = {
+const SCALE_PRECEDENCE_INDEX: {
+  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+  [k in ScaleType]: number
+} = {
   // numeric
   linear: 0,
   log: 1,
@@ -479,7 +486,7 @@ export interface Scale {
 }
 
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[] = [
   'reverse', 'round',
   // quantitative / time
   'clamp', 'nice',

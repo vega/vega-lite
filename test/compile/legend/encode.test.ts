@@ -9,7 +9,7 @@ import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
-    it('should not have strokeDash and strokeDashOffset', function() {
+    it('should not have fill, strokeDash, or strokeDashOffset', function() {
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -17,6 +17,7 @@ describe('compile/legend', function() {
             color: {field: "a", type: "nominal"}
           }
         }), COLOR);
+        assert.isUndefined((symbol||{}).fill);
         assert.isUndefined((symbol||{}).strokeDash);
         assert.isUndefined((symbol||{}).strokeDashOffset);
     });

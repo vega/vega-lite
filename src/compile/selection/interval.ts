@@ -12,6 +12,7 @@ import {
   spatialProjections,
   STORE,
   TUPLE,
+  unitName,
 } from './selection';
 import scales from './transforms/scales';
 
@@ -26,7 +27,8 @@ const interval:SelectionCompiler = {
     const name = selCmpt.name;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
-    const intervals:any[] = [];
+    const intervals: any[] = [];
+    const tupleTriggers: string[] = [];
     const scaleTriggers: any[] = [];
 
     if (selCmpt.translate && !hasScales) {
@@ -54,6 +56,7 @@ const interval:SelectionCompiler = {
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
       signals.push.apply(signals, cs);
+      tupleTriggers.push(dname);
       intervals.push(`{encoding: ${stringValue(channel)}, ` +
         `field: ${stringValue(p.field)}, extent: ${dname}}`);
 
@@ -75,16 +78,23 @@ const interval:SelectionCompiler = {
       });
     }
 
+    // Only add an interval to the store if it has valid data extents. Data extents
+    // are set to null if pixel extents are equal to account for intervals over
+    // ordinal/nominal domains which, when inverted, will still produce a valid datum.
     return signals.concat({
       name: name + TUPLE,
-      update: `{unit: ${stringValue(model.getName(''))}, intervals: [${intervals.join(', ')}]}`
+      on: [{
+        events: tupleTriggers.map((t) => ({signal: t})),
+        update: tupleTriggers.join(' && ') +
+          ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
+      }]
     });
   },
 
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
   },
 
   marks: function(model, selCmpt, marks) {
@@ -112,7 +122,7 @@ const interval:SelectionCompiler = {
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{
-          test: `${store}.length && ${store}[0].unit === ${stringValue(model.getName(''))}`,
+          test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
           ...update[key]
         }, {value: 0}];
       });
@@ -128,7 +138,9 @@ const interval:SelectionCompiler = {
     }, {});
 
     return [{
+      name: name + BRUSH + '_bg',
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: fill},
@@ -139,6 +151,7 @@ const interval:SelectionCompiler = {
     } as any].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
+      clip: true,
       encode: {
         enter: {
           fill: {value: 'transparent'},
@@ -185,7 +198,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     name: vname, value: [], on: on
   }, {
     name: dname,
-    on: [{events: {signal: vname}, update: `invert(${scaleStr}, ${vname})`}]
+    on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
   }];
 }
 

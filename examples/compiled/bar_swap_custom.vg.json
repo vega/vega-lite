@@ -1,0 +1,207 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "encode": {
+        "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "a": "C",
+                    "b": 2
+                },
+                {
+                    "a": "C",
+                    "b": 7
+                },
+                {
+                    "a": "C",
+                    "b": 4
+                },
+                {
+                    "a": "D",
+                    "b": 1
+                },
+                {
+                    "a": "D",
+                    "b": 2
+                },
+                {
+                    "a": "D",
+                    "b": 6
+                },
+                {
+                    "a": "E",
+                    "b": 8
+                },
+                {
+                    "a": "E",
+                    "b": 4
+                },
+                {
+                    "a": "E",
+                    "b": 7
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"b\"])",
+                    "as": "b"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "a"
+                    ],
+                    "ops": [
+                        "average"
+                    ],
+                    "fields": [
+                        "b"
+                    ],
+                    "as": [
+                        "average_b"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "average_b"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "a"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "average_b"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "a",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "title": "Average of b",
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "a",
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axis": {
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
+        }
+    }
+}

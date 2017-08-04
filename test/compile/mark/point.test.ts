@@ -35,7 +35,10 @@ describe('Mark: Point', function() {
     const props = point.encodeEntry(model);
 
     it('should be centered on y', function() {
-      assert.deepEqual(props.y, {value: 21 / 2});
+      assert.deepEqual(props.y, {
+        mult: 0.5,
+        signal: 'height'
+      });
     });
 
     it('should scale on x', function() {
@@ -73,7 +76,10 @@ describe('Mark: Point', function() {
     const props = point.encodeEntry(model);
 
     it('should be centered on x', function() {
-      assert.deepEqual(props.x, {value: 21 / 2});
+      assert.deepEqual(props.x, {
+        mult: 0.5,
+        signal: 'width'
+      });
     });
 
     it('should scale on y', function() {

@@ -22,21 +22,26 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     // 1. initialize config
     const config = initConfig(inputSpec.config);
 
-    // 2. Convert input spec into a normal form
+    // 2. Convert input spec into a normalized form
     // (Decompose all extended unit specs into composition of unit spec.)
     const spec = normalize(inputSpec, config);
 
-    // 3. Instantiate the model with default config
+    // 3. Instantiate the models with default config by doing a top-down traversal.
+    // This allows us to pass properties that child models derive from their parents via their constructors.
     const model = buildModel(spec, null, '', undefined, undefined, config);
 
-    // 4. Parse each part of the model to produce components that will be assembled later
-    // We traverse the whole tree to parse once for each type of components
-    // (e.g., data, layout, mark, scale).
-    // Please see inside model.parse() for order for compilation.
+    // 4. Parse parts of each model to produce components that can be merged
+    // and assembled easily as a part of a model.
+    // In this phase, we do a bottom-up traversal over the whole tree to
+    // parse for each type of components once (e.g., data, layout, mark, scale).
+    // By doing bottom-up traversal, we start parsing components of unit specs and
+    // then merge child components of parent composite specs.
+    //
+    // Please see inside model.parse() for order of different components parsed.
     model.parse();
 
     // 5. Assemble a Vega Spec from the parsed components in 3.
-    return assemble(model, getTopLevelProperties(inputSpec, config));
+    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config));
   } finally {
     // Reset the singleton logger if a logger is provided
     if (logger) {
@@ -53,7 +58,13 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
   };
 }
 
-function assemble(model: Model, topLevelProperties: TopLevelProperties) {
+/*
+ * Assemble the top-level model.
+ *
+ * Note: this couldn't be `model.assemble()` since the top-level model
+ * needs some special treatment to generate top-level properties.
+ */
+function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
 
   // Config with Vega-Lite only config removed.
@@ -79,12 +90,10 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
       model.assembleSelectionData([]),
       model.assembleData()
     ),
-    ...model.assembleGroup(
-      [].concat(
-        model.assembleLayoutSignals(),
-        model.assembleSelectionTopLevelSignals([])
-      )
-    ),
+    ...model.assembleGroup([
+      ...model.assembleLayoutSignals(),
+      ...model.assembleSelectionTopLevelSignals([])
+    ]),
     ...(vgConfig ? {config: vgConfig} : {})
   };
 

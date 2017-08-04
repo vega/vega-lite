@@ -48,10 +48,10 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     const colorMixins = mixins.color(model);
 
     // If there are field for fill or stroke, remove them as we already apply channels.
-    if (colorMixins.fill && colorMixins.fill['field']) {
+    if (colorMixins.fill && (colorMixins.fill['field'] || colorMixins.fill['value'] === 'transparent')) {
       delete colorMixins.fill;
     }
-    if (colorMixins.stroke && colorMixins.stroke['field']) {
+    if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
       delete colorMixins.stroke;
     }
     extend(symbols, colorMixins);

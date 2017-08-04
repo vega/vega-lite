@@ -17,8 +17,8 @@ import {assembleLayoutSignals} from './layout/assemble';
 import {parseRepeatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
+import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {unionDomains} from './scale/domain';
 
 
 export type RepeaterValue = {
@@ -164,6 +164,10 @@ export class RepeatModel extends Model {
 
   public assembleParentGroupProperties(): any {
     return null;
+  }
+
+  public assembleScales(): VgScale[] {
+    return assembleScaleForModelAndChildren(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {

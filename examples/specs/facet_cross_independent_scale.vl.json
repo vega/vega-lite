@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"values": [
+    {"r": "r1", "c": "c1", "a": "a1", "b": "b1"},
+    {"r": "r1", "c": "c1", "a": "a2", "b": "b2"},
+    {"r": "r2", "c": "c2", "a": "a1", "b": "b1"},
+    {"r": "r3", "c": "c2", "a": "a3", "b": "b2"}
+  ]},
+  "facet": {
+    "row": {"field": "r", "type": "nominal"},
+    "column": {"field": "c", "type": "nominal"}
+  },
+  "spec": {
+    "mark": "rect",
+    "encoding": {
+      "y": {"field": "b", "type": "nominal"},
+      "x": {"field": "a", "type": "nominal"}
+    }
+  },
+  "resolve": {
+    "x": {
+      "scale": "independent"
+    },
+    "y": {
+      "scale": "independent"
+    }
+  }
+}

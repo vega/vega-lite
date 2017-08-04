@@ -1,4 +1,4 @@
-import {stringValue} from '../../../util';
+import {stringValue, varName} from '../../../util';
 import {TUPLE} from '../selection';
 import nearest from './nearest';
 import {TransformCompiler} from './transforms';
@@ -18,15 +18,19 @@ const inputBindings:TransformCompiler = {
       '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.forEach(function(p) {
-      signals.unshift({
-        name: name + id(p.field),
-        value: '',
-        on: [{
-          events: selCmpt.events,
-          update: `datum && ${datum}[${stringValue(p.field)}]`
-        }],
-        bind: bind[p.field] || bind[p.channel] || bind
-      });
+      const sgname = varName(`${name}_${p.field}`);
+      const hasSignal = signals.filter((s) => s.name === sgname);
+      if (!hasSignal.length) {
+        signals.unshift({
+          name: sgname,
+          value: '',
+          on: [{
+            events: selCmpt.events,
+            update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`
+          }],
+          bind: bind[p.field] || bind[p.channel] || bind
+        });
+      }
     });
 
     return signals;
@@ -37,9 +41,9 @@ const inputBindings:TransformCompiler = {
     const proj = selCmpt.project;
     const signal = signals.filter((s) => s.name === name + TUPLE)[0];
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
-    const values = proj.map((p) => name + id(p.field)).join(', ');
+    const values = proj.map((p) => varName(`${name}_${p.field}`));
 
-    signal.update = `{fields: [${fields}], values: [${values}]}`;
+    signal.update = `${values.join(' && ')} ? {fields: [${fields}], values: [${values.join(', ')}]} : null`;
     delete signal.value;
     delete signal.on;
 
@@ -48,7 +52,3 @@ const inputBindings:TransformCompiler = {
 };
 
 export {inputBindings as default};
-
-function id(str: string) {
-  return '_' + str.replace(/\W/g, '_');
-}

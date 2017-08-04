@@ -1,12 +1,32 @@
 import {assert} from 'chai';
+
 import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
 import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
 import {keys} from '../../src/util';
-import {DataRefUnionDomain, isDataRefUnionedDomain} from '../../src/vega.schema';
 import {parseRepeatModel} from '../util';
 
 describe('Repeat', function() {
+  describe('assembleScales', () => {
+    it('includes all scales', () => {
+      const model = parseRepeatModel({
+        repeat: {
+          row: ['Acceleration', 'Horsepower']
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: {repeat: 'row'}, type: 'quantitative'}
+          }
+        }
+      });
+
+      model.parseScale();
+      const scales = model.assembleScales();
+      assert.equal(scales.length, 2);
+    });
+  });
+
   describe('resolveRepeat', () => {
     it('should resolve repeated fields', () => {
       const resolved = replaceRepeaterInEncoding({
@@ -99,8 +119,7 @@ describe('Repeat', function() {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      assert(isDataRefUnionedDomain(colorScale.get('domain')));
-      assert.deepEqual((colorScale.get('domain') as DataRefUnionDomain).fields.length, 4);
+      assert.deepEqual(colorScale.domains.length, 4);
 
       model.parseLegend();
 

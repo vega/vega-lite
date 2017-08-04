@@ -27,13 +27,13 @@ describe('Selection', function() {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: '_id', channel: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: '_vgsid_', channel: null}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.shiftKey');
-    assert.sameDeepMembers(component['two'].project, [{field: '_id', channel: null}]);
+    assert.sameDeepMembers(component['two'].project, [{field: '_vgsid_', channel: null}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.three.name, 'three');

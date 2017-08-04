@@ -1,9 +1,9 @@
 import {SingleDefChannel} from './channel';
 import {VgBinding} from './vega.schema';
 
-export type SelectionTypes = 'single' | 'multi' | 'interval';
-export type SelectionResolutions = 'global' | 'independent' | 'union' |
-  'union_others' | 'intersect' | 'intersect_others';
+export const SELECTION_ID = '_vgsid_';
+export type SelectionType = 'single' | 'multi' | 'interval';
+export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export interface BaseSelectionDef {
   /**
@@ -28,18 +28,8 @@ export interface BaseSelectionDef {
    * considered to be selected if it falls within _all_ of these selection
    * instances.
    *
-   * __union_others__: Each view contains its own selection, and a data value
-   * is considered to be selected if it falls within _any_ of the selection
-   * instances of _other_ views. Thus, a view's own selection is not considered
-   * when evaluating its own data values.
-   *
-   * __intersect_others__: Each view contains its own selection, and a data value
-   * is considered to be selected if it falls within _all_ of the selection
-   * instances of _other_ views. Thus, a view's own selection is not considered
-   * when evaluating its own data values.
-   *
    */
-  resolve?: SelectionResolutions;
+  resolve?: SelectionResolution;
 
   // TODO(https://github.com/vega/vega-lite/issues/2596).
   // predicate?: string;
@@ -193,8 +183,8 @@ export interface SelectionConfig {
 }
 
 export const defaultConfig:SelectionConfig = {
-  single: {on: 'click', fields: ['_id'], resolve: 'global'},
-  multi: {on: 'click', fields: ['_id'], toggle: 'event.shiftKey', resolve: 'global'},
+  single: {on: 'click', fields: [SELECTION_ID], resolve: 'global'},
+  multi: {on: 'click', fields: [SELECTION_ID], toggle: 'event.shiftKey', resolve: 'global'},
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
     encodings: ['x', 'y'],

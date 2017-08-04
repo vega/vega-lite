@@ -12,7 +12,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   const legendByDomain: {[domainHash: string]: LegendComponent[]} = {};
   keys(legendComponentIndex).forEach((channel: NonspatialScaleChannel) => {
     const scaleComponent = model.getScaleComponent(channel);
-    const domainHash = stringify(scaleComponent.get('domain'));
+    const domainHash = stringify(scaleComponent.domains);
     if (legendByDomain[domainHash]) {
       for (const mergedLegendComponent of legendByDomain[domainHash]) {
         const merged = mergeLegendComponent(mergedLegendComponent, legendComponentIndex[channel]);

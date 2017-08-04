@@ -4,18 +4,7 @@ import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega
 
 
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {
-  /**
-   * Default `minExtent` and `maxExtent` for axes of quantitative scales.
-   *
-   * __Default value__: `30`
-   */
-  quantitativeExtent?: number;
-}
-
-export const DEFAULT_AXIS_CONFIG = {
-  quantitativeExtent: 30
-};
+export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
 export interface Axis extends VgAxisBase, Guide {
   /**
@@ -24,9 +13,9 @@ export interface Axis extends VgAxisBase, Guide {
   labelPadding?: number;
 
   /**
-   * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
-   * __Default value:__ `"x"` axis is placed on the bottom, `"y"` axis is placed on the left, `"column"`"s x-axis is placed on the top, `"row"`s y-axis is placed on the right.
+   * __Default value:__ x-axis is placed on the bottom, y-axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right.
    */
   orient?: AxisOrient;
 
@@ -78,12 +67,13 @@ export interface Axis extends VgAxisBase, Guide {
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
-export const AXIS_PROPERTY_TYPE: {[k in keyof Axis]: 'main' | 'grid'} = {
+export const AXIS_PROPERTY_TYPE: {
+  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+  [k in keyof Axis]: 'main' | 'grid'
+} = {
   grid: 'grid',
   labelOverlap: 'main',
   offset: 'main',
-  maxExtent: 'main',
-  minExtent: 'main',
   title: 'main'
 };
 

@@ -1,3 +1,4 @@
+import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
 import {OutputNode} from './compile/data/dataflow';
 import {NiceTime, ScaleType, SelectionDomain} from './scale';
@@ -24,7 +25,15 @@ export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
 export type VgSortField = boolean | {
   field?: VgFieldRef,
-  op: string,
+  op: AggregateOp,
+  order?: SortOrder
+};
+
+/**
+ * Unioned domains can only be sorted by count aggregate.
+ */
+export type VgUnionSortField = boolean | {
+  op: 'count'
   order?: SortOrder
 };
 
@@ -62,18 +71,14 @@ export type VgValueRef = {
 // TODO: add vg prefix
 export type DataRefUnionDomain = {
   fields: (any[] | VgDataRef | VgSignalRef)[],
-  sort?: boolean | {
-    op: 'count'
-  }
+  sort?: VgUnionSortField
 };
 
 // TODO: add vg prefix
 export type FieldRefUnionDomain = {
   data: string,
   fields: VgFieldRef[],
-  sort?: boolean | {
-    op: 'count'
-  }
+  sort?: VgUnionSortField
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
@@ -84,7 +89,9 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
-export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
+// Domains that are not a union of domains
+export type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
+export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
 
 export type VgMarkGroup = any;
 
@@ -109,11 +116,15 @@ export type VgScale = {
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
+export type RowCol<T> = {
+  row?: T,
+  column?: T
+};
+
 export type VgLayout = {
-  padding: number | {
-    row?: number,
-    column?: number
-  },
+  padding: number | RowCol<number>,
+  headerBand?: number | RowCol<number>,
+  footerBand?: number | RowCol<number>,
   offset: number | {
     rowHeader: number,
     rowFooter: number,
@@ -267,7 +278,7 @@ export interface VgAggregateTransform {
   type: 'aggregate';
   groupby?: VgFieldRef[];
   fields?: VgFieldRef[];
-  ops?: string[];
+  ops?: AggregateOp[];
   as?: string[];
   cross?: boolean;
   drop?: boolean;
@@ -288,6 +299,22 @@ export interface VgLookupTransform {
   default?: string;
 }
 
+export interface VgStackTransform {
+  type: 'stack';
+  offset?: StackOffset;
+  groupby: string[];
+  field: string;
+  sort: VgSort;
+  as: string[];
+}
+
+export interface VgIdentifierTransform {
+  type: 'identifier';
+  as: string;
+}
+
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform;
+
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
   labels?: VgGuideEncode;
@@ -305,17 +332,6 @@ export interface VgLegendEncode {
 }
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
-
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
-
-export interface VgStackTransform {
-  type: 'stack';
-  offset?: StackOffset;
-  groupby: string[];
-  field: string;
-  sort: VgSort;
-  as: string[];
-}
 
 export type VgSort = {
   field: string;
@@ -456,24 +472,14 @@ export interface VgAxisBase {
   /**
    * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
    *
-   * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-   *
-   * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
-   * to avoid jumpy axis title during pan and zoom interactions.
-   * For other scales, the default value is `undefined`.
+   * __Default value:__ `30`
    */
   minExtent?: number;
 
   /**
    * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
    *
-   * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-   *
-   * __Default value:__
-   * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
-   * to avoid jumpy axis title during pan and zoom interactions.
-   * For other scales, the default value is `undefined`.
+   * __Default value:__ `undefined`.
    */
   maxExtent?: number;
 }

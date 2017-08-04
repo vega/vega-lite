@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {assembleScale} from '../../../src/compile/scale/assemble';
+import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel} from '../../util';
 
@@ -54,7 +54,7 @@ describe('Selection + Scales', function() {
     model.parseScale();
     model.parseSelection();
 
-    const scales = assembleScale(model.children[1]);
+    const scales = assembleScalesForModel(model.children[1]);
     const xscale = scales[0];
     const yscale = scales[1];
     const cscale = scales[2];
@@ -63,17 +63,17 @@ describe('Selection + Scales', function() {
     assert.isObject(xscale.domain);
     assert.property(xscale, 'domainRaw');
     assert.propertyVal(xscale.domainRaw, 'signal',
-      "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")");
+      "vlIntervalDomain(\"brush_store\", \"x\", null)");
 
     assert.isObject(yscale.domain);
     assert.property(yscale, 'domainRaw');
     assert.deepPropertyVal(yscale.domainRaw, 'signal',
-      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\", \"all\")");
+      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
 
     assert.isObject(cscale.domain);
     assert.property(cscale, 'domainRaw');
     assert.propertyVal(cscale.domainRaw, 'signal',
-      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\", \"all\")");
+      "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
 
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');

@@ -45,7 +45,10 @@ const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
 
 export function parseLayerAxis(model: LayerModel) {
   const {axes, resolve} = model.component;
-  const axisCount: {[k in AxisOrient]: number} = {top: 0, bottom: 0, right: 0, left: 0};
+  const axisCount: {
+    // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+    [k in AxisOrient]: number
+  } = {top: 0, bottom: 0, right: 0, left: 0};
 
   for (const child of model.children) {
     child.parseAxisAndHeader();
@@ -74,7 +77,7 @@ export function parseLayerAxis(model: LayerModel) {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis
-        return;
+        continue;
       }
 
       if (resolve[channel].axis === 'independent') {
@@ -288,16 +291,21 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     }
     case 'minExtent': {
       const scaleType = model.component.scales[channel].get('type');
-      return getSpecifiedOrDefaultValue(specifiedAxis.minExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+      return rules.minMaxExtent(specifiedAxis.minExtent, isGridAxis);
     }
     case 'maxExtent': {
       const scaleType = model.component.scales[channel].get('type');
-      return getSpecifiedOrDefaultValue(specifiedAxis.maxExtent, rules.minMaxExtent(isGridAxis, scaleType, model.config.axis));
+      return rules.minMaxExtent(specifiedAxis.maxExtent, isGridAxis);
     }
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
-    case 'tickCount':
-      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef)); // TODO: scaleType
+    case 'tickCount': {
+      const scaleType = model.component.scales[channel].get('type');
+      const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+      const size = sizeType ? model.getSizeSignalRef(sizeType)
+       : undefined;
+      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef, scaleType, size));
+    }
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':

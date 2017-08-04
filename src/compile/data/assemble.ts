@@ -11,11 +11,10 @@ import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
-import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode, LookupNode} from './transforms';
+import {CalculateNode, FilterNode, IdentifierNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';
@@ -47,11 +46,11 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
  */
 function cloneSubtree(facet: FacetNode) {
   function clone(node: DataFlowNode): DataFlowNode[] {
-    if (!(node instanceof OrderNode)) {  // we can ignore order nodes beacuse they don't change the scale domain
+    if (!(node instanceof FacetNode)) {
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
-        const newName = FACET_SCALE_PREFIX + facet.model.getName(copy.getSource());
+        const newName = FACET_SCALE_PREFIX + copy.getSource();
         copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;
@@ -199,8 +198,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
-      node instanceof OrderNode ||
-      node instanceof LookupNode) {
+      node instanceof LookupNode ||
+      node instanceof IdentifierNode) {
       dataSource.transform.push(node.assemble());
     }
 
@@ -307,8 +306,8 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleData(dataCompomponent: DataComponent): VgData[] {
-  let roots: SourceNode[] = vals(dataCompomponent.sources);
+export function assembleData(dataComponent: DataComponent): VgData[] {
+  let roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
@@ -354,7 +353,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   for (const d of data) {
     for (const t of d.transform || []) {
       if (t.type === 'lookup') {
-        t.from = dataCompomponent.outputNodes[t.from].getSource();
+        t.from = dataComponent.outputNodes[t.from].getSource();
       }
     }
   }

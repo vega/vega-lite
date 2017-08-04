@@ -11,7 +11,7 @@ There are **two ways** to facet views in Vega-Lite:
 
 First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view composition operators](composition.html). This is the most flexible way to create faceted plots and allows composition with other operators.
 
-Second, as a shortcut you can use the [`column` or `row` channel](#facet-channels).
+Second, as a shortcut you can use the [`column` or `row` encoding channels](#facet-channels).
 
 * TOC
 {:toc}
@@ -40,7 +40,7 @@ The `facet` property is an object with the following properties:
 
 {% include table.html props="column,row" source="Facet" %}
 
-### Facet Channel Definition
+### Facet Field Definition
 
 A `FacetFieldDef` is similar to a [channel definition](encoding.html#def).
 
@@ -59,11 +59,13 @@ resolution.
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
 
-## Facet Channels
+## `row` / `column` Encoding Channels
 
 The [facet channels](encoding.html#facet) are encoding channels, which produce a trellis plot that facets a plot into columns or rows respectively. Vega-Lite automatically translates this shortcut to use the facet operator.
 
 {% include table.html props="row,column" source="EncodingWithFacet" %}
+
+TODO: add an example shortcut spec and a compiled/normalized spec.
 
 ### Example
 

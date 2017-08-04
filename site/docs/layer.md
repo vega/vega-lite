@@ -5,7 +5,7 @@ title: Layering views
 permalink: /docs/layer.html
 ---
 
-Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is none of Vega-Lite's [view compositon operators](compositon.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
+Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is one of Vega-Lite's [view composition operators](compositon.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
 
 {: .suppress-error}
 ```json
@@ -50,5 +50,5 @@ In the chart below, we set the y-scales of the different layers to be independen
 
 ### Advanced Layering Example
 
-The population of the German city of Falkensee over time. Based on a [visualization built using Vega]((https://vega.github.io/vega/examples/falkensee-population/)).
+The population of the German city of Falkensee over time. Based on a [visualization built using Vega](https://vega.github.io/vega/examples/falkensee-population/).
 <div class="vl-example" data-name="layered_falkensee">

@@ -69,7 +69,7 @@ describe('Interval Selections', function() {
         "name": "one_Horsepower",
         "on": [{
           "events": {"signal": "one_x"},
-          "update": "invert(\"x\", one_x)"
+          "update": "one_x[0] === one_x[1] ? null : invert(\"x\", one_x)"
         }]
       }, {
         "name": "one_scale_trigger",
@@ -114,7 +114,7 @@ describe('Interval Selections', function() {
           "name": "thr_ee_Horsepower",
           "on": [{
             "events": {"signal": "thr_ee_x"},
-            "update": "invert(\"x\", thr_ee_x)"
+            "update": "thr_ee_x[0] === thr_ee_x[1] ? null : invert(\"x\", thr_ee_x)"
           }]
         },
         {
@@ -147,7 +147,7 @@ describe('Interval Selections', function() {
           "name": "thr_ee_Miles_per_Gallon",
           "on": [{
             "events": {"signal": "thr_ee_y"},
-            "update": "invert(\"y\", thr_ee_y)"
+            "update": "thr_ee_y[0] === thr_ee_y[1] ? null : invert(\"y\", thr_ee_y)"
           }]
         },
         {
@@ -162,7 +162,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(oneSg, [
         {
           "name": "one_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]}"
+          "on": [{
+            "events": [{"signal": "one_Horsepower"}],
+            "update": "one_Horsepower ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]} : null"
+          }]
         }
       ]);
 
@@ -170,7 +173,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(twoSg, [
         {
           "name": "two_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]}"
+          "on": [{
+            "events": [{"signal": "two_Miles_per_Gallon"}],
+            "update": "two_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"y\", field: \"Miles-per-Gallon\", extent: two_Miles_per_Gallon}]} : null"
+          }]
         }
       ]);
 
@@ -178,7 +184,10 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(threeSg, [
         {
           "name": "thr_ee_tuple",
-          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]}"
+          "on": [{
+            "events": [{"signal": "thr_ee_Horsepower"}, {"signal": "thr_ee_Miles_per_Gallon"}],
+            "update": "thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: thr_ee_Horsepower}, {encoding: \"y\", field: \"Miles-per-Gallon\", extent: thr_ee_Miles_per_Gallon}]} : null"
+          }]
         }
       ]);
     });
@@ -230,7 +239,9 @@ describe('Interval Selections', function() {
     const marks: any[] = [{hello: "world"}];
     assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
       {
+        "name": "one_brush_bg",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
@@ -282,6 +293,7 @@ describe('Interval Selections', function() {
       {
         "name": "one_brush",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
@@ -336,7 +348,9 @@ describe('Interval Selections', function() {
 
     assert.sameDeepMembers(interval.marks(model, selCmpts['thr_ee'], marks), [
       {
+        "name": "thr_ee_brush_bg",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "red"},
@@ -362,6 +376,7 @@ describe('Interval Selections', function() {
       {
         "name": "thr_ee_brush",
         "type": "rect",
+        "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},

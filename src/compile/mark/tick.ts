@@ -17,8 +17,8 @@ export const tick: MarkCompiler = {
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.pointPosition('x', model, ref.midX(width, config), 'xc'),
-      ...mixins.pointPosition('y', model, ref.midY(height, config), 'yc'),
+      ...mixins.pointPosition('x', model, ref.mid(width), 'xc'),
+      ...mixins.pointPosition('y', model, ref.mid(height), 'yc'),
 
       // size / thickness => width / height
       ...mixins.nonPosition('size', model, {

@@ -61,10 +61,7 @@ export function getHeaderType(orient: AxisOrient) {
 }
 
 export function getTitleGroup(model: Model, channel: HeaderChannel) {
-  const sizeChannel = channel === 'row' ? 'height' : 'width';
   const title = model.component.layoutHeaders[channel].title;
-  const positionChannel = channel === 'row' ? 'y' : 'x';
-  const align = channel === 'row' ? 'right' : 'center';
   const textOrient = channel === 'row' ? 'vertical' : undefined;
 
   return {
@@ -77,8 +74,7 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
       encode: {
         update: {
           // TODO: add title align
-          [positionChannel]: {signal: `0.5 * ${sizeChannel}`},
-          align: {value: align},
+          align: {value: 'center'},
           text: {value: title},
           fill: {value: 'black'},
           fontWeight: {value: 'bold'},
@@ -132,11 +128,13 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
           }
         } : {}),
         ...(title ? {title} : {}),
-        encode: {
-          update: {
-            [sizeChannel]: header.sizeSignal
+        ...(header.sizeSignal ? {
+          encode: {
+            update: {
+              [sizeChannel]: header.sizeSignal
+            }
           }
-        },
+        }: {}),
         ...(hasAxes ? {axes} : {})
       };
     }

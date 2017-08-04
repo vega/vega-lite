@@ -12,7 +12,6 @@ export interface RequiredChannelMap {
 
 /**
  * Required Encoding Channels for each mark type
- * @type {Object}
  */
 export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
   text: ['text'],

@@ -2,7 +2,6 @@ import {UnitModel} from '../../../src/compile/unit';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {DEFAULT_AXIS_CONFIG} from '../../../src/axis';
 import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
 import {parseUnitModelWithScale} from '../../util';
@@ -26,12 +25,12 @@ describe('compile/axis', ()=> {
   });
 
   describe('minMaxExtent', () => {
-    it('returns config.axis.quantitativeExtent for a non-grid quantitative axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'linear', DEFAULT_AXIS_CONFIG), DEFAULT_AXIS_CONFIG.quantitativeExtent);
+    it('returns specified extent for a non-grid axis', () => {
+      assert.equal(rules.minMaxExtent(25, false), 25);
     });
 
-    it('returns undefined for a non-grid ordinal axis by default', () => {
-      assert.equal(rules.minMaxExtent(false, 'ordinal', DEFAULT_AXIS_CONFIG), undefined);
+    it('returns 0 for a grid axis', () => {
+      assert.equal(rules.minMaxExtent(0, true), 0);
     });
   });
 
@@ -48,14 +47,24 @@ describe('compile/axis', ()=> {
   });
 
   describe('tickCount', function() {
-    it('should return undefined by default for non-x', function () {
-      const tickCount = rules.tickCount('y', {field: 'a', type: 'quantitative'});
+    it('should return undefined by default for binned field', function () {
+      const tickCount = rules.tickCount('x', {bin: true, field: 'a', type: 'quantitative'}, 'linear', undefined);
       assert.deepEqual(tickCount, undefined);
     });
 
-    it('should return 5 by default for x', function () {
-      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'});
-      assert.deepEqual(tickCount, 5);
+    it('should return 5 by default for linear scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
+    });
+
+    it('should return undefined by default for log scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined);
+      assert.deepEqual(tickCount, undefined);
+    });
+
+    it('should return undefined by default for point scale', function () {
+      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined);
+      assert.deepEqual(tickCount, undefined);
     });
   });
 

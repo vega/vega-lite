@@ -1,0 +1,408 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "people": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.year == 2000"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+                    "as": "gender"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "column",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "gender"
+                    ],
+                    "fields": [
+                        "age"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column_layout",
+            "source": "column",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "ops": [
+                        "distinct"
+                    ],
+                    "fields": [
+                        "gender"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_x_step",
+            "value": 17
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": {
+            "signal": "data('column_layout')[0][\"distinct_gender\"]"
+        },
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "name": "column_title",
+            "role": "column-title",
+            "type": "group",
+            "marks": [
+                {
+                    "type": "text",
+                    "role": "column-title-text",
+                    "encode": {
+                        "update": {
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "gender"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "title": "population",
+                    "scale": "y",
+                    "labelOverlap": true,
+                    "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column"
+            },
+            "sort": {
+                "field": "datum[\"gender\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "parent[\"gender\"]"
+                },
+                "offset": 10,
+                "orient": "top",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "bandspace(datum[\"distinct_age\"], 0.1, 0.05) * child_x_step"
+                    }
+                }
+            }
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "gender"
+                    ],
+                    "aggregate": {
+                        "fields": [
+                            "age"
+                        ],
+                        "ops": [
+                            "distinct"
+                        ]
+                    }
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"gender\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "bandspace(datum[\"distinct_age\"], 0.1, 0.05) * child_x_step"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "fill": {
+                        "value": "yellow"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "facet"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "child_x",
+                                "field": "age"
+                            },
+                            "width": {
+                                "scale": "child_x",
+                                "band": true
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_people_start"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_x",
+                    "type": "band",
+                    "domain": {
+                        "data": "facet",
+                        "field": "age",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": {
+                            "signal": "child_x_step"
+                        }
+                    },
+                    "round": true,
+                    "paddingInner": 0.1,
+                    "paddingOuter": 0.05
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_x",
+                    "labelOverlap": true,
+                    "orient": "bottom",
+                    "title": "age",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_x"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_people_start",
+                    "sum_people_end"
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "child_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "gender",
+                "sort": true
+            },
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axis": {
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
+        }
+    }
+}

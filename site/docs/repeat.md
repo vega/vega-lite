@@ -7,7 +7,7 @@ permalink: /docs/repeat.html
 
 The `repeat` operator is part of Vega-Lite's [view compostion](compositon.html). It provides a shortcut that creates a view for each entry in an array of fields. This operator generates multiple plots like [`facet`](facet.html). However, unlike `facet` it allows full replication of a data set in each view.
 
-To create a faceted view, define how the data should be faceted in `facet` and how each facet should be displayed in the `spec`.
+To repeat a view, define what fields should be used for each entry in the row or columns. Then define the repeated view in `spec`.
 
 {: .suppress-error}
 ```json
@@ -19,9 +19,18 @@ To create a faceted view, define how the data should be faceted in `facet` and h
 }
 ```
 
-A repeat spec has the following properties:
+For instance, you can use this operator to create histograms for different fields.
+
+<span class="vl-example" data-name="repeat_histogram"></span>
+
+A repeat specification has the following properties:
 
 {% include table.html props="repeat,data,transform,resolve,description,name" source="RepeatSpec" %}
+
+The `repeat` property is an object with two optional properties. They define the list of fields that should be repeated into a row or column.
+
+{: #repeat}
+{% include table.html props="column,row" source="Repeat" %}
 
 Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows a different 2D projection of the same data table.
 

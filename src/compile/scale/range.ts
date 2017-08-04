@@ -49,7 +49,7 @@ function parseUnitScaleRange(model: UnitModel) {
 
     const rangeWithExplicit = parseRangeForChannel(
       channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,
-      localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getSizeSignalRef(sizeType), xyRangeSteps
+      localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getName(sizeType), xyRangeSteps
     );
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
@@ -79,7 +79,7 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, specifiedSize: LayoutSize, sizeSignal: VgSignalRef, xyRangeSteps: number[]
+    zero: boolean, mark: Mark, specifiedSize: LayoutSize, sizeSignal: string, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
   const noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
@@ -139,7 +139,7 @@ function parseScheme(scheme: Scheme) {
 
 export function defaultRange(
   channel: Channel, scaleType: ScaleType, type: Type, config: Config, zero: boolean, mark: Mark,
-  sizeSignal: VgSignalRef, xyRangeSteps: number[], noRangeStep: boolean
+  sizeSignal: string, xyRangeSteps: number[], noRangeStep: boolean
 ): VgRange {
   switch (channel) {
     case X:
@@ -158,7 +158,7 @@ export function defaultRange(
       // If range step is null, assign temporary range signals,
       // which will be later replaced with proper signals in assemble.
       // We cannot set the right size signal here since parseLayoutSize() happens after parseScale().
-      return channel === X ? [0, sizeSignal] : [sizeSignal, 0];
+      return channel === X ? [0, {signal: sizeSignal}] : [{signal: sizeSignal}, 0];
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);

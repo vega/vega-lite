@@ -1,8 +1,13 @@
-import {NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
-import {ResolveMode} from '../../resolve';
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
-import {contains, keys} from '../../util';
+import {
+  NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
+  Scale,
+  scaleCompatible,
+  ScaleType,
+  scaleTypePrecedence,
+} from '../../scale';
+import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
@@ -13,7 +18,6 @@ import {parseScaleDomain} from './domain';
 import {parseScaleProperty} from './properties';
 import {parseScaleRange} from './range';
 import {scaleType} from './type';
-
 
 export function parseScale(model: Model) {
   parseScaleCore(model);
@@ -81,7 +85,10 @@ const scaleTypeTieBreaker = tieBreakByComparing(
 function parseNonUnitScaleCore(model: Model) {
   const scaleComponents: ScaleComponentIndex = model.component.scales = {};
 
-  const scaleTypeWithExplicitIndex: {[k in ScaleChannel]?: Explicit<ScaleType>} = {};
+  const scaleTypeWithExplicitIndex: {
+    // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+    [k in ScaleChannel]?: Explicit<ScaleType>
+  } = {};
   const resolve = model.component.resolve;
 
   // Parse each child scale and determine if a particular channel can be merged.

@@ -1,0 +1,155 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Average Stock prices of 5 Tech Companies.",
+    "autosize": "pad",
+    "padding": 5,
+    "encode": {
+        "update": {
+            "stroke": {
+                "value": "#ccc"
+            },
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "price": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "symbol"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "price"
+                    ],
+                    "as": [
+                        "mean_price"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "21"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rule",
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_price"
+                    },
+                    "x2": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "strokeWidth": {
+                        "value": 2
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_price"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "symbol",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "MEAN(price)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "symbol"
+        }
+    ],
+    "config": {
+        "axis": {
+            "minExtent": 30,
+            "domainColor": "#888",
+            "tickColor": "#888"
+        }
+    }
+}

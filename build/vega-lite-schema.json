@@ -99,11 +99,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "offset": {
@@ -112,7 +112,7 @@
         },
         "orient": {
           "$ref": "#/definitions/AxisOrient",
-          "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"x\"` axis is placed on the bottom, `\"y\"` axis is placed on the left, `\"column\"`\"s x-axis is placed on the top, `\"row\"`s y-axis is placed on the right."
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ x-axis is placed on the bottom, y-axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right."
         },
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
@@ -280,15 +280,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
-          "type": "number"
-        },
-        "quantitativeExtent": {
-          "description": "Default `minExtent` and `maxExtent` for axes of quantitative scales.\n\n__Default value__: `30`",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "shortTimeLabels": {
@@ -481,10 +477,6 @@
           "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -682,8 +674,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         }
       },
       "type": "object"
@@ -815,10 +807,6 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -2501,17 +2489,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2540,17 +2518,7 @@
         },
         "hconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -2649,17 +2617,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2674,6 +2632,28 @@
         "spec"
       ],
       "type": "object"
+    },
+    "Spec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/CompositeUnitSpec"
+        },
+        {
+          "$ref": "#/definitions/LayerSpec"
+        },
+        {
+          "$ref": "#/definitions/FacetedSpec"
+        },
+        {
+          "$ref": "#/definitions/RepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/VConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/HConcatSpec"
+        }
+      ]
     },
     "CompositeUnitSpecAlias": {
       "additionalProperties": false,
@@ -2806,17 +2786,7 @@
         },
         "vconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -3073,8 +3043,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         },
         "translate": {
           "description": "When truthy, allows a user to interactively move an interval selection\nback-and-forth. Can be `true`, `false` (to disable panning), or a\n[Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)\nwhich must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to\n`[mousedown, window:mouseup] > window:mousemove!` which corresponds to\nclicks and dragging within an interval selection to reposition it.",
@@ -3134,8 +3104,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         },
         "translate": {
           "description": "When truthy, allows a user to interactively move an interval selection\nback-and-forth. Can be `true`, `false` (to disable panning), or a\n[Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)\nwhich must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to\n`[mousedown, window:mouseup] > window:mousemove!` which corresponds to\nclicks and dragging within an interval selection to reposition it.",
@@ -3729,10 +3699,6 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
-        },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -3908,6 +3874,10 @@
     "MarkDef": {
       "additionalProperties": false,
       "properties": {
+        "clip": {
+          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "type": "boolean"
+        },
         "filled": {
           "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ All marks except `\"point\"`, `\"line\"`, and `\"rule\"` are filled by default.",
           "type": "boolean"
@@ -3970,8 +3940,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         },
         "toggle": {
           "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).",
@@ -4017,8 +3987,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         },
         "toggle": {
           "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).",
@@ -4766,14 +4736,11 @@
       ],
       "type": "object"
     },
-    "SelectionResolutions": {
+    "SelectionResolution": {
       "enum": [
         "global",
-        "independent",
         "union",
-        "union_others",
-        "intersect",
-        "intersect_others"
+        "intersect"
       ],
       "type": "string"
     },
@@ -4833,8 +4800,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         },
         "type": {
           "enum": [
@@ -4887,8 +4854,8 @@
           "description": "A Vega event stream (object or selector) that triggers the selection."
         },
         "resolve": {
-          "$ref": "#/definitions/SelectionResolutions",
-          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances.\n\n__union_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _any_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values.\n\n__intersect_others__: Each view contains its own selection, and a data value\nis considered to be selected if it falls within _all_ of the selection\ninstances of _other_ views. Thus, a view's own selection is not considered\nwhen evaluating its own data values."
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain. One of: \"global\", \"union\",\n\"intersect\", \"union_others\", or \"intersect_others\".\n\n__global__: Only one instance of the selection exists across all\nviews. When a user interacts within a new view, any previous selections\nare overridden.\n\n__union__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _any_ of these selection\ninstances.\n\n__intersect__: Each view contains its own selection, and a data value is\nconsidered to be selected if it falls within _all_ of these selection\ninstances."
         }
       },
       "type": "object"
@@ -5020,10 +4987,6 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -5219,10 +5182,6 @@
         "baseline": {
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
-          "type": "boolean"
         },
         "color": {
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -5539,17 +5498,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5595,17 +5544,7 @@
         },
         "hconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -5750,17 +5689,7 @@
           "$ref": "#/definitions/ResolveMapping"
         },
         "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RepeatSpec"
-            },
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/CompositeUnitSpec"
-            }
-          ]
+          "$ref": "#/definitions/Spec"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5824,17 +5753,7 @@
         },
         "vconcat": {
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/RepeatSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -6084,11 +6003,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "tickExtra": {
@@ -6222,11 +6141,11 @@
           "type": "boolean"
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\nFor quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.\n\n__Default value:__\nFor quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default\nto avoid jumpy axis title during pan and zoom interactions.\nFor other scales, the default value is `undefined`.",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
           "type": "number"
         },
         "tickColor": {

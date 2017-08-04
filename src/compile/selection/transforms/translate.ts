@@ -71,14 +71,16 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleCh
   const anchor = name + ANCHOR;
   const delta  = name + DELTA;
   const sizeSg = model.getSizeSignalRef(size).signal;
-  const scaleType = model.getScaleComponent(channel).get('type');
+  const scaleCmpt = model.getScaleComponent(channel);
+  const scaleType = scaleCmpt.get('type');
   const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
   const extent = `${anchor}.extent_${channel}`;
   const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
   const panFn = !hasScales ? 'panLinear' :
     scaleType === 'log' ? 'panLog' :
     scaleType === 'pow' ? 'panPow' : 'panLinear';
-  const update = `${panFn}(${extent}, ${offset})`;
+  const update = `${panFn}(${extent}, ${offset}` +
+    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') + ')';
 
   signal.on.push({
     events: {signal: delta},

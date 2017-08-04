@@ -14,6 +14,7 @@ import {parseConcatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponentIndex} from './scale/component';
 
 export class ConcatModel extends Model {
@@ -89,6 +90,10 @@ export class ConcatModel extends Model {
 
   public assembleParentGroupProperties(): any {
     return null;
+  }
+
+  public assembleScales(): VgScale[] {
+    return assembleScaleForModelAndChildren(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {

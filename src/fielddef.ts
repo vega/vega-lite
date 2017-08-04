@@ -208,7 +208,7 @@ export interface FieldRefOption {
   /** prepend fn with custom function prefix */
   prefix?: string;
   /** append suffix to the field ref for bin (default='start') */
-  binSuffix?: 'start' | 'end' | 'range';
+  binSuffix?: 'start' | 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
   /** Overrride which aggregate to use. Needed for unaggregated domain. */
