@@ -9,6 +9,10 @@
       "title": "Aggregate Bar Chart"
     },
     {
+      "name": "histogram",
+      "title": "Histogram"
+    },
+    {
       "name": "bar_grouped",
       "title": "Grouped Bar Chart"
     },
@@ -30,13 +34,6 @@
     {
       "name": "scatter_colored_with_shape",
       "title": "Colored Scatterplot",
-      "galleryParameters": {
-        "backgroundSize": "110%"
-      }
-    },
-    {
-      "name": "text_scatter_colored",
-      "title": "Colored Text Scatter Plot",
       "galleryParameters": {
         "backgroundSize": "110%"
       }
@@ -72,8 +69,8 @@
       "title": "Slope Graph"
     },
     {
-      "name": "histogram",
-      "title": "Histogram"
+      "name": "scatter_connected",
+      "title": "Connected Scatterplot"
     },
     {
       "name": "area",
@@ -85,6 +82,10 @@
       "galleryParameters": {
         "backgroundSize": "110%"
       }
+    },
+    {
+      "name": "rect_binned_heatmap",
+      "title": "Binned heatmap"
     },
     {
       "name": "github_punchcard",
@@ -181,6 +182,12 @@
     {
       "name": "layer_candlestick",
       "title": "Candlestick Chart"
+    }
+  ],
+  "Composition": [
+    {
+      "name": "repeat_layer",
+      "title": "Repeat and layer to show different weather measures"
     }
   ],
   "Interactive": [
