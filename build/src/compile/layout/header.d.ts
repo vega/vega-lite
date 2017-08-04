@@ -64,13 +64,6 @@ export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
     }[];
 };
 export declare function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent): {
-    encode: {
-        update: {
-            [x: string]: {
-                signal: string;
-            };
-        };
-    };
     name: string;
     type: string;
     role: string;

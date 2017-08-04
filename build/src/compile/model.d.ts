@@ -16,8 +16,10 @@ import { ScaleComponent, ScaleComponentIndex } from './scale/component';
 import { SelectionComponent } from './selection/selection';
 /**
  * Composable Components that are intermediate results of the parsing phase of the
- * compilations.  These composable components will be assembled in the last
- * compilation step.
+ * compilations.  The components represents parts of the specification in a form that
+ * can be easily merged (during parsing for composite specs).
+ * In addition, these components are easily transformed into Vega specifications
+ * during the "assemble" phase, which is the last phase of the compilation step.
  */
 export interface Component {
     data: DataComponent;
@@ -61,9 +63,8 @@ export declare abstract class Model {
     readonly component: Component;
     readonly abstract children: Model[];
     constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping);
-    readonly width: number | VgSignalRef;
-    readonly height: number | VgSignalRef;
-    private getLayoutSize(sizeType);
+    readonly width: VgSignalRef;
+    readonly height: VgSignalRef;
     protected initSize(size: LayoutSizeIndex): void;
     parse(): void;
     abstract parseData(): void;
@@ -86,11 +87,14 @@ export declare abstract class Model {
     abstract assembleData(): VgData[];
     abstract assembleLayout(): VgLayout;
     abstract assembleLayoutSignals(): VgSignal[];
-    assembleScales(): VgScale[];
+    abstract assembleScales(): VgScale[];
     assembleHeaderMarks(): VgMarkGroup[];
     abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];
     assembleLegends(): VgLegend[];
+    /**
+     * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
+     */
     assembleGroup(signals?: VgSignal[]): any;
     abstract assembleParentGroupProperties(): VgEncodeEntry;
     hasDescendantWithFieldOnChannel(channel: Channel): boolean;

@@ -3,8 +3,7 @@ import { Config } from '../config';
 import { Facet } from '../facet';
 import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
-import { VgMarkGroup, VgSignal } from '../vega.schema';
-import { VgData, VgLayout } from '../vega.schema';
+import { VgData, VgLayout, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeat';
 export declare class FacetModel extends ModelWithField {
@@ -27,12 +26,18 @@ export declare class FacetModel extends ModelWithField {
     parseLegend(): void;
     assembleData(): VgData[];
     assembleParentGroupProperties(): any;
+    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
+    private getLayoutBandMixins(headerType);
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): VgSignal[];
     private columnDistinctSignal();
+    /**
+     * Aggregate cardinality for calculating size
+     */
+    private getCardinalityAggregateForChild();
     assembleMarks(): VgMarkGroup[];
     protected getMapping(): Facet<string>;
 }

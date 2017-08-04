@@ -13,4 +13,4 @@ export declare function assembleFacetData(root: FacetNode): VgData[];
  * @param  data array
  * @return modified data array
  */
-export declare function assembleData(dataCompomponent: DataComponent): VgData[];
+export declare function assembleData(dataComponent: DataComponent): VgData[];

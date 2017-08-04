@@ -1,6 +1,6 @@
 import { Channel } from './channel';
+import { ScaleComponentProps } from './compile/scale/component';
 import { DateTime } from './datetime';
-import { VgScale } from './vega.schema';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
     const BIN_LINEAR: 'bin-linear';
@@ -323,7 +323,7 @@ export interface Scale {
     zero?: boolean;
     interpolate?: 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
 }
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[];
 export declare const SCALE_PROPERTIES: (keyof Scale)[];
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**

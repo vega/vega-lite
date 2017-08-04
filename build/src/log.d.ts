@@ -11,6 +11,7 @@ import { Mark } from './mark';
 import { ScaleType } from './scale';
 import { TimeUnit } from './timeunit';
 import { Type } from './type';
+import { VgSortField } from './vega.schema';
 export { LoggerInterface } from 'vega-util';
 /**
  * Logger tool for checking if the code throws correct warning
@@ -77,8 +78,9 @@ export declare namespace message {
     function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T): string;
     function independentScaleMeansIndependentGuide(channel: Channel): string;
     function conflictedDomain(channel: Channel): string;
-    const INVAID_DOMAIN = "Invalid scale domain";
+    function domainSortDropped(sort: VgSortField): string;
     const UNABLE_TO_MERGE_DOMAINS = "Unable to merge domains";
+    const MORE_THAN_ONE_SORT = "Domains that should be unioned has conflicting sort properties. Sort will be set to true.";
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";
     function cannotStackRangedMark(channel: Channel): string;
     function cannotStackNonLinearScale(scaleType: ScaleType): string;

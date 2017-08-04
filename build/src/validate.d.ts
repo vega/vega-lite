@@ -4,7 +4,6 @@ export interface RequiredChannelMap {
 }
 /**
  * Required Encoding Channels for each mark type
- * @type {Object}
  */
 export declare const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap;
 export interface SupportedChannelMap {

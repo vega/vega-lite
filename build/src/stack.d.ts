@@ -23,6 +23,10 @@ export interface StackProperties {
      * __Default value:__ `zero` for plots with all of the following conditions: (1) `bar` or `area` marks (2) `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) One ordinal or nominal axis, and (4) one quantitative axis with linear scale and summative aggregation function (e.g., `sum`, `count`).
      */
     offset: StackOffset;
+    /**
+     * Whether this stack will produce impute transform
+     */
+    impute: boolean;
 }
 export declare const STACKABLE_MARKS: ("area" | "circle" | "line" | "text" | "square" | "point" | "bar" | "rule" | "tick")[];
 export declare const STACK_BY_DEFAULT_MARKS: ("area" | "bar")[];

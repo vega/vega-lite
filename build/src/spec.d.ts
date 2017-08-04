@@ -99,22 +99,22 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 export declare type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     facet: Facet<Field>;
-    spec: GenericLayerSpec<U> | GenericRepeatSpec<U> | U;
+    spec: GenericSpec<U>;
     resolve?: ResolveMapping;
 }
 export declare type FacetSpec = GenericFacetSpec<UnitSpec>;
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     repeat: Repeat;
-    spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
+    spec: GenericSpec<U>;
     resolve?: ResolveMapping;
 }
 export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    vconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+    vconcat: (GenericSpec<U>)[];
     resolve?: ResolveMapping;
 }
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    hconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+    hconcat: (GenericSpec<U>)[];
     resolve?: ResolveMapping;
 }
 export declare type ConcatSpec = GenericVConcatSpec<UnitSpec> | GenericHConcatSpec<UnitSpec>;

@@ -2,7 +2,7 @@ import { Filter } from '../../filter';
 import { LogicalOperand } from '../../logical';
 import { CalculateTransform, LookupTransform } from '../../transform';
 import { StringSet } from '../../util';
-import { VgFilterTransform, VgFormulaTransform, VgLookupTransform } from '../../vega.schema';
+import { VgFilterTransform, VgFormulaTransform, VgIdentifierTransform, VgLookupTransform } from '../../vega.schema';
 import { Model } from '../model';
 import { DataFlowNode } from './dataflow';
 export declare class FilterNode extends DataFlowNode {
@@ -30,6 +30,14 @@ export declare class LookupNode extends DataFlowNode {
     static make(model: Model, transform: LookupTransform, counter: number): LookupNode;
     producedFields(): StringSet;
     assemble(): VgLookupTransform;
+}
+export declare class IdentifierNode extends DataFlowNode {
+    clone(): IdentifierNode;
+    constructor();
+    producedFields(): {
+        [x: string]: boolean;
+    };
+    assemble(): VgIdentifierTransform;
 }
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.

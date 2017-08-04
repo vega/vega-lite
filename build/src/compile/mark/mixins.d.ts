@@ -52,69 +52,6 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    interpolate?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeWidth?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeDash?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeDashOffset?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeOpacity?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fillOpacity?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    clip?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    orient?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    tension?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    align?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    angle?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    baseline?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    dx?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    theta?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontSize?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontStyle?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontWeight?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     xc?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -127,7 +64,31 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     height?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    fill?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fillOpacity?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeWidth?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeOpacity?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeDash?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeDashOffset?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     cursor?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    clip?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {
@@ -142,10 +103,49 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     endAngle?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    interpolate?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    tension?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    align?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    baseline?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     ellipsis?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     limit?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    dx?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    theta?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    angle?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontSize?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontWeight?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontStyle?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
 };
@@ -186,69 +186,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    interpolate?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeWidth?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeDash?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeDashOffset?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    strokeOpacity?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fillOpacity?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    clip?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    orient?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    tension?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    align?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    angle?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    baseline?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    dx?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    theta?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontSize?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontStyle?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    fontWeight?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     xc?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -261,7 +198,31 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     height?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    fill?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fillOpacity?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeWidth?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeOpacity?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeDash?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeDashOffset?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     cursor?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    clip?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     innerRadius?: VgValueRef | (VgValueRef & {
@@ -276,10 +237,49 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     endAngle?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    interpolate?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    tension?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    align?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    baseline?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     ellipsis?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     limit?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    dx?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    theta?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    angle?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontSize?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontWeight?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    fontStyle?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
 };

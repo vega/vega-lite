@@ -1,17 +1,20 @@
 /**
- * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
+ * Generic class for storing properties that are explicitly specified
+ * and implicitly determined by the compiler.
+ * This is important for scale/axis/legend merging as
+ * we want to prioritize properties that users explicitly specified.
  */
-export declare class Split<T extends Object> {
+export declare class Split<T extends object> {
     readonly explicit: T;
     readonly implicit: T;
     constructor(explicit?: T, implicit?: T);
     clone(): Split<T>;
-    combine(keys?: (keyof T)[]): T;
+    combine(): T;
     get<K extends keyof T>(key: K): T[K];
     getWithExplicit<K extends keyof T>(key: K): Explicit<T[K]>;
     setWithExplicit<K extends keyof T>(key: K, value: Explicit<T[K]>): void;
     set<K extends keyof T>(key: K, value: T[K], explicit: boolean): this;
-    copyKeyFromSplit<S, K extends keyof (T | S)>(key: K, s: Split<S>): void;
+    copyKeyFromSplit<S extends object, K extends keyof (T | S)>(key: K, s: Split<S>): void;
     copyKeyFromObject<S, K extends keyof (T | S)>(key: K, s: S): void;
     extend(mixins: T, explicit: boolean): Split<T>;
 }

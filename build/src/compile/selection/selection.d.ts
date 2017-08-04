@@ -1,6 +1,6 @@
 import { Channel, ScaleChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
-import { BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes } from '../../selection';
+import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
 import { Dict } from '../../util';
 import { VgBinding, VgData, VgEventStream, VgSignalRef } from '../../vega.schema';
 import { DataFlowNode } from '../data/dataflow';
@@ -15,12 +15,12 @@ export declare const MODIFY = "_modify";
 export declare const SELECTION_DOMAIN = "_selection_domain_";
 export interface SelectionComponent {
     name: string;
-    type: SelectionTypes;
+    type: SelectionType;
     events: VgEventStream;
     bind?: 'scales' | VgBinding | {
         [key: string]: VgBinding;
     };
-    resolve: SelectionResolutions;
+    resolve: SelectionResolution;
     mark?: BrushConfig;
     project?: ProjectComponent[];
     fields?: any;
@@ -52,6 +52,8 @@ export declare function assembleLayerSelectionMarks(model: LayerModel, marks: an
 export declare function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
 export declare function isRawSelectionDomain(domainRaw: VgSignalRef): boolean;
 export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef;
+export declare function unitName(model: Model): string;
+export declare function requiresSelectionId(model: Model): boolean;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;
 export declare function spatialProjections(selCmpt: SelectionComponent): {
     x: ProjectComponent;

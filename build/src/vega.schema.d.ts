@@ -1,3 +1,4 @@
+import { AggregateOp } from './aggregate';
 import { BaseBin } from './bin';
 import { NiceTime, ScaleType } from './scale';
 import { SortOrder } from './sort';
@@ -16,7 +17,14 @@ export declare type VgParentRef = {
 export declare type VgFieldRef = string | VgParentRef | VgParentRef[];
 export declare type VgSortField = boolean | {
     field?: VgFieldRef;
-    op: string;
+    op: AggregateOp;
+    order?: SortOrder;
+};
+/**
+ * Unioned domains can only be sorted by count aggregate.
+ */
+export declare type VgUnionSortField = boolean | {
+    op: 'count';
     order?: SortOrder;
 };
 export declare type VgDataRef = {
@@ -44,16 +52,12 @@ export declare type VgValueRef = {
 };
 export declare type DataRefUnionDomain = {
     fields: (any[] | VgDataRef | VgSignalRef)[];
-    sort?: boolean | {
-        op: 'count';
-    };
+    sort?: VgUnionSortField;
 };
 export declare type FieldRefUnionDomain = {
     data: string;
     fields: VgFieldRef[];
-    sort?: boolean | {
-        op: 'count';
-    };
+    sort?: VgUnionSortField;
 };
 export declare type VgRangeScheme = {
     scheme: string;
@@ -65,7 +69,8 @@ export declare type VgRangeStep = {
     step: number | VgSignalRef;
 };
 export declare function isVgRangeStep(range: VgRange): range is VgRangeStep;
-export declare type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
+export declare type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
+export declare type VgDomain = VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
 export declare type VgMarkGroup = any;
 export declare type VgScale = {
     name: string;
@@ -85,11 +90,14 @@ export declare type VgScale = {
     zero?: boolean;
 };
 export declare type VgLayoutAlign = 'none' | 'each' | 'all';
+export declare type RowCol<T> = {
+    row?: T;
+    column?: T;
+};
 export declare type VgLayout = {
-    padding: number | {
-        row?: number;
-        column?: number;
-    };
+    padding: number | RowCol<number>;
+    headerBand?: number | RowCol<number>;
+    footerBand?: number | RowCol<number>;
     offset: number | {
         rowHeader: number;
         rowFooter: number;
@@ -197,7 +205,7 @@ export interface VgAggregateTransform {
     type: 'aggregate';
     groupby?: VgFieldRef[];
     fields?: VgFieldRef[];
-    ops?: string[];
+    ops?: AggregateOp[];
     as?: string[];
     cross?: boolean;
     drop?: boolean;
@@ -215,6 +223,19 @@ export interface VgLookupTransform {
     as?: string[];
     default?: string;
 }
+export interface VgStackTransform {
+    type: 'stack';
+    offset?: StackOffset;
+    groupby: string[];
+    field: string;
+    sort: VgSort;
+    as: string[];
+}
+export interface VgIdentifierTransform {
+    type: 'identifier';
+    as: string;
+}
+export declare type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform;
 export interface VgAxisEncode {
     ticks?: VgGuideEncode;
     labels?: VgGuideEncode;
@@ -230,15 +251,6 @@ export interface VgLegendEncode {
     gradient?: VgGuideEncode;
 }
 export declare type VgGuideEncode = any;
-export declare type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
-export interface VgStackTransform {
-    type: 'stack';
-    offset?: StackOffset;
-    groupby: string[];
-    field: string;
-    sort: VgSort;
-    as: string[];
-}
 export declare type VgSort = {
     field: string;
     order?: 'ascending' | 'descending';
@@ -356,23 +368,13 @@ export interface VgAxisBase {
     /**
      * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
      *
-     * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-     *
-     * __Default value:__
-     * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
-     * to avoid jumpy axis title during pan and zoom interactions.
-     * For other scales, the default value is `undefined`.
+     * __Default value:__ `30`
      */
     minExtent?: number;
     /**
      * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
      *
-     * For quantitative axes of interactive plots, we recommend setting `minExtent` and `maxExtent` to the same value to avoid avoid jumpy axis title during pan and zoom interactions.
-     *
-     * __Default value:__
-     * For quantitative scales, `minExtent` and `maxExtent` are both set to [`config.axis.quantitativeExtent`](axis.html#extent) by default
-     * to avoid jumpy axis title during pan and zoom interactions.
-     * For other scales, the default value is `undefined`.
+     * __Default value:__ `undefined`.
      */
     maxExtent?: number;
 }

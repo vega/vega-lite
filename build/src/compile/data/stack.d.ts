@@ -1,12 +1,14 @@
+import { FieldDef } from '../../fielddef';
 import { StackOffset } from '../../stack';
 import { VgSort, VgTransform } from '../../vega.schema';
 import { UnitModel } from './../unit';
 import { DataFlowNode } from './dataflow';
 export interface StackComponent {
     /**
-     * Grouping fields for stacked charts.  This includes one of x- or 'y-field and may include faceted field.
+     * Faceted field.
      */
-    groupby: string[];
+    facetby: string[];
+    dimensionFieldDef: FieldDef<string>;
     /**
      * Stack measure's field
      */
@@ -35,5 +37,6 @@ export declare class StackNode extends DataFlowNode {
     addDimensions(fields: string[]): void;
     dependentFields(): {};
     producedFields(): {};
+    private getGroupbyFields();
     assemble(): VgTransform[];
 }

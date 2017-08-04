@@ -33,51 +33,58 @@ describe('Selection Predicate', function () {
     model.component.selection = selection.parseUnitSelection(model, {
         "one": { "type": "single" },
         "two": { "type": "multi", "resolve": "union" },
-        "thr-ee": { "type": "interval", "resolve": "intersect_others" }
+        "thr-ee": { "type": "interval", "resolve": "intersect" }
     });
     it('generates the predicate expression', function () {
-        chai_1.assert.equal(predicate(model, "one"), 'vlPoint("one_store", "", datum, "union", "all")');
-        chai_1.assert.equal(predicate(model, { "not": "one" }), '!(vlPoint("one_store", "", datum, "union", "all"))');
-        chai_1.assert.equal(predicate(model, { "not": { "and": ["one", "two"] } }), '!((vlPoint("one_store", "", datum, "union", "all")) && ' +
-            '(vlPoint("two_store", "", datum, "union", "all")))');
-        chai_1.assert.equal(predicate(model, { "and": ["one", "two", { "not": "thr-ee" }] }), '(vlPoint("one_store", "", datum, "union", "all")) && ' +
-            '(vlPoint("two_store", "", datum, "union", "all")) && ' +
-            '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others")))');
-        chai_1.assert.equal(predicate(model, { "or": ["one", { "and": ["two", { "not": "thr-ee" }] }] }), '(vlPoint("one_store", "", datum, "union", "all")) || ' +
-            '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-            '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))');
+        chai_1.assert.equal(predicate(model, "one"), '!(length(data("one_store"))) || (vlPoint("one_store", datum))');
+        chai_1.assert.equal(predicate(model, { "not": "one" }), '!(length(data("one_store"))) || (!(vlPoint("one_store", datum)))');
+        chai_1.assert.equal(predicate(model, { "not": { "and": ["one", "two"] } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
+            '(!((vlPoint("one_store", datum)) && ' +
+            '(vlPoint("two_store", datum, "union"))))');
+        chai_1.assert.equal(predicate(model, { "and": ["one", "two", { "not": "thr-ee" }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+            '((vlPoint("one_store", datum)) && ' +
+            '(vlPoint("two_store", datum, "union")) && ' +
+            '(!(vlInterval("thr_ee_store", datum, "intersect"))))');
+        chai_1.assert.equal(predicate(model, { "or": ["one", { "and": ["two", { "not": "thr-ee" }] }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+            '((vlPoint("one_store", datum)) || ' +
+            '((vlPoint("two_store", datum, "union")) && ' +
+            '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
     });
     it('generates Vega production rules', function () {
         chai_1.assert.deepEqual(mixins_1.nonPosition('color', model, { vgChannel: 'fill' }), {
             fill: [
-                { test: 'vlPoint("one_store", "", datum, "union", "all")', value: "grey" },
+                { test: '!(length(data("one_store"))) || (vlPoint("one_store", datum))', value: "grey" },
                 { scale: "color", field: "Cylinders" }
             ]
         });
         chai_1.assert.deepEqual(mixins_1.nonPosition('opacity', model), {
             opacity: [
-                { test: '(vlPoint("one_store", "", datum, "union", "all")) || ' +
-                        '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-                        '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))',
+                { test: '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+                        '((vlPoint("one_store", datum)) || ' +
+                        '((vlPoint("two_store", datum, "union")) && ' +
+                        '(!(vlInterval("thr_ee_store", datum, "intersect")))))',
                     value: 0.5 },
                 { scale: "opacity", field: "Origin" }
             ]
         });
     });
     it('generates a selection filter', function () {
-        chai_1.assert.equal(filter_1.expression(model, { "selection": "one" }), 'vlPoint("one_store", "", datum, "union", "all")');
-        chai_1.assert.equal(filter_1.expression(model, { "selection": { "not": "one" } }), '!(vlPoint("one_store", "", datum, "union", "all"))');
-        chai_1.assert.equal(filter_1.expression(model, { "selection": { "not": { "and": ["one", "two"] } } }), '!((vlPoint("one_store", "", datum, "union", "all")) && ' +
-            '(vlPoint("two_store", "", datum, "union", "all")))');
-        chai_1.assert.equal(filter_1.expression(model, { "selection": { "and": ["one", "two", { "not": "thr-ee" }] } }), '(vlPoint("one_store", "", datum, "union", "all")) && ' +
-            '(vlPoint("two_store", "", datum, "union", "all")) && ' +
-            '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others")))');
-        chai_1.assert.equal(filter_1.expression(model, { "selection": { "or": ["one", { "and": ["two", { "not": "thr-ee" }] }] } }), '(vlPoint("one_store", "", datum, "union", "all")) || ' +
-            '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-            '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))');
+        chai_1.assert.equal(filter_1.expression(model, { "selection": "one" }), '!(length(data("one_store"))) || (vlPoint("one_store", datum))');
+        chai_1.assert.equal(filter_1.expression(model, { "selection": { "not": "one" } }), '!(length(data("one_store"))) || (!(vlPoint("one_store", datum)))');
+        chai_1.assert.equal(filter_1.expression(model, { "selection": { "not": { "and": ["one", "two"] } } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
+            '(!((vlPoint("one_store", datum)) && ' +
+            '(vlPoint("two_store", datum, "union"))))');
+        chai_1.assert.equal(filter_1.expression(model, { "selection": { "and": ["one", "two", { "not": "thr-ee" }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+            '((vlPoint("one_store", datum)) && ' +
+            '(vlPoint("two_store", datum, "union")) && ' +
+            '(!(vlInterval("thr_ee_store", datum, "intersect"))))');
+        chai_1.assert.equal(filter_1.expression(model, { "selection": { "or": ["one", { "and": ["two", { "not": "thr-ee" }] }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+            '((vlPoint("one_store", datum)) || ' +
+            '((vlPoint("two_store", datum, "union")) && ' +
+            '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
     });
     it('throws an error for unknown selections', function () {
         chai_1.assert.throws(function () { return predicate(model, 'helloworld'); }, 'Cannot find a selection named "helloworld"');
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJlZGljYXRlLnRlc3QuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi90ZXN0L2NvbXBpbGUvc2VsZWN0aW9uL3ByZWRpY2F0ZS50ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSw4QkFBOEI7O0FBRTlCLDZCQUE0QjtBQUM1QiwyREFBNkQ7QUFDN0Qsb0VBQXNFO0FBQ3RFLDhDQUErQztBQUUvQyxtQ0FBMEM7QUFFMUMsSUFBTSxTQUFTLEdBQUcsU0FBUyxDQUFDLFNBQVMsQ0FBQztBQUV0QyxRQUFRLENBQUMscUJBQXFCLEVBQUU7SUFDOUIsSUFBTSxLQUFLLEdBQUcscUJBQWMsQ0FBQztRQUMzQixNQUFNLEVBQUUsUUFBUTtRQUNoQixVQUFVLEVBQUU7WUFDVixHQUFHLEVBQUUsRUFBQyxPQUFPLEVBQUUsWUFBWSxFQUFDLE1BQU0sRUFBRSxjQUFjLEVBQUM7WUFDbkQsR0FBRyxFQUFFLEVBQUMsT0FBTyxFQUFFLGtCQUFrQixFQUFDLE1BQU0sRUFBRSxjQUFjLEVBQUM7WUFDekQsT0FBTyxFQUFFO2dCQUNQLE9BQU8sRUFBRSxXQUFXLEVBQUUsTUFBTSxFQUFFLFNBQVM7Z0JBQ3ZDLFdBQVcsRUFBRTtvQkFDWCxXQUFXLEVBQUUsS0FBSztvQkFDbEIsT0FBTyxFQUFFLE1BQU07aUJBQ2hCO2FBQ0Y7WUFDRCxTQUFTLEVBQUU7Z0JBQ1QsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLEVBQUUsU0FBUztnQkFDcEMsV0FBVyxFQUFFO29CQUNYLFdBQVcsRUFBRSxFQUFDLElBQUksRUFBRSxDQUFDLEtBQUssRUFBRSxFQUFDLEtBQUssRUFBRSxDQUFDLEtBQUssRUFBRSxFQUFDLEtBQUssRUFBRSxRQUFRLEVBQUMsQ0FBQyxFQUFDLENBQUMsRUFBQztvQkFDakUsT0FBTyxFQUFFLEdBQUc7aUJBQ2I7YUFDRjtTQUNGO0tBQ0YsQ0FBQyxDQUFDO0lBRUgsS0FBSyxDQUFDLFVBQVUsRUFBRSxDQUFDO0lBRW5CLEtB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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJlZGljYXRlLnRlc3QuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi90ZXN0L2NvbXBpbGUvc2VsZWN0aW9uL3ByZWRpY2F0ZS50ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSw4QkFBOEI7O0FBRTlCLDZCQUE0QjtBQUM1QiwyREFBNkQ7QUFDN0Qsb0VBQXNFO0FBQ3RFLDhDQUErQztBQUUvQyxtQ0FBMEM7QUFFMUMsSUFBTSxTQUFTLEdBQUcsU0FBUyxDQUFDLFNBQVMsQ0FBQztBQUV0QyxRQUFRLENBQUMscUJBQXFCLEVBQUU7SUFDOUIsSUFBTSxLQUFLLEdBQUcscUJBQWMsQ0FBQztRQUMzQixNQUFNLEVBQUUsUUFBUTtRQUNoQixVQUFVLEVBQUU7WUFDVixHQUFHLEVBQUUsRUFBQyxPQUFPLEVBQUUsWUFBWSxFQUFDLE1BQU0sRUFBRSxjQUFjLEVBQUM7WUFDbkQsR0FBRyxFQUFFLEVBQUMsT0FBTyxFQUFFLGtCQUFrQixFQUFDLE1BQU0sRUFBRSxjQUFjLEVBQUM7WUFDekQsT0FBTyxFQUFFO2dCQUNQLE9BQU8sRUFBRSxXQUFXLEVBQUUsTUFBTSxFQUFFLFNBQVM7Z0JBQ3ZDLFdBQVcsRUFBRTtvQkFDWCxXQUFXLEVBQUUsS0FBSztvQkFDbEIsT0FBTyxFQUFFLE1BQU07aUJBQ2hCO2FBQ0Y7WUFDRCxTQUFTLEVBQUU7Z0JBQ1QsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLEVBQUUsU0FBUztnQkFDcEMsV0FBVyxFQUFFO29CQUNYLFdBQVcsRUFBRSxFQUFDLElBQUksRUFBRSxDQUFDLEtBQUssRUFBRSxFQUFDLEtBQUssRUFBRSxDQUFDLEtBQUssRUFBRSxFQUFDLEtBQUssRUFBRSxRQUFRLEVBQUMsQ0FBQyxFQUFDLENBQUMsRUFBQztvQkFDakUsT0FBTyxFQUFFLEdBQUc7aUJBQ2I7YUFDRjtTQUNGO0tBQ0YsQ0FBQyxDQUFDO0lBRUgsS0FBSyxDQUFDLFVBQVUsRUFBRSxDQUFDO0lBRW5CLEtB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

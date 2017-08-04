@@ -84,6 +84,10 @@ export interface MarkDef {
      * @maximum 1
      */
     tension?: number;
+    /**
+     * Should a mark be clipped to the enclosing group’s width and height?
+     */
+    clip?: boolean;
 }
 export declare type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 export declare function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef);
@@ -111,10 +115,6 @@ export interface MarkConfig extends VgMarkConfig {
      * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
      */
     color?: string;
-    /**
-     * Should a mark be clipped to the enclosing group’s width and height?
-     */
-    clip?: boolean;
 }
 export declare const defaultMarkConfig: MarkConfig;
 export interface MarkConfigMixins {

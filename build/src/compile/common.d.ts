@@ -1,5 +1,5 @@
 import { CellConfig, Config } from '../config';
-import { FieldDef, OrderFieldDef } from '../fielddef';
+import { FieldDef, FieldRefOption, OrderFieldDef } from '../fielddef';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
 import { LayoutSizeMixins, Spec } from '../spec';
 import { TimeUnit } from '../timeunit';
@@ -19,7 +19,11 @@ export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark:
 export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean): {
     signal: string;
 };
-export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T): T;
+export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {
+    signal: string;
+}): T | {
+    signal: string;
+};
 /**
  * Returns number format for a fieldDef
  *
@@ -34,7 +38,7 @@ export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export declare function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[]): VgSort;
+export declare function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort;
 export declare function titleMerger(v1: Explicit<string>, v2: Explicit<string>): {
     explicit: boolean;
     value: string;

@@ -4,7 +4,7 @@ import { Facet } from '../facet';
 import { Field } from '../fielddef';
 import { Repeat } from '../repeat';
 import { RepeatSpec } from '../spec';
-import { VgData, VgLayout, VgSignal } from '../vega.schema';
+import { VgData, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { Model } from './model';
 export declare type RepeaterValue = {
     row?: string;
@@ -25,6 +25,7 @@ export declare class RepeatModel extends Model {
     parseLegend(): void;
     assembleData(): VgData[];
     assembleParentGroupProperties(): any;
+    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleLayoutSignals(): VgSignal[];

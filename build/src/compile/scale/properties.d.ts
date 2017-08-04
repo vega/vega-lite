@@ -1,10 +1,10 @@
 import { Channel } from '../../channel';
 import { FieldDef } from '../../fielddef';
 import { NiceTime, Scale, ScaleConfig, ScaleType } from '../../scale';
-import { VgScale } from '../../vega.schema';
 import { Model } from '../model';
-export declare function parseScaleProperty(model: Model, property: keyof (Scale | VgScale)): void;
-export declare function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | VgScale)): void;
+import { ScaleComponentProps } from './component';
+export declare function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)): void;
+export declare function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)): void;
 export declare function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime;
 export declare function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig): number;
 export declare function paddingInner(padding: number, channel: Channel, scaleConfig: ScaleConfig): number;

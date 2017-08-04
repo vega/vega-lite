@@ -1,6 +1,6 @@
 import { Config } from '../config';
 import { ConcatSpec } from '../spec';
-import { VgData, VgLayout, VgSignal } from '../vega.schema';
+import { VgData, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeat';
 export declare class ConcatModel extends Model {
@@ -16,6 +16,7 @@ export declare class ConcatModel extends Model {
     parseLegend(): void;
     assembleData(): VgData[];
     assembleParentGroupProperties(): any;
+    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleLayoutSignals(): VgSignal[];

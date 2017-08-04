@@ -1,7 +1,8 @@
 import { SingleDefChannel } from './channel';
 import { VgBinding } from './vega.schema';
-export declare type SelectionTypes = 'single' | 'multi' | 'interval';
-export declare type SelectionResolutions = 'global' | 'independent' | 'union' | 'union_others' | 'intersect' | 'intersect_others';
+export declare const SELECTION_ID = "_vgsid_";
+export declare type SelectionType = 'single' | 'multi' | 'interval';
+export declare type SelectionResolution = 'global' | 'union' | 'intersect';
 export interface BaseSelectionDef {
     /**
      * A Vega event stream (object or selector) that triggers the selection.
@@ -25,18 +26,8 @@ export interface BaseSelectionDef {
      * considered to be selected if it falls within _all_ of these selection
      * instances.
      *
-     * __union_others__: Each view contains its own selection, and a data value
-     * is considered to be selected if it falls within _any_ of the selection
-     * instances of _other_ views. Thus, a view's own selection is not considered
-     * when evaluating its own data values.
-     *
-     * __intersect_others__: Each view contains its own selection, and a data value
-     * is considered to be selected if it falls within _all_ of the selection
-     * instances of _other_ views. Thus, a view's own selection is not considered
-     * when evaluating its own data values.
-     *
      */
-    resolve?: SelectionResolutions;
+    resolve?: SelectionResolution;
     /**
      * An array of encoding channels. The corresponding data field values
      * must match for a data tuple to fall within the selection.

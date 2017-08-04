@@ -12,7 +12,7 @@ import { SortField, SortOrder } from '../sort';
 import { LayoutSizeMixins, UnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
-import { VgData, VgEncodeEntry, VgLayout, VgSignal } from '../vega.schema';
+import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { AxisIndex } from './axis/component';
 import { LegendIndex } from './legend/component';
 import { Model, ModelWithField } from './model';
@@ -50,6 +50,7 @@ export declare class UnitModel extends ModelWithField {
     parseAxisAndHeader(): void;
     parseLegend(): void;
     assembleData(): VgData[];
+    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];

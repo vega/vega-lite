@@ -1,11 +1,11 @@
 import { ScaleChannel } from '../../channel';
 import { FieldDef } from '../../fielddef';
 import { ScaleType } from '../../scale';
-import { VgDomain, VgSortField } from '../../vega.schema';
+import { VgDomain, VgNonUnionDomain, VgSortField } from '../../vega.schema';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
 export declare function parseScaleDomain(model: Model): void;
-export declare function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgDomain;
+export declare function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgNonUnionDomain[];
 export declare function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): VgSortField;
 /**
  * Determine if a scale can use unaggregated domain.
@@ -19,6 +19,12 @@ export declare function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, sca
     reason?: string;
 };
 /**
- * Union two data domains. A unioned domain is always sorted.
+ * Converts an array of domains to a single Vega scale domain.
  */
-export declare function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain;
+export declare function mergeDomains(domains: VgNonUnionDomain[]): VgDomain;
+/**
+ * Return a field if a scale single field.
+ * Return `undefined` otherwise.
+ *
+ */
+export declare function getFieldFromDomains(domains: VgNonUnionDomain[]): string;

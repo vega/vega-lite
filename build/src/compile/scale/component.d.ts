@@ -1,9 +1,11 @@
 import { ScaleChannel } from '../../channel';
 import { Scale, ScaleType } from '../../scale';
-import { VgScale } from '../../vega.schema';
+import { VgNonUnionDomain, VgScale } from '../../vega.schema';
 import { Explicit, Split } from '../split';
-export declare class ScaleComponent extends Split<Partial<VgScale>> {
+export declare type ScaleComponentProps = Partial<Pick<VgScale, 'name' | 'type' | 'domainRaw' | 'range' | 'clamp' | 'exponent' | 'interpolate' | 'nice' | 'padding' | 'paddingInner' | 'paddingOuter' | 'reverse' | 'round' | 'zero'>>;
+export declare class ScaleComponent extends Split<ScaleComponentProps> {
     merged: boolean;
+    domains: VgNonUnionDomain[];
     constructor(name: string, typeWithExplicit: Explicit<ScaleType>);
 }
 export declare type ScaleComponentIndex = {

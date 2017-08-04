@@ -24,7 +24,6 @@ export declare function band(scaleName: string, band?: number | boolean): VgValu
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export declare function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef;
+export declare function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef;
 export declare function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, config: Config): VgValueRef;
-export declare function midX(width: number | VgSignalRef, config: Config): VgValueRef;
-export declare function midY(height: number | VgSignalRef, config: Config): VgValueRef;
+export declare function mid(sizeRef: VgSignalRef): VgValueRef;
