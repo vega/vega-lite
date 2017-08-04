@@ -109,7 +109,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   } else {
-    return {signal: field(fieldDef, {expr})};
+    return {signal: `''+${field(fieldDef, {expr})}`};
   }
 }
 

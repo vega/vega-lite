@@ -204,7 +204,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"r\"]"
+                    "signal": "''+parent[\"r\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -249,7 +249,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"c\"]"
+                    "signal": "''+parent[\"c\"]"
                 },
                 "offset": 10,
                 "orient": "top",

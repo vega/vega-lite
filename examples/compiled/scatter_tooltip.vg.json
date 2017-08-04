@@ -67,7 +67,7 @@
                         "value": "transparent"
                     },
                     "tooltip": {
-                        "signal": "datum[\"Origin\"]"
+                        "signal": "''+datum[\"Origin\"]"
                     },
                     "opacity": {
                         "value": 0.7

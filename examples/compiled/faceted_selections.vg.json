@@ -183,7 +183,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"Series\"]"
+                    "signal": "''+parent[\"Series\"]"
                 },
                 "offset": 10,
                 "orient": "top",

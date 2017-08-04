@@ -64,7 +64,7 @@
                         "field": "Miles_per_Gallon"
                     },
                     "text": {
-                        "signal": "datum[\"OriginInitial\"]"
+                        "signal": "''+datum[\"OriginInitial\"]"
                     },
                     "fill": {
                         "scale": "color",
