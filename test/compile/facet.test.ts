@@ -270,7 +270,7 @@ describe('FacetModel', function() {
         padding: {row: 10, column: 10},
         offset: 10,
         columns: {
-          signal: "length(data('column'))"
+          signal: "length(data('column_domain'))"
         },
         bounds: 'full',
         align: 'all'

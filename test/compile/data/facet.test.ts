@@ -38,7 +38,7 @@ describe('compile/data/facet', function() {
       const data = node.assemble();
 
       assert.deepEqual(data[0], {
-        name: 'column',
+        name: 'column_domain',
         source: 'dataName',
         transform:[{
           type: 'aggregate',
@@ -84,7 +84,7 @@ describe('compile/data/facet', function() {
 
       // crossed data
       assert.deepEqual(data[0], {
-        name: 'cross_column_row',
+        name: 'cross_column_domain_row_domain',
         source: 'dataName',
         transform:[{
           type: 'aggregate',
@@ -95,8 +95,8 @@ describe('compile/data/facet', function() {
       });
 
       assert.deepEqual(data[1], {
-        name: 'column',
-        source: 'cross_column_row',
+        name: 'column_domain',
+        source: 'cross_column_domain_row_domain',
         transform:[{
           type: 'aggregate',
           groupby: ['c'],
@@ -107,8 +107,8 @@ describe('compile/data/facet', function() {
       });
 
       assert.deepEqual(data[2], {
-        name: 'row',
-        source: 'cross_column_row',
+        name: 'row_domain',
+        source: 'cross_column_domain_row_domain',
         transform:[{
           type: 'aggregate',
           groupby: ['r'],

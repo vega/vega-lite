@@ -33,7 +33,7 @@
             ]
         },
         {
-            "name": "cross_column_row",
+            "name": "cross_column_domain_row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -54,8 +54,8 @@
             ]
         },
         {
-            "name": "column",
-            "source": "cross_column_row",
+            "name": "column_domain",
+            "source": "cross_column_domain_row_domain",
             "transform": [
                 {
                     "type": "aggregate",
@@ -75,8 +75,8 @@
             ]
         },
         {
-            "name": "row",
-            "source": "cross_column_row",
+            "name": "row_domain",
+            "source": "cross_column_domain_row_domain",
             "transform": [
                 {
                     "type": "aggregate",
@@ -113,7 +113,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "length(data('column'))"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -181,7 +181,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"r\"]",
@@ -226,7 +226,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"c\"]",

@@ -55,7 +55,7 @@
             ]
         },
         {
-            "name": "row",
+            "name": "row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -123,7 +123,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"Origin\"]",

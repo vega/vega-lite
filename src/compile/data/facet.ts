@@ -31,12 +31,12 @@ export class FacetNode extends DataFlowNode {
 
     if (model.facet.column) {
       this.columnField = model.field(COLUMN);
-      this.columnName = model.getName('column');
+      this.columnName = model.getName('column_domain');
     }
 
     if (model.facet.row) {
       this.rowField = model.field(ROW);
-      this.rowName = model.getName('row');
+      this.rowName = model.getName('row_domain');
     }
 
     for (const channel of ['x', 'y'] as ScaleChannel[]) {

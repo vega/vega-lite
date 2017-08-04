@@ -15,7 +15,7 @@
             }
         },
         {
-            "name": "trellis_barley_row",
+            "name": "trellis_barley_row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -110,7 +110,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "trellis_barley_row"
+                "data": "trellis_barley_row_domain"
             },
             "sort": {
                 "field": "datum[\"site\"]",

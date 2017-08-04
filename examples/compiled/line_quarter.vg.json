@@ -45,7 +45,7 @@
             ]
         },
         {
-            "name": "column",
+            "name": "column_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -78,7 +78,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "length(data('column'))"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -140,7 +140,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"year_date\"]",
@@ -179,7 +179,7 @@
             "type": "group",
             "role": "column-footer",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"year_date\"]",

@@ -269,7 +269,7 @@ export class FacetModel extends ModelWithField {
       return undefined;
     } else {
       // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
-      const facetLayoutDataName = this.getName('column');
+      const facetLayoutDataName = this.getName('column_domain');
       return {signal: `length(data('${facetLayoutDataName}'))`};
     }
   }
