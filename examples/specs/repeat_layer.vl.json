@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Summarized and per year weather information for Seatle and New York.",
+  "data": {"url": "data/weather.csv"},
+  "repeat": {"column": ["temp_max","precipitation","wind"]},
+  "spec": {
+    "layer": [
+      {
+        "mark": "line",
+        "encoding": {
+          "y": {
+            "aggregate": "mean",
+            "field": {"repeat": "column"},
+            "type": "quantitative"
+          },
+          "x": {
+            "timeUnit": "month",
+            "type": "temporal",
+            "field": "date"
+          },
+          "detail": {
+            "timeUnit": "year",
+            "type": "temporal",
+            "field": "date"
+          },
+          "color": {"type": "nominal","field": "location"},
+          "opacity": {"value": 0.2}
+        }
+      },
+      {
+        "mark": "line",
+        "encoding": {
+          "y": {
+            "aggregate": "mean",
+            "field": {"repeat": "column"},
+            "type": "quantitative"
+          },
+          "x": {
+            "timeUnit": "month",
+            "type": "temporal",
+            "field": "date"
+          },
+          "color": {"type": "nominal","field": "location"}
+        }
+      }
+    ]
+  }
+}
