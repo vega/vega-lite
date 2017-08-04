@@ -26,7 +26,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
   }
-  return midPoint(channel, channelDef, scaleName, scale, defaultRef);
+  return midPoint(channel, channelDef, scaleName, scale, stack, defaultRef);
 }
 
 /**
@@ -40,7 +40,7 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return midPoint(channel, a2fieldDef, scaleName, scale, defaultRef);
+  return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
 }
 
 /**
@@ -90,8 +90,8 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties,
+  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
@@ -102,6 +102,11 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains(['x', 'y'], channel)) {
+          if (stack && stack.impute) {
+            // For stack, we computed bin_mid so we can impute.
+            return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
+          }
+          // For non-stack, we can just calculate bin mid on the fly using signal.
           return binMidSignal(channelDef, scaleName);
         }
         return fieldRef(channelDef, scaleName, {binSuffix: 'start'});

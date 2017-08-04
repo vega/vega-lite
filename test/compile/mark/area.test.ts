@@ -43,6 +43,23 @@ describe('Mark: Area', function() {
     });
   });
 
+  describe('stacked vertical area, with binned dimension', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "mark": "area",
+      "encoding": {
+        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"},
+        "color": {"type": "nominal", "field": 'c'}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use bin_mid for x', function() {
+      assert.deepEqual(props.x, {field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
+    });
+  });
+
   describe('vertical area, with zero=false', function() {
     const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "area",
@@ -64,6 +81,23 @@ describe('Mark: Area', function() {
   });
 
   describe('vertical area', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(verticalArea());
+    const props = area.encodeEntry(model);
+
+    it('should have scale for x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
+    });
+
+    it('should have scale for y', function(){
+      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
+    });
+
+    it('should have the correct value for y2', () => {
+      assert.deepEqual(props.y2, {scale: 'y', value: 0});
+    });
+  });
+
+  describe('vertical area with binned dimension', function() {
     const model = parseUnitModelWithScaleMarkDefLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 

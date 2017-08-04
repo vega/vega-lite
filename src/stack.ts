@@ -33,6 +33,11 @@ export interface StackProperties {
    * __Default value:__ `zero` for plots with all of the following conditions: (1) `bar` or `area` marks (2) `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) One ordinal or nominal axis, and (4) one quantitative axis with linear scale and summative aggregation function (e.g., `sum`, `count`).
    */
   offset: StackOffset;
+
+  /**
+   * Whether this stack will produce impute transform
+   */
+  impute: boolean;
 }
 
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
@@ -119,6 +124,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
     return {
       groupbyChannel: xIsAggregate ? (hasYField ? Y : null) : (hasXField ? X : null),
       fieldChannel: fieldChannel,
+      impute: contains(['area', 'line'], mark),
       stackBy: stackBy,
       offset: stackOffset
     };

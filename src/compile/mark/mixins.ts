@@ -55,7 +55,12 @@ export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model:
   const channelDef = model.encoding[channel];
 
   return wrapCondition(model, channelDef, vgChannel || channel, (cDef) => {
-    return ref.midPoint(channel, cDef, model.scaleName(channel), model.getScaleComponent(channel), defaultRef);
+    return ref.midPoint(
+      channel, cDef, model.scaleName(channel),
+      model.getScaleComponent(channel),
+      null, // No need to provide stack for non-position as it does not affect mid point
+      defaultRef
+    );
   });
 }
 

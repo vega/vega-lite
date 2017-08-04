@@ -65,8 +65,8 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum[\"bin_maxbins_10_Acceleration_start\"] + '_' + datum[\"bin_maxbins_10_Acceleration_end\"]",
-                    "as": "key_bin_maxbins_10_Acceleration_start_bin_maxbins_10_Acceleration_end"
+                    "expr": "(datum[\"bin_maxbins_10_Acceleration_start\"]+datum[\"bin_maxbins_10_Acceleration_end\"])/2",
+                    "as": "bin_maxbins_10_Acceleration_mid"
                 },
                 {
                     "type": "impute",
@@ -74,15 +74,14 @@
                     "groupby": [
                         "Cylinders"
                     ],
-                    "key": "key_bin_maxbins_10_Acceleration_start_bin_maxbins_10_Acceleration_end",
+                    "key": "bin_maxbins_10_Acceleration_mid",
                     "method": "value",
                     "value": 0
                 },
                 {
                     "type": "stack",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_start",
-                        "bin_maxbins_10_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_mid"
                     ],
                     "field": "sum_Horsepower",
                     "sort": {
@@ -144,7 +143,7 @@
                     "name": "marks",
                     "type": "area",
                     "sort": {
-                        "field": "datum[\"bin_maxbins_10_Acceleration_start\"]",
+                        "field": "datum[\"bin_maxbins_10_Acceleration_mid\"]",
                         "order": "descending"
                     },
                     "from": {
@@ -153,7 +152,8 @@
                     "encode": {
                         "update": {
                             "x": {
-                                "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
+                                "scale": "x",
+                                "field": "bin_maxbins_10_Acceleration_mid"
                             },
                             "y": {
                                 "scale": "y",
