@@ -200,12 +200,11 @@ export const defaultConfig: Config = {
 
   scale: defaultScaleConfig,
   axis: {
-    minExtent: 30,
     domainColor: '#888',
     tickColor: '#888'
   },
   axisX: {},
-  axisY: {},
+  axisY: {minExtent: 30},
   axisLeft: {},
   axisRight: {},
   axisTop: {},
