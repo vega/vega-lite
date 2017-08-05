@@ -12,10 +12,11 @@ import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
+import {Title} from '../title';
 import {Transform} from '../transform';
 import {getFullName} from '../type';
 import {Dict, extend, vals, varName} from '../util';
-import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgTitle, VgValueRef} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
@@ -102,6 +103,8 @@ export class NameMap implements NameMapInterface {
 export abstract class Model {
   public readonly parent: Model;
   public readonly name: string;
+
+  public readonly title: Title;
   public readonly description: string;
 
   public readonly data: Data;
@@ -126,6 +129,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
+    this.title = spec.title;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -269,6 +273,10 @@ export abstract class Model {
 
   public assembleLegends(): VgLegend[] {
     return assembleLegends(this);
+  }
+
+  public assembleTitle(): VgTitle {
+    return this.title;
   }
 
   /**
