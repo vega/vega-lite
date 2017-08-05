@@ -402,7 +402,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(this: Model, originalScaleName: Channel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: Channel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -414,7 +414,7 @@ export abstract class Model {
     // be in the scale component or exist in the name map
     if (
         // If there is a scale for the channel, there should be a local scale component for it
-        isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName] ||
+        (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
