@@ -102,6 +102,16 @@ export class NameMap implements NameMapInterface {
   }
 }
 
+/*
+  We use type guards instead of `instanceof` as `instanceof` makes
+  different parts of the compiler depend on the actual implementation of
+  the model classes, which in turn depend on different parts of the compiler.
+  Thus, `instanceof` leads to circular dependency problems.
+
+  On the other hand, type guards only make different parts of the compiler
+  depend on the type of the model classes, but not the actual implementation.
+*/
+
 export function isUnitModel(model: Model): model is UnitModel {
   return model && model.type === 'unit';
 }
