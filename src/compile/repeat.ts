@@ -1,25 +1,17 @@
 import {isArray} from 'vega-util';
-import {NonspatialScaleChannel, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
 import {Field, FieldDef, isRepeatRef} from '../fielddef';
 import * as log from '../log';
 import {Repeat} from '../repeat';
-import {ResolveMapping} from '../resolve';
 import {RepeatSpec} from '../spec';
 import {Dict, keys} from '../util';
-import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {VgLayout} from '../vega.schema';
+import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './common';
-import {assembleData} from './data/assemble';
-import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layout/assemble';
 import {parseRepeatLayoutSize} from './layout/parse';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
-import {assembleScaleForModelAndChildren} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-
 
 export type RepeaterValue = {
   row?: string,
@@ -77,7 +69,7 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
   return out;
 }
 
-export class RepeatModel extends Model {
+export class RepeatModel extends BaseConcatModel {
   public readonly repeat: Repeat;
 
   public readonly children: Model[];
@@ -111,82 +103,8 @@ export class RepeatModel extends Model {
     return children;
   }
 
-  public parseData() {
-    this.component.data = parseData(this);
-    this.children.forEach((child) => {
-      child.parseData();
-    });
-  }
-
   public parseLayoutSize() {
     parseRepeatLayoutSize(this);
-  }
-
-  public parseSelection() {
-    // Merge selections up the hierarchy so that they may be referenced
-    // across unit specs. Persist their definitions within each child
-    // to assemble signals which remain within output Vega unit groups.
-    this.component.selection = {};
-    for (const child of this.children) {
-      child.parseSelection();
-      keys(child.component.selection).forEach((key) => {
-        this.component.selection[key] = child.component.selection[key];
-      });
-    }
-  }
-
-  public parseMarkGroup() {
-    for (const child of this.children) {
-      child.parseMarkGroup();
-    }
-  }
-
-  public parseAxisAndHeader() {
-    for (const child of this.children) {
-      child.parseAxisAndHeader();
-    }
-
-    // TODO(#2415): support shared axes
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
-  }
-
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-
-    return [];
-  }
-
-  public assembleParentGroupProperties(): any {
-    return null;
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScaleForModelAndChildren(this);
-  }
-
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
-    return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
-  }
-
-  public assembleSelectionSignals(): VgSignal[] {
-    this.children.forEach((child) => child.assembleSelectionSignals());
-    return [];
-  }
-
-  public assembleLayoutSignals(): VgSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
-    }, assembleLayoutSignals(this));
-  }
-
-  public assembleSelectionData(data: VgData[]): VgData[] {
-    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
   public assembleLayout(): VgLayout {
@@ -198,25 +116,5 @@ export class RepeatModel extends Model {
       bounds: 'full',
       align: 'all'
     };
-  }
-
-  public assembleMarks(): any[] {
-    // only children have marks
-    return this.children.map(child => {
-      const title = child.assembleTitle();
-      const encodeEntry = child.assembleParentGroupProperties();
-
-      return {
-        type: 'group',
-        name: child.getName('group'),
-        ...(title? {title} : {}),
-        ...(encodeEntry ? {
-          encode: {
-            update: encodeEntry
-          }
-        } : {}),
-        ...child.assembleGroup()
-      };
-    });
   }
 }

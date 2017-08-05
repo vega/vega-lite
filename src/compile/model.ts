@@ -27,7 +27,6 @@ import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHead
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
-import {RepeaterValue} from './repeat';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
