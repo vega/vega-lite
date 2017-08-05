@@ -2,12 +2,12 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "width": 500,
   "height": 300,
-  "projection": {
-    "type": "albersUsa"
-  },
   "layer": [
     {
       "mark": "geoshape",
+      "projection": {
+        "type": "albersUsa"
+      },
       "data": {
         "url": "data/us-10m.json",
         "format": {
@@ -32,6 +32,9 @@
         }
       },
       "mark": "circle",
+      "projection": {
+        "type": "albersUsa"
+      },
       "encoding": {
         "x": {
           "field": "longitude",
