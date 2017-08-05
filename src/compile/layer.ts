@@ -15,7 +15,7 @@ import {assembleLayoutSignals} from './layout/assemble';
 import {parseLayerLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
-import {RepeaterValue} from './repeat';
+import {RepeaterValue} from './repeater';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleLayerSelectionMarks} from './selection/selection';

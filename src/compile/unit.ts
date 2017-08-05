@@ -26,7 +26,7 @@ import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
+import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';

@@ -35,7 +35,7 @@ import {parseChildrenLayoutSize} from './layout/parse';
 import {labels} from './legend/encode';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';

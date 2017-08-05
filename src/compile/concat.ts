@@ -5,7 +5,7 @@ import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './common';
 import {parseConcatLayoutSize} from './layout/parse';
 import {Model} from './model';
-import {RepeaterValue} from './repeat';
+import {RepeaterValue} from './repeater';
 
 export class ConcatModel extends BaseConcatModel {
   public readonly type = 'concat';
