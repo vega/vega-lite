@@ -5,7 +5,7 @@ import {FILL_STROKE_CONFIG} from '../mark';
 import {NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal, VgTitle} from '../vega.schema';
 import {AxisComponentIndex} from './axis/component';
 import {parseLayerAxis} from './axis/parse';
 import {applyConfig, buildModel} from './common';
@@ -130,6 +130,19 @@ export class LayerModel extends Model {
       return assembleData(this.component.data);
     }
     return [];
+  }
+
+  public assembleTitle(): VgTitle {
+    if (this.title) {
+      return this.title;
+    }
+    // If title does not provide layer, look into children
+    for (const child of this.children) {
+      if (child.title) {
+        return child.title;
+      }
+    }
+    return undefined;
   }
 
   public assembleScales(): VgScale[] {

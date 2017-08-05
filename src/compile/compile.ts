@@ -72,6 +72,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
 
   // autoResize has to be put under autosize
   const {autoResize, ...topLevelProps} = topLevelProperties;
+  const title = model.assembleTitle();
 
   const encode = model.assembleParentGroupProperties();
   if (encode) {
@@ -85,6 +86,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     // By using Vega layout, we don't support custom autosize
     autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
     ...topLevelProps,
+    ...(title? {title} : {}),
     ...(encode ? {encode: {update: encode}} : {}),
     data: [].concat(
       model.assembleSelectionData([]),

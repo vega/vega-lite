@@ -203,12 +203,13 @@ export class RepeatModel extends Model {
   public assembleMarks(): any[] {
     // only children have marks
     return this.children.map(child => {
-
+      const title = child.assembleTitle();
       const encodeEntry = child.assembleParentGroupProperties();
 
       return {
         type: 'group',
         name: child.getName('group'),
+        ...(title? {title} : {}),
         ...(encodeEntry ? {
           encode: {
             update: encodeEntry

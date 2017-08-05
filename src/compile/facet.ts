@@ -325,9 +325,12 @@ export class FacetModel extends ModelWithField {
       };
     }
 
+    const title = child.assembleTitle();
+
     const markGroup = {
       name: this.getName('cell'),
       type: 'group',
+      ...(title? {title} : {}),
       from: {
         facet: {
           name: facetRoot.name,

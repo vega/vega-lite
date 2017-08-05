@@ -16,11 +16,12 @@ describe('Compile', function() {
   });
 
   describe('compile', () => {
-    it('should return a spec with default top-level properties, size signals, data and marks', () => {
+    it('should return a spec with default top-level properties, size signals, data, marks, and title', () => {
       const spec = compile({
         "data": {
           "values": [{"a": "A","b": 28}]
         },
+        "title": {"text": "test"},
         "mark": "point",
         "encoding": {}
       }).spec;
@@ -37,6 +38,7 @@ describe('Compile', function() {
           update: "21"
         }
       ]);
+      assert.deepEqual(spec.title, {text: 'test'});
 
       assert.equal(spec.data.length, 1); // just source
       assert.equal(spec.marks.length, 1); // just the root group
@@ -77,6 +79,48 @@ describe('Compile', function() {
       }).spec;
 
       assert(spec.autosize.resize);
+    });
+
+    it('should return title for a layered spec.', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "title": {"text": "test"},
+        "layer": [{
+          "mark": "point",
+          "encoding": {}
+        }]
+      }).spec;
+      assert.deepEqual(spec.title, {text: 'test'});
+    });
+
+    it('should return title from a child of a layer spec if parent has no title.', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "layer": [{
+          "title": {"text": "test"},
+          "mark": "point",
+          "encoding": {}
+        }]
+      }).spec;
+      assert.deepEqual(spec.title, {text: 'test'});
+    });
+
+    it('should return title for a concat spec.', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "title": {"text": "test"},
+        "hconcat": [{
+          "mark": "point",
+          "encoding": {}
+        }]
+      }).spec;
+      assert.deepEqual(spec.title, {text: 'test'});
     });
   });
 });

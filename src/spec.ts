@@ -12,9 +12,11 @@ import {Repeat} from './repeat';
 import {ResolveMapping} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
+import {Title} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, Dict, duplicate, hash, vals} from './util';
+import {VgTitle} from './vega.schema';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -32,6 +34,7 @@ export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
 
 
 export interface BaseSpec {
+  title?: Title;
 
   /**
    * Name of the visualization for later reference.
