@@ -364,12 +364,20 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
         type: fullType
       };
     }
-    if (isCountingAggregateOp(fieldDef.aggregate) && fieldDef.type !== 'quantitative') {
-      log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
-      fieldDef = {
-        ...fieldDef,
-        type: 'quantitative'
-      };
+    if (fieldDef.type !== 'quantitative') {
+      if (isCountingAggregateOp(fieldDef.aggregate)) {
+        log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
+        fieldDef = {
+          ...fieldDef,
+          type: 'quantitative'
+        };
+      } else if (fieldDef.bin) {
+        log.warn(log.message.invalidFieldTypeForBin(fieldDef.type));
+        fieldDef = {
+          ...fieldDef,
+          type: 'quantitative'
+        };
+      }
     }
   } else {
     // If type is empty / invalid, then augment with default type
