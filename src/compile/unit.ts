@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, isScaleChannel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, X, X2, Y, Y2} from '../channel';
+import {Channel, isScaleChannel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
@@ -18,26 +18,24 @@ import {parseUnitAxis} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseUnitLayoutSize} from './layout/parse';
 import {LegendIndex} from './legend/component';
-import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
-import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
+import {isLayerModel, Model, ModelWithField} from './model';
+import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
-import {Split} from './split';
 
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
+  public readonly type = 'unit';
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
@@ -195,10 +193,6 @@ export class UnitModel extends ModelWithField {
     this.component.axes = parseUnitAxis(this);
   }
 
-  public parseLegend() {
-    this.component.legends = parseUnitLegend(this);
-  }
-
   public assembleData(): VgData[] {
      if (!this.parent) {
       // only assemble data in the root
@@ -237,7 +231,7 @@ export class UnitModel extends ModelWithField {
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
     // ensures correct interleaving of clipping and brushed marks.
-    if (!this.parent || !(this.parent instanceof LayerModel)) {
+    if (!this.parent || !isLayerModel(this.parent)) {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 

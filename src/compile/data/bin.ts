@@ -7,7 +7,7 @@ import {BinTransform, Transform} from '../../transform';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, keys, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {numberFormatExpr} from '../common';
-import {Model, ModelWithField} from '../model';
+import {isUnitModel, Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -17,7 +17,7 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
     if (discreteDomain) {
       // read format from axis or legend, if there is no format then use config.numberFormat
 
-      const guide = (model instanceof UnitModel) ? (model.axis(channel) || model.legend(channel) || {}) : {};
+      const guide = isUnitModel(model) ? (model.axis(channel) || model.legend(channel) || {}) : {};
 
       const startField = field(fieldDef, {expr: 'datum', binSuffix: 'start'});
       const endField = field(fieldDef, {expr: 'datum', binSuffix: 'end'});

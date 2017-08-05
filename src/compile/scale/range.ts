@@ -8,7 +8,7 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgRangeScheme, VgSignalRef} from '../../vega.schema';
 import {LayoutSize} from '../layout/component';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {Explicit, makeImplicit, Split} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
@@ -21,7 +21,7 @@ export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'
 
 
 export function parseScaleRange(model: Model) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     parseUnitScaleRange(model);
   } else {
     parseNonUnitScaleProperty(model, 'range');

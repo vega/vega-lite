@@ -33,9 +33,8 @@ import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layout/parse';
 import {labels} from './legend/encode';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -43,6 +42,7 @@ import {getFieldFromDomains} from './scale/domain';
 import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
+  public readonly type = 'facet';
   public readonly facet: Facet<string>;
 
   public readonly child: Model;
@@ -182,10 +182,6 @@ export class FacetModel extends ModelWithField {
         // Otherwise do nothing for independent axes
       }
     }
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

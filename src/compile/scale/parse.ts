@@ -9,7 +9,7 @@ import {
 } from '../../scale';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
@@ -30,7 +30,7 @@ export function parseScale(model: Model) {
 }
 
 export function parseScaleCore(model: Model) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     model.component.scales = parseUnitScaleCore(model);
   } else {
     model.component.scales = parseNonUnitScaleCore(model);

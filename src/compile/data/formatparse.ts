@@ -7,7 +7,7 @@ import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, isArray, isNumber, isString, keys, stringValue, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {Model, ModelWithField} from '../model';
+import {isFacetModel, isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -54,7 +54,7 @@ export class ParseNode extends DataFlowNode {
       return fieldMap;
     }, {});
 
-    if (model instanceof ModelWithField) {
+    if (isUnitModel(model) || isFacetModel(model)) {
       // Parse encoded fields
       model.forEachFieldDef(fieldDef => {
         if (fieldDef.type === TEMPORAL) {
