@@ -998,6 +998,10 @@ commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
 
+compare-versions@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.0.1.tgz#e60915b7fb294e29bbb60869188762beeb871443"
+
 component-bind@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/component-bind/-/component-bind-1.0.0.tgz#00c608ab7dcd93897c0009651b1d3a8e1e73bbd1"
@@ -4678,18 +4682,18 @@ vega-dataflow@2:
     vega-statistics "1"
     vega-util "^1.4"
 
-"vega-datasets@github:vega/vega-datasets#gh-pages", vega-datasets@vega/vega-datasets#gh-pages:
+vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
-  uid "7080ba8297825d27495bdfb8386d10cff83cbacf"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
-vega-embed@^3.0.0-beta.19:
-  version "3.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.19.tgz#c68dec612154839e784c18116b9680a1d695fbdf"
+vega-embed@^3.0.0-beta.20:
+  version "3.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.20.tgz#66b228d937256a823dd5e9dd6945d8159b34beb0"
   dependencies:
+    compare-versions "^3.0.1"
     d3-selection "^1.1.0"
-    vega "^3.0.0-beta.38"
-    vega-lite "^2.0.0-beta.4"
+    vega "^3.0.0-rc5"
+    vega-lite "^2.0.0-beta.11"
     vega-schema-url-parser "^1.0.0-beta.2"
 
 vega-encode@1:
@@ -4740,7 +4744,7 @@ vega-hierarchy@1:
     vega-dataflow "2"
     vega-util "1"
 
-vega-lite@^2.0.0-beta.3, vega-lite@^2.0.0-beta.4:
+vega-lite@^2.0.0-beta.11, vega-lite@^2.0.0-beta.3:
   version "2.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-beta.11.tgz#54cfaf5d3236995d6cc1185b3e3d4a40f5e97024"
   dependencies:
@@ -4857,7 +4861,7 @@ vega-wordcloud@1:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@^3.0.0-beta.31, vega@^3.0.0-beta.38, vega@^3.0.0-rc5:
+vega@^3.0.0-beta.31, vega@^3.0.0-rc5:
   version "3.0.0-rc5"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-rc5.tgz#47287ea3f25b49e3fb1e45d1fca0335dae5230df"
   dependencies:
