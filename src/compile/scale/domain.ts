@@ -23,13 +23,13 @@ import {
 } from '../../vega.schema';
 import {FACET_SCALE_PREFIX} from '../data/assemble';
 import {FacetModel} from '../facet';
-import {Model} from '../model';
+import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     parseUnitScaleDomain(model);
   } else {
     parseNonUnitScaleDomain(model);
@@ -85,7 +85,7 @@ function parseNonUnitScaleDomain(model: Model) {
       }
     }
 
-    if (model instanceof FacetModel) {
+    if (isFacetModel(model)) {
       domains.forEach((domain) => {
         // Replace the scale domain with data output from a cloned subtree after the facet.
         if (isDataRefDomain(domain)) {

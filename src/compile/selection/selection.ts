@@ -10,7 +10,7 @@ import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
-import {Model} from '../model';
+import {isFacetModel, isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
@@ -204,7 +204,7 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
   model.children.forEach(child => {
-    if (child instanceof UnitModel) {
+    if (isUnitModel(child)) {
       marks = assembleUnitSelectionMarks(child, marks);
     }
   });
@@ -302,7 +302,7 @@ function compiler(type: SelectionType): SelectionCompiler {
 function getFacetModel(model: Model): FacetModel {
   let parent = model.parent;
   while (parent) {
-    if (parent instanceof FacetModel) {
+    if (isFacetModel(parent)) {
       break;
     }
     parent = parent.parent;

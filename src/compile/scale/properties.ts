@@ -6,7 +6,7 @@ import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, Split, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
@@ -14,7 +14,7 @@ import {parseScaleRange} from './range';
 
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     parseUnitScaleProperty(model, property);
   } else {
     parseNonUnitScaleProperty(model, property);

@@ -70,6 +70,7 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
 }
 
 export class RepeatModel extends BaseConcatModel {
+  public readonly type = 'repeat';
   public readonly repeat: Repeat;
 
   public readonly children: Model[];
