@@ -14,7 +14,8 @@ import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {RepeaterValue, RepeatModel} from './repeat';
+import {RepeatModel} from './repeat';
+import {RepeaterValue} from './repeater';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
