@@ -8,6 +8,7 @@ import {Model} from './model';
 import {RepeaterValue} from './repeat';
 
 export class ConcatModel extends BaseConcatModel {
+  public readonly type = 'concat';
 
   public readonly children: Model[];
 

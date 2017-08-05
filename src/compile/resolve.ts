@@ -5,13 +5,13 @@ import {contains} from '../util';
 import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {Model} from './model';
+import {isConcatModel, isFacetModel, isLayerModel, isRepeatModel, Model} from './model';
 import {RepeatModel} from './repeat';
 
 export function defaultScaleResolve(channel: ScaleChannel, model: Model): ResolveMode {
-  if (model instanceof LayerModel || model instanceof FacetModel) {
+  if (isLayerModel(model) || isFacetModel(model)) {
     return 'shared';
-  } else if (model instanceof ConcatModel || model instanceof RepeatModel) {
+  } else if (isConcatModel(model) || isRepeatModel(model)) {
     return contains(SPATIAL_SCALE_CHANNELS, channel) ? 'independent' : 'shared';
   }
   /* istanbul ignore next: should never reach here. */

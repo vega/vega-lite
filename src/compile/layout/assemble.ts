@@ -5,7 +5,7 @@ import {extend, isArray, keys, StringSet} from '../../util';
 import {isVgRangeStep, VgData, VgFormulaTransform, VgRangeStep, VgSignal, VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
-import {Model, ModelWithField} from '../model';
+import {isFacetModel, Model, ModelWithField} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 
@@ -36,7 +36,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
       if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
         const scaleName = model.scaleName(channel);
 
-        if (model.parent instanceof FacetModel) {
+        if (isFacetModel(model.parent)) {
           // If parent is facet and this is an independent scale, return only signal signal
           // as the width/height will be calculated using the cardinality from
           // facet's aggregate rather than reading from scale domain

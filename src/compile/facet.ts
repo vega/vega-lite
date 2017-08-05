@@ -43,6 +43,7 @@ import {getFieldFromDomains} from './scale/domain';
 import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
+  public readonly type = 'facet';
   public readonly facet: Facet<string>;
 
   public readonly child: Model;

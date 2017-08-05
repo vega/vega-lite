@@ -10,7 +10,7 @@ import {isSortField} from '../../sort';
 import {contains} from '../../util';
 import {sortParams} from '../common';
 import {FacetModel} from '../facet';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
@@ -38,7 +38,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
 };
 
 export function parseMarkDef(model: Model) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
   } else {
     for (const child of model.children) {

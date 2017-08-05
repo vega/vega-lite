@@ -2,7 +2,7 @@ import {MAIN, RAW} from '../../data';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
-import {Model, ModelWithField} from '../model';
+import {isFacetModel, isLayerModel, isUnitModel, Model, ModelWithField} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {UnitModel} from '../unit';
 import {AggregateNode} from './aggregate';
@@ -116,8 +116,8 @@ export function parseData(model: Model): DataComponent {
 
   // HACK: This is equivalent for merging bin extent for union scale.
   // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
-  const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
-  if (model instanceof ModelWithField) {
+  const parentIsLayer = model.parent && isLayerModel(model.parent);
+  if (isUnitModel(model) || isFacetModel(model)) {
     if (parentIsLayer) {
       const bin = BinNode.makeBinFromEncoding(model);
       if (bin) {
@@ -139,7 +139,7 @@ export function parseData(model: Model): DataComponent {
     head = parse;
   }
 
-  if (model instanceof ModelWithField) {
+  if (isUnitModel(model) || isFacetModel(model)) {
     const nullFilter = NullFilterNode.make(model);
     if (nullFilter) {
       nullFilter.parent = head;
@@ -168,7 +168,7 @@ export function parseData(model: Model): DataComponent {
   raw.parent = head;
   head = raw;
 
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     const agg = AggregateNode.makeFromEncoding(model);
     if (agg) {
       agg.parent = head;
@@ -203,7 +203,7 @@ export function parseData(model: Model): DataComponent {
 
   // add facet marker
   let facetRoot = null;
-  if (model instanceof FacetModel) {
+  if (isFacetModel(model)) {
     const facetName = model.getName('facet');
     facetRoot = new FacetNode(model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;

@@ -19,14 +19,17 @@ import {Dict, extend, vals, varName} from '../util';
 import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgTitle, VgValueRef} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
+import {ConcatModel} from './concat';
 import {DataComponent} from './data/index';
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {sizeExpr} from './layout/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
+import {RepeatModel} from './repeat';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
@@ -99,7 +102,29 @@ export class NameMap implements NameMapInterface {
   }
 }
 
+export function isUnitModel(model: Model): model is UnitModel {
+  return model && model.type === 'unit';
+}
+
+export function isFacetModel(model: Model): model is FacetModel {
+  return model && model.type === 'facet';
+}
+
+export function isRepeatModel(model: Model): model is RepeatModel {
+  return model && model.type === 'repeat';
+}
+
+export function isConcatModel(model: Model): model is ConcatModel {
+  return model && model.type === 'concat';
+}
+
+export function isLayerModel(model: Model): model is LayerModel {
+  return model && model.type === 'layer';
+}
+
 export abstract class Model {
+
+  public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
   public readonly parent: Model;
   public readonly name: string;
 
@@ -301,7 +326,7 @@ export abstract class Model {
 
     // Only include scales if this spec is top-level or if parent is facet.
     // (Otherwise, it will be merged with upper-level's scope.)
-    const scales = (!this.parent || this.parent instanceof FacetModel) ? this.assembleScales() : [];
+    const scales = (!this.parent || isFacetModel(this.parent)) ? this.assembleScales() : [];
     if (scales.length > 0) {
       group.scales = scales;
     }
@@ -323,7 +348,7 @@ export abstract class Model {
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {
-      if (child instanceof UnitModel) {
+      if (isUnitModel(child)) {
         if (child.channelHasField(channel)) {
           return true;
         }
@@ -355,7 +380,7 @@ export abstract class Model {
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
-    if (this.parent instanceof FacetModel) {
+    if (isFacetModel(this.parent)) {
       const channel = sizeType === 'width' ? 'x' : 'y';
       const scaleComponent = this.component.scales[channel];
 
