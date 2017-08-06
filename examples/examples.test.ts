@@ -47,7 +47,12 @@ describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
   examples.forEach(function(example: string) {
-    if (path.extname(example) !== '.json') {return;}
+    if (
+      path.extname(example) !== '.json' ||
+      // Do not validate overlay example until we have redesign it
+      example.indexOf('overlay') >= 0) {
+      return;
+    }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
     describe(example, function() {
