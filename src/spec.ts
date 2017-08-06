@@ -1,6 +1,6 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
-import {Config} from './config';
+import {Config, OverlayConfig} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
@@ -302,19 +302,6 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Fiel
     return isPrimitiveMark(spec.mark);
 }
 
-type AreaOverlay = 'line' | 'linepoint' | 'none';
-
-interface OverlayConfig {
-  /**
-   * Whether to overlay line with point.
-   */
-  line?: boolean;
-
-  /**
-   * Type of overlay for area mark (line or linepoint)
-   */
-  area?: AreaOverlay;
-}
 
 function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
@@ -387,7 +374,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
     layer.push({
       mark: {
         type: 'line',
-        role: 'lineOverlay'
+        style: 'lineOverlay'
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding
@@ -398,7 +385,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
       mark: {
         type: 'point',
         filled: true,
-        role: 'pointOverlay'
+        style: 'pointOverlay'
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding
