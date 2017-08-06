@@ -64,6 +64,7 @@
                 {
                     "type": "text",
                     "role": "column-title-text",
+                    "style": "guide-title",
                     "encode": {
                         "update": {
                             "align": {
@@ -71,12 +72,6 @@
                             },
                             "text": {
                                 "value": "MPAA_Rating"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "fontWeight": {
-                                "value": "bold"
                             }
                         }
                     }
@@ -124,6 +119,7 @@
                 },
                 "offset": 10,
                 "orient": "top",
+                "style": "guide-label",
                 "encode": {
                     "update": {
                         "fontWeight": {
