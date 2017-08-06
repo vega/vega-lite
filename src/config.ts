@@ -149,6 +149,10 @@ export interface VLOnlyConfig {
   stack?: StackOffset;
 }
 
+export interface StyleConfigIndex {
+  [style: string]: MarkConfig;
+}
+
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
@@ -165,12 +169,8 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
   /** Title Config */
   title?: VgTitleConfig;
 
-  // Support arbitrary key for role config
-  // Note: Technically, the type for role config should be `MarkConfig`.
-  // However, Typescript requires that the index type must be compatible with all other properties.
-  // Basically, it will complain that `legend: LegendConfig` is not an instance of `MarkConfig`
-  // Thus, we have to use `any` here.
-  [role: string]: any;
+  /** Style Config */
+  style?: StyleConfigIndex;
 }
 
 export const defaultConfig: Config = {
@@ -213,6 +213,7 @@ export const defaultConfig: Config = {
   legend: defaultLegendConfig,
 
   selection: defaultSelectionConfig,
+  style: {},
 
   title: {},
 };
@@ -223,7 +224,11 @@ export function initConfig(config: Config) {
 
 const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
 
-const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'selection', 'invalidValues'];
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
+  'padding', 'numberFormat', 'timeFormat', 'countTitle',
+  'cell', 'stack', 'scale', 'selection', 'invalidValues',
+  'overlay' as keyof Config // FIXME: Redesign and unhide this
+];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,

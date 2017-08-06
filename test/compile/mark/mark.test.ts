@@ -12,7 +12,7 @@ describe('Mark', function() {
     describe('Multi-series Line', () => {
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
         const model = parseUnitModelWithScaleMarkDefLayoutSize({
-          "mark": {"type": "line", "role": "trend"},
+          "mark": {"type": "line", "style": "trend"},
           "encoding": {
             "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
             "y": {"field": "price", "type": "quantitative"},
@@ -31,7 +31,7 @@ describe('Mark', function() {
         const submarkGroup = markGroup.marks[0];
         assert.equal(submarkGroup.name, 'marks');
         assert.equal(submarkGroup.type, 'line');
-        assert.equal(submarkGroup.role, 'trend');
+        assert.equal(submarkGroup.style, 'trend');
         assert.equal(submarkGroup.from.data, 'faceted_path_main');
       });
     });
@@ -65,7 +65,7 @@ describe('Mark', function() {
         });
         const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
-        assert.equal(markGroup[0].role, 'bar');
+        assert.equal(markGroup[0].style, 'bar');
       });
     });
 

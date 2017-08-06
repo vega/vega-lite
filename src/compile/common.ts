@@ -67,24 +67,36 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
   return e;
 }
 
+export function getStyles(mark: MarkDef): string[] {
+  if (mark.style) {
+    return isArray(mark.style) ? mark.style : [mark.style];
+  }
+  return [mark.type];
+}
+
 /**
  * Return value mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
 export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P] {
-  if (mark.role) { // role config has higher pre
-    const roleSpecificConfig = config[mark.role];
-    if (roleSpecificConfig && roleSpecificConfig[prop] !== undefined) {
-      return roleSpecificConfig[prop];
-    }
-  } else {
-    const markSpecificConfig = config[mark.type];
-    if (markSpecificConfig[prop] !== undefined) {
-      return markSpecificConfig[prop];
+  // By default, read from mark config first!
+  let value = config.mark[prop];
+
+  // Then read mark specific config, which has higher precedence
+  const markSpecificConfig = config[mark.type];
+  if (markSpecificConfig[prop] !== undefined) {
+    value = markSpecificConfig[prop];
+  }
+
+  const styles = getStyles(mark);
+  for (const style of styles) {
+    const styleConfig = config.style[style];
+    if (styleConfig && styleConfig[prop] !== undefined) {
+      value = styleConfig[prop];
     }
   }
 
-  return config.mark[prop];
+  return value;
 }
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {

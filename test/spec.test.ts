@@ -324,7 +324,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
@@ -362,7 +362,7 @@ describe('normalize()', function () {
               }
             },
             {
-              "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+              "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
@@ -396,14 +396,14 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "role": "lineOverlay"},
+            "mark": {"type": "line", "style": "lineOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           },
           {
-            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
@@ -436,7 +436,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "role": "lineOverlay"},
+            "mark": {"type": "line", "style": "lineOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
@@ -471,7 +471,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "role": "lineOverlay"},
+            "mark": {"type": "line", "style": "lineOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "zero"},
@@ -507,7 +507,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "role": "lineOverlay"},
+            "mark": {"type": "line", "style": "lineOverlay"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
