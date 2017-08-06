@@ -3895,6 +3895,9 @@
           "$ref": "#/definitions/Orient",
           "description": "TODO"
         },
+        "role": {
+          "type": "string"
+        },
         "style": {
           "anyOf": [
             {

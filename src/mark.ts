@@ -43,6 +43,10 @@ export interface MarkDef {
    */
   type: Mark;
 
+  // FIXME: remove
+  role?: string;
+
+
   /**
    *
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any properties explicitly defined within the `encoding` will override a style default.
