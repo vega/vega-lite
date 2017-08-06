@@ -21,3 +21,4 @@ To see example code for embedding visualization in a webpage, please refer to [t
 Here we list great examples of Vega-Lite visualizations that were created by the community. Please help us expand this gallery by [forking our example block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and sending us a [pull request](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) with your example added to this list.
 
 * [Grouped Bar Chart by @churtado](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364)
+* [Multi Line Highlight by @amitkaps](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701)
