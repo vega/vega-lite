@@ -376,6 +376,9 @@
                     "name": "concat_0_marks",
                     "type": "symbol",
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -558,6 +561,9 @@
                     "name": "concat_1_marks",
                     "type": "symbol",
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_2"
                     },

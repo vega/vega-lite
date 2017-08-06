@@ -299,6 +299,9 @@
         {
             "name": "marks",
             "type": "rect",
+            "style": [
+                "rect"
+            ],
             "from": {
                 "data": "source_0"
             },

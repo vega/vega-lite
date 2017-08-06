@@ -646,6 +646,9 @@
                     "type": "symbol",
                     "clip": true,
                     "role": "circle",
+                    "style": [
+                        "circle"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -661,7 +664,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!(length(data(\"xenc_store\"))) || (vlPoint(\"xenc_store\", datum))",
+                                    "test": "!(length(data(\"xenc_store\"))) || (vlSingle(\"xenc_store\", datum))",
                                     "value": "red"
                                 },
                                 {

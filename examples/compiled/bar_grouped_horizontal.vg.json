@@ -239,6 +239,9 @@
                     "name": "child_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "facet"
                     },

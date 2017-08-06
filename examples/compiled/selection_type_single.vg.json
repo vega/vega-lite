@@ -113,6 +113,9 @@
         {
             "name": "marks",
             "type": "rect",
+            "style": [
+                "rect"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -136,7 +139,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "count_*"
                         },

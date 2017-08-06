@@ -164,6 +164,9 @@
             "name": "layer_0_layer_0_marks",
             "type": "rule",
             "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -183,7 +186,7 @@
                         "field": "lowerBox"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -192,6 +195,9 @@
             "name": "layer_0_layer_1_marks",
             "type": "rule",
             "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -211,7 +217,7 @@
                         "field": "upperWhisker"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -220,6 +226,9 @@
             "name": "layer_0_layer_2_marks",
             "type": "rect",
             "role": "box",
+            "style": [
+                "box"
+            ],
             "from": {
                 "data": "data_3"
             },
@@ -251,6 +260,9 @@
             "name": "layer_0_layer_3_marks",
             "type": "rect",
             "role": "boxMid",
+            "style": [
+                "boxMid"
+            ],
             "from": {
                 "data": "data_4"
             },
@@ -272,7 +284,7 @@
                         "value": 1
                     },
                     "fill": {
-                        "value": "white"
+                        "value": "#4c78a8"
                     },
                     "opacity": {
                         "value": 0.7
@@ -284,6 +296,9 @@
             "name": "layer_1_marks",
             "type": "symbol",
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_5"
             },

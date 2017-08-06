@@ -106,6 +106,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -127,7 +130,7 @@
                     },
                     "size": [
                         {
-                            "test": "!(length(data(\"paintbrush_store\"))) || (vlPoint(\"paintbrush_store\", datum))",
+                            "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
                             "value": 300
                         },
                         {

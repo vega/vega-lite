@@ -73,6 +73,9 @@
                 {
                     "name": "marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"date\"]",
                         "order": "descending"

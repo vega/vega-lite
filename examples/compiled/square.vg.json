@@ -46,6 +46,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "square",
+            "style": [
+                "square"
+            ],
             "from": {
                 "data": "source_0"
             },

@@ -87,6 +87,9 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
+            "style": [
+                "rect"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -118,6 +121,9 @@
         {
             "name": "layer_1_marks",
             "type": "text",
+            "style": [
+                "text"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -248,15 +254,17 @@
         }
     ],
     "config": {
-        "text": {
-            "baseline": "middle"
-        },
         "axis": {
             "domainColor": "#888",
             "tickColor": "#888"
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "text": {
+                "baseline": "middle"
+            }
         }
     }
 }

@@ -96,6 +96,9 @@
                     "name": "child_Origin_marks",
                     "type": "symbol",
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -206,6 +209,9 @@
                     "name": "child_Cylinders_marks",
                     "type": "symbol",
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },

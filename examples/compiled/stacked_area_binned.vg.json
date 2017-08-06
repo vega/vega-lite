@@ -142,6 +142,9 @@
                 {
                     "name": "marks",
                     "type": "area",
+                    "style": [
+                        "area"
+                    ],
                     "sort": {
                         "field": "datum[\"bin_maxbins_10_Acceleration_mid\"]",
                         "order": "descending"

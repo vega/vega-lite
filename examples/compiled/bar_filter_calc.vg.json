@@ -94,6 +94,9 @@
             "name": "marks",
             "type": "rect",
             "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "data_0"
             },

@@ -113,6 +113,9 @@
                     "name": "concat_0_marks",
                     "type": "area",
                     "clip": true,
+                    "style": [
+                        "area"
+                    ],
                     "sort": {
                         "field": "datum[\"date\"]",
                         "order": "descending"
@@ -456,6 +459,9 @@
                 {
                     "name": "concat_1_marks",
                     "type": "area",
+                    "style": [
+                        "area"
+                    ],
                     "sort": {
                         "field": "datum[\"date\"]",
                         "order": "descending"

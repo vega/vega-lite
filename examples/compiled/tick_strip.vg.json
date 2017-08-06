@@ -50,6 +50,9 @@
             "name": "marks",
             "type": "rect",
             "role": "tick",
+            "style": [
+                "tick"
+            ],
             "from": {
                 "data": "source_0"
             },

@@ -105,6 +105,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -120,7 +123,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!(length(data(\"paintbrush_store\"))) || (vlPoint(\"paintbrush_store\", datum))",
+                            "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },
