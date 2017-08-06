@@ -65,6 +65,9 @@
         {
             "name": "marks",
             "type": "area",
+            "style": [
+                "area"
+            ],
             "sort": {
                 "field": "datum[\"yearmonth_date\"]",
                 "order": "descending"

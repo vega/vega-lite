@@ -153,6 +153,9 @@
         {
             "name": "layer_0_marks",
             "type": "rule",
+            "style": [
+                "rule"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -180,6 +183,9 @@
             "name": "layer_1_marks",
             "type": "rect",
             "role": "tick",
+            "style": [
+                "tick"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -209,6 +215,9 @@
             "name": "layer_2_marks",
             "type": "rect",
             "role": "tick",
+            "style": [
+                "tick"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -238,6 +247,9 @@
             "name": "layer_3_marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_3"
             },

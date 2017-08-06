@@ -50,6 +50,9 @@
         {
             "name": "marks",
             "type": "text",
+            "style": [
+                "text"
+            ],
             "from": {
                 "data": "source_0"
             },

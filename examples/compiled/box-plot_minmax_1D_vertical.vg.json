@@ -139,6 +139,9 @@
             "name": "layer_0_marks",
             "type": "rule",
             "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -157,7 +160,7 @@
                         "field": "lowerBox"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -166,6 +169,9 @@
             "name": "layer_1_marks",
             "type": "rule",
             "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -184,7 +190,7 @@
                         "field": "upperWhisker"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -193,6 +199,9 @@
             "name": "layer_2_marks",
             "type": "rect",
             "role": "box",
+            "style": [
+                "box"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -223,6 +232,9 @@
             "name": "layer_3_marks",
             "type": "rect",
             "role": "boxMid",
+            "style": [
+                "boxMid"
+            ],
             "from": {
                 "data": "data_3"
             },
@@ -243,7 +255,7 @@
                         "value": 1
                     },
                     "fill": {
-                        "value": "white"
+                        "value": "#4c78a8"
                     },
                     "opacity": {
                         "value": 0.7

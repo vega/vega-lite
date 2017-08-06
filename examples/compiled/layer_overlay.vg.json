@@ -155,6 +155,9 @@
         {
             "name": "layer_0_layer_0_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"Cylinders\"]",
                 "order": "descending"
@@ -181,7 +184,10 @@
         {
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
-            "role": "pointOverlay",
+            "role": "point",
+            "style": [
+                "pointOverlay"
+            ],
             "from": {
                 "data": "data_6"
             },
@@ -204,6 +210,9 @@
         {
             "name": "layer_1_layer_0_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"Cylinders\"]",
                 "order": "descending"
@@ -230,7 +239,10 @@
         {
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
-            "role": "pointOverlay",
+            "role": "point",
+            "style": [
+                "pointOverlay"
+            ],
             "from": {
                 "data": "data_4"
             },

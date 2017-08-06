@@ -219,6 +219,9 @@
                     "name": "child_marks",
                     "type": "symbol",
                     "role": "circle",
+                    "style": [
+                        "circle"
+                    ],
                     "from": {
                         "data": "facet"
                     },

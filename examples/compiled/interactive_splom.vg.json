@@ -500,6 +500,9 @@
                     "type": "symbol",
                     "clip": true,
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -1075,6 +1078,9 @@
                     "type": "symbol",
                     "clip": true,
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -1648,6 +1654,9 @@
                     "type": "symbol",
                     "clip": true,
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -2221,6 +2230,9 @@
                     "type": "symbol",
                     "clip": true,
                     "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_3"
                     },

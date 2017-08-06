@@ -67,7 +67,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))"
+                    "expr": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -162,6 +162,9 @@
             "name": "layer_0_marks",
             "type": "symbol",
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -177,7 +180,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))",
+                            "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
                             "scale": "color",
                             "field": "Origin"
                         },
@@ -198,6 +201,9 @@
             "name": "layer_1_marks",
             "type": "symbol",
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_1"
             },

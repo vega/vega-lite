@@ -72,6 +72,9 @@
                 {
                     "name": "layer_0_marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"date\"]",
                         "order": "descending"

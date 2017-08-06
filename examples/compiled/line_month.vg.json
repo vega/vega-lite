@@ -65,6 +65,9 @@
         {
             "name": "marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"month_date\"]",
                 "order": "descending"

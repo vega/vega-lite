@@ -102,6 +102,9 @@
         {
             "name": "layer_0_marks",
             "type": "area",
+            "style": [
+                "area"
+            ],
             "sort": {
                 "field": "datum[\"date\"]",
                 "order": "descending"
@@ -135,6 +138,9 @@
         {
             "name": "layer_1_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"date\"]",
                 "order": "descending"
@@ -162,6 +168,9 @@
             "name": "layer_2_marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_2"
             },

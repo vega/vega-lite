@@ -125,6 +125,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -140,7 +143,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))",
+                            "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
                             "scale": "color",
                             "field": "Origin"
                         },
@@ -150,7 +153,7 @@
                     ],
                     "size": [
                         {
-                            "test": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))",
+                            "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
                             "value": 100
                         },
                         {

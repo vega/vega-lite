@@ -101,6 +101,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -116,7 +119,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },
@@ -129,7 +132,7 @@
                     },
                     "size": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                             "value": 200
                         },
                         {
@@ -138,7 +141,7 @@
                     ],
                     "shape": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                             "scale": "shape",
                             "field": "Origin"
                         },
@@ -289,7 +292,7 @@
                     "update": {
                         "stroke": [
                             {
-                                "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                                "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                                 "scale": "color",
                                 "field": "Cylinders"
                             },

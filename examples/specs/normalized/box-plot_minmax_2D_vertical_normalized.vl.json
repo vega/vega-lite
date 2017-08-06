@@ -42,7 +42,8 @@
     {
       "mark": {
         "type": "rule",
-        "role": "boxWhisker"
+        "role": "boxWhisker",
+        "style": "boxWhisker"
       },
       "encoding": {
         "y": {
@@ -65,7 +66,8 @@
     {
       "mark": {
         "type": "rule",
-        "role": "boxWhisker"
+        "role": "boxWhisker",
+        "style": "boxWhisker"
       },
       "encoding": {
         "y": {
@@ -85,7 +87,8 @@
     {
       "mark": {
         "type": "bar",
-        "role": "box"
+        "role": "box",
+        "style": "box"
       },
       "encoding": {
         "y": {
@@ -108,7 +111,8 @@
     {
       "mark": {
         "type": "tick",
-        "role": "boxMid"
+        "role": "boxMid",
+        "style": "boxMid"
       },
       "encoding": {
         "y": {

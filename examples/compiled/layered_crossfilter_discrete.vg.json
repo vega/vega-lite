@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -305,7 +305,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -429,6 +429,9 @@
                     "name": "child_distance_layer_0_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -461,6 +464,9 @@
                     "name": "child_distance_layer_1_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -611,6 +617,9 @@
                     "name": "child_delay_layer_0_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -643,6 +652,9 @@
                     "name": "child_delay_layer_1_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_3"
                     },
@@ -793,6 +805,9 @@
                     "name": "child_time_layer_0_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_4"
                     },
@@ -825,6 +840,9 @@
                     "name": "child_time_layer_1_marks",
                     "type": "rect",
                     "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_5"
                     },

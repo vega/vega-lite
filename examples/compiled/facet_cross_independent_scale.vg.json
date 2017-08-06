@@ -314,6 +314,9 @@
                 {
                     "name": "child_marks",
                     "type": "rect",
+                    "style": [
+                        "rect"
+                    ],
                     "from": {
                         "data": "facet"
                     },

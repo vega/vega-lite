@@ -199,6 +199,9 @@
             "type": "symbol",
             "clip": true,
             "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "source_0"
             },

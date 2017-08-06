@@ -79,6 +79,9 @@
         {
             "name": "marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"yearmonthdatehoursminutes_date\"]",
                 "order": "descending"

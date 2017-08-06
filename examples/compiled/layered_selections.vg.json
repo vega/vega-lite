@@ -582,6 +582,9 @@
             "type": "symbol",
             "clip": true,
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -622,6 +625,9 @@
             "type": "symbol",
             "clip": true,
             "role": "square",
+            "style": [
+                "square"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -647,7 +653,7 @@
                     ],
                     "size": [
                         {
-                            "test": "!(length(data(\"cyl_store\"))) || (vlPoint(\"cyl_store\", datum))",
+                            "test": "!(length(data(\"cyl_store\"))) || (vlSingle(\"cyl_store\", datum))",
                             "value": 150
                         },
                         {

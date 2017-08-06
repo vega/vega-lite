@@ -94,6 +94,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_0"
             },

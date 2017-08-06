@@ -54,7 +54,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlPoint(\"index_store\", datum)))"
+                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
                 },
                 {
                     "type": "filter",
@@ -73,7 +73,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlPoint(\"index_store\", datum)))"
+                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
                 },
                 {
                     "type": "filter",
@@ -164,6 +164,9 @@
                 {
                     "name": "layer_0_marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"date\"]",
                         "order": "descending"
@@ -233,6 +236,9 @@
         {
             "name": "layer_1_marks",
             "type": "rule",
+            "style": [
+                "rule"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -259,6 +265,9 @@
         {
             "name": "layer_2_marks",
             "type": "text",
+            "style": [
+                "text"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -372,17 +381,19 @@
         }
     ],
     "config": {
-        "text": {
-            "align": "right",
-            "dx": -5,
-            "dy": 5
-        },
         "axis": {
             "domainColor": "#888",
             "tickColor": "#888"
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "text": {
+                "align": "right",
+                "dx": -5,
+                "dy": 5
+            }
         }
     }
 }

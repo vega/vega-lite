@@ -101,6 +101,9 @@
             "name": "marks",
             "type": "symbol",
             "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -116,7 +119,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "!(length(data(\"org_store\"))) || (vlPoint(\"org_store\", datum))",
+                            "test": "!(length(data(\"org_store\"))) || (vlSingle(\"org_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },

@@ -376,6 +376,9 @@
             "name": "layer_0_marks",
             "type": "rect",
             "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -408,6 +411,9 @@
             "name": "layer_1_marks",
             "type": "rect",
             "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "data_1"
             },

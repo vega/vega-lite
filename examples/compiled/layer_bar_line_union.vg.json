@@ -113,6 +113,9 @@
             "name": "layer_0_marks",
             "type": "rect",
             "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -143,6 +146,9 @@
         {
             "name": "layer_1_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"b\"]",
                 "order": "descending"

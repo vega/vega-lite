@@ -114,6 +114,9 @@
                 {
                     "name": "marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"Year\"]",
                         "order": "descending"
