@@ -1,5 +1,5 @@
 import {Channel, COLOR, NONSPATIAL_SCALE_CHANNELS, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
-import {isGeoJSONFieldDef, isProjectionFieldDef, title as fieldDefTitle} from '../../fielddef';
+import {title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOSHAPE} from '../../mark';
 import {ResolveMode} from '../../resolve';

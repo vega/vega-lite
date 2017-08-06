@@ -1,7 +1,7 @@
 import {isArray, isNumber, isString} from 'vega-util';
 import {SHAPE} from '../../channel';
 import {DateTime, isDateTime} from '../../datetime';
-import {isGeoJSONFieldDef, isProjectionFieldDef} from '../../fielddef';
+import {isFieldDef} from '../../fielddef';
 import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -17,11 +17,11 @@ import {
   isTimeUnit,
   LookupTransform,
 } from '../../transform';
-import {LATITUDE, LONGITUDE} from '../../type';
+import {isGeoType, LATITUDE, LONGITUDE} from '../../type';
 import {contains, duplicate, keys, StringSet, toSet} from '../../util';
 import {VgFilterTransform, VgFormulaTransform, VgGeoJSONTransform, VgIdentifierTransform, VgLookupTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
 import {Model} from '../model';
+import {ModelWithField} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -58,7 +58,7 @@ export class GeoJSONNode extends DataFlowNode {
 
   public static make(model: ModelWithField): GeoJSONNode {
     const coordinates = model.reduceFieldDef((geo, def, channel) => {
-      if (isProjectionFieldDef(def) || isGeoJSONFieldDef(def)) {
+      if (isGeoType(def.type)) {
         geo[def.type] = def.field;
       }
       return geo;

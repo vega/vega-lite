@@ -2,7 +2,7 @@ import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
 import {Config} from '../../config';
-import {Field, FieldDef, isFieldDef, isGeoJSONFieldDef} from '../../fielddef';
+import {Field, FieldDef, isFieldDef} from '../../fielddef';
 import {VgGeoShapeTransform, VgPostEncodingTransform} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {MarkCompiler} from './base';
@@ -20,13 +20,17 @@ export const geoshape: MarkCompiler = {
   },
   postEncodingTransform: (model: UnitModel): VgPostEncodingTransform[] => {
     const {encoding} = model;
-    const fieldDef: FieldDef<Field> = encoding.shape && isFieldDef(encoding.shape) && isGeoJSONFieldDef(encoding.shape) ? encoding.shape : undefined;
-    const transform: VgGeoShapeTransform = {
-      type: 'geoshape',
-      projection: model.getName('projection'),
-      as: 'shape',
-      ...fieldDef ? {field: `datum[${fieldDef.field}]`} : {},
-    };
-    return [transform];
+    const shapeDef = encoding.shape;
+
+    if (shapeDef.type === 'geojson') {
+      const transform: VgGeoShapeTransform = {
+        type: 'geoshape',
+        projection: model.getName('projection'),
+        as: 'shape',
+        ...(shapeDef ? {field: `datum[${shapeDef.field}]`} : {}),
+      };
+      return [transform];
+    }
+    throw new Error('Will, please think about should happen in this case -- probably error?');
   }
 };
