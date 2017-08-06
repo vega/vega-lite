@@ -1,5 +1,6 @@
-import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
-import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
+import {FieldDef, getFieldDef, isConditionalDef, isFieldDef, isGeoJSONFieldDef, isScaleFieldDef} from '../../fielddef';
+import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   Scale,
@@ -45,6 +46,11 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const mark = model.mark();
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
+    // if mark is geoshape scale channel encodes the geojson
+    if (mark === GEOSHAPE && isGeoJSONFieldDef(encoding[channel])) {
+      return scaleComponents;
+    }
+
     let fieldDef: FieldDef<string>;
     let specifiedScale: Scale = {};
 
@@ -52,13 +58,17 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
-      specifiedScale = channelDef.scale || {};
+      if (isScaleFieldDef(channelDef)) {
+        specifiedScale = channelDef.scale || {};
+      }
     } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
       fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition.scale || {};
-    } else if (channel === 'x') {
+      if (isScaleFieldDef(channelDef.condition)) {
+        specifiedScale = channelDef.condition.scale || {};
+      }
+    } else if (channel === X) {
       fieldDef = getFieldDef(encoding.x2);
-    } else if (channel === 'y') {
+    } else if (channel === Y) {
       fieldDef = getFieldDef(encoding.y2);
     }
 
@@ -73,6 +83,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
         {value: sType, explicit: specifiedScaleType === sType}
       );
     }
+
     return scaleComponents;
   }, {});
 }

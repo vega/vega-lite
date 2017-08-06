@@ -1,5 +1,6 @@
 import {Axis, AXIS_PROPERTIES, AXIS_PROPERTY_TYPE, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
 import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
+import {Encoding} from '../../encoding';
 import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
@@ -16,8 +17,9 @@ type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
-  return SPATIAL_SCALE_CHANNELS.reduce(function(axis, channel) {
-    if (model.axis(channel)) {
+  return SPATIAL_SCALE_CHANNELS.reduce(function (axis, channel) {
+    // geoshape marks with shape channel are not neccessarily scales
+    if (model.component.scales[channel] && model.axis(channel)) {
       const axisComponent: AxisComponent = {};
       // TODO: support multiple axis
       const main = parseMainAxis(channel, model);

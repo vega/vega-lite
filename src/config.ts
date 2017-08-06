@@ -186,6 +186,7 @@ export const defaultConfig: Config = {
   area: {},
   bar: mark.defaultBarConfig,
   circle: {},
+  geoshape: {},
   line: {},
   point: {},
   rect: {},
@@ -199,6 +200,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
+  projection: {},
   axis: {
     domainColor: '#888',
     tickColor: '#888'

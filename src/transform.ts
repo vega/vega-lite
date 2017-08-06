@@ -14,11 +14,6 @@ export interface FilterTransform {
   filter: LogicalOperand<Filter>;
 }
 
-export function isFilter(t: Transform): t is FilterTransform {
-  return t['filter'] !== undefined;
-}
-
-
 export interface CalculateTransform {
   /**
    * A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.
@@ -129,6 +124,10 @@ export interface LookupTransform {
    * (Optional) The default value to use if lookup fails
    */
   default?: string;
+}
+
+export function isFilter(t: Transform): t is FilterTransform {
+  return t['filter'] !== undefined;
 }
 
 export function isLookup(t: Transform): t is LookupTransform {

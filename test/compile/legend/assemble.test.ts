@@ -6,7 +6,7 @@ import {parseUnitModelWithScale} from '../../util';
 
 
 describe('legend/assemble', () => {
-  it('merges legend of the same field with the default type.', () => {
+  it('merges legend of the same field with the default type', () => {
     const model = parseUnitModelWithScale({
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "description": "A scatterplot showing horsepower and miles per gallons.",
@@ -20,7 +20,6 @@ describe('legend/assemble', () => {
       }
     });
     model.parseLegend();
-
     const legends = model.assembleLegends();
     assert.equal(legends.length, 1);
 

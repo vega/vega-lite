@@ -7,6 +7,7 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {GeoPointNode} from './geopoint';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
@@ -14,7 +15,7 @@ import * as optimizers from './optimizers';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode, IdentifierNode, LookupNode} from './transforms';
+import {CalculateNode, FilterNode, GeoJSONNode, IdentifierNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';
@@ -197,6 +198,8 @@ function makeWalkTree(data: VgData[]) {
     if (node instanceof FilterNode ||
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
+      node instanceof GeoPointNode ||
+      node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof IdentifierNode) {

@@ -1,6 +1,6 @@
 import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
 import {FieldDef, isFieldDef, isValueDef} from '../../fielddef';
-import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
+import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
@@ -26,6 +26,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
     case POINT:
     case LINE:
+    case GEOSHAPE:
     case AREA:
       // use default circle
       break;

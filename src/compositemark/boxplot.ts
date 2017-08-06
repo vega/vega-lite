@@ -66,8 +66,10 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
+  // _ is used to denote a dropped property of the unit spec
+  // which should not be carried over to the layer spec
   // TODO: use selection
-  const {mark, encoding, selection, ...outerSpec} = spec;
+  const {mark, encoding, projection: _p, selection, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -168,7 +170,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+    // _ is used to denote a dropped property of the unit spec
+  // which should not be carried over to the layer spec
+  const {mark: mark, projection: _p, encoding: encoding, ...outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
     // x is continuous
@@ -203,7 +207,9 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 
 
 function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  // _ is used to denote a dropped property of the unit spec
+  // which should not be carried over to the layer spec
+  const {mark: mark, projection: _p, encoding: encoding, ...outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
   let continuousAxis: 'x' | 'y';

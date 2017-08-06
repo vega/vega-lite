@@ -40,7 +40,6 @@ import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
-import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
   public readonly type = 'facet';
@@ -52,7 +51,6 @@ export class FacetModel extends ModelWithField {
 
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
-
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];

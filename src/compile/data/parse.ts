@@ -1,4 +1,5 @@
 import {MAIN, RAW} from '../../data';
+import {GEOJSON} from '../../type';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -10,13 +11,14 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {GeoPointNode} from './geopoint';
 import {DataComponent} from './index';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {IdentifierNode, parseTransformArray} from './transforms';
+import {GeoJSONNode, IdentifierNode, parseTransformArray} from './transforms';
 
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
@@ -152,6 +154,18 @@ export function parseData(model: Model): DataComponent {
         bin.parent = head;
         head = bin;
       }
+    }
+
+    const geopoint = GeoPointNode.make(model);
+    if (geopoint) {
+      geopoint.parent = head;
+      head = geopoint;
+    }
+
+    const geojson = GeoJSONNode.make(model);
+    if (geojson) {
+      geojson.parent = head;
+      head = geojson;
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

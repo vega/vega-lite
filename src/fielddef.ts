@@ -1,5 +1,4 @@
 // utility for a field definition object
-
 import {AGGREGATE_OP_INDEX, AggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, binToString} from './bin';
@@ -14,8 +13,8 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
-import {getFullName, Type} from './type';
-import {isBoolean, isString, stringValue} from './util';
+import {GEOJSON, getFullName, LATITUDE, LONGITUDE, Type} from './type';
+import {contains, isBoolean, isString, stringValue} from './util';
 
 
 /**
@@ -160,6 +159,14 @@ export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
   legend?: Legend;
 }
 
+export interface ProjectionFieldDef<F> extends FieldDef<F> {
+  type: 'longitude' | 'latitude';
+}
+
+export interface GeoJSONFieldDef<F> extends FieldDef<F> {
+  type: 'geojson';
+}
+
 // Detail
 
 // Order Path have no scale
@@ -189,16 +196,28 @@ export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef i
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | ProjectionFieldDef<F> | GeoJSONFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
 export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef<any> {
-  return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+  return !!channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+}
+
+export function isLegendFieldDef(channelDef: ChannelDef<any>): channelDef is LegendFieldDef<any> {
+    return !!channelDef && channelDef['legend'];
 }
 
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
-    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+    return !!channelDef && (channelDef['scale'] || channelDef['sort']);
+}
+
+export function isGeoJSONFieldDef(channelDef: ChannelDef<any>): channelDef is GeoJSONFieldDef<any> {
+    return !!channelDef && isFieldDef(channelDef) && channelDef.type === GEOJSON;
+}
+
+export function isProjectionFieldDef(channelDef: ChannelDef<any>): channelDef is ProjectionFieldDef<any> {
+    return !!channelDef && isFieldDef(channelDef) && (channelDef.type === LATITUDE || channelDef.type === LONGITUDE);
 }
 
 export interface FieldRefOption {

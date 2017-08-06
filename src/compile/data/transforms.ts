@@ -1,5 +1,7 @@
 import {isArray, isNumber, isString} from 'vega-util';
+import {SHAPE} from '../../channel';
 import {DateTime, isDateTime} from '../../datetime';
+import {isGeoJSONFieldDef, isProjectionFieldDef} from '../../fielddef';
 import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -15,10 +17,11 @@ import {
   isTimeUnit,
   LookupTransform,
 } from '../../transform';
-import {duplicate, keys, StringSet, toSet} from '../../util';
-import {VgFilterTransform, VgFormulaTransform, VgIdentifierTransform, VgLookupTransform} from '../../vega.schema';
-import {Model} from '../model';
+import {LATITUDE, LONGITUDE} from '../../type';
+import {contains, duplicate, keys, StringSet, toSet} from '../../util';
+import {VgFilterTransform, VgFormulaTransform, VgGeoJSONTransform, VgIdentifierTransform, VgLookupTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
+import {Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -44,6 +47,49 @@ export class FilterNode extends DataFlowNode {
     return {
       type: 'filter',
       expr: this.expr
+    };
+  }
+}
+
+export class GeoJSONNode extends DataFlowNode {
+  public clone() {
+    return new GeoJSONNode(duplicate(this.fields), this.signal);
+  }
+
+  public static make(model: ModelWithField): GeoJSONNode {
+    const coordinates = model.reduceFieldDef((geo, def, channel) => {
+      if (isProjectionFieldDef(def) || isGeoJSONFieldDef(def)) {
+        geo[def.type] = def.field;
+      }
+      return geo;
+    }, {});
+
+    const fields = keys(coordinates);
+    if (fields.length === 1 && contains(fields, SHAPE)) {
+      return new GeoJSONNode(
+        [coordinates[SHAPE]],
+        model.getName('geojson')
+      );
+    } else if (fields.length === 2 && contains(fields, LATITUDE) && contains(fields, LONGITUDE)) {
+      return new GeoJSONNode(
+        [coordinates[LONGITUDE], coordinates[LATITUDE]] ,
+        model.getName('geojson')
+      );
+    } else {
+      // lat lng and shape not found
+      return null;
+    }
+  }
+
+  constructor(private fields: string[], private signal?: string) {
+    super();
+  }
+
+  public assemble(): VgGeoJSONTransform {
+    return {
+      type: 'geojson',
+      fields: this.fields,
+      signal: this.signal
     };
   }
 }

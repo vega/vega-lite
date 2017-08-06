@@ -1,6 +1,7 @@
-import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
-import {title as fieldDefTitle} from '../../fielddef';
+import {Channel, COLOR, NONSPATIAL_SCALE_CHANNELS, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
+import {isGeoJSONFieldDef, isProjectionFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
+import {GEOSHAPE} from '../../mark';
 import {ResolveMode} from '../../resolve';
 import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
@@ -16,12 +17,13 @@ import * as rules from './rules';
 
 
 export function parseUnitLegend(model: UnitModel): LegendComponentIndex {
-  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
+  const components = NONSPATIAL_SCALE_CHANNELS.reduce(function (legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
     }
     return legendComponent;
   }, {});
+  return components;
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
@@ -41,8 +43,8 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
-  const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
+  const fieldDef = model.fieldDef(channel);
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
