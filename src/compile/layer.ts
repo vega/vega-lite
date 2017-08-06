@@ -90,14 +90,6 @@ export class LayerModel extends Model {
     parseLayerAxis(this);
   }
 
-  public assembleParentGroupProperties(): VgEncodeEntry {
-    return {
-      width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height'),
-      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
-    };
-  }
-
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }

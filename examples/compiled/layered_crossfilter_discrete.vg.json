@@ -364,6 +364,7 @@
         {
             "type": "group",
             "name": "child_distance_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -371,12 +372,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -552,6 +547,7 @@
         {
             "type": "group",
             "name": "child_delay_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -559,12 +555,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -740,6 +730,7 @@
         {
             "type": "group",
             "name": "child_time_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -747,12 +738,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1112,6 +1097,12 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "transparent",
+                "stroke": "#ccc"
+            }
         }
     }
 }

@@ -301,12 +301,6 @@
                     },
                     "height": {
                         "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -419,6 +413,12 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "transparent",
+                "stroke": "#ccc"
+            }
         }
     }
 }

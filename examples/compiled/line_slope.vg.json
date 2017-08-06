@@ -3,16 +3,7 @@
     "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -225,6 +216,12 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "transparent",
+                "stroke": "#ccc"
+            }
         }
     }
 }

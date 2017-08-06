@@ -335,6 +335,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -342,12 +343,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -442,6 +437,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -449,12 +445,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -549,6 +539,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -556,12 +547,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -656,6 +641,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -663,12 +649,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -763,6 +743,7 @@
         {
             "type": "group",
             "name": "child_petalLength_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -770,12 +751,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -870,6 +845,7 @@
         {
             "type": "group",
             "name": "child_petalLength_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -877,12 +853,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -977,6 +947,7 @@
         {
             "type": "group",
             "name": "child_petalLength_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -984,12 +955,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1084,6 +1049,7 @@
         {
             "type": "group",
             "name": "child_petalLength_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1091,12 +1057,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1191,6 +1151,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1198,12 +1159,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1298,6 +1253,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1305,12 +1261,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1405,6 +1355,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1412,12 +1363,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1512,6 +1457,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1519,12 +1465,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1619,6 +1559,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1626,12 +1567,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1726,6 +1661,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1733,12 +1669,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1833,6 +1763,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1840,12 +1771,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1940,6 +1865,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1947,12 +1873,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -2678,6 +2598,12 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "transparent",
+                "stroke": "#ccc"
+            }
         }
     }
 }

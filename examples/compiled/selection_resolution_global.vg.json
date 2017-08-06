@@ -213,6 +213,7 @@
         {
             "type": "group",
             "name": "child_Horsepower_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -220,12 +221,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -608,6 +603,7 @@
         {
             "type": "group",
             "name": "child_Horsepower_Acceleration_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -615,12 +611,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1068,6 +1058,7 @@
         {
             "type": "group",
             "name": "child_Horsepower_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1075,12 +1066,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1528,6 +1513,7 @@
         {
             "type": "group",
             "name": "child_Acceleration_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1535,12 +1521,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1988,6 +1968,7 @@
         {
             "type": "group",
             "name": "child_Acceleration_Acceleration_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1995,12 +1976,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -2383,6 +2358,7 @@
         {
             "type": "group",
             "name": "child_Acceleration_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -2390,12 +2366,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -2843,6 +2813,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -2850,12 +2821,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -3303,6 +3268,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_Acceleration_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -3310,12 +3276,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -3763,6 +3723,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -3770,12 +3731,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -4523,6 +4478,12 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "transparent",
+                "stroke": "#ccc"
+            }
         }
     }
 }
