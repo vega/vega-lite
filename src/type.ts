@@ -25,6 +25,15 @@ export const LATITUDE = Type.LATITUDE;
 export const LONGITUDE = Type.LONGITUDE;
 export const GEOJSON = Type.GEOJSON;
 
+
+export function isProjectionType(type: Type): type is 'latitude' | 'longitude' {
+  return type === 'latitude' || type === 'longitude';
+}
+
+export function isGeoType(type: Type): type is 'latitude' | 'longitude' | 'geojson' {
+  return type === 'latitude' || type === 'longitude' || type === 'geojson';
+}
+
 /**
  * Get full, lowercase type name for a given type.
  * @param  type

@@ -82,7 +82,7 @@ export interface Encoding<F> {
    * or `"triangle-down"`, or else a custom SVG path string.
    * For `geoshape` marks it should be a fielddef of the geojson data
    */
-  shape?: Conditional<FieldDef<F>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
+  shape?: Conditional<LegendFieldDef<F>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and

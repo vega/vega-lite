@@ -196,7 +196,7 @@ export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef i
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | ProjectionFieldDef<F> | GeoJSONFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -210,14 +210,6 @@ export function isLegendFieldDef(channelDef: ChannelDef<any>): channelDef is Leg
 
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
     return !!channelDef && (channelDef['scale'] || channelDef['sort']);
-}
-
-export function isGeoJSONFieldDef(channelDef: ChannelDef<any>): channelDef is GeoJSONFieldDef<any> {
-    return !!channelDef && isFieldDef(channelDef) && channelDef.type === GEOJSON;
-}
-
-export function isProjectionFieldDef(channelDef: ChannelDef<any>): channelDef is ProjectionFieldDef<any> {
-    return !!channelDef && isFieldDef(channelDef) && (channelDef.type === LATITUDE || channelDef.type === LONGITUDE);
 }
 
 export interface FieldRefOption {

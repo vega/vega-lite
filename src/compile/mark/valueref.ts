@@ -12,13 +12,13 @@ import {
   FieldDef,
   FieldRefOption,
   isFieldDef,
-  isProjectionFieldDef,
   isValueDef,
   TextFieldDef,
   ValueDef
 } from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
+import {isProjectionType} from '../../type';
 import {contains} from '../../util';
 import {isVgSignalRef, VgScale, VgSignalRef, VgValueRef} from '../../vega.schema';
 import {formatSignalRef, numberFormat} from '../common';
@@ -108,7 +108,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (contains([X, Y], channel) && isProjectionFieldDef(channelDef)) {
+      if (contains([X, Y], channel) && isProjectionType(channelDef.type)) {
         console.log({field: field(channelDef, {suffix: 'geo'})});
         return {field: field(channelDef, {suffix: 'geo'})};
       }

@@ -1,5 +1,5 @@
-import {Field, FieldDef, isFieldDef, isGeoJSONFieldDef, isProjectionFieldDef} from '../../fielddef';
-import {LATITUDE, LONGITUDE} from '../../type';
+import {Field, FieldDef, isFieldDef} from '../../fielddef';
+import {isProjectionType, LATITUDE, LONGITUDE} from '../../type';
 import {contains, duplicate, extend, keys} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
@@ -17,7 +17,7 @@ export class GeoPointNode extends DataFlowNode {
 
   public static make(model: ModelWithField): GeoPointNode {
     const coordinates = model.reduceFieldDef((geo, def, channel) => {
-      if (isProjectionFieldDef(def)) {
+      if (isProjectionType(def.type)) {
         geo[def.type] = def.field;
       }
       return geo;
