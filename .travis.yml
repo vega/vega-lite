@@ -25,7 +25,6 @@ script:
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-cache: yarn
 notifications:
   email: never
   slack:
@@ -33,6 +32,3 @@ notifications:
       - vega-js:eJe5JNgxfucTVcTMbeplKX3v
     on_success: never
     on_failure: always
-cache:
-  directories:
-  - $HOME/.yarn-cache
