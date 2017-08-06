@@ -7,6 +7,7 @@ import * as ref from './valueref';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
+  defaultRole: 'tick',
 
   encodeEntry: (model: UnitModel) => {
     const {config, markDef, width, height} = model;

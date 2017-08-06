@@ -5,6 +5,7 @@ import * as mixins from './mixins';
 
 export const area: MarkCompiler = {
   vgMark: 'area',
+  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),

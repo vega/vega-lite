@@ -17,6 +17,7 @@ import * as ref from './valueref';
 
 export const bar: MarkCompiler = {
   vgMark: 'rect',
+  defaultRole: 'bar',
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
     return {
