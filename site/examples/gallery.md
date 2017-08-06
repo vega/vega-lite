@@ -22,3 +22,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 
 * [Grouped Bar Chart by @churtado](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364)
 * [Multi Line Highlight by @amitkaps](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701)
+* [Slope graph by @g3o2](https://bl.ocks.org/g3o2/a6c539eacfb0b99eaf01e4f20b9f2897)
