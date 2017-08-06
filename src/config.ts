@@ -153,6 +153,20 @@ export interface StyleConfigIndex {
   [style: string]: MarkConfig;
 }
 
+export type AreaOverlay = 'line' | 'linepoint' | 'none';
+
+export interface OverlayConfig {
+  /**
+   * Whether to overlay line with point.
+   */
+  line?: boolean;
+
+  /**
+   * Type of overlay for area mark (line or linepoint)
+   */
+  area?: AreaOverlay;
+}
+
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
@@ -171,6 +185,11 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 
   /** Style Config */
   style?: StyleConfigIndex;
+
+  /**
+   * @hide
+   */
+  overlay?: OverlayConfig;
 }
 
 export const defaultConfig: Config = {
