@@ -40,12 +40,11 @@ describe('compile/layout/header', () => {
         assert.deepEqual<VgMarkGroup>(textMark, {
           type: 'text',
           role: 'column-title-text',
+          style: 'guide-title',
           encode: {
             update: {
               text: {value: 'a'},
-              fontWeight: {value: 'bold'},
-              align: {value: 'center'},
-              fill: {value: 'black'}
+              align: {value: 'center'}
             }
           }
         });
@@ -70,13 +69,12 @@ describe('compile/layout/header', () => {
         assert.deepEqual<VgMarkGroup>(textMark, {
           type: 'text',
           role: 'row-title-text',
+          style: 'guide-title',
           encode: {
             update: {
               text: {value: 'a'},
               angle: {value: 270},
-              fontWeight: {value: 'bold'},
-              align: {value: 'center'},
-              fill: {value: 'black'}
+              align: {value: 'center'}
             }
           }
         });

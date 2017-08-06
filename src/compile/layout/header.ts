@@ -69,13 +69,12 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
     marks: [{
       type: 'text',
       role: `${channel}-title-text`,
+      style: 'guide-title',
       encode: {
         update: {
           // TODO: add title align
           align: {value: 'center'},
           text: {value: title},
-          fill: {value: 'black'},
-          fontWeight: {value: 'bold'},
           ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
         }
       }
@@ -94,6 +93,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config, true),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
+        style: 'guide-label',
         encode: {
           update: {
             fontWeight: {value: 'normal'},
