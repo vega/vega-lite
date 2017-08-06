@@ -10,7 +10,6 @@ import * as mixins from './mixins';
 
 export const rect: MarkCompiler = {
   vgMark: 'rect',
-  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     return {
       ...x(model),

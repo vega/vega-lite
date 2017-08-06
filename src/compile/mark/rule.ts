@@ -6,7 +6,6 @@ import * as ref from './valueref';
 
 export const rule: MarkCompiler = {
   vgMark: 'rule',
-  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     const {config, markDef, width, height} = model;
     const orient = markDef.orient;
