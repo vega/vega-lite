@@ -14,7 +14,7 @@ import {Orient} from './../vega.schema';
 
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
-export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
+export type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 
 
 export interface BoxPlotDef {
@@ -27,7 +27,7 @@ export function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef {
   return !!mark['type'];
 }
 
-export const BOXPLOT_ROLES: BoxPlotRole[] = ['boxWhisker', 'box', 'boxMid'];
+export const BOXPLOT_STYLES: BoxPlotStyle[] = ['boxWhisker', 'box', 'boxMid'];
 
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */

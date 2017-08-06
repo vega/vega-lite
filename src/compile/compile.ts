@@ -1,7 +1,7 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-import {Config, initConfig, stripConfig} from '../config';
+import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
@@ -68,7 +68,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   // TODO: change type to become VgSpec
 
   // Config with Vega-Lite only config removed.
-  const vgConfig = model.config ? stripConfig(model.config) : undefined;
+  const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
   // autoResize has to be put under autosize
   const {autoResize, ...topLevelProps} = topLevelProperties;
