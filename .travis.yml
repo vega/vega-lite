@@ -14,6 +14,11 @@ script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
   - npm run data
+  - echo "Check vega version:"
+  - ./scripts/version.sh vega
+  - ./scripts/version.sh vega-view
+  - ./scripts/version.sh vega-scenegraph
+  - cat node_modules/vega/build/vega.js | grep "var version"
   - npm run build:examples-only
   - npm run check:schema
   - npm run check:examples
