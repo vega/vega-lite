@@ -4,8 +4,8 @@ import {SelectionCompiler, STORE, TUPLE, unitName} from './selection';
 
 
 const single:SelectionCompiler = {
-  predicate: multi.predicate,
-  scaleDomain: multi.scaleDomain,
+  predicate: 'vlSingle',
+  scaleDomain: 'vlSingleDomain',
 
   signals: multi.signals,
 
