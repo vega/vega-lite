@@ -100,7 +100,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       { // lower whisker
         mark: {
           type: 'rule',
-          role: 'boxWhisker',
           style: 'boxWhisker'
         },
         encoding: {
@@ -118,7 +117,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       }, { // upper whisker
         mark: {
           type: 'rule',
-          role: 'boxWhisker',
           style: 'boxWhisker'
         },
         encoding: {
@@ -136,7 +134,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         ...(selection ? {selection} : {}),
         mark: {
           type: 'bar',
-          role: 'box',
           style: 'box'
         },
         encoding: {
@@ -155,7 +152,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       }, { // mid tick
         mark: {
           type: 'tick',
-          role: 'boxMid',
           style: 'boxMid'
         },
         encoding: {

@@ -137,7 +137,6 @@ export function getPathSort(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
-  const role = model.markDef.role || markCompiler[mark].defaultRole;
   const style = getStyles(model.markDef);
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
 
@@ -149,7 +148,6 @@ function parseNonPathMark(model: UnitModel) {
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(clip ? {clip: true} : {}),
-    ...(role? {role} : {}),
     ...(style? {style} : {}),
     from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
