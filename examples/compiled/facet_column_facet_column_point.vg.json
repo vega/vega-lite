@@ -321,7 +321,6 @@
                         {
                             "name": "child_child_marks",
                             "type": "symbol",
-                            "role": "point",
                             "style": [
                                 "point"
                             ],

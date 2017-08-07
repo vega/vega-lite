@@ -90,7 +90,6 @@
                 {
                     "name": "child_Origin_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -198,7 +197,6 @@
                 {
                     "name": "child_Cylinders_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],

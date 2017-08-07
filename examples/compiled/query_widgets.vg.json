@@ -152,7 +152,6 @@
         {
             "name": "layer_0_marks",
             "type": "symbol",
-            "role": "circle",
             "style": [
                 "circle"
             ],
@@ -191,7 +190,6 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "circle",
             "style": [
                 "circle"
             ],

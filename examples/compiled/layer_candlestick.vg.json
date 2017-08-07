@@ -382,7 +382,6 @@
         {
             "name": "layer_2_marks",
             "type": "rect",
-            "role": "bar",
             "style": [
                 "bar"
             ],

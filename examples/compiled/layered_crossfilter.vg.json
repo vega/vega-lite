@@ -606,7 +606,6 @@
                 {
                     "name": "child_distance_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -641,7 +640,6 @@
                 {
                     "name": "child_distance_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -1027,7 +1025,6 @@
                 {
                     "name": "child_delay_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -1062,7 +1059,6 @@
                 {
                     "name": "child_delay_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -1448,7 +1444,6 @@
                 {
                     "name": "child_time_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -1483,7 +1478,6 @@
                 {
                     "name": "child_time_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],

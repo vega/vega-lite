@@ -350,7 +350,6 @@
                 {
                     "name": "child_petalWidth_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -452,7 +451,6 @@
                 {
                     "name": "child_petalWidth_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -554,7 +552,6 @@
                 {
                     "name": "child_petalWidth_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -656,7 +653,6 @@
                 {
                     "name": "child_petalWidth_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -758,7 +754,6 @@
                 {
                     "name": "child_petalLength_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -860,7 +855,6 @@
                 {
                     "name": "child_petalLength_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -962,7 +956,6 @@
                 {
                     "name": "child_petalLength_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1064,7 +1057,6 @@
                 {
                     "name": "child_petalLength_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1166,7 +1158,6 @@
                 {
                     "name": "child_sepalWidth_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1268,7 +1259,6 @@
                 {
                     "name": "child_sepalWidth_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1370,7 +1360,6 @@
                 {
                     "name": "child_sepalWidth_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1472,7 +1461,6 @@
                 {
                     "name": "child_sepalWidth_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1574,7 +1562,6 @@
                 {
                     "name": "child_sepalLength_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1676,7 +1663,6 @@
                 {
                     "name": "child_sepalLength_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1778,7 +1764,6 @@
                 {
                     "name": "child_sepalLength_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1880,7 +1865,6 @@
                 {
                     "name": "child_sepalLength_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],

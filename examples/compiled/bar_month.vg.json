@@ -56,7 +56,6 @@
         {
             "name": "marks",
             "type": "rect",
-            "role": "bar",
             "style": [
                 "bar"
             ],

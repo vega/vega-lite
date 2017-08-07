@@ -173,7 +173,6 @@
         {
             "name": "layer_1_marks",
             "type": "rect",
-            "role": "tick",
             "style": [
                 "tick"
             ],
@@ -205,7 +204,6 @@
         {
             "name": "layer_2_marks",
             "type": "rect",
-            "role": "tick",
             "style": [
                 "tick"
             ],
@@ -237,7 +235,6 @@
         {
             "name": "layer_3_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "point"
             ],

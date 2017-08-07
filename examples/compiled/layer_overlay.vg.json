@@ -175,7 +175,6 @@
         {
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "pointOverlay"
             ],
@@ -230,7 +229,6 @@
         {
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "pointOverlay"
             ],

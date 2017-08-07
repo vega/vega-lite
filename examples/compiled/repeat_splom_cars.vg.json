@@ -125,7 +125,6 @@
                 {
                     "name": "child_Displacement_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -227,7 +226,6 @@
                 {
                     "name": "child_Displacement_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -329,7 +327,6 @@
                 {
                     "name": "child_Miles_per_Gallon_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -431,7 +428,6 @@
                 {
                     "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],

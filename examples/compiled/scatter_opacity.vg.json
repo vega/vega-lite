@@ -36,7 +36,6 @@
         {
             "name": "marks",
             "type": "symbol",
-            "role": "circle",
             "style": [
                 "circle"
             ],

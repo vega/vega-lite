@@ -79,7 +79,6 @@
         {
             "name": "plotname_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "point"
             ],

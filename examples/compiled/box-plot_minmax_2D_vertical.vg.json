@@ -135,7 +135,6 @@
         {
             "name": "layer_0_marks",
             "type": "rule",
-            "role": "boxWhisker",
             "style": [
                 "boxWhisker"
             ],
@@ -166,7 +165,6 @@
         {
             "name": "layer_1_marks",
             "type": "rule",
-            "role": "boxWhisker",
             "style": [
                 "boxWhisker"
             ],
@@ -197,7 +195,6 @@
         {
             "name": "layer_2_marks",
             "type": "rect",
-            "role": "box",
             "style": [
                 "box"
             ],
@@ -231,7 +228,6 @@
         {
             "name": "layer_3_marks",
             "type": "rect",
-            "role": "boxMid",
             "style": [
                 "boxMid"
             ],

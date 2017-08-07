@@ -455,7 +455,6 @@
                 {
                     "name": "child_Horsepower_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -912,7 +911,6 @@
                 {
                     "name": "child_Horsepower_Acceleration_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1367,7 +1365,6 @@
                 {
                     "name": "child_Horsepower_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1822,7 +1819,6 @@
                 {
                     "name": "child_Acceleration_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -2210,7 +2206,6 @@
                 {
                     "name": "child_Acceleration_Acceleration_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -2667,7 +2662,6 @@
                 {
                     "name": "child_Acceleration_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -3122,7 +3116,6 @@
                 {
                     "name": "child_Miles_per_Gallon_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -3577,7 +3570,6 @@
                 {
                     "name": "child_Miles_per_Gallon_Acceleration_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -3965,7 +3957,6 @@
                 {
                     "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],

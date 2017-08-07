@@ -35,7 +35,6 @@
         {
             "name": "marks",
             "type": "rect",
-            "role": "tick",
             "style": [
                 "tick"
             ],

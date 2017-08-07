@@ -90,7 +90,6 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
-            "role": "bar",
             "style": [
                 "bar"
             ],

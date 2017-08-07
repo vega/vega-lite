@@ -126,7 +126,6 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "point"
             ],

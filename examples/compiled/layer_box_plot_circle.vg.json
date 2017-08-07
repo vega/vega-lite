@@ -154,7 +154,6 @@
         {
             "name": "layer_0_layer_0_marks",
             "type": "rule",
-            "role": "boxWhisker",
             "style": [
                 "boxWhisker"
             ],
@@ -185,7 +184,6 @@
         {
             "name": "layer_0_layer_1_marks",
             "type": "rule",
-            "role": "boxWhisker",
             "style": [
                 "boxWhisker"
             ],
@@ -216,7 +214,6 @@
         {
             "name": "layer_0_layer_2_marks",
             "type": "rect",
-            "role": "box",
             "style": [
                 "box"
             ],
@@ -250,7 +247,6 @@
         {
             "name": "layer_0_layer_3_marks",
             "type": "rect",
-            "role": "boxMid",
             "style": [
                 "boxMid"
             ],
@@ -286,7 +282,6 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "circle",
             "style": [
                 "circle"
             ],

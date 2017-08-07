@@ -405,7 +405,6 @@
                 {
                     "name": "concat_0_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -559,7 +558,6 @@
                 {
                     "name": "concat_1_marks",
                     "type": "symbol",
-                    "role": "point",
                     "style": [
                         "point"
                     ],

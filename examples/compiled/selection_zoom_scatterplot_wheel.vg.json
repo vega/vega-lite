@@ -184,7 +184,6 @@
             "name": "marks",
             "type": "symbol",
             "clip": true,
-            "role": "circle",
             "style": [
                 "circle"
             ],

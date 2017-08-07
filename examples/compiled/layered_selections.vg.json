@@ -572,7 +572,6 @@
             "name": "layer_0_marks",
             "type": "symbol",
             "clip": true,
-            "role": "point",
             "style": [
                 "point"
             ],
@@ -615,7 +614,6 @@
             "name": "layer_1_marks",
             "type": "symbol",
             "clip": true,
-            "role": "square",
             "style": [
                 "square"
             ],

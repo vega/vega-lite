@@ -346,7 +346,6 @@
         {
             "name": "layer_2_marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "point"
             ],

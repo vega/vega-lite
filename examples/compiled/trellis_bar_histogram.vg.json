@@ -1,0 +1,350 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Horsepower",
+                    "signal": "child_bin_maxbins_15_Horsepower_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Horsepower",
+                    "as": [
+                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower_end"
+                    ],
+                    "signal": "child_bin_maxbins_15_Horsepower_bins",
+                    "maxbins": 15,
+                    "extent": {
+                        "signal": "child_bin_maxbins_15_Horsepower_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower_end",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "row_domain",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "200"
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 1,
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "name": "row_title",
+            "role": "row-title",
+            "type": "group",
+            "marks": [
+                {
+                    "type": "text",
+                    "role": "row-title-text",
+                    "encode": {
+                        "update": {
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "Origin"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
+                            },
+                            "angle": {
+                                "value": 270
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "from": {
+                "data": "row_domain"
+            },
+            "sort": {
+                "field": "datum[\"Origin\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "''+parent[\"Origin\"]"
+                },
+                "offset": 10,
+                "orient": "left",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "y",
+                    "labelOverlap": true,
+                    "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "title": "Number of Records",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "labelOverlap": true,
+                    "orient": "bottom",
+                    "title": "BIN(Horsepower)",
+                    "values": {
+                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
+                    },
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"Origin\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "facet"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "x",
+                                "field": "bin_maxbins_15_Horsepower_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "bin_maxbins_15_Horsepower_end"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "orient": "left",
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_15_Horsepower_start",
+                    "bin_maxbins_15_Horsepower_end"
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "child_width"
+                }
+            ],
+            "round": true,
+            "zero": false
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
+            "range": [
+                {
+                    "signal": "child_height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainColor": "#888",
+            "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

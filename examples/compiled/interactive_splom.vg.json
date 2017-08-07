@@ -494,7 +494,6 @@
                     "name": "child_Horsepower_Horsepower_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1067,7 +1066,6 @@
                     "name": "child_Horsepower_Miles_per_Gallon_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -1638,7 +1636,6 @@
                     "name": "child_Acceleration_Horsepower_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "point",
                     "style": [
                         "point"
                     ],
@@ -2209,7 +2206,6 @@
                     "name": "child_Acceleration_Miles_per_Gallon_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "point",
                     "style": [
                         "point"
                     ],

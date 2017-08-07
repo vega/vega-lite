@@ -40,7 +40,6 @@
     {
       "mark": {
         "type": "rule",
-        "role": "boxWhisker",
         "style": "boxWhisker"
       },
       "encoding": {
@@ -60,7 +59,6 @@
     {
       "mark": {
         "type": "rule",
-        "role": "boxWhisker",
         "style": "boxWhisker"
       },
       "encoding": {
@@ -77,7 +75,6 @@
     {
       "mark": {
         "type": "bar",
-        "role": "box",
         "style": "box"
       },
       "encoding": {
@@ -97,7 +94,6 @@
     {
       "mark": {
         "type": "tick",
-        "role": "boxMid",
         "style": "boxMid"
       },
       "encoding": {

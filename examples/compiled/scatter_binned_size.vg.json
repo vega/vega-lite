@@ -56,7 +56,6 @@
         {
             "name": "marks",
             "type": "symbol",
-            "role": "point",
             "style": [
                 "point"
             ],

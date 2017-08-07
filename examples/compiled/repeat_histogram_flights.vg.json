@@ -207,7 +207,6 @@
                 {
                     "name": "child_distance_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -311,7 +310,6 @@
                 {
                     "name": "child_delay_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],
@@ -415,7 +413,6 @@
                 {
                     "name": "child_time_marks",
                     "type": "rect",
-                    "role": "bar",
                     "style": [
                         "bar"
                     ],

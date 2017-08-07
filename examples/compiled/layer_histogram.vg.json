@@ -128,7 +128,6 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
-            "role": "bar",
             "style": [
                 "bar"
             ],
@@ -163,7 +162,6 @@
         {
             "name": "layer_1_marks",
             "type": "rect",
-            "role": "bar",
             "style": [
                 "bar"
             ],
