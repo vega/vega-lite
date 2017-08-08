@@ -14,13 +14,17 @@ script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
   - npm run data
+  - echo "Check vega version:"
+  - ./scripts/version.sh vega
+  - ./scripts/version.sh vega-view
+  - ./scripts/version.sh vega-scenegraph
+  - cat node_modules/vega/build/vega.js | grep "var version"
   - npm run build:examples-only
   - npm run check:schema
   - npm run check:examples
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-cache: yarn
 notifications:
   email: never
   slack:
@@ -28,6 +32,3 @@ notifications:
       - vega-js:eJe5JNgxfucTVcTMbeplKX3v
     on_success: never
     on_failure: always
-cache:
-  directories:
-  - $HOME/.yarn-cache
