@@ -8,9 +8,25 @@ import {parseFacetModel, parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
-    it('should return a correct parse for encoding mapping', () => {
+    it('should return a correct parse for encoding mapping and filter transforms', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json"},
+        "transform": [{
+          "filter": {
+            "not": {
+              "and": [{
+                "or": [
+                  {
+                    "timeUnit": "year",
+                    "field": "date",
+                    "equal": 2005
+                  },
+                  "datum.a > 5"
+                ]
+              }]
+            }
+          }
+        }],
         "mark": "point",
         "encoding": {
           "x": {"field": "a", "type": "quantitative"},
@@ -22,7 +38,8 @@ describe('compile/data/formatparse', () => {
 
       assert.deepEqual(ParseNode.make(model).parse, {
         a: 'number',
-        b: 'date'
+        b: 'date',
+        date: 'date'
       });
     });
 

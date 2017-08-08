@@ -1,9 +1,10 @@
 import {isCountingAggregateOp} from '../../aggregate';
 import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
-import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
+import {Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
-import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
+import {forEachLeave} from '../../logical';
+import {CalculateTransform, FilterTransform, isCalculate, isFilter, Transform} from '../../transform';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, isArray, isNumber, isString, keys, stringValue, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
@@ -48,10 +49,20 @@ export class ParseNode extends DataFlowNode {
 
   public static make(model: Model) {
     const parse = {};
+    const calcFieldMap = {};
 
-    const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {
-      fieldMap[formula.as] = true;
-      return fieldMap;
+    (model.transforms || []).forEach((transform: Transform) => {
+      if (isCalculate(transform)) {
+        calcFieldMap[transform.as] = true;
+      } else if (isFilter(transform)) {
+        forEachLeave(transform.filter, (filter) => {
+          if (isEqualFilter(filter) || isRangeFilter(filter) || isOneOfFilter(filter)) {
+            if (filter.timeUnit) {
+              parse[filter.field] = 'date';
+            }
+          }
+        });
+      }
     }, {});
 
     if (isUnitModel(model) || isFacetModel(model)) {
