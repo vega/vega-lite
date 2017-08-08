@@ -4,7 +4,7 @@ menu: docs
 title: Encoding
 permalink: /docs/encoding.html
 ---
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field) or [constant value](#value), and the channel's [scale and guide (axis or legend)](#scale-and-guide).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field-def) or [constant value](#value-def), and the channel's [scale and guide (axis or legend)](#scale-and-guide).
 
 {: .suppress-error}
 ```json
@@ -101,25 +101,24 @@ For more information, read the [facet documentation](facet.html).
 {:#def}
 ## Channel Definition
 
-Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value). In addition, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
+Each channel definition object is either a [field definition]((#field-def)), which describes
+the data field encoded by the channel, or a [value definition](#value-def), which describes
+or a constant value directly mapped to the mark properties.
+Field definitions may also describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
 
 {:#field}
-### Encoded Data
+### Field Definition
 
-To encode a particular field in the data set with a particular channel, the channel must specify the field's name with `field` property.
+#### Field and Type
 
-{% include table.html props="field" source="FieldDef" %}
+To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the following properties:
 
-## Field Definition
-| Property      | Description    |
-| :------------ |:-------------:| 
-| field | Name of the field from which to pull a data value |
-| type | The encoded field's type of measurement. This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`). This property is case-insensitive. | 
+{% include table.html props="field,type" source="FieldDef" %}
 
 {:#inline}
-### Field Transforms
+#### Field Transforms
 
-To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations:
+To facilitate data exploration, Vega-Lite provides inline field transforms as a part of a field definition. If a `field` is provided, the channel definition supports the following transformations:
 
 {% include table.html props="bin,timeUnit,aggregate,stack,sort" source="PositionFieldDef" %}
 
@@ -134,36 +133,7 @@ For more information about these field transforms, please see the following page
 
 <sup>2</sup> `detail` does not support `aggregate` and `sort`. When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.
 
-
-
-## Value Definition
-A value is part of a value definition
-
-{:#value}
-### Constant Value
-
-For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.
-
-{% include table.html props="value" source="ValueDef<number>" %}
-
-**Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode the constant `value`.
-
-#### Example
-
-For example, you can set `color` and `shape` of a scatter plot to constant values. Note that as the value is set directly to the color and shape values, there is no need to specify a data `type`. In fact, the data `type` will be ignored if specified.
-
-<span class="vl-example" data-name="scatter_color_shape_constant"></span>
-
-
-{:#ex-bar-size}
-
-Similarly, `value` for `size` channel of bar marks will adjust the bar's size. By default, there will be 1 pixel offset between bars. The following example sets the size to 10 to add more offset between bars.
-
-<span class="vl-example" data-name="bar_aggregate_size"></span>
-
-
-
-## Scale and Guide
+#### Scale and Guide
 
 For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).
 
@@ -178,3 +148,13 @@ By default, Vega-Lite automatically generates a scale and a guide for each field
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing a legend (`true` by default), or a config object for a legend of a non-position mark property channel (`color`, `size`, or `shape`). |
 
 For more information about [`scale`](scale.html), [`axis`](axis.html), and [`legend`](legend.html), please look at the respective pages.
+
+
+{:#value-def}
+### Value Definition
+
+For [mark properties channels](#props-channels)<sup>3</sup>, if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.  (See the [`value`](value.html) page for more examples.)
+
+{% include table.html props="value" source="ValueDef<number>" %}
+
+<sup>3</sup> `detail`, `path`, `order`, `row`, and `column` channels cannot be used with a channel definition.
