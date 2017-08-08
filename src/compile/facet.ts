@@ -193,10 +193,6 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  public assembleParentGroupProperties(): any {
-    return null;
-  }
-
   public assembleScales(): VgScale[] {
     return assembleScalesForModel(this);
   }
@@ -337,7 +333,7 @@ export class FacetModel extends ModelWithField {
     // so that we create all groups
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
-    const groupProperties = child.assembleParentGroupProperties();
+    const layoutSizeEncodeEntry = child.assembleLayoutSize();
 
     const aggregateMixins: any = {};
     if (hasRow && hasColumn) {
@@ -379,7 +375,7 @@ export class FacetModel extends ModelWithField {
         )
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(groupProperties ? {encode: {update: groupProperties}} : {}),
+      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
       ...child.assembleGroup()
     };
 

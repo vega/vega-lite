@@ -270,6 +270,23 @@ export abstract class Model {
   public abstract assembleSelectionData(data: VgData[]): VgData[];
   public abstract assembleData(): VgData[];
 
+  public assembleGroupStyle(): string {
+    if (this.type === 'unit' || this.type === 'layer') {
+      return 'cell';
+    }
+    return undefined;
+  }
+
+  public assembleLayoutSize(): VgEncodeEntry {
+    if (this.type === 'unit' || this.type === 'layer') {
+      return {
+        width: this.getSizeSignalRef('width'),
+        height: this.getSizeSignalRef('height')
+      };
+    }
+    return undefined;
+  }
+
   public abstract assembleLayout(): VgLayout;
 
   public abstract assembleLayoutSignals(): VgSignal[];
@@ -356,8 +373,6 @@ export abstract class Model {
 
     return group;
   }
-
-  public abstract assembleParentGroupProperties(): VgEncodeEntry;
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {

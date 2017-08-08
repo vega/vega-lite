@@ -56,10 +56,6 @@ export abstract class BaseConcatModel extends Model {
     return [];
   }
 
-  public assembleParentGroupProperties(): any {
-    return null;
-  }
-
   public assembleScales(): VgScale[] {
     return assembleScaleForModelAndChildren(this);
   }
@@ -87,14 +83,16 @@ export abstract class BaseConcatModel extends Model {
     // only children have marks
     return this.children.map(child => {
       const title = child.assembleTitle();
-      const encodeEntry = child.assembleParentGroupProperties();
+      const style = child.assembleGroupStyle();
+      const layoutSizeEncodeEntry = child.assembleLayoutSize();
       return {
         type: 'group',
         name: child.getName('group'),
         ...(title ? {title} : {}),
-        ...(encodeEntry ? {
+        ...(style ? {style} : {}),
+        ...(layoutSizeEncodeEntry ? {
           encode: {
-            update: encodeEntry
+            update: layoutSizeEncodeEntry
           }
         } : {}),
         ...child.assembleGroup()

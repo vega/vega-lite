@@ -314,12 +314,6 @@
                             },
                             "height": {
                                 "signal": "child_child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     },

@@ -95,9 +95,7 @@ export interface CellConfig {
 
 export const defaultCellConfig: CellConfig = {
   width: 200,
-  height: 200,
-  fill: 'transparent',
-  stroke: '#ccc'
+  height: 200
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
@@ -241,16 +239,17 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_STYLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as (Mark | CompositeMarkStyle)[];
+const MARK_STYLES = ['cell'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as (Mark | CompositeMarkStyle)[];
 
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding', 'numberFormat', 'timeFormat', 'countTitle',
-  'cell', 'stack', 'scale', 'selection', 'invalidValues',
+  'stack', 'scale', 'selection', 'invalidValues',
   'overlay' as keyof Config // FIXME: Redesign and unhide this
 ];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+  cell: ['width', 'height'],
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
   ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };

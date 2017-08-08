@@ -74,11 +74,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   const {autoResize, ...topLevelProps} = topLevelProperties;
   const title = model.assembleTitle();
 
-  const encode = model.assembleParentGroupProperties();
-  if (encode) {
-    delete encode.width;
-    delete encode.height;
-  }
+  const style = model.assembleGroupStyle();
 
   const output = {
     $schema: 'https://vega.github.io/schema/vega/v3.0.json',
@@ -87,7 +83,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
     ...topLevelProps,
     ...(title? {title} : {}),
-    ...(encode ? {encode: {update: encode}} : {}),
+    ...(style? {style} : {}),
     data: [].concat(
       model.assembleSelectionData([]),
       model.assembleData()

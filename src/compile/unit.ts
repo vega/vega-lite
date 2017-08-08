@@ -238,11 +238,10 @@ export class UnitModel extends ModelWithField {
     return marks.map(this.correctDataNames);
   }
 
-  public assembleParentGroupProperties(): VgEncodeEntry {
+  public assembleLayoutSize(): VgEncodeEntry {
     return {
       width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height'),
-      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
+      height: this.getSizeSignalRef('height')
     };
   }
 

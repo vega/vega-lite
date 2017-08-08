@@ -229,12 +229,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "yellow"
                     }
                 }
             },
@@ -393,6 +387,11 @@
         },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "yellow"
+            }
         }
     }
 }
