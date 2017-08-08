@@ -4,6 +4,34 @@ title: Binning
 permalink: /docs/bin.html
 ---
 
+There are two ways to define binning. One is the bin transform and the other is a channel's definition of bin in encoding. Both are described on this page.
+
+Table of Contents
+- [Transform](#transform)
+- [Encoding](#encoding)
+
+{:#transform}
+### Transform
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"bin": ..., "field": ..., "as" ...} // Bin Transform
+     ...
+  ],
+  ...
+}
+```
+
+`bin` transform in the `transform` array has the following properties:
+
+{% include table.html props="bin,field,as" source="BinTransform" %}
+
+
+### Encoding
+
 The channel definition's `bin` property is for grouping quantitative, continuous data values of a particular field into a smaller number of "bins" (e.g., for a histogram).
 
 {: .suppress-error}

@@ -4,6 +4,42 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
+There are two ways to define aggregation. A summarize transform or an encoding's aggregate property. This page describes both
+
+Table of Contents
+- [Summarize (Transform)](#summarize)
+- [Aggregate (Encoding)](#aggregate)
+
+{:#summarize}
+### Summarize (Transform)
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {
+      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
+      "groupby": [...]
+    } // Summarize Transform
+     ...
+  ],
+  ...
+}
+```
+
+A `summarize` transform in the `transform` array has the following properties:
+
+{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
+
+#### Aggregated Field Definition for Summarize Transform
+
+{% include table.html props="aggregate,field,as" source="Summarize" %}
+
+{:#aggregate}
+### Aggregate (Encoding)
+
 <!-- TODO why aggregation -->
 
 {: .suppress-error}

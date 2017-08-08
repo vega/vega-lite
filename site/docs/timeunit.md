@@ -4,6 +4,32 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
+Table of Contents
+- [Transform](#transform)
+- [Encoding](#encoding)
+
+{: #transform}
+### Transform
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"timeUnit": ..., "field": ..., "as" ...} // TimeUnit Transform
+     ...
+  ],
+  ...
+}
+```
+
+A `timeUnit` transform in the `transform` array has the following properties:
+
+{% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
+
+{: #encoding}
+### Encoding
+
 {: .suppress-error}
 ```json
 {
