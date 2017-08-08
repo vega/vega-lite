@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-There are two ways to define aggregation. A summarize transform or an encoding's aggregate property. This page describes both
+To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an encoding field definition.
 
 Table of Contents
 - [Summarize (Transform)](#summarize)
