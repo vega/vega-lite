@@ -15,6 +15,9 @@ describe('config', () => {
       bar: {
         opacity: 0.5,
         ...defaultConfig.bar
+      },
+      cell: {
+        fill: '#eee'
       }
     };
     const copy = duplicate(config);
@@ -34,8 +37,8 @@ describe('config', () => {
         assert.isUndefined(output[mark], `${mark} config should be redirected`);
       }
       assert.isUndefined(output.style.bar['binSpacing'], `VL only Bar config should be removed`);
-      assert.isUndefined(output.style.cell['width'], `VL only Bar config should be removed`);
-      assert.isUndefined(output.style.cell['height'], `VL only Bar config should be removed`);
+      assert.isUndefined(output.style.cell['width'], `VL only cell config should be removed`);
+      assert.isUndefined(output.style.cell['height'], `VL only cell config should be removed`);
 
       assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
     });

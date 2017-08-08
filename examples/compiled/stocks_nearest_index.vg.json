@@ -380,10 +380,6 @@
             "minExtent": 30
         },
         "style": {
-            "cell": {
-                "fill": "transparent",
-                "stroke": "#ccc"
-            },
             "text": {
                 "align": "right",
                 "dx": -5,

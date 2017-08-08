@@ -390,8 +390,7 @@
         },
         "style": {
             "cell": {
-                "fill": "yellow",
-                "stroke": "#ccc"
+                "fill": "yellow"
             }
         }
     }

@@ -381,7 +381,6 @@
         },
         "style": {
             "cell": {
-                "fill": "transparent",
                 "stroke": "transparent"
             }
         }

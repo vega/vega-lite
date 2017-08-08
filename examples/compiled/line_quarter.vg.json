@@ -359,12 +359,6 @@
         },
         "axisY": {
             "minExtent": 30
-        },
-        "style": {
-            "cell": {
-                "fill": "transparent",
-                "stroke": "#ccc"
-            }
         }
     }
 }

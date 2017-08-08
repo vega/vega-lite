@@ -95,9 +95,7 @@ export interface CellConfig {
 
 export const defaultCellConfig: CellConfig = {
   width: 200,
-  height: 200,
-  fill: 'transparent',
-  stroke: '#ccc'
+  height: 200
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
