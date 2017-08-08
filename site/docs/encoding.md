@@ -115,7 +115,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 {% include table.html props="field,type" source="FieldDef" %}
 
-{:#inline}
+{:#field-transform}
 #### Field Transforms
 
 To facilitate data exploration, Vega-Lite provides inline field transforms as a part of a field definition. If a `field` is provided, the channel definition supports the following transformations:
