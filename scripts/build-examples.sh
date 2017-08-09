@@ -5,6 +5,7 @@ dir=${dir-"examples/compiled"}
 
 echo "compiling examples to $dir"
 
+rm -f $dir/*.vl.json
 rm -f $dir/*.vg.json
 rm -f $dir/*.svg
 
