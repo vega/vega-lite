@@ -22,7 +22,7 @@ import {UnitModel} from './unit';
 
 
 export class LayerModel extends Model {
-  public readonly type = 'layer';
+  public readonly type: 'layer' = 'layer';
 
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
   // So I'm just putting generic Model for now.

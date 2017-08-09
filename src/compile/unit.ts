@@ -35,7 +35,7 @@ import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectio
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  public readonly type = 'unit';
+  public readonly type: 'unit' = 'unit';
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
