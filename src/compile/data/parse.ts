@@ -218,6 +218,7 @@ export function parseData(model: Model): DataComponent {
     ...model.component.data,
     outputNodes,
     outputNodeRefCounts,
+    raw,
     main,
     facetRoot,
     ancestorParse
