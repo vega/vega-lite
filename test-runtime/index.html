@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="/node_modules/vega/build/vega.js"></script>
+  <script src="/build/vega-lite.js"></script>
+</head>
+<body>
+
+  <div id="vis"></div>
+
+  <script type="text/javascript">
+    function embed(vlSpec) {
+      var vgSpec = vl.compile(vlSpec).spec;
+      view = new vega.View(vega.parse(vgSpec))
+        .renderer('svg')    // set renderer (canvas or svg)
+        .initialize('#vis') // initialize view within parent DOM container
+        .run();
+    }
+
+    var winSrc = ['mousemove', 'mouseup'];
+    function mouseEvt(type, target, opts) {
+      opts.bubbles = true;
+      target = winSrc.indexOf(type) < 0 ? target : window;
+
+      target.dispatchEvent(new MouseEvent('mousemove',
+        vega.extend({}, opts, {clientX: opts.clientX - 5, clientY: opts.clientY - 5})));
+
+      target.dispatchEvent(new MouseEvent('mousemove', opts));
+
+      target.dispatchEvent(type === 'wheel' ?
+        new WheelEvent('wheel', opts) :
+        new MouseEvent(type, opts));
+
+      target.dispatchEvent(new MouseEvent('mousemove',
+        vega.extend({}, opts, {clientX: opts.clientX + 5, clientY: opts.clientY + 5})));
+    }
+
+    function mark(id, parent) {
+      return document.querySelector((parent ? `g.${parent} ` : '') +
+        `g.mark-symbol.role-mark path:nth-child(${id})`);
+    }
+
+    function coords(el) {
+      var rect = el.getBoundingClientRect();
+      return [Math.ceil(rect.left + rect.width/2), Math.ceil(rect.top + rect.height/2)];
+    }
+
+    function brushOrEl(el, parent, _) {
+      return !_ ? el :
+        document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path');
+    }
+
+    function click(el, evt) {
+      mouseEvt('mousedown', el, evt);
+      mouseEvt('mouseup', window, evt);
+      mouseEvt('click', el, evt);
+    }
+
+    function brush(id0, id1, parent, targetBrush) {
+      var el0 = mark(id0, parent);
+      var el1 = mark(id1, parent);
+      var [mdX, mdY] = coords(el0);
+      var [muX, muY] = coords(el1);
+      mouseEvt('mousedown',
+        brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
+      mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
+      return view.data('sel_store');
+    }
+
+    function pt(id, parent, shiftKey) {
+      var el = mark(id, parent);
+      var [clientX, clientY] = coords(el);
+      click(el, {clientX, clientY, shiftKey});
+      return view.data('sel_store');
+    }
+
+    function clear(id, parent, shiftKey) {
+      var bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
+      var el = mark(id, parent);
+      var [clientX, clientY] = coords(el);
+      clientX += 10;
+      clientY -= 10;
+      click(bg, {clientX, clientY, shiftKey});
+      return view.data('sel_store');
+    }
+
+    function zoom(id, delta, parent, targetBrush) {
+      var el = mark(id, parent);
+      var [clientX, clientY] = coords(el);
+      mouseEvt('wheel', brushOrEl(el, parent, targetBrush),
+        {clientX, clientY, deltaX: delta, deltaY: delta, deltaZ: delta});
+      mouseEvt('wheel', brushOrEl(el, parent, targetBrush),
+        {clientX, clientY, deltaX: Math.sign(delta), deltaY: Math.sign(delta), deltaZ: Math.sign(delta)});
+      return view.data('sel_store');
+    }
+  </script>
+</body>
+</html>

@@ -1,14 +1,20 @@
+dist: trusty
+addons:
+  chrome: stable
+
 language: node_js
 node_js:
   - "6"
   - "7"
   - "8"
+
 before_install:
-  - # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
+  # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
   - wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
   - chmod +x parallel
   - cp parallel sem
   - sudo mv parallel sem /usr/local/bin
+
 script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
@@ -17,9 +23,12 @@ script:
   - npm run check:schema
   - npm run check:examples
   - npm run codecov
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
 cache: yarn
+
 notifications:
   email: never
   slack:
@@ -27,6 +36,3 @@ notifications:
       - vega-js:eJe5JNgxfucTVcTMbeplKX3v
     on_success: never
     on_failure: always
-cache:
-  directories:
-  - $HOME/.yarn-cache
