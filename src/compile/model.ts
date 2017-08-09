@@ -1,28 +1,32 @@
-import {isNumber} from 'vega-util';
-import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
+import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
-import {Data, DataSourceType, MAIN, RAW} from '../data';
+import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef, title} from '../fielddef';
-import {Legend} from '../legend';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, title} from '../fielddef';
 import * as log from '../log';
 import {ResolveMapping} from '../resolve';
-import {hasDiscreteDomain, Scale} from '../scale';
-import {SortField, SortOrder} from '../sort';
+import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
-import {StackProperties} from '../stack';
 import {Title} from '../title';
 import {Transform} from '../transform';
-import {getFullName} from '../type';
-import {Dict, extend, vals, varName} from '../util';
-import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgTitle, VgValueRef} from '../vega.schema';
+import {Dict, extend, varName} from '../util';
+import {
+  isVgRangeStep,
+  VgAxis,
+  VgData,
+  VgEncodeEntry,
+  VgLayout,
+  VgLegend,
+  VgMarkGroup,
+  VgScale,
+  VgSignal,
+  VgSignalRef,
+  VgTitle,
+} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
-import {AxisComponent, AxisComponentIndex} from './axis/component';
+import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
-import {assembleData} from './data/assemble';
 import {DataComponent} from './data/index';
-import {optimizeDataflow} from './data/optimize';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layout/assemble';
@@ -33,7 +37,6 @@ import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
-import {assembleScalesForModel} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
@@ -270,14 +273,6 @@ export abstract class Model {
   public abstract assembleSelectionSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      optimizeDataflow(this.component.data);
-      return assembleData(this.component.data);
-    }
-    return [];
-  }
 
   public assembleGroupStyle(): string {
     if (this.type === 'unit' || this.type === 'layer') {

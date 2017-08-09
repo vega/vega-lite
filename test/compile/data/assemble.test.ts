@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {assembleData} from '../../../src/compile/data/assemble';
+import {assembleRootData} from '../../../src/compile/data/assemble';
 import {OutputNode} from '../../../src/compile/data/dataflow';
 import {SourceNode} from '../../../src/compile/data/source';
 import {Data} from '../../../src/data';
@@ -18,7 +18,7 @@ describe('compile/data/assemble', () => {
 
       assert.equal(main.getSource(), 'mainOut');
 
-      const data = assembleData({
+      const data = assembleRootData({
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
@@ -43,7 +43,7 @@ describe('compile/data/assemble', () => {
       assert.equal(raw.getSource(), 'rawOut');
       assert.equal(main.getSource(), 'mainOut');
 
-      const data = assembleData({
+      const data = assembleRootData({
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
