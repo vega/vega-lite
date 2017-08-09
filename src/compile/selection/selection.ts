@@ -220,7 +220,7 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
     const store = stringValue(vname + STORE);
 
     if (selCmpt.timeUnit) {
-      const child = dfnode || model.component.data.main;
+      const child = dfnode || model.component.data.raw;
       const tunode = selCmpt.timeUnit.clone();
       if (child.parent) {
         tunode.insertAsParentOf(child);
