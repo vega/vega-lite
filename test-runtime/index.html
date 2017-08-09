@@ -37,7 +37,7 @@
 
     function mark(id, parent) {
       return document.querySelector((parent ? `g.${parent} ` : '') +
-        `g.role-circle path:nth-child(${id})`);
+        `g.mark-symbol.role-mark path:nth-child(${id})`);
     }
 
     function coords(el) {
