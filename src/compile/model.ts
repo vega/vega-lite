@@ -20,7 +20,9 @@ import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMark
 import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
+import {assembleData} from './data/assemble';
 import {DataComponent} from './data/index';
+import {optimizeDataflow} from './data/optimize';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layout/assemble';
@@ -268,7 +270,14 @@ export abstract class Model {
   public abstract assembleSelectionSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
-  public abstract assembleData(): VgData[];
+  public assembleData(): VgData[] {
+     if (!this.parent) {
+      // only assemble data in the root
+      optimizeDataflow(this.component.data);
+      return assembleData(this.component.data);
+    }
+    return [];
+  }
 
   public assembleGroupStyle(): string {
     if (this.type === 'unit' || this.type === 'layer') {

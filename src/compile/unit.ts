@@ -1,24 +1,30 @@
 import {Axis} from '../axis';
-import {Channel, isScaleChannel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
-import {CellConfig, Config} from '../config';
-import * as vlEncoding from '../encoding'; // TODO: remove
+import {
+  Channel,
+  isScaleChannel,
+  NONSPATIAL_SCALE_CHANNELS,
+  SCALE_CHANNELS,
+  ScaleChannel,
+  SingleDefChannel,
+  X,
+  Y,
+} from '../channel';
+import {Config} from '../config';
+import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
-import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
+import {isMarkDef, Mark, MarkDef} from '../mark';
+import {Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
-import {Dict, duplicate, extend, vals} from '../util';
+import {Dict, duplicate, extend} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
-import {applyConfig} from './common';
-import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {LayerModel} from './layer';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseUnitLayoutSize} from './layout/parse';
 import {LegendIndex} from './legend/component';
@@ -28,7 +34,13 @@ import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
-import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
+import {
+  assembleTopLevelSignals,
+  assembleUnitSelectionData,
+  assembleUnitSelectionMarks,
+  assembleUnitSelectionSignals,
+  parseUnitSelection,
+} from './selection/selection';
 
 
 /**
@@ -191,14 +203,6 @@ export class UnitModel extends ModelWithField {
 
   public parseAxisAndHeader() {
     this.component.axes = parseUnitAxis(this);
-  }
-
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-    return [];
   }
 
   public assembleScales(): VgScale[] {

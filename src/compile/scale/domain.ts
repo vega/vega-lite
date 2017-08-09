@@ -1,4 +1,5 @@
 import {isString} from 'vega-util';
+
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -9,20 +10,16 @@ import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
-import {isBoolean} from '../../util';
 import {
   FieldRefUnionDomain,
   isDataRefDomain,
-  isDataRefUnionedDomain,
-  isFieldRefUnionDomain,
   VgDataRef,
   VgDomain,
   VgNonUnionDomain,
   VgSortField,
-  VgUnionSortField
+  VgUnionSortField,
 } from '../../vega.schema';
-import {FACET_SCALE_PREFIX} from '../data/assemble';
-import {FacetModel} from '../facet';
+import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
@@ -326,7 +323,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   const sorts: VgSortField[] = util.unique(domains.map(d => {
     if (isDataRefDomain(d)) {
       const s = d.sort;
-      if (s !== undefined && !isBoolean(s)) {
+      if (s !== undefined && !util.isBoolean(s)) {
         if (s.op === 'count') {
           // let's make sure that if op is count, we don't use a field
           delete s.field;
@@ -359,7 +356,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 
   // only keep simple sort properties that work with unioned domains
   const onlySimpleSorts = sorts.filter(s => {
-    if (isBoolean(s)) {
+    if (util.isBoolean(s)) {
       return true;
     }
     if (s.op === 'count') {

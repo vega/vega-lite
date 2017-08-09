@@ -1,22 +1,15 @@
-import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
 import * as log from '../log';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
-import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal, VgTitle} from '../vega.schema';
-import {AxisComponentIndex} from './axis/component';
+import {flatten, keys} from '../util';
+import {VgData, VgLayout, VgScale, VgSignal, VgTitle} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
-import {applyConfig, buildModel} from './common';
-import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseLayerLayoutSize} from './layout/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -110,14 +103,6 @@ export class LayerModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
-  }
-
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-    return [];
   }
 
   public assembleTitle(): VgTitle {
