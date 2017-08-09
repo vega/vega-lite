@@ -3,7 +3,6 @@ import {ResolveMapping} from '../resolve';
 import {BaseSpec} from '../spec';
 import {keys} from '../util';
 import {VgData, VgScale, VgSignal} from '../vega.schema';
-import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
 import {Model} from './model';
@@ -45,15 +44,6 @@ export abstract class BaseConcatModel extends Model {
     }
 
     // TODO(#2415): support shared axes
-  }
-
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-
-    return [];
   }
 
   public assembleScales(): VgScale[] {

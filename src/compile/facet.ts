@@ -1,34 +1,16 @@
-import {isString} from 'vega-util';
 import {AggregateOp} from '../aggregate';
-import {Channel, COLUMN, NonspatialScaleChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
-import {channelHasField, reduce} from '../encoding';
+import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {field, FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {ResolveMapping} from '../resolve';
-import {hasDiscreteDomain, Scale} from '../scale';
+import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
-import {contains, Dict, keys, stringValue} from '../util';
-import {
-  isDataRefDomain,
-  isDataRefUnionedDomain,
-  isFieldRefUnionDomain,
-  isVgRangeStep,
-  VgAxis,
-  VgData,
-  VgDataRef,
-  VgEncodeEntry,
-  VgLayout,
-  VgMarkGroup,
-  VgScale,
-  VgSignal
-} from '../vega.schema';
-import {RowCol} from '../vega.schema';
-import {domain} from './axis/rules';
-import {applyConfig, buildModel, formatSignalRef} from './common';
-import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
+import {contains} from '../util';
+import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
+import {buildModel} from './common';
+import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layout/parse';
@@ -37,9 +19,7 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
-import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
@@ -182,15 +162,6 @@ export class FacetModel extends ModelWithField {
         // Otherwise do nothing for independent axes
       }
     }
-  }
-
-  public assembleData(): VgData[] {
-    if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-
-    return [];
   }
 
   public assembleScales(): VgScale[] {
