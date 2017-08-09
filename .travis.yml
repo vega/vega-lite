@@ -9,7 +9,6 @@ before_install:
   - chmod +x parallel
   - cp parallel sem
   - sudo mv parallel sem /usr/local/bin
-
 script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
