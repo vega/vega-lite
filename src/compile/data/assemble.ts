@@ -192,7 +192,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleData(dataComponent: DataComponent): VgData[] {
+export function assembleRootData(dataComponent: DataComponent): VgData[] {
   const roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 

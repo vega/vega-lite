@@ -1,9 +1,11 @@
+import {assert} from 'chai';
+import {assembleRootData} from '../../../src/compile/data/assemble';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {Mark} from '../../../src/mark';
 import {VgTransform} from '../../../src/vega.schema';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {parseModel} from '../../util';
+
+/* tslint:disable:quotemark */
 
 function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
   const model = parseModel({
@@ -19,7 +21,8 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
     }
   });
   model.parse();
-  return model.assembleData();
+  optimizeDataflow(model.component.data);
+  return assembleRootData(model.component.data);
 }
 
 describe('Identifier transform', function() {

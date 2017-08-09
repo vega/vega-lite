@@ -5,12 +5,10 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
-import {extend, keys} from '../util';
 import {buildModel} from './common';
-import {LayerModel} from './layer';
+import {assembleRootData} from './data/assemble';
+import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
-import {UnitModel} from './unit';
-
 
 export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {
@@ -40,7 +38,10 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     // Please see inside model.parse() for order of different components parsed.
     model.parse();
 
-    // 5. Assemble a Vega Spec from the parsed components in 3.
+    // 5. Optimize the datafow.
+    optimizeDataflow(model.component.data);
+
+    // 6. Assemble a Vega Spec from the parsed components.
     return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config));
   } finally {
     // Reset the singleton logger if a logger is provided
@@ -86,7 +87,8 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     ...(style? {style} : {}),
     data: [].concat(
       model.assembleSelectionData([]),
-      model.assembleData()
+      // only assemble data in the root
+      assembleRootData(model.component.data)
     ),
     ...model.assembleGroup([
       ...model.assembleLayoutSignals(),
