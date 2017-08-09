@@ -5,8 +5,8 @@ dir=${dir-"examples/compiled"}
 
 echo "compiling examples to $dir"
 
-rm -rf $dir
-mkdir $dir
+rm -f $dir/*.vg.json
+rm -f $dir/*.svg
 
 if type parallel >/dev/null 2>&1
 then
