@@ -116,7 +116,7 @@ __Not Customizable__: specified `range` will be ignored.
 </span>
 
 Nominal `color` Scales
-: A `color` scale of a nominal field has a categorical color palette as its range. The customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
+: A `color` scale of a nominal field has a categorical color palette as its range. The customized categorical colors can be applied by specifying `range` as an array of desired output values or `scheme` as a [string literal for a palette name](#color-palette).
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
 </span>
