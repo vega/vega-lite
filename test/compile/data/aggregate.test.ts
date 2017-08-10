@@ -129,7 +129,7 @@ describe('compile/data/summary', function () {
         mark: "point",
         encoding: {
           'x': {'bin': true, 'field': 'Displacement', 'type': "quantitative"},
-          'y': {'bin': true, 'field': 'Acceleration', 'type': "ordinal"},
+          'y': {'bin': true, 'field': 'Acceleration', 'type': "quantitative"},
           'color': {'aggregate': 'count', 'type': "quantitative"}
         }
       });
@@ -141,8 +141,7 @@ describe('compile/data/summary', function () {
           'bin_maxbins_10_Displacement_start',
           'bin_maxbins_10_Displacement_end',
           'bin_maxbins_10_Acceleration_start',
-          'bin_maxbins_10_Acceleration_end',
-          'bin_maxbins_10_Acceleration_range'
+          'bin_maxbins_10_Acceleration_end'
         ],
         ops: ['count'],
         fields: ['*'],

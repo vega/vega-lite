@@ -14,7 +14,7 @@ import {Orient} from './../vega.schema';
 
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
-export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
+export type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 
 
 export interface BoxPlotDef {
@@ -27,7 +27,7 @@ export function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef {
   return !!mark['type'];
 }
 
-export const BOXPLOT_ROLES: BoxPlotRole[] = ['boxWhisker', 'box', 'boxMid'];
+export const BOXPLOT_STYLES: BoxPlotStyle[] = ['boxWhisker', 'box', 'boxMid'];
 
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */
@@ -67,7 +67,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
-  const {mark, encoding, selection: _sel, ...outerSpec} = spec;
+  const {mark, encoding, selection, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -100,7 +100,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       { // lower whisker
         mark: {
           type: 'rule',
-          role: 'boxWhisker'
+          style: 'boxWhisker'
         },
         encoding: {
           [continuousAxis]: {
@@ -117,7 +117,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       }, { // upper whisker
         mark: {
           type: 'rule',
-          role: 'boxWhisker'
+          style: 'boxWhisker'
         },
         encoding: {
           [continuousAxis]: {
@@ -131,9 +131,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           ...nonPositionEncodingWithoutColorSize
         }
       }, { // box (q1 to q3)
+        ...(selection ? {selection} : {}),
         mark: {
           type: 'bar',
-          role: 'box'
+          style: 'box'
         },
         encoding: {
           [continuousAxis]: {
@@ -151,7 +152,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       }, { // mid tick
         mark: {
           type: 'tick',
-          role: 'boxMid'
+          style: 'boxMid'
         },
         encoding: {
           [continuousAxis]: {

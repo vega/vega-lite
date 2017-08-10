@@ -228,8 +228,32 @@ describe('FacetModel', function() {
     });
   });
 
+  describe('assembleGroup', () => {
+    it('includes a columns fields in the encode block for facet with column that parent is also a facet.', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+         facet: {
+            column: {field: 'c', type: 'quantitative'}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'b', type: 'quantitative'}
+            }
+          }
+        }
+      });
+      model.parseData();
+      const group = model.child.assembleGroup([]);
+      assert.deepEqual(group.encode.update.columns, {field: 'distinct_c'});
+    });
+  });
+
   describe('assembleLayout', () => {
-    it('returns a layout with a column signal', () => {
+    it('returns a layout with a column signal for facet with column', () => {
       const model = parseFacetModelWithScale({
         facet: {
           column: {field: 'a', type: 'quantitative'}
@@ -246,11 +270,32 @@ describe('FacetModel', function() {
         padding: {row: 10, column: 10},
         offset: 10,
         columns: {
-          signal: "data('column_layout')[0][\"distinct_a\"]"
+          signal: "length(data('column_domain'))"
         },
         bounds: 'full',
         align: 'all'
       });
+    });
+
+    it('returns a layout without a column signal for facet with column that parent is also a facet.', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+         facet: {
+            column: {field: 'c', type: 'quantitative'}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'b', type: 'quantitative'}
+            }
+          }
+        }
+      });
+      const layout = model.child.assembleLayout();
+      assert.deepEqual(layout.columns, undefined);
     });
 
     it('returns a layout with header band if child spec is also a facet', () => {
@@ -331,6 +376,33 @@ describe('FacetModel', function() {
       assert.deepEqual(marks[0].from.facet.aggregate, {
         fields: ['b', 'c'],
         ops: ['distinct', 'distinct']
+      });
+    });
+
+    it('should add calculate cardinality for child column facet', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+         facet: {
+            column: {field: 'c', type: 'quantitative'}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'b', type: 'quantitative'}
+            }
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      assert.deepEqual(marks[0].from.facet.aggregate, {
+        fields: ['c'],
+        ops: ['distinct']
       });
     });
   });

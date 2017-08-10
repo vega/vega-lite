@@ -15,7 +15,7 @@
             }
         },
         {
-            "name": "row",
+            "name": "row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -96,7 +96,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"Origin\"]",
@@ -104,7 +104,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"Origin\"]"
+                    "signal": "''+parent[\"Origin\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -151,7 +151,7 @@
             },
             "data": [
                 {
-                    "name": "child_row",
+                    "name": "child_row_domain",
                     "source": "facet",
                     "transform": [
                         {
@@ -179,7 +179,7 @@
                     "type": "group",
                     "role": "row-header",
                     "from": {
-                        "data": "child_row"
+                        "data": "child_row_domain"
                     },
                     "sort": {
                         "field": "datum[\"Cylinders\"]",
@@ -187,7 +187,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent[\"Cylinders\"]"
+                            "signal": "''+parent[\"Cylinders\"]"
                         },
                         "offset": 10,
                         "orient": "left",
@@ -294,12 +294,6 @@
                             },
                             "height": {
                                 "signal": "child_child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     },
@@ -307,7 +301,9 @@
                         {
                             "name": "child_child_marks",
                             "type": "symbol",
-                            "role": "point",
+                            "style": [
+                                "point"
+                            ],
                             "from": {
                                 "data": "data_0"
                             },
@@ -408,9 +404,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

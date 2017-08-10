@@ -3,16 +3,7 @@
     "description": "The population of the German city of Falkensee over time",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -292,6 +283,9 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
+            "style": [
+                "rect"
+            ],
             "from": {
                 "data": "data_3"
             },
@@ -321,8 +315,11 @@
             }
         },
         {
-            "name": "layer_1_layer_0_marks",
+            "name": "layer_1_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"year_year\"]",
                 "order": "descending"
@@ -347,9 +344,11 @@
             }
         },
         {
-            "name": "layer_1_layer_1_marks",
+            "name": "layer_2_marks",
             "type": "symbol",
-            "role": "pointOverlay",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -363,8 +362,11 @@
                         "scale": "y",
                         "field": "population"
                     },
-                    "fill": {
+                    "stroke": {
                         "value": "#333"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     },
                     "opacity": {
                         "value": 0.7
@@ -452,7 +454,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEAR(start), YEAR(year)",
+            "title": "YEAR(start), YEAR(year), YEAR(year)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -522,9 +524,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

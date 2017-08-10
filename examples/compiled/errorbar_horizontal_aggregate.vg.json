@@ -3,16 +3,7 @@
     "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -153,6 +144,9 @@
         {
             "name": "layer_0_marks",
             "type": "rule",
+            "style": [
+                "rule"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -179,7 +173,9 @@
         {
             "name": "layer_1_marks",
             "type": "rect",
-            "role": "tick",
+            "style": [
+                "tick"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -208,7 +204,9 @@
         {
             "name": "layer_2_marks",
             "type": "rect",
-            "role": "tick",
+            "style": [
+                "tick"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -237,7 +235,9 @@
         {
             "name": "layer_3_marks",
             "type": "symbol",
-            "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_3"
             },
@@ -372,9 +372,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

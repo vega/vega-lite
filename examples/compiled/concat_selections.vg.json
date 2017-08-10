@@ -101,6 +101,7 @@
         {
             "type": "group",
             "name": "concat_0_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -108,12 +109,6 @@
                     },
                     "height": {
                         "signal": "concat_0_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -415,7 +410,9 @@
                 {
                     "name": "concat_0_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -551,6 +548,7 @@
         {
             "type": "group",
             "name": "concat_1_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -558,12 +556,6 @@
                     },
                     "height": {
                         "signal": "concat_1_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -709,7 +701,9 @@
                     "name": "concat_1_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -874,9 +868,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

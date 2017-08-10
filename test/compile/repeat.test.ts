@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
+import {replaceRepeaterInEncoding} from '../../src/compile/repeater';
 import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
 import {keys} from '../../src/util';

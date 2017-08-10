@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A 1D horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {
+    "url": "data/population.json"
+  },
+  "transform": [
+    {
+      "summarize": [
+        {
+          "aggregate": "q1",
+          "field": "people",
+          "as": "lowerBox"
+        },
+        {
+          "aggregate": "q3",
+          "field": "people",
+          "as": "upperBox"
+        },
+        {
+          "aggregate": "median",
+          "field": "people",
+          "as": "midBox"
+        },
+        {
+          "aggregate": "min",
+          "field": "people",
+          "as": "lowerWhisker"
+        },
+        {
+          "aggregate": "max",
+          "field": "people",
+          "as": "upperWhisker"
+        }
+      ],
+      "groupby": []
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "style": "boxWhisker"
+      },
+      "encoding": {
+        "x": {
+          "field": "lowerWhisker",
+          "type": "quantitative",
+          "axis": {
+            "title": "population"
+          }
+        },
+        "x2": {
+          "field": "lowerBox",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "style": "boxWhisker"
+      },
+      "encoding": {
+        "x": {
+          "field": "upperBox",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "upperWhisker",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "style": "box"
+      },
+      "encoding": {
+        "x": {
+          "field": "lowerBox",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "upperBox",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 14
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "style": "boxMid"
+      },
+      "encoding": {
+        "x": {
+          "field": "midBox",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 14
+        }
+      }
+    }
+  ]
+}

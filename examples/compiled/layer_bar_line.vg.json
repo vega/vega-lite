@@ -2,16 +2,7 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -103,7 +94,9 @@
         {
             "name": "layer_0_marks",
             "type": "rect",
-            "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -134,6 +127,9 @@
         {
             "name": "layer_1_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"a\"]",
                 "order": "descending"
@@ -263,9 +259,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

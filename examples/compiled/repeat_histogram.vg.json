@@ -248,6 +248,7 @@
         {
             "type": "group",
             "name": "child_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -255,12 +256,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -268,7 +263,9 @@
                 {
                     "name": "child_Horsepower_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -355,6 +352,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -362,12 +360,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -375,7 +367,9 @@
                 {
                     "name": "child_Miles_per_Gallon_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -462,6 +456,7 @@
         {
             "type": "group",
             "name": "child_Acceleration_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -469,12 +464,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -482,7 +471,9 @@
                 {
                     "name": "child_Acceleration_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -731,9 +722,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

@@ -101,7 +101,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -305,7 +305,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlPoint(\"brush_store\", datum))"
+                    "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -364,6 +364,7 @@
         {
             "type": "group",
             "name": "child_distance_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -371,12 +372,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -428,7 +423,9 @@
                 {
                     "name": "child_distance_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -460,7 +457,9 @@
                 {
                     "name": "child_distance_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -546,6 +545,7 @@
         {
             "type": "group",
             "name": "child_delay_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -553,12 +553,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -610,7 +604,9 @@
                 {
                     "name": "child_delay_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -642,7 +638,9 @@
                 {
                     "name": "child_delay_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_3"
                     },
@@ -728,6 +726,7 @@
         {
             "type": "group",
             "name": "child_time_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -735,12 +734,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -792,7 +785,9 @@
                 {
                     "name": "child_time_layer_0_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_4"
                     },
@@ -824,7 +819,9 @@
                 {
                     "name": "child_time_layer_1_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_5"
                     },
@@ -1089,9 +1086,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

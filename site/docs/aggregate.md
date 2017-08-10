@@ -4,6 +4,42 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
+To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an encoding field definition.
+
+Table of Contents
+- [Summarize (Transform)](#summarize)
+- [Aggregate (Encoding)](#aggregate)
+
+{:#summarize}
+### Summarize (Transform)
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {
+      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
+      "groupby": [...]
+    } // Summarize Transform
+     ...
+  ],
+  ...
+}
+```
+
+A `summarize` transform in the `transform` array has the following properties:
+
+{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
+
+#### Aggregated Field Definition for Summarize Transform
+
+{% include table.html props="aggregate,field,as" source="Summarize" %}
+
+{:#aggregate}
+### Aggregate (Encoding)
+
 <!-- TODO why aggregation -->
 
 {: .suppress-error}

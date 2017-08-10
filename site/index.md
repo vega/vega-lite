@@ -34,10 +34,10 @@ images:
 
 <span class="lead-columns">
   <span>
-    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting.
+    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). The Vega-Lite compiler **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting. Moreover, Vega-Lite views can be **composed** into larger views and made **interactive with selections**.
   </span>
   <span class="lead-buttons">
-    [Get started]({{site.baseurl}}/tutorials/getting_started.html)
+    [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{site.baseurl}}/tutorials/getting_started.html)
     [Try online](https://vega.github.io/editor/#/custom/vega-lite)
   </span>
 </span>

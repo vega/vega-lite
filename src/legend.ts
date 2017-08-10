@@ -67,9 +67,7 @@ export type LegendEncoding = {
   gradient?: GuideEncodingEntry;
 };
 
-export const defaultLegendConfig: LegendConfig = {
-  orient: undefined, // implicitly "right"
-};
+export const defaultLegendConfig: LegendConfig = {};
 
 export const LEGEND_PROPERTIES:(keyof (VgLegend | Legend))[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
 

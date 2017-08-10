@@ -3,16 +3,7 @@
     "description": "Stock price average broken down by quarter.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -99,6 +90,9 @@
                 {
                     "name": "marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"year_date\"]",
                         "order": "descending"
@@ -258,9 +252,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

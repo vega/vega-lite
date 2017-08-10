@@ -192,6 +192,7 @@
         {
             "type": "group",
             "name": "child_distance_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -199,12 +200,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -212,7 +207,9 @@
                 {
                     "name": "child_distance_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -298,6 +295,7 @@
         {
             "type": "group",
             "name": "child_delay_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -305,12 +303,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -318,7 +310,9 @@
                 {
                     "name": "child_delay_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -404,6 +398,7 @@
         {
             "type": "group",
             "name": "child_time_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -411,12 +406,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -424,7 +413,9 @@
                 {
                     "name": "child_time_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -623,9 +614,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

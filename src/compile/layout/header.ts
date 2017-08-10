@@ -121,7 +121,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         type: 'group',
         role: `${channel}-${headerType}`,
         ...(layoutHeader.facetFieldDef ? {
-          from: {data: model.getName(channel)},
+          from: {data: model.getName(channel + '_domain')},
           sort: {
             field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
             order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.header.sort) || 'ascending'

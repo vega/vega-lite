@@ -8,9 +8,9 @@ import {AREA, LINE} from '../../mark';
 import {isSelectionDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains} from '../../util';
-import {sortParams} from '../common';
+import {getStyles, sortParams} from '../common';
 import {FacetModel} from '../facet';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
@@ -38,7 +38,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
 };
 
 export function parseMarkDef(model: Model) {
-  if (model instanceof UnitModel) {
+  if (isUnitModel(model)) {
     normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
   } else {
     for (const child of model.children) {
@@ -63,7 +63,7 @@ function parsePathMark(model: UnitModel) {
   const details = detailFields(model);
 
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
-  const role = model.markDef.role || markCompiler[mark].defaultRole;
+  const style = getStyles(model.markDef);
   const sort = getPathSort(model);
 
   const pathMarks: any = [
@@ -71,7 +71,7 @@ function parsePathMark(model: UnitModel) {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
       ...(clip ? {clip: true} : {}),
-      ...(role? {role} : {}),
+      ...(style? {style} : {}),
       ...(sort? {sort} : {}),
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
@@ -137,7 +137,7 @@ export function getPathSort(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
-  const role = model.markDef.role || markCompiler[mark].defaultRole;
+  const style = getStyles(model.markDef);
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
 
   const marks: any[] = []; // TODO: vgMarks
@@ -148,7 +148,7 @@ function parseNonPathMark(model: UnitModel) {
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(clip ? {clip: true} : {}),
-    ...(role? {role} : {}),
+    ...(style? {style} : {}),
     from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
   });

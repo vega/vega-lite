@@ -1,33 +1,42 @@
-import {isNumber} from 'vega-util';
-import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
+import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
-import {Data, DataSourceType, MAIN, RAW} from '../data';
+import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
-import {Legend} from '../legend';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, title} from '../fielddef';
 import * as log from '../log';
 import {ResolveMapping} from '../resolve';
-import {hasDiscreteDomain, Scale} from '../scale';
-import {SortField, SortOrder} from '../sort';
+import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
-import {StackProperties} from '../stack';
+import {Title} from '../title';
 import {Transform} from '../transform';
-import {getFullName} from '../type';
-import {Dict, extend, vals, varName} from '../util';
-import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {Dict, extend, varName} from '../util';
+import {
+  isVgRangeStep,
+  VgAxis,
+  VgData,
+  VgEncodeEntry,
+  VgLayout,
+  VgLegend,
+  VgMarkGroup,
+  VgScale,
+  VgSignal,
+  VgSignalRef,
+  VgTitle,
+} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
-import {AxisComponent, AxisComponentIndex} from './axis/component';
+import {AxisComponentIndex} from './axis/component';
+import {ConcatModel} from './concat';
 import {DataComponent} from './data/index';
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {sizeExpr} from './layout/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
+import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
-import {RepeaterValue} from './repeat';
-import {assembleScalesForModel} from './scale/assemble';
+import {RepeatModel} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
@@ -99,9 +108,43 @@ export class NameMap implements NameMapInterface {
   }
 }
 
+/*
+  We use type guards instead of `instanceof` as `instanceof` makes
+  different parts of the compiler depend on the actual implementation of
+  the model classes, which in turn depend on different parts of the compiler.
+  Thus, `instanceof` leads to circular dependency problems.
+
+  On the other hand, type guards only make different parts of the compiler
+  depend on the type of the model classes, but not the actual implementation.
+*/
+
+export function isUnitModel(model: Model): model is UnitModel {
+  return model && model.type === 'unit';
+}
+
+export function isFacetModel(model: Model): model is FacetModel {
+  return model && model.type === 'facet';
+}
+
+export function isRepeatModel(model: Model): model is RepeatModel {
+  return model && model.type === 'repeat';
+}
+
+export function isConcatModel(model: Model): model is ConcatModel {
+  return model && model.type === 'concat';
+}
+
+export function isLayerModel(model: Model): model is LayerModel {
+  return model && model.type === 'layer';
+}
+
 export abstract class Model {
+
+  public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
   public readonly parent: Model;
   public readonly name: string;
+
+  public readonly title: Title;
   public readonly description: string;
 
   public readonly data: Data;
@@ -126,6 +169,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
+    this.title = spec.title;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -221,13 +265,31 @@ export abstract class Model {
 
   public abstract parseAxisAndHeader(): void;
 
-  public abstract parseLegend(): void;
+  public parseLegend() {
+    parseLegend(this);
+  }
 
   public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
   public abstract assembleSelectionSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
-  public abstract assembleData(): VgData[];
+
+  public assembleGroupStyle(): string {
+    if (this.type === 'unit' || this.type === 'layer') {
+      return 'cell';
+    }
+    return undefined;
+  }
+
+  public assembleLayoutSize(): VgEncodeEntry {
+    if (this.type === 'unit' || this.type === 'layer') {
+      return {
+        width: this.getSizeSignalRef('width'),
+        height: this.getSizeSignalRef('height')
+      };
+    }
+    return undefined;
+  }
 
   public abstract assembleLayout(): VgLayout;
 
@@ -271,6 +333,10 @@ export abstract class Model {
     return assembleLegends(this);
   }
 
+  public assembleTitle(): VgTitle {
+    return this.title;
+  }
+
   /**
    * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
@@ -294,7 +360,7 @@ export abstract class Model {
 
     // Only include scales if this spec is top-level or if parent is facet.
     // (Otherwise, it will be merged with upper-level's scope.)
-    const scales = (!this.parent || this.parent instanceof FacetModel) ? this.assembleScales() : [];
+    const scales = (!this.parent || isFacetModel(this.parent)) ? this.assembleScales() : [];
     if (scales.length > 0) {
       group.scales = scales;
     }
@@ -312,11 +378,9 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(): VgEncodeEntry;
-
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {
-      if (child instanceof UnitModel) {
+      if (isUnitModel(child)) {
         if (child.channelHasField(channel)) {
           return true;
         }
@@ -348,7 +412,7 @@ export abstract class Model {
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
-    if (this.parent instanceof FacetModel) {
+    if (isFacetModel(this.parent)) {
       const channel = sizeType === 'width' ? 'x' : 'y';
       const scaleComponent = this.component.scales[channel];
 
@@ -402,7 +466,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(this: Model, originalScaleName: Channel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: Channel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -414,7 +478,7 @@ export abstract class Model {
     // be in the scale component or exist in the name map
     if (
         // If there is a scale for the channel, there should be a local scale component for it
-        isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName] ||
+        (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {

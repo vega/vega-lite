@@ -3,16 +3,7 @@
     "description": "Select multiple points with the shift key.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "paintbrush_store"
@@ -105,7 +96,9 @@
         {
             "name": "marks",
             "type": "symbol",
-            "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -127,7 +120,7 @@
                     },
                     "size": [
                         {
-                            "test": "!(length(data(\"paintbrush_store\"))) || (vlPoint(\"paintbrush_store\", datum))",
+                            "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
                             "value": 300
                         },
                         {
@@ -269,9 +262,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

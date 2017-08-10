@@ -1,43 +1,53 @@
 import {Axis} from '../axis';
-import {Channel, isScaleChannel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, X, X2, Y, Y2} from '../channel';
-import {CellConfig, Config} from '../config';
-import * as vlEncoding from '../encoding'; // TODO: remove
+import {
+  Channel,
+  isScaleChannel,
+  NONSPATIAL_SCALE_CHANNELS,
+  SCALE_CHANNELS,
+  ScaleChannel,
+  SingleDefChannel,
+  X,
+  Y,
+} from '../channel';
+import {Config} from '../config';
+import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
-import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
+import {isMarkDef, Mark, MarkDef} from '../mark';
+import {Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
-import {Dict, duplicate, extend, vals} from '../util';
+import {Dict, duplicate, extend} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
-import {applyConfig} from './common';
-import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {FacetModel} from './facet';
-import {LayerModel} from './layer';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseUnitLayoutSize} from './layout/parse';
 import {LegendIndex} from './legend/component';
-import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
-import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
+import {isLayerModel, Model, ModelWithField} from './model';
+import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
-import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
-import {Split} from './split';
+import {
+  assembleTopLevelSignals,
+  assembleUnitSelectionData,
+  assembleUnitSelectionMarks,
+  assembleUnitSelectionSignals,
+  parseUnitSelection,
+} from './selection/selection';
 
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
+  public readonly type: 'unit' = 'unit';
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
@@ -195,18 +205,6 @@ export class UnitModel extends ModelWithField {
     this.component.axes = parseUnitAxis(this);
   }
 
-  public parseLegend() {
-    this.component.legends = parseUnitLegend(this);
-  }
-
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-    return [];
-  }
-
   public assembleScales(): VgScale[] {
     return assembleScalesForModel(this);
   }
@@ -237,18 +235,17 @@ export class UnitModel extends ModelWithField {
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
     // ensures correct interleaving of clipping and brushed marks.
-    if (!this.parent || !(this.parent instanceof LayerModel)) {
+    if (!this.parent || !isLayerModel(this.parent)) {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
     return marks.map(this.correctDataNames);
   }
 
-  public assembleParentGroupProperties(): VgEncodeEntry {
+  public assembleLayoutSize(): VgEncodeEntry {
     return {
       width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height'),
-      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
+      height: this.getSizeSignalRef('height')
     };
   }
 

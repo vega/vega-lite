@@ -3,16 +3,7 @@
     "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -163,7 +154,9 @@
         {
             "name": "layer_0_layer_0_marks",
             "type": "rule",
-            "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -183,7 +176,7 @@
                         "field": "lowerBox"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -191,7 +184,9 @@
         {
             "name": "layer_0_layer_1_marks",
             "type": "rule",
-            "role": "boxWhisker",
+            "style": [
+                "boxWhisker"
+            ],
             "from": {
                 "data": "data_2"
             },
@@ -211,7 +206,7 @@
                         "field": "upperWhisker"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             }
@@ -219,7 +214,9 @@
         {
             "name": "layer_0_layer_2_marks",
             "type": "rect",
-            "role": "box",
+            "style": [
+                "box"
+            ],
             "from": {
                 "data": "data_3"
             },
@@ -250,7 +247,9 @@
         {
             "name": "layer_0_layer_3_marks",
             "type": "rect",
-            "role": "boxMid",
+            "style": [
+                "boxMid"
+            ],
             "from": {
                 "data": "data_4"
             },
@@ -272,7 +271,7 @@
                         "value": 1
                     },
                     "fill": {
-                        "value": "white"
+                        "value": "#4c78a8"
                     },
                     "opacity": {
                         "value": 0.7
@@ -283,7 +282,9 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_5"
             },
@@ -436,9 +437,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

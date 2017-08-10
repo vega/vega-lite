@@ -31,12 +31,12 @@ export class FacetNode extends DataFlowNode {
 
     if (model.facet.column) {
       this.columnField = model.field(COLUMN);
-      this.columnName = model.getName('column');
+      this.columnName = model.getName('column_domain');
     }
 
     if (model.facet.row) {
       this.rowField = model.field(ROW);
-      this.rowName = model.getName('row');
+      this.rowName = model.getName('row_domain');
     }
 
     for (const channel of ['x', 'y'] as ScaleChannel[]) {
@@ -138,17 +138,6 @@ export class FacetNode extends DataFlowNode {
 
     if (this.columnName) {
       data.push(this.assembleRowColumnData('column', crossedDataName));
-
-      // Column needs another data source to calculate cardinality as input to layout
-      data.push({
-        name: this.columnName + '_layout',
-        source: this.columnName,
-        transform: [{
-          type: 'aggregate',
-          ops: ['distinct'],
-          fields: [this.columnField]
-        }]
-      });
     }
 
     if (this.rowName) {

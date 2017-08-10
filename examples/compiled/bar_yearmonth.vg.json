@@ -3,16 +3,7 @@
     "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -66,7 +57,9 @@
         {
             "name": "marks",
             "type": "rect",
-            "role": "bar",
+            "style": [
+                "bar"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -201,9 +194,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

@@ -3,16 +3,7 @@
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -82,6 +73,9 @@
         {
             "name": "layer_0_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": "datum[\"date\"]",
                 "order": "descending"
@@ -108,7 +102,9 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "pointOverlay",
+            "style": [
+                "pointOverlay"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -256,9 +252,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

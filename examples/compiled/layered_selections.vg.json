@@ -3,16 +3,7 @@
     "description": "Drag out a rectangular brush to highlight points.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "grid_store"
@@ -581,7 +572,9 @@
             "name": "layer_0_marks",
             "type": "symbol",
             "clip": true,
-            "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -621,7 +614,9 @@
             "name": "layer_1_marks",
             "type": "symbol",
             "clip": true,
-            "role": "square",
+            "style": [
+                "square"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -647,7 +642,7 @@
                     ],
                     "size": [
                         {
-                            "test": "!(length(data(\"cyl_store\"))) || (vlPoint(\"cyl_store\", datum))",
+                            "test": "!(length(data(\"cyl_store\"))) || (vlSingle(\"cyl_store\", datum))",
                             "value": 150
                         },
                         {
@@ -865,9 +860,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

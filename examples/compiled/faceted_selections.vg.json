@@ -31,27 +31,12 @@
             ]
         },
         {
-            "name": "column",
+            "name": "column_domain",
             "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "Series"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
                         "Series"
                     ]
                 }
@@ -113,7 +98,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_Series\"]"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -175,7 +160,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"Series\"]",
@@ -183,7 +168,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"Series\"]"
+                    "signal": "''+parent[\"Series\"]"
                 },
                 "offset": 10,
                 "orient": "top",
@@ -214,7 +199,7 @@
             "type": "group",
             "role": "column-footer",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"Series\"]",
@@ -267,12 +252,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -660,7 +639,9 @@
                     "name": "child_marks",
                     "type": "symbol",
                     "clip": true,
-                    "role": "circle",
+                    "style": [
+                        "circle"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -676,7 +657,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!(length(data(\"xenc_store\"))) || (vlPoint(\"xenc_store\", datum))",
+                                    "test": "!(length(data(\"xenc_store\"))) || (vlSingle(\"xenc_store\", datum))",
                                     "value": "red"
                                 },
                                 {
@@ -849,9 +830,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

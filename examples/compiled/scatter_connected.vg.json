@@ -2,16 +2,7 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -60,11 +51,6 @@
                     "as": "gas"
                 },
                 {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
@@ -85,6 +71,9 @@
         {
             "name": "layer_0_marks",
             "type": "line",
+            "style": [
+                "line"
+            ],
             "sort": {
                 "field": [
                     "datum[\"year\"]"
@@ -115,7 +104,9 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "pointOverlay",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -129,8 +120,11 @@
                         "scale": "y",
                         "field": "gas"
                     },
-                    "fill": {
+                    "stroke": {
                         "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     },
                     "opacity": {
                         "value": 0.7
@@ -247,9 +241,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

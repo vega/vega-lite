@@ -1,48 +1,28 @@
-import {isString} from 'vega-util';
 import {AggregateOp} from '../aggregate';
-import {Channel, COLUMN, NonspatialScaleChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
-import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
+import {field, FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {ResolveMapping} from '../resolve';
-import {hasDiscreteDomain, Scale} from '../scale';
+import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
-import {contains, Dict, keys, stringValue} from '../util';
-import {
-  isDataRefDomain,
-  isDataRefUnionedDomain,
-  isFieldRefUnionDomain,
-  isVgRangeStep,
-  VgAxis,
-  VgData,
-  VgDataRef,
-  VgEncodeEntry,
-  VgLayout,
-  VgMarkGroup,
-  VgScale,
-  VgSignal
-} from '../vega.schema';
-import {RowCol} from '../vega.schema';
-import {domain} from './axis/rules';
-import {applyConfig, buildModel, formatSignalRef} from './common';
-import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
+import {contains} from '../util';
+import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
+import {buildModel} from './common';
+import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layout/parse';
 import {labels} from './legend/encode';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
-import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
+  public readonly type: 'facet' = 'facet';
   public readonly facet: Facet<string>;
 
   public readonly child: Model;
@@ -184,23 +164,6 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public parseLegend() {
-    parseNonUnitLegend(this);
-  }
-
-  public assembleData(): VgData[] {
-    if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
-    }
-
-    return [];
-  }
-
-  public assembleParentGroupProperties(): any {
-    return null;
-  }
-
   public assembleScales(): VgScale[] {
     return assembleScalesForModel(this);
   }
@@ -243,11 +206,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayout(): VgLayout {
-    const columns = this.channelHasField('column') ? {
-      signal: this.columnDistinctSignal()
-    } : 1;
-
-
+    const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
 
     // TODO: determine default align based on shared / independent scales
 
@@ -270,10 +229,37 @@ export class FacetModel extends ModelWithField {
   }
 
   private columnDistinctSignal() {
-    // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
-    const facetLayoutDataName = this.getName('column') + '_layout';
-    const columnDistinct = this.field('column',  {prefix: 'distinct'});
-    return `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`;
+    if (this.parent && (this.parent instanceof FacetModel)) {
+      // For nested facet, we will add columns to group mark instead
+      // See discussion in https://github.com/vega/vega/issues/952
+      // and https://github.com/vega/vega-view/releases/tag/v1.2.6
+      return undefined;
+    } else {
+      // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
+      const facetLayoutDataName = this.getName('column_domain');
+      return {signal: `length(data('${facetLayoutDataName}'))`};
+    }
+  }
+
+  public assembleGroup(signals: VgSignal[]) {
+    if (this.parent && (this.parent instanceof FacetModel)) {
+      // Provide number of columns for layout.
+      // See discussion in https://github.com/vega/vega/issues/952
+      // and https://github.com/vega/vega-view/releases/tag/v1.2.6
+      return {
+        ...(this.channelHasField('column') ? {
+          encode: {
+            update: {
+              // TODO(https://github.com/vega/vega-lite/issues/2759):
+              // Correct the signal for facet of concat of facet_column
+              columns: {field: field(this.facet.column, {binSuffix: 'start', prefix: 'distinct'})}
+            }
+          }
+        } : {}),
+        ...super.assembleGroup(signals)
+      };
+    }
+    return super.assembleGroup(signals);
   }
 
   /**
@@ -282,19 +268,26 @@ export class FacetModel extends ModelWithField {
   private getCardinalityAggregateForChild() {
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
-    for (const channel of ['x', 'y'] as ScaleChannel[]) {
-      const childScaleComponent = this.child.component.scales[channel];
-      if (childScaleComponent && !childScaleComponent.merged) {
-        const type = childScaleComponent.get('type');
-        const range = childScaleComponent.get('range');
+    if (this.child instanceof FacetModel) {
+      if (this.child.channelHasField('column')) {
+        fields.push(field(this.child.facet.column));
+        ops.push('distinct');
+      }
+    } else {
+      for (const channel of ['x', 'y'] as ScaleChannel[]) {
+        const childScaleComponent = this.child.component.scales[channel];
+        if (childScaleComponent && !childScaleComponent.merged) {
+          const type = childScaleComponent.get('type');
+          const range = childScaleComponent.get('range');
 
-        if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
-          const field = getFieldFromDomains(childScaleComponent.domains);
-          if (field) {
-            fields.push(field);
-            ops.push('distinct');
-          } else {
-            throw new Error('We do not yet support calculation of size for faceted union domain.');
+          if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+            const field = getFieldFromDomains(childScaleComponent.domains);
+            if (field) {
+              fields.push(field);
+              ops.push('distinct');
+            } else {
+              throw new Error('We do not yet support calculation of size for faceted union domain.');
+            }
           }
         }
       }
@@ -311,7 +304,7 @@ export class FacetModel extends ModelWithField {
     // so that we create all groups
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
-    const groupProperties = child.assembleParentGroupProperties();
+    const layoutSizeEncodeEntry = child.assembleLayoutSize();
 
     const aggregateMixins: any = {};
     if (hasRow && hasColumn) {
@@ -325,9 +318,12 @@ export class FacetModel extends ModelWithField {
       };
     }
 
+    const title = child.assembleTitle();
+
     const markGroup = {
       name: this.getName('cell'),
       type: 'group',
+      ...(title? {title} : {}),
       from: {
         facet: {
           name: facetRoot.name,
@@ -350,7 +346,7 @@ export class FacetModel extends ModelWithField {
         )
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(groupProperties ? {encode: {update: groupProperties}} : {}),
+      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
       ...child.assembleGroup()
     };
 

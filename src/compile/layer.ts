@@ -1,28 +1,21 @@
-import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
 import * as log from '../log';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
-import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-import {AxisComponentIndex} from './axis/component';
+import {flatten, keys} from '../util';
+import {VgData, VgLayout, VgScale, VgSignal, VgTitle} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
-import {applyConfig, buildModel} from './common';
-import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseLayerLayoutSize} from './layout/parse';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
-import {RepeaterValue} from './repeat';
+import {RepeaterValue} from './repeater';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
 
 export class LayerModel extends Model {
+  public readonly type: 'layer' = 'layer';
 
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
   // So I'm just putting generic Model for now.
@@ -90,18 +83,6 @@ export class LayerModel extends Model {
     parseLayerAxis(this);
   }
 
-  public parseLegend() {
-    parseNonUnitLegend(this);
-  }
-
-  public assembleParentGroupProperties(): VgEncodeEntry {
-    return {
-      width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height'),
-      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
-    };
-  }
-
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
@@ -124,12 +105,17 @@ export class LayerModel extends Model {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
-  public assembleData(): VgData[] {
-     if (!this.parent) {
-      // only assemble data in the root
-      return assembleData(this.component.data);
+  public assembleTitle(): VgTitle {
+    if (this.title) {
+      return this.title;
     }
-    return [];
+    // If title does not provide layer, look into children
+    for (const child of this.children) {
+      if (child.title) {
+        return child.title;
+      }
+    }
+    return undefined;
   }
 
   public assembleScales(): VgScale[] {

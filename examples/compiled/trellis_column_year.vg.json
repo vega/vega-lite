@@ -45,27 +45,12 @@
             ]
         },
         {
-            "name": "column",
+            "name": "column_domain",
             "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "year_date"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
                         "year_date"
                     ]
                 }
@@ -93,7 +78,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_year_date\"]"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -155,7 +140,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"year_date\"]",
@@ -194,7 +179,7 @@
             "type": "group",
             "role": "column-footer",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"year_date\"]",
@@ -262,12 +247,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -302,6 +281,9 @@
                         {
                             "name": "child_marks",
                             "type": "line",
+                            "style": [
+                                "line"
+                            ],
                             "sort": {
                                 "field": "datum[\"quarter_date\"]",
                                 "order": "descending"
@@ -401,9 +383,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

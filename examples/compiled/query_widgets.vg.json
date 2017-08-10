@@ -3,16 +3,7 @@
     "description": "Drag the sliders to highlight points.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "CylYr_store"
@@ -67,7 +58,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))"
+                    "expr": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -161,7 +152,9 @@
         {
             "name": "layer_0_marks",
             "type": "symbol",
-            "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_0"
             },
@@ -177,7 +170,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!(length(data(\"CylYr_store\"))) || (vlPoint(\"CylYr_store\", datum))",
+                            "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
                             "scale": "color",
                             "field": "Origin"
                         },
@@ -197,7 +190,9 @@
         {
             "name": "layer_1_marks",
             "type": "symbol",
-            "role": "circle",
+            "style": [
+                "circle"
+            ],
             "from": {
                 "data": "data_1"
             },
@@ -369,9 +364,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

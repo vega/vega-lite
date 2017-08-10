@@ -3,16 +3,7 @@
     "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -114,6 +105,9 @@
                 {
                     "name": "marks",
                     "type": "line",
+                    "style": [
+                        "line"
+                    ],
                     "sort": {
                         "field": "datum[\"Year\"]",
                         "order": "descending"
@@ -262,9 +256,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

@@ -21,7 +21,7 @@
             ]
         },
         {
-            "name": "column",
+            "name": "column_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -33,22 +33,7 @@
             ]
         },
         {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "Origin"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "row",
+            "name": "row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -77,7 +62,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_Origin\"]"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -145,7 +130,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"Cylinders\"]",
@@ -153,7 +138,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"Cylinders\"]"
+                    "signal": "''+parent[\"Cylinders\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -202,7 +187,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"Origin\"]",
@@ -210,7 +195,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"Origin\"]"
+                    "signal": "''+parent[\"Origin\"]"
                 },
                 "offset": 10,
                 "orient": "top",
@@ -241,7 +226,7 @@
             "type": "group",
             "role": "column-footer",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"Origin\"]",
@@ -300,12 +285,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -313,7 +292,9 @@
                 {
                     "name": "child_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -447,9 +428,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

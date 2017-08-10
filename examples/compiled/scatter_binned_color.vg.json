@@ -3,16 +3,7 @@
     "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "source_0",
@@ -70,7 +61,9 @@
         {
             "name": "marks",
             "type": "symbol",
-            "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -203,9 +196,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

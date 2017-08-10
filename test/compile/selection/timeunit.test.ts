@@ -1,10 +1,18 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+import {assembleRootData} from '../../../src/compile/data/assemble';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
+import {Model} from '../../../src/compile/model';
 import * as selection from '../../../src/compile/selection/selection';
 import {UnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
+
+function getData(model: Model) {
+  optimizeDataflow(model.component.data);
+  return assembleRootData(model.component.data);
+}
 
 function getModel(unit2: UnitSpec) {
   const model = parseModel({
@@ -72,7 +80,7 @@ describe('Selection time unit', function() {
       }
     });
 
-    const data2 = model.assembleData().filter((d) => d.name === 'data_2')[0].transform;
+    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
     assert.equal(data2.filter((tx) => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
   });
 
@@ -90,14 +98,14 @@ describe('Selection time unit', function() {
       }
     });
 
-    const data2 = model.assembleData().filter((d) => d.name === 'data_2')[0].transform;
+    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
     let tuIdx = -1;
     let selIdx = -1;
 
     data2.forEach((tx, idx) => {
       if (tx.type === 'formula' && tx.as === 'seconds_date') {
         tuIdx = idx;
-      } else if (tx.type === 'filter' && tx.expr.indexOf('vlPoint') >= 0) {
+      } else if (tx.type === 'filter' && tx.expr.indexOf('vlSingle') >= 0) {
         selIdx = idx;
       }
     });
@@ -121,7 +129,7 @@ describe('Selection time unit', function() {
       }
     });
 
-    const data2 = model.assembleData().filter((d) => d.name === 'data_2')[0].transform;
+    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
     assert.equal(data2.filter((tx) => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
   });
 });

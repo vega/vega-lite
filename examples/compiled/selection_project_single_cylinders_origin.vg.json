@@ -2,16 +2,7 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "encode": {
-        "update": {
-            "stroke": {
-                "value": "#ccc"
-            },
-            "fill": {
-                "value": "transparent"
-            }
-        }
-    },
+    "style": "cell",
     "data": [
         {
             "name": "pts_store"
@@ -89,7 +80,9 @@
         {
             "name": "marks",
             "type": "symbol",
-            "role": "point",
+            "style": [
+                "point"
+            ],
             "from": {
                 "data": "source_0"
             },
@@ -105,7 +98,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                             "scale": "color",
                             "field": "Cylinders"
                         },
@@ -118,7 +111,7 @@
                     },
                     "size": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                             "value": 200
                         },
                         {
@@ -127,7 +120,7 @@
                     ],
                     "shape": [
                         {
-                            "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                             "scale": "shape",
                             "field": "Origin"
                         },
@@ -278,7 +271,7 @@
                     "update": {
                         "stroke": [
                             {
-                                "test": "!(length(data(\"pts_store\"))) || (vlPoint(\"pts_store\", datum))",
+                                "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                                 "scale": "color",
                                 "field": "Cylinders"
                             },
@@ -293,9 +286,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

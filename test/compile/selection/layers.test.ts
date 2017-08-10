@@ -46,7 +46,7 @@ describe('Layered Selections', function() {
     assert.sameDeepMembers(layers.children[0].assembleMarks(), [{
       "name": "layer_0_marks",
       "type": "symbol",
-      "role": "circle",
+      "style": ["circle"],
       "from": {
         "data": "layer_0_main"
       },
@@ -78,7 +78,7 @@ describe('Layered Selections', function() {
     assert.sameDeepMembers(layers.children[1].assembleMarks(), [{
       "name": "layer_1_marks",
       "type": "symbol",
-      "role": "square",
+      "style": ["square"],
       "from": {
         "data": "layer_1_main"
       },

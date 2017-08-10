@@ -63,7 +63,7 @@
             ]
         },
         {
-            "name": "row",
+            "name": "row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -135,7 +135,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"gender\"]",
@@ -143,7 +143,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"gender\"]"
+                    "signal": "''+parent[\"gender\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -250,12 +250,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -263,7 +257,9 @@
                 {
                     "name": "child_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -382,9 +378,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

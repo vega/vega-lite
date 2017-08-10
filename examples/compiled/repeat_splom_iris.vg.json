@@ -335,6 +335,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -342,12 +343,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -355,7 +350,9 @@
                 {
                     "name": "child_petalWidth_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -439,6 +436,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -446,12 +444,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -459,7 +451,9 @@
                 {
                     "name": "child_petalWidth_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -543,6 +537,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -550,12 +545,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -563,7 +552,9 @@
                 {
                     "name": "child_petalWidth_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -647,6 +638,7 @@
         {
             "type": "group",
             "name": "child_petalWidth_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -654,12 +646,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -667,7 +653,9 @@
                 {
                     "name": "child_petalWidth_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_3"
                     },
@@ -751,6 +739,7 @@
         {
             "type": "group",
             "name": "child_petalLength_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -758,12 +747,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -771,7 +754,9 @@
                 {
                     "name": "child_petalLength_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_4"
                     },
@@ -855,6 +840,7 @@
         {
             "type": "group",
             "name": "child_petalLength_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -862,12 +848,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -875,7 +855,9 @@
                 {
                     "name": "child_petalLength_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_5"
                     },
@@ -959,6 +941,7 @@
         {
             "type": "group",
             "name": "child_petalLength_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -966,12 +949,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -979,7 +956,9 @@
                 {
                     "name": "child_petalLength_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_6"
                     },
@@ -1063,6 +1042,7 @@
         {
             "type": "group",
             "name": "child_petalLength_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1070,12 +1050,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1083,7 +1057,9 @@
                 {
                     "name": "child_petalLength_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_7"
                     },
@@ -1167,6 +1143,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1174,12 +1151,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1187,7 +1158,9 @@
                 {
                     "name": "child_sepalWidth_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_8"
                     },
@@ -1271,6 +1244,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1278,12 +1252,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1291,7 +1259,9 @@
                 {
                     "name": "child_sepalWidth_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_9"
                     },
@@ -1375,6 +1345,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1382,12 +1353,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1395,7 +1360,9 @@
                 {
                     "name": "child_sepalWidth_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_10"
                     },
@@ -1479,6 +1446,7 @@
         {
             "type": "group",
             "name": "child_sepalWidth_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1486,12 +1454,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1499,7 +1461,9 @@
                 {
                     "name": "child_sepalWidth_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_11"
                     },
@@ -1583,6 +1547,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_sepalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1590,12 +1555,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1603,7 +1562,9 @@
                 {
                     "name": "child_sepalLength_sepalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_12"
                     },
@@ -1687,6 +1648,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_sepalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1694,12 +1656,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1707,7 +1663,9 @@
                 {
                     "name": "child_sepalLength_sepalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_13"
                     },
@@ -1791,6 +1749,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_petalLength_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1798,12 +1757,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1811,7 +1764,9 @@
                 {
                     "name": "child_sepalLength_petalLength_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_14"
                     },
@@ -1895,6 +1850,7 @@
         {
             "type": "group",
             "name": "child_sepalLength_petalWidth_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -1902,12 +1858,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -1915,7 +1865,9 @@
                 {
                     "name": "child_sepalLength_petalWidth_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_15"
                     },
@@ -2625,9 +2577,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

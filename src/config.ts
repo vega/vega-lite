@@ -1,9 +1,9 @@
 import {AxisConfig, AxisConfigMixins} from './axis';
-import {BoxPlotConfig, COMPOSITE_MARK_ROLES} from './compositemark';
-import {CompositeMarkConfigMixins, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
+import {BoxPlotConfig, COMPOSITE_MARK_STYLES} from './compositemark';
+import {CompositeMarkConfigMixins, CompositeMarkStyle, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
+import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
@@ -95,9 +95,7 @@ export interface CellConfig {
 
 export const defaultCellConfig: CellConfig = {
   width: 200,
-  height: 200,
-  fill: 'transparent',
-  stroke: '#ccc'
+  height: 200
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
@@ -149,6 +147,24 @@ export interface VLOnlyConfig {
   stack?: StackOffset;
 }
 
+export interface StyleConfigIndex {
+  [style: string]: MarkConfig;
+}
+
+export type AreaOverlay = 'line' | 'linepoint' | 'none';
+
+export interface OverlayConfig {
+  /**
+   * Whether to overlay line with point.
+   */
+  line?: boolean;
+
+  /**
+   * Type of overlay for area mark (line or linepoint)
+   */
+  area?: AreaOverlay;
+}
+
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
@@ -165,12 +181,13 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
   /** Title Config */
   title?: VgTitleConfig;
 
-  // Support arbitrary key for role config
-  // Note: Technically, the type for role config should be `MarkConfig`.
-  // However, Typescript requires that the index type must be compatible with all other properties.
-  // Basically, it will complain that `legend: LegendConfig` is not an instance of `MarkConfig`
-  // Thus, we have to use `any` here.
-  [role: string]: any;
+  /** Style Config */
+  style?: StyleConfigIndex;
+
+  /**
+   * @hide
+   */
+  overlay?: OverlayConfig;
 }
 
 export const defaultConfig: Config = {
@@ -200,12 +217,11 @@ export const defaultConfig: Config = {
 
   scale: defaultScaleConfig,
   axis: {
-    minExtent: 30,
     domainColor: '#888',
     tickColor: '#888'
   },
   axisX: {},
-  axisY: {},
+  axisY: {minExtent: 30},
   axisLeft: {},
   axisRight: {},
   axisTop: {},
@@ -214,6 +230,7 @@ export const defaultConfig: Config = {
   legend: defaultLegendConfig,
 
   selection: defaultSelectionConfig,
+  style: {},
 
   title: {},
 };
@@ -222,16 +239,22 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
+const MARK_STYLES = ['cell'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as (Mark | CompositeMarkStyle)[];
 
-const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'selection', 'invalidValues'];
+
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
+  'padding', 'numberFormat', 'timeFormat', 'countTitle',
+  'stack', 'scale', 'selection', 'invalidValues',
+  'overlay' as keyof Config // FIXME: Redesign and unhide this
+];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+  cell: ['width', 'height'],
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
   ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };
 
-export function stripConfig(config: Config) {
+export function stripAndRedirectConfig(config: Config) {
   config = duplicate(config);
 
   for (const prop of VL_ONLY_CONFIG_PROPERTIES) {
@@ -252,22 +275,26 @@ export function stripConfig(config: Config) {
 
   // Remove Vega-Lite only generic mark config
   if (config.mark) {
-    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
+    for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
       delete config.mark[prop];
     }
   }
 
-  // Remove Vega-Lite Mark/Role config
-  for (const role of MARK_ROLES) {
-    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
-      delete config[role][prop];
+  for (const mark of MARK_STYLES) {
+    // Remove Vega-Lite-only mark config
+    for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
+      delete config[mark][prop];
     }
-    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[role];
+
+    // Remove Vega-Lite only mark-specific config
+    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[mark];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[role][prop];
+        delete config[mark][prop];
       }
     }
+
+    redirectConfig(config, mark);
   }
 
   // Remove empty config objects
@@ -278,4 +305,16 @@ export function stripConfig(config: Config) {
   }
 
   return keys(config).length > 0 ? config : undefined;
+}
+
+function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle) {
+  const style = {
+    ...config[prop],
+    ...config.style[prop]
+  };
+  // set config.style if it is not an empty object
+  if (keys(style).length > 0) {
+    config.style[prop] = style;
+  }
+  delete config[prop];
 }

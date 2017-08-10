@@ -17,6 +17,7 @@
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
+    "test-runtime/**/*.ts",
     "examples/**/*.ts",
     "typings/*.d.ts"
   ],

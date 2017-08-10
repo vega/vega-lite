@@ -15,7 +15,7 @@
             }
         },
         {
-            "name": "trellis_barley_row",
+            "name": "trellis_barley_row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -110,7 +110,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "trellis_barley_row"
+                "data": "trellis_barley_row_domain"
             },
             "sort": {
                 "field": "datum[\"site\"]",
@@ -118,7 +118,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"site\"]"
+                    "signal": "''+parent[\"site\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -234,12 +234,6 @@
                     },
                     "height": {
                         "signal": "trellis_barley_child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -247,7 +241,9 @@
                 {
                     "name": "trellis_barley_child_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -348,9 +344,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

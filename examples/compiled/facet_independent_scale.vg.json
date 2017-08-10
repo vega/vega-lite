@@ -63,7 +63,7 @@
             ]
         },
         {
-            "name": "column",
+            "name": "column_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -76,21 +76,6 @@
                     ],
                     "ops": [
                         "distinct"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "column_layout",
-            "source": "column",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "ops": [
-                        "distinct"
-                    ],
-                    "fields": [
-                        "gender"
                     ]
                 }
             ]
@@ -113,7 +98,7 @@
         },
         "offset": 10,
         "columns": {
-            "signal": "data('column_layout')[0][\"distinct_gender\"]"
+            "signal": "length(data('column_domain'))"
         },
         "bounds": "full",
         "align": "all"
@@ -175,7 +160,7 @@
             "type": "group",
             "role": "column-header",
             "from": {
-                "data": "column"
+                "data": "column_domain"
             },
             "sort": {
                 "field": "datum[\"gender\"]",
@@ -183,7 +168,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"gender\"]"
+                    "signal": "''+parent[\"gender\"]"
                 },
                 "offset": 10,
                 "orient": "top",
@@ -244,12 +229,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "yellow"
                     }
                 }
             },
@@ -257,7 +236,9 @@
                 {
                     "name": "child_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -400,9 +381,16 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "fill": "yellow"
+            }
         }
     }
 }

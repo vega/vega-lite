@@ -110,6 +110,7 @@
         {
             "type": "group",
             "name": "child_Displacement_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -117,12 +118,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -130,7 +125,9 @@
                 {
                     "name": "child_Displacement_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_0"
                     },
@@ -214,6 +211,7 @@
         {
             "type": "group",
             "name": "child_Displacement_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -221,12 +219,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -234,7 +226,9 @@
                 {
                     "name": "child_Displacement_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_1"
                     },
@@ -318,6 +312,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_Horsepower_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -325,12 +320,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -338,7 +327,9 @@
                 {
                     "name": "child_Miles_per_Gallon_Horsepower_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_2"
                     },
@@ -422,6 +413,7 @@
         {
             "type": "group",
             "name": "child_Miles_per_Gallon_Miles_per_Gallon_group",
+            "style": "cell",
             "encode": {
                 "update": {
                     "width": {
@@ -429,12 +421,6 @@
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -442,7 +428,9 @@
                 {
                     "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "style": [
+                        "point"
+                    ],
                     "from": {
                         "data": "data_3"
                     },
@@ -696,9 +684,11 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
         }
     }
 }

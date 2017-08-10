@@ -62,7 +62,7 @@
             ]
         },
         {
-            "name": "row",
+            "name": "row_domain",
             "source": "source_0",
             "transform": [
                 {
@@ -134,7 +134,7 @@
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "row_domain"
             },
             "sort": {
                 "field": "datum[\"age\"]",
@@ -142,7 +142,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"age\"]"
+                    "signal": "''+parent[\"age\"]"
                 },
                 "offset": 10,
                 "orient": "left",
@@ -225,12 +225,6 @@
                     },
                     "height": {
                         "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "transparent"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },
@@ -238,7 +232,9 @@
                 {
                     "name": "child_marks",
                     "type": "rect",
-                    "role": "bar",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
                         "data": "facet"
                     },
@@ -340,10 +336,17 @@
     ],
     "config": {
         "axis": {
-            "minExtent": 30,
             "domainColor": "#888",
             "tickColor": "#888",
             "domainWidth": 1
+        },
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
         }
     }
 }
