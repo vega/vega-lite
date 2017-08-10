@@ -5,8 +5,9 @@ import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
 import { VgData, VgLayout, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
-import { RepeaterValue } from './repeat';
+import { RepeaterValue } from './repeater';
 export declare class FacetModel extends ModelWithField {
+    readonly type: 'facet';
     readonly facet: Facet<string>;
     readonly child: Model;
     readonly children: Model[];
@@ -23,9 +24,6 @@ export declare class FacetModel extends ModelWithField {
     private parseHeader(channel);
     private makeHeaderComponent(channel, labels);
     private mergeChildAxis(channel);
-    parseLegend(): void;
-    assembleData(): VgData[];
-    assembleParentGroupProperties(): any;
     assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
@@ -34,6 +32,7 @@ export declare class FacetModel extends ModelWithField {
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): VgSignal[];
     private columnDistinctSignal();
+    assembleGroup(signals: VgSignal[]): any;
     /**
      * Aggregate cardinality for calculating size
      */

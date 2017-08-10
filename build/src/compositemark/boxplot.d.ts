@@ -5,14 +5,14 @@ import { GenericUnitSpec, LayerSpec } from './../spec';
 import { Orient } from './../vega.schema';
 export declare const BOXPLOT: 'box-plot';
 export declare type BOXPLOT = typeof BOXPLOT;
-export declare type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
+export declare type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 export interface BoxPlotDef {
     type: BOXPLOT;
     orient?: Orient;
     extent?: 'min-max' | number;
 }
 export declare function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef;
-export declare const BOXPLOT_ROLES: BoxPlotRole[];
+export declare const BOXPLOT_STYLES: BoxPlotStyle[];
 export interface BoxPlotConfig extends MarkConfig {
     /** Size of the box and mid tick of a box plot */
     size?: number;

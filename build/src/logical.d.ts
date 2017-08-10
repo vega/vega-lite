@@ -11,3 +11,4 @@ export interface LogicalNot<T> {
 export declare function isLogicalOr(op: LogicalOperand<any>): op is LogicalOr<any>;
 export declare function isLogicalAnd(op: LogicalOperand<any>): op is LogicalAnd<any>;
 export declare function isLogicalNot(op: LogicalOperand<any>): op is LogicalNot<any>;
+export declare function forEachLeave<T>(op: LogicalOperand<T>, fn: (op: T) => void): void;

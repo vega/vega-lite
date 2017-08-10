@@ -16,12 +16,13 @@ import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.sche
 import { AxisIndex } from './axis/component';
 import { LegendIndex } from './legend/component';
 import { Model, ModelWithField } from './model';
-import { RepeaterValue } from './repeat';
+import { RepeaterValue } from './repeater';
 import { ScaleIndex } from './scale/component';
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
 export declare class UnitModel extends ModelWithField {
+    readonly type: 'unit';
     readonly markDef: MarkDef;
     readonly encoding: Encoding<string>;
     readonly specifiedScales: ScaleIndex;
@@ -48,8 +49,6 @@ export declare class UnitModel extends ModelWithField {
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;
-    parseLegend(): void;
-    assembleData(): VgData[];
     assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
@@ -57,7 +56,7 @@ export declare class UnitModel extends ModelWithField {
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): VgSignal[];
     assembleMarks(): any[];
-    assembleParentGroupProperties(): VgEncodeEntry;
+    assembleLayoutSize(): VgEncodeEntry;
     protected getMapping(): vlEncoding.Encoding<string>;
     toSpec(excludeConfig?: any, excludeData?: any): any;
     mark(): Mark;

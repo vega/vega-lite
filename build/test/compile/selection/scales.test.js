@@ -61,10 +61,10 @@ describe('Selection + Scales', function () {
         chai_1.assert.propertyVal(xscale.domainRaw, 'signal', "vlIntervalDomain(\"brush_store\", \"x\", null)");
         chai_1.assert.isObject(yscale.domain);
         chai_1.assert.property(yscale, 'domainRaw');
-        chai_1.assert.deepPropertyVal(yscale.domainRaw, 'signal', "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
+        chai_1.assert.deepPropertyVal(yscale.domainRaw, 'signal', "vlMultiDomain(\"brush2_store\", null, \"price\", \"intersect\")");
         chai_1.assert.isObject(cscale.domain);
         chai_1.assert.property(cscale, 'domainRaw');
-        chai_1.assert.propertyVal(cscale.domainRaw, 'signal', "vlPointDomain(\"brush2_store\", null, \"price\", \"intersect\")");
+        chai_1.assert.propertyVal(cscale.domainRaw, 'signal', "vlMultiDomain(\"brush2_store\", null, \"price\", \"intersect\")");
         chai_1.assert.isObject(oscale.domain);
         chai_1.assert.property(oscale, 'domainRaw');
         chai_1.assert.propertyVal(oscale.domainRaw, 'signal', 'null');

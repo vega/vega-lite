@@ -52,6 +52,7 @@ export declare namespace message {
     const NO_FIELDS_NEEDS_AS = "If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.";
     function invalidFieldType(type: Type): string;
     function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
+    function invalidFieldTypeForBin(type: Type): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
     function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;

@@ -4,16 +4,22 @@ import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
 import { ResolveMapping } from '../resolve';
 import { BaseSpec } from '../spec';
+import { Title } from '../title';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef } from '../vega.schema';
+import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
+import { ConcatModel } from './concat';
 import { DataComponent } from './data/index';
+import { FacetModel } from './facet';
+import { LayerModel } from './layer';
 import { LayoutSizeComponent, LayoutSizeIndex } from './layout/component';
 import { LayoutHeaderComponent } from './layout/header';
 import { LegendComponentIndex } from './legend/component';
+import { RepeatModel } from './repeat';
 import { ScaleComponent, ScaleComponentIndex } from './scale/component';
 import { SelectionComponent } from './selection/selection';
+import { UnitModel } from './unit';
 /**
  * Composable Components that are intermediate results of the parsing phase of the
  * compilations.  The components represents parts of the specification in a form that
@@ -49,9 +55,16 @@ export declare class NameMap implements NameMapInterface {
     has(name: string): boolean;
     get(name: string): string;
 }
+export declare function isUnitModel(model: Model): model is UnitModel;
+export declare function isFacetModel(model: Model): model is FacetModel;
+export declare function isRepeatModel(model: Model): model is RepeatModel;
+export declare function isConcatModel(model: Model): model is ConcatModel;
+export declare function isLayerModel(model: Model): model is LayerModel;
 export declare abstract class Model {
+    readonly abstract type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly parent: Model;
     readonly name: string;
+    readonly title: Title;
     readonly description: string;
     readonly data: Data;
     readonly transforms: Transform[];
@@ -80,11 +93,12 @@ export declare abstract class Model {
     parseMarkDef(): void;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
-    abstract parseLegend(): void;
+    parseLegend(): void;
     abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
     abstract assembleSelectionSignals(): any[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
-    abstract assembleData(): VgData[];
+    assembleGroupStyle(): string;
+    assembleLayoutSize(): VgEncodeEntry;
     abstract assembleLayout(): VgLayout;
     abstract assembleLayoutSignals(): VgSignal[];
     abstract assembleScales(): VgScale[];
@@ -92,11 +106,11 @@ export declare abstract class Model {
     abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];
     assembleLegends(): VgLegend[];
+    assembleTitle(): VgTitle;
     /**
      * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
      */
     assembleGroup(signals?: VgSignal[]): any;
-    abstract assembleParentGroupProperties(): VgEncodeEntry;
     hasDescendantWithFieldOnChannel(channel: Channel): boolean;
     getName(text: string): string;
     /**
@@ -114,7 +128,7 @@ export declare abstract class Model {
     /**
      * @return scale name for a given channel after the scale has been parsed and named.
      */
-    scaleName(this: Model, originalScaleName: Channel | string, parse?: boolean): string;
+    scaleName(originalScaleName: Channel | string, parse?: boolean): string;
     /**
      * Corrects the data references in marks after assemble.
      */

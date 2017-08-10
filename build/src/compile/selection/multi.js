@@ -4,8 +4,8 @@ var util_1 = require("../../util");
 var selection_1 = require("./selection");
 var nearest_1 = require("./transforms/nearest");
 var multi = {
-    predicate: 'vlPoint',
-    scaleDomain: 'vlPointDomain',
+    predicate: 'vlMulti',
+    scaleDomain: 'vlMultiDomain',
     signals: function (model, selCmpt) {
         var proj = selCmpt.project;
         var datum = nearest_1.default.has(selCmpt) ?

@@ -7,6 +7,7 @@ import { AnyMark, Mark, MarkDef } from './mark';
 import { Repeat } from './repeat';
 import { ResolveMapping } from './resolve';
 import { SelectionDef } from './selection';
+import { Title } from './title';
 import { TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
 export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -21,6 +22,10 @@ export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
     config?: Config;
 };
 export interface BaseSpec {
+    /**
+     * @hide
+     */
+    title?: Title;
     /**
      * Name of the visualization for later reference.
      */

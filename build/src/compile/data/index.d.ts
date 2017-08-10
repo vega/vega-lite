@@ -17,6 +17,10 @@ export interface DataComponent {
      */
     outputNodeRefCounts: Dict<number>;
     /**
+     * The output node before aggregation.
+     */
+    raw?: OutputNode;
+    /**
      * The main output node.
      */
     main?: OutputNode;

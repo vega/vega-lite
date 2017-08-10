@@ -1,7 +1,7 @@
 import { AxisConfigMixins } from './axis';
 import { CompositeMarkConfigMixins } from './compositemark/index';
 import { LegendConfig } from './legend';
-import { MarkConfigMixins } from './mark';
+import { MarkConfig, MarkConfigMixins } from './mark';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
@@ -118,6 +118,20 @@ export interface VLOnlyConfig {
     /** Default stack offset for stackable mark. */
     stack?: StackOffset;
 }
+export interface StyleConfigIndex {
+    [style: string]: MarkConfig;
+}
+export declare type AreaOverlay = 'line' | 'linepoint' | 'none';
+export interface OverlayConfig {
+    /**
+     * Whether to overlay line with point.
+     */
+    line?: boolean;
+    /**
+     * Type of overlay for area mark (line or linepoint)
+     */
+    area?: AreaOverlay;
+}
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
     /**
      * Scale range config, or properties defining named range arrays
@@ -132,8 +146,13 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
     legend?: LegendConfig;
     /** Title Config */
     title?: VgTitleConfig;
-    [role: string]: any;
+    /** Style Config */
+    style?: StyleConfigIndex;
+    /**
+     * @hide
+     */
+    overlay?: OverlayConfig;
 }
 export declare const defaultConfig: Config;
 export declare function initConfig(config: Config): Config;
-export declare function stripConfig(config: Config): Config;
+export declare function stripAndRedirectConfig(config: Config): Config;

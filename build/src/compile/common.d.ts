@@ -5,12 +5,13 @@ import { LayoutSizeMixins, Spec } from '../spec';
 import { TimeUnit } from '../timeunit';
 import { VgEncodeEntry, VgSort } from '../vega.schema';
 import { Model } from './model';
-import { RepeaterValue } from './repeat';
+import { RepeaterValue } from './repeater';
 import { Explicit } from './split';
 import { UnitModel } from './unit';
 export declare function buildModel(spec: Spec, parent: Model, parentGivenName: string, unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config): Model;
 export declare function applyConfig(e: VgEncodeEntry, config: CellConfig | MarkConfig | TextConfig, propsList: string[]): VgEncodeEntry;
 export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]): VgEncodeEntry;
+export declare function getStyles(mark: MarkDef): string[];
 /**
  * Return value mark specific config property if exists.
  * Otherwise, return general mark specific config.
