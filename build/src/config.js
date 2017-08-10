@@ -1,0 +1,125 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var compositemark_1 = require("./compositemark");
+var index_1 = require("./compositemark/index");
+var guide_1 = require("./guide");
+var legend_1 = require("./legend");
+var mark_1 = require("./mark");
+var mark = require("./mark");
+var scale_1 = require("./scale");
+var selection_1 = require("./selection");
+var util_1 = require("./util");
+exports.defaultCellConfig = {
+    width: 200,
+    height: 200
+};
+exports.defaultConfig = {
+    padding: 5,
+    timeFormat: '%b %d, %Y',
+    countTitle: 'Number of Records',
+    invalidValues: 'filter',
+    cell: exports.defaultCellConfig,
+    mark: mark.defaultMarkConfig,
+    area: {},
+    bar: mark.defaultBarConfig,
+    circle: {},
+    line: {},
+    point: {},
+    rect: {},
+    rule: { color: 'black' },
+    square: {},
+    text: { color: 'black' },
+    tick: mark.defaultTickConfig,
+    box: { size: 14 },
+    boxWhisker: {},
+    boxMid: { color: 'white' },
+    scale: scale_1.defaultScaleConfig,
+    axis: {
+        domainColor: '#888',
+        tickColor: '#888'
+    },
+    axisX: {},
+    axisY: { minExtent: 30 },
+    axisLeft: {},
+    axisRight: {},
+    axisTop: {},
+    axisBottom: {},
+    axisBand: {},
+    legend: legend_1.defaultLegendConfig,
+    selection: selection_1.defaultConfig,
+    style: {},
+    title: {},
+};
+function initConfig(config) {
+    return util_1.mergeDeep(util_1.duplicate(exports.defaultConfig), config);
+}
+exports.initConfig = initConfig;
+var MARK_STYLES = ['cell'].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_STYLES);
+var VL_ONLY_CONFIG_PROPERTIES = [
+    'padding', 'numberFormat', 'timeFormat', 'countTitle',
+    'stack', 'scale', 'selection', 'invalidValues',
+    'overlay' // FIXME: Redesign and unhide this
+];
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ cell: ['width', 'height'] }, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+function stripAndRedirectConfig(config) {
+    config = util_1.duplicate(config);
+    for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
+        var prop = VL_ONLY_CONFIG_PROPERTIES_1[_i];
+        delete config[prop];
+    }
+    // Remove Vega-Lite only axis/legend config
+    if (config.axis) {
+        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = guide_1.VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_1[_a];
+            delete config.axis[prop];
+        }
+    }
+    if (config.legend) {
+        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = guide_1.VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
+            delete config.legend[prop];
+        }
+    }
+    // Remove Vega-Lite only generic mark config
+    if (config.mark) {
+        for (var _c = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = mark_1.VL_ONLY_MARK_CONFIG_PROPERTIES; _c < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _c++) {
+            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_1[_c];
+            delete config.mark[prop];
+        }
+    }
+    for (var _d = 0, MARK_STYLES_1 = MARK_STYLES; _d < MARK_STYLES_1.length; _d++) {
+        var mark_2 = MARK_STYLES_1[_d];
+        // Remove Vega-Lite-only mark config
+        for (var _e = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = mark_1.VL_ONLY_MARK_CONFIG_PROPERTIES; _e < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _e++) {
+            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_2[_e];
+            delete config[mark_2][prop];
+        }
+        // Remove Vega-Lite only mark-specific config
+        var vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[mark_2];
+        if (vlOnlyMarkSpecificConfigs) {
+            for (var _f = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _f < vlOnlyMarkSpecificConfigs_1.length; _f++) {
+                var prop = vlOnlyMarkSpecificConfigs_1[_f];
+                delete config[mark_2][prop];
+            }
+        }
+        redirectConfig(config, mark_2);
+    }
+    // Remove empty config objects
+    for (var prop in config) {
+        if (util_1.isObject(config[prop]) && util_1.keys(config[prop]).length === 0) {
+            delete config[prop];
+        }
+    }
+    return util_1.keys(config).length > 0 ? config : undefined;
+}
+exports.stripAndRedirectConfig = stripAndRedirectConfig;
+function redirectConfig(config, prop) {
+    var style = tslib_1.__assign({}, config[prop], config.style[prop]);
+    // set config.style if it is not an empty object
+    if (util_1.keys(style).length > 0) {
+        config.style[prop] = style;
+    }
+    delete config[prop];
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFDQSxpREFBcUU7QUFDckUsK0NBQTJJO0FBQzNJLGlDQUE2QztBQUM3QyxtQ0FBMkQ7QUFDM0QsK0JBQTJMO0FBQzNMLDZCQUErQjtBQUMvQixpQ0FBd0Q7QUFDeEQseUNBQXFGO0FBR3JGLCtCQUE0RDtBQW9GL0MsUUFBQSxpQkFBaUIsR0FBZTtJQUMzQyxLQUFLLEVBQUUsR0FBRztJQUNWLE1BQU0sRUFBRSxHQUFHO0NBQ1osQ0FBQztBQThGVyxRQUFBLGFBQWEsR0FBVztJQUNuQyxPQUFPLEVBQUUsQ0FBQztJQUNWLFVBQVUsRUFBRSxXQUFXO0lBQ3ZCLFVBQVUsRUFBRSxtQkFBbUI7SUFFL0IsYUFBYSxFQUFFLFFBQVE7SUFFdkIsSUFBSSxFQUFFLHlCQUFpQjtJQUV2QixJQUFJLEVBQUUsSUFBSSxDQUFDLGlCQUFpQjtJQUM1QixJQUFJLEVBQUUsRUFBRTtJQUNSLEdBQUcsRUFBRSxJQUFJLENBQUMsZ0JBQWdCO0lBQzFCLE1BQU0sRUFBRSxFQUFFO0lBQ1YsSUFBSSxFQUFFLEVBQUU7SUFDUixLQUFLLEVBQUUsRUFBRTtJQUNULElBQUksRUFBRSxFQUFFO0lBQ1IsSUFBSSxFQUFFLEVBQUMsS0FBSyxFQUFFLE9BQU8sRUFBQztJQUN0QixNQUFNLEVBQUUsRUFBRTtJQUNWLElBQUksRUFBRSxFQUFDLEtBQUssRUFBRSxPQUFPLEVBQUM7SUFDdEIsSUFBSSxFQUFFLElBQUksQ0FBQyxpQkFBaUI7SUFFNUIsR0FBRyxFQUFFLEVBQUMsSUFBSSxFQUFFLEVBQUUsRUFBQztJQUNmLFVBQVUsRUFBRSxFQUFFO0lBQ2QsTUFBTSxFQUFFLEVBQUMsS0FBSyxFQUFFLE9BQU8sRUFBQztJQUV4QixLQUFLLEVBQUUsMEJBQWtCO0lBQ3pCLElBQUksRUFBRTtRQUNKLFdBQVcsRUFBRSxNQUFNO1FBQ25CLFNBQVMs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
