@@ -26,7 +26,7 @@ If multiple projections are specified, customized bindings can be specified by m
 
 With interval selections, the `bind` property can be set to the value `"scales"` to enable a two-way binding between the selection and the scales used within the same view. This binding first populates the interval selection with the scale domains, and then uses the selection to drive the scale domains. As a result, the view now functions like an interval selection and can be [panned](selection-translate.html) and [zoomed](selection-zoom.html).
 
-<div class="vl-example" data-name="panzoom_scatter"></div>
+<div class="vl-example" data-name="selection_translate_scatterplot_drag"></div>
 
 In multi-view displays, binding shared scales will keep the views synchronized. For example, below we explicitly share the `x` scale between the two vertically concatenated views. Panning/zooming the bound interval selection in the first view also updates the second view.
 
