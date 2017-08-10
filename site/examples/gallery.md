@@ -23,3 +23,6 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Grouped Bar Chart by @churtado](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364)
 * [Multi Line Highlight by @amitkaps](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701)
 * [Slope graph by @g3o2](https://bl.ocks.org/g3o2/a6c539eacfb0b99eaf01e4f20b9f2897)
+* [Scatter Nearest Rule](https://bl.ocks.org/amitkaps/abfa7157d4366cc43cbbba55353d35d8)
+* [Scatter Brush Rule](https://bl.ocks.org/amitkaps/a484b94a7e1e0705c5ec865ba31f463c)
+* [Bar Brush Rule](https://bl.ocks.org/amitkaps/4b8d4dd9d3341b2a2dffbb69fa278e21)
