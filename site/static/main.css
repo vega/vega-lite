@@ -563,45 +563,32 @@ footer .edit-page {
   width: 100%;
 }
 
-.slides {
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
 .slide {
-  padding-top: 15px;
   display: none;
-}
-
-.slide button {
-  padding: 3px 6px;
-  text-align: center;
-  background-color: #4682b4;
-  border: 1px solid #357ebd;
-  color: #fff;
-  border-radius: 3px;
-  vertical-align: bottom;
-  font-size: .8em;
-  cursor: pointer;
-}
-
-.slide:nth-child(1) {
-  display: block;
 }
 
 .slide[data-state=active] {
   display: block;
 }
 
+.slide .example .example-vis {
+  align-self: flex-start;
+}
+
 .indicators {
   position: absolute;
-  top: 10px;
+  top: -40px;
   width: 100%;
-  text-align: center;
+  text-align: right;
 }
 
 .indicator {
   cursor: pointer;
+}
+
+.slide-nav[data-state=active] {
+  color: #373a3c;
+  font-weight: bold;
 }
 
 /* Media queries */

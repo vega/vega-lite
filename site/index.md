@@ -47,25 +47,16 @@ Read our [introduction article to Vega-Lite 1 on Medium](https://medium.com/p/43
 ## Example
 
 <div id="carousel" class="carousel">
+  <p>With Vega-Lite, we can start with a <a class="slide-nav" data-slide="1" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="2">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="3">an interactive moving average for a dragged region</a>.</p>
+
   <div class="slides">
     <div class="slide" data-state="active">
-      <p>
-        This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
-        <button class="next">Next</button>
-      </p>
       <div class="vl-example" data-name="bar_month"></div>
     </div>
     <div class="slide">
-      <p>
-        We can <a href="{{site.baseurl}}/docs/layer.html">overlay</a> this bar chart with a rule that shows an overall average.
-        <button class="next">Next</button>
-      </p>
       <div class="vl-example" data-name="layer_bar_month"></div>
     </div>
     <div class="slide">
-      <p>
-        And lastly, using <a href="{{site.baseurl}}/docs/selection.html">selections</a>, we can make this example interactive. Select a time range and notice how the overlay shows the average of the selected range.
-      </p>
       <div class="vl-example" data-name="selection_layer_bar_month"></div>
     </div>
   </div>
