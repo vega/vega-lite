@@ -6,12 +6,12 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/seattle-temps.csv",
+            "url": "data/seattle-weather.csv",
             "format": {
                 "type": "csv",
                 "parse": {
                     "date": "date",
-                    "temp": "number"
+                    "precipitation": "number"
                 }
             },
             "transform": [
@@ -29,10 +29,10 @@
                         "mean"
                     ],
                     "fields": [
-                        "temp"
+                        "precipitation"
                     ],
                     "as": [
-                        "mean_temp"
+                        "mean_precipitation"
                     ]
                 }
             ]
@@ -74,7 +74,7 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "mean_temp"
+                        "field": "mean_precipitation"
                     },
                     "y2": {
                         "scale": "y",
@@ -110,7 +110,7 @@
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "mean_temp"
+                "field": "mean_precipitation"
             },
             "range": [
                 {
@@ -156,7 +156,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(temp)",
+            "title": "MEAN(precipitation)",
             "zindex": 1
         },
         {
