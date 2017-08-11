@@ -102,64 +102,47 @@ selectAll('.vl-example').each(function(this: Element) {
 
 const carousel = document.getElementById('carousel');
 
-function carouselHide(indicators: NodeListOf<any>, slides: NodeListOf<any>, num: number) {
-  indicators[num].setAttribute('data-state', '');
-  slides[num].setAttribute('data-state', '');
-
-  slides[num].style.display='none';
+function carouselHide(slides: NodeListOf<any>, indicators: NodeListOf<any>, links: NodeListOf<any>, active: number) {
+  indicators[active].setAttribute('data-state', '');
+  links[active].setAttribute('data-state', '');
+  slides[active].setAttribute('data-state', '');
+  slides[active].style.display = 'none';
 }
 
-function carouselShow(indicators: NodeListOf<any>, slides: NodeListOf<any>, num: number) {
-  indicators[num].checked = true;
-  indicators[num].setAttribute('data-state', 'active');
-  slides[num].setAttribute('data-state', 'active');
-
-  slides[num].style.display='block';
+function carouselShow(slides: NodeListOf<any>, indicators: NodeListOf<any>, links: NodeListOf<any>, active: number) {
+  indicators[active].checked = true;
+  indicators[active].setAttribute('data-state', 'active');
+  links[active].setAttribute('data-state', 'active');
+  slides[active].setAttribute('data-state', 'active');
+  slides[active].style.display = 'block';
 }
 
-function setSlide(indicators: NodeListOf<Element>, slides: NodeListOf<Element>, slide: number) {
+function setSlide(slides: NodeListOf<Element>, indicators: NodeListOf<Element>, links: NodeListOf<any>, active: number) {
   return function() {
     // Reset all slides
     for (let i = 0; i < indicators.length; i++) {
       indicators[i].setAttribute('data-state', '');
       slides[i].setAttribute('data-state', '');
-
-      carouselHide(indicators, slides, i);
+      carouselHide(slides, indicators, links, i);
     }
 
     // Set defined slide as active
-    indicators[slide].setAttribute('data-state', 'active');
-    slides[slide].setAttribute('data-state', 'active');
-    carouselShow(indicators, slides, slide);
+    indicators[active].setAttribute('data-state', 'active');
+    slides[active].setAttribute('data-state', 'active');
+    carouselShow(slides, indicators, links, active);
   };
-}
-
-function switchSlide(indicators: NodeListOf<Element>, slides: NodeListOf<Element>) {
-  let nextSlide = 0;
-
-  // Reset all slides
-  for (let i = 0; i < indicators.length; i++) {
-    // If current slide is active & NOT equal to last slide then increment nextSlide
-    if ((indicators[i].getAttribute('data-state') === 'active') && (i !== (indicators.length-1))) {
-      nextSlide = i + 1;
-    }
-
-    // Remove all active states & hide
-    carouselHide(indicators, slides, i);
-  }
-
-  // Set next slide as active & show the next slide
-  carouselShow(indicators, slides, nextSlide);
 }
 
 if (carousel) {
   const slides = carousel.querySelectorAll('.slide');
   const indicators = carousel.querySelectorAll('.indicator');
+  const links = carousel.querySelectorAll('.slide-nav');
 
   for (let i = 0; i < indicators.length; i++) {
-    indicators[i].addEventListener('click', setSlide(indicators, slides, i));
+    indicators[i].addEventListener('click', setSlide(slides, indicators, links, i));
   }
 
-  [].forEach.call(document.querySelectorAll('.next'), (n: Element) =>
-    n.addEventListener('click', () => switchSlide(indicators, slides)));
+  for (let i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', setSlide(slides, indicators, links, i));
+  }
 }
