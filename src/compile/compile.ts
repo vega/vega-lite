@@ -5,7 +5,7 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
-import {buildModel} from './common';
+import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';

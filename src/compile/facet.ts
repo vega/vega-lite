@@ -9,7 +9,7 @@ import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
-import {buildModel} from './common';
+import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
