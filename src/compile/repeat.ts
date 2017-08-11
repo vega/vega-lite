@@ -10,7 +10,7 @@ import {Dict, keys} from '../util';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './common';
-import {parseRepeatLayoutSize} from './layout/parse';
+import {parseRepeatLayoutSize} from './layoutsize/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
 

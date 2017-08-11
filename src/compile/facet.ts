@@ -13,7 +13,7 @@ import {buildModel} from './common';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
-import {parseChildrenLayoutSize} from './layout/parse';
+import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {labels} from './legend/encode';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
