@@ -575,6 +575,16 @@ footer .edit-page {
   align-self: flex-start;
 }
 
+.slide.video-demo .example-vis {
+  visibility: hidden;
+}
+
+.slide.video-demo video {
+  position: absolute;
+  top: 65px;
+  border: 1px dashed #ddd;
+}
+
 .indicators {
   position: absolute;
   top: -40px;

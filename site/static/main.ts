@@ -107,6 +107,11 @@ function carouselHide(slides: NodeListOf<any>, indicators: NodeListOf<any>, link
   links[active].setAttribute('data-state', '');
   slides[active].setAttribute('data-state', '');
   slides[active].style.display = 'none';
+
+  const video = slides[active].querySelector('video');
+  if (video) {
+    video.pause();
+  }
 }
 
 function carouselShow(slides: NodeListOf<any>, indicators: NodeListOf<any>, links: NodeListOf<any>, active: number) {
@@ -114,7 +119,15 @@ function carouselShow(slides: NodeListOf<any>, indicators: NodeListOf<any>, link
   indicators[active].setAttribute('data-state', 'active');
   links[active].setAttribute('data-state', 'active');
   slides[active].setAttribute('data-state', 'active');
-  slides[active].style.display = 'block';
+
+  const video = slides[active].querySelector('video');
+  if (video) {
+    video.currentTime = 0;
+    slides[active].style.display = 'block';
+    video.play();
+  } else {
+    slides[active].style.display = 'block';
+  }
 }
 
 function setSlide(slides: NodeListOf<Element>, indicators: NodeListOf<Element>, links: NodeListOf<any>, active: number) {
@@ -145,4 +158,15 @@ if (carousel) {
   for (let i = 0; i < links.length; i++) {
     links[i].addEventListener('click', setSlide(slides, indicators, links, i));
   }
+
+  [].forEach.call(slides, (slide: Element) => {
+    const video = slide.querySelector('video');
+    if (video) {
+      video.addEventListener('mouseover', () => {
+        (slide.querySelector('.example-vis') as any).style.visibility = 'visible';
+        video.style.display = 'none';
+        video.pause();
+      });
+    }
+  });
 }
