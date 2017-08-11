@@ -4,46 +4,14 @@ import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '.
 import * as log from '../log';
 import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
-import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSizeMixins, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
-import {ConcatModel} from './concat';
-import {FacetModel} from './facet';
-import {LayerModel} from './layer';
-import {Model} from './model';
-import {RepeatModel} from './repeat';
-import {RepeaterValue} from './repeater';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
-
-export function buildModel(spec: Spec, parent: Model, parentGivenName: string,
-  unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config): Model {
-  if (isFacetSpec(spec)) {
-    return new FacetModel(spec, parent, parentGivenName, repeater, config);
-  }
-
-  if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName, unitSize, repeater, config);
-  }
-
-  if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName, unitSize, repeater, config);
-  }
-
-  if (isRepeatSpec(spec)) {
-    return new RepeatModel(spec, parent, parentGivenName, repeater, config);
-  }
-
-  if (isConcatSpec(spec)) {
-    return new ConcatModel(spec, parent, parentGivenName, repeater, config);
-  }
-
-  throw new Error(log.message.INVALID_SPEC);
-}
 
 export function applyConfig(e: VgEncodeEntry,
     config: CellConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?

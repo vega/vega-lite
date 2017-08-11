@@ -2,8 +2,8 @@ import {Config} from '../config';
 import {ConcatSpec, isVConcatSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
-import {buildModel} from './common';
-import {parseConcatLayoutSize} from './layout/parse';
+import {buildModel} from './buildmodel';
+import {parseConcatLayoutSize} from './layoutsize/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
 
