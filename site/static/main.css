@@ -557,6 +557,50 @@ footer .edit-page {
   border: 1px dashed #ddd;
 }
 
+/* Carousel */
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+.slide {
+  display: none;
+}
+
+.slide[data-state=active] {
+  display: block;
+}
+
+.slide .example .example-vis {
+  align-self: flex-start;
+}
+
+.slide.video-demo .example-vis {
+  visibility: hidden;
+}
+
+.slide.video-demo video {
+  position: absolute;
+  top: 65px;
+  border: 1px dashed #ddd;
+}
+
+.indicators {
+  position: absolute;
+  top: -40px;
+  width: 100%;
+  text-align: right;
+}
+
+.indicator {
+  cursor: pointer;
+}
+
+.slide-nav[data-state=active] {
+  color: #373a3c;
+  font-weight: bold;
+}
+
 /* Media queries */
 @media (max-width:768px) {
   body {

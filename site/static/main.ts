@@ -23,19 +23,19 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
 
 /* Documentation */
 
-function renderExample($target: Selection<any, any, any, any>, text: string) {
+function renderExample($target: Selection<any, any, any, any>, specText: string) {
   $target.classed('example', true);
   $target.text('');
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
   // Decrease visual noise by removing $schema and description from code examples.
-  const textClean = text.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
+  const textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
   const code = $target.append('pre').attr('class', 'example-code')
-    .append('code').attr('class', 'json').text(textClean);
+  .append('code').attr('class', 'json').text(textClean);
   hljs.highlightBlock(code.node() as any);
 
-  const spec = JSON.parse(text);
+  const spec = JSON.parse(specText);
 
   embed(vis.node(), spec, {
     mode: 'vega-lite',
@@ -51,7 +51,7 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
     }
   }).then(result => {
     if ($target.classed('tooltip')) {
-      vegaLite(result.view, JSON.parse(text) as any);
+      vegaLite(result.view, JSON.parse(specText) as any);
     }
   }).catch(console.error);
 }
@@ -96,3 +96,77 @@ window['buildSpecOpts'] = function(id: string, baseName: string) {
 selectAll('.vl-example').each(function(this: Element) {
   getSpec(this);
 });
+
+// caroussel for the front page
+// adapted from https://codepen.io/LANparty/pen/wePYXb
+
+const carousel = document.getElementById('carousel');
+
+function carouselHide(slides: NodeListOf<any>, indicators: NodeListOf<any>, links: NodeListOf<any>, active: number) {
+  indicators[active].setAttribute('data-state', '');
+  links[active].setAttribute('data-state', '');
+  slides[active].setAttribute('data-state', '');
+  slides[active].style.display = 'none';
+
+  const video = slides[active].querySelector('video');
+  if (video) {
+    video.pause();
+  }
+}
+
+function carouselShow(slides: NodeListOf<any>, indicators: NodeListOf<any>, links: NodeListOf<any>, active: number) {
+  indicators[active].checked = true;
+  indicators[active].setAttribute('data-state', 'active');
+  links[active].setAttribute('data-state', 'active');
+  slides[active].setAttribute('data-state', 'active');
+
+  const video = slides[active].querySelector('video');
+  if (video) {
+    video.currentTime = 0;
+    slides[active].style.display = 'block';
+    video.play();
+  } else {
+    slides[active].style.display = 'block';
+  }
+}
+
+function setSlide(slides: NodeListOf<Element>, indicators: NodeListOf<Element>, links: NodeListOf<any>, active: number) {
+  return function() {
+    // Reset all slides
+    for (let i = 0; i < indicators.length; i++) {
+      indicators[i].setAttribute('data-state', '');
+      slides[i].setAttribute('data-state', '');
+      carouselHide(slides, indicators, links, i);
+    }
+
+    // Set defined slide as active
+    indicators[active].setAttribute('data-state', 'active');
+    slides[active].setAttribute('data-state', 'active');
+    carouselShow(slides, indicators, links, active);
+  };
+}
+
+if (carousel) {
+  const slides = carousel.querySelectorAll('.slide');
+  const indicators = carousel.querySelectorAll('.indicator');
+  const links = carousel.querySelectorAll('.slide-nav');
+
+  for (let i = 0; i < indicators.length; i++) {
+    indicators[i].addEventListener('click', setSlide(slides, indicators, links, i));
+  }
+
+  for (let i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', setSlide(slides, indicators, links, i));
+  }
+
+  [].forEach.call(slides, (slide: Element) => {
+    const video = slide.querySelector('video');
+    if (video) {
+      video.addEventListener('mouseover', () => {
+        (slide.querySelector('.example-vis') as any).style.visibility = 'visible';
+        video.style.display = 'none';
+        video.pause();
+      });
+    }
+  });
+}

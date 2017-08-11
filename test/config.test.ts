@@ -18,6 +18,10 @@ describe('config', () => {
       },
       cell: {
         fill: '#eee'
+      },
+      title: {
+        color: 'red',
+        fontWeight: 'bold'
       }
     };
     const copy = duplicate(config);
@@ -43,8 +47,14 @@ describe('config', () => {
       assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
     });
 
+    it('should redirect config.title to config.style.group-title and rename color to fill', () => {
+      assert.deepEqual(output.title, undefined);
+      assert.deepEqual(output.style['group-title'].fontWeight, 'bold');
+      assert.deepEqual(output.style['group-title'].fill, 'red');
+    });
+
     it('should remove empty config object', () => {
-      assert.isUndefined(output.title);
+      assert.isUndefined(output.axisTop);
     });
   });
 });

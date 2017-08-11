@@ -8,9 +8,10 @@ import * as mark from './mark';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
+import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, isObject, keys, mergeDeep} from './util';
-import {VgRangeScheme, VgTitleConfig} from './vega.schema';
+import {VgMarkConfig, VgRangeScheme, VgTitleConfig} from './vega.schema';
 
 
 export interface CellConfig {
@@ -148,7 +149,7 @@ export interface VLOnlyConfig {
 }
 
 export interface StyleConfigIndex {
-  [style: string]: MarkConfig;
+  [style: string]: VgMarkConfig;
 }
 
 export type AreaOverlay = 'line' | 'linepoint' | 'none';
@@ -239,7 +240,7 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_STYLES = ['cell'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as (Mark | CompositeMarkStyle)[];
+const MARK_STYLES = ['cell'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as ('cell' | Mark | CompositeMarkStyle)[];
 
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
@@ -294,8 +295,15 @@ export function stripAndRedirectConfig(config: Config) {
       }
     }
 
+    // Redirect mark config to config.style so that mark config only affect its own mark type
+    // without affecting other marks that share the same underlying Vega marks.
+    // For example, config.rect should not affect bar marks.
     redirectConfig(config, mark);
   }
+
+  // Redirect config.title -- so that title config do not
+  // affect header labels, which also uses `title` directive to implement.
+  redirectConfig(config, 'title', 'group-title');
 
   // Remove empty config objects
   for (const prop in config) {
@@ -307,14 +315,16 @@ export function stripAndRedirectConfig(config: Config) {
   return keys(config).length > 0 ? config : undefined;
 }
 
-function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle) {
-  const style = {
-    ...config[prop],
+function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title' | 'cell', toProp?: string) {
+  const propConfig: VgMarkConfig = prop === 'title' ? extractTitleConfig(config.title).mark : config[prop];
+
+  const style: VgMarkConfig = {
+    ...propConfig,
     ...config.style[prop]
   };
   // set config.style if it is not an empty object
   if (keys(style).length > 0) {
-    config.style[prop] = style;
+    config.style[toProp || prop] = style;
   }
   delete config[prop];
 }

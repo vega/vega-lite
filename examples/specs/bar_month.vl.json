@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "data": {"url": "data/seattle-temps.csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
     "x": {
@@ -10,7 +10,7 @@
     },
     "y": {
       "aggregate": "mean",
-      "field": "temp",
+      "field": "precipitation",
       "type": "quantitative"
     }
   }

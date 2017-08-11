@@ -109,7 +109,7 @@ describe('Compile', function() {
       assert.deepEqual(spec.title, {text: 'test'});
     });
 
-    it('should return title for a concat spec.', () => {
+    it('should return a title for a concat spec and augment the title with non-mark title config (e.g., anchor).', () => {
       const spec = compile({
         "data": {
           "values": [{"a": "A","b": 28}]
@@ -118,9 +118,10 @@ describe('Compile', function() {
         "hconcat": [{
           "mark": "point",
           "encoding": {}
-        }]
+        }],
+        "config": {"title": {"anchor": "start"}}
       }).spec;
-      assert.deepEqual(spec.title, {text: 'test'});
+      assert.deepEqual(spec.title, {text: 'test', anchor: 'start'});
     });
   });
 });

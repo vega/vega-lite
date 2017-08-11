@@ -46,9 +46,29 @@ Read our [introduction article to Vega-Lite 1 on Medium](https://medium.com/p/43
 
 ## Example
 
-This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
+<div id="carousel" class="carousel">
+  <p>With Vega-Lite, we can start with a <a class="slide-nav" data-slide="1" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="2">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="3">an interactive moving average for a dragged region</a>.</p>
 
-<div class="vl-example" data-name="bar_month"></div>
+  <div class="slides">
+    <div class="slide" data-state="active">
+      <div class="vl-example" data-name="bar_month"></div>
+    </div>
+    <div class="slide">
+      <div class="vl-example" data-name="layer_bar_month"></div>
+    </div>
+    <div class="slide video-demo">
+      <div class="vl-example" data-name="selection_layer_bar_month"></div>
+      <video loop>
+        <source src="{{site.baseurl}}/site/static/moving-avg.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="indicators">
+    <input class="indicator" name="indicator" data-slide="1" data-state="active" checked type="radio" />
+    <input class="indicator" name="indicator" data-slide="2" type="radio" />
+    <input class="indicator" name="indicator" data-slide="3" type="radio" />
+  </div>
+</div>
 
 ## Additional Links
 

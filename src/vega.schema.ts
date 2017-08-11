@@ -1005,6 +1005,11 @@ export interface VgMarkConfig {
   radius?: number;
 
   /**
+   * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
+   */
+  limit?: number;
+
+  /**
    * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
    */
   theta?: number;
@@ -1047,7 +1052,7 @@ export interface VgTitle {
   /**
    * The orientation of the title relative to the chart. One of `"top"` (the default), `"bottom"`, `"left"`, or `"right"`.
    */
-  orient?: Orient;
+  orient?: TitleOrient;
 
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"` (the default), or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
@@ -1062,11 +1067,13 @@ export interface VgTitle {
   // TODO: name, encode, interactive, zindex
 }
 
+export type TitleOrient = 'top' | 'bottom' | 'left' | 'right';
+
 export interface VgTitleConfig {
   /**
    * Title anchor position (`"start"`, `"middle"`, or `"end"`).
    */
-  anchor?: string;
+  anchor?: Anchor;
   /**
    * Angle in degrees of title text.
    */
@@ -1074,7 +1081,7 @@ export interface VgTitleConfig {
   /**
    * Vertical text baseline for title text.
    */
-  baseline?:	string;
+  baseline?: VerticalAlign;
   /**
    * Text color for title text.
    */
@@ -1094,7 +1101,7 @@ export interface VgTitleConfig {
   /**
    * Font weight for title text.
    */
-  fontWeight?:	string | number;
+  fontWeight?: FontWeight | FontWeightNumber;
   /**
    * The maximum allowed length in pixels of legend labels.
    *
@@ -1108,5 +1115,5 @@ export interface VgTitleConfig {
   /**
    * Default title orientation ("top", "bottom", "left", or "right")
    */
-  orient?:	string;
+  orient?: TitleOrient;
 }
