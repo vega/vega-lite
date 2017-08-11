@@ -1,11 +1,6 @@
-import {Anchor, Orient, TitleOrient} from './vega.schema';
+import {Anchor, Orient, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
 
-export interface Title {
-  /**
-   * The title text.
-   */
-  text: string;
-
+export interface TitleBase {
   /**
    * The orientation of the title relative to the chart. One of `"top"` (the default), `"bottom"`, `"left"`, or `"right"`.
    */
@@ -22,4 +17,38 @@ export interface Title {
   offset?: number;
 
   // TODO: name, encode, interactive, zindex
+}
+
+export interface Title extends TitleBase {
+  /**
+   * The title text.
+   */
+  text: string;
+}
+
+export function extractTitleConfig(titleConfig: VgTitleConfig): {
+  mark: VgMarkConfig,
+  nonMark: TitleBase
+} {
+  const {
+    // These are non-mark title config that need to be hardcoded
+    anchor, offset, orient,
+    // color needs to be redirect to fill
+    color,
+    // The rest are mark config.
+    ...titleMarkConfig
+  } = titleConfig;
+
+  const mark: VgMarkConfig = {
+    ...titleMarkConfig,
+    ...color ? {fill: color} : {}
+  };
+
+  const nonMark: TitleBase = {
+    ...anchor ? {anchor} : {},
+    ...offset ? {offset} : {},
+    ...orient ? {orient} : {}
+  };
+
+  return {mark, nonMark};
 }

@@ -7,9 +7,9 @@ import * as log from '../log';
 import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
-import {Title} from '../title';
+import {extractTitleConfig, Title} from '../title';
 import {Transform} from '../transform';
-import {Dict, extend, varName} from '../util';
+import {Dict, extend, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,
@@ -334,7 +334,12 @@ export abstract class Model {
   }
 
   public assembleTitle(): VgTitle {
-    return this.title;
+    const title: VgTitle = {
+      ...extractTitleConfig(this.config.title).nonMark,
+      ...this.title
+    };
+
+    return keys(title).length > 0 ? title : undefined;
   }
 
   /**

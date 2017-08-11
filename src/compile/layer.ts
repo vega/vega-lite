@@ -106,13 +106,15 @@ export class LayerModel extends Model {
   }
 
   public assembleTitle(): VgTitle {
-    if (this.title) {
-      return this.title;
+    let title = super.assembleTitle();
+    if (title) {
+      return title;
     }
     // If title does not provide layer, look into children
     for (const child of this.children) {
-      if (child.title) {
-        return child.title;
+      title = child.assembleTitle();
+      if (title) {
+        return title;
       }
     }
     return undefined;
