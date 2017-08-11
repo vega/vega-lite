@@ -7,7 +7,7 @@ import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, Sca
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgRangeScheme, VgSignalRef} from '../../vega.schema';
-import {LayoutSize} from '../layout/component';
+import {LayoutSize} from '../layoutsize/component';
 import {isUnitModel, Model} from '../model';
 import {Explicit, makeImplicit, Split} from '../split';
 import {UnitModel} from '../unit';

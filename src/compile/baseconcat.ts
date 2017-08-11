@@ -4,7 +4,7 @@ import {BaseSpec} from '../spec';
 import {keys} from '../util';
 import {VgData, VgScale, VgSignal} from '../vega.schema';
 import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layout/assemble';
+import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 

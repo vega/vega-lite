@@ -25,8 +25,8 @@ import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layout/assemble';
-import {parseUnitLayoutSize} from './layout/parse';
+import {assembleLayoutSignals} from './layoutsize/assemble';
+import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
