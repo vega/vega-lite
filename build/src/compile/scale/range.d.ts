@@ -4,7 +4,7 @@ import { Mark } from '../../mark';
 import { Range, Scale, ScaleType, Scheme } from '../../scale';
 import { Type } from '../../type';
 import { VgRange } from '../../vega.schema';
-import { LayoutSize } from '../layout/component';
+import { LayoutSize } from '../layoutsize/component';
 import { Model } from '../model';
 import { Explicit } from '../split';
 export declare type RangeMixins = {
