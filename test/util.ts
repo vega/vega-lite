@@ -1,4 +1,4 @@
-import {buildModel} from '../src/compile/common';
+import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
