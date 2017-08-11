@@ -23,19 +23,19 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
 
 /* Documentation */
 
-function renderExample($target: Selection<any, any, any, any>, text: string) {
+function renderExample($target: Selection<any, any, any, any>, specText: string) {
   $target.classed('example', true);
   $target.text('');
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
   // Decrease visual noise by removing $schema and description from code examples.
-  const textClean = text.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
+  const textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
   const code = $target.append('pre').attr('class', 'example-code')
-    .append('code').attr('class', 'json').text(textClean);
+  .append('code').attr('class', 'json').text(textClean);
   hljs.highlightBlock(code.node() as any);
 
-  const spec = JSON.parse(text);
+  const spec = JSON.parse(specText);
 
   embed(vis.node(), spec, {
     mode: 'vega-lite',
@@ -51,7 +51,7 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
     }
   }).then(result => {
     if ($target.classed('tooltip')) {
-      vegaLite(result.view, JSON.parse(text) as any);
+      vegaLite(result.view, JSON.parse(specText) as any);
     }
   }).catch(console.error);
 }
@@ -96,3 +96,70 @@ window['buildSpecOpts'] = function(id: string, baseName: string) {
 selectAll('.vl-example').each(function(this: Element) {
   getSpec(this);
 });
+
+// caroussel for the front page
+// adapted from https://codepen.io/LANparty/pen/wePYXb
+
+const carousel = document.getElementById('carousel');
+
+function carouselHide(indicators: NodeListOf<any>, slides: NodeListOf<any>, num: number) {
+  indicators[num].setAttribute('data-state', '');
+  slides[num].setAttribute('data-state', '');
+
+  slides[num].style.display='none';
+}
+
+function carouselShow(indicators: NodeListOf<any>, slides: NodeListOf<any>, num: number) {
+  indicators[num].checked = true;
+  indicators[num].setAttribute('data-state', 'active');
+  slides[num].setAttribute('data-state', 'active');
+
+  slides[num].style.display='block';
+}
+
+function setSlide(indicators: NodeListOf<Element>, slides: NodeListOf<Element>, slide: number) {
+  return function() {
+    // Reset all slides
+    for (let i = 0; i < indicators.length; i++) {
+      indicators[i].setAttribute('data-state', '');
+      slides[i].setAttribute('data-state', '');
+
+      carouselHide(indicators, slides, i);
+    }
+
+    // Set defined slide as active
+    indicators[slide].setAttribute('data-state', 'active');
+    slides[slide].setAttribute('data-state', 'active');
+    carouselShow(indicators, slides, slide);
+  };
+}
+
+function switchSlide(indicators: NodeListOf<Element>, slides: NodeListOf<Element>) {
+  let nextSlide = 0;
+
+  // Reset all slides
+  for (let i = 0; i < indicators.length; i++) {
+    // If current slide is active & NOT equal to last slide then increment nextSlide
+    if ((indicators[i].getAttribute('data-state') === 'active') && (i !== (indicators.length-1))) {
+      nextSlide = i + 1;
+    }
+
+    // Remove all active states & hide
+    carouselHide(indicators, slides, i);
+  }
+
+  // Set next slide as active & show the next slide
+  carouselShow(indicators, slides, nextSlide);
+}
+
+if (carousel) {
+  const slides = carousel.querySelectorAll('.slide');
+  const indicators = carousel.querySelectorAll('.indicator');
+
+  for (let i = 0; i < indicators.length; i++) {
+    indicators[i].addEventListener('click', setSlide(indicators, slides, i));
+  }
+
+  [].forEach.call(document.querySelectorAll('.next'), (n: Element) =>
+    n.addEventListener('click', () => switchSlide(indicators, slides)));
+}

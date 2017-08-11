@@ -46,9 +46,35 @@ Read our [introduction article to Vega-Lite 1 on Medium](https://medium.com/p/43
 
 ## Example
 
-This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
-
-<div class="vl-example" data-name="bar_month"></div>
+<div id="carousel" class="carousel">
+  <div class="slides">
+    <div class="slide" data-state="active">
+      <p>
+        This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
+        <button class="next">Next</button>
+      </p>
+      <div class="vl-example" data-name="bar_month"></div>
+    </div>
+    <div class="slide">
+      <p>
+        We can <a href="{{site.baseurl}}/docs/layer.html">overlay</a> this bar chart with a rule that shows an overall average.
+        <button class="next">Next</button>
+      </p>
+      <div class="vl-example" data-name="layer_bar_month"></div>
+    </div>
+    <div class="slide">
+      <p>
+        And lastly, using <a href="{{site.baseurl}}/docs/selection.html">selections</a>, we can make this example interactive. Select a time range and notice how the overlay shows the average of the selected range.
+      </p>
+      <div class="vl-example" data-name="selection_layer_bar_month"></div>
+    </div>
+  </div>
+  <div class="indicators">
+    <input class="indicator" name="indicator" data-slide="1" data-state="active" checked type="radio" />
+    <input class="indicator" name="indicator" data-slide="2" type="radio" />
+    <input class="indicator" name="indicator" data-slide="3" type="radio" />
+  </div>
+</div>
 
 ## Additional Links
 
