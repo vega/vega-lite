@@ -341,8 +341,8 @@ export class FacetModel extends ModelWithField {
           hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
-          hasRow ? [ (facet.row.header && facet.row.header.sort) || 'ascending'] : [],
-          hasColumn ? [ (facet.column.header && facet.column.header.sort) || 'ascending'] : []
+          hasRow ? [ (facet.row.sort) || 'ascending'] : [],
+          hasColumn ? [ (facet.column.sort) || 'ascending'] : []
         )
       },
       ...(data.length > 0 ? {data: data} : {}),

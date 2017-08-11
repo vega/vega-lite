@@ -22,11 +22,16 @@ export interface Header {
    */
   title?: string;
 
-  sort?: SortOrder;
 }
 
 export interface FacetFieldDef<F> extends FieldDef<F> {
   header?: Header;
+
+  /**
+   * Sort order for a facet field.
+   * This can be `"ascending"`, `"descending"`.
+   */
+  sort?: SortOrder;
 }
 
 export interface Facet<F> {
