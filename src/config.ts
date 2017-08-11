@@ -10,7 +10,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {StackOffset} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, isObject, keys, mergeDeep} from './util';
-import {VgRangeScheme, VgTitleConfig} from './vega.schema';
+import {VgMarkConfig, VgRangeScheme, VgTitleConfig} from './vega.schema';
 
 
 export interface CellConfig {
@@ -148,7 +148,7 @@ export interface VLOnlyConfig {
 }
 
 export interface StyleConfigIndex {
-  [style: string]: MarkConfig;
+  [style: string]: VgMarkConfig;
 }
 
 export type AreaOverlay = 'line' | 'linepoint' | 'none';
