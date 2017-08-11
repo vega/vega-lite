@@ -1,6 +1,6 @@
 import {ScaleChannel, SPATIAL_SCALE_CHANNELS} from '../channel';
 import * as log from '../log';
-import {ResolveMapping, ResolveMode} from '../resolve';
+import {Resolve, ResolveMode} from '../resolve';
 import {contains} from '../util';
 import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
@@ -18,16 +18,16 @@ export function defaultScaleResolve(channel: ScaleChannel, model: Model): Resolv
   throw new Error('invalid model type for resolve');
 }
 
-export function parseGuideResolve(resolve: ResolveMapping, channel: ScaleChannel): ResolveMode {
-  const channelResolve = resolve[channel];
+export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel): ResolveMode {
+  const channelScaleResolve = resolve.scale[channel];
   const guide = contains(SPATIAL_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
 
-  if (channelResolve.scale === 'independent') {
-    if (channelResolve[guide] === 'shared') {
+  if (channelScaleResolve === 'independent') {
+    if (resolve[guide][channel] === 'shared') {
       log.warn(log.message.independentScaleMeansIndependentGuide(channel));
     }
     return 'independent';
   }
 
-  return channelResolve[guide] || 'shared';
+  return resolve[guide][channel] || 'shared';
 }

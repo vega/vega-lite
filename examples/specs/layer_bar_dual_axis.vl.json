@@ -41,5 +41,5 @@
       }
     }
   ],
-  "resolve": {"y": {"scale": "independent"}}
+  "resolve": {"scale": {"y": "independent"}}
 }

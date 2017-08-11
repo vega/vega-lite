@@ -29,7 +29,7 @@ describe('compile/data/facet', function() {
           }
         },
         'resolve': {
-          'x': {'scale': 'independent'}
+          'scale': {'x': 'independent'}
         },
         'config': {'cell': {'fill': 'yellow'}}
       });
@@ -70,11 +70,9 @@ describe('compile/data/facet', function() {
           }
         },
         'resolve': {
-          'x': {
-            'scale': 'independent'
-          },
-          'y': {
-            'scale': 'independent'
+          'scale': {
+            'x': 'independent',
+            'y': 'independent'
           }
         }
       });

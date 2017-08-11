@@ -98,10 +98,9 @@ function parseNonUnitScaleCore(model: Model) {
     // Instead of always merging right away -- check if it is compatible to merge first!
     keys(child.component.scales).forEach((channel: ScaleChannel) => {
       // if resolve is undefined, set default first
-      resolve[channel] = resolve[channel] || {};
-      resolve[channel].scale = resolve[channel].scale || defaultScaleResolve(channel, model);
+      resolve.scale[channel] = resolve.scale[channel] || defaultScaleResolve(channel, model);
 
-      if (model.component.resolve[channel].scale === 'shared') {
+      if (resolve.scale[channel] === 'shared') {
         const scaleType = scaleTypeWithExplicitIndex[channel];
         const childScaleType = child.component.scales[channel].getWithExplicit('type');
 
@@ -113,7 +112,7 @@ function parseNonUnitScaleCore(model: Model) {
             );
           } else {
             // Otherwise, update conflicting channel to be independent
-            model.component.resolve[channel].scale = 'independent';
+            resolve[channel].scale = 'independent';
             // Remove from the index so they don't get merged
             delete scaleTypeWithExplicitIndex[channel];
           }

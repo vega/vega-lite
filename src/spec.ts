@@ -9,7 +9,7 @@ import {Field, FieldDef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {Repeat} from './repeat';
-import {ResolveMapping} from './resolve';
+import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {Title} from './title';
@@ -125,7 +125,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
    */
   layer: (GenericLayerSpec<U> | U)[];
 
-  resolve?: ResolveMapping;
+  resolve?: Resolve;
 }
 
 export type LayerSpec = GenericLayerSpec<UnitSpec>;
@@ -135,7 +135,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 
   spec: GenericSpec<U>;
 
-  resolve?: ResolveMapping;
+  resolve?: Resolve;
 }
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
@@ -145,7 +145,7 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
 
   spec: GenericSpec<U>;
 
-  resolve?: ResolveMapping;
+  resolve?: Resolve;
 }
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
@@ -153,13 +153,13 @@ export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   vconcat: (GenericSpec<U>)[];
 
-  resolve?: ResolveMapping;
+  resolve?: Resolve;
 }
 
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   hconcat: (GenericSpec<U>)[];
 
-  resolve?: ResolveMapping;
+  resolve?: Resolve;
 }
 
 export type ConcatSpec = GenericVConcatSpec<UnitSpec> | GenericHConcatSpec<UnitSpec>;

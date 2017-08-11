@@ -78,8 +78,8 @@ describe('Layer', function() {
           }
         }],
         resolve: {
-          x: {
-            scale: 'independent'
+          scale: {
+            x: 'independent'
           }
         }
       });
@@ -104,8 +104,8 @@ describe('Layer', function() {
         }
       }],
       resolve: {
-        x: {
-          scale: 'independent'
+        scale: {
+          x: 'independent'
         }
       }
     });

@@ -4,7 +4,7 @@ import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, title} from '../fielddef';
 import * as log from '../log';
-import {ResolveMapping} from '../resolve';
+import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
 import {extractTitleConfig, Title} from '../title';
@@ -72,7 +72,7 @@ export interface Component {
   /** Dictionary mapping channel to VgLegend definition */
   legends: LegendComponentIndex;
 
-  resolve: ResolveMapping;
+  resolve: Resolve;
 }
 
 export interface NameMapInterface {
@@ -163,7 +163,7 @@ export abstract class Model {
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
     this.parent = parent;
     this.config = config;
 
@@ -190,7 +190,10 @@ export abstract class Model {
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders:{row: {}, column: {}},
       mark: null,
-      resolve: resolve || {},
+      resolve: {
+        scale: {}, axis: {}, legend: {},
+        ...(resolve || {})
+      },
       selection: null,
       scales: null,
       axes: {},

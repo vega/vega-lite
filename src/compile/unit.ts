@@ -65,7 +65,7 @@ export class UnitModel extends ModelWithField {
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config) {
 
-    super(spec, parent, parentGivenName, config, {});
+    super(spec, parent, parentGivenName, config, undefined);
     this.initSize({
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),

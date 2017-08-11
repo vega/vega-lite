@@ -72,35 +72,40 @@ describe('compile/resolve', () => {
   describe('parseGuideResolve', () => {
     it('shares axis for a shared scale by default', () => {
       const axisResolve = parseGuideResolve({
-        x: {scale: 'shared'},
+        scale: {x: 'shared'},
+        axis: {}
       }, 'x');
       assert.equal(axisResolve, 'shared');
     });
 
     it('separates axis for a shared scale if specified', () => {
       const axisResolve = parseGuideResolve({
-        x: {scale: 'shared', axis: 'independent'},
+        scale: {x: 'shared'},
+        axis: {x: 'independent'}
       }, 'x');
       assert.equal(axisResolve, 'independent');
     });
 
     it('separates legend for a shared scale if specified', () => {
       const legendResolve = parseGuideResolve({
-        color: {scale: 'shared', legend: 'independent'},
+        scale: {color: 'shared'},
+        legend: {color: 'independent'}
       }, 'color');
       assert.equal(legendResolve, 'independent');
     });
 
     it('separates axis for an independent scale by default', () => {
       const axisResolve = parseGuideResolve({
-        x: {scale: 'independent'},
+        scale: {x: 'independent'},
+        axis: {}
       }, 'x');
       assert.equal(axisResolve, 'independent');
     });
 
     it('separates axis for an independent scale even "shared" is specified and throw warning', log.wrap((localLogger) => {
       const axisResolve = parseGuideResolve({
-        x: {scale: 'independent', axis: 'shared'},
+        scale: {x: 'independent'},
+        axis: {x: 'shared'}
       }, 'x');
       assert.equal(axisResolve, 'independent');
       assert.equal(localLogger.warns[0], log.message.independentScaleMeansIndependentGuide('x'));

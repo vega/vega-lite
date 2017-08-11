@@ -76,7 +76,7 @@ describe('compile/layout', () => {
           }
         },
         resolve: {
-          x: {scale: 'independent'}
+          scale: {x: 'independent'}
         }
       });
       model.parseScale();

@@ -458,6 +458,18 @@
       ],
       "type": "string"
     },
+    "AxisResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "y": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
+      "type": "object"
+    },
     "BOXPLOT": {
       "enum": [
         "box-plot"
@@ -2507,7 +2519,7 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -2548,7 +2560,7 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2597,7 +2609,7 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2635,7 +2647,7 @@
           "$ref": "#/definitions/Repeat"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -2796,7 +2808,7 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -3510,6 +3522,24 @@
       ],
       "type": "string"
     },
+    "LegendResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "opacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "shape": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "size": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
+      "type": "object"
+    },
     "AndFilter": {
       "additionalProperties": false,
       "properties": {
@@ -4052,18 +4082,6 @@
       ],
       "type": "object"
     },
-    "NonspatialResolve": {
-      "additionalProperties": false,
-      "properties": {
-        "legend": {
-          "$ref": "#/definitions/ResolveMode"
-        },
-        "scale": {
-          "$ref": "#/definitions/ResolveMode"
-        }
-      },
-      "type": "object"
-    },
     "OneOfFilter": {
       "additionalProperties": false,
       "properties": {
@@ -4380,26 +4398,17 @@
       ],
       "type": "object"
     },
-    "ResolveMapping": {
+    "Resolve": {
       "additionalProperties": false,
       "properties": {
-        "color": {
-          "$ref": "#/definitions/NonspatialResolve"
+        "axis": {
+          "$ref": "#/definitions/AxisResolveMap"
         },
-        "opacity": {
-          "$ref": "#/definitions/NonspatialResolve"
+        "legend": {
+          "$ref": "#/definitions/LegendResolveMap"
         },
-        "shape": {
-          "$ref": "#/definitions/NonspatialResolve"
-        },
-        "size": {
-          "$ref": "#/definitions/NonspatialResolve"
-        },
-        "x": {
-          "$ref": "#/definitions/SpatialResolve"
-        },
-        "y": {
-          "$ref": "#/definitions/SpatialResolve"
+        "scale": {
+          "$ref": "#/definitions/ScaleResolveMap"
         }
       },
       "type": "object"
@@ -4662,6 +4671,30 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "ScaleResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "opacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "shape": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "size": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "x": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "y": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
       "type": "object"
     },
     "ScaleType": {
@@ -4933,18 +4966,6 @@
           "type": "null"
         }
       ]
-    },
-    "SpatialResolve": {
-      "additionalProperties": false,
-      "properties": {
-        "axis": {
-          "$ref": "#/definitions/ResolveMode"
-        },
-        "scale": {
-          "$ref": "#/definitions/ResolveMode"
-        }
-      },
-      "type": "object"
     },
     "StackOffset": {
       "enum": [
@@ -5553,7 +5574,7 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -5615,7 +5636,7 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5685,7 +5706,7 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5744,7 +5765,7 @@
           "$ref": "#/definitions/Repeat"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -5800,7 +5821,7 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",

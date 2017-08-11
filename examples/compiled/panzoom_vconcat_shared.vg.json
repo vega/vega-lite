@@ -123,7 +123,7 @@
                             "events": {
                                 "signal": "region_zoom_delta"
                             },
-                            "update": "zoomLinear(domain(\"x\"), region_zoom_anchor.x, region_zoom_delta)"
+                            "update": "zoomLinear(domain(\"concat_0_x\"), region_zoom_anchor.x, region_zoom_delta)"
                         }
                     ],
                     "push": "outer"
@@ -141,7 +141,7 @@
                             "events": {
                                 "signal": "region_zoom_delta"
                             },
-                            "update": "zoomLinear(domain(\"concat_0_y\"), region_zoom_anchor.y, region_zoom_delta)"
+                            "update": "zoomLinear(domain(\"y\"), region_zoom_anchor.y, region_zoom_delta)"
                         }
                     ],
                     "push": "outer"
@@ -173,7 +173,7 @@
                                     "type": "mousedown"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"concat_0_y\")}"
+                            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"concat_0_x\"), extent_y: domain(\"y\")}"
                         }
                     ]
                 },
@@ -214,7 +214,7 @@
                                     "consume": true
                                 }
                             ],
-                            "update": "{x: invert(\"x\", x(unit)), y: invert(\"concat_0_y\", y(unit))}"
+                            "update": "{x: invert(\"concat_0_x\", x(unit)), y: invert(\"y\", y(unit))}"
                         }
                     ]
                 },
@@ -260,11 +260,11 @@
                     "encode": {
                         "update": {
                             "x": {
-                                "scale": "x",
+                                "scale": "concat_0_x",
                                 "field": "Horsepower"
                             },
                             "y": {
-                                "scale": "concat_0_y",
+                                "scale": "y",
                                 "field": "Miles_per_Gallon"
                             },
                             "stroke": {
@@ -282,7 +282,7 @@
             ],
             "axes": [
                 {
-                    "scale": "x",
+                    "scale": "concat_0_x",
                     "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": {
@@ -292,7 +292,7 @@
                     "zindex": 1
                 },
                 {
-                    "scale": "x",
+                    "scale": "concat_0_x",
                     "domain": false,
                     "grid": true,
                     "labels": false,
@@ -304,10 +304,10 @@
                     },
                     "ticks": false,
                     "zindex": 0,
-                    "gridScale": "concat_0_y"
+                    "gridScale": "y"
                 },
                 {
-                    "scale": "concat_0_y",
+                    "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
                     "tickCount": {
@@ -317,7 +317,7 @@
                     "zindex": 1
                 },
                 {
-                    "scale": "concat_0_y",
+                    "scale": "y",
                     "domain": false,
                     "grid": true,
                     "labels": false,
@@ -329,7 +329,7 @@
                     },
                     "ticks": false,
                     "zindex": 0,
-                    "gridScale": "x"
+                    "gridScale": "concat_0_x"
                 }
             ]
         },
@@ -361,11 +361,11 @@
                     "encode": {
                         "update": {
                             "x": {
-                                "scale": "x",
+                                "scale": "concat_1_x",
                                 "field": "Horsepower"
                             },
                             "y": {
-                                "scale": "concat_1_y",
+                                "scale": "y",
                                 "field": "Acceleration"
                             },
                             "stroke": {
@@ -383,7 +383,7 @@
             ],
             "axes": [
                 {
-                    "scale": "x",
+                    "scale": "concat_1_x",
                     "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": {
@@ -393,7 +393,7 @@
                     "zindex": 1
                 },
                 {
-                    "scale": "x",
+                    "scale": "concat_1_x",
                     "domain": false,
                     "grid": true,
                     "labels": false,
@@ -405,10 +405,10 @@
                     },
                     "ticks": false,
                     "zindex": 0,
-                    "gridScale": "concat_1_y"
+                    "gridScale": "y"
                 },
                 {
-                    "scale": "concat_1_y",
+                    "scale": "y",
                     "labelOverlap": true,
                     "orient": "left",
                     "tickCount": {
@@ -418,7 +418,7 @@
                     "zindex": 1
                 },
                 {
-                    "scale": "concat_1_y",
+                    "scale": "y",
                     "domain": false,
                     "grid": true,
                     "labels": false,
@@ -430,47 +430,27 @@
                     },
                     "ticks": false,
                     "zindex": 0,
-                    "gridScale": "x"
+                    "gridScale": "concat_1_x"
                 }
             ]
         }
     ],
     "scales": [
         {
-            "name": "x",
+            "name": "y",
             "type": "linear",
             "domain": {
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "Horsepower"
+                        "field": "Miles_per_Gallon"
                     },
                     {
                         "data": "data_1",
-                        "field": "Horsepower"
+                        "field": "Acceleration"
                     }
                 ],
                 "sort": true
-            },
-            "domainRaw": {
-                "signal": "region_Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "concat_0_y",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Miles_per_Gallon"
             },
             "domainRaw": {
                 "signal": "region_Miles_per_Gallon"
@@ -486,17 +466,37 @@
             "zero": true
         },
         {
-            "name": "concat_1_y",
+            "name": "concat_0_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Horsepower"
+            },
+            "domainRaw": {
+                "signal": "region_Horsepower"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_1_x",
             "type": "linear",
             "domain": {
                 "data": "data_1",
-                "field": "Acceleration"
+                "field": "Horsepower"
             },
             "range": [
+                0,
                 {
-                    "signal": "concat_1_height"
-                },
-                0
+                    "signal": "width"
+                }
             ],
             "round": true,
             "nice": true,
