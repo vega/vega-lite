@@ -71,8 +71,9 @@ git checkout master
 git push --tags
 # now the published tag contains build files which work great with bower.
 
-# 3. GITHUB PAGES PUBLISH
+# 3. SCHEMA
+scripts/deploy-schema.sh
+
+# 4. GITHUB PAGES PUBLISH
 scripts/deploy-gh.sh
 
-# 4. SCHEMA
-scripts/deploy-schema.sh
