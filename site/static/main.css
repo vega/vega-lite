@@ -557,6 +557,53 @@ footer .edit-page {
   border: 1px dashed #ddd;
 }
 
+/* Carousel */
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+.slides {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.slide {
+  padding-top: 15px;
+  display: none;
+}
+
+.slide button {
+  padding: 3px 6px;
+  text-align: center;
+  background-color: #4682b4;
+  border: 1px solid #357ebd;
+  color: #fff;
+  border-radius: 3px;
+  vertical-align: bottom;
+  font-size: .8em;
+  cursor: pointer;
+}
+
+.slide:nth-child(1) {
+  display: block;
+}
+
+.slide[data-state=active] {
+  display: block;
+}
+
+.indicators {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.indicator {
+  cursor: pointer;
+}
+
 /* Media queries */
 @media (max-width:768px) {
   body {
