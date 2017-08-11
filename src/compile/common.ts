@@ -9,7 +9,7 @@ import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
-import {VgEncodeEntry, VgSort} from '../vega.schema';
+import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -91,8 +91,12 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   const styles = getStyles(mark);
   for (const style of styles) {
     const styleConfig = config.style[style];
-    if (styleConfig && styleConfig[prop] !== undefined) {
-      value = styleConfig[prop];
+
+    // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
+    // However here we also check if it is defined, so it is okay to cast here
+    const p = prop as keyof VgMarkConfig;
+    if (styleConfig && styleConfig[p] !== undefined) {
+      value = styleConfig[p];
     }
   }
 

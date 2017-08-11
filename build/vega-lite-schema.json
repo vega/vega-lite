@@ -4937,7 +4937,7 @@
     },
     "StyleConfigIndex": {
       "additionalProperties": {
-        "$ref": "#/definitions/MarkConfig"
+        "$ref": "#/definitions/VgMarkConfig"
       },
       "type": "object"
     },
