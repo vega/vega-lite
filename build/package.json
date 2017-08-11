@@ -86,7 +86,7 @@
     "@types/mkdirp": "^0.5.0",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.19",
-    "@types/webdriverio": "^4.8.2",
+    "@types/webdriverio": "^4.8.4",
     "ajv": "5.2.2",
     "browser-sync": "^2.18.13",
     "browserify": "^14.4.0",
@@ -110,7 +110,7 @@
     "typescript": "^2.4.2",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
     "uglify-js": "^3.0.27",
-    "vega": "3.0.0-rc7",
+    "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "^3.0.0-beta.20",
     "vega-tooltip": "^0.4.2",
@@ -119,7 +119,7 @@
     "wdio-dot-reporter": "0.0.8",
     "wdio-mocha-framework": "^0.5.10",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "4.7.1",
+    "webdriverio": "^4.8.0",
     "yaml-front-matter": "^3.4.0"
   },
   "dependencies": {

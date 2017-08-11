@@ -1,12 +1,12 @@
 import { AxisConfigMixins } from './axis';
 import { CompositeMarkConfigMixins } from './compositemark/index';
 import { LegendConfig } from './legend';
-import { MarkConfig, MarkConfigMixins } from './mark';
+import { MarkConfigMixins } from './mark';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
 import { TopLevelProperties } from './toplevelprops';
-import { VgRangeScheme, VgTitleConfig } from './vega.schema';
+import { VgMarkConfig, VgRangeScheme, VgTitleConfig } from './vega.schema';
 export interface CellConfig {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
@@ -119,7 +119,7 @@ export interface VLOnlyConfig {
     stack?: StackOffset;
 }
 export interface StyleConfigIndex {
-    [style: string]: MarkConfig;
+    [style: string]: VgMarkConfig;
 }
 export declare type AreaOverlay = 'line' | 'linepoint' | 'none';
 export interface OverlayConfig {

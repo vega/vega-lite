@@ -1623,7 +1623,7 @@ module.exports={
     "@types/mkdirp": "^0.5.0",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.19",
-    "@types/webdriverio": "^4.8.2",
+    "@types/webdriverio": "^4.8.4",
     "ajv": "5.2.2",
     "browser-sync": "^2.18.13",
     "browserify": "^14.4.0",
@@ -1647,7 +1647,7 @@ module.exports={
     "typescript": "^2.4.2",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
     "uglify-js": "^3.0.27",
-    "vega": "3.0.0-rc7",
+    "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "^3.0.0-beta.20",
     "vega-tooltip": "^0.4.2",
@@ -1656,7 +1656,7 @@ module.exports={
     "wdio-dot-reporter": "0.0.8",
     "wdio-mocha-framework": "^0.5.10",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "4.7.1",
+    "webdriverio": "^4.8.0",
     "yaml-front-matter": "^3.4.0"
   },
   "dependencies": {
@@ -1723,7 +1723,7 @@ exports.SHARED_DOMAIN_OPS = [
 ];
 exports.SHARED_DOMAIN_OP_INDEX = util_1.toSet(exports.SHARED_DOMAIN_OPS);
 
-},{"./util":109}],10:[function(require,module,exports){
+},{"./util":110}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -1770,7 +1770,7 @@ function autoMaxBins(channel) {
 }
 exports.autoMaxBins = autoMaxBins;
 
-},{"./channel":12,"./util":109}],12:[function(require,module,exports){
+},{"./channel":12,"./util":110}],12:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for encoding channels (Visual variables)
@@ -1951,7 +1951,7 @@ function rangeType(channel) {
 }
 exports.rangeType = rangeType;
 
-},{"./scale":100,"./util":109}],13:[function(require,module,exports){
+},{"./scale":100,"./util":110}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mainAxisReducer = getAxisReducer('main');
@@ -2054,7 +2054,7 @@ function labelAlign(angle, orient) {
 }
 exports.labelAlign = labelAlign;
 
-},{"../../channel":12,"../../scale":100,"../../type":108,"../../util":109,"../common":19,"tslib":5}],16:[function(require,module,exports){
+},{"../../channel":12,"../../scale":100,"../../type":109,"../../util":110,"../common":19,"tslib":5}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2337,7 +2337,7 @@ function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
     return specifiedAxis[property];
 }
 
-},{"../../axis":10,"../../channel":12,"../../util":109,"../common":19,"../resolve":62,"../split":82,"./component":14,"./encode":15,"./rules":17,"tslib":5}],17:[function(require,module,exports){
+},{"../../axis":10,"../../channel":12,"../../util":110,"../common":19,"../resolve":62,"../split":82,"./component":14,"./encode":15,"./rules":17,"tslib":5}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var bin_1 = require("../../bin");
@@ -2448,7 +2448,7 @@ function zindex(isGridAxis) {
 }
 exports.zindex = zindex;
 
-},{"../../bin":11,"../../channel":12,"../../datetime":89,"../../fielddef":92,"../../log":97,"../../scale":100,"../../util":109}],18:[function(require,module,exports){
+},{"../../bin":11,"../../channel":12,"../../datetime":89,"../../fielddef":92,"../../log":97,"../../scale":100,"../../util":110}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2533,7 +2533,7 @@ var BaseConcatModel = (function (_super) {
 }(model_1.Model));
 exports.BaseConcatModel = BaseConcatModel;
 
-},{"../util":109,"./data/parse":32,"./layout/assemble":39,"./model":59,"./scale/assemble":63,"tslib":5}],19:[function(require,module,exports){
+},{"../util":110,"./data/parse":32,"./layout/assemble":39,"./model":59,"./scale/assemble":63,"tslib":5}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2614,8 +2614,11 @@ function getMarkConfig(prop, mark, config) {
     for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
         var style = styles_1[_i];
         var styleConfig = config.style[style];
-        if (styleConfig && styleConfig[prop] !== undefined) {
-            value = styleConfig[prop];
+        // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
+        // However here we also check if it is defined, so it is okay to cast here
+        var p = prop;
+        if (styleConfig && styleConfig[p] !== undefined) {
+            value = styleConfig[p];
         }
     }
     return value;
@@ -2724,7 +2727,7 @@ function titleMerger(v1, v2) {
 }
 exports.titleMerger = titleMerger;
 
-},{"../fielddef":92,"../log":97,"../scale":100,"../spec":103,"../timeunit":105,"../type":108,"../util":109,"./concat":21,"./facet":37,"./layer":38,"./repeat":60,"./unit":83,"tslib":5}],20:[function(require,module,exports){
+},{"../fielddef":92,"../log":97,"../scale":100,"../spec":103,"../timeunit":105,"../type":109,"../util":110,"./concat":21,"./facet":37,"./layer":38,"./repeat":60,"./unit":83,"tslib":5}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2802,7 +2805,7 @@ function assembleTopLevelModel(model, topLevelProperties) {
     };
 }
 
-},{"../config":87,"../log":97,"../spec":103,"../toplevelprops":106,"./common":19,"./data/assemble":23,"./data/optimize":30,"tslib":5}],21:[function(require,module,exports){
+},{"../config":87,"../log":97,"../spec":103,"../toplevelprops":107,"./common":19,"./data/assemble":23,"./data/optimize":30,"tslib":5}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3011,7 +3014,7 @@ var AggregateNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.AggregateNode = AggregateNode;
 
-},{"../../channel":12,"../../fielddef":92,"../../log":97,"../../type":108,"../../util":109,"./dataflow":25,"tslib":5}],23:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../log":97,"../../type":109,"../../util":110,"./dataflow":25,"tslib":5}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3222,7 +3225,7 @@ function assembleRootData(dataComponent) {
 }
 exports.assembleRootData = assembleRootData;
 
-},{"../../data":88,"../../util":109,"./aggregate":22,"./bin":24,"./dataflow":25,"./facet":26,"./formatparse":27,"./nonpositivefilter":28,"./nullfilter":29,"./source":33,"./stack":34,"./timeunit":35,"./transforms":36,"tslib":5}],24:[function(require,module,exports){
+},{"../../data":88,"../../util":110,"./aggregate":22,"./bin":24,"./dataflow":25,"./facet":26,"./formatparse":27,"./nonpositivefilter":28,"./nullfilter":29,"./source":33,"./stack":34,"./timeunit":35,"./transforms":36,"tslib":5}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3340,7 +3343,7 @@ var BinNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.BinNode = BinNode;
 
-},{"../../bin":11,"../../fielddef":92,"../../util":109,"../common":19,"../model":59,"./dataflow":25,"tslib":5}],25:[function(require,module,exports){
+},{"../../bin":11,"../../fielddef":92,"../../util":110,"../common":19,"../model":59,"./dataflow":25,"tslib":5}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3617,7 +3620,7 @@ var FacetNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.FacetNode = FacetNode;
 
-},{"../../channel":12,"../../scale":100,"../../vega.schema":111,"../scale/domain":65,"./dataflow":25,"tslib":5}],27:[function(require,module,exports){
+},{"../../channel":12,"../../scale":100,"../../vega.schema":112,"../scale/domain":65,"./dataflow":25,"tslib":5}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3762,7 +3765,7 @@ var ParseNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.ParseNode = ParseNode;
 
-},{"../../aggregate":9,"../../filter":93,"../../log":97,"../../logical":98,"../../transform":107,"../../type":108,"../../util":109,"../model":59,"./dataflow":25,"tslib":5}],28:[function(require,module,exports){
+},{"../../aggregate":9,"../../filter":93,"../../log":97,"../../logical":98,"../../transform":108,"../../type":109,"../../util":110,"../model":59,"./dataflow":25,"tslib":5}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3818,7 +3821,7 @@ var NonPositiveFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NonPositiveFilterNode = NonPositiveFilterNode;
 
-},{"../../channel":12,"../../scale":100,"../../util":109,"./dataflow":25,"tslib":5}],29:[function(require,module,exports){
+},{"../../channel":12,"../../scale":100,"../../util":110,"./dataflow":25,"tslib":5}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3898,7 +3901,7 @@ var NullFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NullFilterNode = NullFilterNode;
 
-},{"../../channel":12,"../../scale":100,"../../type":108,"../../util":109,"./dataflow":25,"tslib":5}],30:[function(require,module,exports){
+},{"../../channel":12,"../../scale":100,"../../type":109,"../../util":110,"./dataflow":25,"tslib":5}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var data_1 = require("../../data");
@@ -4026,7 +4029,7 @@ function optimizeDataflow(dataComponent) {
 }
 exports.optimizeDataflow = optimizeDataflow;
 
-},{"../../data":88,"../../util":109,"./aggregate":22,"./dataflow":25,"./facet":26,"./nonpositivefilter":28,"./nullfilter":29,"./optimizers":31,"./stack":34}],31:[function(require,module,exports){
+},{"../../data":88,"../../util":110,"./aggregate":22,"./dataflow":25,"./facet":26,"./nonpositivefilter":28,"./nullfilter":29,"./optimizers":31,"./stack":34}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4120,7 +4123,7 @@ function removeDuplicateTimeUnits(leaf) {
 }
 exports.removeDuplicateTimeUnits = removeDuplicateTimeUnits;
 
-},{"../../util":109,"./dataflow":25,"./formatparse":27,"./source":33,"./timeunit":35,"tslib":5}],32:[function(require,module,exports){
+},{"../../util":110,"./dataflow":25,"./formatparse":27,"./source":33,"./timeunit":35,"tslib":5}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4415,7 +4418,7 @@ var SourceNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.SourceNode = SourceNode;
 
-},{"../../data":88,"../../util":109,"./dataflow":25,"tslib":5}],34:[function(require,module,exports){
+},{"../../data":88,"../../util":110,"./dataflow":25,"tslib":5}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4574,7 +4577,7 @@ var StackNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.StackNode = StackNode;
 
-},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":109,"../common":19,"./dataflow":25,"tslib":5,"vega-util":7}],35:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":110,"../common":19,"./dataflow":25,"tslib":5,"vega-util":7}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4651,7 +4654,7 @@ var TimeUnitNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.TimeUnitNode = TimeUnitNode;
 
-},{"../../fielddef":92,"../../timeunit":105,"../../type":108,"../../util":109,"./dataflow":25,"tslib":5}],36:[function(require,module,exports){
+},{"../../fielddef":92,"../../timeunit":105,"../../type":109,"../../util":110,"./dataflow":25,"tslib":5}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4870,7 +4873,7 @@ function parseTransformArray(model) {
 }
 exports.parseTransformArray = parseTransformArray;
 
-},{"../../datetime":89,"../../filter":93,"../../log":97,"../../selection":101,"../../transform":107,"../../util":109,"../selection/selection":72,"./aggregate":22,"./bin":24,"./dataflow":25,"./formatparse":27,"./source":33,"./timeunit":35,"tslib":5,"vega-util":7}],37:[function(require,module,exports){
+},{"../../datetime":89,"../../filter":93,"../../log":97,"../../selection":101,"../../transform":108,"../../util":110,"../selection/selection":72,"./aggregate":22,"./bin":24,"./dataflow":25,"./formatparse":27,"./source":33,"./timeunit":35,"tslib":5,"vega-util":7}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5143,7 +5146,7 @@ var FacetModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.FacetModel = FacetModel;
 
-},{"../channel":12,"../encoding":90,"../fielddef":92,"../log":97,"../scale":100,"../util":109,"../vega.schema":111,"./common":19,"./data/assemble":23,"./data/parse":32,"./layout/header":40,"./layout/parse":41,"./model":59,"./repeater":61,"./resolve":62,"./scale/assemble":63,"./scale/domain":65,"tslib":5}],38:[function(require,module,exports){
+},{"../channel":12,"../encoding":90,"../fielddef":92,"../log":97,"../scale":100,"../util":110,"../vega.schema":112,"./common":19,"./data/assemble":23,"./data/parse":32,"./layout/header":40,"./layout/parse":41,"./model":59,"./repeater":61,"./resolve":62,"./scale/assemble":63,"./scale/domain":65,"tslib":5}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5230,14 +5233,16 @@ var LayerModel = (function (_super) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
     };
     LayerModel.prototype.assembleTitle = function () {
-        if (this.title) {
-            return this.title;
+        var title = _super.prototype.assembleTitle.call(this);
+        if (title) {
+            return title;
         }
         // If title does not provide layer, look into children
         for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
             var child = _a[_i];
-            if (child.title) {
-                return child.title;
+            title = child.assembleTitle();
+            if (title) {
+                return title;
             }
         }
         return undefined;
@@ -5257,7 +5262,7 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../log":97,"../spec":103,"../util":109,"./axis/parse":16,"./data/parse":32,"./layout/assemble":39,"./layout/parse":41,"./model":59,"./scale/assemble":63,"./selection/selection":72,"./unit":83,"tslib":5}],39:[function(require,module,exports){
+},{"../log":97,"../spec":103,"../util":110,"./axis/parse":16,"./data/parse":32,"./layout/assemble":39,"./layout/parse":41,"./model":59,"./scale/assemble":63,"./selection/selection":72,"./unit":83,"tslib":5}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
@@ -5333,7 +5338,7 @@ function sizeExpr(scaleName, scaleComponent, cardinality) {
 }
 exports.sizeExpr = sizeExpr;
 
-},{"../../scale":100,"../../vega.schema":111,"../model":59}],40:[function(require,module,exports){
+},{"../../scale":100,"../../vega.schema":112,"../model":59}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5522,7 +5527,7 @@ function defaultUnitSize(model, sizeType) {
     }
 }
 
-},{"../../scale":100,"../../vega.schema":111,"../split":82}],42:[function(require,module,exports){
+},{"../../scale":100,"../../vega.schema":112,"../split":82}],42:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
@@ -5552,7 +5557,7 @@ function assembleLegends(model) {
 }
 exports.assembleLegends = assembleLegends;
 
-},{"../../util":109,"./parse":45,"json-stable-stringify":1}],43:[function(require,module,exports){
+},{"../../util":110,"./parse":45,"json-stable-stringify":1}],43:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5643,7 +5648,7 @@ function labels(fieldDef, labelsSpec, model, channel) {
 }
 exports.labels = labels;
 
-},{"../../channel":12,"../../fielddef":92,"../../mark":99,"../../scale":100,"../../type":108,"../../util":109,"../common":19,"../mark/mixins":52}],45:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../mark":99,"../../scale":100,"../../type":109,"../../util":110,"../common":19,"../mark/mixins":52}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -5809,7 +5814,7 @@ function mergeLegendComponent(mergedLegend, childLegend) {
 }
 exports.mergeLegendComponent = mergeLegendComponent;
 
-},{"../../channel":12,"../../fielddef":92,"../../legend":96,"../../util":109,"../common":19,"../model":59,"../resolve":62,"../split":82,"./component":43,"./encode":44,"./rules":46}],46:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../legend":96,"../../util":110,"../common":19,"../model":59,"../resolve":62,"../split":82,"./component":43,"./encode":44,"./rules":46}],46:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -5836,7 +5841,7 @@ function type(type, channel, scaleType) {
 }
 exports.type = type;
 
-},{"../../channel":12,"../../datetime":89,"../../scale":100,"../../util":109}],47:[function(require,module,exports){
+},{"../../channel":12,"../../datetime":89,"../../scale":100,"../../util":110}],47:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5945,7 +5950,7 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":12,"../../fielddef":92,"../../log":97,"../../scale":100,"../../vega.schema":111,"./mixins":52,"./valueref":58,"tslib":5,"vega-util":7}],49:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../log":97,"../../scale":100,"../../vega.schema":112,"./mixins":52,"./valueref":58,"tslib":5,"vega-util":7}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var encoding_1 = require("../../encoding");
@@ -6086,7 +6091,7 @@ function orient(mark, encoding, scales, specifiedOrient) {
     return 'vertical';
 }
 
-},{"../../encoding":90,"../../fielddef":92,"../../log":97,"../../mark":99,"../../scale":100,"../../type":108,"../../util":109,"../common":19}],50:[function(require,module,exports){
+},{"../../encoding":90,"../../fielddef":92,"../../log":97,"../../mark":99,"../../scale":100,"../../type":109,"../../util":110,"../common":19}],50:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6270,7 +6275,7 @@ function scaleClip(model) {
         (yScale && yScale.get('domainRaw')) ? true : false;
 }
 
-},{"../../channel":12,"../../data":88,"../../encoding":90,"../../fielddef":92,"../../mark":99,"../../sort":102,"../../util":109,"../common":19,"../model":59,"./area":47,"./bar":48,"./init":49,"./line":50,"./point":53,"./rect":54,"./rule":55,"./text":56,"./tick":57,"tslib":5,"vega-util":7}],52:[function(require,module,exports){
+},{"../../channel":12,"../../data":88,"../../encoding":90,"../../fielddef":92,"../../mark":99,"../../sort":102,"../../util":110,"../common":19,"../model":59,"./area":47,"./bar":48,"./init":49,"./line":50,"./point":53,"./rect":54,"./rule":55,"./text":56,"./tick":57,"tslib":5,"vega-util":7}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6435,7 +6440,7 @@ function pointPosition2(model, defaultRef, channel) {
 }
 exports.pointPosition2 = pointPosition2;
 
-},{"../../fielddef":92,"../../log":97,"../../util":109,"../common":19,"../selection/selection":72,"./valueref":58,"tslib":5}],53:[function(require,module,exports){
+},{"../../fielddef":92,"../../log":97,"../../util":110,"../common":19,"../selection/selection":72,"./valueref":58,"tslib":5}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6587,7 +6592,7 @@ function align(markDef, encoding, config) {
     return undefined;
 }
 
-},{"../../channel":12,"../../encoding":90,"../../fielddef":92,"../../type":108,"../common":19,"./mixins":52,"./valueref":58,"tslib":5}],57:[function(require,module,exports){
+},{"../../channel":12,"../../encoding":90,"../../fielddef":92,"../../type":109,"../common":19,"./mixins":52,"./valueref":58,"tslib":5}],57:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6628,7 +6633,7 @@ function defaultSize(model) {
     }
 }
 
-},{"../../vega.schema":111,"./mixins":52,"./valueref":58,"tslib":5}],58:[function(require,module,exports){
+},{"../../vega.schema":112,"./mixins":52,"./valueref":58,"tslib":5}],58:[function(require,module,exports){
 "use strict";
 /**
  * Utility files for producing Vega ValueRef for marks
@@ -6849,7 +6854,7 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":109,"../common":19,"tslib":5}],59:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":110,"../common":19,"tslib":5}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6858,6 +6863,7 @@ var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
 var log = require("../log");
 var scale_1 = require("../scale");
+var title_1 = require("../title");
 var util_1 = require("../util");
 var vega_schema_1 = require("../vega.schema");
 var assemble_1 = require("./axis/assemble");
@@ -7071,7 +7077,8 @@ var Model = (function () {
         return assemble_3.assembleLegends(this);
     };
     Model.prototype.assembleTitle = function () {
-        return this.title;
+        var title = tslib_1.__assign({}, title_1.extractTitleConfig(this.config.title).nonMark, this.title);
+        return util_1.keys(title).length > 0 ? title : undefined;
     };
     /**
      * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
@@ -7265,7 +7272,7 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":12,"../encoding":90,"../fielddef":92,"../log":97,"../scale":100,"../util":109,"../vega.schema":111,"./axis/assemble":13,"./layout/assemble":39,"./layout/header":40,"./legend/assemble":42,"./legend/parse":45,"./mark/mark":51,"./scale/domain":65,"./scale/parse":66,"./split":82,"tslib":5}],60:[function(require,module,exports){
+},{"../channel":12,"../encoding":90,"../fielddef":92,"../log":97,"../scale":100,"../title":106,"../util":110,"../vega.schema":112,"./axis/assemble":13,"./layout/assemble":39,"./layout/header":40,"./legend/assemble":42,"./legend/parse":45,"./mark/mark":51,"./scale/domain":65,"./scale/parse":66,"./split":82,"tslib":5}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -7402,7 +7409,7 @@ function parseGuideResolve(resolve, channel) {
 }
 exports.parseGuideResolve = parseGuideResolve;
 
-},{"../channel":12,"../log":97,"../util":109,"./model":59}],63:[function(require,module,exports){
+},{"../channel":12,"../log":97,"../util":110,"./model":59}],63:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -7479,7 +7486,7 @@ function assembleScaleRange(scaleRange, scaleName, model, channel) {
 }
 exports.assembleScaleRange = assembleScaleRange;
 
-},{"../../util":109,"../../vega.schema":111,"../selection/selection":72,"./domain":65,"tslib":5,"vega-util":7}],64:[function(require,module,exports){
+},{"../../util":110,"../../vega.schema":112,"../selection/selection":72,"./domain":65,"tslib":5,"vega-util":7}],64:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -7874,7 +7881,7 @@ function getFieldFromDomains(domains) {
 }
 exports.getFieldFromDomains = getFieldFromDomains;
 
-},{"../../aggregate":9,"../../bin":11,"../../channel":12,"../../data":88,"../../datetime":89,"../../log":97,"../../scale":100,"../../sort":102,"../../util":109,"../../vega.schema":111,"../data/optimize":30,"../model":59,"../selection/selection":72,"tslib":5,"vega-util":7}],66:[function(require,module,exports){
+},{"../../aggregate":9,"../../bin":11,"../../channel":12,"../../data":88,"../../datetime":89,"../../log":97,"../../scale":100,"../../sort":102,"../../util":110,"../../vega.schema":112,"../data/optimize":30,"../model":59,"../selection/selection":72,"tslib":5,"vega-util":7}],66:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -7998,7 +8005,7 @@ function parseNonUnitScaleCore(model) {
     return scaleComponents;
 }
 
-},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":109,"../model":59,"../resolve":62,"../split":82,"./component":64,"./domain":65,"./properties":67,"./range":68,"./type":69}],67:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":92,"../../scale":100,"../../util":110,"../model":59,"../resolve":62,"../split":82,"./component":64,"./domain":65,"./properties":67,"./range":68,"./type":69}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -8188,7 +8195,7 @@ function zero(channel, fieldDef, hasCustomDomain) {
 }
 exports.zero = zero;
 
-},{"../../channel":12,"../../log":97,"../../scale":100,"../../timeunit":105,"../../util":109,"../model":59,"../split":82,"./range":68}],68:[function(require,module,exports){
+},{"../../channel":12,"../../log":97,"../../scale":100,"../../timeunit":105,"../../util":110,"../model":59,"../split":82,"./range":68}],68:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_util_1 = require("vega-util");
@@ -8408,7 +8415,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":12,"../../log":97,"../../scale":100,"../../util":109,"../../vega.schema":111,"../model":59,"../split":82,"./properties":67,"vega-util":7}],69:[function(require,module,exports){
+},{"../../channel":12,"../../log":97,"../../scale":100,"../../util":110,"../../vega.schema":112,"../model":59,"../split":82,"./properties":67,"vega-util":7}],69:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -8548,7 +8555,7 @@ function fieldDefMatchScaleType(specifiedType, fieldDef) {
 }
 exports.fieldDefMatchScaleType = fieldDefMatchScaleType;
 
-},{"../../channel":12,"../../log":97,"../../scale":100,"../../timeunit":105,"../../type":108,"../../util":109}],70:[function(require,module,exports){
+},{"../../channel":12,"../../log":97,"../../scale":100,"../../timeunit":105,"../../type":109,"../../util":110}],70:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -8726,7 +8733,7 @@ function events(selCmpt, cb) {
     }, []);
 }
 
-},{"../../channel":12,"../../log":97,"../../scale":100,"../../util":109,"./selection":72,"./transforms/scales":77,"tslib":5}],71:[function(require,module,exports){
+},{"../../channel":12,"../../log":97,"../../scale":100,"../../util":110,"./selection":72,"./transforms/scales":77,"tslib":5}],71:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -8780,7 +8787,7 @@ var multi = {
 };
 exports.default = multi;
 
-},{"../../util":109,"./selection":72,"./transforms/nearest":75}],72:[function(require,module,exports){
+},{"../../util":110,"./selection":72,"./transforms/nearest":75}],72:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -9068,7 +9075,7 @@ function spatialProjections(selCmpt) {
 }
 exports.spatialProjections = spatialProjections;
 
-},{"../../channel":12,"../../log":97,"../../selection":101,"../../util":109,"../model":59,"./interval":70,"./multi":71,"./single":73,"./transforms/transforms":79,"tslib":5,"vega-event-selector":6}],73:[function(require,module,exports){
+},{"../../channel":12,"../../log":97,"../../selection":101,"../../util":110,"../model":59,"./interval":70,"./multi":71,"./single":73,"./transforms/transforms":79,"tslib":5,"vega-event-selector":6}],73:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -9096,7 +9103,7 @@ var single = {
 };
 exports.default = single;
 
-},{"../../util":109,"./multi":71,"./selection":72}],74:[function(require,module,exports){
+},{"../../util":110,"./multi":71,"./selection":72}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../../util");
@@ -9144,7 +9151,7 @@ var inputBindings = {
 };
 exports.default = inputBindings;
 
-},{"../../../util":109,"../selection":72,"./nearest":75}],75:[function(require,module,exports){
+},{"../../../util":110,"../selection":72,"./nearest":75}],75:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("../selection");
@@ -9244,7 +9251,7 @@ var project = {
 };
 exports.default = project;
 
-},{"../../../log":97,"../../../util":109,"../../data/timeunit":35}],77:[function(require,module,exports){
+},{"../../../log":97,"../../../util":110,"../../data/timeunit":35}],77:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log_1 = require("../../../log");
@@ -9302,7 +9309,7 @@ function domain(model, channel) {
 }
 exports.domain = domain;
 
-},{"../../../log":97,"../../../scale":100,"../../../util":109,"../selection":72}],78:[function(require,module,exports){
+},{"../../../log":97,"../../../scale":100,"../../../util":110,"../selection":72}],78:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("../selection");
@@ -9505,7 +9512,7 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":12,"../../../util":109,"../interval":70,"../selection":72,"./scales":77,"vega-event-selector":6}],82:[function(require,module,exports){
+},{"../../../channel":12,"../../../util":110,"../interval":70,"../selection":72,"./scales":77,"vega-event-selector":6}],82:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -9633,7 +9640,7 @@ function mergeValuesWithExplicit(v1, v2, property, propertyOf, tieBreaker) {
 }
 exports.mergeValuesWithExplicit = mergeValuesWithExplicit;
 
-},{"../log":97,"../util":109,"tslib":5}],83:[function(require,module,exports){
+},{"../log":97,"../util":110,"tslib":5}],83:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -9859,7 +9866,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":12,"../encoding":90,"../fielddef":92,"../mark":99,"../scale":100,"../stack":104,"../util":109,"./axis/parse":16,"./data/parse":32,"./layout/assemble":39,"./layout/parse":41,"./mark/init":49,"./mark/mark":51,"./model":59,"./repeater":61,"./scale/assemble":63,"./selection/selection":72,"tslib":5}],84:[function(require,module,exports){
+},{"../channel":12,"../encoding":90,"../fielddef":92,"../mark":99,"../scale":100,"../stack":104,"../util":110,"./axis/parse":16,"./data/parse":32,"./layout/assemble":39,"./layout/parse":41,"./mark/init":49,"./mark/mark":51,"./model":59,"./repeater":61,"./scale/assemble":63,"./selection/selection":72,"tslib":5}],84:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -10199,6 +10206,7 @@ var mark_1 = require("./mark");
 var mark = require("./mark");
 var scale_1 = require("./scale");
 var selection_1 = require("./selection");
+var title_1 = require("./title");
 var util_1 = require("./util");
 exports.defaultCellConfig = {
     width: 200,
@@ -10293,8 +10301,14 @@ function stripAndRedirectConfig(config) {
                 delete config[mark_2][prop];
             }
         }
+        // Redirect mark config to config.style so that mark config only affect its own mark type
+        // without affecting other marks that share the same underlying Vega marks.
+        // For example, config.rect should not affect bar marks.
         redirectConfig(config, mark_2);
     }
+    // Redirect config.title -- so that title config do not
+    // affect header labels, which also uses `title` directive to implement.
+    redirectConfig(config, 'title', 'group-title');
     // Remove empty config objects
     for (var prop in config) {
         if (util_1.isObject(config[prop]) && util_1.keys(config[prop]).length === 0) {
@@ -10304,16 +10318,17 @@ function stripAndRedirectConfig(config) {
     return util_1.keys(config).length > 0 ? config : undefined;
 }
 exports.stripAndRedirectConfig = stripAndRedirectConfig;
-function redirectConfig(config, prop) {
-    var style = tslib_1.__assign({}, config[prop], config.style[prop]);
+function redirectConfig(config, prop, toProp) {
+    var propConfig = prop === 'title' ? title_1.extractTitleConfig(config.title).mark : config[prop];
+    var style = tslib_1.__assign({}, propConfig, config.style[prop]);
     // set config.style if it is not an empty object
     if (util_1.keys(style).length > 0) {
-        config.style[prop] = style;
+        config.style[toProp || prop] = style;
     }
     delete config[prop];
 }
 
-},{"./compositemark":86,"./compositemark/index":86,"./guide":94,"./legend":96,"./mark":99,"./scale":100,"./selection":101,"./util":109,"tslib":5}],88:[function(require,module,exports){
+},{"./compositemark":86,"./compositemark/index":86,"./guide":94,"./legend":96,"./mark":99,"./scale":100,"./selection":101,"./title":106,"./util":110,"tslib":5}],88:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for data.
@@ -10475,7 +10490,7 @@ function dateTimeExpr(d, normalize) {
 }
 exports.dateTimeExpr = dateTimeExpr;
 
-},{"./log":97,"./util":109}],90:[function(require,module,exports){
+},{"./log":97,"./util":110}],90:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
@@ -10612,7 +10627,7 @@ function reduce(mapping, f, init, thisArg) {
 }
 exports.reduce = reduce;
 
-},{"./channel":12,"./fielddef":92,"./log":97,"./util":109}],91:[function(require,module,exports){
+},{"./channel":12,"./fielddef":92,"./log":97,"./util":110}],91:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -10884,7 +10899,7 @@ function channelCompatibility(fieldDef, channel) {
 }
 exports.channelCompatibility = channelCompatibility;
 
-},{"./aggregate":9,"./bin":11,"./channel":12,"./log":97,"./timeunit":105,"./type":108,"./util":109,"tslib":5}],93:[function(require,module,exports){
+},{"./aggregate":9,"./bin":11,"./channel":12,"./log":97,"./timeunit":105,"./type":109,"./util":110,"tslib":5}],93:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("./compile/selection/selection");
@@ -10978,7 +10993,7 @@ function valueExpr(v, timeUnit) {
     return JSON.stringify(v);
 }
 
-},{"./compile/selection/selection":72,"./datetime":89,"./fielddef":92,"./timeunit":105,"./util":109}],94:[function(require,module,exports){
+},{"./compile/selection/selection":72,"./datetime":89,"./fielddef":92,"./timeunit":105,"./util":110}],94:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VL_ONLY_GUIDE_CONFIG = ['shortTimeLabels'];
@@ -11012,7 +11027,7 @@ exports.util = require("./util");
 exports.validate = require("./validate");
 exports.version = require('../package.json').version;
 
-},{"../package.json":8,"./aggregate":9,"./axis":10,"./bin":11,"./channel":12,"./compile/compile":20,"./compositemark":86,"./config":87,"./data":88,"./datetime":89,"./encoding":90,"./facet":91,"./fielddef":92,"./legend":96,"./mark":99,"./scale":100,"./sort":102,"./spec":103,"./stack":104,"./timeunit":105,"./transform":107,"./type":108,"./util":109,"./validate":110}],96:[function(require,module,exports){
+},{"../package.json":8,"./aggregate":9,"./axis":10,"./bin":11,"./channel":12,"./compile/compile":20,"./compositemark":86,"./config":87,"./data":88,"./datetime":89,"./encoding":90,"./facet":91,"./fielddef":92,"./legend":96,"./mark":99,"./scale":100,"./sort":102,"./spec":103,"./stack":104,"./timeunit":105,"./transform":108,"./type":109,"./util":110,"./validate":111}],96:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultLegendConfig = {};
@@ -11404,7 +11419,7 @@ exports.defaultTickConfig = {
     thickness: 1
 };
 
-},{"./util":109}],100:[function(require,module,exports){
+},{"./util":110}],100:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
@@ -11628,7 +11643,7 @@ function channelScalePropertyIncompatability(channel, propName) {
 }
 exports.channelScalePropertyIncompatability = channelScalePropertyIncompatability;
 
-},{"./log":97,"./util":109}],101:[function(require,module,exports){
+},{"./log":97,"./util":110}],101:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SELECTION_ID = '_vgsid_';
@@ -11883,7 +11898,7 @@ function isStacked(spec, config) {
 }
 exports.isStacked = isStacked;
 
-},{"./channel":12,"./compositemark":86,"./encoding":90,"./log":97,"./mark":99,"./stack":104,"./util":109,"tslib":5}],104:[function(require,module,exports){
+},{"./channel":12,"./compositemark":86,"./encoding":90,"./log":97,"./mark":99,"./stack":104,"./util":110,"tslib":5}],104:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var aggregate_1 = require("./aggregate");
@@ -11976,7 +11991,7 @@ function stack(m, encoding, stackConfig) {
 }
 exports.stack = stack;
 
-},{"./aggregate":9,"./channel":12,"./encoding":90,"./fielddef":92,"./log":97,"./mark":99,"./scale":100,"./util":109}],105:[function(require,module,exports){
+},{"./aggregate":9,"./channel":12,"./encoding":90,"./fielddef":92,"./log":97,"./mark":99,"./scale":100,"./util":110}],105:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var datetime_1 = require("./datetime");
@@ -12284,7 +12299,25 @@ function isUTCTimeUnit(timeUnit) {
     return timeUnit.substr(0, 3) === 'utc';
 }
 
-},{"./datetime":89,"./log":97,"./util":109}],106:[function(require,module,exports){
+},{"./datetime":89,"./log":97,"./util":110}],106:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+function extractTitleConfig(titleConfig) {
+    var 
+    // These are non-mark title config that need to be hardcoded
+    anchor = titleConfig.anchor, offset = titleConfig.offset, orient = titleConfig.orient, 
+    // color needs to be redirect to fill
+    color = titleConfig.color, 
+    // The rest are mark config.
+    titleMarkConfig = tslib_1.__rest(titleConfig, ["anchor", "offset", "orient", "color"]);
+    var mark = tslib_1.__assign({}, titleMarkConfig, color ? { fill: color } : {});
+    var nonMark = tslib_1.__assign({}, anchor ? { anchor: anchor } : {}, offset ? { offset: offset } : {}, orient ? { orient: orient } : {});
+    return { mark: mark, nonMark: nonMark };
+}
+exports.extractTitleConfig = extractTitleConfig;
+
+},{"tslib":5}],107:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var TOP_LEVEL_PROPERTIES = [
@@ -12300,7 +12333,7 @@ function extractTopLevelProperties(t) {
 }
 exports.extractTopLevelProperties = extractTopLevelProperties;
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isFilter(t) {
@@ -12328,7 +12361,7 @@ function isSummarize(t) {
 }
 exports.isSummarize = isSummarize;
 
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 "use strict";
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
@@ -12372,7 +12405,7 @@ function getFullName(type) {
 }
 exports.getFullName = getFullName;
 
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
@@ -12606,7 +12639,7 @@ function logicalExpr(op, cb) {
 }
 exports.logicalExpr = logicalExpr;
 
-},{"./logical":98,"json-stable-stringify":1,"vega-util":7}],110:[function(require,module,exports){
+},{"./logical":98,"json-stable-stringify":1,"vega-util":7}],111:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mark_1 = require("./mark");
@@ -12674,7 +12707,7 @@ function getEncodingMappingError(spec, requiredChannelMap, supportedChannelMap) 
 }
 exports.getEncodingMappingError = getEncodingMappingError;
 
-},{"./mark":99,"./util":109}],111:[function(require,module,exports){
+},{"./mark":99,"./util":110}],112:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -12715,6 +12748,6 @@ function isSignalRefDomain(domain) {
 }
 exports.isSignalRefDomain = isSignalRefDomain;
 
-},{"./util":109}]},{},[95])(95)
+},{"./util":110}]},{},[95])(95)
 });
 //# sourceMappingURL=vega-lite.js.map

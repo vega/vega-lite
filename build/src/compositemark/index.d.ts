@@ -15,9 +15,9 @@ export declare type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {
 }
 export declare const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-    box?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
-    boxWhisker?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
-    boxMid?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
+    box?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
+    boxWhisker?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
+    boxMid?: ("font" | "text" | "color" | "opacity" | "size" | "shape" | "fill" | "fillOpacity" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "filled")[];
 };
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
