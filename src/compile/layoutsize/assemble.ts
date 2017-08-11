@@ -40,8 +40,8 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
           // If parent is facet and this is an independent scale, return only signal signal
           // as the width/height will be calculated using the cardinality from
           // facet's aggregate rather than reading from scale domain
-          const parentChannelResolve = model.parent.component.resolve[channel];
-          if (parentChannelResolve.scale === 'independent') {
+          const parentResolve = model.parent.component.resolve;
+          if (parentResolve.scale[channel] === 'independent') {
             return [stepSignal(scaleName, range)];
           }
         }

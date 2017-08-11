@@ -54,9 +54,8 @@ export function parseLayerAxis(model: LayerModel) {
     child.parseAxisAndHeader();
 
     keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-      const channelResolve = model.component.resolve[channel];
-      channelResolve.axis = parseGuideResolve(model.component.resolve, channel);
-      if (channelResolve.axis === 'shared') {
+      resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
+      if (resolve.axis[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
@@ -65,7 +64,7 @@ export function parseLayerAxis(model: LayerModel) {
         if (!axes[channel]) {
           // If merge returns nothing, there is a conflict so we cannot make the axis shared.
           // Thus, mark axis as independent and remove the axis component.
-          channelResolve.axis = 'independent';
+          resolve.axis[channel] = 'independent';
           delete axes[channel];
         }
       }
@@ -80,7 +79,7 @@ export function parseLayerAxis(model: LayerModel) {
         continue;
       }
 
-      if (resolve[channel].axis === 'independent') {
+      if (resolve.axis[channel] === 'independent') {
         // If axes are independent, concat the axisComponent array.
         axes[channel] = (axes[channel] || []).concat(child.component.axes[channel]);
 

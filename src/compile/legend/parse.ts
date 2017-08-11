@@ -108,10 +108,9 @@ function parseNonUnitLegend(model: Model) {
     parseLegend(child);
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      const channelResolve = model.component.resolve[channel];
-      channelResolve.legend = parseGuideResolve(model.component.resolve, channel);
+      resolve.legend[channel] = parseGuideResolve(model.component.resolve, channel);
 
-      if (channelResolve.legend === 'shared') {
+      if (resolve.legend[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
@@ -120,7 +119,7 @@ function parseNonUnitLegend(model: Model) {
         if (!legends[channel]) {
           // If merge returns nothing, there is a conflict so we cannot make the legend shared.
           // Thus, mark legend as independent and remove the legend component.
-          channelResolve.legend = 'independent';
+          resolve.legend[channel] = 'independent';
           delete legends[channel];
         }
       }
@@ -134,7 +133,7 @@ function parseNonUnitLegend(model: Model) {
         continue;
       }
 
-      if (resolve[channel].legend === 'shared') {
+      if (resolve.legend[channel] === 'shared') {
         // After merging shared legend, make sure to remove legend from child
         delete child.component.legends[channel];
       }

@@ -169,8 +169,8 @@ describe('FacetModel', function() {
           }
         },
         resolve: {
-          x: {
-            scale: 'independent'
+          scale: {
+            x: 'independent'
           }
         }
       });
@@ -193,7 +193,7 @@ describe('FacetModel', function() {
           }
         },
         resolve: {
-          x: {scale: 'independent'}
+          scale: {x: 'independent'}
         }
       });
 
@@ -365,8 +365,10 @@ describe('FacetModel', function() {
           }
         },
         resolve: {
-          x: {scale: 'independent'},
-          y: {scale: 'independent'}
+          scale: {
+            x: 'independent',
+            y: 'independent'
+          }
         }
       });
       model.parse();

@@ -109,7 +109,7 @@ describe('Model', () => {
           }
         },
         resolve: {
-          x: {scale: 'independent'}
+          scale: {x: 'independent'}
         }
       });
 

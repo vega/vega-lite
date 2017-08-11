@@ -140,10 +140,9 @@ export class FacetModel extends ModelWithField {
     const {child} = this;
     if (child.component.axes[channel]) {
       const {layoutHeaders, resolve} = this.component;
-      const channelResolve = resolve[channel];
-      channelResolve.axis = parseGuideResolve(resolve, channel);
+      resolve.axis[channel] = parseGuideResolve(resolve, channel);
 
-      if (channelResolve.axis === 'shared') {
+      if (resolve.axis[channel] === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 

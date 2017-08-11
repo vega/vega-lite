@@ -25,7 +25,7 @@
     }
   },
   "resolve": {
-    "x": {"scale": "independent"}
+    "scale": {"x": "independent"}
   },
   "config": {"cell": {"fill": "yellow"}}
 }

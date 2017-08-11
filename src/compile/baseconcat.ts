@@ -1,5 +1,5 @@
 import {Config} from '../config';
-import {ResolveMapping} from '../resolve';
+import {Resolve} from '../resolve';
 import {BaseSpec} from '../spec';
 import {keys} from '../util';
 import {VgData, VgScale, VgSignal} from '../vega.schema';
@@ -9,7 +9,7 @@ import {Model} from './model';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 
 export abstract class BaseConcatModel extends Model {
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
     super(spec, parent, parentGivenName, config, resolve);
   }
 
