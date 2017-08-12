@@ -30,9 +30,9 @@ export interface ValueDef {
 
 /**
  * Generic type for conditional channelDef.
- * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
+ * F defines the underlying FieldDef type.
  */
-export type Conditional<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F> | ConditionOnlyDef<F>;
+export type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F> | ConditionOnlyDef<F>;
 
 
 export type Condition<T> = {
@@ -179,9 +179,9 @@ export interface TextFieldDef<F> extends FieldDef<F> {
   format?: string;
 }
 
-export type ChannelDef<F> = Conditional<FieldDef<F>>;
+export type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;
 
-export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>> {
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ConditionalChannelDef<FieldDef<F>> {
   return !!channelDef && !!channelDef.condition;
 }
 

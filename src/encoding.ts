@@ -6,7 +6,7 @@ import {Facet} from './facet';
 import {
   ChannelDef,
   Condition,
-  Conditional,
+  ConditionalChannelDef,
   Field,
   FieldDef,
   getFieldDef,
@@ -59,12 +59,12 @@ export interface Encoding<F> {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: Conditional<LegendFieldDef<F>>;
+  color?: ConditionalChannelDef<LegendFieldDef<F>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: Conditional<LegendFieldDef<F>>;
+  opacity?: ConditionalChannelDef<LegendFieldDef<F>>;
 
   /**
    * Size of the mark.
@@ -74,14 +74,14 @@ export interface Encoding<F> {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: Conditional<LegendFieldDef<F>>;
+  size?: ConditionalChannelDef<LegendFieldDef<F>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: Conditional<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
+  shape?: ConditionalChannelDef<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -92,12 +92,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: Conditional<TextFieldDef<F>>;
+  text?: ConditionalChannelDef<TextFieldDef<F>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: Conditional<TextFieldDef<F>>;
+  tooltip?: ConditionalChannelDef<TextFieldDef<F>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
