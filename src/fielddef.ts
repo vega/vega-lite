@@ -80,10 +80,13 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
+export type Aggregate = AggregateOp | CompositeAggregate;
+
 export interface FieldDefBase<F> {
 
   /**
-   * __Required.__ Name of the field from which to pull a data value.
+   * __Required.__ A string defining the name of the field from which to pull a data value
+   * or an object defining iterated values from the [`repeat`](repeat.html) operator.
    *
    * __Note:__ `field` is not required if `aggregate` is `count`.
    */
@@ -112,7 +115,7 @@ export interface FieldDefBase<F> {
    * __Default value:__ `undefined` (None)
    *
    */
-  aggregate?: AggregateOp | CompositeAggregate;
+  aggregate?: Aggregate;
 }
 
 /**

@@ -77,8 +77,11 @@ NumberValueDef:
   name: ValueDef
   link: "encoding.html#value"
 
-# Scale / Axis / Legend
+# FieldDefinition
+Aggregate:
+  link: "aggregate.html"
 
+# Scale / Axis / Legend
 ScaleType:
   name: String
 AxisOrient:
