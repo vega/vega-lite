@@ -70,7 +70,7 @@ You can also create a normalized stacked bar chart by setting `config.mark.stack
 
 ### Histogram
 If the data is not pre-aggregated (i.e. each record in the data field represents one item),
-mapping a binned quantitative field to `x` and aggregate `count` to `y` produces a histogram.
+mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to `y` produces a histogram.
 
 <span class="vl-example" data-name="histogram"></span>
 

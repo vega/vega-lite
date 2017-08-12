@@ -808,7 +808,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "An object indicating bin properties, or simply `true` for using default bin values.."
+          "description": "An object indicating bin properties, or simply `true` for using default bin parameters."
         },
         "field": {
           "description": "The data field to bin.",
