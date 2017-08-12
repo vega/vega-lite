@@ -1,6 +1,7 @@
 import {AggregateOp} from '../../aggregate';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {hasDiscreteDomain} from '../../scale';
+import {isBin} from '../../transform';
 import {isVgRangeStep, VgAggregateTransform, VgData, VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {getFieldFromDomains} from '../scale/domain';
@@ -10,7 +11,7 @@ import {DataFlowNode, OutputNode} from './dataflow';
  * A node that helps us track what fields we are faceting by.
  */
 export class FacetNode extends DataFlowNode {
-  private readonly columnField: string;
+  private readonly columnFields: string[];
   private readonly columnName: string;
 
   private readonly childIndependentFieldWithStep: {
@@ -18,7 +19,7 @@ export class FacetNode extends DataFlowNode {
     y?: string
   } = {};
 
-  private readonly rowField: string;
+  private readonly rowFields: string[];
   private readonly rowName: string;
 
   /**
@@ -30,13 +31,20 @@ export class FacetNode extends DataFlowNode {
     super();
 
     if (model.facet.column) {
-      this.columnField = model.field(COLUMN);
+      this.columnFields = [model.field(COLUMN)];
       this.columnName = model.getName('column_domain');
+      if (model.fieldDef(COLUMN).bin) {
+        this.columnFields.push(model.field(COLUMN, {binSuffix: 'range'}));
+      }
+
     }
 
     if (model.facet.row) {
-      this.rowField = model.field(ROW);
+      this.rowFields = [model.field(ROW)];
       this.rowName = model.getName('row_domain');
+      if (model.fieldDef(ROW).bin) {
+        this.rowFields.push(model.field(ROW, {binSuffix: 'range'}));
+      }
     }
 
     for (const channel of ['x', 'y'] as ScaleChannel[]) {
@@ -58,12 +66,12 @@ export class FacetNode extends DataFlowNode {
   }
 
   get fields() {
-    const fields: string[] = [];
-    if (this.columnField) {
-      fields.push(this.columnField);
+    let fields: string[] = [];
+    if (this.columnFields) {
+      fields = fields.concat(this.columnFields);
     }
-    if (this.rowField) {
-      fields.push(this.rowField);
+    if (this.rowFields) {
+      fields = fields.concat(this.rowFields);
     }
     return fields;
   }
@@ -104,7 +112,7 @@ export class FacetNode extends DataFlowNode {
       source: crossedDataName || this.data,
       transform: [{
         type: 'aggregate',
-        groupby: [channel === 'row' ? this.rowField : this.columnField],
+        groupby: channel === 'row' ? this.rowFields : this.columnFields,
         ...aggregateChildField
       }]
     };
@@ -129,7 +137,7 @@ export class FacetNode extends DataFlowNode {
         source: this.data,
         transform: [{
           type: 'aggregate',
-          groupby: [this.columnField, this.rowField],
+          groupby: this.columnFields.concat(this.rowFields),
           fields: fields,
           ops
         }]
