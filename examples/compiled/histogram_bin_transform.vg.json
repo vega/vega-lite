@@ -1,0 +1,200 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "extent",
+                    "field": "IMDB_Rating",
+                    "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "IMDB_Rating",
+                    "as": [
+                        "bin_IMDB_Rating",
+                        "bin_IMDB_Rating_end"
+                    ],
+                    "signal": "bin_maxbins_10_IMDB_Rating_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"bin_IMDB_Rating\"])",
+                    "as": "bin_IMDB_Rating"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_IMDB_Rating"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "bin_IMDB_Rating"
+                    },
+                    "width": {
+                        "value": 2
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "count_*"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "bin_IMDB_Rating"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "title": "bin_IMDB_Rating",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "Number of Records",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainColor": "#888",
+            "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

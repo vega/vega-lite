@@ -32,7 +32,7 @@ export interface CalculateTransform {
 
 export interface BinTransform {
   /**
-   * An object indicating bin properties, or simply `true` for using default bin values..
+   * An object indicating bin properties, or simply `true` for using default bin parameters.
    */
   bin: boolean | BinParams;
 
