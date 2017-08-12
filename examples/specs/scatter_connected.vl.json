@@ -9,7 +9,7 @@
       "order": {"field": "year","type": "temporal"}
     }
   }, {
-    "mark": "point",
+    "mark": {"type": "point", "filled": true},
     "encoding": {
       "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
       "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}}
