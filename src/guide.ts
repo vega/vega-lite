@@ -29,7 +29,7 @@ export interface VlOnlyGuideConfig {
 
 
 export type GuideEncodingEntry = {
-  [k in VgEncodeChannel]?: ValueDef<any>;
+  [k in VgEncodeChannel]?: ValueDef;
 };
 
 export const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[] = ['shortTimeLabels'];

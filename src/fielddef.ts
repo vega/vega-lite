@@ -21,18 +21,18 @@ import {isBoolean, isString, stringValue} from './util';
 /**
  * Definition object for a constant value of an encoding channel.
  */
-export interface ValueDef<T> {
+export interface ValueDef {
   /**
    * A constant value in visual domain.
    */
-  value: T;
+  value: number | string | boolean;
 }
 
 /**
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
  */
-export type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V> | ConditionOnlyDef<F, V>;
+export type Conditional<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F> | ConditionOnlyDef<F>;
 
 
 export type Condition<T> = {
@@ -47,10 +47,12 @@ export type Condition<T> = {
  *   ...
  * }
  */
-export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {condition?: Condition<V>};
+export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+  condition?: Condition<ValueDef>
+};
 
-export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<any>> {
-  condition: Condition<F> | Condition<V>;
+export interface ConditionOnlyDef <F extends FieldDef<any>> {
+  condition: Condition<F> | Condition<ValueDef>;
 }
 
 
@@ -61,7 +63,9 @@ export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<a
  *   value: ...,
  * }
  */
-export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F> | Condition<V>;};
+export type ConditionalValueDef<F extends FieldDef<any>> = ValueDef & {
+  condition?: Condition<F> | Condition<ValueDef>;
+};
 
 /**
  * Reference to a repeated value.
@@ -175,16 +179,16 @@ export interface TextFieldDef<F> extends FieldDef<F> {
   format?: string;
 }
 
-export type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;
+export type ChannelDef<F> = Conditional<FieldDef<F>>;
 
-export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>, ValueDef<any>> {
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>> {
   return !!channelDef && !!channelDef.condition;
 }
 
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {condition: Condition<FieldDef<F>>}) {
+export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<FieldDef<F>>}) {
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
@@ -192,7 +196,7 @@ export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef<any> {
+export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 

@@ -151,7 +151,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
   return defaultRef;
 }
 
-export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, config: Config): VgValueRef {
+export function text(textDef: Conditional<TextFieldDef<string>>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {

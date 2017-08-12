@@ -1250,7 +1250,7 @@
       ],
       "type": "object"
     },
-    "ConditionTextValueDef": {
+    "ConditionValueDef": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1259,8 +1259,8 @@
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
         }
@@ -1271,41 +1271,7 @@
       ],
       "type": "object"
     },
-    "ConditionNumberValueDef": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand"
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionStringValueDef": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand"
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyNumberLegendDef": {
+    "ConditionOnlyLegendDef": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -1314,26 +1280,7 @@
               "$ref": "#/definitions/ConditionLegendFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionNumberValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyStringLegendDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionStringValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
           ]
         }
@@ -1352,7 +1299,7 @@
               "$ref": "#/definitions/ConditionTextFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionTextValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
           ]
         }
@@ -1362,30 +1309,16 @@
       ],
       "type": "object"
     },
-    "ConditionalNumberLegendDef": {
+    "ConditionalLegendDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalNumberLegendFieldDef"
+          "$ref": "#/definitions/ConditionalLegendFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionalNumberLegendValueDef"
+          "$ref": "#/definitions/ConditionalLegendValueDef"
         },
         {
-          "$ref": "#/definitions/ConditionOnlyNumberLegendDef"
-        }
-      ],
-      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
-    },
-    "ConditionalStringLegendDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalStringLegendFieldDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionalStringLegendValueDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyStringLegendDef"
+          "$ref": "#/definitions/ConditionOnlyLegendDef"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
@@ -1404,7 +1337,7 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionalNumberLegendFieldDef": {
+    "ConditionalLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1431,78 +1364,7 @@
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
         "condition": {
-          "$ref": "#/definitions/ConditionNumberValueDef"
-        },
-        "field": {
-          "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "legend": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Legend"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "scale": {
-          "$ref": "#/definitions/Scale"
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SortField"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            }
-          ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
-    "ConditionalStringLegendFieldDef": {
-      "additionalProperties": false,
-      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
-      "properties": {
-        "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/Bin"
-            }
-          ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-        },
-        "condition": {
-          "$ref": "#/definitions/ConditionStringValueDef"
+          "$ref": "#/definitions/ConditionValueDef"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1573,7 +1435,7 @@
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
         "condition": {
-          "$ref": "#/definitions/ConditionTextValueDef"
+          "$ref": "#/definitions/ConditionValueDef"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1597,7 +1459,7 @@
       ],
       "type": "object"
     },
-    "ConditionalNumberLegendValueDef": {
+    "ConditionalLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1607,37 +1469,17 @@
               "$ref": "#/definitions/ConditionLegendFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionNumberValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
           ]
         },
         "value": {
           "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalStringLegendValueDef": {
-      "additionalProperties": false,
-      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionStringValueDef"
-            }
+          "type": [
+            "number",
+            "string",
+            "boolean"
           ]
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
         }
       },
       "required": [
@@ -1655,15 +1497,15 @@
               "$ref": "#/definitions/ConditionTextFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionTextValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
           ]
         },
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
         }
@@ -2030,7 +1872,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "detail": {
@@ -2048,7 +1890,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -2066,11 +1908,11 @@
           "description": "stack order for stacked marks or order of data points in line marks."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
@@ -2087,7 +1929,7 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2098,7 +1940,7 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2109,7 +1951,7 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2120,7 +1962,7 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2132,7 +1974,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "column": {
@@ -2154,7 +1996,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -2176,11 +2018,11 @@
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
+          "$ref": "#/definitions/ConditionalLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
@@ -2197,7 +2039,7 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2208,7 +2050,7 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2219,7 +2061,7 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2230,7 +2072,7 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
           "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -5973,58 +5815,17 @@
       },
       "type": "object"
     },
-    "TextValueDef": {
+    "ValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value of an encoding channel.",
       "properties": {
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain."
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "NumberValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "StringValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
         }
       },
       "required": [
