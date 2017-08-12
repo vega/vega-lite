@@ -2,6 +2,16 @@
   "$ref": "#/definitions/TopLevelExtendedSpec",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "definitions": {
+    "Aggregate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/AggregateOp"
+        },
+        {
+          "$ref": "#/definitions/CompositeAggregate"
+        }
+      ]
+    },
     "AggregateOp": {
       "enum": [
         "argmax",
@@ -1132,14 +1142,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1155,7 +1158,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1203,14 +1206,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1226,7 +1222,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
           "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
@@ -1276,14 +1272,7 @@
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1302,7 +1291,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1347,14 +1336,7 @@
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1373,7 +1355,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
           "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
@@ -2167,14 +2149,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2190,7 +2165,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
           "$ref": "#/definitions/Header"
@@ -2232,14 +2207,7 @@
       "description": "Definition object for a data field, its type and transformation of an encoding channel.",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2255,7 +2223,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2275,14 +2243,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2298,7 +2259,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3302,14 +3263,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -3325,7 +3279,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -3988,14 +3942,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -4011,7 +3958,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder"
@@ -4067,14 +4014,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "axis": {
@@ -4101,7 +4041,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
           "$ref": "#/definitions/Scale"
@@ -4475,14 +4415,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -4498,7 +4431,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
           "$ref": "#/definitions/Scale"
@@ -5039,14 +4972,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -5062,7 +4988,7 @@
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
           "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
