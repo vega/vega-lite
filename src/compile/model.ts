@@ -553,10 +553,9 @@ export abstract class ModelWithField extends Model {
   public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
+    if (fieldDef.bin) {
       opt = extend({
-        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
+        binSuffix: 'start'
       }, opt);
     }
 

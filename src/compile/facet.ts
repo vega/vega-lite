@@ -336,8 +336,8 @@ export class FacetModel extends ModelWithField {
       },
       sort: {
         field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
-          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+          hasRow ? [this.field(ROW, {expr: 'datum', binSuffix: 'start'})] : [],
+          hasColumn ? [this.field(COLUMN, {expr: 'datum', binSuffix: 'start'})] : []
         ),
         order: [].concat(
           hasRow ? [ (facet.row.sort) || 'ascending'] : [],
