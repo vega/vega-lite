@@ -1,4 +1,4 @@
-import {autoMaxBins, Bin, binToString} from '../../bin';
+import {autoMaxBins, BinParams, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
@@ -30,11 +30,11 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
     return {};
 }
 
-function binKey(bin: Bin, field: string) {
+function binKey(bin: BinParams, field: string) {
   return `${binToString(bin)}_${field}`;
 }
 
-function createBinComponent(bin: Bin, t: FieldDef<string>|BinTransform, model: Model, key:string) {
+function createBinComponent(bin: BinParams, t: FieldDef<string>|BinTransform, model: Model, key:string) {
   return {
     bin: bin,
     field: t.field,
@@ -45,7 +45,7 @@ function createBinComponent(bin: Bin, t: FieldDef<string>|BinTransform, model: M
 }
 
 export interface BinComponent {
-  bin: Bin;
+  bin: BinParams;
   field: string;
   extentSignal: string;
   signal: string;
