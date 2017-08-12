@@ -1271,44 +1271,6 @@
       ],
       "type": "object"
     },
-    "ConditionOnlyLegendDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyTextDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
     "ConditionalLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
@@ -1454,9 +1416,6 @@
           ]
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
     "ConditionalTextValueDef": {
@@ -1482,9 +1441,6 @@
           ]
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
     "Config": {
@@ -1850,9 +1806,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1878,9 +1831,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range."
@@ -1906,9 +1856,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1920,9 +1867,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1934,9 +1878,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalTextValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyTextDef"
             }
           ],
           "description": "Text of the `text` mark."
@@ -1948,9 +1889,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalTextValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyTextDef"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -2012,9 +1950,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -2044,9 +1979,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range."
@@ -2076,9 +2008,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -2090,9 +2019,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalLegendValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyLegendDef"
             }
           ],
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -2104,9 +2030,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalTextValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyTextDef"
             }
           ],
           "description": "Text of the `text` mark."
@@ -2118,9 +2041,6 @@
             },
             {
               "$ref": "#/definitions/ConditionalTextValueDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionOnlyTextDef"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
