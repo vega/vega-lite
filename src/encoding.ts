@@ -6,7 +6,9 @@ import {Facet} from './facet';
 import {
   ChannelDef,
   Condition,
-  ConditionalChannelDef,
+  ConditionalFieldDef,
+  ConditionalValueDef,
+  ConditionOnlyDef,
   Field,
   FieldDef,
   getFieldDef,
@@ -25,7 +27,6 @@ import {
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, keys, some} from './util';
-
 
 export interface Encoding<F> {
   /**
@@ -59,12 +60,12 @@ export interface Encoding<F> {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: ConditionalChannelDef<LegendFieldDef<F>>;
+  color?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>> | ConditionOnlyDef<LegendFieldDef<F>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: ConditionalChannelDef<LegendFieldDef<F>>;
+  opacity?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>> | ConditionOnlyDef<LegendFieldDef<F>>;
 
   /**
    * Size of the mark.
@@ -74,14 +75,14 @@ export interface Encoding<F> {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: ConditionalChannelDef<LegendFieldDef<F>>;
+  size?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>> | ConditionOnlyDef<LegendFieldDef<F>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: ConditionalChannelDef<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
+  shape?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>> | ConditionOnlyDef<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -92,12 +93,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: ConditionalChannelDef<TextFieldDef<F>>;
+  text?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>> | ConditionOnlyDef<TextFieldDef<F>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: ConditionalChannelDef<TextFieldDef<F>>;
+  tooltip?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>> | ConditionOnlyDef<TextFieldDef<F>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
