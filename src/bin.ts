@@ -47,10 +47,11 @@ export interface BaseBin {
   nice?: boolean;
 }
 
+
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
-export interface Bin extends BaseBin {
+export interface BinParams extends BaseBin {
   /**
    * A two-element (`[min, max]`) array indicating the range of desired bin values.
    * @minItems 2
@@ -59,7 +60,7 @@ export interface Bin extends BaseBin {
   extent?: number[];  // VgBinTransform uses a different extent so we need to pull this out.
 }
 
-export function binToString(bin: Bin | boolean) {
+export function binToString(bin: BinParams | boolean) {
   if (isBoolean(bin)) {
     return 'bin';
   }

@@ -739,7 +739,7 @@
       },
       "type": "object"
     },
-    "Bin": {
+    "BinParams": {
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
       "properties": {
@@ -802,13 +802,10 @@
         "bin": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Bin"
+              "type": "boolean"
             },
             {
-              "enum": [
-                true
-              ],
-              "type": "boolean"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "An object indicating bin properties, or simply `true` for using default bin values.."
@@ -1151,7 +1148,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1224,7 +1221,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1290,7 +1287,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1364,7 +1361,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2180,7 +2177,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2238,7 +2235,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2274,7 +2271,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -3294,7 +3291,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -3982,7 +3979,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -4066,7 +4063,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -4464,7 +4461,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -5029,7 +5026,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"

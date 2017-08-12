@@ -89,11 +89,13 @@ ValueDef:
   name: ValueDef
   link: "encoding.html#value"
 
-# FieldDefinition
+# Field Definition
 Aggregate:
   link: "aggregate.html"
 Axis:
   link: axis.html
+Bin:
+  link: "bin.html"
 Field:
   link: field.html
 Legend:

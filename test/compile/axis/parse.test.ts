@@ -121,7 +121,6 @@ describe('Axis', function() {
               "x": {"field": "Cylinders","type": "ordinal"},
               "y": {
                 "aggregate": "max",
-                "bin": false,
                 "field": "Horsepower",
                 "type": "quantitative"
               },
@@ -135,7 +134,6 @@ describe('Axis', function() {
               "x": {"field": "Cylinders","type": "ordinal"},
               "y": {
                 "aggregate": "min",
-                "bin": false,
                 "field": "Horsepower",
                 "type": "quantitative"
               }

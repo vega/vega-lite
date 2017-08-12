@@ -2,7 +2,7 @@
 
 import {AGGREGATE_OP_INDEX, AggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, Bin, binToString} from './bin';
+import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
@@ -117,7 +117,7 @@ export interface FieldDefBase<F> {
    *
    * __Default value:__ `false`
    */
-  bin?: boolean | Bin;
+  bin?: boolean | BinParams;
 
   /**
    * Aggregation function for the field
@@ -441,7 +441,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   return fieldDef;
 }
 
-export function normalizeBin(bin: Bin|boolean, channel: Channel) {
+export function normalizeBin(bin: BinParams|boolean, channel: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
   } else if (!bin.maxbins && !bin.step) {
