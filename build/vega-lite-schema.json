@@ -1154,7 +1154,7 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1168,10 +1168,12 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand"
@@ -1179,13 +1181,20 @@
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1193,7 +1202,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1218,14 +1227,14 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "selection": {
@@ -1237,7 +1246,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1284,10 +1293,11 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionValueDef"
+          "$ref": "#/definitions/ConditionValueDef",
+          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1301,21 +1311,30 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1323,7 +1342,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1348,17 +1367,18 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionValueDef"
+          "$ref": "#/definitions/ConditionValueDef",
+          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -1367,7 +1387,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1387,7 +1407,8 @@
             {
               "$ref": "#/definitions/ConditionValueDef"
             }
-          ]
+          ],
+          "description": "A field definition or a value definition with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1412,7 +1433,8 @@
             {
               "$ref": "#/definitions/ConditionValueDef"
             }
-          ]
+          ],
+          "description": "A field definition or a value definition with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1790,7 +1812,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`, `\"text\"`, `\"circle\"`, and `\"square\"` /\nstroke color for `\"line\"` and `\"point\"`.)\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property."
         },
         "detail": {
           "anyOf": [
@@ -1815,7 +1837,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range."
+          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -1829,7 +1851,7 @@
               "type": "array"
             }
           ],
-          "description": "stack order for stacked marks or order of data points in line marks."
+          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
           "anyOf": [
@@ -1840,7 +1862,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -1851,7 +1873,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
         },
         "text": {
           "anyOf": [
@@ -1884,7 +1906,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`."
         },
         "x2": {
           "anyOf": [
@@ -1895,7 +1917,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -1906,7 +1928,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`."
         },
         "y2": {
           "anyOf": [
@@ -1917,7 +1939,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -1934,7 +1956,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`, `\"text\"`, `\"circle\"`, and `\"square\"` /\nstroke color for `\"line\"` and `\"point\"`.)\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1963,7 +1985,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range."
+          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -1977,7 +1999,7 @@
               "type": "array"
             }
           ],
-          "description": "stack order for stacked marks or order of data points in line marks."
+          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1992,7 +2014,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -2003,7 +2025,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
         },
         "text": {
           "anyOf": [
@@ -2036,7 +2058,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`."
         },
         "x2": {
           "anyOf": [
@@ -2047,7 +2069,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -2058,7 +2080,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`."
         },
         "y2": {
           "anyOf": [
@@ -2069,7 +2091,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -2161,7 +2183,7 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -2180,7 +2202,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -2219,7 +2241,7 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -2231,7 +2253,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -2255,7 +2277,7 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -3275,7 +3297,7 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -3289,21 +3311,30 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3311,7 +3342,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -3954,14 +3985,15 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
-          "$ref": "#/definitions/SortOrder"
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3969,7 +4001,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -4026,7 +4058,7 @@
               "type": "null"
             }
           ],
-          "description": "By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.\nIf `axis` is not defined, default axis properties are applied.\nUser can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)\nor set `axis` to `null` to remove the axis."
+          "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](axis.html) are applied."
         },
         "bin": {
           "anyOf": [
@@ -4037,29 +4069,37 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
-          "description": "Type of stacking offset if the field should be stacked.\n\"none\" or null, if the field should not be stacked."
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can have one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)).\n- `\"none\"` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `\"none\"` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4067,7 +4107,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -4427,25 +4467,33 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4453,7 +4501,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -4984,14 +5032,14 @@
               "$ref": "#/definitions/Bin"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -5000,7 +5048,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [

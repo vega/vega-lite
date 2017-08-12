@@ -32,6 +32,7 @@ If we map a different ordinal field to the `y` channel, we can produce a horizon
 
 <span class="vl-example" data-name="bar_aggregate"></span>
 
+{:#stack}
 ### Stacked Bar Chart
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default. Here we also customize the color's scale range to make the color a little nicer.

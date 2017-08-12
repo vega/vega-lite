@@ -54,32 +54,59 @@ Type:
   link: "encoding.html#data-type"
 
 # Channel Definitions
-ConditionalStringLegendDef:
-  name: FieldDef
-  link: "encoding.html#def"
-ConditionalNumberLegendDef:
-  name: FieldDef
-  link: "encoding.html#def"
-ConditionalTextDef:
-  name: FieldDef
-  link: "encoding.html#def"
+ConditionalLegendFieldDef:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+ConditionalLegendValueDef:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+ConditionalTextFieldDef:
+  name: TextFieldDef
+  link: "encoding.html#text-field-def"
+ConditionalTextValueDef:
+  name: TextValueDef
+  link: "encoding.html#text-value-def"
+
+ConditionLegendFieldDef:
+  name: ConditionFieldDef
+  link: "condition.html#field"
+ConditionTextFieldDef:
+  name: ConditionFieldDef
+  link: "condition.html#field"
+ConditionValueDef:
+  link: "condition.html#value"
+
 FieldDef:
-  link: "encoding.html#def"
+  link: "encoding.html#field"
 FacetFieldDef:
   link: "facet.html#facet-field-definition"
 OrderFieldDef:
-  name: FieldDef
-  link: "encoding.html#def"
+  link: "encoding.html#order"
 PositionFieldDef:
-  name: FieldDef
-  link: "encoding.html#def"
-NumberValueDef:
+  link: "encoding.html#position-field-def"
+ValueDef:
   name: ValueDef
   link: "encoding.html#value"
 
 # FieldDefinition
 Aggregate:
   link: "aggregate.html"
+Axis:
+  link: axis.html
+Field:
+  link: field.html
+Legend:
+  link: legend.html
+Scale:
+  link: scale.html
+SortOrder:
+  name: String
+SortField:
+  link: "sort.html#sort-field"
+StackOffset:
+  name: Stack
+  link: "stack.html"
 
 # Scale / Axis / Legend
 ScaleType:

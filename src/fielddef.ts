@@ -48,6 +48,12 @@ export type Condition<T> = {
  * }
  */
 export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+  /**
+   * A value definition with a selection predicate.
+   *
+   * __Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)
+   * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
+   */
   condition?: Condition<ValueDef>
 };
 
@@ -59,6 +65,9 @@ export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
  * }
  */
 export interface ConditionalValueDef<F extends FieldDef<any>> {
+  /**
+   * A field definition or a value definition with a selection predicate.
+   */
   condition?: Condition<F> | Condition<ValueDef>;
 
   /**
@@ -103,8 +112,10 @@ export interface FieldDefBase<F> {
   timeUnit?: TimeUnit;
 
   /**
-   * Flag for binning a `quantitative` field, or a bin property object
-   * for binning parameters.
+   * A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).
+   * If `true`, default [binning parameters](bin.html) will be applied.
+   *
+   * __Default value:__ `false`
    */
   bin?: boolean | Bin;
 
@@ -124,43 +135,67 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
-   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
-   * This property is case-insensitive.
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`).
    */
+  // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+  // * This property is case-insensitive.
   type: Type;
 }
 
 export interface ScaleFieldDef<F> extends FieldDef<F> {
+  /**
+   * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
+   *
+   * __Default value:__ If undefined, default [scale properties](scale.html) are applied.
+   */
   scale?: Scale;
   /**
    * Sort order for a field with discrete domain.
-   * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+   * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.
+   *
+   * __Default value:__ `"ascending"`
    *
    * __Note:__ For fields with continuous domain, please use `"scale": {"reverse": true}` to flip the scale instead.
+   *
+   * @nullable
    */
-  sort?: SortField | SortOrder;
+  sort?: SortOrder | SortField;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   /**
-   * By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.
-   * If `axis` is not defined, default axis properties are applied.
-   * User can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)
-   * or set `axis` to `null` to remove the axis.
+   * An object defining properties of axis's gridlines, ticks and labels.
+   * If `null`, the axis for the encoding channel will be removed.
+   *
+   * __Default value:__ If undefined, default [axis properties](axis.html) are applied.
+   *
    * @nullable
    */
   axis?: Axis;
 
   /**
    * Type of stacking offset if the field should be stacked.
-   * "none" or null, if the field should not be stacked.
+   * `stack` is only applicable for `x` and `y` channels with continuous domains.
+   * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
+   *
+   * `stack` can have one of the following values:
+   * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).
+   * - `"normalize"` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/>
+   * -`"center"` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)).
+   * - `"none"` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart.
+   *
+   * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `"none"` by default.
    */
   stack?: StackOffset;
 }
 
 export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
    /**
+    * An object defining properties of the legend.
+    * If `null`, the legend for the encoding channel will be removed.
+    *
+    * __Default value:__ If undefined, default [legend properties](legend.html) are applied.
+    *
     * @nullable
     */
   legend?: Legend;
@@ -171,13 +206,16 @@ export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
 // Order Path have no scale
 
 export interface OrderFieldDef<F> extends FieldDef<F> {
+  /**
+   * The sort order. One of `"ascending"` (default) or `"descending"`.
+   */
   sort?: SortOrder;
 }
 
 export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
   /**
-   * The formatting pattern for text value. If not defined, this will be determined automatically.
+   * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }

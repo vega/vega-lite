@@ -31,14 +31,18 @@ In the example below, we group points using a new field mapped to `color`. This 
 
 <span class="vl-example" data-name="line_color"></span>
 
+{:#line-detail}
 ### Line Chart with Multiple Lines
 
 Alternatively, we can map the same field to `detail`, creating multiple lines but with the same color instead.
 
 <span class="vl-example" data-name="line_detail"></span>
 
-### Line Chart with Custom Path
+{:#connected-scatter-plot}
+### Connected Scatter Plot (Line Chart with Custom Path)
 
 By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples. However, a field can be mapped to the `order` channel for determining a custom path.
+
+For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also [`layer`](layer.html) point marks over the line marks to highlight each data point.
 
 <span class="vl-example" data-name="scatter_connected"></span>
