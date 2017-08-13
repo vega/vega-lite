@@ -179,7 +179,10 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
   /** Legend Config */
   legend?: LegendConfig;
 
-  /** Title Config */
+  /**
+   * Title Config
+   * @hide
+   */
   title?: VgTitleConfig;
 
   /** Style Config */

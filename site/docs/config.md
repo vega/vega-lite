@@ -224,8 +224,8 @@ For a full list of axis configuration, please see the [Axis Config section in th
 ## Legend Configuration  (`config.legend.*`)
 
 Legend configuration determines default properties for [legends](legend.html). Please see [legend config](legend.html#legend-config) for each property name and default values.
-
+<!--
 {:#title-config}
 ## Title Configuration  (`config.title.*`)
 
-{% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %}
+{% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %} -->
