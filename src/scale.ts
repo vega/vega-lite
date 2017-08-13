@@ -382,9 +382,13 @@ export interface Scale {
    */
   domain?: Domain;
 
+
+  // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
+   *
+   * @hide
    */
   reverse?: boolean;
 
