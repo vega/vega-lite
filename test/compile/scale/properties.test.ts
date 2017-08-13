@@ -93,6 +93,16 @@ describe('compile/scale', () => {
     });
   });
 
+  describe('reverse', () => {
+    it('should return true for a continuous scale with sort = "descending".', () => {
+      assert.isTrue(rules.reverse('linear', 'descending'));
+    });
+
+    it('should return false for a discrete scale with sort = "descending".', () => {
+      assert.isUndefined(rules.reverse('point', 'descending'));
+    });
+  });
+
   describe('zero', () => {
     it('should return true when mapping a quantitative field to size', () => {
       assert(rules.zero('size', {field: 'a', type: 'quantitative'}, false));

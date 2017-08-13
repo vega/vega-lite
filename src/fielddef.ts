@@ -149,13 +149,13 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    * __Default value:__ If undefined, default [scale properties](scale.html) are applied.
    */
   scale?: Scale;
+
   /**
-   * Sort order for a field with discrete domain.
-   * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.
+   * Sort order for the encoded field.
+   * Suppoted `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
+   * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field) for sorting the field by another field.
    *
    * __Default value:__ `"ascending"`
-   *
-   * __Note:__ For fields with continuous domain, please use `"scale": {"reverse": true}` to flip the scale instead.
    *
    * @nullable
    */
