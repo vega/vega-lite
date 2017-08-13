@@ -100,15 +100,6 @@ describe('compile/axis', ()=> {
 
       assert.deepEqual(values, [1,2,3,4]);
     });
-
-    it('should return bin values if binned', () => {
-      const model = {getName: x => x} as UnitModel;
-      const values = rules.values({}, model, {field: 'foo', type: 'quantitative', bin: {maxbins: 5}});
-
-      assert.deepEqual(values, {
-        signal: 'sequence(bin_maxbins_5_foo_bins.start, bin_maxbins_5_foo_bins.stop + bin_maxbins_5_foo_bins.step, bin_maxbins_5_foo_bins.step)'
-      });
-    });
   });
 
   describe('zindex()', function () {

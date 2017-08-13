@@ -103,10 +103,6 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
       return {signal: dateTimeExpr(dt, true)};
     });
   }
-  if (!vals && fieldDef.bin) {
-    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
-  }
   return vals;
 }
 
