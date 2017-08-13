@@ -4,18 +4,37 @@ title: Field
 permalink: /docs/field.html
 ---
 
-<!-- TODO: Intro for value -->
+{: .suppress-error}
+```json
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "field": ..., // Field
+      "type": "quantitative",
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
 
-A [field definition](#encoding.html) must include a `field` in order to map an encoding channel to a data field.
+A [field definition](encoding.html#field-def) of an [encoding channel](encoding.html#channels) must include a `field` in order to map an encoding channel to a data field.
 The `field` property can be one of:
 
-1) A string representing the data field
+**1) A string representing the data field.**
 
-2) [An object defining iterated values from the `repeat` operator](#repeated-field)
+For example, we can set `field` to `"precipitation"` to map it to `x` position.
 
+<span class="vl-example" data-name="tick_dot"></span>
 
-{:#-repeated-field}
+{:#repeated-field}
+**2) An object defining iterated values from the `repeat` operator**
 
-### Repeated Field
+For example, we can set `field` of `x` channel to `{"repeat": "column"}` to create a histogram of different fields.
 
-TODO: @domoritz Please add this
+<span class="vl-example" data-name="repeat_histogram"></span>
+
+See the [`repeat`](repeat.html) page for more information about the `repeat` operator and more examples.
