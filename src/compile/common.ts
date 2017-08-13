@@ -128,7 +128,7 @@ export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string
 }
 
 function formatExpr(field: string, format: string) {
-  return `format(${field}, '${format || ''}')`;
+  return `format(${field}, "${format || ''}")`;
 }
 
 export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
@@ -137,7 +137,7 @@ export function numberFormatExpr(field: string, specifiedFormat: string, config:
 
 
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${startField} === null ? 'null' : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+  return `${startField} === null ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
 }
 
 

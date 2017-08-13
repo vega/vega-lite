@@ -48,8 +48,8 @@ describe('compile/axis', ()=> {
 
   describe('tickCount', function() {
     it('should return undefined by default for binned field', function () {
-      const tickCount = rules.tickCount('x', {bin: true, field: 'a', type: 'quantitative'}, 'linear', undefined);
-      assert.deepEqual(tickCount, undefined);
+      const tickCount = rules.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      assert.deepEqual(tickCount, {signal: 'min(ceil(a/40), 10)'});
     });
 
     it('should return 5 by default for linear scale', function () {
