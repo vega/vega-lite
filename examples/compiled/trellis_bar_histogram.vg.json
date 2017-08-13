@@ -26,7 +26,7 @@
                     "type": "bin",
                     "field": "Horsepower",
                     "as": [
-                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower",
                         "bin_maxbins_15_Horsepower_end"
                     ],
                     "signal": "child_bin_maxbins_15_Horsepower_bins",
@@ -38,7 +38,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower",
                         "bin_maxbins_15_Horsepower_end",
                         "Origin"
                     ],
@@ -258,7 +258,7 @@
                         "update": {
                             "x2": {
                                 "scale": "x",
-                                "field": "bin_maxbins_15_Horsepower_start",
+                                "field": "bin_maxbins_15_Horsepower",
                                 "offset": 1
                             },
                             "x": {
@@ -306,7 +306,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_15_Horsepower_start",
+                    "bin_maxbins_15_Horsepower",
                     "bin_maxbins_15_Horsepower_end"
                 ],
                 "sort": true

@@ -25,7 +25,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration",
                         "bin_maxbins_6_Acceleration_end"
                     ],
                     "signal": "bin_maxbins_6_Acceleration_bins",
@@ -36,7 +36,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], '') + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], '')",
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration\"], '') + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], '')",
                     "as": "bin_maxbins_6_Acceleration_range"
                 },
                 {
@@ -52,7 +52,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration",
                         "bin_maxbins_6_Acceleration_range"
                     ]
                 }
@@ -118,7 +118,7 @@
                 "data": "row_domain"
             },
             "sort": {
-                "field": "datum[\"bin_maxbins_6_Acceleration_start\"]",
+                "field": "datum[\"bin_maxbins_6_Acceleration\"]",
                 "order": "ascending"
             },
             "title": {
@@ -199,13 +199,13 @@
                     "name": "facet",
                     "data": "source_0",
                     "groupby": [
-                        "bin_maxbins_6_Acceleration_start"
+                        "bin_maxbins_6_Acceleration"
                     ]
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"bin_maxbins_6_Acceleration_start\"]"
+                    "datum[\"bin_maxbins_6_Acceleration\"]"
                 ],
                 "order": [
                     "ascending"

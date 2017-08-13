@@ -27,7 +27,7 @@
                     "type": "bin",
                     "field": "precipitation",
                     "as": [
-                        "bin_maxbins_10_precipitation_start",
+                        "bin_maxbins_10_precipitation",
                         "bin_maxbins_10_precipitation_end"
                     ],
                     "signal": "bin_maxbins_10_precipitation_bins",
@@ -39,7 +39,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_precipitation_start",
+                        "bin_maxbins_10_precipitation",
                         "bin_maxbins_10_precipitation_end"
                     ],
                     "ops": [
@@ -79,7 +79,7 @@
                 "update": {
                     "x2": {
                         "scale": "x",
-                        "field": "bin_maxbins_10_precipitation_start",
+                        "field": "bin_maxbins_10_precipitation",
                         "offset": 1
                     },
                     "x": {
@@ -108,7 +108,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_10_precipitation_start",
+                    "bin_maxbins_10_precipitation",
                     "bin_maxbins_10_precipitation_end"
                 ],
                 "sort": true

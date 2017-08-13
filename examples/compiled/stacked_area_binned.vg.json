@@ -28,7 +28,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "signal": "bin_maxbins_10_Acceleration_bins",
@@ -41,7 +41,7 @@
                     "type": "aggregate",
                     "groupby": [
                         "Cylinders",
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "ops": [
@@ -56,7 +56,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "(datum[\"bin_maxbins_10_Acceleration_start\"]+datum[\"bin_maxbins_10_Acceleration_end\"])/2",
+                    "expr": "(datum[\"bin_maxbins_10_Acceleration\"]+datum[\"bin_maxbins_10_Acceleration_end\"])/2",
                     "as": "bin_maxbins_10_Acceleration_mid"
                 },
                 {
@@ -177,7 +177,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_10_Acceleration_start",
+                    "bin_maxbins_10_Acceleration",
                     "bin_maxbins_10_Acceleration_end"
                 ],
                 "sort": true

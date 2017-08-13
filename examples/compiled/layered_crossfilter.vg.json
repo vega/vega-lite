@@ -41,7 +41,7 @@
                     "type": "bin",
                     "field": "distance",
                     "as": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "signal": "child_distance_layer_0_bin_maxbins_20_distance_bins",
@@ -57,7 +57,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "ops": [
@@ -90,7 +90,7 @@
                     "type": "bin",
                     "field": "distance",
                     "as": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "signal": "child_distance_layer_1_bin_maxbins_20_distance_bins",
@@ -110,7 +110,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "ops": [
@@ -143,7 +143,7 @@
                     "type": "bin",
                     "field": "delay",
                     "as": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "signal": "child_delay_layer_0_bin_maxbins_20_delay_bins",
@@ -159,7 +159,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "ops": [
@@ -192,7 +192,7 @@
                     "type": "bin",
                     "field": "delay",
                     "as": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "signal": "child_delay_layer_1_bin_maxbins_20_delay_bins",
@@ -212,7 +212,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "ops": [
@@ -245,7 +245,7 @@
                     "type": "bin",
                     "field": "time",
                     "as": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "signal": "child_time_layer_0_bin_maxbins_20_time_bins",
@@ -261,7 +261,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "ops": [
@@ -294,7 +294,7 @@
                     "type": "bin",
                     "field": "time",
                     "as": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "signal": "child_time_layer_1_bin_maxbins_20_time_bins",
@@ -314,7 +314,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "ops": [
@@ -616,7 +616,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_distance_x",
-                                "field": "bin_maxbins_20_distance_start",
+                                "field": "bin_maxbins_20_distance",
                                 "offset": 1
                             },
                             "x": {
@@ -650,7 +650,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_distance_x",
-                                "field": "bin_maxbins_20_distance_start",
+                                "field": "bin_maxbins_20_distance",
                                 "offset": 1
                             },
                             "x": {
@@ -1035,7 +1035,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_delay_x",
-                                "field": "bin_maxbins_20_delay_start",
+                                "field": "bin_maxbins_20_delay",
                                 "offset": 1
                             },
                             "x": {
@@ -1069,7 +1069,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_delay_x",
-                                "field": "bin_maxbins_20_delay_start",
+                                "field": "bin_maxbins_20_delay",
                                 "offset": 1
                             },
                             "x": {
@@ -1454,7 +1454,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_time_x",
-                                "field": "bin_maxbins_20_time_start",
+                                "field": "bin_maxbins_20_time",
                                 "offset": 1
                             },
                             "x": {
@@ -1488,7 +1488,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_time_x",
-                                "field": "bin_maxbins_20_time_start",
+                                "field": "bin_maxbins_20_time",
                                 "offset": 1
                             },
                             "x": {
@@ -1627,7 +1627,7 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "bin_maxbins_20_distance_start"
+                        "field": "bin_maxbins_20_distance"
                     },
                     {
                         "data": "data_0",
@@ -1635,7 +1635,7 @@
                     },
                     {
                         "data": "data_1",
-                        "field": "bin_maxbins_20_distance_start"
+                        "field": "bin_maxbins_20_distance"
                     },
                     {
                         "data": "data_1",
@@ -1686,7 +1686,7 @@
                 "fields": [
                     {
                         "data": "data_2",
-                        "field": "bin_maxbins_20_delay_start"
+                        "field": "bin_maxbins_20_delay"
                     },
                     {
                         "data": "data_2",
@@ -1694,7 +1694,7 @@
                     },
                     {
                         "data": "data_3",
-                        "field": "bin_maxbins_20_delay_start"
+                        "field": "bin_maxbins_20_delay"
                     },
                     {
                         "data": "data_3",
@@ -1745,7 +1745,7 @@
                 "fields": [
                     {
                         "data": "data_4",
-                        "field": "bin_maxbins_20_time_start"
+                        "field": "bin_maxbins_20_time"
                     },
                     {
                         "data": "data_4",
@@ -1753,7 +1753,7 @@
                     },
                     {
                         "data": "data_5",
-                        "field": "bin_maxbins_20_time_start"
+                        "field": "bin_maxbins_20_time"
                     },
                     {
                         "data": "data_5",

@@ -125,7 +125,7 @@ describe('compile/scale', () => {
 
         assert.deepEqual(testParseDomainForChannel(model,'y'), [{
             data: 'main',
-            field: 'bin_maxbins_15_origin_start'
+            field: 'bin_maxbins_15_origin'
           }, {
             data: 'main',
             field: 'bin_maxbins_15_origin_end'
@@ -207,7 +207,7 @@ describe('compile/scale', () => {
 
         assert.deepEqual(_domain, [{
             data: 'main',
-            field: 'bin_maxbins_15_origin_start'
+            field: 'bin_maxbins_15_origin'
           }, {
             data: 'main',
             field: 'bin_maxbins_15_origin_end'

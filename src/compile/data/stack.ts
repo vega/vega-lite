@@ -16,9 +16,7 @@ function getStackByFields(model: UnitModel): string[] {
     const fieldDef = by.fieldDef;
 
     const scale = isScaleChannel(channel) ? model.getScaleComponent(channel) : undefined;
-    const _field = field(fieldDef, {
-      binSuffix: 'start'
-    });
+    const _field = field(fieldDef);
     if (_field) {
       fields.push(_field);
     }
@@ -151,8 +149,8 @@ export class StackNode extends DataFlowNode {
           return [field(dimensionFieldDef, {binSuffix: 'mid'})];
         }
         return [
-          // For binned group by field without impute, we need both bin_start and bin_end
-          field(dimensionFieldDef, {binSuffix: 'start'}),
+          // For binned group by field without impute, we need both bin (start) and bin_end
+          field(dimensionFieldDef, {}),
           field(dimensionFieldDef, {binSuffix: 'end'})
         ];
       }
@@ -176,7 +174,7 @@ export class StackNode extends DataFlowNode {
         transform.push({
           type: 'formula',
           expr: '(' +
-            field(dimensionFieldDef, {expr: 'datum', binSuffix: 'start'}) +
+            field(dimensionFieldDef, {expr: 'datum'}) +
             '+' +
             field(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
             ')/2',

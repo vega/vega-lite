@@ -253,7 +253,7 @@ export interface FieldRefOption {
   /** prepend fn with custom function prefix */
   prefix?: string;
   /** append suffix to the field ref for bin (default='start') */
-  binSuffix?: 'start' | 'end' | 'range' | 'mid';
+  binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
   /** Overrride which aggregate to use. Needed for unaggregated domain. */
@@ -273,7 +273,7 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
     if (!opt.nofn) {
       if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
-        suffix = opt.binSuffix;
+        suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
         fn = String(opt.aggregate || fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {

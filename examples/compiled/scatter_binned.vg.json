@@ -28,7 +28,7 @@
                     "type": "bin",
                     "field": "IMDB_Rating",
                     "as": [
-                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating",
                         "bin_maxbins_10_IMDB_Rating_end"
                     ],
                     "signal": "bin_maxbins_10_IMDB_Rating_bins",
@@ -46,7 +46,7 @@
                     "type": "bin",
                     "field": "Rotten_Tomatoes_Rating",
                     "as": [
-                        "bin_maxbins_10_Rotten_Tomatoes_Rating_start",
+                        "bin_maxbins_10_Rotten_Tomatoes_Rating",
                         "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                     ],
                     "signal": "bin_maxbins_10_Rotten_Tomatoes_Rating_bins",
@@ -58,9 +58,9 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating",
                         "bin_maxbins_10_IMDB_Rating_end",
-                        "bin_maxbins_10_Rotten_Tomatoes_Rating_start",
+                        "bin_maxbins_10_Rotten_Tomatoes_Rating",
                         "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                     ],
                     "ops": [
@@ -99,10 +99,10 @@
             "encode": {
                 "update": {
                     "x": {
-                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
+                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                     },
                     "y": {
-                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_start\"]) + scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
+                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) + scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
                     },
                     "fill": {
                         "value": "#4c78a8"
@@ -125,7 +125,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_10_IMDB_Rating_start",
+                    "bin_maxbins_10_IMDB_Rating",
                     "bin_maxbins_10_IMDB_Rating_end"
                 ],
                 "sort": true
@@ -145,7 +145,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_10_Rotten_Tomatoes_Rating_start",
+                    "bin_maxbins_10_Rotten_Tomatoes_Rating",
                     "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                 ],
                 "sort": true

@@ -138,9 +138,9 @@ describe('compile/data/summary', function () {
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: [
-          'bin_maxbins_10_Displacement_start',
+          'bin_maxbins_10_Displacement',
           'bin_maxbins_10_Displacement_end',
-          'bin_maxbins_10_Acceleration_start',
+          'bin_maxbins_10_Acceleration',
           'bin_maxbins_10_Acceleration_end'
         ],
         ops: ['count'],

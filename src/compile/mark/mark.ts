@@ -123,7 +123,7 @@ export function getPathSort(model: UnitModel) {
       }, {expr: 'datum'}) :
       model.field(dimensionChannel, {
         // For stack with imputation, we only have bin_mid
-        binSuffix: model.stack && model.stack.impute ? 'mid' : 'start',
+        binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
         expr: 'datum'
       });
 
@@ -168,14 +168,14 @@ function detailFields(model: UnitModel): string[] {
       if (channelDef) {
         (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
           if (!fieldDef.aggregate) {
-            details.push(field(fieldDef, {binSuffix: 'start'}));
+            details.push(field(fieldDef, {}));
           }
         });
       }
     } else {
       const fieldDef = getFieldDef<string>(encoding[channel]);
       if (fieldDef && !fieldDef.aggregate) {
-        details.push(field(fieldDef, {binSuffix: 'start'}));
+        details.push(field(fieldDef, {}));
       }
     }
     return details;

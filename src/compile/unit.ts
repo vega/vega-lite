@@ -286,21 +286,4 @@ export class UnitModel extends ModelWithField {
     const channelDef = this.encoding[channel] as ChannelDef<string>;
     return getFieldDef(channelDef);
   }
-
-  /** Get "field" reference for vega */
-  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (!fieldDef) {
-      return undefined;
-    }
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
-  }
 }
