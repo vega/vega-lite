@@ -31,12 +31,12 @@ Adding a color field to area chart creates stacked area chart by default. For ex
 
 ### Normalized Stacked Area Chart
 
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industries.
+You can also create a normalized stacked area chart by setting `"stack"` to `"normalize"` in the encoding channel. Here we can easily see the percentage of unemployment across industries.
 
 <span class="vl-example" data-name="stacked_area_normalize"></span>
 
 ### Streamgraph
 
-We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `config.mark.stacked` to `"center"`.
+We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `"stack"` to `"center"` in the encoding channel.
 
 <span class="vl-example" data-name="stacked_area_stream"></span>
