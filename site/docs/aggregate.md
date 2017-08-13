@@ -69,7 +69,8 @@ Otherwise, if none of the specified encoding channel contains `aggregate`, the r
 
 <span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
-#### Supported Aggregation Operations
+{:#ops}
+### Supported Aggregation Operations
 
 The supported **aggregation operations** are:
 

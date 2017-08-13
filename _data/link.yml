@@ -14,7 +14,7 @@ Transform:
   link: transform.html
 
 AggregateOp:
-  link: "aggregate.html#supported-aggregation-operations"
+  link: "aggregate.html#ops"
 Bin:
   link: bin.html
 FilterOperand:
