@@ -19,6 +19,6 @@ permalink: /docs/circle.html
 
 ### Scatterplot with Circle
 
-Here are some examples of scatter plots with `circle`:
+Here is an example scatter plot with `circle` marks:
 
 <span class="vl-example" data-name="circle"></span>

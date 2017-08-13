@@ -17,6 +17,11 @@ permalink: /docs/line.html
 
 The `line` mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for [`area`](area.html)).
 
+## Documentation Overview
+
+* TOC
+{:toc}
+
 ### Line Chart
 
 Using `line` with one ordinal field (typically on `x`) and another quantitative field (typically on `y`) produces a simple line chart with a single line.

@@ -19,7 +19,7 @@ permalink: /docs/text.html
 
 ### Scatterplot with Text
 
-Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.
+Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can make a colored scatterplot with text marks showing the initial character of its origin, instead of [`point`](point.html#color) marks.
 
 <span class="vl-example" data-name="text_scatter_colored"></span>
 
