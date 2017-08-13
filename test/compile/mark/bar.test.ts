@@ -150,6 +150,41 @@ describe('Mark: Bar', function() {
   });
 
 
+  describe('horizontal binned with ordinal', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"bin": true, "field": 'Horsepower', "type": "ordinal"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with y', function() {
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_range'});
+      assert.deepEqual(props.height, {scale: 'y', band: true});
+    });
+  });
+
+  describe('vertical binned with ordinal', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "field": 'Horsepower', "type": "ordinal"},
+        "y": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with y', function() {
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_range'});
+      assert.deepEqual(props.width, {scale: 'x', band: true});
+    });
+  });
+
+
   describe('horizontal binned with no spacing', function() {
     const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": 'data/cars.json'},

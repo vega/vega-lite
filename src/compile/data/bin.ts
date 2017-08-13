@@ -24,7 +24,7 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
 
       return {
         formulaAs: field(fieldDef, {binSuffix: 'range'}),
-        formula: `${numberFormatExpr(startField, guide.format, config)} + " - " + ${numberFormatExpr(endField, guide.format, config)}`
+        formula: `${startField} === null ? 'null' : ${numberFormatExpr(startField, guide.format, config)} + " - " + ${numberFormatExpr(endField, guide.format, config)}`
       };
     }
     return {};

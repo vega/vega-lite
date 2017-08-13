@@ -416,12 +416,6 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
           ...fieldDef,
           type: 'quantitative'
         };
-      } else if (fieldDef.bin) {
-        log.warn(log.message.invalidFieldTypeForBin(fieldDef.type));
-        fieldDef = {
-          ...fieldDef,
-          type: 'quantitative'
-        };
       }
     }
   } else {

@@ -140,10 +140,6 @@ export namespace message {
     return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
   }
 
-  export function invalidFieldTypeForBin(type: Type) {
-    return `Invalid field type "${type}" for bin, using "quantitative" instead.`;
-  }
-
   export function invalidAggregate(aggregate: AggregateOp | string) {
     return `Invalid aggregation operator "${aggregate}"`;
   }
