@@ -6,7 +6,7 @@ import {hasDiscreteDomain} from '../../scale';
 import {BinTransform, Transform} from '../../transform';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, keys, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {numberFormatExpr} from '../common';
+import {binFormatExpression, numberFormatExpr} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -24,7 +24,7 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
 
       return {
         formulaAs: field(fieldDef, {binSuffix: 'range'}),
-        formula: `${startField} === null ? 'null' : ${numberFormatExpr(startField, guide.format, config)} + " - " + ${numberFormatExpr(endField, guide.format, config)}`
+        formula: binFormatExpression(startField, endField, guide.format, config)
       };
     }
     return {};

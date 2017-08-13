@@ -72,29 +72,31 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
 }
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
-  if (fieldDef.type === 'quantitative') {
-    const format = numberFormat(fieldDef, specifiedFormat, config);
-    if (fieldDef.bin) {
-      if (useBinRange) {
-        // For bin range, no need to apply format as the formula that creates range already include format
-        return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-      } else {
-        return {
-          signal: `${formatExpr(field(fieldDef, {expr}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
-        };
-      }
+  const format = numberFormat(fieldDef, specifiedFormat, config);
+  if (fieldDef.bin) {
+    if (useBinRange) {
+      // For bin range, no need to apply format as the formula that creates range already include format
+      return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
     } else {
+      const startField = field(fieldDef, {expr});
+      const endField = field(fieldDef, {expr, binSuffix: 'end'});
       return {
-        signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+        signal: binFormatExpression(startField, endField, format, config)
       };
     }
+  } else if (fieldDef.type === 'quantitative') {
+    return {
+      signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+    };
   } else if (fieldDef.type === 'temporal') {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   } else {
-    return {signal: `''+${field(fieldDef, {expr})}`};
+    return {
+      signal: `''+${field(fieldDef, {expr})}`
+    };
   }
 }
 
@@ -132,6 +134,12 @@ function formatExpr(field: string, format: string) {
 export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
   return formatExpr(field, specifiedFormat || config.numberFormat);
 }
+
+
+export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
+  return `${startField} === null ? 'null' : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+}
+
 
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
