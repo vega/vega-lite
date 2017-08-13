@@ -19,6 +19,6 @@ permalink: /docs/square.html
 
 ### Scatterplot with Square
 
-Here are some examples of scatter plots with `square`:
+Here are an example scatter plot with `square` marks:
 
 <span class="vl-example" data-name="square"></span>

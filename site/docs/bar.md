@@ -17,6 +17,11 @@ permalink: /docs/bar.html
 
 The `bar` mark encodes x and y channels with a pair of discrete and continuous fields. Bar marks are useful in a wide variety of visualizations, including bar charts and timelines.
 
+## Documentation Overview
+
+* TOC
+{:toc}
+
 ### Single Bar Chart
 
 Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar. In the following example, note that the `x` channel encodes the sum of the populations.
@@ -32,11 +37,19 @@ If we map a different ordinal field to the `y` channel, we can produce a horizon
 
 <span class="vl-example" data-name="bar_aggregate"></span>
 
+### Histogram
+If the data is not pre-aggregated (i.e. each record in the data field represents one item),
+mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to `y` produces a histogram.
+
+<span class="vl-example" data-name="histogram"></span>
+
+If you prefer to have histogram without gaps between bars, you can set the [`barBinSpacing` mark config](config.html#bar-config) to `0`.
+
 {:#stack}
 ### Stacked Bar Chart
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default. Here we also customize the color's scale range to make the color a little nicer.
-(See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
+(See [`stack`](stack.html) for more details about customizing stack.)
 
 
 <span class="vl-example" data-name="stacked_bar_population"></span>
@@ -44,7 +57,7 @@ Adding color to the bar chart (by using the `color` attribute) creates a stacked
 
 ### Layered Bar Chart
 
-To disable stacking, you can alternatively set `config.mark.stacked` to `"none"`.
+To disable stacking, you can alternatively set [`stack`](stack.html) to `"none"`.
 This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
@@ -54,7 +67,7 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 ### Normalized Stacked Bar Chart
 
 <!-- TODO: better explain this -->
-You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of male and female population at different ages.
+You can also create a normalized stacked bar chart by setting [`stack`](stack.html) to `"normalize"`. Here we can easily see the percentage of male and female population at different ages.
 
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
@@ -65,13 +78,3 @@ You can also create a normalized stacked bar chart by setting `config.mark.stack
 [Faceting](facet.html) a bar chart produces a grouped bar chart.
 
 <span class="vl-example" data-name="bar_grouped"></span>
-
-<!-- ### Table Heat Map -->
-
-### Histogram
-If the data is not pre-aggregated (i.e. each record in the data field represents one item),
-mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to `y` produces a histogram.
-
-<span class="vl-example" data-name="histogram"></span>
-
-If you prefer to have histogram without gaps between bars, you can set the [`barBinSpacing` mark config](config.html#bar-config) to `0`.

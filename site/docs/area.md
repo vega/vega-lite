@@ -17,6 +17,11 @@ permalink: /docs/area.html
 
 `area` represent multiple data element as a single area shape. Area marks are often used to show change over time, using either a single area or stacked areas.
 
+## Documentation Overview
+
+* TOC
+{:toc}
+
 ### Area Chart
 
 Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart. For example, the following area chart shows a number of unemployment people in the US over time.
