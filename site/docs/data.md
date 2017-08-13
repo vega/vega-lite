@@ -5,17 +5,7 @@ title: Data
 permalink: /docs/data.html
 ---
 
-Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://www.github.com/vega/vega/wiki/Data), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
-
-{: .suppress-error}
-```json
-{
-  "data": ... ,       // data
-  "mark": ... ,
-  "encoding": ... ,
-  ...
-}
-```
+Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
 Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data).
 
@@ -30,13 +20,19 @@ Vega-Lite's `data` property describes the visualization's data source as part of
 ### Inline Data
 
 Inline Data can be specified using `values` property.
-Here is a list of all properties describing an line `data` source:
+Here is a list of all properties of an inline `data` source:
 
 {% include table.html props="values,format" source="InlineData" %}
 
 For example, the following specification embeds an inline data table with nine rows and two columns (`a` and `b`).
 
 <span class="vl-example" data-name="bar"></span>
+
+If the input data is simply an array of primitive values, each value is mapped to the `data` property of a new object. For example `[5, 3, 8, 1]` is loaded as:
+
+```json
+[ {"data": 5}, {"data": 3}, {"data": 8}, {"data": 1} ]
+```
 
 {:#url}
 ### Data from URL
@@ -47,7 +43,7 @@ Here is a list of all properties describing a `data` source from URL:
 
 {% include table.html props="url,format" source="UrlData" %}
 
-For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly json by default.
+For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly `"json"` by default.
 
 <span class="vl-example" data-name="scatter"></span>
 

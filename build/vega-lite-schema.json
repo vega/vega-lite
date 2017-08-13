@@ -2835,10 +2835,10 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data values."
         },
         "values": {
-          "description": "Pass array of objects instead of a url to a file.",
+          "description": "The full data set, included inline. This can be an array of objects or primitive values.\nArrays of primitive values are ingested as objects with a `data` property.",
           "items": {
           },
           "type": "array"
@@ -3895,7 +3895,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data."
         },
         "name": {
           "description": "Provide a placeholder name and bind data at runtime.",
@@ -5721,7 +5721,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataUrlFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data file."
         },
         "url": {
           "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
