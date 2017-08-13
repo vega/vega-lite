@@ -41,7 +41,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_5_Acceleration\"], '') + \" - \" + format(datum[\"bin_maxbins_5_Acceleration_end\"], '')",
+                    "expr": "datum[\"bin_maxbins_5_Acceleration\"] === null ? \"null\" : format(datum[\"bin_maxbins_5_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_5_Acceleration_end\"], \"\")",
                     "as": "bin_maxbins_5_Acceleration_range"
                 }
             ]

@@ -1,6 +1,6 @@
 import {Axis} from '../../axis';
 import {binToString} from '../../bin';
-import {Bin} from '../../bin';
+import {BinParams} from '../../bin';
 import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
@@ -81,7 +81,7 @@ export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleTyp
 
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     if (fieldDef.bin) {
-      return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as Bin).maxbins})`};
+      return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as BinParams).maxbins})`};
     }
     return {signal: `ceil(${size.signal}/40)`};
   }

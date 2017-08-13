@@ -108,7 +108,7 @@
                         "value": "#4c78a8"
                     },
                     "tooltip": {
-                        "signal": "format(datum[\"b\"], '')"
+                        "signal": "format(datum[\"b\"], \"\")"
                     }
                 }
             }
