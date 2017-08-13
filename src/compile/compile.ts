@@ -73,8 +73,8 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
 
   // autoResize has to be put under autosize
   const {autoResize, ...topLevelProps} = topLevelProperties;
-  const title = model.assembleTitle();
 
+  const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
 
   const output = {

@@ -181,6 +181,7 @@
         {
             "name": "cell",
             "type": "group",
+            "style": "cell",
             "from": {
                 "facet": {
                     "name": "facet",

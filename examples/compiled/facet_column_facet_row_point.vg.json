@@ -281,6 +281,7 @@
                 {
                     "name": "child_cell",
                     "type": "group",
+                    "style": "cell",
                     "from": {
                         "facet": {
                             "name": "child_facet",
