@@ -1,5 +1,6 @@
 import {Axis} from '../../axis';
 import {binToString} from '../../bin';
+import {Bin} from '../../bin';
 import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
@@ -78,11 +79,10 @@ export function orient(channel: Channel) {
 
 export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
 
-  if (!fieldDef.bin && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
-    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
-    // Thus, we set it to 5 for width = 200
-    // and set the same value for y for consistency.
-
+  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    if (fieldDef.bin) {
+      return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as Bin).maxbins})`};
+    }
     return {signal: `ceil(${size.signal}/40)`};
   }
 
