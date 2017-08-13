@@ -47,7 +47,8 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
  * Value Ref for binned fields
  */
 export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
-  return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset ? {offset} : {});
+  const binSuffix = side === 'start' ? undefined : 'end';
+  return fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
 }
 
 export function fieldRef(
@@ -80,7 +81,7 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
 function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', expr: 'datum'})})` +
+      `scale("${scaleName}", ${field(fieldDef, {expr: 'datum'})})` +
       ` + ` +
       `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
     `)/2`
@@ -109,7 +110,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
           // For non-stack, we can just calculate bin mid on the fly using signal.
           return binMidSignal(channelDef, scaleName);
         }
-        return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
+        return fieldRef(channelDef, scaleName, {});
       }
 
       const scaleType = scale.get('type');

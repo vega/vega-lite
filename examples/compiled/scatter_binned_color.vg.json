@@ -30,7 +30,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_5_Acceleration_start",
+                        "bin_maxbins_5_Acceleration",
                         "bin_maxbins_5_Acceleration_end"
                     ],
                     "signal": "bin_maxbins_5_Acceleration_bins",
@@ -41,7 +41,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_5_Acceleration_start\"], '') + \" - \" + format(datum[\"bin_maxbins_5_Acceleration_end\"], '')",
+                    "expr": "format(datum[\"bin_maxbins_5_Acceleration\"], '') + \" - \" + format(datum[\"bin_maxbins_5_Acceleration_end\"], '')",
                     "as": "bin_maxbins_5_Acceleration_range"
                 }
             ]
@@ -79,7 +79,7 @@
                     },
                     "stroke": {
                         "scale": "color",
-                        "field": "bin_maxbins_5_Acceleration_start"
+                        "field": "bin_maxbins_5_Acceleration"
                     },
                     "fill": {
                         "value": "transparent"

@@ -80,7 +80,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
         return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
+          signal: `${formatExpr(field(fieldDef, {expr}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
     } else {
@@ -155,7 +155,7 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
  */
 export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(field(orderChannelDef, {binSuffix: 'start', ...fieldRefOption}));
+    s.field.push(field(orderChannelDef, fieldRefOption));
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});

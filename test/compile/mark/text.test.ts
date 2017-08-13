@@ -75,7 +75,7 @@ describe('Mark: Text', function() {
     const props = text.encodeEntry(model);
 
     it('should output correct bin range', function() {
-      assert.deepEqual(props.text, {signal: `format(datum["bin_maxbins_10_foo_start"], 'd') + '-' + format(datum["bin_maxbins_10_foo_end"], 'd')`});
+      assert.deepEqual(props.text, {signal: `format(datum["bin_maxbins_10_foo"], 'd') + '-' + format(datum["bin_maxbins_10_foo_end"], 'd')`});
     });
   });
 

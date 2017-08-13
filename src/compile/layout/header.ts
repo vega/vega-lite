@@ -123,7 +123,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         ...(layoutHeader.facetFieldDef ? {
           from: {data: model.getName(channel + '_domain')},
           sort: {
-            field: field(layoutHeader.facetFieldDef, {expr: 'datum', binSuffix: 'start'}),
+            field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
             order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.sort) || 'ascending'
           }
         } : {}),

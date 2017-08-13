@@ -553,10 +553,8 @@ export abstract class ModelWithField extends Model {
   public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
-    if (fieldDef.bin) {
-      opt = extend({
-        binSuffix: 'start'
-      }, opt);
+    if (!fieldDef) {
+      return undefined;
     }
 
     return field(fieldDef, opt);

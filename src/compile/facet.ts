@@ -251,7 +251,7 @@ export class FacetModel extends ModelWithField {
             update: {
               // TODO(https://github.com/vega/vega-lite/issues/2759):
               // Correct the signal for facet of concat of facet_column
-              columns: {field: field(this.facet.column, {binSuffix: 'start', prefix: 'distinct'})}
+              columns: {field: field(this.facet.column, {prefix: 'distinct'})}
             }
           }
         } : {}),
@@ -336,8 +336,8 @@ export class FacetModel extends ModelWithField {
       },
       sort: {
         field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum', binSuffix: 'start'})] : [],
-          hasColumn ? [this.field(COLUMN, {expr: 'datum', binSuffix: 'start'})] : []
+          hasRow ? [this.field(ROW, {expr: 'datum',})] : [],
+          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
           hasRow ? [ (facet.row.sort) || 'ascending'] : [],

@@ -32,7 +32,7 @@ describe('compile/data/bin', function() {
     assert.deepEqual<VgTransform>(assembleFromEncoding(model)[0], {
       type: 'bin',
       field: 'Acceleration',
-      as: ['bin_extent_0,100_maxbins_10_Acceleration_start', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
+      as: ['bin_extent_0,100_maxbins_10_Acceleration', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
       maxbins: 10,
       extent: [0, 100],
       signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
@@ -60,7 +60,7 @@ describe('compile/data/bin', function() {
     assert.deepEqual<VgTransform>(transform[1], {
       type: 'bin',
       field: 'Acceleration',
-      as: ['bin_maxbins_10_Acceleration_start', 'bin_maxbins_10_Acceleration_end'],
+      as: ['bin_maxbins_10_Acceleration', 'bin_maxbins_10_Acceleration_end'],
       maxbins: 10,
       signal: 'bin_maxbins_10_Acceleration_bins',
       extent: {signal: 'bin_maxbins_10_Acceleration_extent'}
@@ -95,7 +95,7 @@ describe('compile/data/bin', function() {
       type: 'bin',
       field: 'Rotten_Tomatoes_Rating',
       as:
-      [ 'bin_maxbins_10_Rotten_Tomatoes_Rating_start',
+      [ 'bin_maxbins_10_Rotten_Tomatoes_Rating',
         'bin_maxbins_10_Rotten_Tomatoes_Rating_end' ],
       signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_bins',
       maxbins: 10,
@@ -104,7 +104,7 @@ describe('compile/data/bin', function() {
     assert.deepEqual<VgTransform>(transform[2], {
       type: 'formula',
       as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-      expr: `format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_start"], '') + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], '')`
+      expr: `format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], '') + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], '')`
     });
   });
 
@@ -134,7 +134,7 @@ describe('compile/data/bin', function() {
       type: 'bin',
       field: 'Acceleration',
       "maxbins": 10,
-      as: ['bin_extent_0,100_Acceleration_start', 'bin_extent_0,100_Acceleration_end'],
+      as: ['bin_extent_0,100_Acceleration', 'bin_extent_0,100_Acceleration_end'],
       extent: [0, 100],
       signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
     });
@@ -163,7 +163,7 @@ describe('compile/data/bin', function() {
       type: 'bin',
       field: 'Acceleration',
       "maxbins": 20,
-      as: ['bin_extent_0,100_maxbins_20_Acceleration_start', 'bin_extent_0,100_maxbins_20_Acceleration_end'],
+      as: ['bin_extent_0,100_maxbins_20_Acceleration', 'bin_extent_0,100_maxbins_20_Acceleration_end'],
       extent: [0, 100],
       signal: "bin_extent_0_100_maxbins_20_Acceleration_bins",
     });

@@ -14,7 +14,7 @@ import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
-    dims[field(fieldDef, {binSuffix: 'start'})] = true;
+    dims[field(fieldDef, {})] = true;
     dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
     // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).

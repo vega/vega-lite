@@ -19,7 +19,7 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
 
       const guide = isUnitModel(model) ? (model.axis(channel) || model.legend(channel) || {}) : {};
 
-      const startField = field(fieldDef, {expr: 'datum', binSuffix: 'start'});
+      const startField = field(fieldDef, {expr: 'datum',});
       const endField = field(fieldDef, {expr: 'datum', binSuffix: 'end'});
 
       return {
@@ -38,7 +38,7 @@ function createBinComponent(bin: Bin, t: FieldDef<string>|BinTransform, model: M
   return {
     bin: bin,
     field: t.field,
-    as: [field(t, {binSuffix: 'start'}), field(t, {binSuffix: 'end'})],
+    as: [field(t, {}), field(t, {binSuffix: 'end'})],
     signal: model.getName(`${key}_bins`),
     extentSignal: model.getName(key + '_extent')
   };
