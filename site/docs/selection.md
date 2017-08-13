@@ -13,9 +13,10 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 | [on](#selection-on)      | [Vega Event Stream](https://vega.github.io/vega/docs/event-streams/) | Alternate user input events that should trigger the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters). |
 | [resolve](#resolving-selections-in-data-driven-views) | String | A strategy for how the selection's data query should be constructed, when used within a multiview or layered display. |
 
+## Documentation Overview
+
 * TOC
 {:toc}
-
 
 ## Selection Types
 

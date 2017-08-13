@@ -7,10 +7,12 @@ permalink: /tutorials/getting_started.html
 
 This tutorial will guide through the process of writing a visualization specification in Vega-Lite. We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one. After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
+We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/editor/#/custom/vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
+
+## Tutorial Overview
+
 * TOC
 {:toc}
-
-We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/editor/#/custom/vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## `$schema`
 
