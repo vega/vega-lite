@@ -301,10 +301,10 @@
                     "scale": "child_Horsepower_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Horsepower)",
-                    "values": {
-                        "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Horsepower)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -405,10 +405,10 @@
                     "scale": "child_Miles_per_Gallon_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Miles_per_Gallon)",
-                    "values": {
-                        "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Miles_per_Gallon)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -509,10 +509,10 @@
                     "scale": "child_Acceleration_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Acceleration)",
-                    "values": {
-                        "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Acceleration)",
                     "zindex": 1,
                     "encode": {
                         "labels": {

@@ -244,10 +244,10 @@
                     "scale": "child_distance_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(distance)",
-                    "values": {
-                        "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(distance)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -347,10 +347,10 @@
                     "scale": "child_delay_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(delay)",
-                    "values": {
-                        "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(delay)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -450,10 +450,10 @@
                     "scale": "child_time_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(time)",
-                    "values": {
-                        "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(time)",
                     "zindex": 1,
                     "encode": {
                         "labels": {

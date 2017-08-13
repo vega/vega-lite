@@ -144,10 +144,10 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "title": "BIN(IMDB_Rating)",
-            "values": {
-                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+            "tickCount": {
+                "signal": "min(ceil(width/40), 10)"
             },
+            "title": "BIN(IMDB_Rating)",
             "zindex": 1,
             "encode": {
                 "labels": {
