@@ -4,9 +4,9 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "bin": {"maxbins": 30},
+      "bin": {"maxbins": 10},
       "field": "IMDB_Rating",
-      "type": "quantitative"
+      "type": "ordinal"
     },
     "y": {
       "aggregate": "count",
