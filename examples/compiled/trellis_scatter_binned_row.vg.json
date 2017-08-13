@@ -52,6 +52,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
+                        "bin_maxbins_6_Acceleration_start",
                         "bin_maxbins_6_Acceleration_range"
                     ]
                 }
@@ -117,7 +118,7 @@
                 "data": "row_domain"
             },
             "sort": {
-                "field": "datum[\"bin_maxbins_6_Acceleration\"]",
+                "field": "datum[\"bin_maxbins_6_Acceleration_start\"]",
                 "order": "ascending"
             },
             "title": {
@@ -198,13 +199,13 @@
                     "name": "facet",
                     "data": "source_0",
                     "groupby": [
-                        "bin_maxbins_6_Acceleration_range"
+                        "bin_maxbins_6_Acceleration_start"
                     ]
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"bin_maxbins_6_Acceleration_range\"]"
+                    "datum[\"bin_maxbins_6_Acceleration_start\"]"
                 ],
                 "order": [
                     "ascending"
