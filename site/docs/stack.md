@@ -5,21 +5,75 @@ permalink: /docs/stack.html
 ---
 <!-- TODO: Intro for stack -->
 
-#### Example: Stack
-Here is an example of stack area with `normalize`:
-<div class="vl-example" data-name="stacked_area_normalize"></div>
+The `stack` property of a [position field definition](encoding.html#position-field-def)
+determines type of stacking offset if the field should be stacked.
+`stack` can be one of the following values:
 
-And this example has a stack value of `center`:
+- `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked bar and area chart).
+- `"normalize"` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/>
+- `"center"` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)).
+- `"none"` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart.
+
+{: .suppress-error}
+```json
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "field": ...,
+      "type": "quantitative",
+      "stack": ..., // Stack
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+* TOC
+{:toc}
+
+
+## Stack Bar Chart
+
+Similarly, adding a color field to a bar chart also creates stacked bar chart by default.
+
+<span class="vl-example" data-name="stacked_bar_v"></span>
+
+## Stack Area Chart
+
+Similarly, adding a color field to area chart also creates stacked area chart by default.
+
+<span class="vl-example" data-name="stacked_area"></span>
+
+## Normalized Stacked Bar Chart
+
+Setting `stack` to `"center"` creates a normalized (or percentage) stacked chart.
+
+<div class="vl-example" data-name="stacked_bar_normalize"></div>
+
+## Streamgraph
+
+Setting `stack` to `"center"` for a stacked area chart creates a streamgraph:
+
 <div class="vl-example" data-name="stacked_area_stream"></div>
 
-Another example is to have a stack value of `none`:
+## Layered Bar Chart
+
+If `stack` is `"none"`, the marks will be layered on top of each other.
+In this example, setting the mark's `opacity` to be semi-transparent (`0.6`) creates a layered bar chart.
+
 <div class="vl-example" data-name="bar_layered_transparent"></div>
 
 
-{:#ex-order}
-#### Example: Sorting Stack Order
+{:#order}
+## Sorting Stack Order
 
-Given a stacked bar chart:
+You can use the order channel to sort the order of stacked marks.
+
+For example, given a stacked bar chart for the barley dataset:
 
 <div class="vl-example" data-name="stacked_bar_h"></div>
 
