@@ -318,11 +318,13 @@ export class FacetModel extends ModelWithField {
     }
 
     const title = child.assembleTitle();
+    const style = child.assembleGroupStyle();
 
     const markGroup = {
       name: this.getName('cell'),
       type: 'group',
       ...(title? {title} : {}),
+      ...(style? {style} : {}),
       from: {
         facet: {
           name: facetRoot.name,
