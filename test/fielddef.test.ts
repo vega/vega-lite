@@ -45,12 +45,6 @@ describe('fieldDef', () => {
       assert.equal(localLogger.warns.length, 4);
     }));
 
-    it('should replace other type with quantitative for a field with bin.', log.wrap((localLogger) => {
-      const fieldDef: FieldDef<string> = {bin: {maxbins: 10}, field: 'a', type: 'nominal'};
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {bin: {maxbins: 10}, field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns.length, 1);
-    }));
-
     it('should return fieldDef with default type and throw warning if type is missing.', log.wrap((localLogger) => {
       const fieldDef = {field: 'a'} as FieldDef<string>;
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});

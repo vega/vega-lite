@@ -104,7 +104,7 @@ describe('compile/data/bin', function() {
     assert.deepEqual<VgTransform>(transform[2], {
       type: 'formula',
       as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-      expr: `format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], '') + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], '')`
+      expr: `datum["bin_maxbins_10_Rotten_Tomatoes_Rating"] === null ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
     });
   });
 
