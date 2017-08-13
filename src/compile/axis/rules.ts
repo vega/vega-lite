@@ -81,6 +81,7 @@ export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleTyp
 
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     if (fieldDef.bin) {
+      // for binned data, we don't want more ticks than maxbins
       return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as BinParams).maxbins})`};
     }
     return {signal: `ceil(${size.signal}/40)`};

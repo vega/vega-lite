@@ -4,7 +4,7 @@ import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Summarize, SummarizeTransform} from '../../transform';
-import {ORDINAL} from '../../type';
+import {NOMINAL, ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from '../model';
@@ -19,7 +19,7 @@ function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<strin
 
     // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
     // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
-    if (fieldDef.type === ORDINAL) {
+    if (fieldDef.type === ORDINAL || fieldDef.type === NOMINAL) {
       dims[field(fieldDef, {binSuffix: 'range'})] = true;
     }
   } else {
