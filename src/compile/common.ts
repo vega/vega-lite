@@ -137,7 +137,7 @@ export function numberFormatExpr(field: string, specifiedFormat: string, config:
 
 
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${startField} === null ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+  return `${startField} === null || !isNaN(${startField}) ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
 }
 
 
