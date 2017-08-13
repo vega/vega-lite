@@ -41,7 +41,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum[\"bin_maxbins_6_Acceleration\"] === null ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")",
+                    "expr": "datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")",
                     "as": "bin_maxbins_6_Acceleration_range"
                 },
                 {
