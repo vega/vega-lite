@@ -178,7 +178,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * `stack` is only applicable for `x` and `y` channels with continuous domains.
    * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
    *
-   * `stack` can have one of the following values:
+   * `stack` can be one of the following values:
    * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).
    * - `"normalize"` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/>
    * -`"center"` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)).
