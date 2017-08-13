@@ -32,6 +32,8 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
 
 The rest of this page describes properties of a scale and their default behavior.
 
+## Documentation Overview
+
 * TOC
 {:toc}
 

@@ -7,6 +7,8 @@ permalink: /docs/tooltip.html
 
 Tooltip can provide details of a particular data point on demand. There are two ways to create a tooltip in Vega-Lite.
 
+## Documentation Overview
+
 * TOC
 {:toc}
 

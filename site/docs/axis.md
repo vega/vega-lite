@@ -40,6 +40,8 @@ Besides `axis` property of each encoding channel, the configuration object ([`co
 }
 ```
 
+## Documentation Overview
+
 * TOC
 {:toc}
 
