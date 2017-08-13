@@ -1194,7 +1194,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1334,7 +1334,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3334,7 +3334,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4095,7 +4095,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
@@ -4489,7 +4489,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting the field by another field.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4764,15 +4764,16 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "The field name to aggregate over.",
+          "description": "The data field to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference.",
           "type": "string"
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The sort aggregation operator"
+          "description": "An [aggregate operation](aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`).\nThis property is required in cases where the sort field and the data reference field do not match.\nThe input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](aggregate.html#ops)."
         },
         "order": {
-          "$ref": "#/definitions/SortOrder"
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
         }
       },
       "required": [

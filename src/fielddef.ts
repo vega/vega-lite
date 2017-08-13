@@ -152,8 +152,8 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
 
   /**
    * Sort order for the encoded field.
-   * Suppoted `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
-   * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field) for sorting the field by another field.
+   * Supported `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
+   * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).
    *
    * __Default value:__ `"ascending"`
    *
