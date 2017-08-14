@@ -36,7 +36,7 @@ export interface BaseSpec {
   /**
    * Title for the plot.
    */
-  title?: Title;
+  title?: string | Title;
 
   /**
    * Name of the visualization for later reference.

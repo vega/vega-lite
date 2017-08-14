@@ -730,7 +730,14 @@
           "type": "string"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2367,7 +2374,14 @@
           "$ref": "#/definitions/Spec"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2409,7 +2423,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2462,7 +2483,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2507,7 +2535,14 @@
           "$ref": "#/definitions/Spec"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2581,7 +2616,14 @@
           "type": "object"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2637,7 +2679,14 @@
           "type": "object"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -2677,7 +2726,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5415,7 +5471,14 @@
           "type": "object"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5482,7 +5545,14 @@
           "$ref": "#/definitions/Spec"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5545,7 +5615,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5619,7 +5696,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5685,7 +5769,14 @@
           "$ref": "#/definitions/Spec"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
@@ -5742,7 +5833,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "title": {
-          "$ref": "#/definitions/Title",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Title"
+            }
+          ],
           "description": "Title for the plot."
         },
         "transform": {
