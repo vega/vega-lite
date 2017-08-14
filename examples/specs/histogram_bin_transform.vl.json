@@ -10,7 +10,7 @@
   "encoding": {
     "x": {
       "field": "bin_IMDB_Rating",
-      "type": "quantitative"
+      "type": "ordinal"
     },
     "y": {
       "aggregate": "count",
