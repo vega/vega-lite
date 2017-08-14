@@ -30,15 +30,6 @@
                     }
                 },
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"bin_IMDB_Rating\"])",
-                    "as": "bin_IMDB_Rating"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_IMDB_Rating"
@@ -58,8 +49,12 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 21
+        },
+        {
             "name": "width",
-            "update": "200"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "height",
@@ -78,12 +73,13 @@
             },
             "encode": {
                 "update": {
-                    "xc": {
+                    "x": {
                         "scale": "x",
                         "field": "bin_IMDB_Rating"
                     },
                     "width": {
-                        "value": 2
+                        "scale": "x",
+                        "band": true
                     },
                     "y": {
                         "scale": "y",
@@ -103,20 +99,20 @@
     "scales": [
         {
             "name": "x",
-            "type": "linear",
+            "type": "band",
             "domain": {
                 "data": "source_0",
-                "field": "bin_IMDB_Rating"
+                "field": "bin_IMDB_Rating",
+                "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "width"
+            "range": {
+                "step": {
+                    "signal": "x_step"
                 }
-            ],
+            },
             "round": true,
-            "nice": true,
-            "zero": true
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
@@ -141,26 +137,23 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
             "title": "bin_IMDB_Rating",
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "orient": "bottom",
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
         },
         {
             "scale": "y",
