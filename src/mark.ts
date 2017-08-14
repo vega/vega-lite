@@ -142,9 +142,8 @@ export interface MarkConfig extends VgMarkConfig {
    */
   filled?: boolean;
 
-  // TODO: remove this once we correctly integrate theme
   /**
-   * Default color.
+   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    */
