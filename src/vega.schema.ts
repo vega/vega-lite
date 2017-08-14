@@ -1070,7 +1070,12 @@ export type TitleOrient = 'top' | 'bottom' | 'left' | 'right';
 
 export interface VgTitleConfig {
   /**
-   * Title anchor position (`"start"`, `"middle"`, or `"end"`).
+   * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+   *
+   * __Default value:__ `"middle"` for [single](spec.html) and [layered](layer.html) views.
+   * `"start"` for other composite views.
+   *
+   * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
   anchor?: Anchor;
   /**

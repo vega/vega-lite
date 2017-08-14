@@ -111,6 +111,11 @@ export namespace message {
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
   }
+  // TITLE
+
+  export function cannotSetTitleAnchor(type: string) {
+    return `Cannot set title "anchor" for a ${type} spec`;
+  }
 
   // DATA
   export function unrecognizedParse(p: string) {

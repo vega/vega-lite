@@ -122,7 +122,7 @@ describe('Compile', function() {
       assert.deepEqual(spec.title, {text: 'test'});
     });
 
-    it('should return a title for a concat spec and augment the title with non-mark title config (e.g., anchor).', () => {
+    it('should return a title for a concat spec, throw warning if anchor is set to other values than "start" and automatically set anchor to "start".', log.wrap((localLogger) => {
       const spec = compile({
         "data": {
           "values": [{"a": "A","b": 28}]
@@ -132,9 +132,46 @@ describe('Compile', function() {
           "mark": "point",
           "encoding": {}
         }],
-        "config": {"title": {"anchor": "start"}}
+        "config": {"title": {"anchor": "middle"}}
       }).spec;
-      assert.deepEqual(spec.title, {text: 'test', anchor: 'start'});
+      assert.deepEqual(spec.title, {
+        text: 'test',
+        anchor: 'start' // We only support anchor as start for concat
+      });
+      assert.equal(localLogger.warns[0], log.message.cannotSetTitleAnchor('concat'));
+    }));
+
+    it('should return a title for a concat spec, automatically set anchor to "start", and augment the title with non-mark title config (e.g., offset).', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "title": {"text": "test"},
+        "hconcat": [{
+          "mark": "point",
+          "encoding": {}
+        }],
+        "config": {"title": {"offset": 5}}
+      }).spec;
+      assert.deepEqual(spec.title, {
+        text: 'test',
+        anchor: 'start',
+        offset: 5
+      });
+    });
+
+    it('should not have title if there is no title.', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "hconcat": [{
+          "mark": "point",
+          "encoding": {}
+        }],
+        "config": {"title": {"offset": 5}}
+      }).spec;
+      assert.isUndefined(spec.title);
     });
   });
 });
