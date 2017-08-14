@@ -39,6 +39,14 @@
       ],
       "type": "string"
     },
+    "Anchor": {
+      "enum": [
+        "start",
+        "middle",
+        "end"
+      ],
+      "type": "string"
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -720,6 +728,10 @@
         "name": {
           "description": "Name of the visualization for later reference.",
           "type": "string"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -1576,6 +1588,10 @@
         "timeFormat": {
           "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)).\n\n__Default value:__ `'%b %d, %Y'`.",
           "type": "string"
+        },
+        "title": {
+          "$ref": "#/definitions/VgTitleConfig",
+          "description": "Title Config"
         }
       },
       "type": "object"
@@ -2350,6 +2366,10 @@
         "spec": {
           "$ref": "#/definitions/Spec"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2387,6 +2407,10 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2437,6 +2461,10 @@
         "resolve": {
           "$ref": "#/definitions/Resolve"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2477,6 +2505,10 @@
         },
         "spec": {
           "$ref": "#/definitions/Spec"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2548,6 +2580,10 @@
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2600,6 +2636,10 @@
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2635,6 +2675,10 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5263,6 +5307,58 @@
       ],
       "type": "object"
     },
+    "Title": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"` (the default), or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        },
+        "text": {
+          "description": "The title text.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
+    },
+    "TitleBase": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"` (the default), or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        }
+      },
+      "type": "object"
+    },
+    "TitleOrient": {
+      "enum": [
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ],
+      "type": "string"
+    },
     "TopLevelFacetedUnitSpec": {
       "additionalProperties": false,
       "properties": {
@@ -5317,6 +5413,10 @@
           },
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5381,6 +5481,10 @@
         "spec": {
           "$ref": "#/definitions/Spec"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -5439,6 +5543,10 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5510,6 +5618,10 @@
         "resolve": {
           "$ref": "#/definitions/Resolve"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -5572,6 +5684,10 @@
         "spec": {
           "$ref": "#/definitions/Spec"
         },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -5624,6 +5740,10 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "$ref": "#/definitions/Title",
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -6542,6 +6662,61 @@
         "input",
         "options"
       ],
+      "type": "object"
+    },
+    "VgTitleConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "Title anchor position (`\"start\"`, `\"middle\"`, or `\"end\"`)."
+        },
+        "angle": {
+          "description": "Angle in degrees of title text.",
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/VerticalAlign",
+          "description": "Vertical text baseline for title text."
+        },
+        "color": {
+          "description": "Text color for title text.",
+          "type": "string"
+        },
+        "font": {
+          "description": "Font name for title text.",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontWeight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/FontWeightNumber"
+            }
+          ],
+          "description": "Font weight for title text."
+        },
+        "limit": {
+          "description": "The maximum allowed length in pixels of legend labels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "offset": {
+          "description": "Offset in pixels of the title from the chart body and axes.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "Default title orientation (\"top\", \"bottom\", \"left\", or \"right\")"
+        }
+      },
       "type": "object"
     },
     "VlOnlyGuideConfig": {

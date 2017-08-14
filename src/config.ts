@@ -181,7 +181,6 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 
   /**
    * Title Config
-   * @hide
    */
   title?: VgTitleConfig;
 
