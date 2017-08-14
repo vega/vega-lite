@@ -342,7 +342,20 @@ export abstract class Model {
       ...this.title
     };
 
-    return keys(title).length > 0 ? title : undefined;
+    if (title.text) {
+      if (!contains(['unit', 'layer'], this.type)) {
+        // As described in https://github.com/vega/vega-lite/issues/2875:
+        // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
+
+        if (title.anchor && title.anchor !== 'start') {
+          log.warn(log.message.cannotSetTitleAnchor(this.type));
+        }
+        title.anchor = 'start';
+      }
+
+      return keys(title).length > 0 ? title : undefined;
+    }
+    return undefined;
   }
 
   /**

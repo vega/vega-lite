@@ -5368,7 +5368,7 @@
       "properties": {
         "anchor": {
           "$ref": "#/definitions/Anchor",
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"` (the default), or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
         },
         "offset": {
           "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
@@ -5393,7 +5393,7 @@
       "properties": {
         "anchor": {
           "$ref": "#/definitions/Anchor",
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"` (the default), or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
         },
         "offset": {
           "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
@@ -6767,7 +6767,7 @@
       "properties": {
         "anchor": {
           "$ref": "#/definitions/Anchor",
-          "description": "Title anchor position (`\"start\"`, `\"middle\"`, or `\"end\"`)."
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
         },
         "angle": {
           "description": "Angle in degrees of title text.",
