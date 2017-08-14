@@ -6,7 +6,7 @@ import {isNumber} from 'vega-util';
 import {Channel, ScaleChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, ConditionalChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {isVgSignalRef, VgScale, VgSignalRef, VgValueRef} from '../../vega.schema';
@@ -110,7 +110,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
           // For non-stack, we can just calculate bin mid on the fly using signal.
           return binMidSignal(channelDef, scaleName);
         }
-        return fieldRef(channelDef, scaleName, {});
+        return fieldRef(channelDef, scaleName, isBinScale(scale.get('type')) ? {} : {binSuffix: 'range'});
       }
 
       const scaleType = scale.get('type');
