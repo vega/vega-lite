@@ -15,8 +15,9 @@ Transform:
 
 AggregateOp:
   link: "aggregate.html#ops"
-Bin:
-  link: bin.html
+BinParams:
+  name: Bin
+  link: "bin.html#bin-parameters"
 FilterOperand:
   name: Filter
   link: "transform.html#filter"
@@ -139,5 +140,3 @@ Padding:
 SelectionDef:
   name: Selection
   link: selection.html
-
-
