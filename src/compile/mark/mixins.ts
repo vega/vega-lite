@@ -13,10 +13,12 @@ import * as ref from './valueref';
 export function color(model: UnitModel) {
   const config = model.config;
   const filled = model.markDef.filled;
-
+  const vgChannel = filled ? 'fill' : 'stroke';
   const e = nonPosition('color', model, {
-    vgChannel: filled ? 'fill' : 'stroke',
-    defaultValue: getMarkConfig('color', model.markDef, config) as string
+    vgChannel,
+    // fill/stroke has higher precedence than color
+    defaultValue: getMarkConfig(vgChannel, model.markDef, config) ||
+      getMarkConfig('color', model.markDef, config)
   });
 
   // If there is no fill, always fill symbols
