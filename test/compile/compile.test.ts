@@ -94,6 +94,20 @@ describe('Compile', function() {
       assert.deepEqual(spec.title, {text: 'test'});
     });
 
+    it('should return title (string) for a layered spec.', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "title": "test",
+        "layer": [{
+          "mark": "point",
+          "encoding": {}
+        }]
+      }).spec;
+      assert.deepEqual(spec.title, {text: 'test'});
+    });
+
     it('should return title from a child of a layer spec if parent has no title.', () => {
       const spec = compile({
         "data": {
