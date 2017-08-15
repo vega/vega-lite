@@ -2,90 +2,90 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import * as rules from '../../../src/compile/axis/rules';
+import * as properties from '../../../src/compile/axis/properties';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
     it('should return true by default for continuous scale that is not binned', function () {
-      const grid = rules.grid('linear', {field: 'a', type: 'quantitative'});
+      const grid = properties.grid('linear', {field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, true);
     });
 
     it('should return false by default for binned field', function () {
-      const grid = rules.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
+      const grid = properties.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, false);
     });
 
     it('should return false by default for a discrete scale', function () {
-      const grid = rules.grid('point', {field: 'a', type: 'quantitative'});
+      const grid = properties.grid('point', {field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, false);
     });
   });
 
   describe('minMaxExtent', () => {
     it('returns specified extent for a non-grid axis', () => {
-      assert.equal(rules.minMaxExtent(25, false), 25);
+      assert.equal(properties.minMaxExtent(25, false), 25);
     });
 
     it('returns 0 for a grid axis', () => {
-      assert.equal(rules.minMaxExtent(0, true), 0);
+      assert.equal(properties.minMaxExtent(0, true), 0);
     });
   });
 
   describe('orient()', function () {
     it('should return bottom for x by default', function () {
-      const orient = rules.orient('x');
+      const orient = properties.orient('x');
       assert.deepEqual(orient, 'bottom');
     });
 
     it('should return left for y by default', function () {
-      const orient = rules.orient('y');
+      const orient = properties.orient('y');
       assert.deepEqual(orient, 'left');
     });
   });
 
   describe('tickCount', function() {
     it('should return undefined by default for binned field', function () {
-      const tickCount = rules.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
       assert.deepEqual(tickCount, {signal: 'min(ceil(a/40), 10)'});
     });
 
     it('should return 5 by default for linear scale', function () {
-      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
       assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
     });
 
     it('should return undefined by default for log scale', function () {
-      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined);
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined);
       assert.deepEqual(tickCount, undefined);
     });
 
     it('should return undefined by default for point scale', function () {
-      const tickCount = rules.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined);
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined);
       assert.deepEqual(tickCount, undefined);
     });
   });
 
   describe('title()', function () {
     it('should add return fieldTitle by default', function () {
-      const title = rules.title(3, {field: 'a', type: "quantitative"}, {});
+      const title = properties.title(3, {field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'a');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title(10, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
+      const title = properties.title(10, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title(3, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
+      const title = properties.title(3, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SU…');
     });
   });
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = rules.values({values: [{year: 1970}, {year: 1980}]}, null, null);
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, null);
 
       assert.deepEqual(values, [
         {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
@@ -94,7 +94,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = rules.values({values: [1,2,3,4]}, null, null);
+      const values = properties.values({values: [1,2,3,4]}, null, null);
 
       assert.deepEqual(values, [1,2,3,4]);
     });
@@ -102,12 +102,12 @@ describe('compile/axis', ()=> {
 
   describe('zindex()', function () {
     it('should return undefined by default without grid defined', function () {
-      const zindex = rules.zindex(false);
+      const zindex = properties.zindex(false);
       assert.deepEqual(zindex, 1);
     });
 
     it('should return back by default with grid defined', function () {
-      const zindex = rules.zindex(true);
+      const zindex = properties.zindex(true);
       assert.deepEqual(zindex, 0);
     });
   });

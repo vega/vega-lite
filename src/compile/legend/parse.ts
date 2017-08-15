@@ -11,7 +11,7 @@ import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
-import * as rules from './rules';
+import * as properties from './properties';
 
 
 export function parseLegend(model: Model) {
@@ -91,9 +91,9 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
     case 'title':
       return getSpecifiedOrDefaultValue(specifiedLegend.title, fieldDefTitle(fieldDef, model.config));
     case 'values':
-      return rules.values(specifiedLegend);
+      return properties.values(specifiedLegend);
     case 'type':
-      return getSpecifiedOrDefaultValue(specifiedLegend.type, rules.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
+      return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }
 
   // Otherwise, return specified property.
