@@ -6,12 +6,12 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, VgRange, VgRangeScheme, VgSignalRef} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgRangeScheme} from '../../vega.schema';
 import {LayoutSize} from '../layoutsize/component';
 import {isUnitModel, Model} from '../model';
-import {Explicit, makeImplicit, Split} from '../split';
+import {Explicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
+import {ScaleComponentIndex} from './component';
 import {parseNonUnitScaleProperty} from './properties';
 
 

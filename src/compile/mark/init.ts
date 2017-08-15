@@ -1,15 +1,15 @@
-import {Channel} from '../../channel';
+
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
-import {hasDiscreteDomain, Scale} from '../../scale';
+import {AREA, BAR, CIRCLE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
+import {hasDiscreteDomain} from '../../scale';
 import {StackProperties} from '../../stack';
 import {TEMPORAL} from '../../type';
-import {contains, Dict} from '../../util';
+import {contains} from '../../util';
 import {getMarkConfig} from '../common';
-import {ScaleComponentIndex, ScaleIndex} from '../scale/component';
+import {ScaleComponentIndex} from '../scale/component';
 import {Orient} from './../../vega.schema';
 
 

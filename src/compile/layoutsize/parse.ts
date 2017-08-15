@@ -1,12 +1,10 @@
 import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
-import {LayerModel} from '../layer';
 import {Model} from '../model';
-import {RepeatModel} from '../repeat';
-import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit, Split} from '../split';
+import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {LayoutSize, LayoutSizeComponent, LayoutSizeIndex} from './component';
+import {LayoutSize, LayoutSizeIndex} from './component';
 
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);

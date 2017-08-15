@@ -1,6 +1,4 @@
-import {Channel, NONSPATIAL_SCALE_CHANNELS, NonspatialScaleChannel, SCALE_CHANNELS, ScaleChannel, SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from './channel';
-import * as log from './log';
-import {contains} from './util';
+import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from './channel';
 
 
 export type ResolveMode = 'independent' | 'shared';

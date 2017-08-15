@@ -4,13 +4,10 @@ import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {NullFilterNode} from '../../../src/compile/data/nullfilter';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {CalculateNode, FilterNode, LookupNode, parseTransformArray} from '../../../src/compile/data/transforms';
-import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
-import {TimeUnit} from '../../../src/timeunit';
-import {Dict, extend, StringSet} from '../../../src/util';
+import {Dict, extend} from '../../../src/util';
 import {VgLookupTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 

@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
-import {BinTransform, Transform} from '../../../src/transform';
+import {BinTransform} from '../../../src/transform';
 import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 

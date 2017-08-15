@@ -1,5 +1,5 @@
-import {isUrlData, MAIN} from '../../data';
-import {every, flatten, vals} from '../../util';
+import {isUrlData} from '../../data';
+import {vals} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';

@@ -3,7 +3,6 @@ import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, toSet} from './util';
-import {VgScale} from './vega.schema';
 
 
 export namespace ScaleType {

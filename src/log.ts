@@ -4,14 +4,12 @@
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
-import {Axis} from './axis';
 import {Channel} from './channel';
 import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
-import {Legend} from './legend';
 import {Mark} from './mark';
-import {Scale, ScaleType} from './scale';
+import {ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
 import {VgSortField} from './vega.schema';

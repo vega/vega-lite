@@ -47,7 +47,7 @@
     "no-string-throw": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
-    // FIXME(https://github.com/palantir/tslint/issues/2470): "no-unused-variable": true,
+    "no-unused-variable": [true, {"ignore-pattern": "^_"}],
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "one-line": [

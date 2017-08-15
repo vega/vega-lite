@@ -1,4 +1,4 @@
-import {Anchor, Orient, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
+import {Anchor, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
 
 export interface TitleBase {
   /**

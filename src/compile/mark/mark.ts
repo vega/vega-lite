@@ -1,15 +1,12 @@
 import {isArray} from 'vega-util';
 import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
-import {X, Y} from '../../channel';
 import {MAIN} from '../../data';
 import {isAggregate} from '../../encoding';
 import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
-import {isSelectionDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains} from '../../util';
 import {getStyles, sortParams} from '../common';
-import {FacetModel} from '../facet';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';

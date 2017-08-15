@@ -1,14 +1,12 @@
 import {isCountingAggregateOp} from '../../aggregate';
-import {DateTime, isDateTime} from '../../datetime';
-import {FieldDef, isCount} from '../../fielddef';
-import {Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
+import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
-import {CalculateTransform, FilterTransform, isCalculate, isFilter, Transform} from '../../transform';
+import {isCalculate, isFilter, Transform} from '../../transform';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {Dict, duplicate, extend, isArray, isNumber, isString, keys, stringValue, toSet} from '../../util';
+import {Dict, duplicate, extend, keys, stringValue, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {isFacetModel, isUnitModel, Model, ModelWithField} from '../model';
+import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
 

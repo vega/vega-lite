@@ -3,7 +3,7 @@ import {NonspatialScaleChannel} from '../../channel';
 import {flatten, keys, vals} from '../../util';
 import {VgLegend} from '../../vega.schema';
 import {Model} from '../model';
-import {LegendComponent, LegendComponentIndex} from './component';
+import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
 
 export function assembleLegends(model: Model): VgLegend[] {

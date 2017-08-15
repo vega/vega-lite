@@ -1,12 +1,11 @@
-import {Channel, X, Y} from '../../channel';
+import {X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain, isBinScale} from '../../scale';
-import {extend, keys, stringValue} from '../../util';
+import {keys, stringValue} from '../../util';
 import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {
   channelSignalName,
-  ProjectComponent,
   SelectionCompiler,
   SelectionComponent,
   spatialProjections,
@@ -100,7 +99,6 @@ const interval:SelectionCompiler = {
   marks: function(model, selCmpt, marks) {
     const name = selCmpt.name;
     const {xi, yi} = spatialProjections(selCmpt);
-    const tpl = name + TUPLE;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.

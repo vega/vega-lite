@@ -3,7 +3,6 @@
 import {assert} from 'chai';
 import {COLOR, SIZE} from '../../../src/channel';
 import * as rules from '../../../src/compile/legend/rules';
-import {defaultConfig} from '../../../src/config';
 
 describe('compile/legend', function() {
   describe('values()', () => {

@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {VgLegend} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 

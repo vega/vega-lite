@@ -8,7 +8,7 @@ import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {Explicit, mergeValuesWithExplicit, Split, tieBreakByComparing} from '../split';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';

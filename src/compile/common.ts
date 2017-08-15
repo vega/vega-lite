@@ -1,8 +1,7 @@
-import {Channel, TEXT} from '../channel';
+
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '../fielddef';
-import * as log from '../log';
-import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
+import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';

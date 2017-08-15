@@ -128,7 +128,7 @@ function parseNonUnitScaleCore(model: Model) {
     // Create new merged scale component
     const name = model.scaleName(channel, true);
     const typeWithExplicit = scaleTypeWithExplicitIndex[channel];
-    const modelScale = scaleComponents[channel] = new ScaleComponent(name, typeWithExplicit);
+    scaleComponents[channel] = new ScaleComponent(name, typeWithExplicit);
 
     // rename each child and mark them as merged
     for (const child of model.children) {

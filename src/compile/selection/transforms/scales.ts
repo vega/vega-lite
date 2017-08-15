@@ -3,7 +3,7 @@ import {warn} from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {stringValue} from '../../../util';
 import {UnitModel} from '../../unit';
-import {channelSignalName, MODIFY, TUPLE} from '../selection';
+import {channelSignalName} from '../selection';
 import {TransformCompiler} from './transforms';
 
 

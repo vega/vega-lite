@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-import {X, Y} from '../../../src/channel';
+import {X} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
 import * as log from '../../../src/log';
 

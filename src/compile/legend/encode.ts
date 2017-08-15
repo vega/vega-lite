@@ -1,10 +1,9 @@
 import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
-import {FieldDef, isFieldDef, isValueDef} from '../../fielddef';
+import {FieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
-import {VgValueRef} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
@@ -31,7 +30,6 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
   }
 
-  const cfg = model.config;
   const filled = model.markDef.filled;
 
   let config = channel === COLOR ?

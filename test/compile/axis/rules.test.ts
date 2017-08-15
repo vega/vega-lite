@@ -1,10 +1,8 @@
-import {UnitModel} from '../../../src/compile/unit';
+
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
-import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {

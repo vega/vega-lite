@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {stringValue} from 'vega-util';
 import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
 ['single', 'multi'].forEach(function(type) {

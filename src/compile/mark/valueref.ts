@@ -2,15 +2,15 @@
  * Utility files for producing Vega ValueRef for marks
  */
 
-import {isNumber} from 'vega-util';
-import {Channel, ScaleChannel, X, X2, Y, Y2} from '../../channel';
+
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, ConditionalChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
+import {ChannelDef, ConditionalChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef} from '../../fielddef';
 import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
-import {isVgSignalRef, VgScale, VgSignalRef, VgValueRef} from '../../vega.schema';
-import {formatSignalRef, numberFormat} from '../common';
+import {VgSignalRef, VgValueRef} from '../../vega.schema';
+import {formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 

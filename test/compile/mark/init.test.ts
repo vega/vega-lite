@@ -4,7 +4,6 @@ import * as log from '../../../src/log';
 
 import {assert} from 'chai';
 import {BAR} from '../../../src/mark';
-import {normalize, TopLevel, UnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('compile/mark/normalize', function() {

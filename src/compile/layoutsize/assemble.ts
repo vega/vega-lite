@@ -1,13 +1,8 @@
-import {Channel, COLUMN, ROW, X, Y} from '../../channel';
-import {MAIN} from '../../data';
-import {hasDiscreteDomain, scaleCompatible} from '../../scale';
-import {extend, isArray, keys, StringSet} from '../../util';
-import {isVgRangeStep, VgData, VgFormulaTransform, VgRangeStep, VgSignal, VgTransform} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
-import {isFacetModel, Model, ModelWithField} from '../model';
+
+import {hasDiscreteDomain} from '../../scale';
+import {isVgRangeStep, VgRangeStep, VgSignal} from '../../vega.schema';
+import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
-import {UnitModel} from '../unit';
 
 export function assembleLayoutSignals(model: Model): VgSignal[] {
   return [].concat(

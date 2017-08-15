@@ -4,7 +4,6 @@ import {COUNTING_OPS} from '../src/aggregate';
 import {Channel} from '../src/channel';
 import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
-import {LocalLogger} from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 

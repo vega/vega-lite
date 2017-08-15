@@ -2,12 +2,11 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {isRepeatRef} from '../fielddef';
-import {BinTransform, CalculateTransform, Summarize, SummarizeTransform, TimeUnitTransform} from '../transform';
+import {BinTransform, CalculateTransform, Summarize, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
-import {field, Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
+import {field, Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
-import {MarkConfig, MarkDef} from './../mark';
+import {MarkConfig} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 
@@ -77,7 +76,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       }
     }
   }
-  const isMinMax = kIQRScalar === undefined;
 
   const orient: Orient = boxOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, kIQRScalar);
@@ -168,7 +166,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  const {mark: mark, encoding: encoding, ..._outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
     // x is continuous
@@ -203,7 +201,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 
 
 function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  const {mark: mark, encoding: encoding, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
   let continuousAxis: 'x' | 'y';

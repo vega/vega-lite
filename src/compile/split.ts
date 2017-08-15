@@ -1,7 +1,5 @@
-import {Axis} from '../axis';
-import {Legend} from '../legend';
+
 import * as log from '../log';
-import {Scale} from '../scale';
 import {duplicate} from '../util';
 
 /**

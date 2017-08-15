@@ -1,5 +1,5 @@
 import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
-import {field, FieldDef} from '../../fielddef';
+import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {ScaleConfig, ScaleType} from '../../scale';

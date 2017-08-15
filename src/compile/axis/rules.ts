@@ -1,17 +1,14 @@
 import {Axis} from '../../axis';
-import {binToString} from '../../bin';
 import {BinParams} from '../../bin';
-import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
+import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
-import {VgAxis, VgSignalRef} from '../../vega.schema';
-import {numberFormat} from '../common';
+import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {labelAngle} from './encode';
 
 
 export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {

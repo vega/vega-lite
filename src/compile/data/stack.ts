@@ -1,6 +1,4 @@
 import {isArray} from 'vega-util';
-
-import {isScaleChannel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {duplicate} from '../../util';
@@ -12,10 +10,8 @@ import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
-    const channel = by.channel;
     const fieldDef = by.fieldDef;
 
-    const scale = isScaleChannel(channel) ? model.getScaleComponent(channel) : undefined;
     const _field = field(fieldDef);
     if (_field) {
       fields.push(_field);

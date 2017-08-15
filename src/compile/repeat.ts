@@ -1,12 +1,7 @@
-import {isArray} from 'vega-util';
+
 import {Config} from '../config';
-import {Encoding} from '../encoding';
-import {Facet} from '../facet';
-import {Field, FieldDef, isRepeatRef} from '../fielddef';
-import * as log from '../log';
 import {Repeat} from '../repeat';
 import {RepeatSpec} from '../spec';
-import {Dict, keys} from '../util';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';

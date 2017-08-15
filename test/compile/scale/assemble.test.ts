@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {Model} from '../../../src/compile/model';
 import {assembleScaleRange} from '../../../src/compile/scale/assemble';
 import {parseUnitModel, parseUnitModelWithScale} from '../../util';
 
