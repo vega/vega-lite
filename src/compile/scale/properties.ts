@@ -61,7 +61,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
   });
 }
 
-function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField, scaleConfig: ScaleConfig) {
+function getDefaultValue(property: keyof Scale, specifiedScale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField, scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {
@@ -78,7 +78,7 @@ function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleCo
     case 'reverse':
       return reverse(scaleCmpt.get('type'), sort);
     case 'zero':
-      return zero(channel, fieldDef, scale.domain);
+      return zero(channel, fieldDef, specifiedScale.domain);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -201,7 +201,7 @@ export function reverse(scaleType: ScaleType, sort: SortOrder | SortField) {
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, domain: Domain) {
+export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -214,7 +214,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, domain: Domai
   // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
   // (For binning, we should not include zero by default because binning are calculated without zero.
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
-  const hasCustomDomain = !!domain && domain !== 'unaggregated';
+  const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
     return true;
   }
