@@ -32,9 +32,10 @@ To create a faceted view, define how the data should be faceted in `facet` and h
 }
 ```
 
-A facet spec has the following properties:
+In addition to [common properties of a view specification](spec.html#common),
+a facet specification has the following properties:
 
-{% include table.html props="facet,spec,data,transform,resolve,name,description" source="FacetedSpec" %}
+{% include table.html props="facet,spec,resolve" source="FacetedSpec" %}
 
 ### Facet Definition
 

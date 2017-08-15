@@ -22,9 +22,10 @@ Put multiple views into a row by putting the specs for each view into an array a
 }
 ```
 
-A horizontal concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common),
+a horizontal concatenation specification has the following properties:
 
-{% include table.html props="hconcat,data,transform,resolve,name,description" source="HConcatSpec" %}
+{% include table.html props="hconcat,resolve" source="HConcatSpec" %}
 
 ## Vertical Concatenation
 
@@ -39,7 +40,8 @@ Put multiple views into a column by putting the specs for each view into an arra
 }
 ```
 
-A vertical concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common),
+a vertical concatenation specification has the following properties:
 
 {% include table.html props="vconcat,data,transform,resolve,name,description" source="VConcatSpec" %}
 
