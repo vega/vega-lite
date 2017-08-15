@@ -21,6 +21,13 @@ export interface TitleBase {
    */
   offset?: number;
 
+  /*
+   * A mark style property to apply to the title text mark.
+   *
+   * __Default value:__ `"group-title"`.
+   */
+  style?: string | string[];
+
   // TODO: name, encode, interactive, zindex
 }
 

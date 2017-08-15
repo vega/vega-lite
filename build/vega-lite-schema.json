@@ -5378,6 +5378,19 @@
           "$ref": "#/definitions/TitleOrient",
           "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
         },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ]
+        },
         "text": {
           "description": "The title text.",
           "type": "string"
@@ -5402,6 +5415,19 @@
         "orient": {
           "$ref": "#/definitions/TitleOrient",
           "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ]
         }
       },
       "type": "object"
