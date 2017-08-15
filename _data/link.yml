@@ -15,8 +15,9 @@ Transform:
 
 AggregateOp:
   link: "aggregate.html#ops"
+Bin:
+  link: bin.html
 BinParams:
-  name: Bin
   link: "bin.html#bin-parameters"
 FilterOperand:
   name: Filter

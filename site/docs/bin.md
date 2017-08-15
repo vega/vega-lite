@@ -92,7 +92,7 @@ Setting the `maxbins` parameter changes the number of output bins.
 
 <div class="vl-example" data-name="histogram_bin_change"></div>
 
-### Ordinal Bin
+## Ordinal Bin
 
 Usually, you should set the type of binned encodings to be quantitative. Vega-Lite automatically creates axes and legends that best represent binned data. However, if you want to sort the bins or skip empty bins, you can set the type to ordinal.
 
