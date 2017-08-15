@@ -1,5 +1,12 @@
 # Use "" if there is a # in the url
 
+# Spec
+CompositeUnitSpec:
+  name: SingleViewSpec
+  link: spec.html#single
+LayerSpec:
+  link: layer.html
+
 # Data
 Data:
   link: data.html

@@ -71,7 +71,7 @@ export interface LayoutSizeMixins {
    * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).
    * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
    *
-   * __Note__: For plot with `row` and `column` channels, this represents the width of a single cell.
+   * __Note__: For plot with `row` and `column` channels, this represents the width of a single view.
    */
   width?: number;
 
@@ -121,7 +121,9 @@ export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>,
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
   /**
-   * Unit specs that will be layered.
+   * Layer or single view specifications to be layered.
+   *
+   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
    */
   layer: (GenericLayerSpec<U> | U)[];
 
