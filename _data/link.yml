@@ -16,6 +16,13 @@ DataUrlFormat:
   name: DataFormat
   link: "data.html#format"
 
+TitleParams:
+  link: "title.html#params"
+Anchor:
+  name: String
+TitleOrient:
+  name: String
+
 # Transform
 Transform:
   link: transform.html
