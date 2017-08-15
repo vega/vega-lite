@@ -12,7 +12,7 @@ import {Repeat} from './repeat';
 import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
-import {Title} from './title';
+import {TitleParams} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, Dict, duplicate, hash, vals} from './util';
@@ -36,7 +36,7 @@ export interface BaseSpec {
   /**
    * Title for the plot.
    */
-  title?: string | Title;
+  title?: string | TitleParams;
 
   /**
    * Name of the visualization for later reference.
