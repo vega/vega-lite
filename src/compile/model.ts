@@ -8,9 +8,9 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
-import {extractTitleConfig, Title} from '../title';
+import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {Dict, keys, varName} from '../util';
+import {contains, Dict, extend, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,
@@ -146,7 +146,7 @@ export abstract class Model {
   public readonly parent: Model;
   public readonly name: string;
 
-  public readonly title: Title;
+  public readonly title: TitleParams;
   public readonly description: string;
 
   public readonly data: Data;

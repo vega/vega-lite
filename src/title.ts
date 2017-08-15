@@ -22,7 +22,7 @@ export interface TitleBase {
   offset?: number;
 
   /*
-   * A mark style property to apply to the title text mark.
+   * A [mark style property](config.html#style) to apply to the title text mark.
    *
    * __Default value:__ `"group-title"`.
    */
@@ -31,7 +31,7 @@ export interface TitleBase {
   // TODO: name, encode, interactive, zindex
 }
 
-export interface Title extends TitleBase {
+export interface TitleParams extends TitleBase {
   /**
    * The title text.
    */
