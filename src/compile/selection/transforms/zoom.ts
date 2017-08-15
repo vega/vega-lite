@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel, ScaleChannel, X, Y} from '../../../channel';
+import {ScaleChannel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
 import {channelSignalName, SelectionComponent, spatialProjections} from '../selection';

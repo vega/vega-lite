@@ -1,9 +1,7 @@
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
-import * as log from '../../log';
-import {isSelectionDomain} from '../../scale';
-import {keys, stringValue} from '../../util';
-import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, isVgRangeStep, isVgSignalRef, VgDataRef, VgRange, VgScale} from '../../vega.schema';
+import {keys} from '../../util';
+import {isDataRefDomain, isVgRangeStep, isVgSignalRef, VgRange, VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 import {mergeDomains} from './domain';

@@ -5,7 +5,6 @@ import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
-import {defaultConfig} from '../src/config';
 import {initConfig} from '../src/config';
 import {ConcatSpec, FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 

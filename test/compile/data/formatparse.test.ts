@@ -2,7 +2,7 @@
 import {assert} from 'chai';
 
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {Model, ModelWithField} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
 import {parseFacetModel, parseUnitModel} from '../../util';
 

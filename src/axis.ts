@@ -1,6 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
+import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig} from './vega.schema';
 
 
 

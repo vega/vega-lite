@@ -1,4 +1,4 @@
-import {isArray, isNumber, isString} from 'vega-util';
+import {isNumber, isString} from 'vega-util';
 import {DateTime, isDateTime} from '../../datetime';
 import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
@@ -6,7 +6,6 @@ import {LogicalOperand} from '../../logical';
 import {SELECTION_ID} from '../../selection';
 import {
   CalculateTransform,
-  FilterTransform,
   isBin,
   isCalculate,
   isFilter,
@@ -18,12 +17,10 @@ import {
 import {duplicate, keys, StringSet, toSet} from '../../util';
 import {VgFilterTransform, VgFormulaTransform, VgIdentifierTransform, VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {ModelWithField} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
-import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';

@@ -2,16 +2,12 @@
 
 import {assert} from 'chai';
 
-import {defaultRange, parseRangeForChannel} from '../../../src/compile/scale/range';
-
-import {ScaleComponent} from '../../../src/compile/scale/component';
-import {Split} from '../../../src/compile/split';
+import {parseRangeForChannel} from '../../../src/compile/scale/range';
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
-import {CONTINUOUS_TO_CONTINUOUS_SCALES, Scale, ScaleType} from '../../../src/scale';
+import {CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType} from '../../../src/scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
-import {VgRange, VgRangeScheme, VgScale} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
   describe('parseRange()', function() {

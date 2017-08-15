@@ -1,8 +1,5 @@
 import {Channel, COLOR} from '../../channel';
-import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef} from '../../fielddef';
-import {title as fieldTitle} from '../../fielddef';
 import {Legend} from '../../legend';
 import {isBinScale, ScaleType} from '../../scale';
 import {Type} from '../../type';

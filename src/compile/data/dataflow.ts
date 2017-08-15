@@ -1,4 +1,4 @@
-import {isFunction} from 'util';
+
 import {DataSourceType} from '../../data';
 import {Dict, StringSet} from '../../util';
 

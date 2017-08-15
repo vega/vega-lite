@@ -1,10 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {X} from '../../src/channel';
 import {numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
-import {field, FieldDef} from '../../src/fielddef';
+import {field} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 

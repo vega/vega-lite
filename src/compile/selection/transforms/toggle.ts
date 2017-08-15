@@ -1,4 +1,4 @@
-import {stringValue} from '../../../util';
+
 import {TUPLE, unitName} from '../selection';
 import {TransformCompiler} from './transforms';
 

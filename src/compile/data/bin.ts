@@ -1,14 +1,12 @@
-import {autoMaxBins, BinParams, binToString} from '../../bin';
+import {BinParams, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
-import {hasDiscreteDomain} from '../../scale';
-import {BinTransform, Transform} from '../../transform';
-import {Dict, duplicate, extend, flatten, hash, isBoolean, keys, StringSet, vals} from '../../util';
+import {BinTransform} from '../../transform';
+import {Dict, duplicate, extend, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {binFormatExpression, numberFormatExpr} from '../common';
+import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
-import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
@@ -91,8 +89,6 @@ export class BinNode extends DataFlowNode {
   }
 
   public static makeFromTransform(model: Model, t: BinTransform) {
-    const bins: Dict<BinComponent> = {};
-
     const bin = normalizeBin(t.bin, undefined) || {};
     const key = binKey(bin, t.field);
     return new BinNode({

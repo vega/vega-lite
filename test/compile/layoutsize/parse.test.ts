@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {TopLevel, UnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {

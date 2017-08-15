@@ -1,5 +1,5 @@
 import * as stringify from 'json-stable-stringify';
-import {isArray, isNumber, isObject, isString} from 'vega-util';
+import {isArray, isNumber, isString} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 

@@ -5,7 +5,7 @@ import {Encoding} from '../src/encoding';
 import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
 import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec, TopLevelExtendedSpec} from '../src/spec';
-import {Config, defaultConfig, initConfig} from './../src/config';
+import {defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -57,7 +57,7 @@ describe('normalize()', function () {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, spec.config), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}

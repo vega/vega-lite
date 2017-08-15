@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
 

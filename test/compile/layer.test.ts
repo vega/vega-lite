@@ -1,8 +1,4 @@
 import {assert} from 'chai';
-
-import {parseMainAxis} from '../../src/compile/axis/parse';
-import {LayerModel} from '../../src/compile/layer';
-import {LayerSpec} from '../../src/spec';
 import {parseLayerModel} from '../util';
 
 describe('Layer', function() {

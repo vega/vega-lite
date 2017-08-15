@@ -2,11 +2,7 @@ import {ScaleChannel, SPATIAL_SCALE_CHANNELS} from '../channel';
 import * as log from '../log';
 import {Resolve, ResolveMode} from '../resolve';
 import {contains} from '../util';
-import {ConcatModel} from './concat';
-import {FacetModel} from './facet';
-import {LayerModel} from './layer';
 import {isConcatModel, isFacetModel, isLayerModel, isRepeatModel, Model} from './model';
-import {RepeatModel} from './repeat';
 
 export function defaultScaleResolve(channel: ScaleChannel, model: Model): ResolveMode {
   if (isLayerModel(model) || isFacetModel(model)) {

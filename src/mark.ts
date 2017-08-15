@@ -1,5 +1,5 @@
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {Dict, toSet} from './util';
+import {toSet} from './util';
 import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
 
 export namespace Mark {

@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {DETAIL, SHAPE, X} from '../../src/channel';
-import {UnitModel} from '../../src/compile/unit';
 import {FieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';

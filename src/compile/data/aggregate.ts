@@ -1,9 +1,8 @@
 import {AggregateOp} from '../../aggregate';
 import {isScaleChannel} from '../../channel';
-import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {Summarize, SummarizeTransform} from '../../transform';
+import {SummarizeTransform} from '../../transform';
 import {NOMINAL, ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';

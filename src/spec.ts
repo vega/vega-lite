@@ -16,7 +16,6 @@ import {Title} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, Dict, duplicate, hash, vals} from './util';
-import {VgTitle} from './vega.schema';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {

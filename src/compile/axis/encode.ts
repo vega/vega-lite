@@ -3,7 +3,7 @@ import {Channel, SpatialScaleChannel, X} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
-import {contains, extend, keys} from '../../util';
+import {contains, keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {Split} from '../split';

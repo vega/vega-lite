@@ -1,7 +1,7 @@
 /* tslint:disable no-bitwise */
 import {assert} from 'chai';
 import {stringValue} from 'vega-util';
-import {compositeTypes, embedFn, parentSelector, pt, spec, testRenderFn} from './util';
+import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
 
 const hits = {
   qq: [8, 19, 13, 21],

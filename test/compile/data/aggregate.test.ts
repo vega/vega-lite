@@ -3,7 +3,6 @@
 import {assert} from 'chai';
 
 import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {Condition} from '../../../src/fielddef';
 import {SummarizeTransform} from '../../../src/transform';
 import {StringSet} from '../../../src/util';
 import {VgAggregateTransform} from '../../../src/vega.schema';

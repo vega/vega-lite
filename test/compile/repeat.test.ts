@@ -42,7 +42,7 @@ describe('Repeat', function() {
 
     it('should show warning if repeat cannot be resolved', () => {
       log.runLocalLogger((localLogger) => {
-        const resolved = replaceRepeaterInEncoding({
+        const _resolved = replaceRepeaterInEncoding({
           x: {field: {repeat: 'row'}, type: 'quantitative'},
           y: {field: 'bar', type: 'quantitative'}
         }, {column: 'foo'});

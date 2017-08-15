@@ -10,7 +10,7 @@ import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
-import {Scale, ScaleType} from './scale';
+import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';

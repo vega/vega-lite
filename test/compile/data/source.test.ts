@@ -3,9 +3,7 @@
 import {assert} from 'chai';
 
 import {SourceNode} from '../../../src/compile/data/source';
-import {Model} from '../../../src/compile/model';
 import {Data} from '../../../src/data';
-import {parseUnitModel} from '../../util';
 
 function parse(data: Data) {
   return new SourceNode(data);

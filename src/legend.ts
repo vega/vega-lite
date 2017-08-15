@@ -1,6 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {VgLegend, VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
+import {VgLegend, VgLegendBase, VgLegendConfig} from './vega.schema';
 
 
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}

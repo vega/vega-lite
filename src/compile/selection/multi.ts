@@ -1,4 +1,4 @@
-import {keys, stringValue} from '../../util';
+import {stringValue} from '../../util';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
 

@@ -1,10 +1,7 @@
 import {MAIN, RAW} from '../../data';
 import {Dict} from '../../util';
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
-import {isFacetModel, isLayerModel, isUnitModel, Model, ModelWithField} from '../model';
+import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
-import {UnitModel} from '../unit';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';

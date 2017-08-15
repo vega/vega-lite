@@ -1,6 +1,5 @@
 import {assert} from 'chai';
-import {InlineData} from '../src/data';
-import {brush, compositeTypes, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
+import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 
 describe('interval selections at runtime in unit views', function() {
   const type = 'interval';

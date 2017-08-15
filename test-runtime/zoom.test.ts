@@ -4,7 +4,6 @@ import {
   brush,
   compositeTypes,
   embedFn,
-  hits as hitsMaster,
   parentSelector,
   spec,
   testRenderFn,

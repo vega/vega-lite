@@ -1,11 +1,10 @@
 import {AggregateOp} from '../../aggregate';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {hasDiscreteDomain} from '../../scale';
-import {isBin} from '../../transform';
-import {isVgRangeStep, VgAggregateTransform, VgData, VgTransform} from '../../vega.schema';
+import {isVgRangeStep, VgAggregateTransform, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {getFieldFromDomains} from '../scale/domain';
-import {DataFlowNode, OutputNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 /**
  * A node that helps us track what fields we are faceting by.

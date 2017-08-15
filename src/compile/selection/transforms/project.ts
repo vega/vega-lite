@@ -1,4 +1,4 @@
-import {Channel, SingleDefChannel} from '../../../channel';
+import {SingleDefChannel} from '../../../channel';
 import * as log from '../../../log';
 import {SelectionDef} from '../../../selection';
 import {keys} from '../../../util';

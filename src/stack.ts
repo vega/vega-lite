@@ -1,5 +1,5 @@
 import {SUM_OPS} from './aggregate';
-import {Channel, STACK_BY_CHANNELS, StackByChannel, X, X2, Y, Y2} from './channel';
+import {STACK_BY_CHANNELS, StackByChannel, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import {Field, FieldDef, getFieldDef, isFieldDef, PositionFieldDef} from './fielddef';
 import * as log from './log';

@@ -2,14 +2,14 @@ import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, title} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
 import {extractTitleConfig, Title} from '../title';
 import {Transform} from '../transform';
-import {Dict, extend, keys, varName} from '../util';
+import {Dict, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,

@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {UnitSpec} from '../../../src/spec';
-import {parseLayerModel, parseUnitModel, parseUnitModelWithScale} from '../../util';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
   describe('parseLegendForChannel()', function() {

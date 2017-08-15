@@ -1,9 +1,7 @@
 import {Data, DataFormat, isInlineData, isNamedData, isUrlData} from '../../data';
 import {contains, hash} from '../../util';
 import {VgData} from '../../vega.schema';
-import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
-import {LookupNode} from './transforms';
 
 
 export class SourceNode extends DataFlowNode {

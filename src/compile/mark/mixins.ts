@@ -1,5 +1,5 @@
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, Condition, ConditionalValueDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
+import {ChannelDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import * as util from '../../util';
