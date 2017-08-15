@@ -1063,6 +1063,8 @@ export interface VgTitle {
    */
   offset?: number;
 
+  style?: string | string[];
+
   // TODO: name, encode, interactive, zindex
 }
 
