@@ -1,7 +1,7 @@
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {channelScalePropertyIncompatability, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {SortField, SortOrder} from '../../sort';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
@@ -78,7 +78,7 @@ function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleCo
     case 'reverse':
       return reverse(scaleCmpt.get('type'), sort);
     case 'zero':
-      return zero(channel, fieldDef, !!scale.domain);
+      return zero(channel, fieldDef, scale.domain);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -201,7 +201,7 @@ export function reverse(scaleType: ScaleType, sort: SortOrder | SortField) {
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, hasCustomDomain: boolean) {
+export function zero(channel: Channel, fieldDef: FieldDef<string>, domain: Domain) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -214,6 +214,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, hasCustomDoma
   // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
   // (For binning, we should not include zero by default because binning are calculated without zero.
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
+  const hasCustomDomain = !!domain && domain !== 'unaggregated';
   if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
     return true;
   }
