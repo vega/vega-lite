@@ -735,7 +735,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2379,7 +2379,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2428,7 +2428,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2488,7 +2488,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2540,7 +2540,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2621,7 +2621,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2684,7 +2684,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -2731,7 +2731,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5363,44 +5363,6 @@
       ],
       "type": "object"
     },
-    "Title": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "$ref": "#/definitions/Anchor",
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
-        },
-        "offset": {
-          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/TitleOrient",
-          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
-        },
-        "style": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "text": {
-          "description": "The title text.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "text"
-      ],
-      "type": "object"
-    },
     "TitleBase": {
       "additionalProperties": false,
       "properties": {
@@ -5427,7 +5389,8 @@
               },
               "type": "array"
             }
-          ]
+          ],
+          "description": "A [mark style property](config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
         }
       },
       "type": "object"
@@ -5440,6 +5403,45 @@
         "right"
       ],
       "type": "string"
+    },
+    "TitleParams": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A [mark style property](config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
+        },
+        "text": {
+          "description": "The title text.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
     },
     "TopLevelFacetedUnitSpec": {
       "additionalProperties": false,
@@ -5502,7 +5504,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5576,7 +5578,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5646,7 +5648,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5727,7 +5729,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5800,7 +5802,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
@@ -5864,7 +5866,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/Title"
+              "$ref": "#/definitions/TitleParams"
             }
           ],
           "description": "Title for the plot."
