@@ -101,7 +101,7 @@ export namespace message {
 
   // SELECTION
   export function cannotProjectOnChannelWithoutField(channel: Channel) {
-    return `Cannot project a selection on encoding channel ${channel}, which has no field.`;
+    return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
   }
 
   export function selectionNotFound(name: string) {
@@ -115,11 +115,11 @@ export namespace message {
 
   // DATA
   export function unrecognizedParse(p: string) {
-    return `Unrecognized parse ${p}.`;
+    return `Unrecognized parse "${p}".`;
   }
 
   export function differentParse(field: string, local: string, ancestor: string) {
-    return `An ancestor parsed field ${field} as ${ancestor} but a child wants to parse the field as ${local}.`;
+    return `An ancestor parsed field "${field}" as ${ancestor} but a child wants to parse the field as ${local}.`;
   }
 
   // TRANSFORMS
@@ -127,7 +127,7 @@ export namespace message {
     return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
   }
 
-  export const NO_FIELDS_NEEDS_AS = 'If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.';
+  export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the the data from the secondary source.';
 
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
@@ -143,15 +143,15 @@ export namespace message {
   }
 
   export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
-    return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
+    return `Invalid field type "${type}" for channel "${channel}", using "${newType}" instead.`;
   }
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
-    return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
+    return `Dropping ${JSON.stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
-    return `${channel} dropped as it is incompatible with ${markOrFacet}${when ? ` when ${when}` : ''}.`;
+    return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {
@@ -159,29 +159,29 @@ export namespace message {
   }
 
   export function discreteChannelCannotEncode(channel: Channel, type: Type) {
-    return `Using discrete channel ${channel} to encode ${type} field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
+    return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
   }
 
   // Mark
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
-    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode continous fields. In this case, we use vertical by default`;
+    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continous fields. In this case, we use vertical by default`;
   }
 
   export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode discrete or empty fields.`;
+    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode discrete or empty fields.`;
   }
 
   export function orientOverridden(original: string, actual: string) {
-    return `Specified orient ${original} overridden with ${actual}`;
+    return `Specified orient "${original}" overridden with "${actual}"`;
   }
 
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
   export function cannotUseScalePropertyWithNonColor(prop: string) {
-    return `Cannot use ${prop} with non-color channel.`;
+    return `Cannot use the scale property "${prop}" with non-color channel.`;
   }
 
   export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
@@ -189,7 +189,7 @@ export namespace message {
   }
 
   export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
-    return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
+    return `Unaggregated domain not applicable for "${aggregate}" since it produces values outside the origin domain of the source data.`;
   }
 
   export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
@@ -204,20 +204,20 @@ export namespace message {
   }
 
   export function cannotApplySizeToNonOrientedMark(mark: Mark) {
-    return `Cannot apply size to non-oriented mark ${mark}.`;
+    return `Cannot apply size to non-oriented mark "${mark}".`;
   }
 
   export function rangeStepDropped(channel: Channel) {
-    return `rangeStep for ${channel} is dropped as top-level ${
+    return `rangeStep for "${channel}" is dropped as top-level ${
       channel === 'x' ? 'width' : 'height'} is provided.`;
   }
 
   export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType) {
-    return `Channel ${channel} does not work with ${scaleType} scale. We are using ${defaultScaleType} scale instead.`;
+    return `Channel "${channel}" does not work with "${scaleType}" scale. We are using "${defaultScaleType}" scale instead.`;
   }
 
   export function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType) {
-    return `FieldDef does not work with ${scaleType} scale. We are using ${defaultScaleType} scale instead.`;
+    return `FieldDef does not work with "${scaleType}" scale. We are using "${defaultScaleType}" scale instead.`;
   }
 
   export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
@@ -225,15 +225,15 @@ export namespace message {
   }
 
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
-    return `Scale type "${scaleType}" does not work with mark ${mark}.`;
+    return `Scale type "${scaleType}" does not work with mark "${mark}".`;
   }
 
   export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
-    return `Conflicting ${propertyOf} property ${property} (${v1} and ${v2}).  Using ${v1}.`;
+    return `Conflicting ${propertyOf} property "${property}" ("${v1}" and "${v2}").  Using "${v1}".`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {
-    return `Setting the scale to be independent for ${channel} means we also have to set the guide (axis or legend) to be independent.`;
+    return `Setting the scale to be independent for "${channel}" means we also have to set the guide (axis or legend) to be independent.`;
   }
 
   export function conflictedDomain(channel: Channel) {
@@ -241,7 +241,7 @@ export namespace message {
   }
 
   export function domainSortDropped(sort: VgSortField) {
-    return `Dropping sort property ${JSON.stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+    return `Dropping sort property "${JSON.stringify(sort)}" as unioned domains only support boolean or op 'count'.`;
   }
 
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
@@ -253,7 +253,7 @@ export namespace message {
 
   // STACK
   export function cannotStackRangedMark(channel: Channel) {
-    return `Cannot stack ${channel} if there is already ${channel}2`;
+    return `Cannot stack "${channel}" if there is already "${channel}2"`;
   }
 
   export function cannotStackNonLinearScale(scaleType: ScaleType) {
@@ -261,12 +261,12 @@ export namespace message {
   }
 
   export function cannotStackNonSummativeAggregate(aggregate: string) {
-    return `Cannot stack when the aggregate function is non-summative (${aggregate})`;
+    return `Cannot stack when the aggregate function is non-summative ("${aggregate}")`;
   }
 
   // TIMEUNIT
   export function invalidTimeUnit(unitName: string, value: string | number) {
-    return `Invalid ${unitName}: ${value}`;
+    return `Invalid ${unitName}: "${value}"`;
   }
 
   export function dayReplacedWithDate(fullTimeUnit: TimeUnit) {
