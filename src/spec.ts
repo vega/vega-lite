@@ -70,7 +70,9 @@ export interface LayoutSizeMixins {
    * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).
    * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
    *
-   * __Note__: For plot with `row` and `column` channels, this represents the width of a single view.
+   * __Note:__ For plot with `row` and `column` channels, this represents the width of a single view.
+   *
+   * __See also:__ The documentation for [width and height](size.html) contains more examples.
    */
   width?: number;
 
@@ -83,6 +85,8 @@ export interface LayoutSizeMixins {
    * - If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.
    *
    * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
+   *
+   * __See also:__ The documentation for [width and height](size.html) contains more examples.
    */
   height?: number;
 }
