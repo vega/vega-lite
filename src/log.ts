@@ -10,7 +10,6 @@ import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {ScaleType} from './scale';
-import {TimeUnit} from './timeunit';
 import {Type} from './type';
 import {VgSortField} from './vega.schema';
 
@@ -269,7 +268,7 @@ export namespace message {
     return `Invalid ${unitName}: "${value}"`;
   }
 
-  export function dayReplacedWithDate(fullTimeUnit: TimeUnit) {
+  export function dayReplacedWithDate(fullTimeUnit: string) {
     return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${
       fullTimeUnit.replace('day', 'date')}.`;
   }

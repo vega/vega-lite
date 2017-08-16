@@ -39,3 +39,15 @@ export function forEachLeave<T>(op: LogicalOperand<T>, fn: (op: T) => void) {
     fn(op);
   }
 }
+
+export function normalizeLogicalOperand<T>(op: LogicalOperand<T>, normalizer: (o: T) => T): LogicalOperand<T> {
+  if (isLogicalNot(op)) {
+    return {not: normalizeLogicalOperand(op.not, normalizer)};
+  } else if (isLogicalAnd(op)) {
+    return {and: op.and.map(o => normalizeLogicalOperand(o, normalizer))};
+  } else if (isLogicalOr(op)) {
+    return {or: op.or.map(o => normalizeLogicalOperand(o, normalizer))};
+  } else {
+    return normalizer(op);
+  }
+}

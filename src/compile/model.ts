@@ -8,7 +8,7 @@ import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
 import {extractTitleConfig, Title} from '../title';
-import {Transform} from '../transform';
+import {normalizeTransform, Transform} from '../transform';
 import {Dict, keys, varName} from '../util';
 import {
   isVgRangeStep,
@@ -179,7 +179,7 @@ export abstract class Model {
     this.data = spec.data;
 
     this.description = spec.description;
-    this.transforms = spec.transform || [];
+    this.transforms = normalizeTransform(spec.transform || []);
 
     this.component = {
       data: {

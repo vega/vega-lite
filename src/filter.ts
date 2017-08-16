@@ -4,7 +4,7 @@ import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
 import {LogicalOperand} from './logical';
-import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
+import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString, logicalExpr} from './util';
 
 
@@ -105,6 +105,10 @@ export function isOneOfFilter(filter: any): filter is OneOfFilter {
   );
 }
 
+export function isFieldFilter(filter: Filter): filter is OneOfFilter | EqualFilter | RangeFilter {
+  return isOneOfFilter(filter) || isEqualFilter(filter) || isRangeFilter(filter);
+}
+
 /**
  * Converts a filter into an expression.
  */
@@ -162,4 +166,14 @@ function valueExpr(v: any, timeUnit: TimeUnit) {
     return 'time(' + expr + ')';
   }
   return JSON.stringify(v);
+}
+
+export function normalizeFilter(f: Filter): Filter {
+  if (isFieldFilter(f) && f.timeUnit) {
+    return {
+      ...f,
+      timeUnit: normalizeTimeUnit(f.timeUnit)
+    };
+  }
+  return f;
 }
