@@ -1,8 +1,8 @@
 import {AggregateOp} from './aggregate';
 import {BinParams} from './bin';
 import {Data} from './data';
-import {Filter} from './filter';
-import {LogicalOperand} from './logical';
+import {Filter, normalizeFilter} from './filter';
+import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {TimeUnit} from './timeunit';
 
 
@@ -151,3 +151,14 @@ export function isSummarize(t: Transform): t is SummarizeTransform {
 }
 
 export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | SummarizeTransform;
+
+export function normalizeTransform(transform: Transform[]) {
+  return transform.map(t => {
+    if (isFilter(t)) {
+      return {
+        filter: normalizeLogicalOperand(t.filter, normalizeFilter)
+      };
+    }
+    return t;
+  });
+}

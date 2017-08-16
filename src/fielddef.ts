@@ -13,7 +13,7 @@ import {LogicalOperand} from './logical';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {isDiscreteByDefault, TimeUnit} from './timeunit';
+import {isDiscreteByDefault, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -389,6 +389,14 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
     log.warn(log.message.invalidAggregate(fieldDef.aggregate));
     fieldDef = fieldDefWithoutAggregate;
+  }
+
+  // Normalize Time Unit
+  if (fieldDef.timeUnit) {
+    fieldDef = {
+      ...fieldDef,
+      timeUnit: normalizeTimeUnit(fieldDef.timeUnit)
+    };
   }
 
   // Normalize bin

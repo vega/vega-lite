@@ -1,7 +1,4 @@
 import {assert} from 'chai';
-
-import * as log from '../src/log';
-
 import {containsTimeUnit, convert, fieldExpr, formatExpression, TimeUnit} from '../src/timeunit';
 
 
@@ -50,17 +47,6 @@ describe('timeUnit', () => {
         fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x'),
         'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), hours(datum["x"]), minutes(datum["x"]), seconds(datum["x"]), 0)'
       );
-    });
-
-
-    it('should automatically correct YEARMONTHDAY to be YEARMONTHDATE', () => {
-      log.runLocalLogger((localLogger) => {
-        assert.equal(
-          fieldExpr('yearmonthday' as any, 'x'),
-          'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
-        );
-        assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday' as any));
-      });
     });
 
     it('should return correct field expression for QUARTER', () => {
