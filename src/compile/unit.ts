@@ -21,7 +21,7 @@ import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -32,7 +32,6 @@ import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
-import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
 import {
   assembleTopLevelSignals,
@@ -203,10 +202,6 @@ export class UnitModel extends ModelWithField {
 
   public parseAxisAndHeader() {
     this.component.axes = parseUnitAxis(this);
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScalesForModel(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
