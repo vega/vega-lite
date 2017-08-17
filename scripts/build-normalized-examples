@@ -18,7 +18,7 @@ const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
 examples.forEach(function(example) {
-  if (example && example.includes('.vl.json') && example.includes('overlay')) {
+  if (example && example.includes('.vl.json')) {
     const path = DIR + SPECS + '/' + example;
     const spec = JSON.parse(fs.readFileSync(path));
 

@@ -178,10 +178,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
    *
    * `stack` can be one of the following values:
-   * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).
-   * - `"normalize"` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/>
-   * -`"center"` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)).
-   * - `"none"` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart.
+   * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).
+   * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>
+   * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
+   * - `"none"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
    *
    * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `"none"` by default.
    */

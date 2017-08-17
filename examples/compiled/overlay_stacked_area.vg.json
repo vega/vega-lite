@@ -1,0 +1,433 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.year == 2000"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+                    "as": "gender"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                },
+                {
+                    "type": "impute",
+                    "field": "sum_people",
+                    "groupby": [
+                        "gender"
+                    ],
+                    "key": "age",
+                    "method": "value",
+                    "value": 0
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                },
+                {
+                    "type": "impute",
+                    "field": "sum_people",
+                    "groupby": [
+                        "gender"
+                    ],
+                    "key": "age",
+                    "method": "value",
+                    "value": 0
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
+                    "groupby": [
+                        "gender"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "area",
+                    "style": [
+                        "area"
+                    ],
+                    "sort": {
+                        "field": "datum[\"age\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_0_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "age"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_people_start"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            },
+                            "orient": {
+                                "value": "vertical"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_1_main",
+                    "data": "data_1",
+                    "groupby": [
+                        "gender"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_1_marks",
+                    "type": "line",
+                    "style": [
+                        "lineOverlay"
+                    ],
+                    "sort": {
+                        "field": "datum[\"age\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_1_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "age"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people_end"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "age"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "sum_people_start"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "sum_people_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_people_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_people_end"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "gender"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "gender"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "title": "age",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "SUM(people)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "gender",
+            "stroke": "color"
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainColor": "#888",
+            "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
