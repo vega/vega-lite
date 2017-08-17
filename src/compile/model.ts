@@ -37,6 +37,7 @@ import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
+import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
@@ -298,8 +299,6 @@ export abstract class Model {
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
-  public abstract assembleScales(): VgScale[];
-
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
     const headerMarks = [];
@@ -368,7 +367,7 @@ export abstract class Model {
 
     // Only include scales if this spec is top-level or if parent is facet.
     // (Otherwise, it will be merged with upper-level's scope.)
-    const scales = (!this.parent || isFacetModel(this.parent)) ? this.assembleScales() : [];
+    const scales = (!this.parent || isFacetModel(this.parent)) ? assembleScales(this) : [];
     if (scales.length > 0) {
       group.scales = scales;
     }

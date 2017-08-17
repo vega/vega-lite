@@ -17,7 +17,6 @@ import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
-import {assembleScalesForModel} from './scale/assemble';
 import {getFieldFromDomains} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
@@ -160,10 +159,6 @@ export class FacetModel extends ModelWithField {
         // Otherwise do nothing for independent axes
       }
     }
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScalesForModel(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
