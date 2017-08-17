@@ -18,14 +18,16 @@ const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
 examples.forEach(function(example) {
-  if (example && example.includes('.vl.json')) {
+  if (example && example.includes('.vl.json') && example.includes('overlay')) {
     const path = DIR + SPECS + '/' + example;
-    const file = JSON.parse(fs.readFileSync(path));
+    const spec = JSON.parse(fs.readFileSync(path));
 
-    const preNormalized = stringify(file);
-    const fullSpec = vl.spec.normalize(file, vl.config.defaultConfig);
+    const preNormalized = stringify(spec);
+    const config = vl.config.initConfig(spec.config);
+    const fullSpec = vl.spec.normalize(spec, config);
     const postNormalized = stringify(fullSpec);
 
+    console.log(preNormalized, postNormalized);
     if (preNormalized !== postNormalized) {
       const postNormalizedOutput = JSON.stringify(fullSpec, null, 2);
       // -8 is cutting .vl.json
