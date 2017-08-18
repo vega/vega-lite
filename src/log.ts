@@ -201,7 +201,7 @@ export namespace message {
   }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
-    'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
+    'Cannot use a custom "range" with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
   export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
     return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;

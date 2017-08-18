@@ -102,6 +102,7 @@ export type VgScale = {
   range: VgRange,
 
   clamp?: boolean,
+  base?: number,
   exponent?: number,
   interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
   nice?: boolean | NiceTime,

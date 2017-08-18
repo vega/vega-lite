@@ -1770,37 +1770,6 @@
       "minimum": 1,
       "type": "number"
     },
-    "Domain": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/DateTime"
-          },
-          "type": "array"
-        },
-        {
-          "enum": [
-            "unaggregated"
-          ],
-          "type": "string"
-        },
-        {
-          "$ref": "#/definitions/SelectionDomain"
-        }
-      ]
-    },
     "ERRORBAR": {
       "enum": [
         "error-bar"
@@ -1819,7 +1788,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`, `\"text\"`, `\"circle\"`, and `\"square\"` /\nstroke color for `\"line\"` and `\"point\"`.)\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property."
+          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -1963,7 +1932,7 @@
               "$ref": "#/definitions/ConditionalLegendValueDef"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`, `\"text\"`, `\"circle\"`, and `\"square\"` /\nstroke color for `\"line\"` and `\"point\"`.)\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property."
+          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -2135,28 +2104,6 @@
       "required": [
         "field",
         "equal"
-      ],
-      "type": "object"
-    },
-    "ExtendedScheme": {
-      "additionalProperties": false,
-      "properties": {
-        "count": {
-          "type": "number"
-        },
-        "extent": {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "name": {
-          "description": "Color scheme that determines output color of an ordinal/sequential color scale.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name"
       ],
       "type": "object"
     },
@@ -4006,6 +3953,18 @@
       ],
       "type": "object"
     },
+    "NiceTime": {
+      "enum": [
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year"
+      ],
+      "type": "string"
+    },
     "OneOfFilter": {
       "additionalProperties": false,
       "properties": {
@@ -4199,25 +4158,6 @@
       ],
       "type": "object"
     },
-    "Range": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        {
-          "type": "string"
-        }
-      ]
-    },
     "RangeConfig": {
       "anyOf": [
         {
@@ -4342,16 +4282,48 @@
     "Scale": {
       "additionalProperties": false,
       "properties": {
+        "base": {
+          "description": "The logarithm base of the `log` scale (default `10`).",
+          "type": "number"
+        },
         "clamp": {
-          "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)\n\n__Supported types:__ only `linear`, `pow`, `sqrt`, and `log` (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)",
+          "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](config.html#scale-config)'s `clamp` (`true` by default).",
           "type": "boolean"
         },
         "domain": {
-          "$ref": "#/definitions/Domain",
-          "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for an aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            },
+            {
+              "enum": [
+                "unaggregated"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SelectionDomain"
+            }
+          ],
+          "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values."
         },
         "exponent": {
-          "description": "Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.",
+          "description": "The exponent of the `pow` scale.",
           "type": "number"
         },
         "interpolate": {
@@ -4368,36 +4340,75 @@
           "type": "string"
         },
         "nice": {
-          "description": "As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.\nAs time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)\n\n__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.",
-          "type": [
-            "boolean",
-            "string"
-          ]
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/NiceTime"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "interval": {
+                  "type": "string"
+                },
+                "step": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "interval",
+                "step"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields."
         },
         "padding": {
-          "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels have `0` padding by default.",
+          "description": "Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.\n\n__Default value:__ see `paddingInner` and `paddingOuter`.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "paddingInner": {
-          "description": "The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)",
+          "description": "The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].\n\nFor point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).\n\n__Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingInner`.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "paddingOuter": {
-          "description": "The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.",
+          "description": "The outer padding (spacing) at the ends of the range of band and point scales,\nas a fraction of the step size. This value must lie in the range [0,1].\n\n__Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "range": {
-          "$ref": "#/definitions/Range",
-          "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain."
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](scale.html#piecewise).\n\n- For [discrete](scale.html#discrete) and [discretizing](scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For [sequential](scale.html#sequential), [ordinal](scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales."
         },
         "rangeStep": {
-          "description": "The distance between the starts of adjacent bands or points in band or point scales.\nIf this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.\nIf both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)\n\n__Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.\n__Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.",
+          "description": "The distance between the starts of adjacent bands or points in [band](scale.html#band) and [point](scale.html#point) scales.\n\nIf `rangeStep` is `null` or if the view contains the scale's corresponding [size](size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.\n\n__Default value:__  derived the [scale config](config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.\n\n__Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.",
           "minimum": 0,
           "type": [
             "number",
@@ -4405,19 +4416,26 @@
           ]
         },
         "round": {
-          "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
+          "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default value:__ `true` for x and y channels if the scale config's `round` is `true`; `false` otherwise.",
           "type": "boolean"
         },
         "scheme": {
-          "$ref": "#/definitions/Scheme",
-          "description": "Range scheme (e.g., color schemes such as `\"category10\"` or `\"viridis\"`).\n\n__Default value:__ [scale config](config.html#scale-config)'s `\"nominalColorScheme\"` for nominal field and `\"sequentialColorScheme\"` for other types of fields."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SchemeParams"
+            }
+          ],
+          "description": "A string indicating a color [scheme](scale.html#scheme) name (e.g., `\"category10\"` or `\"viridis\"`) or a [scheme parameter object](scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
-          "description": "The type of scale.\n- For a _quantitative_ field, supported quantitative scale types  are `\"linear\"` (default), `\"log\"`, `\"pow\"`, `\"sqrt\"`, `\"quantile\"`, `\"quantize\"`, and `\"threshold\"`.\n- For a _temporal_ field without `timeUnit`, the scale type should be `\"time\"` (default), `\"utc\"` or `\"ordinal\"`. See more about [UTC time](timeunit.html#utc)\n- For _ordinal_ and _nominal_ fields, the type is always `\"ordinal\"`.\nUnsupported values will be ignored."
+          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](scale.html#linear), [`\"pow\"`](scale.html#pow), [`\"sqrt\"`](scale.html#sqrt), [`\"log\"`](scale.html#log), [`\"time\"`](scale.html#time), [`\"utc\"`](scale.html#utc), [`\"sequential\"`](scale.html#sequential)).\n\n2) [**Discrete Scales**](scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](scale.html#ordinal)) or continuous ([`\"band\"`](scale.html#band) and [`\"point\"`](scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`\"bin-linear\"`](scale.html#bin-linear) and [`\"bin-ordinal\"`](scale.html#bin-ordinal)).\n\n__Default value:__ please see the [scale type table](scale.html#type)."
         },
         "zero": {
-          "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.\n\n__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__  This property is always `false` for log scale.",
+          "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
           "type": "boolean"
         }
       },
@@ -4443,7 +4461,7 @@
           "type": "boolean"
         },
         "maxBandSize": {
-          "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
+          "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the scale's `rangeStep` - 1.",
           "minimum": 0,
           "type": "number"
         },
@@ -4469,7 +4487,7 @@
           "type": "number"
         },
         "minBandSize": {
-          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.",
+          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\n\n__Default value:__ `2`",
           "minimum": 0,
           "type": "number"
         },
@@ -4623,15 +4641,29 @@
       ],
       "type": "string"
     },
-    "Scheme": {
-      "anyOf": [
-        {
-          "type": "string"
+    "SchemeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
+          "type": "number"
         },
-        {
-          "$ref": "#/definitions/ExtendedScheme"
+        "extent": {
+          "description": "For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "A color scheme name for sequential/ordinal scales (e.g., `\"category10\"` or `\"viridis\"`).\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
+          "type": "string"
         }
-      ]
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
     },
     "SelectionConfig": {
       "additionalProperties": false,
