@@ -1,6 +1,7 @@
 
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
+import {NiceTime} from './scale';
 import {Dict, stringValue} from './util';
 
 export namespace TimeUnit {
@@ -221,7 +222,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
 }
 
 /** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit: TimeUnit): string {
+export function smallestUnit(timeUnit: TimeUnit): NiceTime {
   if (!timeUnit) {
     return undefined;
   }

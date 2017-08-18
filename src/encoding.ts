@@ -49,10 +49,12 @@ export interface Encoding<F> {
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
-   * (By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`, `"text"`, `"circle"`, and `"square"` /
-   * stroke color for `"line"` and `"point"`.)
+   * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
+   * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
   color?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
 

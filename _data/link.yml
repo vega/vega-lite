@@ -59,8 +59,6 @@ Mark:
   name: String
 
 # Encoding
-DateTime:
-  link: "transform.html#datetime"
 Config:
   link: config.html
 EncodingWithFacet:
@@ -123,12 +121,19 @@ SortOrder:
 SortField:
   link: "sort.html#sort-field"
 StackOffset:
-  name: Stack
+  name: String
   link: "stack.html"
 
 # Scale / Axis / Legend
 ScaleType:
   name: String
+SchemeParams:
+  link: "scale.html#scheme-params"
+SelectionDomain:
+  name: Object
+NiceTime:
+  name: String
+
 AxisOrient:
   name: String
 LegendOrient:
@@ -138,6 +143,8 @@ ResolveMapping:
   link: resolve.html
 
 # Others
+DateTime:
+  link: "types.html#datetime"
 HorizontalAlign:
   name: String
 VerticalAlign:
