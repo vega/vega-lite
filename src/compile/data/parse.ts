@@ -1,20 +1,27 @@
+import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
-import {Dict} from '../../util';
+import {DateTime, isDateTime} from '../../datetime';
+import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
+import * as log from '../../log';
+import {isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit} from '../../transform';
+import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
+import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
+import {IdentifierNode} from './indentifier';
 import {DataComponent} from './index';
+import {LookupNode} from './lookup';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {IdentifierNode, parseTransformArray} from './transforms';
-
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
@@ -33,6 +40,91 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
     // If we don't have a source defined (overriding parent's data), use the parent's facet root or main.
     return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
   }
+}
+
+
+/**
+ * Parses a transforms array into a chain of connected dataflow nodes.
+ */
+export function parseTransformArray(model: Model) {
+  let first: DataFlowNode = null;
+  let node: DataFlowNode;
+  let previous: DataFlowNode;
+  let lookupCounter = 0;
+
+  function insert(newNode: DataFlowNode) {
+    if (!first) {
+      // A parent may be inserted during node construction
+      // (e.g., selection FilterNodes may add a TimeUnitNode).
+      first = newNode.parent || newNode;
+    } else if (newNode.parent) {
+      previous.insertAsParentOf(newNode);
+    } else {
+      newNode.parent = previous;
+    }
+
+    previous = newNode;
+  }
+
+  model.transforms.forEach(t => {
+    if (isCalculate(t)) {
+      node = new CalculateNode(t);
+    } else if (isFilter(t)) {
+      // Automatically add a parse node for filters with filter objects
+      const parse = {};
+      const filter = t.filter;
+      let val: string | number | boolean | DateTime = null;
+      // For EqualFilter, just use the equal property.
+      // For RangeFilter and OneOfFilter, all array members should have
+      // the same type, so we only use the first one.
+      if (isEqualFilter(filter)) {
+        val = filter.equal;
+      } else if (isRangeFilter(filter)) {
+        val = filter.range[0];
+      } else if (isOneOfFilter(filter)) {
+        val = (filter.oneOf || filter['in'])[0];
+      } // else -- for filter expression, we can't infer anything
+
+      if (val) {
+        if (isDateTime(val)) {
+          parse[filter['field']] = 'date';
+        } else if (isNumber(val)) {
+          parse[filter['field']] = 'number';
+        } else if (isString(val)) {
+          parse[filter['field']] = 'string';
+        }
+      }
+
+      if (keys(parse).length > 0) {
+        const parseNode = new ParseNode(parse);
+        insert(parseNode);
+      }
+
+      node = new FilterNode(model, t.filter);
+    } else if (isBin(t)) {
+      node = BinNode.makeFromTransform(model, t);
+    } else if (isTimeUnit(t)) {
+      node = TimeUnitNode.makeFromTransform(model, t);
+    } else if (isSummarize(t)) {
+      node = AggregateNode.makeFromTransform(model, t);
+
+      if (requiresSelectionId(model)) {
+        insert(node);
+        node = new IdentifierNode();
+      }
+    } else if (isLookup(t)) {
+      node = LookupNode.make(model, t, lookupCounter++);
+    } else {
+      log.warn(log.message.invalidTransformIgnored(t));
+      return;
+    }
+
+    insert(node);
+  });
+
+  const last = node;
+
+  return {first, last};
 }
 
 /*
