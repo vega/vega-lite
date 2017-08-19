@@ -1,4 +1,4 @@
-import {Channel, hasScale, rangeType} from '../../channel';
+import {Channel, isScaleChannel, rangeType} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -23,7 +23,7 @@ export function scaleType(
 
   const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig);
 
-  if (!hasScale(channel)) {
+  if (!isScaleChannel(channel)) {
     // There is no scale for these channels
     return null;
   }
@@ -53,16 +53,9 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
-      if (channel === 'color' || rangeType(channel) === 'discrete') {
-        return 'ordinal';
-      }
-      return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
-
     case 'ordinal':
-      if (channel === 'color') {
-        return 'ordinal';
-      } else if (rangeType(channel) === 'discrete') {
-        if (channel !== 'text' && channel !=='tooltip') {
+      if (channel === 'color' || rangeType(channel) === 'discrete') {
+        if (channel === 'shape' && fieldDef.type === 'ordinal') {
           log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         }
         return 'ordinal';
