@@ -7,6 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
+import {SCALE_TYPES, ScaleType} from './scale';
 import {contains, Flag, flagKeys} from './util';
 
 export namespace Channel {
@@ -207,11 +208,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {text: true};
   }
 }
-
-export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, ORDER, TOOLTIP], channel);
-}
-
 
 export function rangeType(channel: Channel): RangeType {
   switch (channel) {

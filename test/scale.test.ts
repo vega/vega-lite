@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Channel, SCALE_CHANNELS} from '../src/channel';
+import {Channel, SCALE_CHANNELS, ScaleChannel} from '../src/channel';
 import * as scale from '../src/scale';
 import {channelSupportScaleType, CONTINUOUS_TO_CONTINUOUS_SCALES, SCALE_TYPES, ScaleType} from '../src/scale';
 import {some, without} from '../src/util';
@@ -76,7 +76,7 @@ describe('scale', () => {
       // x,y should use either band or point for ordinal input
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
 
-      for (const channel of ['x', 'y', 'size', 'opacity'] as Channel[]) {
+      for (const channel of ['x', 'y', 'size', 'opacity'] as ScaleChannel[]) {
         assert(!channelSupportScaleType(channel, 'ordinal'));
         assert(!channelSupportScaleType(channel, 'sequential'));
         for (const scaleType of scaleTypes) {
