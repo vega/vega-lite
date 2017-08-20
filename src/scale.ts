@@ -513,10 +513,18 @@ export interface Scale {
    */
   zero?: boolean;
 
-  // FIXME: Add description
-  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+  /**
+   * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
+   */
+  interpolate?: Interpolate | InterpolateParams;
 }
 
+export type Interpolate = 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+
+export interface InterpolateParams {
+  type: 'rgb' | 'cubehelix' | 'cubehelix-long';
+  gamma?: number;
+}
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[] = [
   'reverse', 'round',
@@ -543,7 +551,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'scheme':
       return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
     case 'interpolate':
-      // FIXME how about ordinal?
+      // FIXME(https://github.com/vega/vega-lite/issues/2902) how about ordinal?
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';

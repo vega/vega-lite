@@ -148,7 +148,7 @@ By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"
 
 In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
 
-{% include table.html props="clamp,nice,round,zero" source="Scale" %}
+{% include table.html props="clamp,interpolate,nice,round,zero" source="Scale" %}
 
 {:#linear}
 ### Linear Scales
