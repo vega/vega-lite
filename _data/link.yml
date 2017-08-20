@@ -131,6 +131,10 @@ SchemeParams:
   link: "scale.html#scheme-params"
 SelectionDomain:
   name: Object
+Interpolate:
+  name: String
+InterpolateParams:
+  name: Object
 NiceTime:
   name: String
 
