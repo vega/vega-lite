@@ -186,7 +186,6 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
   }
   switch (mark) {
     case 'bar':
-      return config.scale.minBandSize !== undefined ? config.scale.minBandSize : config.bar.continuousBandSize;
     case 'tick':
       return config.scale.minBandSize;
     case 'line':
@@ -197,9 +196,7 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
     case 'point':
     case 'square':
     case 'circle':
-      if (config.scale.minSize) {
-        return config.scale.minSize;
-      }
+      return config.scale.minSize;
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMin not implemented for the mark
