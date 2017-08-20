@@ -4484,7 +4484,7 @@
           "type": "number"
         },
         "maxFontSize": {
-          "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.\n\n__Default value:__ `40`",
+          "description": "The default max value for mapping quantitative fields to text's size/fontSize.\n\n__Default value:__ `40`",
           "minimum": 0,
           "type": "number"
         },
@@ -4505,7 +4505,7 @@
           "type": "number"
         },
         "minBandSize": {
-          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\n\n__Default value:__ `2`",
+          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.\n\n__Default value:__ `2`",
           "minimum": 0,
           "type": "number"
         },
@@ -4537,7 +4537,7 @@
           "type": "number"
         },
         "rangeStep": {
-          "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.\n\n__Default value:__ `21`",
+          "description": "Default range step for band and point scales of (1) the `y` channel\nand (2) the `x` channel when the mark is not `text`.\n\n__Default value:__ `21`",
           "minimum": 0,
           "type": [
             "number",
@@ -4545,16 +4545,16 @@
           ]
         },
         "round": {
-          "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
+          "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, and `size` scales.)",
           "type": "boolean"
         },
         "textXRangeStep": {
-          "description": "Default range step for `x` ordinal scale when is mark is `text`.\n\n__Default value:__ `90`",
+          "description": "Default range step for `x` band and point scales of text marks.\n\n__Default value:__ `90`",
           "minimum": 0,
           "type": "number"
         },
         "useUnaggregatedDomain": {
-          "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
+          "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\n\nThis is equivalent to setting `domain` to `\"unaggregate\"` for aggregated _quantitative_ fields by default.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.\n\n__Default value:__ `false`",
           "type": "boolean"
         }
       },
