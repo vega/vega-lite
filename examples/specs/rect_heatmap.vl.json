@@ -6,12 +6,5 @@
     "y": {"field": "Origin", "type": "ordinal"},
     "x": {"field": "Cylinders", "type": "ordinal"},
     "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
-  },
-  "config": {
-    "range": {
-      "heatmap": {
-        "scheme": "greenblue"
-      }
-    }
   }
 }
