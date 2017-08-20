@@ -11,8 +11,6 @@ Internally, Vega-Lite uses [Vega scales](https://vega.github.io/vega/docs/scales
 Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-props) channels.
 To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
-For more information about guides that visualize the scales, please see the [axes](axis.html) and [legends](legend.html) pages.
-
 {: .suppress-error}
 ```json
 // Single View Specification
@@ -35,6 +33,11 @@ For more information about guides that visualize the scales, please see the [axe
   ...
 }
 ```
+
+Besides the `scale` property of each encoding channel, the top-level configuration object ([`config`](config.html)) also provides [scale config](#config) (`config: {scale: {...}}`) for setting default scale properties for all scales.
+
+For more information about guides that visualize the scales, please see the [axes](axis.html) and [legends](legend.html) pages.
+
 
 ## Documentation Overview
 
@@ -298,12 +301,39 @@ For example, the following plot has a binned field on the `color` channel.
 Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
 
 {:#config}
-## Scale Config
+## Configuration
 
-**TODO**
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "scale": {
+      ...                       // Scale Config
+    },
+    "range": {
+      ...                       // Scale Range Config
+    },
+    ...
+  }
+  ...
+}
+```
 
+### Scale Config
+
+To provide themes for all scales, the scale config `config: {scale: {...}}` can contain the following properties:
+
+{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,pointPadding,rangeStep,round,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#range-config}
-## Range Config
+### Range Config
 
-**TODO**
+Scale range configuration `config: {range: {...}}` defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid [`range`](#range) or, for named color ranges, [Vega scheme definitions](https://vega.github.io/vega/docs/schemes/#scheme-properties).
+
+By default, Vega-Lite (via Vega) includes the following pre-defined named ranges:
+
+{% include table.html props="category,diverging,heatmap,ordinal,ramp,symbol" source="RangeConfig" %}
+
+See [this file](https://github.com/vega/vega-parser/blob/master/src/config.js#L188) for the default values of named ranges.

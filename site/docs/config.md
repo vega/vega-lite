@@ -8,17 +8,16 @@ permalink: /docs/config.html
 {: .suppress-error}
 ```json
 {
-  "data": ... ,
-  "mark": ... ,
-  "encoding": ... ,
+  ...,
   "config": {          // Configuration Object
     ...                // - Top-level Configuration
     "cell": { ... },   // - Cell Configuration
     "mark": { ... },   // - Mark Configuration
     "scale": { ... },  // - Scale Configuration
+    "range": { ... },  // - Scale Range Configuration
     "axis": { ... },   // - Axis Configuration
     "legend": { ... }, // - Legend Configuration
-    "facet": { ... },   // - Facet Configuration
+    "facet": { ... },  // - Facet Configuration
     "title": { ... }   // - title Configuration
   }
 }
@@ -31,6 +30,7 @@ This page outlines different types of config properties:
 - [Cell Configuration](#cell-config)
 - [Mark Configuration](#mark-config)
 - [Scale Configuration](#scale-config)
+- [Scale Range Configuration](#scale-range-config)
 - [Axis Configuration](#axis-config)
 - [Legend Configuration](#legend-config)
 - [Facet Configuration](#facet-config)
@@ -211,8 +211,12 @@ vg.embed('#horizontal_line', {
 ## Scale Configuration  (`config.scale.*`)
 
 Scale configuration determines default properties for all [scales](scale.html).
+For a full list of scale configuration, please see the [Scale Config section in the scale page](scale.html#config).
 
-{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,facetSpacing,maxBandSize,maxFontSize,maxOpacity,maxSize,maxStrokeWidth,minBandSize,minFontSize,minOpacity,minSize,minStrokeWidth,pointPadding,rangeStep,round,shapes,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
+{:#scale-range-config}
+## Scale Range Configuration  (`config.range.*`)
+
+Scale range configuration defines default range array or scheme for using with scales. For a full list of scale range configuration, please see the [Range Config section in the scale page](scale.html#config).
 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
