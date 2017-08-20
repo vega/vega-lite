@@ -7,14 +7,37 @@ permalink: /docs/legend.html
 
 Similar to [axes](axis.html), legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
-By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded. 
-If `legend` is not defined, default legend properties are applied. User can  set `legend` to an object to customize [legend properties](#legend-properties) or set `legend` to `null` to remove the legend.
+By default, Vega-Lite automatically creates legends with default properties for `color`, `opacity`, `size`, and `shape` channels when they encode data fields.
+User can set the `legend` property of a [mark property channel's field definition](encoding.html#mark-prop) to an object to customize [legend properties](#legend-properties) or set `legend` to `null` to remove the legend.
 
-Besides `legend` property of each encoding channel, the configuration object ([`config`](config.html)) also provides [legend config](#legend-config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
+Besides `legend` property of a field definition, the configuration object ([`config`](config.html)) also provides [legend config](#legend-config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
 
+* TOC
+{:toc}
+
+## Legend Types
+
+By default, Vega-Lite automatically generates gradient legends for color channels with
+non-binned quantitative fields and temporal fields.
+
+<div class="vl-example" data-name="scatter_color_quantitative"></div>
+
+Otherwise, symbol legends are generated.
+
+<div class="vl-example" data-name="scatter_color"></div>
+
+
+## Combined Legend
+
+If multiple channels encode the same fields, Vega-lite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
+
+<div class="vl-example" data-name="scatter_colored_with_shape"></div>
+
+## Legend Properties
 
 {: .suppress-error}
 ```json
+// Single View Specification
 {
   "data": ... ,
   "mark": ... ,
@@ -30,46 +53,39 @@ Besides `legend` property of each encoding channel, the configuration object ([`
       ...
     },
     ...
-  },
-  "config":{
-    "legend": {
-      ...                       // legend config
-    }
   }
-  ...
 }
 ```
 
-* TOC
-{:toc}
-
-
-## Legend Properties
-
 To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
-
-
 
 ### General
 
-{% include table.html props="entryPadding,fillColor,format,offset,orient,padding,type,values,zindex" source="Legend" %}
+{% include table.html props="type,entryPadding,fillColor,format,offset,orient,padding,tickCount,title,titleAlign,values,zindex" source="Legend" %}
 
-### Tick
-
-{% include table.html props="tickCount" source="Legend" %}
-
-### Title
-
-{% include table.html props="title,titleAlign" source="Legend" %}
-
+<!--
 ### Custom Legend Encodings
 
 **TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/legends/#custom-legend-encodings), but within each element's block, we do not have `enter/update/exit`.)
+-->
 
 {:#legend-config}
 ## Legend Config
 
-Legend Config will apply to the all encoding channel has `legend`. Legend Config can be customized by setting `config: {legend: {...}}`. Legend Config supports the following configurations:
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "axis": : {
+      ...
+    }
+  }
+}
+```
+
+To provide themes for all legends, the legends config (`config: {legend: {...}}`) can contain the following properties:
 
 ### General
 
