@@ -1549,11 +1549,8 @@
           "description": "Point-Specific Config "
         },
         "range": {
-          "additionalProperties": {
-            "$ref": "#/definitions/RangeConfig"
-          },
-          "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.",
-          "type": "object"
+          "$ref": "#/definitions/RangeConfig",
+          "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties."
         },
         "rect": {
           "$ref": "#/definitions/MarkConfig",
@@ -4179,6 +4176,91 @@
       "type": "object"
     },
     "RangeConfig": {
+      "additionalProperties": {
+        "$ref": "#/definitions/RangeConfigValue"
+      },
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _nominal_ (categorical) fields."
+        },
+        "diverging": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for diverging _quantitative_ fields."
+        },
+        "heatmap": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _quantitative_ heatmaps."
+        },
+        "ordinal": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _ordinal_ fields."
+        },
+        "ramp": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _quantitative_ and _temporal_ fields."
+        },
+        "symbol": {
+          "description": "Default range palette for the `shape` channel.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "RangeConfigValue": {
       "anyOf": [
         {
           "items": {
@@ -4190,7 +4272,7 @@
           "type": "array"
         },
         {
-          "$ref": "#/definitions/VgRangeScheme"
+          "$ref": "#/definitions/VgScheme"
         },
         {
           "additionalProperties": false,
@@ -6786,7 +6868,7 @@
       ],
       "type": "object"
     },
-    "VgRangeScheme": {
+    "VgScheme": {
       "additionalProperties": false,
       "properties": {
         "count": {

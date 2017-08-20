@@ -80,8 +80,8 @@ export type FieldRefUnionDomain = {
   sort?: VgUnionSortField
 };
 
-export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgRangeScheme | VgRangeStep;
+export type VgScheme = {scheme: string, extent?: number[], count?: number};
+export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgScheme | VgRangeStep;
 
 export type VgRangeStep = {step: number | VgSignalRef};
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
