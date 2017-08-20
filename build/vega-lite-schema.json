@@ -66,23 +66,19 @@
       "additionalProperties": false,
       "properties": {
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
-        "encoding": {
-          "$ref": "#/definitions/AxisEncoding",
-          "description": "Optional mark definitions for custom axis encoding."
-        },
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
         },
         "grid": {
-          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -105,14 +101,14 @@
               "type": "string"
             }
           ],
-          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
           "description": "The padding, in pixels, between axis and text labels.",
           "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -120,16 +116,16 @@
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
         },
         "offset": {
-          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from  [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)",
+          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)",
           "type": "number"
         },
         "orient": {
           "$ref": "#/definitions/AxisOrient",
-          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ x-axis is placed on the bottom, y-axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right."
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
@@ -137,15 +133,10 @@
         },
         "tickCount": {
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
-          "minimum": 0,
           "type": "number"
         },
-        "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
-        },
         "tickSize": {
-          "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
+          "description": "The size in pixels of axis ticks.",
           "minimum": 0,
           "type": "number"
         },
@@ -154,7 +145,7 @@
           "type": "boolean"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
           "type": "string"
         },
         "titleAlign": {
@@ -166,8 +157,7 @@
           "type": "number"
         },
         "titleMaxLength": {
-          "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
-          "minimum": 0,
+          "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
         },
         "titlePadding": {
@@ -192,7 +182,7 @@
           "description": "Explicitly set the visible axis tick values."
         },
         "zindex": {
-          "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `0` (Behind the marks.)",
+          "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `1` (in front of the marks) for actual axis and `0` (behind the marks) for grids.",
           "minimum": 0,
           "type": "number"
         }
@@ -207,7 +197,7 @@
           "type": "number"
         },
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "domainColor": {
@@ -219,7 +209,7 @@
           "type": "number"
         },
         "grid": {
-          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
         },
         "gridColor": {
@@ -246,7 +236,7 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -260,7 +250,7 @@
           "type": "string"
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.\n\n__Default value:__ `10`.",
+          "description": "The font size of the label, in pixels.",
           "minimum": 0,
           "type": "number"
         },
@@ -286,14 +276,14 @@
               "type": "string"
             }
           ],
-          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "Padding in pixels between axis ticks and tick labels.",
+          "description": "The padding, in pixels, between axis and text labels.",
           "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -301,7 +291,7 @@
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
         },
         "shortTimeLabels": {
@@ -312,16 +302,12 @@
           "description": "The color of the axis's tick.",
           "type": "string"
         },
-        "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
-        },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.",
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
+          "description": "The size in pixels of axis ticks.",
           "minimum": 0,
           "type": "number"
         },
@@ -355,7 +341,7 @@
           "type": "string"
         },
         "titleFontSize": {
-          "description": "Font size of the title.\n\n__Default value:__ `10`.",
+          "description": "Font size of the title.",
           "minimum": 0,
           "type": "number"
         },
@@ -371,8 +357,7 @@
           "type": "number"
         },
         "titleMaxLength": {
-          "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
-          "minimum": 0,
+          "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
         },
         "titlePadding": {
@@ -424,36 +409,6 @@
         "axisY": {
           "$ref": "#/definitions/VgAxisConfig",
           "description": "Y-axis specific config."
-        }
-      },
-      "type": "object"
-    },
-    "AxisEncoding": {
-      "additionalProperties": false,
-      "properties": {
-        "axis": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for the axis container."
-        },
-        "domain": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for the axis domain rule mark."
-        },
-        "grid": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for axis gridline rule marks."
-        },
-        "labels": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for axis label text marks."
-        },
-        "ticks": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for axis tick rule marks."
-        },
-        "title": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for the axis title text mark."
         }
       },
       "type": "object"
@@ -2705,150 +2660,12 @@
       "additionalProperties": false,
       "properties": {
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
           "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "GuideEncodingEntry": {
-      "additionalProperties": false,
-      "properties": {
-        "align": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "angle": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "baseline": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "clip": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "cursor": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "dir": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "dx": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "dy": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "ellipsis": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "endAngle": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "fill": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "fillOpacity": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "font": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "fontSize": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "fontStyle": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "fontWeight": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "height": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "innerRadius": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "interpolate": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "limit": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "opacity": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "orient": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "outerRadius": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "path": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "radius": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "shape": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "size": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "startAngle": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "stroke": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "strokeDash": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "strokeDashOffset": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "strokeOpacity": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "strokeWidth": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "tension": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "text": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "theta": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "url": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "width": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "x": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "x2": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "xc": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "y": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "y2": {
-          "$ref": "#/definitions/ValueDef"
-        },
-        "yc": {
-          "$ref": "#/definitions/ValueDef"
         }
       },
       "type": "object"
@@ -3064,10 +2881,6 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
-        "encoding": {
-          "$ref": "#/definitions/LegendEncoding",
-          "description": "Optional mark definitions for custom legend encoding."
-        },
         "entryPadding": {
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
@@ -3077,7 +2890,7 @@
           "type": "string"
         },
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
         },
         "offset": {
@@ -3086,7 +2899,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3097,7 +2910,7 @@
           "type": "number"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
           "type": "string"
         },
         "titleAlign": {
@@ -3105,7 +2918,7 @@
           "type": "string"
         },
         "type": {
-          "description": "The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.",
+          "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
           "enum": [
             "symbol",
             "gradient"
@@ -3225,7 +3038,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3302,32 +3115,6 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.",
           "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "LegendEncoding": {
-      "additionalProperties": false,
-      "properties": {
-        "gradient": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for legend gradient filled rect marks."
-        },
-        "labels": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for legend label text marks."
-        },
-        "legend": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for the legend container.\nThis can be useful for creating legend with custom x, y position."
-        },
-        "symbols": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for legend symbol marks."
-        },
-        "title": {
-          "$ref": "#/definitions/GuideEncodingEntry",
-          "description": "Custom encoding for the legend title text mark."
         }
       },
       "type": "object"
@@ -6219,15 +6006,15 @@
       "description": "Base object for Vega's Axis and Axis Config.\nAll of these properties are both properties of Vega's Axis and Axis Config.",
       "properties": {
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "grid": {
-          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -6250,10 +6037,14 @@
               "type": "string"
             }
           ],
-          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
+        },
+        "labelPadding": {
+          "description": "The padding, in pixels, between axis and text labels.",
+          "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -6261,15 +6052,11 @@
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
         },
-        "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
-        },
         "tickSize": {
-          "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
+          "description": "The size in pixels of axis ticks.",
           "minimum": 0,
           "type": "number"
         },
@@ -6286,8 +6073,7 @@
           "type": "number"
         },
         "titleMaxLength": {
-          "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
-          "minimum": 0,
+          "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
         },
         "titlePadding": {
@@ -6305,7 +6091,7 @@
           "type": "number"
         },
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "domainColor": {
@@ -6317,7 +6103,7 @@
           "type": "number"
         },
         "grid": {
-          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
         },
         "gridColor": {
@@ -6344,7 +6130,7 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -6358,7 +6144,7 @@
           "type": "string"
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.\n\n__Default value:__ `10`.",
+          "description": "The font size of the label, in pixels.",
           "minimum": 0,
           "type": "number"
         },
@@ -6384,14 +6170,14 @@
               "type": "string"
             }
           ],
-          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for x-axes with horizontal labels, otherwise `false`."
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "Padding in pixels between axis ticks and tick labels.",
+          "description": "The padding, in pixels, between axis and text labels.",
           "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -6399,23 +6185,19 @@
           "type": "number"
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30`",
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
         },
         "tickColor": {
           "description": "The color of the axis's tick.",
           "type": "string"
         },
-        "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
-        },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.",
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
+          "description": "The size in pixels of axis ticks.",
           "minimum": 0,
           "type": "number"
         },
@@ -6449,7 +6231,7 @@
           "type": "string"
         },
         "titleFontSize": {
-          "description": "Font size of the title.\n\n__Default value:__ `10`.",
+          "description": "Font size of the title.",
           "minimum": 0,
           "type": "number"
         },
@@ -6465,8 +6247,7 @@
           "type": "number"
         },
         "titleMaxLength": {
-          "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
-          "minimum": 0,
+          "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
         },
         "titlePadding": {
@@ -6553,7 +6334,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -6648,7 +6429,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
