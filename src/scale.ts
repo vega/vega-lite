@@ -142,7 +142,7 @@ export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
    * This can be helpful for snapping to the pixel grid.
-   * (Only available for `x`, `y`, `size`, `row`, and `column` scales.)
+   * (Only available for `x`, `y`, and `size` scales.)
    */
   round?: boolean;
 
@@ -151,16 +151,17 @@ export interface ScaleConfig {
    */
   clamp?: boolean;
   /**
-   *  Default range step for `x` ordinal scale when is mark is `text`.
+   *  Default range step for `x` band and point scales of text marks.
    *
    * __Default value:__ `90`
    *
    *  @minimum 0
    */
   textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
+
   /**
-   * Default range step for (1) `y` ordinal scale,
-   * and (2) `x` ordinal scale when the mark is not `text`.
+   * Default range step for band and point scales of (1) the `y` channel
+   * and (2) the `x` channel when the mark is not `text`.
    *
    * __Default value:__ `21`
    *
@@ -199,7 +200,12 @@ export interface ScaleConfig {
 
   /**
    * Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   *
+   * This is equivalent to setting `domain` to `"unaggregate"` for aggregated _quantitative_ fields by default.
+   *
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
+   *
+   * __Default value:__ `false`
    */
   useUnaggregatedDomain?: boolean;
 
@@ -207,7 +213,6 @@ export interface ScaleConfig {
   // let's not make a config.
 
   // Configs for Range
-
 
   /**
    * The default max value for mapping quantitative fields to bar's size/bandSize.
@@ -218,7 +223,7 @@ export interface ScaleConfig {
   maxBandSize?: number;
 
   /**
-   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false
+   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.
    *
    * __Default value:__ `2`
    *
@@ -228,7 +233,6 @@ export interface ScaleConfig {
 
   /**
    * The default max value for mapping quantitative fields to text's size/fontSize.
-   * If undefined (default), we will use bandSize - 1.
    *
    * __Default value:__ `40`
    *
