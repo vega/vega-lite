@@ -174,8 +174,7 @@
             "domain": {
                 "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
             },
-            "range": "ramp",
-            "zero": false
+            "range": "ramp"
         }
     ],
     "axes": [
