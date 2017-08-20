@@ -4512,13 +4512,6 @@
           "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
           "type": "boolean"
         },
-        "shapes": {
-          "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `[\"circle\", \"square\", \"cross\", \"diamond\", \"triangle-up\", \"triangle-down\"]`",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "textXRangeStep": {
           "description": "Default range step for `x` ordinal scale when is mark is `text`.\n\n__Default value:__ `90`",
           "minimum": 0,
