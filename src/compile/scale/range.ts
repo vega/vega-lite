@@ -6,7 +6,7 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, VgRange, VgRangeScheme} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {LayoutSize} from '../layoutsize/component';
 import {isUnitModel, Model} from '../model';
 import {Explicit, makeImplicit} from '../split';
@@ -125,7 +125,7 @@ export function parseRangeForChannel(
 
 function parseScheme(scheme: Scheme) {
   if (isExtendedScheme(scheme)) {
-    const r: VgRangeScheme = {scheme: scheme.name};
+    const r: VgScheme = {scheme: scheme.name};
     if (scheme.count) {
       r.count = scheme.count;
     }

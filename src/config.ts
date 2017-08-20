@@ -11,7 +11,7 @@ import {StackOffset} from './stack';
 import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, isObject, keys, mergeDeep} from './util';
-import {VgMarkConfig, VgRangeScheme, VgTitleConfig} from './vega.schema';
+import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
 
 
 export interface CellConfig {
@@ -99,7 +99,41 @@ export const defaultCellConfig: CellConfig = {
   height: 200
 };
 
-export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
+export type RangeConfigValue = (number|string)[] | VgScheme | {step: number};
+
+export interface RangeConfig {
+  /**
+   * Default range for _nominal_ (categorical) fields.
+   */
+  category?: string[] | VgScheme;
+
+  /**
+   * Default range for diverging _quantitative_ fields.
+   */
+  diverging?: string[] | VgScheme;
+
+  /**
+   * Default range for _quantitative_ heatmaps.
+   */
+  heatmap?: string[] | VgScheme;
+
+  /**
+   * Default range for _ordinal_ fields.
+   */
+  ordinal?: string[] | VgScheme;
+
+  /**
+   * Default range for _quantitative_ and _temporal_ fields.
+   */
+  ramp?: string[] | VgScheme;
+
+  /**
+   * Default range palette for the `shape` channel.
+   */
+  symbol?: string[];
+
+  [name: string]: RangeConfigValue;
+}
 
 export interface VLOnlyConfig {
   /**
@@ -174,7 +208,7 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    * (such as `{"type": "ordinal", "range": "category"}`).
    * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
    */
-  range?: {[name: string]: RangeConfig};
+  range?: RangeConfig;
 
   /** Legend Config */
   legend?: LegendConfig;

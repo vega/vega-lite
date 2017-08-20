@@ -137,6 +137,8 @@ InterpolateParams:
   name: Object
 NiceTime:
   name: String
+VgScheme:
+  link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
 
 AxisOrient:
   name: String
