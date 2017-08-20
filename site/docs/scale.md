@@ -88,7 +88,7 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 | `x`         | The range is _always_ `[0, width]`.  Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.  |
 | `y`         | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
 | `opacity`   | Derived from the [scale config](#config)'s `min/maxOpacity`. |
-| `color`     | Derived from the following [named ranges]((scale.html#range-config)) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"ramp"` for _quantitative_ and _temporal_ fields. <br/><br/> See the [color scheme](#scheme) section for examples. |
+| `color`     | Derived from the following [named ranges]((scale.html#range-config)) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
 | `size`      | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
 | `shape`   | Derived from the [pre-defined named range](#range-config) `"symbol"`. |
 
@@ -111,7 +111,9 @@ By default, Vega-Lite assigns different [default color schemes](#range-config) b
 
 <div class="vl-example" data-name="scatter_color_ordinal"></div>
 
-- _Quantitative_ and _temporal_ fields use the `"ramp"` [pre-defined named color range](#range-config) (the `"blues"` color scheme by default).
+- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the `"viridis"` scheme by default) for rect marks and `"ramp"` (the `"blues"` scheme by default) for other marks.
+
+<div class="vl-example" data-name="rect_heatmap"></div>
 
 <div class="vl-example" data-name="scatter_color_quantitative"></div>
 

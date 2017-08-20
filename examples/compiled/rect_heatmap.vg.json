@@ -179,11 +179,6 @@
         },
         "axisY": {
             "minExtent": 30
-        },
-        "range": {
-            "heatmap": {
-                "scheme": "greenblue"
-            }
         }
     }
 }
