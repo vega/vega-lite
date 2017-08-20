@@ -1,8 +1,7 @@
 import {assert} from 'chai';
-import {Channel, isScaleChannel, rangeType, ScaleChannel, SINGLE_DEF_CHANNELS} from '../src/channel';
-import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
-import {SCALE_TYPES, ScaleType} from '../src/scale';
-import {some, without} from '../src/util';
+import {Channel, isScaleChannel, rangeType, SINGLE_DEF_CHANNELS} from '../src/channel';
+import {CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
+import {without} from '../src/util';
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {

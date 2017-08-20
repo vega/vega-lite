@@ -36,6 +36,7 @@ export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR |
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
   typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
+
 /**
  * Index for scale categories -- only scale of the same categories can be merged together.
  * Current implementation is trying to be conservative and avoid merging scale type that might not work together
@@ -490,9 +491,11 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'domain':
     case 'reverse':
     case 'range':
-    case 'scheme':
       return true;
+    case 'scheme':
+      return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
     case 'interpolate':
+      // FIXME how about ordinal?
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
@@ -507,10 +510,17 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'nice':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
     case 'exponent':
-      return scaleType === 'pow' || scaleType === 'log';
+      return scaleType === 'pow';
+    case 'base':
+      return scaleType === 'log';
     case 'zero':
-      // TODO: what about quantize, threshold?
-      return scaleType === 'bin-ordinal' || (!hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc', 'bin-linear'], scaleType));
+      return hasContinuousDomain(scaleType) && !contains([
+        'log',  // log scale cannot have zero value
+        'time', 'utc', // zero is not meaningful for time
+        'bin-linear', // binning should not automatically add zero
+        'threshold', // threshold requires custom domain so zero does not matter
+        'quantile' // quantile depends on distribution so zero does not matter
+      ], scaleType);
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
