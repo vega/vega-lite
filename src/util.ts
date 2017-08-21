@@ -194,6 +194,16 @@ export function vals<T>(x: {[key: string]: T}): T[] {
   return _vals;
 }
 
+// Using mapped type to declare a collect of flags for a string literal type S
+// https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
+export type Flag<S extends string> = {
+  [K in S]: 1
+};
+
+export function flagKeys<S extends string>(f: Flag<S>): S[] {
+  return keys(f) as S[];
+}
+
 export function duplicate<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }

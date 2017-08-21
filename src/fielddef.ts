@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {AGGREGATE_OP_INDEX, AggregateOp, isCountingAggregateOp} from './aggregate';
+import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -16,7 +16,6 @@ import {StackOffset} from './stack';
 import {isDiscreteByDefault, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
-
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -385,7 +384,7 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel): Cha
 }
 export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
   // Drop invalid aggregate
-  if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
+  if (fieldDef.aggregate && !isAggregateOp(fieldDef.aggregate)) {
     const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
     log.warn(log.message.invalidAggregate(fieldDef.aggregate));
     fieldDef = fieldDefWithoutAggregate;
