@@ -1,8 +1,7 @@
 import {assert} from 'chai';
-import {Channel, hasScale, rangeType, SINGLE_DEF_CHANNELS, supportScaleType} from '../src/channel';
+import {Channel, hasScale, rangeType, SINGLE_DEF_CHANNELS} from '../src/channel';
 import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
-import {SCALE_TYPES, ScaleType} from '../src/scale';
-import {some, without} from '../src/util';
+import {without} from '../src/util';
 
 
 describe('channel', () => {
@@ -40,62 +39,6 @@ describe('channel', () => {
     it('should return true for all scale channel', () => {
       for (const channel of SCALE_CHANNELS) {
         assert(hasScale(channel));
-      }
-    });
-  });
-
-  describe('supportScaleType', () => {
-    // Make sure we always edit this when we add new channel
-    it('should have at least one supported scale types for all channels with scale', () => {
-      for (const channel of SCALE_CHANNELS) {
-        assert(some(SCALE_TYPES, (scaleType) => {
-          return supportScaleType(channel, scaleType);
-        }));
-      }
-    });
-
-    // Make sure we always edit this when we add new scale type
-    it('should have at least one supported channel for all scale types', () => {
-      for (const scaleType of SCALE_TYPES) {
-        assert(some(SCALE_CHANNELS, (channel) => {
-          return supportScaleType(channel, scaleType);
-        }));
-      }
-    });
-
-    it('row,column should support only band', () => {
-      for (const channel of ['row', 'column'] as Channel[]) {
-        assert(supportScaleType(channel, 'band'));
-        const nonBands = without<ScaleType>(SCALE_TYPES, ['band']);
-        for (const scaleType of nonBands) {
-          assert(!supportScaleType(channel, scaleType));
-        }
-      }
-    });
-
-    it('shape should support only ordinal', () => {
-      assert(supportScaleType('shape', 'ordinal'));
-      const nonOrdinal = without<ScaleType>(SCALE_TYPES, ['ordinal']);
-      for (const scaleType of nonOrdinal) {
-        assert(!supportScaleType('shape', scaleType));
-      }
-    });
-
-    it('color should support all scale types except band', () => {
-      for (const scaleType of SCALE_TYPES) {
-        assert.equal(supportScaleType('color', scaleType), scaleType !== 'band');
-      }
-    });
-
-    it('x, y, size, opacity should support all scale type except ordinal and sequential', () => {
-      // x,y should use either band or point for ordinal input
-      const nonOrdinal = without<ScaleType>(SCALE_TYPES, ['ordinal', 'sequential']);
-      for (const channel of ['x', 'y', 'size', 'opacity'] as Channel[]) {
-        assert(!supportScaleType(channel, 'ordinal'));
-        assert(!supportScaleType(channel, 'sequential'));
-        for (const scaleType of nonOrdinal) {
-          assert(supportScaleType(channel, scaleType), `Error: ${channel}, ${scaleType}`);
-        }
       }
     });
   });

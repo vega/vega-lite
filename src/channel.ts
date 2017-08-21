@@ -7,7 +7,6 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
-import {isContinuousToContinuous, SCALE_TYPES, ScaleType} from './scale';
 import {contains, toSet, without} from './util';
 
 
@@ -170,26 +169,6 @@ export function hasScale(channel: Channel) {
   return !contains([DETAIL, TEXT, ORDER, TOOLTIP], channel);
 }
 
-export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
-  switch (channel) {
-    case ROW:
-    case COLUMN:
-      return scaleType === 'band'; // row / column currently supports band only
-    case X:
-    case Y:
-    case SIZE: // TODO: size and opacity can support ordinal with more modification
-    case OPACITY:
-      // Although it generally doesn't make sense to use band with size and opacity,
-      // it can also work since we use band: 0.5 to get midpoint.
-      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
-    case COLOR:
-      return scaleType !== 'band';    // band does not make sense with color
-    case SHAPE:
-      return scaleType === 'ordinal'; // shape = lookup only
-  }
-  /* istanbul ignore next: it should never reach here */
-  return false;
-}
 
 export function rangeType(channel: Channel): RangeType {
   switch (channel) {
