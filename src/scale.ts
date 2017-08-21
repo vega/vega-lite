@@ -570,3 +570,24 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   /* istanbul ignore next: it should never reach here */
   throw new Error('Invalid scale property "${propName}".');
 }
+
+export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+  switch (channel) {
+    case Channel.ROW:
+    case Channel.COLUMN:
+      return scaleType === 'band'; // row / column currently supports band only
+    case Channel.X:
+    case Channel.Y:
+    case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
+    case Channel.OPACITY:
+      // Although it generally doesn't make sense to use band with size and opacity,
+      // it can also work since we use band: 0.5 to get midpoint.
+      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+    case Channel.COLOR:
+      return scaleType !== 'band';    // band does not make sense with color
+    case Channel.SHAPE:
+      return scaleType === 'ordinal'; // shape = lookup only
+  }
+  /* istanbul ignore next: it should never reach here */
+  return false;
+}

@@ -1,8 +1,8 @@
-import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
+import {Channel, hasScale, rangeType} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {ScaleConfig, ScaleType} from '../../scale';
+import {channelSupportScaleType, ScaleConfig, ScaleType} from '../../scale';
 import {hasDiscreteDomain} from '../../scale';
 import {isDiscreteByDefault} from '../../timeunit';
 import {Type} from '../../type';
@@ -29,7 +29,7 @@ export function scaleType(
   }
   if (specifiedType !== undefined) {
     // Check if explicitly specified scale type is supported by the channel
-    if (!supportScaleType(channel, specifiedType)) {
+    if (!channelSupportScaleType(channel, specifiedType)) {
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
       return defaultScaleType;
     }
