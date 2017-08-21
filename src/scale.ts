@@ -2,7 +2,7 @@ import {Channel} from './channel';
 import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
-import {contains, toSet} from './util';
+import {contains, keys, toSet} from './util';
 
 
 export namespace ScaleType {
@@ -36,17 +36,6 @@ export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR |
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
   typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
-export const SCALE_TYPES: ScaleType[] = [
-  // Continuous - Quantitative
-  'linear', 'bin-linear', 'log', 'pow', 'sqrt',
-  // Continuous - Time
-  'time', 'utc',
-  // Sequential
-  'sequential', // TODO: add 'quantile', 'quantize' when we really support them
-  // Discrete
-  'ordinal', 'bin-ordinal', 'point', 'band',
-];
-
 /**
  * Index for scale categories -- only scale of the same categories can be merged together.
  * Current implementation is trying to be conservative and avoid merging scale type that might not work together
@@ -68,6 +57,8 @@ const SCALE_CATEGORY_INDEX: {
   point: 'ordinal-position',
   band: 'ordinal-position'
 };
+
+export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
 
 export function getScaleCategory(scaleType: ScaleType) {
   return SCALE_CATEGORY_INDEX[scaleType];
