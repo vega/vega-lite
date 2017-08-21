@@ -7,7 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
-import {SCALE_TYPES, ScaleType} from './scale';
+import {isContinuousToContinuous, SCALE_TYPES, ScaleType} from './scale';
 import {contains, toSet, without} from './util';
 
 
@@ -170,9 +170,6 @@ export function hasScale(channel: Channel) {
   return !contains([DETAIL, TEXT, ORDER, TOOLTIP], channel);
 }
 
-// Position does not work with ordinal (lookup) scale and sequential (which is only for color)
-const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
-
 export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
     case ROW:
@@ -184,7 +181,7 @@ export function supportScaleType(channel: Channel, scaleType: ScaleType): boolea
     case OPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
-      return scaleType in POSITION_SCALE_TYPE_INDEX;
+      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
     case COLOR:
       return scaleType !== 'band';    // band does not make sense with color
     case SHAPE:
