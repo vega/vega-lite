@@ -1,8 +1,7 @@
 import {assert} from 'chai';
 import {Channel, hasScale, rangeType, SINGLE_DEF_CHANNELS} from '../src/channel';
-import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
+import {CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
 import {without} from '../src/util';
-
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {
@@ -20,12 +19,6 @@ describe('channel', () => {
   describe('SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
       assert.deepEqual(SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label', 'tooltip']));
-    });
-  });
-
-  describe('NONSPATIAL_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without x, y, x2, y2', () => {
-      assert.deepEqual(NONSPATIAL_CHANNELS, without(UNIT_CHANNELS, ['x', 'y', 'x2', 'y2']));
     });
   });
 
