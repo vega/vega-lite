@@ -104,9 +104,9 @@ export function parseTransformArray(model: Model) {
     } else if (isBin(t)) {
       node = BinNode.makeFromTransform(model, t);
     } else if (isTimeUnit(t)) {
-      node = TimeUnitNode.makeFromTransform(model, t);
+      node = TimeUnitNode.makeFromTransform(t);
     } else if (isSummarize(t)) {
-      node = AggregateNode.makeFromTransform(model, t);
+      node = AggregateNode.makeFromTransform(t);
 
       if (requiresSelectionId(model)) {
         insert(node);

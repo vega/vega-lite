@@ -6,7 +6,6 @@ import {SummarizeTransform} from '../../transform';
 import {NOMINAL, ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {Model} from '../model';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -102,7 +101,7 @@ export class AggregateNode extends DataFlowNode {
     return new AggregateNode(dims, meas);
   }
 
-  public static makeFromTransform(model: Model, t: SummarizeTransform): AggregateNode {
+  public static makeFromTransform(t: SummarizeTransform): AggregateNode {
     const dims = {};
     const meas = {};
     for(const s of t.summarize) {

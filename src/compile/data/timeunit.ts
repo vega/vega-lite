@@ -4,7 +4,7 @@ import {TimeUnitTransform} from '../../transform';
 import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {Model, ModelWithField} from '../model';
+import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -43,7 +43,7 @@ export class TimeUnitNode extends DataFlowNode {
     return new TimeUnitNode(formula);
   }
 
-  public static makeFromTransform(model: Model, t: TimeUnitTransform) {
+  public static makeFromTransform(t: TimeUnitTransform) {
     return new TimeUnitNode({
       [t.field]: {
         as: t.as,
