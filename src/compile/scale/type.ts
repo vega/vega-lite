@@ -147,7 +147,7 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
     }
   } else if (type === Type.QUANTITATIVE) {
     if (fieldDef.bin) {
-      return specifiedType === ScaleType.BIN_LINEAR || specifiedType === ScaleType.BIN_ORDINAL;
+      return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
     }
     return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, undefined], specifiedType);
   }
