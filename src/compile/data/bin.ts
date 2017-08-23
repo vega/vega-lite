@@ -32,21 +32,48 @@ function binKey(bin: BinParams, field: string) {
   return `${binToString(bin)}_${field}`;
 }
 
-function createBinComponent(bin: BinParams, t: FieldDef<string>|BinTransform, model: Model, key:string) {
-  return {
+function isModelParams(p: {model: Model} | {signal?: string, extentSignal?: string}): p is {model: Model} {
+  return !!p['model'];
+}
+
+function getSignalsFromParams(
+  params: {model: Model} | {signal?: string, extentSignal?: string},
+  key: string
+) {
+  if (isModelParams(params)) {
+    const model = params.model;
+    return {
+      signal: model.getName(`${key}_bins`),
+      extentSignal: model.getName(`${key}_extent`)
+    };
+  }
+  return params;
+}
+
+function createBinComponent(
+  t: FieldDef<string>|BinTransform,
+  params: {model: Model} | {signal?: string, extentSignal?: string}
+) {
+  const bin = normalizeBin(t.bin, undefined) || {};
+  const key = binKey(bin, t.field);
+  const {signal, extentSignal} = getSignalsFromParams(params, key);
+
+  const binComponent: BinComponent = {
     bin: bin,
     field: t.field,
     as: [field(t, {}), field(t, {binSuffix: 'end'})],
-    signal: model.getName(`${key}_bins`),
-    extentSignal: model.getName(key + '_extent')
+    ...signal ? {signal} : {},
+    ...extentSignal ? {extentSignal} : {}
   };
+
+  return {key, binComponent};
 }
 
 export interface BinComponent {
   bin: BinParams;
   field: string;
-  extentSignal: string;
-  signal: string;
+  extentSignal?: string;
+  signal?: string;
   as: string[];
 
   // Range Formula
@@ -65,20 +92,17 @@ export class BinNode extends DataFlowNode {
   }
 
   public static makeBinFromEncoding(model: ModelWithField) {
-    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef, channel) => {
+    const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
       const fieldDefBin = fieldDef.bin;
       if (fieldDefBin) {
-        const bin = normalizeBin(fieldDefBin, undefined) || {};
-        const key = binKey(bin, fieldDef.field);
-        if (!(key in binComponent)) {
-          binComponent[key] =  createBinComponent(bin, fieldDef, model, key);
-        }
-        binComponent[key] = {
-          ...binComponent[key],
+        const {key, binComponent} = createBinComponent(fieldDef, {model});
+        binComponentIndex[key] = {
+          ...binComponent,
+          ...binComponentIndex[key],
           ...rangeFormula(model, fieldDef, channel, model.config)
         };
       }
-      return binComponent;
+      return binComponentIndex;
     }, {});
 
     if (keys(bins).length === 0) {
@@ -88,13 +112,16 @@ export class BinNode extends DataFlowNode {
     return new BinNode(bins);
   }
 
-  public static makeFromTransform(model: Model, t: BinTransform) {
-    const bin = normalizeBin(t.bin, undefined) || {};
-    const key = binKey(bin, t.field);
+  /**
+   * Creates a bin node from BinTransform.
+   * The optional parameter should provide
+   */
+  public static makeFromTransform(t: BinTransform, params: {model: Model} | {signal?: string, extentSignal?: string}) {
+    const {key, binComponent} = createBinComponent(t, params);
     return new BinNode({
-      [key]: createBinComponent(bin, t, model, key)
+      [key]: binComponent
     });
-}
+  }
 
   public merge(other: BinNode) {
     this.bins = extend(other.bins);
@@ -133,7 +160,7 @@ export class BinNode extends DataFlowNode {
           ...bin.bin
       };
 
-      if (!bin.bin.extent) {
+      if (!bin.bin.extent && bin.extentSignal) {
         transform.push({
           type: 'extent',
           field: bin.field,
