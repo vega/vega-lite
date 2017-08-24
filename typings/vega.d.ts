@@ -8,6 +8,8 @@ declare module 'vega' {
     public renderer(renderer: string): View;
     public hover(): View;
     public run(): View;
+    public change(name: string, changeset: any): View;
+    public changeset(): any;
   }
   export const Warn: number;
   export const changeset: any;
