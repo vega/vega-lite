@@ -197,13 +197,15 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     }
 
     if (hasDiscreteDomain(scaleType)) {
-      // ordinal bin scale takes domain from bin_range, ordered by bin_start
+      // ordinal bin scale takes domain from bin_range, ordered by bin start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
       return [{
-        data: model.requestDataName(MAIN),
+        // If sort by aggregation of a specified sort field, we need to use RAW table,
+        // so we can aggregate values for the scale independently from the main aggregation.
+        data: sort && util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
         field: model.field(channel, {binSuffix: 'range'}),
-        sort: {
-          field: model.field(channel, {binSuffix: 'start'}),
+        sort: sort || {
+          field: model.field(channel, {}),
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
       }];
@@ -213,7 +215,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         const data = model.requestDataName(MAIN);
         return [{
           data,
-          field: model.field(channel, {binSuffix: 'start'})
+          field: model.field(channel, {})
         }, {
           data,
           field: model.field(channel, {binSuffix: 'end'})
@@ -222,7 +224,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         // TODO: use bin_mid
         return [{
           data: model.requestDataName(MAIN),
-          field: model.field(channel, {binSuffix: 'start'})
+          field: model.field(channel, {})
         }];
       }
     }

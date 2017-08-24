@@ -1,5 +1,5 @@
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {Dict, toSet} from './util';
+import {flagKeys, toSet} from './util';
 import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
 
 export namespace Mark {
@@ -33,7 +33,25 @@ export const RULE = Mark.RULE;
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
 
-export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
+// Using mapped type to declare index, ensuring we always have all marks when we add more.
+const MARK_INDEX: {[M in Mark]: 1} = {
+  area: 1,
+  bar: 1,
+  line: 1,
+  point: 1,
+  text: 1,
+  tick: 1,
+  rect: 1,
+  rule: 1,
+  circle: 1,
+  square: 1
+};
+
+export function isMark(m: string): m is Mark {
+  return !!MARK_INDEX[m];
+}
+
+export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
 export interface MarkDef {
   /**
@@ -142,9 +160,8 @@ export interface MarkConfig extends VgMarkConfig {
    */
   filled?: boolean;
 
-  // TODO: remove this once we correctly integrate theme
   /**
-   * Default color.
+   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    */

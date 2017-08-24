@@ -1,17 +1,22 @@
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
-import * as log from '../../log';
-import {isSelectionDomain} from '../../scale';
-import {keys, stringValue} from '../../util';
-import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, isVgRangeStep, isVgSignalRef, VgDataRef, VgRange, VgScale} from '../../vega.schema';
-import {Model} from '../model';
+import {keys} from '../../util';
+import {isDataRefDomain, isVgRangeStep, isVgSignalRef, VgRange, VgScale} from '../../vega.schema';
+import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 import {mergeDomains} from './domain';
 
-export function assembleScaleForModelAndChildren(model: Model) {
-  return model.children.reduce((scales, child) => {
-    return scales.concat(child.assembleScales());
-  }, assembleScalesForModel(model));
+export function assembleScales(model: Model): VgScale[] {
+  if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
+    // For concat / layer / repeat, include scales of children too
+    return model.children.reduce((scales, child) => {
+      return scales.concat(assembleScales(child));
+    }, assembleScalesForModel(model));
+  } else {
+    // For facet, child scales would not be included in the parent's scope.
+    // For unit, there is no child.
+    return assembleScalesForModel(model);
+  }
 }
 
 export function assembleScalesForModel(model: Model): VgScale[] {

@@ -2,14 +2,13 @@ import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
 import {flatten, keys} from '../util';
-import {VgData, VgLayout, VgScale, VgSignal, VgTitle} from '../vega.schema';
+import {VgData, VgLayout, VgSignal, VgTitle} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
-import {assembleScaleForModelAndChildren} from './scale/assemble';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -118,10 +117,6 @@ export class LayerModel extends Model {
       }
     }
     return undefined;
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScaleForModelAndChildren(this);
   }
 
   public assembleLayout(): VgLayout {

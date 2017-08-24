@@ -50,7 +50,7 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 
 describe('Translate Selection Transform', function() {
   it('identifies transform invocation', function() {
-    const {model, selCmpts} = getModel();
+    const {model: _model, selCmpts} = getModel();
     assert.isNotTrue(translate.has(selCmpts['one']));
     assert.isNotTrue(translate.has(selCmpts['two']));
     assert.isNotTrue(translate.has(selCmpts['three']));

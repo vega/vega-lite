@@ -3,12 +3,11 @@ import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {Scale, ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {VgValueRef} from '../../vega.schema';
 import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 import {ScaleComponent} from '../scale/component';
-import {Split} from '../split';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
@@ -45,11 +44,10 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
-      if (xDef.bin && !sizeDef) {
+      const xScaleType = xScale.get('type');
+      if (xDef.bin && !sizeDef && !hasDiscreteDomain(xScaleType)) {
         return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
       } else {
-        const xScaleType = xScale.get('type');
-
         if (xScaleType === ScaleType.BAND) {
           return mixins.bandPosition(xDef, 'x', model);
         }
@@ -81,7 +79,7 @@ function y(model: UnitModel, stack: StackProperties) {
   } else {
     if (isFieldDef(yDef)) {
       const yScaleType = yScale.get('type');
-      if (yDef.bin && !sizeDef) {
+      if (yDef.bin && !sizeDef && !hasDiscreteDomain(yScaleType)) {
         return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing);
       } else if (yScaleType === ScaleType.BAND) {
         return mixins.bandPosition(yDef, 'y', model);

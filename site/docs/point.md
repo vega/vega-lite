@@ -17,6 +17,11 @@ permalink: /docs/point.html
 
 `point` mark represents each data point with a symbol. Point marks are commonly used in visualizations like scatterplots.
 
+## Documentation Overview
+
+* TOC
+{:toc}
+
 ### Dot Plot
 
 Mapping a field to either only `x` (or only `y`) of `point` mark creates a **dot plot**.
@@ -34,6 +39,8 @@ Mapping fields to both the `x` and `y` channels creates a scatter plot.
 By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
 <span class="vl-example" data-name="scatter_bubble"></span>
+
+{:#color}
 
 ### Scatter Plot with Color and/or Shape
 

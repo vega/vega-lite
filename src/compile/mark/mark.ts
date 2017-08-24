@@ -1,15 +1,12 @@
 import {isArray} from 'vega-util';
-import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
-import {X, Y} from '../../channel';
+import {NONSPATIAL_CHANNELS} from '../../channel';
 import {MAIN} from '../../data';
 import {isAggregate} from '../../encoding';
 import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
-import {isSelectionDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains} from '../../util';
 import {getStyles, sortParams} from '../common';
-import {FacetModel} from '../facet';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';
@@ -123,7 +120,7 @@ export function getPathSort(model: UnitModel) {
       }, {expr: 'datum'}) :
       model.field(dimensionChannel, {
         // For stack with imputation, we only have bin_mid
-        binSuffix: model.stack && model.stack.impute ? 'mid' : 'start',
+        binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
         expr: 'datum'
       });
 
@@ -161,21 +158,24 @@ function parseNonPathMark(model: UnitModel) {
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
-  return LEVEL_OF_DETAIL_CHANNELS.reduce(function(details, channel) {
+  return NONSPATIAL_CHANNELS.reduce(function(details, channel) {
     const {encoding} = model;
-    if (channel === 'detail' || channel === 'order') {
+    if (channel === 'order') {
+      return details;
+    }
+    if (channel === 'detail') {
       const channelDef = encoding[channel];
       if (channelDef) {
         (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
           if (!fieldDef.aggregate) {
-            details.push(field(fieldDef, {binSuffix: 'start'}));
+            details.push(field(fieldDef, {}));
           }
         });
       }
     } else {
       const fieldDef = getFieldDef<string>(encoding[channel]);
       if (fieldDef && !fieldDef.aggregate) {
-        details.push(field(fieldDef, {binSuffix: 'start'}));
+        details.push(field(fieldDef, {}));
       }
     }
     return details;

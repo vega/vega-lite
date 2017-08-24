@@ -10,7 +10,7 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {SortField} from '../../../src/sort';
-import {FieldRefUnionDomain, VgDataRef, VgDomain, VgSortField} from '../../../src/vega.schema';
+import {VgDomain, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -125,7 +125,7 @@ describe('compile/scale', () => {
 
         assert.deepEqual(testParseDomainForChannel(model,'y'), [{
             data: 'main',
-            field: 'bin_maxbins_15_origin_start'
+            field: 'bin_maxbins_15_origin'
           }, {
             data: 'main',
             field: 'bin_maxbins_15_origin_end'
@@ -207,7 +207,7 @@ describe('compile/scale', () => {
 
         assert.deepEqual(_domain, [{
             data: 'main',
-            field: 'bin_maxbins_15_origin_start'
+            field: 'bin_maxbins_15_origin'
           }, {
             data: 'main',
             field: 'bin_maxbins_15_origin_end'

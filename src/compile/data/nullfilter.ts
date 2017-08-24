@@ -1,12 +1,11 @@
-import {isCountingAggregateOp} from '../../aggregate';
+
 import {isScaleChannel} from '../../channel';
-import {FieldDef, isContinuous, isDiscrete} from '../../fielddef';
+import {FieldDef} from '../../fielddef';
 import {hasContinuousDomain} from '../../scale';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, Dict, differ, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
+import {contains, Dict, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
 
 export class NullFilterNode extends DataFlowNode {

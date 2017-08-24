@@ -1,18 +1,21 @@
-import {isUrlData, MAIN} from '../../data';
-import {every, flatten, vals} from '../../util';
+import {isUrlData} from '../../data';
+import {vals} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
+import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
+import {IdentifierNode} from './indentifier';
+import {LookupNode} from './lookup';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode, IdentifierNode, LookupNode} from './transforms';
 
 /**
  * Print debug information for dataflow tree.

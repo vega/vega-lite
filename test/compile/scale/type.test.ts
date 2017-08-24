@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../../../src/log';
 
-import {CHANNELS, COLUMN, rangeType, ROW, X, Y} from '../../../src/channel';
+import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
 import {PRIMITIVE_MARKS} from '../../../src/mark';
@@ -143,7 +143,7 @@ describe('compile/scale', () => {
         });
 
         it('should return point scale for ordinal/nominal fields for continous channels other than x and y.', () => {
-          const OTHER_CONTINUOUS_CHANNELS = CHANNELS.filter((c) => rangeType(c) === 'continuous' && !util.contains([X, Y, ROW, COLUMN], c));
+          const OTHER_CONTINUOUS_CHANNELS = SCALE_CHANNELS.filter((c) => rangeType(c) === 'continuous' && !util.contains([X, Y], c));
           PRIMITIVE_MARKS.forEach((mark) => {
             [ORDINAL, NOMINAL].forEach((t) => {
               OTHER_CONTINUOUS_CHANNELS.forEach((channel) => {

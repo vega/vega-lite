@@ -271,6 +271,22 @@ describe('src/compile', function() {
       });
     });
 
+    describe('ordinal color with bin', function() {
+      const model = parseUnitModelWithScale({
+          mark: "point",
+          encoding: {
+            color: {field: "origin", type: "ordinal", bin: true}
+          }
+        });
+
+      const scale = model.getScaleComponent('color');
+
+      it('should add correct scales', function() {
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'ordinal');
+      });
+    });
+
     describe('opacity with bin', function() {
       const model = parseUnitModelWithScale({
           mark: "point",

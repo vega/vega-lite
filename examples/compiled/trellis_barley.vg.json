@@ -186,6 +186,7 @@
         {
             "name": "trellis_barley_cell",
             "type": "group",
+            "style": "cell",
             "from": {
                 "facet": {
                     "name": "trellis_barley_facet",

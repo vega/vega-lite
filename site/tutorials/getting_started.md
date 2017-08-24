@@ -7,10 +7,12 @@ permalink: /tutorials/getting_started.html
 
 This tutorial will guide through the process of writing a visualization specification in Vega-Lite. We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one. After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
+We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/editor/#/custom/vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
+
+## Tutorial Overview
+
 * TOC
 {:toc}
-
-We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/editor/#/custom/vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## `$schema`
 
@@ -201,7 +203,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
 
 In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.
 
-In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
+In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://vega.github.io/vega/usage/) to display visualization in the container `<div/>` element.
 
 If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/site/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
 

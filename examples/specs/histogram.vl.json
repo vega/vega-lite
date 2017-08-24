@@ -4,7 +4,7 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "bin": {"maxbins": 10},
+      "bin": true,
       "field": "IMDB_Rating",
       "type": "quantitative"
     },

@@ -1,16 +1,11 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {Axis} from '../../src/axis';
 import {ROW, SHAPE} from '../../src/channel';
-import {parseData} from '../../src/compile/data/parse';
 import {FacetModel} from '../../src/compile/facet';
-import * as facet from '../../src/compile/facet';
-import {defaultConfig} from '../../src/config';
 import {Facet} from '../../src/facet';
 import {PositionFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
-import {POINT} from '../../src/mark';
 import {ORDINAL} from '../../src/type';
 import {VgLayout} from '../../src/vega.schema';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
@@ -169,37 +164,13 @@ describe('FacetModel', function() {
           }
         },
         resolve: {
-          x: {
-            scale: 'independent'
+          scale: {
+            x: 'independent'
           }
         }
       });
 
       assert(!model.component.scales['x']);
-    });
-  });
-
-  describe('assembleScales', () => {
-    it('includes shared scales, but not independent scales (as they are nested).', () => {
-      const model = parseFacetModelWithScale({
-        facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        },
-        resolve: {
-          x: {scale: 'independent'}
-        }
-      });
-
-      const scales = model.assembleScales();
-      assert.equal(scales.length, 1);
-      assert.equal(scales[0].name, 'y');
     });
   });
 
@@ -365,8 +336,10 @@ describe('FacetModel', function() {
           }
         },
         resolve: {
-          x: {scale: 'independent'},
-          y: {scale: 'independent'}
+          scale: {
+            x: 'independent',
+            y: 'independent'
+          }
         }
       });
       model.parse();

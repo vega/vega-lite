@@ -1,14 +1,15 @@
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
+import {Omit} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
-export type ScaleComponentProps = Partial<Pick<VgScale,
-  // All VgDomain property except domain.
-  // (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
-  // TODO: also exclude domainRaw and property implement the right scaleComponent for selection domain
-  'name' | 'type' | 'domainRaw' | 'range' | 'clamp' | 'exponent' | 'interpolate' | 'nice' | 'padding' | 'paddingInner' | 'paddingOuter' | 'reverse' | 'round' | 'zero'
->>;
+/**
+ * All VgDomain property except domain.
+ * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
+ */
+// TODO: also exclude domainRaw and property implement the right scaleComponent for selection domain
+export type ScaleComponentProps = Partial<Omit<VgScale, 'domain'>>;
 
 export class ScaleComponent extends Split<ScaleComponentProps> {
   public merged = false;

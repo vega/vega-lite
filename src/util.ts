@@ -1,5 +1,5 @@
 import * as stringify from 'json-stable-stringify';
-import {isArray, isNumber, isObject, isString} from 'vega-util';
+import {isArray, isNumber, isString} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 
@@ -194,6 +194,16 @@ export function vals<T>(x: {[key: string]: T}): T[] {
   return _vals;
 }
 
+// Using mapped type to declare a collect of flags for a string literal type S
+// https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
+export type Flag<S extends string> = {
+  [K in S]: 1
+};
+
+export function flagKeys<S extends string>(f: Flag<S>): S[] {
+  return keys(f) as S[];
+}
+
 export function duplicate<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -224,3 +234,7 @@ export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
     return cb(op);
   }
 }
+
+// Omit from http://ideasintosoftware.com/typescript-advanced-tricks/
+export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
+export type Omit<T, K extends keyof T> = {[P in Diff<keyof T, K>]: T[P]};

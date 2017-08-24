@@ -2,8 +2,7 @@ import {Channel} from './channel';
 import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
-import {contains, toSet} from './util';
-import {VgScale} from './vega.schema';
+import {contains, keys, toSet} from './util';
 
 
 export namespace ScaleType {
@@ -37,16 +36,6 @@ export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR |
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
   typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
-export const SCALE_TYPES: ScaleType[] = [
-  // Continuous - Quantitative
-  'linear', 'bin-linear', 'log', 'pow', 'sqrt',
-  // Continuous - Time
-  'time', 'utc',
-  // Sequential
-  'sequential', // TODO: add 'quantile', 'quantize' when we really support them
-  // Discrete
-  'ordinal', 'bin-ordinal', 'point', 'band',
-];
 
 /**
  * Index for scale categories -- only scale of the same categories can be merged together.
@@ -69,6 +58,8 @@ const SCALE_CATEGORY_INDEX: {
   point: 'ordinal-position',
   band: 'ordinal-position'
 };
+
+export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
 
 export function getScaleCategory(scaleType: ScaleType) {
   return SCALE_CATEGORY_INDEX[scaleType];
@@ -151,7 +142,7 @@ export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
    * This can be helpful for snapping to the pixel grid.
-   * (Only available for `x`, `y`, `size`, `row`, and `column` scales.)
+   * (Only available for `x`, `y`, and `size` scales.)
    */
   round?: boolean;
 
@@ -160,16 +151,17 @@ export interface ScaleConfig {
    */
   clamp?: boolean;
   /**
-   *  Default range step for `x` ordinal scale when is mark is `text`.
+   *  Default range step for `x` band and point scales of text marks.
    *
    * __Default value:__ `90`
    *
    *  @minimum 0
    */
   textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
+
   /**
-   * Default range step for (1) `y` ordinal scale,
-   * and (2) `x` ordinal scale when the mark is not `text`.
+   * Default range step for band and point scales of (1) the `y` channel
+   * and (2) the `x` channel when the mark is not `text`.
    *
    * __Default value:__ `21`
    *
@@ -208,7 +200,12 @@ export interface ScaleConfig {
 
   /**
    * Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   *
+   * This is equivalent to setting `domain` to `"unaggregate"` for aggregated _quantitative_ fields by default.
+   *
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
+   *
+   * __Default value:__ `false`
    */
   useUnaggregatedDomain?: boolean;
 
@@ -217,24 +214,25 @@ export interface ScaleConfig {
 
   // Configs for Range
 
-
   /**
    * The default max value for mapping quantitative fields to bar's size/bandSize.
-   * If undefined (default), we will use bandSize - 1.
+   *
+   * If undefined (default), we will use the scale's `rangeStep` - 1.
    * @minimum 0
    */
   maxBandSize?: number;
 
   /**
-   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false
-   * If undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.
+   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.
+   *
+   * __Default value:__ `2`
+   *
    * @minimum 0
    */
   minBandSize?: number;
 
   /**
    * The default max value for mapping quantitative fields to text's size/fontSize.
-   * If undefined (default), we will use bandSize - 1.
    *
    * __Default value:__ `40`
    *
@@ -304,15 +302,6 @@ export interface ScaleConfig {
    * @minimum 0
    */
   maxStrokeWidth?: number;
-
-  /**
-   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
-   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   *
-   * __Default value:__ `["circle", "square", "cross", "diamond", "triangle-up", "triangle-down"]`
-   *
-   */
-  shapes?: string[];
 }
 
 export const defaultScaleConfig = {
@@ -322,6 +311,8 @@ export const defaultScaleConfig = {
   pointPadding: 0.5,
   bandPaddingInner: 0.1,
   facetSpacing: 16,
+
+  minBandSize: 2,
 
   minFontSize: 8,
   maxFontSize: 40,
@@ -333,31 +324,35 @@ export const defaultScaleConfig = {
   minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
 
   minStrokeWidth: 1,
-  maxStrokeWidth: 4,
-
-  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down']
+  maxStrokeWidth: 4
 };
 
-export interface ExtendedScheme {
+export interface SchemeParams {
   /**
-   * Color scheme that determines output color of an ordinal/sequential color scale.
+   * A color scheme name for sequential/ordinal scales (e.g., `"category10"` or `"viridis"`).
+   *
+   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
   name: string;
 
-  // TODO: add docs
+  /**
+   * For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
+   */
   extent?: number[];
 
-  // TODO: add docs
+  /**
+   * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
+   */
   count?: number;
 }
 
 export type SelectionDomain = {selection: string, field?: string} | {selection: string, encoding?: string};
 export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
-export type Scheme = string | ExtendedScheme;
+export type Scheme = string | SchemeParams;
 
 export type Range = number[] | string[] | string;
 
-export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme {
+export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
   return scheme && !!scheme['name'];
 }
 
@@ -367,66 +362,93 @@ export function isSelectionDomain(domain: Domain): domain is SelectionDomain {
 
 export interface Scale {
   /**
-   * The type of scale.
-   * - For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.
-   * - For a _temporal_ field without `timeUnit`, the scale type should be `"time"` (default), `"utc"` or `"ordinal"`. See more about [UTC time](timeunit.html#utc)
-   * - For _ordinal_ and _nominal_ fields, the type is always `"ordinal"`.
-   * Unsupported values will be ignored.
+   * The type of scale.  Vega-Lite supports the following categories of scale types:
+   *
+   * 1) [**Continuous Scales**](scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc), [`"sequential"`](scale.html#sequential)).
+   *
+   * 2) [**Discrete Scales**](scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](scale.html#ordinal)) or continuous ([`"band"`](scale.html#band) and [`"point"`](scale.html#point)) output ranges.
+   *
+   * 3) [**Discretizing Scales**](scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](scale.html#bin-linear) and [`"bin-ordinal"`](scale.html#bin-ordinal)).
+   *
+   * __Default value:__ please see the [scale type table](scale.html#type).
    */
   type?: ScaleType;
-  /**
-   * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
-   *
-   * If the domain is `"unaggregated"`, we use the source data range before aggregation as scale domain instead of aggregated data for an aggregate axis.
-   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
-   */
-  domain?: Domain;
 
+  /**
+   * Customized domain values.
+   *
+   * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.
+   * If the input field is aggregated, `domain` can also be a string value `"unaggregated"`, indicating that the domain should include the raw data values prior to the aggregation.
+   *
+   * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).
+   *
+   * For _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.
+   */
+  // FIXME: Arvind -- Please describe "SelectionDomain"
+  domain?: number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
+
+
+  // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
+   *
+   * @hide
    */
   reverse?: boolean;
 
   /**
-   * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
-   */
-  range?: Range;
-
-  /**
-   * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
+   * The range of the scale. One of:
    *
-   * __Default Rule:__ `true` for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; `false` otherwise.
+   * - A string indicating a [pre-defined named scale range](scale.html#range-config) (e.g., example, `"symbol"`, or `"diverging"`).
+   *
+   * - For [continuous scales](scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](scale.html#piecewise).
+   *
+   * - For [discrete](scale.html#discrete) and [discretizing](scale.html#discretizing) scales, an array of desired output values.
+   *
+   * __Notes:__
+   *
+   * 1) For [sequential](scale.html#sequential), [ordinal](scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](scale.html#scheme) instead of `range`.
+   *
+   * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.
    */
-  round?: boolean;
+  range?: number[] | string[] | string;
 
   // ordinal
   /**
-   * The distance between the starts of adjacent bands or points in band or point scales.
-   * If this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.
-   * If both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)
+   * The distance between the starts of adjacent bands or points in [band](scale.html#band) and [point](scale.html#point) scales.
    *
-   * __Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.
-   * __Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.
+   * If `rangeStep` is `null` or if the view contains the scale's corresponding [size](size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.
+   *
+   * __Default value:__  derived the [scale config](config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.
+   *
+   * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
+   *
    * @minimum 0
    * @nullable
    */
   rangeStep?: number | null;
 
   /**
-   * Range scheme (e.g., color schemes such as `"category10"` or `"viridis"`).
+   * A string indicating a color [scheme](scale.html#scheme) name (e.g., `"category10"` or `"viridis"`) or a [scheme parameter object](scale.html#scheme-params).
    *
-   * __Default value:__ [scale config](config.html#scale-config)'s `"nominalColorScheme"` for nominal field and `"sequentialColorScheme"` for other types of fields.
+   * Discrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.
    *
+   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: Scheme;
-
+  scheme?: string | SchemeParams;
 
   /**
-   * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
-   * A convenience property for setting the inner and outer padding to the same value.
+   * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
    *
-   * __Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels have `0` padding by default.
+   * __Default value:__ `true` for x and y channels if the scale config's `round` is `true`; `false` otherwise.
+   */
+  round?: boolean;
+
+  /**
+   * Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.
+   *
+   * __Default value:__ see `paddingInner` and `paddingOuter`.
    *
    * @minimum 0
    * @maximum 1
@@ -434,14 +456,23 @@ export interface Scale {
   padding?: number;
 
   /**
-   * The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)
+   * The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].
+   *
+   * For point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).
+   *
+   * __Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingInner`.
+   *
    * @minimum 0
    * @maximum 1
    */
   paddingInner?: number;
 
   /**
-   * The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.
+   * The outer padding (spacing) at the ends of the range of band and point scales,
+   * as a fraction of the step size. This value must lie in the range [0,1].
+   *
+   * __Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -451,40 +482,53 @@ export interface Scale {
   /**
    * If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value
    *
-   * __Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)
-   *
-   * __Supported types:__ only `linear`, `pow`, `sqrt`, and `log` (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)
-   *
+   * __Default value:__ derived from the [scale config](config.html#scale-config)'s `clamp` (`true` by default).
    */
   clamp?: boolean;
+
   /**
-   * As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.
-   * As time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)
+   * Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.
    *
-   * __Default value:__ `true` only for quantitative x and y scales and `false` otherwise.
+   * For quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.
+   *
+   * For temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and `"year"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{"interval": "month", "step": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.
+   *
+   * __Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields.
    *
    */
-  nice?: boolean | string;
+  nice?: boolean | number | NiceTime | {interval: string, step: number};
+
   /**
-   * Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.
+   * The logarithm base of the `log` scale (default `10`).
+   */
+  base?: number;
+
+  /**
+   * The exponent of the `pow` scale.
    */
   exponent?: number;
+
   /**
    * If `true`, ensures that a zero baseline value is included in the scale domain.
-   * Default value: `true` for `x` and `y` channel if the quantitative field is not binned
-   * and no custom `domain` is provided; `false` otherwise.
    *
-   * __Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.
+   * __Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.
    *
-   * __Note:__  This property is always `false` for log scale.
-   *
+   * __Note:__ Log, time, and utc scales do not support `zero`.
    */
   zero?: boolean;
 
-  // FIXME: Add description
-  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+  /**
+   * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
+   */
+  interpolate?: Interpolate | InterpolateParams;
 }
 
+export type Interpolate = 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+
+export interface InterpolateParams {
+  type: 'rgb' | 'cubehelix' | 'cubehelix-long';
+  gamma?: number;
+}
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[] = [
   'reverse', 'round',
@@ -507,9 +551,11 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'domain':
     case 'reverse':
     case 'range':
-    case 'scheme':
       return true;
+    case 'scheme':
+      return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
     case 'interpolate':
+      // FIXME(https://github.com/vega/vega-lite/issues/2902) how about ordinal?
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
@@ -524,10 +570,17 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'nice':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
     case 'exponent':
-      return scaleType === 'pow' || scaleType === 'log';
+      return scaleType === 'pow';
+    case 'base':
+      return scaleType === 'log';
     case 'zero':
-      // TODO: what about quantize, threshold?
-      return scaleType === 'bin-ordinal' || (!hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc', 'bin-linear'], scaleType));
+      return hasContinuousDomain(scaleType) && !contains([
+        'log',  // log scale cannot have zero value
+        'time', 'utc', // zero is not meaningful for time
+        'bin-linear', // binning should not automatically add zero
+        'threshold', // threshold requires custom domain so zero does not matter
+        'quantile' // quantile depends on distribution so zero does not matter
+      ], scaleType);
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
@@ -566,4 +619,25 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   }
   /* istanbul ignore next: it should never reach here */
   throw new Error('Invalid scale property "${propName}".');
+}
+
+export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+  switch (channel) {
+    case Channel.ROW:
+    case Channel.COLUMN:
+      return scaleType === 'band'; // row / column currently supports band only
+    case Channel.X:
+    case Channel.Y:
+    case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
+    case Channel.OPACITY:
+      // Although it generally doesn't make sense to use band with size and opacity,
+      // it can also work since we use band: 0.5 to get midpoint.
+      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+    case Channel.COLOR:
+      return scaleType !== 'band';    // band does not make sense with color
+    case Channel.SHAPE:
+      return scaleType === 'ordinal'; // shape = lookup only
+  }
+  /* istanbul ignore next: it should never reach here */
+  return false;
 }

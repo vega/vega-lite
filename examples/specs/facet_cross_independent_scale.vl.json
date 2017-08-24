@@ -18,11 +18,9 @@
     }
   },
   "resolve": {
-    "x": {
-      "scale": "independent"
-    },
-    "y": {
-      "scale": "independent"
+    "scale": {
+      "x": "independent",
+      "y": "independent"
     }
   }
 }

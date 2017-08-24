@@ -10,7 +10,7 @@ import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
 import * as encode from './encode';
-import * as rules from './rules';
+import * as properties from './properties';
 
 type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
@@ -54,9 +54,8 @@ export function parseLayerAxis(model: LayerModel) {
     child.parseAxisAndHeader();
 
     keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-      const channelResolve = model.component.resolve[channel];
-      channelResolve.axis = parseGuideResolve(model.component.resolve, channel);
-      if (channelResolve.axis === 'shared') {
+      resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
+      if (resolve.axis[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
@@ -65,7 +64,7 @@ export function parseLayerAxis(model: LayerModel) {
         if (!axes[channel]) {
           // If merge returns nothing, there is a conflict so we cannot make the axis shared.
           // Thus, mark axis as independent and remove the axis component.
-          channelResolve.axis = 'independent';
+          resolve.axis[channel] = 'independent';
           delete axes[channel];
         }
       }
@@ -80,7 +79,7 @@ export function parseLayerAxis(model: LayerModel) {
         continue;
       }
 
-      if (resolve[channel].axis === 'independent') {
+      if (resolve.axis[channel] === 'independent') {
         // If axes are independent, concat the axisComponent array.
         axes[channel] = (axes[channel] || []).concat(child.component.axes[channel]);
 
@@ -233,7 +232,7 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
   });
 
   // Special case for gridScale since gridScale is not a Vega-Lite Axis property.
-  const gridScale = rules.gridScale(model, channel, isGridAxis);
+  const gridScale = properties.gridScale(model, channel, isGridAxis);
   if (gridScale !== undefined) {
     axisComponent.set('gridScale', gridScale, false);
   }
@@ -276,44 +275,42 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
 
   switch (property) {
     case 'domain':
-      return rules.domain(property, specifiedAxis, isGridAxis, channel);
+      return properties.domain(property, specifiedAxis, isGridAxis, channel);
     case 'format':
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
       const scaleType = model.component.scales[channel].get('type');
-      return getSpecifiedOrDefaultValue(specifiedAxis.grid, rules.grid(scaleType, fieldDef));
+      return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
     }
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap': {
       const scaleType = model.component.scales[channel].get('type');
-      return rules.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
+      return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
     case 'minExtent': {
-      const scaleType = model.component.scales[channel].get('type');
-      return rules.minMaxExtent(specifiedAxis.minExtent, isGridAxis);
+      return properties.minMaxExtent(specifiedAxis.minExtent, isGridAxis);
     }
     case 'maxExtent': {
-      const scaleType = model.component.scales[channel].get('type');
-      return rules.minMaxExtent(specifiedAxis.maxExtent, isGridAxis);
+      return properties.minMaxExtent(specifiedAxis.maxExtent, isGridAxis);
     }
     case 'orient':
-      return getSpecifiedOrDefaultValue(specifiedAxis.orient, rules.orient(channel));
+      return getSpecifiedOrDefaultValue(specifiedAxis.orient, properties.orient(channel));
     case 'tickCount': {
       const scaleType = model.component.scales[channel].get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType)
        : undefined;
-      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, rules.tickCount(channel, fieldDef, scaleType, size));
+      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size));
     }
     case 'ticks':
-      return rules.ticks(property, specifiedAxis, isGridAxis, channel);
+      return properties.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'title':
-      return getSpecifiedOrDefaultValue(specifiedAxis.title, rules.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
+      return getSpecifiedOrDefaultValue(specifiedAxis.title, properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
     case 'values':
-      return rules.values(specifiedAxis, model, fieldDef);
+      return properties.values(specifiedAxis, model, fieldDef);
     case 'zindex':
-      return getSpecifiedOrDefaultValue(specifiedAxis.zindex, rules.zindex(isGridAxis));
+      return getSpecifiedOrDefaultValue(specifiedAxis.zindex, properties.zindex(isGridAxis));
   }
   // Otherwise, return specified property.
   return specifiedAxis[property];

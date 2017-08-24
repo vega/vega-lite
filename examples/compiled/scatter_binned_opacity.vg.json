@@ -30,7 +30,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration",
                         "bin_maxbins_6_Acceleration_end"
                     ],
                     "signal": "bin_maxbins_6_Acceleration_bins",
@@ -80,7 +80,7 @@
                     },
                     "opacity": {
                         "scale": "opacity",
-                        "field": "bin_maxbins_6_Acceleration_start"
+                        "field": "bin_maxbins_6_Acceleration"
                     }
                 }
             }

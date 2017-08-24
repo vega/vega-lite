@@ -7,26 +7,6 @@ import {keys} from '../../src/util';
 import {parseRepeatModel} from '../util';
 
 describe('Repeat', function() {
-  describe('assembleScales', () => {
-    it('includes all scales', () => {
-      const model = parseRepeatModel({
-        repeat: {
-          row: ['Acceleration', 'Horsepower']
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: {repeat: 'row'}, type: 'quantitative'}
-          }
-        }
-      });
-
-      model.parseScale();
-      const scales = model.assembleScales();
-      assert.equal(scales.length, 2);
-    });
-  });
-
   describe('resolveRepeat', () => {
     it('should resolve repeated fields', () => {
       const resolved = replaceRepeaterInEncoding({
@@ -42,7 +22,7 @@ describe('Repeat', function() {
 
     it('should show warning if repeat cannot be resolved', () => {
       log.runLocalLogger((localLogger) => {
-        const resolved = replaceRepeaterInEncoding({
+        const _resolved = replaceRepeaterInEncoding({
           x: {field: {repeat: 'row'}, type: 'quantitative'},
           y: {field: 'bar', type: 'quantitative'}
         }, {column: 'foo'});

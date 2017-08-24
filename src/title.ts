@@ -1,4 +1,4 @@
-import {Anchor, Orient, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
+import {Anchor, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
 
 export interface TitleBase {
   /**
@@ -7,7 +7,12 @@ export interface TitleBase {
   orient?: TitleOrient;
 
   /**
-   * The anchor position for placing the title. One of `"start"`, `"middle"` (the default), or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+   * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+   *
+   * __Default value:__ `"middle"` for [single](spec.html) and [layered](layer.html) views.
+   * `"start"` for other composite views.
+   *
+   * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
   anchor?: Anchor;
 
@@ -16,10 +21,17 @@ export interface TitleBase {
    */
   offset?: number;
 
+  /**
+   * A [mark style property](config.html#style) to apply to the title text mark.
+   *
+   * __Default value:__ `"group-title"`.
+   */
+  style?: string | string[];
+
   // TODO: name, encode, interactive, zindex
 }
 
-export interface Title extends TitleBase {
+export interface TitleParams extends TitleBase {
   /**
    * The title text.
    */

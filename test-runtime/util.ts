@@ -4,7 +4,6 @@ import {sync as mkdirp} from 'mkdirp';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {LayerSpec, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
-import {Type} from '../src/type';
 
 export const generate = process.env.VL_GENERATE_TESTS;
 export const output = 'test-runtime/resources';

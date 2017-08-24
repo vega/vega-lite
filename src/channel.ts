@@ -8,8 +8,7 @@ import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
 import {SCALE_TYPES, ScaleType} from './scale';
-import {contains, toSet, without} from './util';
-
+import {contains, Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
@@ -52,58 +51,102 @@ export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 export const TOOLTIP = Channel.TOOLTIP;
 
+const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
+  x: 1,
+  y: 1,
+  x2: 1,
+  y2: 1,
+  size: 1,
+  shape: 1,
+  color: 1,
+  order: 1,
+  opacity: 1,
+  text: 1,
+  detail: 1,
+  tooltip: 1
+};
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
-const CHANNEL_INDEX = toSet(CHANNELS);
+const FACET_CHANNEL_INDEX: Flag<keyof Facet<any>> = {
+  row: 1,
+  column: 1
+};
 
+const CHANNEL_INDEX = {
+  ...UNIT_CHANNEL_INDEX,
+  ...FACET_CHANNEL_INDEX
+};
+
+export const CHANNELS = flagKeys(CHANNEL_INDEX);
+
+const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
 /**
- * Channels cannot have an array of channelDef.
+ * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
  *
  * (The only two channels that can have an array of channelDefs are "detail" and "order".
  * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
  * are not applicable for them.  Similarly, selection projecttion won't work with "detail" and "order".)
  */
-export const SINGLE_DEF_CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, OPACITY, TEXT, TOOLTIP];
 
+export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+
+// Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
+// when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-// FIXME somehow the typeof above leads to the following error when running npm run schema
-// UnknownNodeError: Unknown node "SingleDefChannel" (ts.SyntaxKind = 171) at /Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/src/selection.ts(17,14)
 export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
+
+
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
 }
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
+export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
+
+
+// NONSPATIAL_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
+const {
+  x: _x, y: _y,
+  // x2 and y2 share the same scale as x and y
+  x2: _x2, y2: _y2,
+  // The rest of unit channels then have scale
+  ...NONSPATIAL_CHANNEL_INDEX
+} = UNIT_CHANNEL_INDEX;
+
+export const NONSPATIAL_CHANNELS = flagKeys(NONSPATIAL_CHANNEL_INDEX);
+export type NonSpatialChannel = typeof NONSPATIAL_CHANNELS[0];
+
+// SPATIAL_SCALE_CHANNELS = X and Y;
+const SPATIAL_SCALE_CHANNEL_INDEX: {x:1, y:1} = {x:1, y:1};
+export const SPATIAL_SCALE_CHANNELS = flagKeys(SPATIAL_SCALE_CHANNEL_INDEX);
+export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
+
+// NON_SPATIAL_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
+const {
+    // x2 and y2 share the same scale as x and y
+  // text and tooltip has format instead of scale
+  text: _t, tooltip: _tt,
+  // detail and order have no scale
+  detail: _dd, order: _oo,
+  ...NONSPATIAL_SCALE_CHANNEL_INDEX
+} = NONSPATIAL_CHANNEL_INDEX;
+export const NONSPATIAL_SCALE_CHANNELS = flagKeys(NONSPATIAL_SCALE_CHANNEL_INDEX);
+export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
+
+// Declare SCALE_CHANNEL_INDEX
+const SCALE_CHANNEL_INDEX = {
+  ...SPATIAL_SCALE_CHANNEL_INDEX,
+  ...NONSPATIAL_SCALE_CHANNEL_INDEX
+};
 
 /** List of channels with scales */
-export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
+export const SCALE_CHANNELS = flagKeys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
-
-const SCALE_CHANNEL_INDEX = toSet(SCALE_CHANNELS);
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
-
-// UNIT_CHANNELS without X, Y, X2, Y2;
-export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
-
-// X and Y;
-export const SPATIAL_SCALE_CHANNELS = [X, Y];
-export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
-
-// SCALE_CHANNELS without X, Y;
-export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
-export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
-
-export const LEVEL_OF_DETAIL_CHANNELS = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
-
-/** Channels that can serve as groupings for stacked charts. */
-export const STACK_BY_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
-export type StackByChannel = typeof STACK_BY_CHANNELS[0];
 
 export interface SupportedMark {
   point?: boolean;
@@ -164,34 +207,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case TEXT:
       return {text: true};
   }
-}
-
-export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, ORDER, TOOLTIP], channel);
-}
-
-// Position does not work with ordinal (lookup) scale and sequential (which is only for color)
-const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
-
-export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
-  switch (channel) {
-    case ROW:
-    case COLUMN:
-      return scaleType === 'band'; // row / column currently supports band only
-    case X:
-    case Y:
-    case SIZE: // TODO: size and opacity can support ordinal with more modification
-    case OPACITY:
-      // Although it generally doesn't make sense to use band with size and opacity,
-      // it can also work since we use band: 0.5 to get midpoint.
-      return scaleType in POSITION_SCALE_TYPE_INDEX;
-    case COLOR:
-      return scaleType !== 'band';    // band does not make sense with color
-    case SHAPE:
-      return scaleType === 'ordinal'; // shape = lookup only
-  }
-  /* istanbul ignore next: it should never reach here */
-  return false;
 }
 
 export function rangeType(channel: Channel): RangeType {

@@ -2,15 +2,15 @@
  * Utility files for producing Vega ValueRef for marks
  */
 
-import {isNumber} from 'vega-util';
-import {Channel, ScaleChannel, X, X2, Y, Y2} from '../../channel';
+
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, Conditional, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {ChannelDef, ConditionalChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef} from '../../fielddef';
+import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
-import {isVgSignalRef, VgScale, VgSignalRef, VgValueRef} from '../../vega.schema';
-import {formatSignalRef, numberFormat} from '../common';
+import {VgSignalRef, VgValueRef} from '../../vega.schema';
+import {formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 
@@ -47,7 +47,8 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
  * Value Ref for binned fields
  */
 export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
-  return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset ? {offset} : {});
+  const binSuffix = side === 'start' ? undefined : 'end';
+  return fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
 }
 
 export function fieldRef(
@@ -80,7 +81,7 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
 function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', expr: 'datum'})})` +
+      `scale("${scaleName}", ${field(fieldDef, {expr: 'datum'})})` +
       ` + ` +
       `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
     `)/2`
@@ -109,7 +110,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
           // For non-stack, we can just calculate bin mid on the fly using signal.
           return binMidSignal(channelDef, scaleName);
         }
-        return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
+        return fieldRef(channelDef, scaleName, isBinScale(scale.get('type')) ? {} : {binSuffix: 'range'});
       }
 
       const scaleType = scale.get('type');
@@ -151,7 +152,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
   return defaultRef;
 }
 
-export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, config: Config): VgValueRef {
+export function text(textDef: ConditionalChannelDef<TextFieldDef<string>>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {

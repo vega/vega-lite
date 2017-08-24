@@ -1,15 +1,16 @@
+import {isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, title} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef} from '../fielddef';
 import * as log from '../log';
-import {ResolveMapping} from '../resolve';
+import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
-import {extractTitleConfig, Title} from '../title';
-import {Transform} from '../transform';
-import {Dict, extend, keys, varName} from '../util';
+import {extractTitleConfig, TitleParams} from '../title';
+import {normalizeTransform, Transform} from '../transform';
+import {contains, Dict, extend, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,
@@ -37,6 +38,7 @@ import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
+import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {getFieldFromDomains} from './scale/domain';
 import {parseScale} from './scale/parse';
@@ -72,7 +74,7 @@ export interface Component {
   /** Dictionary mapping channel to VgLegend definition */
   legends: LegendComponentIndex;
 
-  resolve: ResolveMapping;
+  resolve: Resolve;
 }
 
 export interface NameMapInterface {
@@ -144,7 +146,7 @@ export abstract class Model {
   public readonly parent: Model;
   public readonly name: string;
 
-  public readonly title: Title;
+  public readonly title: TitleParams;
   public readonly description: string;
 
   public readonly data: Data;
@@ -163,13 +165,13 @@ export abstract class Model {
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
     this.parent = parent;
     this.config = config;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
-    this.title = spec.title;
+    this.title = isString(spec.title) ? {text: spec.title} : spec.title;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -178,7 +180,7 @@ export abstract class Model {
     this.data = spec.data;
 
     this.description = spec.description;
-    this.transforms = spec.transform || [];
+    this.transforms = normalizeTransform(spec.transform || []);
 
     this.component = {
       data: {
@@ -190,7 +192,10 @@ export abstract class Model {
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders:{row: {}, column: {}},
       mark: null,
-      resolve: resolve || {},
+      resolve: {
+        scale: {}, axis: {}, legend: {},
+        ...(resolve || {})
+      },
       selection: null,
       scales: null,
       axes: {},
@@ -295,8 +300,6 @@ export abstract class Model {
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
-  public abstract assembleScales(): VgScale[];
-
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
     const headerMarks = [];
@@ -339,7 +342,20 @@ export abstract class Model {
       ...this.title
     };
 
-    return keys(title).length > 0 ? title : undefined;
+    if (title.text) {
+      if (!contains(['unit', 'layer'], this.type)) {
+        // As described in https://github.com/vega/vega-lite/issues/2875:
+        // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
+
+        if (title.anchor && title.anchor !== 'start') {
+          log.warn(log.message.cannotSetTitleAnchor(this.type));
+        }
+        title.anchor = 'start';
+      }
+
+      return keys(title).length > 0 ? title : undefined;
+    }
+    return undefined;
   }
 
   /**
@@ -365,7 +381,7 @@ export abstract class Model {
 
     // Only include scales if this spec is top-level or if parent is facet.
     // (Otherwise, it will be merged with upper-level's scope.)
-    const scales = (!this.parent || isFacetModel(this.parent)) ? this.assembleScales() : [];
+    const scales = (!this.parent || isFacetModel(this.parent)) ? assembleScales(this) : [];
     if (scales.length > 0) {
       group.scales = scales;
     }
@@ -550,11 +566,8 @@ export abstract class ModelWithField extends Model {
   public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
-      }, opt);
+    if (!fieldDef) {
+      return undefined;
     }
 
     return field(fieldDef, opt);

@@ -3,10 +3,8 @@
  */
 import {FacetFieldDef} from '../../facet';
 import {field} from '../../fielddef';
-import {contains} from '../../util';
-import {AxisOrient, Orient, VgAxis, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
+import {AxisOrient, VgAxis} from '../../vega.schema';
 import {formatSignalRef} from '../common';
-import {FacetModel} from '../facet';
 import {Model} from '../model';
 
 export type HeaderChannel = 'row' | 'column';
@@ -124,7 +122,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
           from: {data: model.getName(channel + '_domain')},
           sort: {
             field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
-            order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.header.sort) || 'ascending'
+            order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.sort) || 'ascending'
           }
         } : {}),
         ...(title ? {title} : {}),

@@ -1,12 +1,10 @@
 import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
-import {LayerModel} from '../layer';
 import {Model} from '../model';
-import {RepeatModel} from '../repeat';
-import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit, Split} from '../split';
+import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {LayoutSize, LayoutSizeComponent, LayoutSizeIndex} from './component';
+import {LayoutSize, LayoutSizeIndex} from './component';
 
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);
@@ -40,7 +38,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'hei
   // Try to merge layout size
   for (const child of model.children) {
     const childSize = child.component.layoutSize.getWithExplicit(sizeType);
-    const scaleResolve = resolve[channel] ? resolve[channel].scale : undefined;
+    const scaleResolve = resolve.scale[channel];
     if (scaleResolve === 'independent' && childSize.value === 'range-step') {
       // Do not merge independent scales with range-step as their size depends
       // on the scale domains, which can be different between scales.

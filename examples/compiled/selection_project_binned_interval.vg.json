@@ -32,7 +32,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
@@ -48,7 +48,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "ops": [
@@ -81,7 +81,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
@@ -101,7 +101,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "ops": [
@@ -376,7 +376,7 @@
                 "update": {
                     "x2": {
                         "scale": "x",
-                        "field": "bin_maxbins_10_Acceleration_start",
+                        "field": "bin_maxbins_10_Acceleration",
                         "offset": 1
                     },
                     "x": {
@@ -410,7 +410,7 @@
                 "update": {
                     "x2": {
                         "scale": "x",
-                        "field": "bin_maxbins_10_Acceleration_start",
+                        "field": "bin_maxbins_10_Acceleration",
                         "offset": 1
                     },
                     "x": {
@@ -495,7 +495,7 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "bin_maxbins_10_Acceleration_start"
+                        "field": "bin_maxbins_10_Acceleration"
                     },
                     {
                         "data": "data_0",
@@ -503,7 +503,7 @@
                     },
                     {
                         "data": "data_1",
-                        "field": "bin_maxbins_10_Acceleration_start"
+                        "field": "bin_maxbins_10_Acceleration"
                     },
                     {
                         "data": "data_1",
@@ -553,10 +553,10 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "title": "BIN(Acceleration)",
-            "values": {
-                "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
+            "tickCount": {
+                "signal": "min(ceil(width/40), 10)"
             },
+            "title": "BIN(Acceleration)",
             "zindex": 1,
             "encode": {
                 "labels": {

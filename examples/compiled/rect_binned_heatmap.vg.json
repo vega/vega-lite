@@ -28,7 +28,7 @@
                     "type": "bin",
                     "field": "IMDB_Rating",
                     "as": [
-                        "bin_maxbins_60_IMDB_Rating_start",
+                        "bin_maxbins_60_IMDB_Rating",
                         "bin_maxbins_60_IMDB_Rating_end"
                     ],
                     "signal": "bin_maxbins_60_IMDB_Rating_bins",
@@ -46,7 +46,7 @@
                     "type": "bin",
                     "field": "Rotten_Tomatoes_Rating",
                     "as": [
-                        "bin_maxbins_40_Rotten_Tomatoes_Rating_start",
+                        "bin_maxbins_40_Rotten_Tomatoes_Rating",
                         "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
                     ],
                     "signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_bins",
@@ -58,9 +58,9 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_60_IMDB_Rating_start",
+                        "bin_maxbins_60_IMDB_Rating",
                         "bin_maxbins_60_IMDB_Rating_end",
-                        "bin_maxbins_40_Rotten_Tomatoes_Rating_start",
+                        "bin_maxbins_40_Rotten_Tomatoes_Rating",
                         "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
                     ],
                     "ops": [
@@ -100,7 +100,7 @@
                 "update": {
                     "x2": {
                         "scale": "x",
-                        "field": "bin_maxbins_60_IMDB_Rating_start"
+                        "field": "bin_maxbins_60_IMDB_Rating"
                     },
                     "x": {
                         "scale": "x",
@@ -108,7 +108,7 @@
                     },
                     "y2": {
                         "scale": "y",
-                        "field": "bin_maxbins_40_Rotten_Tomatoes_Rating_start"
+                        "field": "bin_maxbins_40_Rotten_Tomatoes_Rating"
                     },
                     "y": {
                         "scale": "y",
@@ -129,7 +129,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_60_IMDB_Rating_start",
+                    "bin_maxbins_60_IMDB_Rating",
                     "bin_maxbins_60_IMDB_Rating_end"
                 ],
                 "sort": true
@@ -149,7 +149,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_40_Rotten_Tomatoes_Rating_start",
+                    "bin_maxbins_40_Rotten_Tomatoes_Rating",
                     "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
                 ],
                 "sort": true
@@ -180,10 +180,10 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "title": "BIN(IMDB_Rating)",
-            "values": {
-                "signal": "sequence(bin_maxbins_60_IMDB_Rating_bins.start, bin_maxbins_60_IMDB_Rating_bins.stop + bin_maxbins_60_IMDB_Rating_bins.step, bin_maxbins_60_IMDB_Rating_bins.step)"
+            "tickCount": {
+                "signal": "min(ceil(width/40), 60)"
             },
+            "title": "BIN(IMDB_Rating)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -205,10 +205,10 @@
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
-            "title": "BIN(Rotten_Tomatoes_Rating)",
-            "values": {
-                "signal": "sequence(bin_maxbins_40_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.stop + bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step)"
+            "tickCount": {
+                "signal": "min(ceil(height/40), 40)"
             },
+            "title": "BIN(Rotten_Tomatoes_Rating)",
             "zindex": 1
         }
     ],

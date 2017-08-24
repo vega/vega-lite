@@ -1,7 +1,6 @@
 import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
-import {OutputNode} from './compile/data/dataflow';
-import {NiceTime, ScaleType, SelectionDomain} from './scale';
+import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -81,8 +80,8 @@ export type FieldRefUnionDomain = {
   sort?: VgUnionSortField
 };
 
-export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgRangeScheme | VgRangeStep;
+export type VgScheme = {scheme: string, extent?: number[], count?: number};
+export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgScheme | VgRangeStep;
 
 export type VgRangeStep = {step: number | VgSignalRef};
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
@@ -103,6 +102,7 @@ export type VgScale = {
   range: VgRange,
 
   clamp?: boolean,
+  base?: number,
   exponent?: number,
   interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
   nice?: boolean | NiceTime,
@@ -1064,6 +1064,8 @@ export interface VgTitle {
    */
   offset?: number;
 
+  style?: string | string[];
+
   // TODO: name, encode, interactive, zindex
 }
 
@@ -1071,7 +1073,12 @@ export type TitleOrient = 'top' | 'bottom' | 'left' | 'right';
 
 export interface VgTitleConfig {
   /**
-   * Title anchor position (`"start"`, `"middle"`, or `"end"`).
+   * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+   *
+   * __Default value:__ `"middle"` for [single](spec.html) and [layered](layer.html) views.
+   * `"start"` for other composite views.
+   *
+   * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
   anchor?: Anchor;
   /**

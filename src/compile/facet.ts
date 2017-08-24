@@ -14,11 +14,9 @@ import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
-import {labels} from './legend/encode';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
-import {assembleScalesForModel} from './scale/assemble';
 import {getFieldFromDomains} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
@@ -140,10 +138,9 @@ export class FacetModel extends ModelWithField {
     const {child} = this;
     if (child.component.axes[channel]) {
       const {layoutHeaders, resolve} = this.component;
-      const channelResolve = resolve[channel];
-      channelResolve.axis = parseGuideResolve(resolve, channel);
+      resolve.axis[channel] = parseGuideResolve(resolve, channel);
 
-      if (channelResolve.axis === 'shared') {
+      if (resolve.axis[channel] === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 
@@ -162,10 +159,6 @@ export class FacetModel extends ModelWithField {
         // Otherwise do nothing for independent axes
       }
     }
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScalesForModel(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
@@ -252,7 +245,7 @@ export class FacetModel extends ModelWithField {
             update: {
               // TODO(https://github.com/vega/vega-lite/issues/2759):
               // Correct the signal for facet of concat of facet_column
-              columns: {field: field(this.facet.column, {binSuffix: 'start', prefix: 'distinct'})}
+              columns: {field: field(this.facet.column, {prefix: 'distinct'})}
             }
           }
         } : {}),
@@ -319,11 +312,13 @@ export class FacetModel extends ModelWithField {
     }
 
     const title = child.assembleTitle();
+    const style = child.assembleGroupStyle();
 
     const markGroup = {
       name: this.getName('cell'),
       type: 'group',
       ...(title? {title} : {}),
+      ...(style? {style} : {}),
       from: {
         facet: {
           name: facetRoot.name,
@@ -337,12 +332,12 @@ export class FacetModel extends ModelWithField {
       },
       sort: {
         field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
+          hasRow ? [this.field(ROW, {expr: 'datum',})] : [],
           hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
-          hasRow ? [ (facet.row.header && facet.row.header.sort) || 'ascending'] : [],
-          hasColumn ? [ (facet.column.header && facet.column.header.sort) || 'ascending'] : []
+          hasRow ? [ (facet.row.sort) || 'ascending'] : [],
+          hasColumn ? [ (facet.column.sort) || 'ascending'] : []
         )
       },
       ...(data.length > 0 ? {data: data} : {}),

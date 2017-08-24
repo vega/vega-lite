@@ -1,8 +1,4 @@
 import {assert} from 'chai';
-
-import {parseMainAxis} from '../../src/compile/axis/parse';
-import {LayerModel} from '../../src/compile/layer';
-import {LayerSpec} from '../../src/spec';
 import {parseLayerModel} from '../util';
 
 describe('Layer', function() {
@@ -61,35 +57,6 @@ describe('Layer', function() {
     });
   });
 
-  describe('assembleScales', () => {
-    it('includes all scales from children, both shared and independent', () => {
-      const model = parseLayerModel({
-        layer: [{
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        },{
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }],
-        resolve: {
-          x: {
-            scale: 'independent'
-          }
-        }
-      });
-
-      model.parseScale();
-      const scales = model.assembleScales();
-      assert.equal(scales.length, 3); // 2 x, 1 y
-    });
-  });
-
   describe('dual axis chart', () => {
     const model = parseLayerModel({
       layer: [{
@@ -104,8 +71,8 @@ describe('Layer', function() {
         }
       }],
       resolve: {
-        x: {
-          scale: 'independent'
+        scale: {
+          x: 'independent'
         }
       }
     });

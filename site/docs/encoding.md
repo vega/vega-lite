@@ -4,60 +4,214 @@ menu: docs
 title: Encoding
 permalink: /docs/encoding.html
 ---
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field-def) or [constant value](#value-def), and the channel's [scale and guide (axis or legend)](#scale-and-guide).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks.
+The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def) or [constant values](#value-def).
 
 {: .suppress-error}
 ```json
+// Specification of a Single View
 {
   "data": ... ,
   "mark": ... ,
   "encoding": {     // Encoding
-    "column": ...,
-    "row": ...,
+    // Position Channels
     "x": ...,
     "y": ...,
+    "x2": ...,
+    "y2": ...,
+
+    // Mark Properties Channels
     "color": ...,
     "opacity": ...,
     "size": ...,
     "shape": ...,
+
+    // Text and Tooltip Channels
     "text": ...,
     "tooltip": ...,
-    "detail": ...
+
+    // Order Channel
+    "order": ...,
+
+    // Level of Detail Channel
+    "detail": ...,
+
+    // Facet Channels
+    "row": ...,
+    "column": ...
   },
   ...
 }
 ```
 
-* TOC
-{:toc}
-
 {:#channels}
 ## Encoding Channels
 
-The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.
+The keys in the `encoding` object are encoding channels.  Vega-lite supports the following groups of encoding channels
 
-{:#props-channels}
-### Position Channels
+- [Position Channels](#position): `x`, `y`, `x2`, `y2`
+- [Mark Property Channels](#mark-prop): `color`, `opacity`, `shape`, `size`
+- [Text and Tooltip Channels](#text):  `text`, `tooltip`
+- [Level of Detail Channel](#detail): `detail`
+- [Order Channel](#order): `order`
+- [Facet Channels](#facet): `row`, `column`
 
-Position channels determine the position of the marks.
+## Channel Definition
 
-{% include table.html props="x,x2,y,y2" source="Encoding" %}
+Each channel definition object is either a [field definition]((#field-def)), which describes
+the data field encoded by the channel, or a [value definition](#value-def), which describes
+an encoded constant value.
 
-### Mark Properties Channels
+{:#field-def}
+### Field Definition
 
-Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
+{: .suppress-error}
+```json
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "field": ...,
+      "type": ...,
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
 
-{% include table.html props="color,opacity,shape,size,text,tooltip" source="Encoding" %}
+To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
 
-### Additional Level of Detail Channel
+All field definitions support the following properties:
 
-Grouping data is another important operation in visualizing data. For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL). For line and area marks, mapping a data field to color or shape channel will group the lines and stacked areas by the field.
+{% include table.html props="field,type,bin,timeUnit,aggregate" source="FieldDef" %}
 
-`detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
+In addition, field definitions for different encoding channels may support the following properties:
+
+- [`scale`](scale.html) - The function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) for [position](#position) and [mark property](#mark-prop) channels.
+
+- [`axis`](axis.html) - The guiding visualization to aid interpretation of scales for [position channels](#position).
+
+- [`legend`](legend.html) - The guiding visualization to aid interpretation of [mark property channels](#mark-prop).
+
+- [`format`](format.html) - The formatting pattern for text value for [text channels](#text).
+
+- [`stack`](stack.html) - Type of stacking offset if a [position field](#position) with continuous domain should be stacked.
+
+- [`sort`](sort.html) - Sort order for a field for [position](#position) and [mark property](#mark-prop) channels.
+
+- [`condition`](condition.html) - The conditional encoding rule for [mark property](#mark-prop) and [text](#text) channels.
+
+To see a list of additional properties for each type of encoding channels, please see the specific sections
+for [position](#position), [mark property](#mark-prop), [text and tooltip](#text), [detail](#detail), [order](#order), and [facet](#facet) channels.
+
+{:#value-def}
+### Value Definition
+
+{: .suppress-error}
+```json
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "value": ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+To map a constant value to an encoding channel, the channel's value definition must describe the `value` property.
+(See the [`value`](value.html) page for more examples.)
+
+{% include table.html props="value" source="ValueDef" %}
+
+{:#position}
+## Position Channels
+
+`x` and `y` position channels determine the position of the marks, or width/height of horizontal/vertical `"area"` and `"bar"`.
+In addition, `x2` and `y2` specify the span of ranged marks.
+
+By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis](axis.html) for each field mapped to a position channel. If unspecified, properties of scales and axes are determined based on a set of rules by the compiler. `scale` and `axis` properties of the field definition can be used to customize their properties.
+
+{% include table.html props="x,y,x2,y2" source="Encoding" %}
+
+{:#position-field-def}
+### Position Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
+[field definitions](#field-def) for `x` and `y` channels may also include these properties:
+
+{% include table.html props="scale,axis,sort,stack" source="PositionFieldDef" %}
+
+__Note:__ `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
+
+{:#mark-prop}
+## Mark Property Channels
+
+Mark properties channels map data fields to visual properties of the marks.
+By default, Vega-Lite automatically generates a scale and a legend for each field mapped to a mark property channel. If unspecified, properties of scales and legends are determined based on a set of rules by the compiler. `scale` and `legend` properties of the field definition can be used to customize their properties.
+In addition, definitions of mark property channels can include the `condition` property  to specify conditional logic.
+
+Here are the list of mark property channels:
+
+{% include table.html props="color,opacity,shape,size" source="Encoding" %}
+
+{:#mark-prop-field-def}
+### Mark Property Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
+[field definitions](#field-def) for mark property channels may also include these properties:
+
+{% include table.html props="scale,legend,condition" source="ConditionalLegendFieldDef" %}
+
+{:#mark-prop-value-def}
+### Mark Property Value Definition
+
+In addition to `value`, [value definitions](#value-def) of mark properties channels can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="ConditionalLegendValueDef" %}
+
+{:#text}
+## Text and Tooltip Channels
+
+Text and tooltip channels directly encode text values of the data fields.
+By default, Vega-Lite automatically determines appropriate format for quantitative and temporal values.  Users can set `format` property to customize text and time format.
+Similar to mark property channels, definitions of text and tooltip channels can include the `condition` property to specify conditional logic.
+
+{% include table.html props="text,tooltip" source="Encoding" %}
+
+
+{:#mark-prop-field-def}
+### Text and Tooltip Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
+[field definitions](#field-def) for `text` and `tooltip` channels may also include these properties:
+
+{% include table.html props="format,condition" source="ConditionalTextFieldDef" %}
+
+{:#mark-prop-value-def}
+### Text and Tooltip Value Definition
+
+In addition to `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="ConditionalTextValueDef" %}
+
+
+{:#detail}
+## Level of Detail Channel
+
+Grouping data is another important operation in data visualization.
+For line and area marks, mapping a unaggregate data field (field without `aggregate` function) to any non-[position](#position) channel will group the lines and stacked areas by the field.
+For [aggregated plots](aggregate.html), all unaggregated fields encoded are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).
+
+`detail` channel specify an additional grouping field (or fields) for grouping data without mapping the field(s) to any visual properties.
 
 {% include table.html props="detail" source="Encoding" %}
-
-**Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode a constant `value`.
 
 #### Examples
 
@@ -73,24 +227,23 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
 
+{:#order}
+## Order Channel
 
-### Mark Order Channels
-
-`order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.
+`order` channel can define a data field (or a ordered list of data fields) that are used to
+ sorts stacking order for stacked charts (see [an example in the `stack` page](stack.html#order)) and the order of data points in line marks for connected scatterplots (see [an example in the `line` page](line.html#connected-scatter-plot)).
 
 {% include table.html props="order" source="Encoding" %}
 
-**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
+### Order Field Definition
 
-{:#ex-path}
-#### Example: Sorting Line Order
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
+[field definitions](#field-def) for the `order` channel can include `sort`.
 
-By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).
-
-<div class="vl-example" data-name="scatter_connected"></div>
+{% include table.html props="sort" source="OrderFieldDef" %}
 
 {:#facet}
-### Facet Channels
+## Facet Channels
 
 `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
@@ -99,62 +252,3 @@ By default, line marks order their points in their paths by the field of channel
 For more information, read the [facet documentation](facet.html).
 
 {:#def}
-## Channel Definition
-
-Each channel definition object is either a [field definition]((#field-def)), which describes
-the data field encoded by the channel, or a [value definition](#value-def), which describes
-or a constant value directly mapped to the mark properties.
-Field definitions may also describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
-
-{:#field}
-### Field Definition
-
-#### Field and Type
-
-To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the following properties:
-
-{% include table.html props="field,type" source="FieldDef" %}
-
-{:#field-transform}
-#### Field Transforms
-
-To facilitate data exploration, Vega-Lite provides inline field transforms as a part of a field definition. If a `field` is provided, the channel definition supports the following transformations:
-
-{% include table.html props="bin,timeUnit,aggregate,stack,sort" source="PositionFieldDef" %}
-
-
-<!-- TODO: re-explain sort + make it clear that text does not support sorting -->
-
-For more information about these field transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), [`stack`](stack.html), and [`sort`](sort.html).
-
-**Notes**:
-
-<sup>1</sup>  Inline field transforms are executed after the top-level `transform`s are executed, and are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
-
-<sup>2</sup> `detail` does not support `aggregate` and `sort`. When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.
-
-#### Scale and Guide
-
-For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).
-
-In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produce lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).   Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
-
-By default, Vega-Lite automatically generates a scale and a guide for each field. If no properties are specified, scale, axis, and legend's properties are determined based on a set of rules by the compiler. `scale`, `axis`, `legend` properties of the channel definition can be used to customize their properties.
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| [scale](scale.html)      | Object        | A property object for a scale of a [mark property channel](#props-channels). |
-| [axis](axis.html)        | Boolean &#124; Object  | Boolean flag for showing an axis (`true` by default), or a property object for an axis of a position channel (`x` or `y`) or a facet channel (`row` or `column`). |
-| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing a legend (`true` by default), or a config object for a legend of a non-position mark property channel (`color`, `size`, or `shape`). |
-
-For more information about [`scale`](scale.html), [`axis`](axis.html), and [`legend`](legend.html), please look at the respective pages.
-
-
-{:#value-def}
-### Value Definition
-
-For [mark properties channels](#props-channels)<sup>3</sup>, if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.  (See the [`value`](value.html) page for more examples.)
-
-{% include table.html props="value" source="ValueDef<number>" %}
-
-<sup>3</sup> `detail`, `path`, `order`, `row`, and `column` channels cannot be used with a channel definition.

@@ -13,7 +13,7 @@ This documentation describes the [JSON specification language](#spec) and how to
 {:#toc}
 ## Table of Contents
 
-Below is an overview of the documentation for Vega-Lite properties. See [below](#spec) for an overview of Vega-Lite specifications.
+Below is an overview of the documentation for Vega-Lite properties. See [the specification page](spec.html) for an overview of Vega-Lite specifications.
 
 {% include docs_toc.md %}
 

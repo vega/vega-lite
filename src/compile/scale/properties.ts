@@ -1,13 +1,14 @@
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {channelScalePropertyIncompatability, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {SortField, SortOrder} from '../../sort';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {Explicit, mergeValuesWithExplicit, Split, tieBreakByComparing} from '../split';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
@@ -29,6 +30,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
     const fieldDef = model.fieldDef(channel);
+    const sort = model.sort(channel);
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];
@@ -50,17 +52,16 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         // copyKeyFromObject ensure type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
-        const value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, config.scale);
+        const value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, sort, config.scale);
         if (value !== undefined) {
           localScaleCmpt.set(property, value, false);
         }
       }
-
     }
   });
 }
 
-function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
+function getDefaultValue(property: keyof Scale, specifiedScale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField, scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {
@@ -74,8 +75,10 @@ function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleCo
       return paddingOuter(scaleCmpt.get('padding'), channel, scaleCmpt.get('type'), scaleCmpt.get('paddingInner'), scaleConfig);
     case 'round':
       return round(channel, scaleConfig);
+    case 'reverse':
+      return reverse(scaleCmpt.get('type'), sort);
     case 'zero':
-      return zero(channel, fieldDef, !!scale.domain);
+      return zero(channel, fieldDef, specifiedScale.domain);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -189,7 +192,16 @@ export function round(channel: Channel, scaleConfig: ScaleConfig) {
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, hasCustomDomain: boolean) {
+export function reverse(scaleType: ScaleType, sort: SortOrder | SortField) {
+  if (hasContinuousDomain(scaleType) && sort === 'descending') {
+    // For continuous domain scales, Vega does not support domain sort.
+    // Thus, we reverse range instead if sort is descending
+    return true;
+  }
+  return undefined;
+}
+
+export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -202,6 +214,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, hasCustomDoma
   // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
   // (For binning, we should not include zero by default because binning are calculated without zero.
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
+  const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
     return true;
   }

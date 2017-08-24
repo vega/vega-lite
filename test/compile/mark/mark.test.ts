@@ -161,7 +161,7 @@ describe('Mark', function() {
         }
       });
       assert.deepEqual(getPathSort(model), {
-        field: 'datum[\"bin_maxbins_10_IMDB_Rating_start\"]',
+        field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
         order: 'descending'
       });
     });

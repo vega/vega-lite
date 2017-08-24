@@ -32,7 +32,7 @@
                     "type": "bin",
                     "field": "Horsepower",
                     "as": [
-                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower",
                         "bin_maxbins_10_Horsepower_end"
                     ],
                     "signal": "child_Horsepower_bin_maxbins_10_Horsepower_bins",
@@ -44,7 +44,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower",
                         "bin_maxbins_10_Horsepower_end",
                         "Origin"
                     ],
@@ -61,7 +61,7 @@
                 {
                     "type": "stack",
                     "groupby": [
-                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower",
                         "bin_maxbins_10_Horsepower_end"
                     ],
                     "field": "count_*",
@@ -103,7 +103,7 @@
                     "type": "bin",
                     "field": "Miles_per_Gallon",
                     "as": [
-                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon",
                         "bin_maxbins_10_Miles_per_Gallon_end"
                     ],
                     "signal": "child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
@@ -115,7 +115,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon",
                         "bin_maxbins_10_Miles_per_Gallon_end",
                         "Origin"
                     ],
@@ -132,7 +132,7 @@
                 {
                     "type": "stack",
                     "groupby": [
-                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon",
                         "bin_maxbins_10_Miles_per_Gallon_end"
                     ],
                     "field": "count_*",
@@ -174,7 +174,7 @@
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "signal": "child_Acceleration_bin_maxbins_10_Acceleration_bins",
@@ -186,7 +186,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end",
                         "Origin"
                     ],
@@ -203,7 +203,7 @@
                 {
                     "type": "stack",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration",
                         "bin_maxbins_10_Acceleration_end"
                     ],
                     "field": "count_*",
@@ -273,7 +273,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_Horsepower_x",
-                                "field": "bin_maxbins_10_Horsepower_start",
+                                "field": "bin_maxbins_10_Horsepower",
                                 "offset": 1
                             },
                             "x": {
@@ -301,10 +301,10 @@
                     "scale": "child_Horsepower_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Horsepower)",
-                    "values": {
-                        "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Horsepower)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -377,7 +377,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_Miles_per_Gallon_x",
-                                "field": "bin_maxbins_10_Miles_per_Gallon_start",
+                                "field": "bin_maxbins_10_Miles_per_Gallon",
                                 "offset": 1
                             },
                             "x": {
@@ -405,10 +405,10 @@
                     "scale": "child_Miles_per_Gallon_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Miles_per_Gallon)",
-                    "values": {
-                        "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Miles_per_Gallon)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -481,7 +481,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_Acceleration_x",
-                                "field": "bin_maxbins_10_Acceleration_start",
+                                "field": "bin_maxbins_10_Acceleration",
                                 "offset": 1
                             },
                             "x": {
@@ -509,10 +509,10 @@
                     "scale": "child_Acceleration_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(Acceleration)",
-                    "values": {
-                        "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 10)"
                     },
+                    "title": "BIN(Acceleration)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -587,7 +587,7 @@
             "domain": {
                 "data": "data_0",
                 "fields": [
-                    "bin_maxbins_10_Horsepower_start",
+                    "bin_maxbins_10_Horsepower",
                     "bin_maxbins_10_Horsepower_end"
                 ],
                 "sort": true
@@ -628,7 +628,7 @@
             "domain": {
                 "data": "data_1",
                 "fields": [
-                    "bin_maxbins_10_Miles_per_Gallon_start",
+                    "bin_maxbins_10_Miles_per_Gallon",
                     "bin_maxbins_10_Miles_per_Gallon_end"
                 ],
                 "sort": true
@@ -669,7 +669,7 @@
             "domain": {
                 "data": "data_2",
                 "fields": [
-                    "bin_maxbins_10_Acceleration_start",
+                    "bin_maxbins_10_Acceleration",
                     "bin_maxbins_10_Acceleration_end"
                 ],
                 "sort": true

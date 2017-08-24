@@ -1,0 +1,98 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "config": {
+    "overlay": {
+      "line": true
+    }
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/cars.json"
+      },
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "Cylinders",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "max",
+              "bin": false,
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "darkred"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "style": "pointOverlay"
+          },
+          "encoding": {
+            "x": {
+              "field": "Cylinders",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "max",
+              "bin": false,
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "darkred"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/cars.json"
+      },
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "Cylinders",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "min",
+              "bin": false,
+              "field": "Horsepower",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "style": "pointOverlay"
+          },
+          "encoding": {
+            "x": {
+              "field": "Cylinders",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "min",
+              "bin": false,
+              "field": "Horsepower",
+              "type": "quantitative"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

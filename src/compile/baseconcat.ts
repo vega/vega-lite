@@ -1,15 +1,14 @@
 import {Config} from '../config';
-import {ResolveMapping} from '../resolve';
+import {Resolve} from '../resolve';
 import {BaseSpec} from '../spec';
 import {keys} from '../util';
-import {VgData, VgScale, VgSignal} from '../vega.schema';
+import {VgData, VgSignal} from '../vega.schema';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
-import {assembleScaleForModelAndChildren} from './scale/assemble';
 
 export abstract class BaseConcatModel extends Model {
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
     super(spec, parent, parentGivenName, config, resolve);
   }
 
@@ -44,10 +43,6 @@ export abstract class BaseConcatModel extends Model {
     }
 
     // TODO(#2415): support shared axes
-  }
-
-  public assembleScales(): VgScale[] {
-    return assembleScaleForModelAndChildren(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {

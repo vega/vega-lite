@@ -24,25 +24,25 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "bin_maxbins_5_Acceleration_extent"
+                    "signal": "bin_maxbins_6_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_5_Acceleration_start",
-                        "bin_maxbins_5_Acceleration_end"
+                        "bin_maxbins_6_Acceleration",
+                        "bin_maxbins_6_Acceleration_end"
                     ],
-                    "signal": "bin_maxbins_5_Acceleration_bins",
-                    "maxbins": 5,
+                    "signal": "bin_maxbins_6_Acceleration_bins",
+                    "maxbins": 6,
                     "extent": {
-                        "signal": "bin_maxbins_5_Acceleration_extent"
+                        "signal": "bin_maxbins_6_Acceleration_extent"
                     }
                 },
                 {
                     "type": "formula",
-                    "expr": "format(datum[\"bin_maxbins_5_Acceleration_start\"], '') + \" - \" + format(datum[\"bin_maxbins_5_Acceleration_end\"], '')",
-                    "as": "bin_maxbins_5_Acceleration_range"
+                    "expr": "datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")",
+                    "as": "bin_maxbins_6_Acceleration_range"
                 }
             ]
         }
@@ -79,7 +79,7 @@
                     },
                     "stroke": {
                         "scale": "color",
-                        "field": "bin_maxbins_5_Acceleration_start"
+                        "field": "bin_maxbins_6_Acceleration"
                     },
                     "fill": {
                         "value": "transparent"
@@ -130,10 +130,9 @@
             "name": "color",
             "type": "bin-ordinal",
             "domain": {
-                "signal": "sequence(bin_maxbins_5_Acceleration_bins.start, bin_maxbins_5_Acceleration_bins.stop + bin_maxbins_5_Acceleration_bins.step, bin_maxbins_5_Acceleration_bins.step)"
+                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
             },
-            "range": "ramp",
-            "zero": false
+            "range": "ramp"
         }
     ],
     "axes": [

@@ -1,8 +1,8 @@
-import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
-import {field, FieldDef} from '../../fielddef';
+import {Channel, isScaleChannel, rangeType} from '../../channel';
+import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {ScaleConfig, ScaleType} from '../../scale';
+import {channelSupportScaleType, ScaleConfig, ScaleType} from '../../scale';
 import {hasDiscreteDomain} from '../../scale';
 import {isDiscreteByDefault} from '../../timeunit';
 import {Type} from '../../type';
@@ -23,13 +23,13 @@ export function scaleType(
 
   const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig);
 
-  if (!hasScale(channel)) {
+  if (!isScaleChannel(channel)) {
     // There is no scale for these channels
     return null;
   }
   if (specifiedType !== undefined) {
     // Check if explicitly specified scale type is supported by the channel
-    if (!supportScaleType(channel, specifiedType)) {
+    if (!channelSupportScaleType(channel, specifiedType)) {
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
       return defaultScaleType;
     }
@@ -53,16 +53,9 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
-      if (channel === 'color' || rangeType(channel) === 'discrete') {
-        return 'ordinal';
-      }
-      return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
-
     case 'ordinal':
-      if (channel === 'color') {
-        return 'ordinal';
-      } else if (rangeType(channel) === 'discrete') {
-        if (channel !== 'text' && channel !=='tooltip') {
+      if (channel === 'color' || rangeType(channel) === 'discrete') {
+        if (channel === 'shape' && fieldDef.type === 'ordinal') {
           log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         }
         return 'ordinal';
@@ -141,15 +134,15 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (type === Type.TEMPORAL) {
     if (!fieldDef.timeUnit) {
-      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
+      return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
     } else {
-      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
+      return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
     }
   } else if (type === Type.QUANTITATIVE) {
     if (fieldDef.bin) {
-      return specifiedType === ScaleType.BIN_LINEAR || specifiedType === ScaleType.BIN_ORDINAL;
+      return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
     }
-    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, undefined], specifiedType);
+    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, ScaleType.SEQUENTIAL, undefined], specifiedType);
   }
 
   return true;

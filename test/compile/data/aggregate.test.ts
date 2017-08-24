@@ -3,7 +3,6 @@
 import {assert} from 'chai';
 
 import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {Condition} from '../../../src/fielddef';
 import {SummarizeTransform} from '../../../src/transform';
 import {StringSet} from '../../../src/util';
 import {VgAggregateTransform} from '../../../src/vega.schema';
@@ -129,7 +128,7 @@ describe('compile/data/summary', function () {
         mark: "point",
         encoding: {
           'x': {'bin': true, 'field': 'Displacement', 'type': "quantitative"},
-          'y': {'bin': true, 'field': 'Acceleration', 'type': "quantitative"},
+          'y': {'bin': true, 'field': 'Acceleration', 'type': "ordinal"},
           'color': {'aggregate': 'count', 'type': "quantitative"}
         }
       });
@@ -138,10 +137,11 @@ describe('compile/data/summary', function () {
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: [
-          'bin_maxbins_10_Displacement_start',
+          'bin_maxbins_10_Displacement',
           'bin_maxbins_10_Displacement_end',
-          'bin_maxbins_10_Acceleration_start',
-          'bin_maxbins_10_Acceleration_end'
+          'bin_maxbins_10_Acceleration',
+          'bin_maxbins_10_Acceleration_end',
+          'bin_maxbins_10_Acceleration_range'
         ],
         ops: ['count'],
         fields: ['*'],
@@ -157,15 +157,7 @@ describe('compile/data/summary', function () {
         ],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
-      const model = parseUnitModel({
-        mark: "point",
-        transform: [t],
-        encoding: {
-          'x': {'field': 'Displacement', 'type': "quantitative"}
-        }
-      });
-
-      const agg = AggregateNode.makeFromTransform(model, t);
+      const agg = AggregateNode.makeFromTransform(t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Displacement_mean', 'Acceleration_sum'],
@@ -182,15 +174,7 @@ describe('compile/data/summary', function () {
         {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
-      const model = parseUnitModel({
-        mark: "point",
-        transform: [t],
-        encoding: {
-          'x': {'field': 'Displacement', 'type': "quantitative"}
-        }
-      });
-
-      const agg = AggregateNode.makeFromTransform(model, t);
+      const agg = AggregateNode.makeFromTransform(t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Displacement_mean', 'Acceleration_sum'],

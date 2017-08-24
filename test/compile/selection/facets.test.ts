@@ -1,7 +1,6 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import multi from '../../../src/compile/selection/multi';
 import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseModel} from '../../util';
@@ -51,6 +50,6 @@ describe('Faceted Selections', function() {
 
   it('should name the unit with the facet keys', function() {
     assert.equal(selection.unitName(unit),
-      `"child_layer_1" + '_' + facet["bin_maxbins_6_X_range"] + '_' + facet["Series"]`);
+      `"child_layer_1" + '_' + facet["bin_maxbins_6_X"] + '_' + facet["Series"]`);
   });
 });

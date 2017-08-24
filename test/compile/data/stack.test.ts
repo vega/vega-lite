@@ -174,7 +174,7 @@ describe('compile/data/stack', () => {
     assert.deepEqual<VgTransform[]>(assemble(model), [
       {
         type: 'formula',
-        expr: '(datum[\"bin_maxbins_10_b_start\"]+datum[\"bin_maxbins_10_b_end\"])/2',
+        expr: '(datum[\"bin_maxbins_10_b\"]+datum[\"bin_maxbins_10_b_end\"])/2',
         as: 'bin_maxbins_10_b_mid'
       },
       {

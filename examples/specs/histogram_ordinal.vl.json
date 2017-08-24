@@ -1,11 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/movies.json"},
-  "mark": "point",
+  "mark": "bar",
   "encoding": {
     "x": {
-      "bin": {"maxbins": 10},
+      "bin": true,
       "field": "IMDB_Rating",
+      "type": "ordinal",
+      "sort": {
+        "op": "count",
+        "order": "descending"
+      }
+    },
+    "y": {
+      "aggregate": "count",
       "type": "quantitative"
     }
   }

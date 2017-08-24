@@ -1,10 +1,9 @@
 import {AggregateOp} from './aggregate';
-import {Bin} from './bin';
+import {BinParams} from './bin';
 import {Data} from './data';
-import {Filter} from './filter';
-import {LogicalOperand} from './logical';
+import {Filter, normalizeFilter} from './filter';
+import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {TimeUnit} from './timeunit';
-import {VgFieldRef} from './vega.schema';
 
 
 export interface FilterTransform {
@@ -32,9 +31,9 @@ export interface CalculateTransform {
 
 export interface BinTransform {
   /**
-   * An object indicating bin properties, or simply `true` for using default bin values..
+   * An object indicating bin properties, or simply `true` for using default bin parameters.
    */
-  bin: Bin | true;
+  bin: boolean | BinParams;
 
   /**
    * The data field to bin.
@@ -140,7 +139,7 @@ export function isCalculate(t: Transform): t is CalculateTransform {
 }
 
 export function isBin(t: Transform): t is BinTransform {
-  return t['bin'] !== undefined;
+  return !!t['bin'];
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
@@ -152,3 +151,14 @@ export function isSummarize(t: Transform): t is SummarizeTransform {
 }
 
 export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | SummarizeTransform;
+
+export function normalizeTransform(transform: Transform[]) {
+  return transform.map(t => {
+    if (isFilter(t)) {
+      return {
+        filter: normalizeLogicalOperand(t.filter, normalizeFilter)
+      };
+    }
+    return t;
+  });
+}

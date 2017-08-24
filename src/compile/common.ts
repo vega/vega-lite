@@ -1,8 +1,7 @@
-import {Channel, TEXT} from '../channel';
+
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '../fielddef';
-import * as log from '../log';
-import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
+import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
@@ -72,29 +71,31 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
 }
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
-  if (fieldDef.type === 'quantitative') {
-    const format = numberFormat(fieldDef, specifiedFormat, config);
-    if (fieldDef.bin) {
-      if (useBinRange) {
-        // For bin range, no need to apply format as the formula that creates range already include format
-        return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-      } else {
-        return {
-          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
-        };
-      }
+  const format = numberFormat(fieldDef, specifiedFormat, config);
+  if (fieldDef.bin) {
+    if (useBinRange) {
+      // For bin range, no need to apply format as the formula that creates range already include format
+      return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
     } else {
+      const startField = field(fieldDef, {expr});
+      const endField = field(fieldDef, {expr, binSuffix: 'end'});
       return {
-        signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+        signal: binFormatExpression(startField, endField, format, config)
       };
     }
+  } else if (fieldDef.type === 'quantitative') {
+    return {
+      signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+    };
   } else if (fieldDef.type === 'temporal') {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   } else {
-    return {signal: `''+${field(fieldDef, {expr})}`};
+    return {
+      signal: `''+${field(fieldDef, {expr})}`
+    };
   }
 }
 
@@ -126,12 +127,18 @@ export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string
 }
 
 function formatExpr(field: string, format: string) {
-  return `format(${field}, '${format || ''}')`;
+  return `format(${field}, "${format || ''}")`;
 }
 
 export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
   return formatExpr(field, specifiedFormat || config.numberFormat);
 }
+
+
+export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
+  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+}
+
 
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
@@ -155,7 +162,7 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
  */
 export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(field(orderChannelDef, {binSuffix: 'start', ...fieldRefOption}));
+    s.field.push(field(orderChannelDef, fieldRefOption));
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});

@@ -1,6 +1,6 @@
 import {SCALE_CHANNELS} from '../../channel';
 import {ScaleType} from '../../scale';
-import {Dict, duplicate, extend, keys, stringValue} from '../../util';
+import {Dict, extend, keys, stringValue} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';

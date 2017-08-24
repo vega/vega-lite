@@ -5,11 +5,17 @@ title: Customizing Size
 permalink: /docs/size.html
 ---
 
-At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple sub-plots or _cells_.
 
-## Width and Height of a Single Plot
+This page describe how to adjust width and height of visualizations in Vega-lite.
 
-This includes the width of a single plot or each cell of a trellis plot.
+## Documentation Overview
+
+* TOC
+{:toc}
+
+## Width and Height of Single and Layered Plots
+
+[Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size.
 
 ### Explicitly Specified Width and Height
 
@@ -17,7 +23,7 @@ When the top-level `width` property is specified, the width of the single plot i
 
 <span class="vl-example" data-name="bar_size_explicit"></span>
 
-**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be overridden with `null`.
+**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be ignored (overridden with `null`).
 
 **Warning**: If the cardinality of the x/y-field's domain is too high, the `rangeStep` might become less than one pixel and the mark might not appear correctly.
 
@@ -25,28 +31,37 @@ When the top-level `width` property is specified, the width of the single plot i
 
 ### Default Width and Height
 
-If the top-level `width` / `height` property is not specified, the width / height of a single plot or each cell of a trellis plot is determined by the properties of the `x` / `y` channel:
+If the top-level `width` / `height` property is not specified, the width / height of a single view is determined by the properties of the `x` / `y` channel:
 
-- If `x` / `y` axis has a continuous scale (either quantitative or time), the width is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property.
+- If `x` / `y` axis has a continuous scale (either quantitative or time), the width/height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property.
 
-- If the `x` / `y` channel has an ordinal scale with a numeric `rangeStep` value (default), the width / height is a product of the scale's [`rangeStep`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to the `x` / `y` channel, plus the scale's padding. (_bandWidth * (cardinality + padding)_).
+- If the `x` / `y` channel has a [discrete scale](scale.html#discrete) (`point` or `band`) with a numeric `rangeStep` value (default), the width / height is is determined based on the scale's `rangeStep`, `paddingInner`, `paddingOuter` and the cardinality of the encoded field (the number of possible distinct values of the field).
 
-This example shows continuous y-scale and ordinal x-scale:
+<!-- TODO Explain more about the formula-->
+
+This example shows a plot with a continuous y-scale and a discrete x-scale:
 
 <span class="vl-example" data-name="bar_size_default"></span>
 
-- If the `x` / `y` channel has an ordinal scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
+- If the `x` / `y` channel has a discrete scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 
-- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except when the mark is `text`.  In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
+- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except for the width when the mark is `text`.  In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
+
+For example, the following plot use `21` as a default height.
 
 <span class="vl-example" data-name="bar_1d_rangestep_config"></span>
 
-## Total Width and Height of a Trellis Plots
+## Width and Height of Multi-View Displays
 
- The total width of the visualization is the product of the cell's width plus the `column` scale's `padding` and the cardinality of the `column` (_(cellWidth + columnPadding) * columnCardinality_).
+Currently, width and height of multi-view displays including [concatanated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views.  To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
 
- Similarly, the total height of the visualization is the product of the cell's height plus the `row` scale's `padding` and the cardinality of the `row` (_(cellHeight + rowPadding) * rowCardinality_).
+For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 
-<span class="vl-example" data-name="trellis_bar"></span>
+<span class="vl-example" data-name="normalized/trellis_scatter_small_normalized"></span>
+
+__Note:__ If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot.
+For example, this specification is equilvalent to the specification above.
+
+<span class="vl-example" data-name="trellis_scatter_small"></span>

@@ -2,7 +2,6 @@ import {VgAxis} from '../../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 
-
 const mainAxisReducer = getAxisReducer('main');
 const gridAxisReducer = getAxisReducer('grid');
 

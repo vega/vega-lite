@@ -1,13 +1,8 @@
-import {Channel, COLUMN, ROW, X, Y} from '../../channel';
-import {MAIN} from '../../data';
-import {hasDiscreteDomain, scaleCompatible} from '../../scale';
-import {extend, isArray, keys, StringSet} from '../../util';
-import {isVgRangeStep, VgData, VgFormulaTransform, VgRangeStep, VgSignal, VgTransform} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
-import {isFacetModel, Model, ModelWithField} from '../model';
+
+import {hasDiscreteDomain} from '../../scale';
+import {isVgRangeStep, VgRangeStep, VgSignal} from '../../vega.schema';
+import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
-import {UnitModel} from '../unit';
 
 export function assembleLayoutSignals(model: Model): VgSignal[] {
   return [].concat(
@@ -40,8 +35,8 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
           // If parent is facet and this is an independent scale, return only signal signal
           // as the width/height will be calculated using the cardinality from
           // facet's aggregate rather than reading from scale domain
-          const parentChannelResolve = model.parent.component.resolve[channel];
-          if (parentChannelResolve.scale === 'independent') {
+          const parentResolve = model.parent.component.resolve;
+          if (parentResolve.scale[channel] === 'independent') {
             return [stepSignal(scaleName, range)];
           }
         }

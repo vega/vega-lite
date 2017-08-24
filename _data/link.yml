@@ -1,5 +1,12 @@
 # Use "" if there is a # in the url
 
+# Spec
+CompositeUnitSpec:
+  name: SingleViewSpec
+  link: spec.html#single
+LayerSpec:
+  link: layer.html
+
 # Data
 Data:
   link: data.html
@@ -9,14 +16,23 @@ DataUrlFormat:
   name: DataFormat
   link: "data.html#format"
 
+TitleParams:
+  link: "title.html#params"
+Anchor:
+  name: String
+TitleOrient:
+  name: String
+
 # Transform
 Transform:
   link: transform.html
 
 AggregateOp:
-  link: "aggregate.html#supported-aggregation-operations"
+  link: "aggregate.html#ops"
 Bin:
   link: bin.html
+BinParams:
+  link: "bin.html#bin-parameters"
 FilterOperand:
   name: Filter
   link: "transform.html#filter"
@@ -43,8 +59,6 @@ Mark:
   name: String
 
 # Encoding
-DateTime:
-  link: "transform.html#datetime"
 Config:
   link: config.html
 EncodingWithFacet:
@@ -54,33 +68,78 @@ Type:
   link: "encoding.html#data-type"
 
 # Channel Definitions
-ConditionalStringLegendDef:
-  name: FieldDef
-  link: "encoding.html#def"
-ConditionalNumberLegendDef:
-  name: FieldDef
-  link: "encoding.html#def"
-ConditionalTextDef:
-  name: FieldDef
-  link: "encoding.html#def"
+ConditionalLegendFieldDef:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+ConditionalLegendValueDef:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+ConditionalTextFieldDef:
+  name: TextFieldDef
+  link: "encoding.html#text-field-def"
+ConditionalTextValueDef:
+  name: TextValueDef
+  link: "encoding.html#text-value-def"
+
+ConditionLegendFieldDef:
+  name: ConditionFieldDef
+  link: "condition.html#field"
+ConditionTextFieldDef:
+  name: ConditionFieldDef
+  link: "condition.html#field"
+ConditionValueDef:
+  link: "condition.html#value"
+
 FieldDef:
-  link: "encoding.html#def"
+  link: "encoding.html#field"
 FacetFieldDef:
   link: "facet.html#facet-field-definition"
 OrderFieldDef:
-  name: FieldDef
-  link: "encoding.html#def"
+  link: "encoding.html#order"
 PositionFieldDef:
-  name: FieldDef
-  link: "encoding.html#def"
-NumberValueDef:
+  link: "encoding.html#position-field-def"
+ValueDef:
   name: ValueDef
   link: "encoding.html#value"
 
-# Scale / Axis / Legend
+# Field Definition
+Aggregate:
+  link: "aggregate.html"
+Axis:
+  link: axis.html
+Bin:
+  link: "bin.html"
+Field:
+  link: field.html
+Legend:
+  link: legend.html
+Scale:
+  link: scale.html
+SortOrder:
+  name: String
+SortField:
+  link: "sort.html#sort-field"
+StackOffset:
+  name: String
+  link: "stack.html"
 
+# Scale / Axis / Legend
 ScaleType:
   name: String
+SchemeParams:
+  link: "scale.html#scheme-params"
+SelectionDomain:
+  name: Object
+Interpolate:
+  name: String
+InterpolateParams:
+  name: Object
+NiceTime:
+  name: String
+VgScheme:
+  link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
+
 AxisOrient:
   name: String
 LegendOrient:
@@ -90,6 +149,8 @@ ResolveMapping:
   link: resolve.html
 
 # Others
+DateTime:
+  link: "types.html#datetime"
 HorizontalAlign:
   name: String
 VerticalAlign:
@@ -107,5 +168,3 @@ Padding:
 SelectionDef:
   name: Selection
   link: selection.html
-
-

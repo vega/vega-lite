@@ -1,16 +1,14 @@
 import {Axis} from '../../axis';
-import {binToString} from '../../bin';
-import {Channel, SpatialScaleChannel, X, Y} from '../../channel';
+import {BinParams} from '../../bin';
+import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {getScaleCategory, hasContinuousDomain, hasDiscreteDomain, ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {truncate} from '../../util';
-import {VgAxis, VgSignalRef} from '../../vega.schema';
-import {numberFormat} from '../common';
+import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {labelAngle} from './encode';
 
 
 export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
@@ -78,11 +76,11 @@ export function orient(channel: Channel) {
 
 export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
 
-  if (!fieldDef.bin && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
-    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
-    // Thus, we set it to 5 for width = 200
-    // and set the same value for y for consistency.
-
+  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    if (fieldDef.bin) {
+      // for binned data, we don't want more ticks than maxbins
+      return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as BinParams).maxbins})`};
+    }
     return {signal: `ceil(${size.signal}/40)`};
   }
 
@@ -102,10 +100,6 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
       // normalize = true as end user won't put 0 = January
       return {signal: dateTimeExpr(dt, true)};
     });
-  }
-  if (!vals && fieldDef.bin) {
-    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }
   return vals;
 }

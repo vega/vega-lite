@@ -1,8 +1,8 @@
-import {TimeUnitComponent} from './compile/data/timeunit';
+
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {Dict, keys, stringValue} from './util';
-
+import {NiceTime} from './scale';
+import {Dict, stringValue} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -218,17 +218,11 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
     return dateExpr;
   }, {} as {[key in SingleTimeUnit]: string});
 
-  if (d.day && keys(d).length > 1) {
-    log.warn(log.message.dayReplacedWithDate(fullTimeUnit));
-    delete d.day;
-    d.date = func(TimeUnit.DATE);
-  }
-
   return dateTimeExpr(d);
 }
 
 /** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit: TimeUnit): string {
+export function smallestUnit(timeUnit: TimeUnit): NiceTime {
   if (!timeUnit) {
     return undefined;
   }
@@ -346,4 +340,12 @@ export function isDiscreteByDefault(timeUnit: TimeUnit) {
 
 function isUTCTimeUnit(timeUnit: TimeUnit) {
   return timeUnit.substr(0, 3) === 'utc';
+}
+
+export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
+  if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
+    log.warn(log.message.dayReplacedWithDate(timeUnit));
+    return timeUnit.replace('day', 'date') as TimeUnit;
+  }
+  return timeUnit;
 }

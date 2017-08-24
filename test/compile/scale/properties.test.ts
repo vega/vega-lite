@@ -3,10 +3,9 @@
 import {assert} from 'chai';
 
 import {Channel, NONSPATIAL_SCALE_CHANNELS} from '../../../src/channel';
-import {Scale, ScaleType} from '../../../src/scale';
+import {ScaleType} from '../../../src/scale';
 
 import * as rules from '../../../src/compile/scale/properties';
-import {Split} from '../../../src/compile/split';
 
 describe('compile/scale', () => {
   describe('nice', () => {
@@ -93,24 +92,38 @@ describe('compile/scale', () => {
     });
   });
 
+  describe('reverse', () => {
+    it('should return true for a continuous scale with sort = "descending".', () => {
+      assert.isTrue(rules.reverse('linear', 'descending'));
+    });
+
+    it('should return false for a discrete scale with sort = "descending".', () => {
+      assert.isUndefined(rules.reverse('point', 'descending'));
+    });
+  });
+
   describe('zero', () => {
+    it('should return true when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
+      assert(rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated'));
+    });
+
     it('should return true when mapping a quantitative field to size', () => {
-      assert(rules.zero('size', {field: 'a', type: 'quantitative'}, false));
+      assert(rules.zero('size', {field: 'a', type: 'quantitative'}, undefined));
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      assert(!rules.zero('size', {field: 'a', type: 'ordinal'}, false));
+      assert(!rules.zero('size', {field: 'a', type: 'ordinal'}, undefined));
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(rules.zero(channel, {field: 'a', type: 'quantitative'}, false));
+        assert(rules.zero(channel, {field: 'a', type: 'quantitative'}, undefined));
       }
     });
 
     it('should return false when mapping a binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, false));
+        assert(!rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, undefined));
       }
     });
 
@@ -118,7 +131,7 @@ describe('compile/scale', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
         assert(!rules.zero(channel, {
           bin: true, field: 'a', type: 'quantitative'
-        }, true));
+        }, [3, 5]));
       }
     });
   });

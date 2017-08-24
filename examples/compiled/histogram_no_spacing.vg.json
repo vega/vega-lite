@@ -27,7 +27,7 @@
                     "type": "bin",
                     "field": "IMDB_Rating",
                     "as": [
-                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating",
                         "bin_maxbins_10_IMDB_Rating_end"
                     ],
                     "signal": "bin_maxbins_10_IMDB_Rating_bins",
@@ -39,7 +39,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating",
                         "bin_maxbins_10_IMDB_Rating_end"
                     ],
                     "ops": [
@@ -79,7 +79,7 @@
                 "update": {
                     "x2": {
                         "scale": "x",
-                        "field": "bin_maxbins_10_IMDB_Rating_start"
+                        "field": "bin_maxbins_10_IMDB_Rating"
                     },
                     "x": {
                         "scale": "x",
@@ -107,7 +107,7 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "bin_maxbins_10_IMDB_Rating_start",
+                    "bin_maxbins_10_IMDB_Rating",
                     "bin_maxbins_10_IMDB_Rating_end"
                 ],
                 "sort": true
@@ -144,10 +144,10 @@
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
-            "title": "BIN(IMDB_Rating)",
-            "values": {
-                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+            "tickCount": {
+                "signal": "min(ceil(width/40), 10)"
             },
+            "title": "BIN(IMDB_Rating)",
             "zindex": 1,
             "encode": {
                 "labels": {

@@ -10,5 +10,5 @@
       "color": {"field": {"repeat": "column"}, "type": "nominal"}
     }
   },
-  "resolve": {"color": {"scale": "independent"}}
+  "resolve": {"scale": {"color": "independent"}}
 }

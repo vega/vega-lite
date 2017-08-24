@@ -1,8 +1,7 @@
 import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
-import {ResolveMode} from '../../resolve';
-import {Dict, keys} from '../../util';
+import {keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {isUnitModel, Model} from '../model';
@@ -12,7 +11,7 @@ import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
-import * as rules from './rules';
+import * as properties from './properties';
 
 
 export function parseLegend(model: Model) {
@@ -92,9 +91,9 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
     case 'title':
       return getSpecifiedOrDefaultValue(specifiedLegend.title, fieldDefTitle(fieldDef, model.config));
     case 'values':
-      return rules.values(specifiedLegend);
+      return properties.values(specifiedLegend);
     case 'type':
-      return getSpecifiedOrDefaultValue(specifiedLegend.type, rules.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
+      return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }
 
   // Otherwise, return specified property.
@@ -108,10 +107,9 @@ function parseNonUnitLegend(model: Model) {
     parseLegend(child);
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      const channelResolve = model.component.resolve[channel];
-      channelResolve.legend = parseGuideResolve(model.component.resolve, channel);
+      resolve.legend[channel] = parseGuideResolve(model.component.resolve, channel);
 
-      if (channelResolve.legend === 'shared') {
+      if (resolve.legend[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
         // We will try to merge and see if there is a conflict
 
@@ -120,7 +118,7 @@ function parseNonUnitLegend(model: Model) {
         if (!legends[channel]) {
           // If merge returns nothing, there is a conflict so we cannot make the legend shared.
           // Thus, mark legend as independent and remove the legend component.
-          channelResolve.legend = 'independent';
+          resolve.legend[channel] = 'independent';
           delete legends[channel];
         }
       }
@@ -134,7 +132,7 @@ function parseNonUnitLegend(model: Model) {
         continue;
       }
 
-      if (resolve[channel].legend === 'shared') {
+      if (resolve.legend[channel] === 'shared') {
         // After merging shared legend, make sure to remove legend from child
         delete child.component.legends[channel];
       }

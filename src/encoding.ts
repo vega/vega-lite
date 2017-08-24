@@ -1,12 +1,10 @@
-// utility for encoding mapping
-import {AggregateOp} from './aggregate';
+
 import {Channel, CHANNELS, supportMark} from './channel';
-import {CompositeAggregate} from './compositemark';
 import {Facet} from './facet';
 import {
   ChannelDef,
-  Condition,
-  Conditional,
+  ConditionalFieldDef,
+  ConditionalValueDef,
   Field,
   FieldDef,
   getFieldDef,
@@ -26,62 +24,63 @@ import * as log from './log';
 import {Mark} from './mark';
 import {isArray, keys, some} from './util';
 
-
 export interface Encoding<F> {
   /**
-   * X coordinates for `point`, `circle`, `square`,
-   * `line`, `rule`, `text`, and `tick`
-   * (or to width and height for `bar` and `area` marks).
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"`.
    */
-  x?: PositionFieldDef<F> | ValueDef<number>;
+  x?: PositionFieldDef<F> | ValueDef;
 
   /**
-   * Y coordinates for `point`, `circle`, `square`,
-   * `line`, `rule`, `text`, and `tick`
-   * (or to width and height for `bar` and `area` marks).
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"`.
    */
-  y?: PositionFieldDef<F> | ValueDef<number>;
+  y?: PositionFieldDef<F> | ValueDef;
 
   /**
-   * X2 coordinates for ranged `bar`, `rule`, `area`.
+   * X2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  x2?: FieldDef<F> | ValueDef<number>;
+  x2?: FieldDef<F> | ValueDef;
 
   /**
-   * Y2 coordinates for ranged `bar`, `rule`, `area`.
+   * Y2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  y2?: FieldDef<F> | ValueDef<number>;
+  y2?: FieldDef<F> | ValueDef;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
-   * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
-   * stroke color for `line` and `point`.)
+   * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
+   * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
+   *
+   * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
-  color?: Conditional<LegendFieldDef<F>, ValueDef<string>>;
+  color?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
+   *
+   * __Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property.
    */
-  opacity?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
+  opacity?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
 
   /**
    * Size of the mark.
-   * - For `point`, `square` and `circle`
-   * – the symbol size, or pixel area of the mark.
-   * - For `bar` and `tick` – the bar and tick's size.
-   * - For `text` – the text's font size.
-   * - Size is currently unsupported for `line` and `area`.
+   * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
+   * - For `"bar"` and `"tick"` – the bar and tick's size.
+   * - For `"text"` – the text's font size.
+   * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
    */
-  size?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
+  size?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
+   * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
    */
-  shape?: Conditional<LegendFieldDef<F>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
+  shape?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -92,15 +91,17 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
+  text?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
+  tooltip?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
 
   /**
-   * stack order for stacked marks or order of data points in line marks.
+   * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
+   *
+   * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
   order?: OrderFieldDef<F> | OrderFieldDef<F>[];
 }

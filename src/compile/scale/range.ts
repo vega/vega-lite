@@ -6,12 +6,12 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, VgRange, VgRangeScheme, VgSignalRef} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {LayoutSize} from '../layoutsize/component';
 import {isUnitModel, Model} from '../model';
-import {Explicit, makeImplicit, Split} from '../split';
+import {Explicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
+import {ScaleComponentIndex} from './component';
 import {parseNonUnitScaleProperty} from './properties';
 
 
@@ -125,7 +125,7 @@ export function parseRangeForChannel(
 
 function parseScheme(scheme: Scheme) {
   if (isExtendedScheme(scheme)) {
-    const r: VgRangeScheme = {scheme: scheme.name};
+    const r: VgScheme = {scheme: scheme.name};
     if (scheme.count) {
       r.count = scheme.count;
     }
@@ -186,7 +186,6 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
   }
   switch (mark) {
     case 'bar':
-      return config.scale.minBandSize !== undefined ? config.scale.minBandSize : config.bar.continuousBandSize;
     case 'tick':
       return config.scale.minBandSize;
     case 'line':
@@ -197,9 +196,7 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
     case 'point':
     case 'square':
     case 'circle':
-      if (config.scale.minSize) {
-        return config.scale.minSize;
-      }
+      return config.scale.minSize;
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMin not implemented for the mark

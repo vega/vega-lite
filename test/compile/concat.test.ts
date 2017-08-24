@@ -3,29 +3,6 @@ import {VgLayout} from '../../src/vega.schema';
 import {parseConcatModel} from '../util';
 
 describe('Concat', function() {
-  describe('assembleScales', () => {
-    it('includes all scales', () => {
-      const model = parseConcatModel({
-        vconcat: [{
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'ordinal'}
-          }
-        },{
-          mark: 'bar',
-          encoding: {
-            x: {field: 'b', type: 'ordinal'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }]
-      });
-
-      model.parseScale();
-      const scales = model.assembleScales();
-      assert.equal(scales.length, 3);
-    });
-  });
-
   describe('merge scale domains', () => {
     it('should instantiate all children in vconcat', () => {
       const model = parseConcatModel({

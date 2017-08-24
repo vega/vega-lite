@@ -5,7 +5,6 @@ import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {OutputNode} from '../../../src/compile/data/dataflow';
 import {SourceNode} from '../../../src/compile/data/source';
-import {Data} from '../../../src/data';
 import {VgData} from '../../../src/vega.schema';
 
 describe('compile/data/assemble', () => {

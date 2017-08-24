@@ -17,7 +17,7 @@ You can find more details, [documentation](https://vega.github.io/vega-lite/docs
 
 Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/custom/vega-lite).
 
-Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines.
+Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
 ## Team
 

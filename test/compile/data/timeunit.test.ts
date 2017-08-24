@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {Model, ModelWithField} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
 
@@ -10,8 +10,8 @@ function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(model).assemble();
 }
 
-function assembleFromTransform(model: Model, t: TimeUnitTransform) {
-  return TimeUnitNode.makeFromTransform(model, t).assemble();
+function assembleFromTransform(t: TimeUnitTransform) {
+  return TimeUnitNode.makeFromTransform(t).assemble();
 }
 
 describe('compile/data/timeunit', () => {
@@ -36,16 +36,8 @@ describe('compile/data/timeunit', () => {
 
     it('should return a dictionary of formula transform from transform array', () => {
       const t: TimeUnitTransform = {field: 'date', as: 'month_date', timeUnit: 'month'};
-      const model = parseUnitModel({
-        "data": {"values": []},
-        "transform": [t],
-        "mark": "point",
-        "encoding": {
-          "x": {field: 'date', type: 'temporal', timeUnit: 'month'}
-        }
-      });
 
-      assert.deepEqual(assembleFromTransform(model, t), [{
+      assert.deepEqual(assembleFromTransform(t), [{
         type: 'formula',
         as: 'month_date',
         expr: 'datetime(0, month(datum["date"]), 1, 0, 0, 0, 0)'

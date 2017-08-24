@@ -4,7 +4,6 @@ import {
   brush,
   compositeTypes,
   embedFn,
-  hits as hitsMaster,
   parentSelector,
   spec,
   testRenderFn,
@@ -160,7 +159,7 @@ const cmp = (a: number, b: number) => a - b;
         it(`should work with shared scales in ${specType} views`, function() {
           for (let i = 0; i < hits.bins.length; i++) {
             embed(spec(specType, 0, {type, ...binding},
-              {resolve: {x: {scale: 'shared'}, y: {scale: 'shared'}}}));
+              {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
             const {inOut, xold, yold} = setup(specType, i, ['x', 'y'], parent);
             const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];

@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {FacetNode} from '../../../src/compile/data/facet';
-import {VgData} from '../../../src/vega.schema';
-import {parseFacetModel, parseFacetModelWithScale} from '../../util';
+import {parseFacetModelWithScale} from '../../util';
 
 describe('compile/data/facet', function() {
   describe('assemble', () => {
@@ -29,7 +28,7 @@ describe('compile/data/facet', function() {
           }
         },
         'resolve': {
-          'x': {'scale': 'independent'}
+          'scale': {'x': 'independent'}
         },
         'config': {'cell': {'fill': 'yellow'}}
       });
@@ -70,11 +69,9 @@ describe('compile/data/facet', function() {
           }
         },
         'resolve': {
-          'x': {
-            'scale': 'independent'
-          },
-          'y': {
-            'scale': 'independent'
+          'scale': {
+            'x': 'independent',
+            'y': 'independent'
           }
         }
       });

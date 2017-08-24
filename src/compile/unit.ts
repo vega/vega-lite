@@ -12,7 +12,7 @@ import {
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {isMarkDef, Mark, MarkDef} from '../mark';
 import {Domain, hasDiscreteDomain, Scale} from '../scale';
@@ -20,8 +20,8 @@ import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
-import {Dict, duplicate, extend} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {Dict, duplicate} from '../util';
+import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -32,7 +32,6 @@ import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
-import {assembleScalesForModel} from './scale/assemble';
 import {ScaleIndex} from './scale/component';
 import {
   assembleTopLevelSignals,
@@ -65,7 +64,7 @@ export class UnitModel extends ModelWithField {
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config) {
 
-    super(spec, parent, parentGivenName, config, {});
+    super(spec, parent, parentGivenName, config, undefined);
     this.initSize({
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
@@ -205,10 +204,6 @@ export class UnitModel extends ModelWithField {
     this.component.axes = parseUnitAxis(this);
   }
 
-  public assembleScales(): VgScale[] {
-    return assembleScalesForModel(this);
-  }
-
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
     return assembleTopLevelSignals(this, signals);
   }
@@ -285,22 +280,5 @@ export class UnitModel extends ModelWithField {
   public fieldDef(channel: SingleDefChannel): FieldDef<string> {
     const channelDef = this.encoding[channel] as ChannelDef<string>;
     return getFieldDef(channelDef);
-  }
-
-  /** Get "field" reference for vega */
-  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (!fieldDef) {
-      return undefined;
-    }
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
   }
 }

@@ -46,8 +46,10 @@ describe('Selection + Scales', function() {
         }
       ],
       resolve: {
-        color: {scale: 'independent'},
-        opacity: {scale: 'independent'}
+        scale: {
+          color: 'independent',
+          opacity: 'independent'
+        }
       }
     });
 

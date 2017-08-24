@@ -42,7 +42,7 @@
                     "type": "bin",
                     "field": "distance",
                     "as": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "signal": "child_distance_bin_maxbins_20_distance_bins",
@@ -54,7 +54,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance",
                         "bin_maxbins_20_distance_end"
                     ],
                     "ops": [
@@ -91,7 +91,7 @@
                     "type": "bin",
                     "field": "delay",
                     "as": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "signal": "child_delay_bin_maxbins_20_delay_bins",
@@ -103,7 +103,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay",
                         "bin_maxbins_20_delay_end"
                     ],
                     "ops": [
@@ -140,7 +140,7 @@
                     "type": "bin",
                     "field": "time",
                     "as": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "signal": "child_time_bin_maxbins_20_time_bins",
@@ -152,7 +152,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time",
                         "bin_maxbins_20_time_end"
                     ],
                     "ops": [
@@ -217,7 +217,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_distance_x",
-                                "field": "bin_maxbins_20_distance_start",
+                                "field": "bin_maxbins_20_distance",
                                 "offset": 1
                             },
                             "x": {
@@ -244,10 +244,10 @@
                     "scale": "child_distance_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(distance)",
-                    "values": {
-                        "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(distance)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -320,7 +320,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_delay_x",
-                                "field": "bin_maxbins_20_delay_start",
+                                "field": "bin_maxbins_20_delay",
                                 "offset": 1
                             },
                             "x": {
@@ -347,10 +347,10 @@
                     "scale": "child_delay_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(delay)",
-                    "values": {
-                        "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(delay)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -423,7 +423,7 @@
                         "update": {
                             "x2": {
                                 "scale": "child_time_x",
-                                "field": "bin_maxbins_20_time_start",
+                                "field": "bin_maxbins_20_time",
                                 "offset": 1
                             },
                             "x": {
@@ -450,10 +450,10 @@
                     "scale": "child_time_x",
                     "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "BIN(time)",
-                    "values": {
-                        "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                    "tickCount": {
+                        "signal": "min(ceil(width/40), 20)"
                     },
+                    "title": "BIN(time)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -506,7 +506,7 @@
             "domain": {
                 "data": "data_0",
                 "fields": [
-                    "bin_maxbins_20_distance_start",
+                    "bin_maxbins_20_distance",
                     "bin_maxbins_20_distance_end"
                 ],
                 "sort": true
@@ -543,7 +543,7 @@
             "domain": {
                 "data": "data_1",
                 "fields": [
-                    "bin_maxbins_20_delay_start",
+                    "bin_maxbins_20_delay",
                     "bin_maxbins_20_delay_end"
                 ],
                 "sort": true
@@ -580,7 +580,7 @@
             "domain": {
                 "data": "data_2",
                 "fields": [
-                    "bin_maxbins_20_time_start",
+                    "bin_maxbins_20_time",
                     "bin_maxbins_20_time_end"
                 ],
                 "sort": true

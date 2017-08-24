@@ -2,9 +2,7 @@
 
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
-import {AxisComponent} from '../../../src/compile/axis/component';
 import {parseGridAxis, parseLayerAxis, parseMainAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
-import {gridScale} from '../../../src/compile/axis/rules';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('Axis', function() {
@@ -121,7 +119,6 @@ describe('Axis', function() {
               "x": {"field": "Cylinders","type": "ordinal"},
               "y": {
                 "aggregate": "max",
-                "bin": false,
                 "field": "Horsepower",
                 "type": "quantitative"
               },
@@ -135,7 +132,6 @@ describe('Axis', function() {
               "x": {"field": "Cylinders","type": "ordinal"},
               "y": {
                 "aggregate": "min",
-                "bin": false,
                 "field": "Horsepower",
                 "type": "quantitative"
               }

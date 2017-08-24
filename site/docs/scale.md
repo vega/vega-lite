@@ -5,12 +5,15 @@ title: Scale
 permalink: /docs/scale.html
 ---
 
-Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes).
+Scales are functions that transform a domain of data values (numbers, dates, strings, etc.) to a range of visual values (pixels, colors, sizes).
+Internally, Vega-Lite uses [Vega scales](https://vega.github.io/vega/docs/scales/), which are derived from the [d3-scale](https://github.com/d3/d3-scale) library. For more background about scales, please see ["Introducing d3-scale"](https://medium.com/@mbostock/introducing-d3-scale-61980c51545f) by Mike Bostock.
 
-Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels). Supported [scale types](#type) are quantitative, time, and ordinal. Default scale properties are determined based on a set of rules for each scale type, but [`scale`](encoding.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
+Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels.
+To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
 {: .suppress-error}
 ```json
+// Single View Specification
 {
   "data": ... ,
   "mark": ... ,
@@ -19,7 +22,8 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
       "field": ...,
       "type": ...,
       "scale": {                // scale
-        "type": ...
+        "type": ...,
+        ...
       },
       ...
     },
@@ -30,193 +34,306 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
 }
 ```
 
-The rest of this page describes properties of a scale and their default behavior.
+Besides the `scale` property of each encoding channel, the top-level configuration object ([`config`](config.html)) also provides [scale config](#config) (`config: {scale: {...}}`) for setting default scale properties for all scales.
+
+For more information about guides that visualize the scales, please see the [axes](axis.html) and [legends](legend.html) pages.
+
+
+## Documentation Overview
 
 * TOC
 {:toc}
 
 {:#type}
-## Scale Type
+## Scale Types
 
-Vega-Lite supports the following scale types:
-
-Quantitative Scale
-: A quantitative scales takes continuous, quantitative data as its input domain. There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges. Meanwhile `quantize` and `quantile` scales output discrete ranges.
-
-- `linear` scale expresses each range value _y_ as a linear function of the domain value _x_: _y = mx + b_. This is the default scale for a quantitative field (field with `type` = `"quantitative"`).
-- `pow` scale expresses each range value _y_ as a power (exponential) function of the domain value _x_: _y = mx^k + b_, where _k_ is the exponent value. (_k_ can be customized using [`exponent`](#quant-props) property.)
-- `log` scale expresses each range value _y_ as a logarithmic function of the domain value _x_: _y = mlog(x) + b_. As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero. Vega-Lite automatically filters zero values from the field mapped to a log scale.
-- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
-- `quantile` scale maps a sampled input domain to a discrete range by sorting the domain and compute the quantiles. The cardinality of the output range determines the number of quantiles that will be computed.
-
-<!-- TODO: need to test if we support threshold scale correctly before writing about it-->
-
-Time Scale
-: Time scales (`time` and `utc`) are [quantitative scales](#quantitative) with a temporal domain: values in the input domain are assumed to be [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects or timestamps. The `time` scale type uses the current local timezone setting. UTC scales (`utc`) instead use [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time). Both `time` and `utc` scales use a default _domain_ of [2000-01-01, 2000-01-02], and a default unit _range_ [0, 1]. See more about [UTC time](timeunit.html#utc)
-
-Ordinal Scale
-: An ordinal scale (`ordinal`) takes discrete domain as their input domain.   Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.
-
-- An ordinal `color` scale with `nominal` data outputs categorical color palette while an ordinal `color` scale with `ordinal` data outputs sequential color ramp. ([See example](#ex-color-range).)
-- An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
-- Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range. The default order for nominal data is determined by Javascript's natural order. For example, `"a"` < `"b"`.
+The `type` property can be specified to customize the scale type.
 
 {% include table.html props="type" source="Scale" %}
 
-<!-- TODO: add utc to the above table for temporal field -->
 
-**Note:** For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales).
+By default, Vega-Lite use the following scale types for the following [data types](type.html) and [encoding channels](encoding.html#channel):
 
-#### Example: Log Scale
+|                      | Nominal / Ordinal               | Quantitative              | Bin-Quantitative<sup>1</sup>    | Temporal                  |
+|---------------------:|:------------------------------:|:-------------------------:|:------------------------:|:-------------------------:|
+| __X, Y__ | [Band](#band) / [Point](#point)<sup>2</sup>| [Linear](#linear)         | [Linear](#linear)        | [Time](#time)             |
+| __Size, Opacity__    | [Point](#point)                | [Linear](#linear)         | [Bin-Linear](#bin-linear)| [Time](#time)             |
+| __Color__            | [Ordinal](#ordinal)            | [Sequential](#sequential) | [Bin-Ordinal](#ordinal)  | [Sequential](#sequential) |
+| __Shape__            | [Ordinal](#ordinal)            | N/A                       | N/A                      | N/A                       |
 
-The following example has a logarithmic y-scale.
-
-<div class="vl-example" data-name="scatter_log"></div>
-
-<!-- TODO: refine log example -->
-
-<!--
-#### Example: UTC Scale
-TODO: example utc scale with utc time unit (once implemented)
--->
+<span class="note-line">
+<sup>1</sup> Quantitative fields with the [`bin`](bin.html) transform.
+</span>
+<span class="note-line">
+<sup>2</sup> For positional (x and y) ordinal and ordinal fields, `"point"` is the default scale type for all marks except
+bar and rect marks, which use `"band"` scales.
+</span>
 
 {:#domain}
-## Scale Domain
+## Scale Domains
 
-By default, a scale draws domain values directly from the channel field.
-Custom domain values can be specified via the scale's `domain` property.
+By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
 {% include table.html props="domain" source="Scale" %}
 
-<!-- TODO:
-- Decide if we should write about custom domain for ordinal scale.
-- Write about default domain for `month`, `day`, `hour`, `minute`.
-- Piecewise scale.
-- Quantize scale?
--->
-
-**Note:** To sort the order mapping between the domain values and range, please use the channel definition's [`sort`](sort.html) property.
-
 <!--
 #### Example: Custom Domain
-TODO: Custom Domain for quantitative
+TODO: Custom Domain for quantitative / discrete scales
 -->
 
-<!-- TODO: Explain default domain for month and (week)day -->
-
 {:#range}
-## Scale Range
+## Scale Ranges
 
-The range of the scale represents the set of output visual values. Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
+The range of the scale represents the set of output visual values. Vega-Lite automatically determines the default range for each [encoding channel](encoding.html#channel) using the following rules:
 
-`x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range is always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
-<span class="note-line">
-__Not Customizable__: specified `range` will be ignored.
-</span>
+| Channels    | Default Range  |
+| :---------- | :-----------------  |
+| `x`         | The range is _always_ `[0, width]`.  Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.  |
+| `y`         | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
+| `opacity`   | Derived from the [scale config](#config)'s `min/maxOpacity`. |
+| `color`     | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
+| `size`      | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
+| `shape`   | Derived from the [pre-defined named range](#range-config) `"symbol"`. |
 
-Nominal `color` Scales
-: A `color` scale of a nominal field has a categorical color palette as its range. The customized categorical colors can be applied by specifying `range` as an array of desired output values or `scheme` as a [string literal for a palette name](#color-palette).
-<span class="note-line">
-__Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
-</span>
-
-Sequential `color` Scales
-: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range. Currently, Vega-Lite only supports color ramp that interpolates between two color values. The customized sequential color `range` takes a two-element array of color values for interpolation.
-<span class="note-line">
-__Default value:__ derived from [scale config](config.html#scale-config)'s `sequentialColorRange` (green ramp between `["#AFC6A3", "#09622A"]` by default).
-</span>
-
-`shape` Scales
-: A `shape` scale has a list of shape type names as its range. A customized shape  `range` is an array of supported shapes.
-<span class="note-line">
-__Default value:__ derived from [scale config](config.html#scale-config)'s `shapeRange` This is, by default, the `"shape"` palette, which is equivalent to`["circle", "cross", "diamond", "square", "triangle-down", "triangle-up"]`.
-</span>
-
-`size` Scales
-: A `size` scale has a sequential range. Customized size `range` can be either a two-element array of size values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
-<span class="note-line">
-__Default value:__
-<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `rangeStep`.
-<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`. If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `rangeStep` (_rangeStep^2_).
-<br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).
-<br/> • for  `tick`: derived from [scale config](config.html#scale-config)'s `tickSizeRange` (`[1, 20]` by default).
-</span>
-
+To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [sequential](#sequential) color scales.
 
 {% include table.html props="range" source="Scale" %}
 
+{:#scheme}
+### Color Schemes
 
-{:#color-palette}
+Color schemes provide a set of named color palettes as a scale range for the `color` channel. Vega-Lite (via Vega) provides a collection of perceptually-motivated color schemes, many of which are drawn from the [d3-scale](https://github.com/d3/d3-scale), [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic), and [ColorBrewer](http://colorbrewer2.org/) projects.
 
-### Built-in Color Scheme
+By default, Vega-Lite assigns different [default color schemes](#range-config) based on the types of the encoded fields:
 
-<!-- FIXME link to Vega heatmap example or a similar Vega-lite version-->
-We support all color schemes provided by the D3 4.0 [d3-scale](https://github.com/d3/d3-scale) and
-[d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic) modules.
-
-### Example: Default Color Ranges based on Data Types
-
-A color scale of a nominal field outputs a categorical color palette.
+-  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the `"category20"` scheme by default).
 
 <div class="vl-example" data-name="scatter_color"></div>
 
-Meanwhile, a color scale an ordinal field and a quantitative field outputs a sequential color ramp.
+- _Ordinal_ fields use the `"ordinal"` [pre-defined named color range](#range-config) (the `"blues"` color scheme by default).
 
 <div class="vl-example" data-name="scatter_color_ordinal"></div>
+
+- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the `"viridis"` scheme by default) for rect marks and `"ramp"` (the `"blues"` scheme by default) for other marks.
+
+<div class="vl-example" data-name="rect_heatmap"></div>
+
 <div class="vl-example" data-name="scatter_color_quantitative"></div>
 
-### Example: Custom Color Range
+There are multiple ways to customize the scale range for the color encoding channel:
 
-We can customize the color range of the scatterplot above by providing `scale`'s `range` property. For a nominal color field, `range` can be an array describing the desired palette.
+1) Set a custom `scheme`.
+
+{% include table.html props="scheme" source="Scale" %}
+
+For example, the following plot use the `"category20b"` scheme.
+
+<div class="vl-example" data-name="stacked_area"></div>
+
+{:#scheme-params}
+
+The `scheme` property can also be a __scheme parameter object__, which contain the following properties:
+
+{% include table.html props="name,extent,count" source="SchemeParams" %}
+
+2) Setting the `range` property to an array of valid CSS color strings.
 
 <div class="vl-example" data-name="scatter_color_custom"></div>
 
-For ordinal, quantitative, and time fields, `range` can be a two-element array describing the two colors for interpolation.
+3) Change the default color schemes using the [range config](#range-config).
 
-<div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
+{:#continuous}
+## Continuous Scales
 
-### Piecewise Scale Example: Diverging Color Scale
+Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors).  Supported continuous scale types for _quantitative_ fields are [`"linear"`](#linear), [`"log"`](#log), [`"pow"`](#pow), [`"sqrt"`](#sqrt), and [`"sequential"`](#sequential).  Meanwhile, supported continuous scale types for _temporal_ fields are [`"time"`](#time), [`"utc"`](#utc), and [`"sequential"`](#sequential).
 
-We can also create a diverging color graph by specify `range` with multiple elements. The number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
+By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel) except for `color`, which uses `"sequential"` scales for both quantitative and temporal fields.
+
+In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
+
+{% include table.html props="clamp,interpolate,nice,round,zero" source="Scale" %}
+
+{:#linear}
+### Linear Scales
+
+Linear scales (`"linear"`) are quantitative scales scales that preserve proportional differences. Each range value y can be expressed as a linear function of the domain value _x_: _y = mx + b_.
+
+{:#pow}
+### Power Scales
+
+Power scales (`"pow"`) are quantitative scales scales that apply an exponential transform to the input domain value before the output range value is computed. Each range value y can be expressed as a polynomial function of the domain value  _x_: _y = mx^k + b_, where _k_ is the `exponent` value. Power scales also support negative domain values, in which case the input value and the resulting output value are multiplied by -1.
+
+{% include table.html props="exponent" source="Scale" %}
+
+{:#sqrt}
+### Square Root Scales
+
+Square root (`"sqrt"`) scales are a convenient shorthand for power scales with an `exponent` of `0.5`, indicating a square root transform.
+
+{:#log}
+
+### Logarithmic Scales
+
+Log scales (`"log"`) are quantitative scales in which a logarithmic transform is applied to the input domain value before the output range value is computed. Log scales are particularly useful for plotting data that varies over multiple orders of magnitude. The mapping to the range value y can be expressed as a logarithmic function of the domain value _x_: _y = m log<sub>a</sub>(x) + b_, where _a_ is the logarithmic `base`.
+
+As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero.
+A log scale with a positive domain has a well-defined behavior for positive values, and a log scale with a negative domain has a well-defined behavior for negative values. (For a negative domain, input and output values are implicitly multiplied by -1.) The behavior of the scale is undefined if you run a negative value through a log scale with a positive domain or vice versa.
+
+{% include table.html props="base" source="Scale" %}
+
+__Example:__ The following plot has a logarithmic y-scale.
+
+<div class="vl-example" data-name="scatter_log"></div>
+
+<!-- {% include table.html props="base" source="Scale" %} -->
+
+<!--
+- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
+- `quantile` scale maps a sampled input domain to a discrete range by sorting the domain and compute the quantiles. The cardinality of the output range determines the number of quantiles that will be computed. -->
+
+<!-- TODO: need to test if we support threshold scale correctly before writing about it-->
+
+{:#time}
+### Time and UTC Scales
+
+Time and UTC scales (`"time"` and `"utc"`) are [continuous scales](#quantitative) with a temporal domain: values in the input domain are assumed to be [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects or timestamps. Time scales use the current local timezone setting. UTC scales instead use [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+
+{:#sequential}
+### Sequential Scales
+
+Sequential scales (`"sequential"`) are similar to linear scales, but use a fixed interpolator to determine the output range. By default, Vega-lite uses sequential scales to encode continuous (quantitative and temporal) fields with `color`s.
+
+To customize the range of a sequential scale, either a [`range`](#range) array listing colors or a color [`scheme`](#scheme) can be specified.
+
+{:#piecewise}
+### Piecewise Scales
+
+We can use any types of continuous scales ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc), [`"sequential"`](scale.html#sequential)) to create a diverging color graph by specifying a custom `domain` with multiple elements.
+
+If `range` is specified, the number of elements in `range` should match with the number of elements in `domain`. [Diverging color `scheme`s](https://vega.github.io/vega/docs/schemes/#diverging) are also useful as a range for a piecewise scale.
+
+__Example__
 
 <div class="vl-example" data-name="diverging_color_points"></div>
 
+{:#discrete}
+## Discrete Scales
 
-## Other Scale Properties
-
-### General Scale Properties
-
-{% include table.html props="reverse,round,paddingInner,paddingOuter" source="Scale" %}
-
-{:#quant-props}
-
-### Quantitative Scale Properties
-
-{% include table.html props="clamp,exponent,nice,zero," source="Scale" %}
-
-
-### Time Scale Properties
-
-{% include table.html props="clamp,nice" source="Scale" %}
-
+Discrete scales map values from a discrete domain to a discrete or continuous range.
 
 {:#ordinal}
-### Discrete Scale Properties
+### Ordinal Scales
 
-<!-- TODO revise -->
+Ordinal scales (`"ordinal"`) have a discrete domain and range. These scales function as a “lookup table” from a domain value to a range value.
 
-{% include table.html props="rangeStep,scheme,padding" source="Scale" %}
+By default, Vega-Lite automatically creates ordinal scales for `color` and `shape` channels.  For example, the following plot implicitly has two ordinal scales, which map the values of the field `"Origin"` to a set of `color`s and a set of `shape`s.
 
-{:#ex-bandwidth}
-#### Example: Custom Range Step
+<div class="vl-example" data-name="scatter_colored_with_shape"></div>
 
-Given a bar chart:
+The [`range`](#range) of an ordinal scale can be an array of desired output values, which are directly mapped to elements in the [`domain`](#domain).  Both `domain` and `range` array can be re-ordered to specify the order and mapping between the domain and the output range. For ordinal color scales, a custom [`scheme`](#scheme) can be set as well.
+
+<a name="point"></a><!-- point and band are in the same section -->
+
+{:#band}
+### Band and Point Scales
+
+Band and point scales accept a discrete domain similar to [ordinal scales](#ordinal), but map this domain to a continuous, numeric output range such as pixels.
+
+__Band scales__ (`"band"`) compute the discrete output values by dividing the continuous range into uniform _bands_. Band scales are typically used for bar charts with an ordinal or categorical dimension.
+
+In addition to a standard numerical _range_ value (such as `[0, 500]`), band scales can be given a fixed _step_ size for each band. The actual range is then determined by both the step size and the cardinality (element count) of the input domain.
+
+This image from the [d3-scale documentation](https://github.com/d3/d3-scale#band-scales) illustrates how a band scale works:
+
+<img src="https://raw.githubusercontent.com/d3/d3-scale/master/img/band.png"/>
+
+__Point scales__ (`"point"`) are a variant of [band scales](#band) where the internal band width is fixed to zero. Point scales are typically used for scatterplots with an ordinal or categorical dimension. Similar to band scales, point scale _range_ values may be specified using either a numerical extent (`[0, 500]`) or a step size (`{"step": 20}`).
+
+This image from the [d3-scale documentation](https://github.com/d3/d3-scale#band-scales) illustrates how a point scale works:
+
+<img src="https://raw.githubusercontent.com/d3/d3-scale/master/img/point.png"/>
+
+
+By default, Vega-Lite uses band scales for nominal and ordinal fields on [position channels](encoding.html#position) (`x` and `y`) of [bar](bar.html) or [rect](rect.html) marks.
+For `x` and `y` of other marks and `size` and `opacity`, Vega-Lite uses point scales by default.
+
+For example, the following bar chart has uses a band scale for its x-position.
 
 <div class="vl-example" data-name="bar"></div>
 
-We can make the band for each bar smaller by providing `scale`'s `rangeStep`.
+<a name="padding"/>
+{:#range-step}
+
+To customize the range of band and point scales, users can provide the following properties:
+
+{% include table.html props="padding,paddingInner,paddingOuter,rangeStep,round" source="Scale" %}
+
+For example, we can set the `rangeStep` property to make the bands of the bars smaller.
 
 <span class="vl-example" data-name="bar_size_rangestep_small"></span>
 
-For more information about adjusting size of a visualization, please see [this page](size.html).
+{:#discretizing}
+## Discretizing Scales
+
+Discretizing scales break up a continuous domain into discrete segments, and then map values in each segment to a range value.
+
+{:#bin-linear}
+### Bin-Linear Scales
+
+Binned linear scales (`"bin-linear"`) are a special type of linear scale for use with [binned](bin.html) fields to correctly create legend labels.
+Vega-Lite _always_ uses binned linear scales with binned quantitative fields on size and opacity channels.
+
+For example, the following plot has a binned field on the `size` channel.
+
+<span class="vl-example" data-name="scatter_binned_size"></span>
+
+
+{:#bin-ordinal}
+### Bin-Ordinal Scales
+
+Binned ordinal scales (`"bin-ordinal"`) are a special type of ordinal scale for use with [binned](bin.html) fields to correctly create legend labels.
+Vega-Lite _always_ uses binned ordinal scales with binned quantitative fields on the color channel.
+
+For example, the following plot has a binned field on the `color` channel.
+
+<span class="vl-example" data-name="scatter_binned_color"></span>
+
+Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
+
+{:#config}
+## Configuration
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "scale": {
+      ...                       // Scale Config
+    },
+    "range": {
+      ...                       // Scale Range Config
+    },
+    ...
+  }
+  ...
+}
+```
+
+### Scale Config
+
+To provide themes for all scales, the scale config `config: {scale: {...}}` can contain the following properties:
+
+{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,pointPadding,rangeStep,round,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
+
+{:#range-config}
+### Range Config
+
+Scale range configuration `config: {range: {...}}` defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid [`range`](#range) or, for named color ranges, [Vega scheme definitions](https://vega.github.io/vega/docs/schemes/#scheme-properties).
+
+By default, Vega-Lite (via Vega) includes the following pre-defined named ranges:
+
+{% include table.html props="category,diverging,heatmap,ordinal,ramp,symbol" source="RangeConfig" %}
+
+See [this file](https://github.com/vega/vega-parser/blob/master/src/config.js#L188) for the default values of named ranges.

@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {NameMap} from '../../src/compile/model';
-import {paddingInner, paddingOuter} from '../../src/compile/scale/properties';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('Model', () => {
@@ -109,7 +108,7 @@ describe('Model', () => {
           }
         },
         resolve: {
-          x: {scale: 'independent'}
+          scale: {x: 'independent'}
         }
       });
 

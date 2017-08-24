@@ -4,7 +4,6 @@ import {COUNTING_OPS} from '../src/aggregate';
 import {Channel} from '../src/channel';
 import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
-import {LocalLogger} from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
@@ -37,18 +36,22 @@ describe('fieldDef', () => {
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
     });
 
+    it('normalizes yearmonthday to become yearmonthdate.', log.wrap((localLogger) => {
+      const fieldDef: FieldDef<string> = {
+        timeUnit: 'yearmonthday' as TimeUnit,  // Need to cast here as this is intentionally wrong
+        field: 'a',
+        type: 'temporal'
+      };
+      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {timeUnit: 'yearmonthdate', field: 'a', type: 'temporal'});
+      assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
+    }));
+
     it('should replace other type with quantitative for a field with counting aggregate.', log.wrap((localLogger) => {
       for (const aggregate of COUNTING_OPS) {
         const fieldDef: FieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
         assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {aggregate, field: 'a', type: 'quantitative'});
       }
       assert.equal(localLogger.warns.length, 4);
-    }));
-
-    it('should replace other type with quantitative for a field with bin.', log.wrap((localLogger) => {
-      const fieldDef: FieldDef<string> = {bin: {maxbins: 10}, field: 'a', type: 'nominal'};
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {bin: {maxbins: 10}, field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns.length, 1);
     }));
 
     it('should return fieldDef with default type and throw warning if type is missing.', log.wrap((localLogger) => {

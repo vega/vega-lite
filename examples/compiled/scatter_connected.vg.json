@@ -120,11 +120,8 @@
                         "scale": "y",
                         "field": "gas"
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     },
                     "opacity": {
                         "value": 0.7
