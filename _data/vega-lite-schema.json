@@ -2,6 +2,16 @@
   "$ref": "#/definitions/TopLevelExtendedSpec",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "definitions": {
+    "Aggregate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/AggregateOp"
+        },
+        {
+          "$ref": "#/definitions/CompositeAggregate"
+        }
+      ]
+    },
     "AggregateOp": {
       "enum": [
         "argmax",
@@ -14,7 +24,6 @@
         "median",
         "min",
         "missing",
-        "modeskew",
         "q1",
         "q3",
         "ci0",
@@ -458,6 +467,18 @@
       ],
       "type": "string"
     },
+    "AxisResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "y": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
+      "type": "object"
+    },
     "BOXPLOT": {
       "enum": [
         "box-plot"
@@ -487,7 +508,7 @@
           "type": "number"
         },
         "color": {
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "continuousBandSize": {
@@ -707,6 +728,17 @@
           "description": "Name of the visualization for later reference.",
           "type": "string"
         },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -717,7 +749,7 @@
       },
       "type": "object"
     },
-    "Bin": {
+    "BinParams": {
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
       "properties": {
@@ -780,16 +812,13 @@
         "bin": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Bin"
+              "type": "boolean"
             },
             {
-              "enum": [
-                true
-              ],
-              "type": "boolean"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "An object indicating bin properties, or simply `true` for using default bin values.."
+          "description": "An object indicating bin properties, or simply `true` for using default bin parameters."
         },
         "field": {
           "description": "The data field to bin.",
@@ -821,7 +850,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "dx": {
@@ -1120,14 +1149,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1136,14 +1158,14 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1153,10 +1175,12 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand"
@@ -1164,13 +1188,20 @@
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1178,7 +1209,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1191,14 +1222,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1207,17 +1231,17 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "selection": {
@@ -1229,7 +1253,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1238,7 +1262,7 @@
       ],
       "type": "object"
     },
-    "ConditionTextValueDef": {
+    "ConditionValueDef": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1247,8 +1271,8 @@
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
         }
@@ -1259,152 +1283,12 @@
       ],
       "type": "object"
     },
-    "ConditionNumberValueDef": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand"
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionStringValueDef": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand"
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyNumberLegendDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionNumberValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyStringLegendDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionStringValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyTextDef": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionTextValueDef"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionalNumberLegendDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalNumberLegendFieldDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionalNumberLegendValueDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyNumberLegendDef"
-        }
-      ],
-      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
-    },
-    "ConditionalStringLegendDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalStringLegendFieldDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionalStringLegendValueDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyStringLegendDef"
-        }
-      ],
-      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
-    },
-    "ConditionalTextDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalTextFieldDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionalTextValueDef"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyTextDef"
-        }
-      ],
-      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
-    },
-    "ConditionalNumberLegendFieldDef": {
+    "ConditionalLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1413,17 +1297,18 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionNumberValueDef"
+          "$ref": "#/definitions/ConditionValueDef",
+          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1433,92 +1318,30 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            }
-          ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
-    "ConditionalStringLegendFieldDef": {
-      "additionalProperties": false,
-      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
-      "properties": {
-        "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/Bin"
-            }
-          ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-        },
-        "condition": {
-          "$ref": "#/definitions/ConditionStringValueDef"
-        },
-        "field": {
-          "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "legend": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
               "type": "null"
             }
-          ]
-        },
-        "scale": {
-          "$ref": "#/definitions/Scale"
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SortField"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1526,7 +1349,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1539,14 +1362,7 @@
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -1555,20 +1371,21 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionTextValueDef"
+          "$ref": "#/definitions/ConditionValueDef",
+          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -1577,7 +1394,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -1585,7 +1402,7 @@
       ],
       "type": "object"
     },
-    "ConditionalNumberLegendValueDef": {
+    "ConditionalLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1595,42 +1412,20 @@
               "$ref": "#/definitions/ConditionLegendFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionNumberValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
-          ]
+          ],
+          "description": "A field definition or a value definition with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalStringLegendValueDef": {
-      "additionalProperties": false,
-      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionStringValueDef"
-            }
+          "type": [
+            "number",
+            "string",
+            "boolean"
           ]
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
     "ConditionalTextValueDef": {
@@ -1643,22 +1438,20 @@
               "$ref": "#/definitions/ConditionTextFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionTextValueDef"
+              "$ref": "#/definitions/ConditionValueDef"
             }
-          ]
+          ],
+          "description": "A field definition or a value definition with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
     "Config": {
@@ -1756,11 +1549,8 @@
           "description": "Point-Specific Config "
         },
         "range": {
-          "additionalProperties": {
-            "$ref": "#/definitions/RangeConfig"
-          },
-          "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.",
-          "type": "object"
+          "$ref": "#/definitions/RangeConfig",
+          "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties."
         },
         "rect": {
           "$ref": "#/definitions/MarkConfig",
@@ -1804,7 +1594,7 @@
         },
         "title": {
           "$ref": "#/definitions/VgTitleConfig",
-          "description": "Title Config "
+          "description": "Title Config"
         }
       },
       "type": "object"
@@ -1977,37 +1767,6 @@
       "minimum": 1,
       "type": "number"
     },
-    "Domain": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/DateTime"
-          },
-          "type": "array"
-        },
-        {
-          "enum": [
-            "unaggregated"
-          ],
-          "type": "string"
-        },
-        {
-          "$ref": "#/definitions/SelectionDomain"
-        }
-      ]
-    },
     "ERRORBAR": {
       "enum": [
         "error-bar"
@@ -2018,8 +1777,15 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -2036,8 +1802,15 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
-          "description": "Opacity of the marks – either can be a value or a range."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2051,22 +1824,50 @@
               "type": "array"
             }
           ],
-          "description": "stack order for stacked marks or order of data points in line marks."
+          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
-          "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalTextValueDef"
+            }
+          ],
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalTextValueDef"
+            }
+          ],
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
@@ -2075,10 +1876,10 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`."
         },
         "x2": {
           "anyOf": [
@@ -2086,10 +1887,10 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -2097,10 +1898,10 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`."
         },
         "y2": {
           "anyOf": [
@@ -2108,10 +1909,10 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -2120,8 +1921,15 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
-          "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -2142,8 +1950,15 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
-          "description": "Opacity of the marks – either can be a value or a range."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2157,26 +1972,54 @@
               "type": "array"
             }
           ],
-          "description": "stack order for stacked marks or order of data points in line marks."
+          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalStringLegendDef",
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalNumberLegendDef",
-          "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalLegendValueDef"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalTextValueDef"
+            }
+          ],
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalTextValueDef"
+            }
+          ],
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
@@ -2185,10 +2028,10 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`."
         },
         "x2": {
           "anyOf": [
@@ -2196,10 +2039,10 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -2207,10 +2050,10 @@
               "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`."
         },
         "y2": {
           "anyOf": [
@@ -2218,10 +2061,10 @@
               "$ref": "#/definitions/FieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
+          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -2261,28 +2104,6 @@
       ],
       "type": "object"
     },
-    "ExtendedScheme": {
-      "additionalProperties": false,
-      "properties": {
-        "count": {
-          "type": "number"
-        },
-        "extent": {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "name": {
-          "description": "Color scheme that determines output color of an ordinal/sequential color scale.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name"
-      ],
-      "type": "object"
-    },
     "Facet": {
       "additionalProperties": false,
       "properties": {
@@ -2301,14 +2122,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2317,17 +2131,21 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
           "$ref": "#/definitions/Header"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortOrder",
+          "description": "Sort order for a facet field.\nThis can be `\"ascending\"`, `\"descending\"`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2335,7 +2153,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -2362,14 +2180,7 @@
       "description": "Definition object for a data field, its type and transformation of an encoding channel.",
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2378,14 +2189,14 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2393,7 +2204,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -2405,14 +2216,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -2421,14 +2225,14 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2507,10 +2311,21 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2548,7 +2363,18 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2575,11 +2401,11 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
-          "description": "Unit specs that will be layered.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
           "items": {
             "anyOf": [
               {
@@ -2597,7 +2423,18 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2607,7 +2444,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2635,10 +2472,21 @@
           "$ref": "#/definitions/Repeat"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2692,7 +2540,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2710,6 +2558,17 @@
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
         },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2718,7 +2577,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2744,7 +2603,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2762,6 +2621,17 @@
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
         },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -2770,7 +2640,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2796,7 +2666,18 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -2977,9 +2858,6 @@
           "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
           "type": "string"
         },
-        "sort": {
-          "$ref": "#/definitions/SortOrder"
-        },
         "title": {
           "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
           "type": "string"
@@ -3000,10 +2878,10 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data values."
         },
         "values": {
-          "description": "Pass array of objects instead of a url to a file.",
+          "description": "The full data set, included inline. This can be an array of objects or primitive values.\nArrays of primitive values are ingested as objects with a `data` property.",
           "items": {
           },
           "type": "array"
@@ -3031,6 +2909,26 @@
         "monotone"
       ],
       "type": "string"
+    },
+    "InterpolateParams": {
+      "additionalProperties": false,
+      "properties": {
+        "gamma": {
+          "type": "number"
+        },
+        "type": {
+          "enum": [
+            "rgb",
+            "cubehelix",
+            "cubehelix-long"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
     },
     "IntervalSelection": {
       "additionalProperties": false,
@@ -3149,11 +3047,11 @@
       "additionalProperties": false,
       "properties": {
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -3435,14 +3333,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -3451,14 +3342,14 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -3468,21 +3359,30 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3490,7 +3390,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -3509,6 +3409,24 @@
         "none"
       ],
       "type": "string"
+    },
+    "LegendResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "opacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "shape": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "size": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
+      "type": "object"
     },
     "AndFilter": {
       "additionalProperties": false,
@@ -3721,7 +3639,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "dx": {
@@ -4040,7 +3958,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data."
         },
         "name": {
           "description": "Provide a placeholder name and bind data at runtime.",
@@ -4052,17 +3970,17 @@
       ],
       "type": "object"
     },
-    "NonspatialResolve": {
-      "additionalProperties": false,
-      "properties": {
-        "legend": {
-          "$ref": "#/definitions/ResolveMode"
-        },
-        "scale": {
-          "$ref": "#/definitions/ResolveMode"
-        }
-      },
-      "type": "object"
+    "NiceTime": {
+      "enum": [
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year"
+      ],
+      "type": "string"
     },
     "OneOfFilter": {
       "additionalProperties": false,
@@ -4115,14 +4033,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -4131,17 +4042,18 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
-          "$ref": "#/definitions/SortOrder"
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4149,7 +4061,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -4194,14 +4106,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "axis": {
@@ -4213,7 +4118,7 @@
               "type": "null"
             }
           ],
-          "description": "By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.\nIf `axis` is not defined, default axis properties are applied.\nUser can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)\nor set `axis` to `null` to remove the axis."
+          "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](axis.html) are applied."
         },
         "bin": {
           "anyOf": [
@@ -4221,32 +4126,40 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
-          "description": "Type of stacking offset if the field should be stacked.\n\"none\" or null, if the field should not be stacked."
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `\"none\"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `\"none\"` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4254,7 +4167,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -4262,26 +4175,92 @@
       ],
       "type": "object"
     },
-    "Range": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+    "RangeConfig": {
+      "additionalProperties": {
+        "$ref": "#/definitions/RangeConfigValue"
+      },
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _nominal_ (categorical) fields."
         },
-        {
+        "diverging": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for diverging _quantitative_ fields."
+        },
+        "heatmap": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _quantitative_ heatmaps."
+        },
+        "ordinal": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _ordinal_ fields."
+        },
+        "ramp": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/VgScheme"
+            }
+          ],
+          "description": "Default range for _quantitative_ and _temporal_ fields."
+        },
+        "symbol": {
+          "description": "Default range palette for the `shape` channel.",
           "items": {
             "type": "string"
           },
           "type": "array"
-        },
-        {
-          "type": "string"
         }
-      ]
+      },
+      "type": "object"
     },
-    "RangeConfig": {
+    "RangeConfigValue": {
       "anyOf": [
         {
           "items": {
@@ -4293,7 +4272,7 @@
           "type": "array"
         },
         {
-          "$ref": "#/definitions/VgRangeScheme"
+          "$ref": "#/definitions/VgScheme"
         },
         {
           "additionalProperties": false,
@@ -4380,26 +4359,17 @@
       ],
       "type": "object"
     },
-    "ResolveMapping": {
+    "Resolve": {
       "additionalProperties": false,
       "properties": {
-        "color": {
-          "$ref": "#/definitions/NonspatialResolve"
+        "axis": {
+          "$ref": "#/definitions/AxisResolveMap"
         },
-        "opacity": {
-          "$ref": "#/definitions/NonspatialResolve"
+        "legend": {
+          "$ref": "#/definitions/LegendResolveMap"
         },
-        "shape": {
-          "$ref": "#/definitions/NonspatialResolve"
-        },
-        "size": {
-          "$ref": "#/definitions/NonspatialResolve"
-        },
-        "x": {
-          "$ref": "#/definitions/SpatialResolve"
-        },
-        "y": {
-          "$ref": "#/definitions/SpatialResolve"
+        "scale": {
+          "$ref": "#/definitions/ScaleResolveMap"
         }
       },
       "type": "object"
@@ -4414,86 +4384,158 @@
     "Scale": {
       "additionalProperties": false,
       "properties": {
+        "base": {
+          "description": "The logarithm base of the `log` scale (default `10`).",
+          "type": "number"
+        },
         "clamp": {
-          "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)\n\n__Supported types:__ only `linear`, `pow`, `sqrt`, and `log` (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)",
+          "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](config.html#scale-config)'s `clamp` (`true` by default).",
           "type": "boolean"
         },
         "domain": {
-          "$ref": "#/definitions/Domain",
-          "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for an aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            },
+            {
+              "enum": [
+                "unaggregated"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SelectionDomain"
+            }
+          ],
+          "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values."
         },
         "exponent": {
-          "description": "Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.",
+          "description": "The exponent of the `pow` scale.",
           "type": "number"
         },
         "interpolate": {
-          "enum": [
-            "rgb",
-            "lab",
-            "hcl",
-            "hsl",
-            "hsl-long",
-            "hcl-long",
-            "cubehelix",
-            "cubehelix-long"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Interpolate"
+            },
+            {
+              "$ref": "#/definitions/InterpolateParams"
+            }
           ],
-          "type": "string"
+          "description": "The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate)."
         },
         "nice": {
-          "description": "As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.\nAs time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)\n\n__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.",
-          "type": [
-            "boolean",
-            "string"
-          ]
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/NiceTime"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "interval": {
+                  "type": "string"
+                },
+                "step": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "interval",
+                "step"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields."
         },
         "padding": {
-          "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels have `0` padding by default.",
+          "description": "Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.\n\n__Default value:__ see `paddingInner` and `paddingOuter`.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "paddingInner": {
-          "description": "The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)",
+          "description": "The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].\n\nFor point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).\n\n__Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingInner`.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "paddingOuter": {
-          "description": "The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.",
+          "description": "The outer padding (spacing) at the ends of the range of band and point scales,\nas a fraction of the step size. This value must lie in the range [0,1].\n\n__Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "range": {
-          "$ref": "#/definitions/Range",
-          "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain."
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](scale.html#piecewise).\n\n- For [discrete](scale.html#discrete) and [discretizing](scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For [sequential](scale.html#sequential), [ordinal](scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales."
         },
         "rangeStep": {
-          "description": "The distance between the starts of adjacent bands or points in band or point scales.\nIf this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.\nIf both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)\n\n__Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.\n__Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.",
+          "description": "The distance between the starts of adjacent bands or points in [band](scale.html#band) and [point](scale.html#point) scales.\n\nIf `rangeStep` is `null` or if the view contains the scale's corresponding [size](size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.\n\n__Default value:__  derived the [scale config](config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.\n\n__Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.",
           "minimum": 0,
           "type": [
             "number",
             "null"
           ]
         },
-        "reverse": {
-          "description": "If true, reverses the order of the scale range.\n__Default value:__ `false`.",
-          "type": "boolean"
-        },
         "round": {
-          "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
+          "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default value:__ `true` for x and y channels if the scale config's `round` is `true`; `false` otherwise.",
           "type": "boolean"
         },
         "scheme": {
-          "$ref": "#/definitions/Scheme",
-          "description": "Range scheme (e.g., color schemes such as `\"category10\"` or `\"viridis\"`).\n\n__Default value:__ [scale config](config.html#scale-config)'s `\"nominalColorScheme\"` for nominal field and `\"sequentialColorScheme\"` for other types of fields."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SchemeParams"
+            }
+          ],
+          "description": "A string indicating a color [scheme](scale.html#scheme) name (e.g., `\"category10\"` or `\"viridis\"`) or a [scheme parameter object](scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
-          "description": "The type of scale.\n- For a _quantitative_ field, supported quantitative scale types  are `\"linear\"` (default), `\"log\"`, `\"pow\"`, `\"sqrt\"`, `\"quantile\"`, `\"quantize\"`, and `\"threshold\"`.\n- For a _temporal_ field without `timeUnit`, the scale type should be `\"time\"` (default), `\"utc\"` or `\"ordinal\"`. See more about [UTC time](timeunit.html#utc)\n- For _ordinal_ and _nominal_ fields, the type is always `\"ordinal\"`.\nUnsupported values will be ignored."
+          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](scale.html#linear), [`\"pow\"`](scale.html#pow), [`\"sqrt\"`](scale.html#sqrt), [`\"log\"`](scale.html#log), [`\"time\"`](scale.html#time), [`\"utc\"`](scale.html#utc), [`\"sequential\"`](scale.html#sequential)).\n\n2) [**Discrete Scales**](scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](scale.html#ordinal)) or continuous ([`\"band\"`](scale.html#band) and [`\"point\"`](scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`\"bin-linear\"`](scale.html#bin-linear) and [`\"bin-ordinal\"`](scale.html#bin-ordinal)).\n\n__Default value:__ please see the [scale type table](scale.html#type)."
         },
         "zero": {
-          "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.\n\n__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__  This property is always `false` for log scale.",
+          "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
           "type": "boolean"
         }
       },
@@ -4519,12 +4561,12 @@
           "type": "boolean"
         },
         "maxBandSize": {
-          "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
+          "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the scale's `rangeStep` - 1.",
           "minimum": 0,
           "type": "number"
         },
         "maxFontSize": {
-          "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.\n\n__Default value:__ `40`",
+          "description": "The default max value for mapping quantitative fields to text's size/fontSize.\n\n__Default value:__ `40`",
           "minimum": 0,
           "type": "number"
         },
@@ -4545,7 +4587,7 @@
           "type": "number"
         },
         "minBandSize": {
-          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.",
+          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.\n\n__Default value:__ `2`",
           "minimum": 0,
           "type": "number"
         },
@@ -4577,7 +4619,7 @@
           "type": "number"
         },
         "rangeStep": {
-          "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.\n\n__Default value:__ `21`",
+          "description": "Default range step for band and point scales of (1) the `y` channel\nand (2) the `x` channel when the mark is not `text`.\n\n__Default value:__ `21`",
           "minimum": 0,
           "type": [
             "number",
@@ -4585,23 +4627,16 @@
           ]
         },
         "round": {
-          "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
+          "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, and `size` scales.)",
           "type": "boolean"
         },
-        "shapes": {
-          "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `[\"circle\", \"square\", \"cross\", \"diamond\", \"triangle-up\", \"triangle-down\"]`",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "textXRangeStep": {
-          "description": "Default range step for `x` ordinal scale when is mark is `text`.\n\n__Default value:__ `90`",
+          "description": "Default range step for `x` band and point scales of text marks.\n\n__Default value:__ `90`",
           "minimum": 0,
           "type": "number"
         },
         "useUnaggregatedDomain": {
-          "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
+          "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\n\nThis is equivalent to setting `domain` to `\"unaggregate\"` for aggregated _quantitative_ fields by default.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.\n\n__Default value:__ `false`",
           "type": "boolean"
         }
       },
@@ -4611,14 +4646,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -4627,28 +4655,36 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
-          "$ref": "#/definitions/Scale"
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "sort": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SortField"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SortOrder"
+                },
+                {
+                  "$ref": "#/definitions/SortField"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/SortOrder"
+              "type": "null"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4656,12 +4692,36 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "ScaleResolveMap": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "opacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "shape": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "size": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "x": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "y": {
+          "$ref": "#/definitions/ResolveMode"
+        }
+      },
       "type": "object"
     },
     "ScaleType": {
@@ -4681,15 +4741,29 @@
       ],
       "type": "string"
     },
-    "Scheme": {
-      "anyOf": [
-        {
-          "type": "string"
+    "SchemeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
+          "type": "number"
         },
-        {
-          "$ref": "#/definitions/ExtendedScheme"
+        "extent": {
+          "description": "For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "A color scheme name for sequential/ordinal scales (e.g., `\"category10\"` or `\"viridis\"`).\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
+          "type": "string"
         }
-      ]
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
     },
     "SelectionConfig": {
       "additionalProperties": false,
@@ -4899,15 +4973,16 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "The field name to aggregate over.",
+          "description": "The data field to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference.",
           "type": "string"
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The sort aggregation operator"
+          "description": "An [aggregate operation](aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`).\nThis property is required in cases where the sort field and the data reference field do not match.\nThe input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](aggregate.html#ops)."
         },
         "order": {
-          "$ref": "#/definitions/SortOrder"
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
         }
       },
       "required": [
@@ -4933,18 +5008,6 @@
           "type": "null"
         }
       ]
-    },
-    "SpatialResolve": {
-      "additionalProperties": false,
-      "properties": {
-        "axis": {
-          "$ref": "#/definitions/ResolveMode"
-        },
-        "scale": {
-          "$ref": "#/definitions/ResolveMode"
-        }
-      },
-      "type": "object"
     },
     "StackOffset": {
       "enum": [
@@ -5030,7 +5093,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "dx": {
@@ -5163,14 +5226,7 @@
       "additionalProperties": false,
       "properties": {
         "aggregate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
-            },
-            {
-              "$ref": "#/definitions/CompositeAggregate"
-            }
-          ],
+          "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
@@ -5179,17 +5235,17 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/Bin"
+              "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "$ref": "#/definitions/Field",
-          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -5198,7 +5254,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
         }
       },
       "required": [
@@ -5229,7 +5285,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
         },
         "dx": {
@@ -5431,6 +5487,38 @@
       ],
       "type": "object"
     },
+    "TitleBase": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A [mark style property](config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
+        }
+      },
+      "type": "object"
+    },
     "TitleOrient": {
       "enum": [
         "top",
@@ -5439,6 +5527,45 @@
         "right"
       ],
       "type": "string"
+    },
+    "TitleParams": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/Anchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A [mark style property](config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
+        },
+        "text": {
+          "description": "The title text.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
     },
     "TopLevelFacetedUnitSpec": {
       "additionalProperties": false,
@@ -5473,7 +5600,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -5495,6 +5622,17 @@
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
         },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
           "items": {
@@ -5503,7 +5641,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5553,10 +5691,21 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5615,7 +5764,18 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5659,11 +5819,11 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
-          "description": "Unit specs that will be layered.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
           "items": {
             "anyOf": [
               {
@@ -5685,7 +5845,18 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5695,7 +5866,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5744,10 +5915,21 @@
           "$ref": "#/definitions/Repeat"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5800,7 +5982,18 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/ResolveMapping"
+          "$ref": "#/definitions/Resolve"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
         },
         "transform": {
           "description": "An array of data transformations such as filter and new field calculation.",
@@ -5898,7 +6091,7 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataUrlFormat",
-          "description": "Data format properties"
+          "description": "An object that specifies the format for parsing the data file."
         },
         "url": {
           "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
@@ -5951,58 +6144,17 @@
       },
       "type": "object"
     },
-    "TextValueDef": {
+    "ValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value of an encoding channel.",
       "properties": {
         "value": {
           "description": "A constant value in visual domain.",
           "type": [
-            "string",
             "number",
+            "string",
             "boolean"
           ]
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain."
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "NumberValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "StringValueDef": {
-      "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
-      "properties": {
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": "string"
         }
       },
       "required": [
@@ -6716,7 +6868,7 @@
       ],
       "type": "object"
     },
-    "VgRangeScheme": {
+    "VgScheme": {
       "additionalProperties": false,
       "properties": {
         "count": {
@@ -6767,7 +6919,7 @@
       "properties": {
         "anchor": {
           "$ref": "#/definitions/Anchor",
-          "description": "Title anchor position (`\"start\"`, `\"middle\"`, or `\"end\"`)."
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](spec.html) and [layered](layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
         },
         "angle": {
           "description": "Angle in degrees of title text.",

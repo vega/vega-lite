@@ -28,6 +28,7 @@ export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, default
  */
 export declare function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config): string;
 export declare function numberFormatExpr(field: string, specifiedFormat: string, config: Config): string;
+export declare function binFormatExpression(startField: string, endField: string, format: string, config: Config): string;
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */

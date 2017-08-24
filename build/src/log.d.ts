@@ -9,7 +9,6 @@ import { DateTime, DateTimeExpr } from './datetime';
 import { FieldDef } from './fielddef';
 import { Mark } from './mark';
 import { ScaleType } from './scale';
-import { TimeUnit } from './timeunit';
 import { Type } from './type';
 import { VgSortField } from './vega.schema';
 export { LoggerInterface } from 'vega-util';
@@ -46,13 +45,13 @@ export declare namespace message {
     function cannotProjectOnChannelWithoutField(channel: Channel): string;
     function selectionNotFound(name: string): string;
     function noSuchRepeatedValue(field: string): string;
+    function cannotSetTitleAnchor(type: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
     function invalidTransformIgnored(transform: any): string;
-    const NO_FIELDS_NEEDS_AS = "If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.";
+    const NO_FIELDS_NEEDS_AS = "If \"from.fields\" is not specified, \"as\" has to be a string that specifies the key to be used for the the data from the secondary source.";
     function invalidFieldType(type: Type): string;
     function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
-    function invalidFieldTypeForBin(type: Type): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
     function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;
@@ -68,7 +67,7 @@ export declare namespace message {
     function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>): string;
     function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
     function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
-    const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
+    const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use a custom \"range\" with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
     function cannotUseSizeFieldWithBandSize(positionChannel: 'x' | 'y'): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     function rangeStepDropped(channel: Channel): string;
@@ -87,6 +86,6 @@ export declare namespace message {
     function cannotStackNonLinearScale(scaleType: ScaleType): string;
     function cannotStackNonSummativeAggregate(aggregate: string): string;
     function invalidTimeUnit(unitName: string, value: string | number): string;
-    function dayReplacedWithDate(fullTimeUnit: TimeUnit): string;
+    function dayReplacedWithDate(fullTimeUnit: string): string;
     function droppedDay(d: DateTime | DateTimeExpr): string;
 }

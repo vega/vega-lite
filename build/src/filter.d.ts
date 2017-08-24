@@ -4,6 +4,7 @@ import { DateTime } from './datetime';
 import { LogicalOperand } from './logical';
 import { TimeUnit } from './timeunit';
 export declare type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
+export declare type FieldFilter = EqualFilter | RangeFilter | OneOfFilter;
 export interface SelectionFilter {
     /**
      * Filter using a selection name.
@@ -60,7 +61,10 @@ export interface OneOfFilter {
     oneOf: string[] | number[] | boolean[] | DateTime[];
 }
 export declare function isOneOfFilter(filter: any): filter is OneOfFilter;
+export declare function isFieldFilter(filter: Filter): filter is OneOfFilter | EqualFilter | RangeFilter;
 /**
  * Converts a filter into an expression.
  */
 export declare function expression(model: Model, filterOp: LogicalOperand<Filter>, node?: DataFlowNode): string;
+export declare function fieldFilterExpression(filter: FieldFilter): string;
+export declare function normalizeFilter(f: Filter): Filter;

@@ -41,7 +41,7 @@ export declare type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 export declare type Data = UrlData | InlineData | NamedData;
 export interface UrlData {
     /**
-     * Data format properties
+     * An object that specifies the format for parsing the data file.
      */
     format?: DataUrlFormat;
     /**
@@ -52,17 +52,18 @@ export interface UrlData {
 }
 export interface InlineData {
     /**
-     * Data format properties
+     * An object that specifies the format for parsing the data values.
      */
     format?: DataFormat;
     /**
-     * Pass array of objects instead of a url to a file.
+     * The full data set, included inline. This can be an array of objects or primitive values.
+     * Arrays of primitive values are ingested as objects with a `data` property.
      */
     values: any[];
 }
 export interface NamedData {
     /**
-     * Data format properties
+     * An object that specifies the format for parsing the data.
      */
     format?: DataFormat;
     /**

@@ -49,6 +49,10 @@ export declare const keys: (o: any) => string[];
 export declare function vals<T>(x: {
     [key: string]: T;
 }): T[];
+export declare type Flag<S extends string> = {
+    [K in S]: 1;
+};
+export declare function flagKeys<S extends string>(f: Flag<S>): S[];
 export declare function duplicate<T>(obj: T): T;
 export declare function isBoolean(b: any): b is boolean;
 /**
@@ -56,3 +60,13 @@ export declare function isBoolean(b: any): b is boolean;
  */
 export declare function varName(s: string): string;
 export declare function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string;
+export declare type Diff<T extends string, U extends string> = ({
+    [P in T]: P;
+} & {
+    [P in U]: never;
+} & {
+    [x: string]: never;
+})[T];
+export declare type Omit<T, K extends keyof T> = {
+    [P in Diff<keyof T, K>]: T[P];
+};

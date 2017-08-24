@@ -3,7 +3,7 @@ import { Config } from '../config';
 import { Facet } from '../facet';
 import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
-import { VgData, VgLayout, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
+import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
 export declare class FacetModel extends ModelWithField {
@@ -24,7 +24,6 @@ export declare class FacetModel extends ModelWithField {
     private parseHeader(channel);
     private makeHeaderComponent(channel, labels);
     private mergeChildAxis(channel);
-    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];

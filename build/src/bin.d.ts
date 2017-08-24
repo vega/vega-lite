@@ -46,7 +46,7 @@ export interface BaseBin {
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
-export interface Bin extends BaseBin {
+export interface BinParams extends BaseBin {
     /**
      * A two-element (`[min, max]`) array indicating the range of desired bin values.
      * @minItems 2
@@ -54,5 +54,5 @@ export interface Bin extends BaseBin {
      */
     extent?: number[];
 }
-export declare function binToString(bin: Bin | boolean): string;
+export declare function binToString(bin: BinParams | boolean): string;
 export declare function autoMaxBins(channel: Channel): number;

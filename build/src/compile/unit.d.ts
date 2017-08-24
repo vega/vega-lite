@@ -3,7 +3,7 @@ import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
 import { Config } from '../config';
 import * as vlEncoding from '../encoding';
 import { Encoding } from '../encoding';
-import { FieldDef, FieldRefOption } from '../fielddef';
+import { FieldDef } from '../fielddef';
 import { Legend } from '../legend';
 import { Mark, MarkDef } from '../mark';
 import { Domain } from '../scale';
@@ -12,7 +12,7 @@ import { SortField, SortOrder } from '../sort';
 import { LayoutSizeMixins, UnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
-import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.schema';
+import { VgData, VgEncodeEntry, VgLayout, VgSignal } from '../vega.schema';
 import { AxisIndex } from './axis/component';
 import { LegendIndex } from './legend/component';
 import { Model, ModelWithField } from './model';
@@ -49,7 +49,6 @@ export declare class UnitModel extends ModelWithField {
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;
-    assembleScales(): VgScale[];
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
@@ -62,6 +61,4 @@ export declare class UnitModel extends ModelWithField {
     mark(): Mark;
     channelHasField(channel: Channel): boolean;
     fieldDef(channel: SingleDefChannel): FieldDef<string>;
-    /** Get "field" reference for vega */
-    field(channel: SingleDefChannel, opt?: FieldRefOption): string;
 }

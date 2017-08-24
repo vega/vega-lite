@@ -26,7 +26,8 @@ export declare const RECT: "rect";
 export declare const RULE: "rule";
 export declare const CIRCLE: "circle";
 export declare const SQUARE: "square";
-export declare const PRIMITIVE_MARKS: ("area" | "circle" | "line" | "rect" | "text" | "square" | "point" | "bar" | "rule" | "tick")[];
+export declare function isMark(m: string): m is Mark;
+export declare const PRIMITIVE_MARKS: Mark[];
 export interface MarkDef {
     /**
      * The mark type.
@@ -105,7 +106,7 @@ export interface MarkConfig extends VgMarkConfig {
      */
     filled?: boolean;
     /**
-     * Default color.
+     * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
      *
      * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
      */

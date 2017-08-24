@@ -12,3 +12,4 @@ export declare function isLogicalOr(op: LogicalOperand<any>): op is LogicalOr<an
 export declare function isLogicalAnd(op: LogicalOperand<any>): op is LogicalAnd<any>;
 export declare function isLogicalNot(op: LogicalOperand<any>): op is LogicalNot<any>;
 export declare function forEachLeave<T>(op: LogicalOperand<T>, fn: (op: T) => void): void;
+export declare function normalizeLogicalOperand<T>(op: LogicalOperand<T>, normalizer: (o: T) => T): LogicalOperand<T>;

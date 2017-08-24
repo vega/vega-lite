@@ -6,7 +6,7 @@ import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
 import { TopLevelProperties } from './toplevelprops';
-import { VgMarkConfig, VgRangeScheme, VgTitleConfig } from './vega.schema';
+import { VgMarkConfig, VgScheme, VgTitleConfig } from './vega.schema';
 export interface CellConfig {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
@@ -77,9 +77,36 @@ export interface CellConfig {
     strokeDashOffset?: number;
 }
 export declare const defaultCellConfig: CellConfig;
-export declare type RangeConfig = (number | string)[] | VgRangeScheme | {
+export declare type RangeConfigValue = (number | string)[] | VgScheme | {
     step: number;
 };
+export interface RangeConfig {
+    /**
+     * Default range for _nominal_ (categorical) fields.
+     */
+    category?: string[] | VgScheme;
+    /**
+     * Default range for diverging _quantitative_ fields.
+     */
+    diverging?: string[] | VgScheme;
+    /**
+     * Default range for _quantitative_ heatmaps.
+     */
+    heatmap?: string[] | VgScheme;
+    /**
+     * Default range for _ordinal_ fields.
+     */
+    ordinal?: string[] | VgScheme;
+    /**
+     * Default range for _quantitative_ and _temporal_ fields.
+     */
+    ramp?: string[] | VgScheme;
+    /**
+     * Default range palette for the `shape` channel.
+     */
+    symbol?: string[];
+    [name: string]: RangeConfigValue;
+}
 export interface VLOnlyConfig {
     /**
      * Default axis and legend title for count fields.
@@ -139,12 +166,12 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
      * (such as `{"type": "ordinal", "range": "category"}`).
      * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
      */
-    range?: {
-        [name: string]: RangeConfig;
-    };
+    range?: RangeConfig;
     /** Legend Config */
     legend?: LegendConfig;
-    /** Title Config */
+    /**
+     * Title Config
+     */
     title?: VgTitleConfig;
     /** Style Config */
     style?: StyleConfigIndex;

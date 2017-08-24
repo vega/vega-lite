@@ -2,12 +2,12 @@ import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
 import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
-import { ResolveMapping } from '../resolve';
+import { Resolve } from '../resolve';
 import { BaseSpec } from '../spec';
-import { Title } from '../title';
+import { TitleParams } from '../title';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
+import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
 import { DataComponent } from './data/index';
@@ -41,7 +41,7 @@ export interface Component {
     axes: AxisComponentIndex;
     /** Dictionary mapping channel to VgLegend definition */
     legends: LegendComponentIndex;
-    resolve: ResolveMapping;
+    resolve: Resolve;
 }
 export interface NameMapInterface {
     rename(oldname: string, newName: string): void;
@@ -64,7 +64,7 @@ export declare abstract class Model {
     readonly abstract type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly parent: Model;
     readonly name: string;
-    readonly title: Title;
+    readonly title: TitleParams;
     readonly description: string;
     readonly data: Data;
     readonly transforms: Transform[];
@@ -75,7 +75,7 @@ export declare abstract class Model {
     readonly config: Config;
     readonly component: Component;
     readonly abstract children: Model[];
-    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: ResolveMapping);
+    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve);
     readonly width: VgSignalRef;
     readonly height: VgSignalRef;
     protected initSize(size: LayoutSizeIndex): void;
@@ -101,7 +101,6 @@ export declare abstract class Model {
     assembleLayoutSize(): VgEncodeEntry;
     abstract assembleLayout(): VgLayout;
     abstract assembleLayoutSignals(): VgSignal[];
-    abstract assembleScales(): VgScale[];
     assembleHeaderMarks(): VgMarkGroup[];
     abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];

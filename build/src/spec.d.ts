@@ -5,9 +5,9 @@ import { Facet } from './facet';
 import { Field, FieldDef } from './fielddef';
 import { AnyMark, Mark, MarkDef } from './mark';
 import { Repeat } from './repeat';
-import { ResolveMapping } from './resolve';
+import { Resolve } from './resolve';
 import { SelectionDef } from './selection';
-import { Title } from './title';
+import { TitleParams } from './title';
 import { TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
 export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -23,9 +23,9 @@ export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
 };
 export interface BaseSpec {
     /**
-     * @hide
+     * Title for the plot.
      */
-    title?: Title;
+    title?: string | TitleParams;
     /**
      * Name of the visualization for later reference.
      */
@@ -53,7 +53,9 @@ export interface LayoutSizeMixins {
      * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).
      * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
      *
-     * __Note__: For plot with `row` and `column` channels, this represents the width of a single cell.
+     * __Note:__ For plot with `row` and `column` channels, this represents the width of a single view.
+     *
+     * __See also:__ The documentation for [width and height](size.html) contains more examples.
      */
     width?: number;
     /**
@@ -65,6 +67,8 @@ export interface LayoutSizeMixins {
      * - If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.
      *
      * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
+     *
+     * __See also:__ The documentation for [width and height](size.html) contains more examples.
      */
     height?: number;
 }
@@ -96,31 +100,33 @@ export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark
 export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
     /**
-     * Unit specs that will be layered.
+     * Layer or single view specifications to be layered.
+     *
+     * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
      */
     layer: (GenericLayerSpec<U> | U)[];
-    resolve?: ResolveMapping;
+    resolve?: Resolve;
 }
 export declare type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     facet: Facet<Field>;
     spec: GenericSpec<U>;
-    resolve?: ResolveMapping;
+    resolve?: Resolve;
 }
 export declare type FacetSpec = GenericFacetSpec<UnitSpec>;
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     repeat: Repeat;
     spec: GenericSpec<U>;
-    resolve?: ResolveMapping;
+    resolve?: Resolve;
 }
 export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     vconcat: (GenericSpec<U>)[];
-    resolve?: ResolveMapping;
+    resolve?: Resolve;
 }
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     hconcat: (GenericSpec<U>)[];
-    resolve?: ResolveMapping;
+    resolve?: Resolve;
 }
 export declare type ConcatSpec = GenericVConcatSpec<UnitSpec> | GenericHConcatSpec<UnitSpec>;
 export declare type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericVConcatSpec<U> | GenericHConcatSpec<U>;

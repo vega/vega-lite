@@ -1,6 +1,6 @@
 import { AggregateOp } from './aggregate';
 import { Axis } from './axis';
-import { Bin } from './bin';
+import { BinParams } from './bin';
 import { Channel } from './channel';
 import { CompositeAggregate } from './compositemark';
 import { Config } from './config';
@@ -15,17 +15,17 @@ import { Type } from './type';
 /**
  * Definition object for a constant value of an encoding channel.
  */
-export interface ValueDef<T> {
+export interface ValueDef {
     /**
      * A constant value in visual domain.
      */
-    value: T;
+    value: number | string | boolean;
 }
 /**
  * Generic type for conditional channelDef.
- * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
+ * F defines the underlying FieldDef type.
  */
-export declare type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V> | ConditionOnlyDef<F, V>;
+export declare type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F>;
 export declare type Condition<T> = {
     selection: LogicalOperand<string>;
 } & T;
@@ -37,12 +37,15 @@ export declare type Condition<T> = {
  *   ...
  * }
  */
-export declare type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {
-    condition?: Condition<V>;
+export declare type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+    /**
+     * A value definition with a selection predicate.
+     *
+     * __Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)
+     * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
+     */
+    condition?: Condition<ValueDef>;
 };
-export interface ConditionOnlyDef<F extends FieldDef<any>, V extends ValueDef<any>> {
-    condition: Condition<F> | Condition<V>;
-}
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
  * {
@@ -50,9 +53,16 @@ export interface ConditionOnlyDef<F extends FieldDef<any>, V extends ValueDef<an
  *   value: ...,
  * }
  */
-export declare type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {
-    condition?: Condition<F> | Condition<V>;
-};
+export interface ConditionalValueDef<F extends FieldDef<any>> {
+    /**
+     * A field definition or a value definition with a selection predicate.
+     */
+    condition?: Condition<F> | Condition<ValueDef>;
+    /**
+     * A constant value in visual domain.
+     */
+    value?: number | string | boolean;
+}
 /**
  * Reference to a repeated value.
  */
@@ -61,9 +71,11 @@ export declare type RepeatRef = {
 };
 export declare type Field = string | RepeatRef;
 export declare function isRepeatRef(field: Field): field is RepeatRef;
+export declare type Aggregate = AggregateOp | CompositeAggregate;
 export interface FieldDefBase<F> {
     /**
-     * __Required.__ Name of the field from which to pull a data value.
+     * __Required.__ A string defining the name of the field from which to pull a data value
+     * or an object defining iterated values from the [`repeat`](repeat.html) operator.
      *
      * __Note:__ `field` is not required if `aggregate` is `count`.
      */
@@ -76,10 +88,12 @@ export interface FieldDefBase<F> {
      */
     timeUnit?: TimeUnit;
     /**
-     * Flag for binning a `quantitative` field, or a bin property object
-     * for binning parameters.
+     * A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).
+     * If `true`, default [binning parameters](bin.html) will be applied.
+     *
+     * __Default value:__ `false`
      */
-    bin?: boolean | Bin;
+    bin?: boolean | BinParams;
     /**
      * Aggregation function for the field
      * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
@@ -87,7 +101,7 @@ export interface FieldDefBase<F> {
      * __Default value:__ `undefined` (None)
      *
      */
-    aggregate?: AggregateOp | CompositeAggregate;
+    aggregate?: Aggregate;
 }
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
@@ -95,62 +109,86 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
     /**
      * The encoded field's type of measurement. This can be either a full type
-     * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
-     * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
-     * This property is case-insensitive.
+     * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`).
      */
     type: Type;
 }
 export interface ScaleFieldDef<F> extends FieldDef<F> {
+    /**
+     * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
+     *
+     * __Default value:__ If undefined, default [scale properties](scale.html) are applied.
+     */
     scale?: Scale;
     /**
-     * Sort order for a field with discrete domain.
-     * This can be `"ascending"`, `"descending"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+     * Sort order for the encoded field.
+     * Supported `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
+     * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).
      *
-     * __Note:__ For fields with continuous domain, please use `"scale": {"reverse": true}` to flip the scale instead.
+     * __Default value:__ `"ascending"`
+     *
+     * @nullable
      */
-    sort?: SortField | SortOrder;
+    sort?: SortOrder | SortField;
 }
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
-     * By default, Vega-Lite automatically creates axes for `x` and `y` channels when they are encoded.
-     * If `axis` is not defined, default axis properties are applied.
-     * User can provide set `axis` to an object to customize [axis properties](axis.html#axis-properties)
-     * or set `axis` to `null` to remove the axis.
+     * An object defining properties of axis's gridlines, ticks and labels.
+     * If `null`, the axis for the encoding channel will be removed.
+     *
+     * __Default value:__ If undefined, default [axis properties](axis.html) are applied.
+     *
      * @nullable
      */
     axis?: Axis;
     /**
      * Type of stacking offset if the field should be stacked.
-     * "none" or null, if the field should not be stacked.
+     * `stack` is only applicable for `x` and `y` channels with continuous domains.
+     * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
+     *
+     * `stack` can be one of the following values:
+     * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).
+     * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>
+     * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
+     * - `"none"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
+     *
+     * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `"none"` by default.
      */
     stack?: StackOffset;
 }
 export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
     /**
+     * An object defining properties of the legend.
+     * If `null`, the legend for the encoding channel will be removed.
+     *
+     * __Default value:__ If undefined, default [legend properties](legend.html) are applied.
+     *
      * @nullable
      */
     legend?: Legend;
 }
 export interface OrderFieldDef<F> extends FieldDef<F> {
+    /**
+     * The sort order. One of `"ascending"` (default) or `"descending"`.
+     */
     sort?: SortOrder;
 }
 export interface TextFieldDef<F> extends FieldDef<F> {
     /**
-     * The formatting pattern for text value. If not defined, this will be determined automatically.
+     * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
      */
     format?: string;
 }
-export declare type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;
-export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>, ValueDef<any>>;
+export declare type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;
+export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ConditionalChannelDef<FieldDef<F>>;
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export declare function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {
+export declare function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
     condition: Condition<FieldDef<F>>;
 });
 export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
-export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef<any>;
+export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef;
 export declare function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any>;
 export interface FieldRefOption {
     /** exclude bin, aggregate, timeUnit */
@@ -160,7 +198,7 @@ export interface FieldRefOption {
     /** prepend fn with custom function prefix */
     prefix?: string;
     /** append suffix to the field ref for bin (default='start') */
-    binSuffix?: 'start' | 'end' | 'range' | 'mid';
+    binSuffix?: 'end' | 'range' | 'mid';
     /** append suffix to the field ref (general) */
     suffix?: string;
     /** Overrride which aggregate to use. Needed for unaggregated domain. */
@@ -182,7 +220,7 @@ export declare function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F>;
  */
 export declare function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any>;
 export declare function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel): FieldDef<string>;
-export declare function normalizeBin(bin: Bin | boolean, channel: Channel): Bin;
+export declare function normalizeBin(bin: BinParams | boolean, channel: Channel): BinParams;
 export declare function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {
     compatible: boolean;
     warning?: string;

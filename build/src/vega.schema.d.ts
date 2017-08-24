@@ -59,12 +59,12 @@ export declare type FieldRefUnionDomain = {
     fields: VgFieldRef[];
     sort?: VgUnionSortField;
 };
-export declare type VgRangeScheme = {
+export declare type VgScheme = {
     scheme: string;
     extent?: number[];
     count?: number;
 };
-export declare type VgRange = string | VgDataRef | (number | string | VgDataRef | VgSignalRef)[] | VgRangeScheme | VgRangeStep;
+export declare type VgRange = string | VgDataRef | (number | string | VgDataRef | VgSignalRef)[] | VgScheme | VgRangeStep;
 export declare type VgRangeStep = {
     step: number | VgSignalRef;
 };
@@ -79,6 +79,7 @@ export declare type VgScale = {
     domainRaw?: VgSignalRef;
     range: VgRange;
     clamp?: boolean;
+    base?: number;
     exponent?: number;
     interpolate?: 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
     nice?: boolean | NiceTime;
@@ -852,11 +853,17 @@ export interface VgTitle {
      * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
      */
     offset?: number;
+    style?: string | string[];
 }
 export declare type TitleOrient = 'top' | 'bottom' | 'left' | 'right';
 export interface VgTitleConfig {
     /**
-     * Title anchor position (`"start"`, `"middle"`, or `"end"`).
+     * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+     *
+     * __Default value:__ `"middle"` for [single](spec.html) and [layered](layer.html) views.
+     * `"start"` for other composite views.
+     *
+     * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
      */
     anchor?: Anchor;
     /**

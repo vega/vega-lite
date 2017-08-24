@@ -24,7 +24,5 @@ export declare function tickCount(channel: Channel, fieldDef: FieldDef<string>, 
 export declare function title(maxLength: number, fieldDef: FieldDef<string>, config: Config): string;
 export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>): number[] | DateTime[] | {
     signal: string;
-}[] | {
-    signal: string;
-};
+}[];
 export declare function zindex(isGridAxis: boolean): 1 | 0;

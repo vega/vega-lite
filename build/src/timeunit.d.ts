@@ -1,3 +1,4 @@
+import { NiceTime } from './scale';
 export declare namespace TimeUnit {
     const YEAR: 'year';
     const MONTH: 'month';
@@ -64,9 +65,10 @@ export declare function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeU
  */
 export declare function fieldExpr(fullTimeUnit: TimeUnit, field: string): string;
 /** returns the smallest nice unit for scale.nice */
-export declare function smallestUnit(timeUnit: TimeUnit): string;
+export declare function smallestUnit(timeUnit: TimeUnit): NiceTime;
 /**
  * returns the signal expression used for axis labels for a time unit
  */
 export declare function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string;
 export declare function isDiscreteByDefault(timeUnit: TimeUnit): boolean;
+export declare function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit;

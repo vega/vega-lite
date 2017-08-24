@@ -8,10 +8,10 @@ export declare class FacetNode extends DataFlowNode {
     readonly model: FacetModel;
     readonly name: string;
     data: string;
-    private readonly columnField;
+    private readonly columnFields;
     private readonly columnName;
     private readonly childIndependentFieldWithStep;
-    private readonly rowField;
+    private readonly rowFields;
     private readonly rowName;
     /**
      * @param model The facet model.

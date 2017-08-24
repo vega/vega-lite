@@ -1,5 +1,5 @@
 import { AggregateOp } from './aggregate';
-import { Bin } from './bin';
+import { BinParams } from './bin';
 import { Data } from './data';
 import { Filter } from './filter';
 import { LogicalOperand } from './logical';
@@ -23,9 +23,9 @@ export interface CalculateTransform {
 }
 export interface BinTransform {
     /**
-     * An object indicating bin properties, or simply `true` for using default bin values..
+     * An object indicating bin properties, or simply `true` for using default bin parameters.
      */
-    bin: Bin | true;
+    bin: boolean | BinParams;
     /**
      * The data field to bin.
      */
@@ -115,3 +115,6 @@ export declare function isBin(t: Transform): t is BinTransform;
 export declare function isTimeUnit(t: Transform): t is TimeUnitTransform;
 export declare function isSummarize(t: Transform): t is SummarizeTransform;
 export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | SummarizeTransform;
+export declare function normalizeTransform(transform: Transform[]): (TimeUnitTransform | SummarizeTransform | CalculateTransform | LookupTransform | BinTransform | {
+    filter: LogicalOperand<Filter>;
+})[];
