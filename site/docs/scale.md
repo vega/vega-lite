@@ -8,7 +8,7 @@ permalink: /docs/scale.html
 Scales are functions that transform a domain of data values (numbers, dates, strings, etc.) to a range of visual values (pixels, colors, sizes).
 Internally, Vega-Lite uses [Vega scales](https://vega.github.io/vega/docs/scales/), which are derived from the [d3-scale](https://github.com/d3/d3-scale) library. For more background about scales, please see ["Introducing d3-scale"](https://medium.com/@mbostock/introducing-d3-scale-61980c51545f) by Mike Bostock.
 
-Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-props) channels.
+Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels.
 To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
 {: .suppress-error}
