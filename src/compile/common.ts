@@ -1,11 +1,11 @@
-
+import {Channel, isScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
-import {QUANTITATIVE} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE} from '../type';
 import {isArray} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {Explicit} from './split';
@@ -170,4 +170,19 @@ export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
       v1.value : // if title is the same just use one of them
       v1.value + ', ' + v2.value // join title with comma if different
   };
+}
+
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
+  if (!fieldDef.bin) {
+    console.warn('Only use this method with binned field defs');
+    return false;
+  }
+  if (!isScaleChannel(channel)) {
+    // range is only needed for scales that have legends or axes
+    return false;
+  }
+  return fieldDef.type === ORDINAL || fieldDef.type === NOMINAL;
 }

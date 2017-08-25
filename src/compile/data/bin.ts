@@ -1,29 +1,14 @@
 import {BinParams, binToString} from '../../bin';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS} from '../../channel';
+import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
 import {BinTransform} from '../../transform';
-import {NOMINAL, ORDINAL} from '../../type';
-import {contains, Dict, duplicate, extend, flatten, keys, vals} from '../../util';
+import {Dict, duplicate, extend, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {binFormatExpression} from '../common';
+import {binFormatExpression, binRequiresRange} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-/**
- * Checks whether a fieldDef for a particular channel requires a computed bin range.
- */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
-  if (!fieldDef.bin) {
-    console.warn('Only use this method with binned field defs');
-    return false;
-  }
-  if (!contains(NONSPATIAL_SCALE_CHANNELS, channel) && !contains(SPATIAL_SCALE_CHANNELS, channel)) {
-    // range is only needed for scales that have legends or axes
-    return false;
-  }
-  return fieldDef.type === ORDINAL || fieldDef.type === NOMINAL;
-}
 
 function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
     if (binRequiresRange(fieldDef, channel)) {

@@ -2,7 +2,7 @@ import {isString} from 'vega-util';
 
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
-import {isScaleChannel, ScaleChannel, SPATIAL_SCALE_CHANNELS} from '../../channel';
+import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
@@ -19,12 +19,13 @@ import {
   VgSortField,
   VgUnionSortField,
 } from '../../vega.schema';
-import {binRequiresRange} from '../data/bin';
+import {binRequiresRange} from '../common';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
