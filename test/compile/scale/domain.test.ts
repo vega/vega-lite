@@ -276,8 +276,24 @@ describe('compile/scale', () => {
             }
           });
           const _domain = testParseDomainForChannel(model,'y');
-          assert.deepEqual(_domain, [{data: 'main', field: 'month_origin', sort: true}]);
+          assert.deepEqual(_domain, [{data: 'main', field: 'month_origin'}]);
         });
+
+        it('should return the correct domain for month O',
+          function() {
+            const model = parseUnitModel({
+              mark: "point",
+              encoding: {
+                y: {
+                  field: 'origin',
+                  type: "ordinal",
+                  timeUnit: 'month'
+                }
+              }
+            });
+            const _domain = testParseDomainForChannel(model,'y');
+            assert.deepEqual(_domain, [{data: 'main', field: 'month_origin', sort: true}]);
+          });
 
         it('should return the correct domain for yearmonth T',
           function() {
@@ -297,16 +313,16 @@ describe('compile/scale', () => {
           });
 
 
-        it('should return the correct domain for yearmonth T when specify sort',
+        it('should return the correct domain for month O when specify sort',
           function() {
             const sortDef: SortField = {op: 'mean', field: 'precipitation', order: 'descending'} ;
             const model = parseUnitModel({
-              mark: "line",
+              mark: "bar",
               encoding: {
                 x: {
                   timeUnit: 'month',
                   field: 'date',
-                  type: 'temporal',
+                  type: 'ordinal',
                   sort: sortDef
                 },
                 y: {

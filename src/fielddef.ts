@@ -506,3 +506,11 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
   }
   throw new Error('channelCompatability not implemented for channel ' + channel);
 }
+
+export function isNumberFieldDef(fieldDef: FieldDef<any>) {
+  return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+}
+
+export function isTimeFieldDef(fieldDef: FieldDef<any>) {
+  return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
+}
