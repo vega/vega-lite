@@ -7,7 +7,7 @@ import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
 import {PRIMITIVE_MARKS} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
-import {TimeUnit} from '../../../src/timeunit';
+import {TimeUnit, TIMEUNITS} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
 
@@ -167,14 +167,6 @@ describe('compile/scale', () => {
         );
       });
 
-
-      it('should return ordinal scale for temporal color field with discrete timeUnit by default.', () => {
-        assert.equal(
-          scaleType(undefined, 'color', {timeUnit: 'quarter', type: 'temporal'}, 'point', undefined, defaultScaleConfig),
-          ScaleType.ORDINAL
-        );
-      });
-
       it('should return ordinal for temporal field and throw a warning.', log.wrap((localLogger) => {
         assert.deepEqual(
           scaleType(undefined, 'shape', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, defaultScaleConfig),
@@ -183,42 +175,13 @@ describe('compile/scale', () => {
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'temporal'));
       }));
 
-      it('should return time for most of time unit.', function() {
-        // See exception in the next test)
-        const TIMEUNITS = [
-          TimeUnit.YEAR,
-          TimeUnit.DATE,
-          TimeUnit.MINUTES,
-          TimeUnit.SECONDS,
-          TimeUnit.MILLISECONDS,
-          TimeUnit.YEARMONTH,
-          TimeUnit.YEARMONTHDATE,
-          TimeUnit.YEARMONTHDATEHOURS,
-          TimeUnit.YEARMONTHDATEHOURSMINUTES,
-          TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-          TimeUnit.HOURSMINUTES,
-          TimeUnit.HOURSMINUTESSECONDS,
-          TimeUnit.MINUTESSECONDS,
-          TimeUnit.SECONDSMILLISECONDS,
-          TimeUnit.YEARQUARTER,
-          TimeUnit.QUARTERMONTH,
-          TimeUnit.YEARQUARTERMONTH,
-        ];
+      it('should return time for all time units.', function() {
         for (const timeUnit of TIMEUNITS) {
           assert.deepEqual(
             scaleType(undefined, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', undefined, defaultScaleConfig),
             ScaleType.TIME
           );
         }
-      });
-
-      it('should return a discrete scale for hours, day, month, quarter for x-y', function() {
-        [TimeUnit.MONTH, TimeUnit.HOURS, TimeUnit.DAY, TimeUnit.QUARTER].forEach((timeUnit) => {
-          assert.deepEqual(
-            scaleType(undefined, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', undefined, defaultScaleConfig),
-            ScaleType.POINT
-          );
-        });
       });
     });
     describe('quantitative', () => {
