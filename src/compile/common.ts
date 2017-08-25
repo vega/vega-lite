@@ -70,19 +70,14 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   return value;
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
+export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
   if (fieldDef.bin) {
-    if (useBinRange) {
-      // For bin range, no need to apply format as the formula that creates range already include format
-      return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-    } else {
-      const startField = field(fieldDef, {expr});
-      const endField = field(fieldDef, {expr, binSuffix: 'end'});
-      return {
-        signal: binFormatExpression(startField, endField, format, config)
-      };
-    }
+    const startField = field(fieldDef, {expr});
+    const endField = field(fieldDef, {expr, binSuffix: 'end'});
+    return {
+      signal: binFormatExpression(startField, endField, format, config)
+    };
   } else if (fieldDef.type === 'quantitative') {
     return {
       signal: `${formatExpr(field(fieldDef, {expr}), format)}`
