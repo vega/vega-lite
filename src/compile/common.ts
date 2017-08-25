@@ -1,13 +1,19 @@
-
+import {Channel, COLUMN, NonspatialScaleChannel, ROW, SpatialScaleChannel, TEXT, TOOLTIP} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
-import {QUANTITATIVE} from '../type';
-import {isArray} from '../util';
+import {FormatType, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {contains, duplicate, isArray} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
+import {ConcatModel} from './concat';
+import {FacetModel} from './facet';
+import {LayerModel} from './layer';
+import {Model} from './model';
+import {RepeatModel} from './repeat';
+import {RepeaterValue} from './repeater';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
@@ -70,24 +76,25 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   return value;
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
-  const format = numberFormat(fieldDef, specifiedFormat, config);
-  if (fieldDef.bin) {
-    if (useBinRange) {
-      // For bin range, no need to apply format as the formula that creates range already include format
-      return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-    } else {
-      const startField = field(fieldDef, {expr});
-      const endField = field(fieldDef, {expr, binSuffix: 'end'});
-      return {
-        signal: binFormatExpression(startField, endField, format, config)
-      };
+export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, formatType: FormatType | undefined, useBinRange?: boolean) {
+  if (fieldDef.type === 'quantitative' || formatType === 'number') {
+    const format = numberFormat(fieldDef, specifiedFormat, config);
+    if (fieldDef.bin) {
+      if (useBinRange) {
+        // For bin range, no need to apply format as the formula that creates range already include format
+        return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
+      } else {
+        const startField = field(fieldDef, {expr});
+        const endField = field(fieldDef, {expr, binSuffix: 'end'});
+        return {
+          signal: binFormatExpression(startField, endField, format, config)
+        };
+      }
     }
-  } else if (fieldDef.type === 'quantitative') {
     return {
       signal: `${formatExpr(field(fieldDef, {expr}), format)}`
     };
-  } else if (fieldDef.type === 'temporal') {
+  } else if (fieldDef.type === 'temporal' || contains(['utc', 'time'], formatType)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
@@ -112,18 +119,13 @@ export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T
  * @param format explicitly specified format
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
-  if (fieldDef.type === QUANTITATIVE) {
-    // add number format for quantitative type only
-
-    // Specified format in axis/legend has higher precedence than fieldDef.format
-    if (specifiedFormat) {
-      return specifiedFormat;
-    }
-
-    // TODO: need to make this work correctly for numeric ordinal / nominal type
-    return config.numberFormat;
+  // Specified format in axis/legend has higher precedence than fieldDef.format
+  if (specifiedFormat) {
+    return specifiedFormat;
   }
-  return undefined;
+
+  // TODO: need to make this work correctly for numeric ordinal / nominal type
+  return config.numberFormat;
 }
 
 function formatExpr(field: string, format: string) {
@@ -146,12 +148,8 @@ export function binFormatExpression(startField: string, endField: string, format
 export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
-    if (isUTCScale) {
-      return `utcFormat(${field}, '${_format}')`;
-    } else {
-      return `timeFormat(${field}, '${_format}')`;
-    }
+    // only use config.timeFormat if there is no timeUnit.
+    return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format || timeFormatConfig}')`;
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
   }
@@ -175,4 +173,24 @@ export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
       v1.value : // if title is the same just use one of them
       v1.value + ', ' + v2.value // join title with comma if different
   };
+}
+
+export function guideLabels(fieldDef: FieldDef<string>, config: Config, model: Model, channel: SpatialScaleChannel | NonspatialScaleChannel, label: any) {
+    if (fieldDef.type === TEMPORAL) {
+    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
+    return {
+      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, label.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
+    };
+  } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && label.format) {
+    if (label.formatType === 'number') {
+      return {
+        signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, label.format, config)}')`
+      };
+    } else if (label.formatType) {
+      return {
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, label.format, config.legend.shortTimeLabels, config.timeFormat, label.formatType === 'utc')
+      };
+    }
+  }
+  return undefined;
 }

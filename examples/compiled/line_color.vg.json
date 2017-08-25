@@ -140,6 +140,7 @@
     ],
     "axes": [
         {
+            "format": "%Y",
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
@@ -168,6 +169,7 @@
             }
         },
         {
+            "format": "%Y",
             "scale": "x",
             "domain": false,
             "grid": true,

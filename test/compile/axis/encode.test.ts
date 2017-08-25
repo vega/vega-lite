@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import * as encode from '../../../src/compile/axis/encode';
 import {labelAlign} from '../../../src/compile/axis/encode';
 import {Split} from '../../../src/compile/split';
-import {AxisOrient} from '../../../src/vega.schema';
+import {AxisOrient, VgAxis} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 
@@ -44,6 +44,37 @@ describe('compile/axis', () => {
       const labels = encode.labels(model, 'x', {}, new Split<{}>());
       const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       assert.equal(labels.text.signal, expected);
+    });
+
+    it('should not format ordinal types', () => {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "ordinal", timeUnit: "yearquartermonth", formatType: "time", axis: {format: "%y", labelAngle: 90}}
+        }
+      });
+      const labels = encode.labels(model, 'x', {}, new Split<VgAxis>());
+      assert.deepEqual(labels, {
+        angle: {value: 90},
+        align: {value: 'left'},
+        baseline: {value: 'middle'}
+      });
+    });
+
+    it('should format temporal formatType if axis is formatted as an integers', () => {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", formatType: "number", axis: {format: "d"}}
+        }
+      });
+      const labels = encode.labels(model, 'x', {}, new Split<VgAxis>());
+      assert.deepEqual(labels, {
+        text: {signal: `timeFormat(datum.value, 'd')`},
+        angle: {value: 270},
+        align: {value: 'right'},
+        baseline: {value: 'middle'}
+      });
     });
   });
 

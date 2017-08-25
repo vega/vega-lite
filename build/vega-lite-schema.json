@@ -77,6 +77,14 @@
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
         },
+        "formatType": {
+          "enum": [
+            "number",
+            "time",
+            "utc"
+          ],
+          "type": "string"
+        },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
           "type": "boolean"
@@ -1244,6 +1252,9 @@
           "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
+        "formatType": {
+          "$ref": "#/definitions/FormatType"
+        },
         "selection": {
           "$ref": "#/definitions/SelectionOperand"
         },
@@ -1387,6 +1398,9 @@
         "format": {
           "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
+        },
+        "formatType": {
+          "$ref": "#/definitions/FormatType"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2292,6 +2306,14 @@
       "minimum": 100,
       "type": "number"
     },
+    "FormatType": {
+      "enum": [
+        "number",
+        "time",
+        "utc"
+      ],
+      "type": "string"
+    },
     "FacetedSpec": {
       "additionalProperties": false,
       "properties": {
@@ -3076,6 +3098,9 @@
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
+        },
+        "formatType": {
+          "$ref": "#/definitions/FormatType"
         },
         "offset": {
           "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
@@ -5243,6 +5268,9 @@
         "format": {
           "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
+        },
+        "formatType": {
+          "$ref": "#/definitions/FormatType"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",

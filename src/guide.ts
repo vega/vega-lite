@@ -11,6 +11,11 @@ export interface Guide {
   format?: string;
 
   /**
+   * Type of formatter for discrete scales.  One of `"number"`, `"time"`, or `"utc"`.
+   */
+  formatType?: 'number' | 'time' | 'utc';
+
+  /**
    * A title for the field.
    *
    * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".

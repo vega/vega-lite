@@ -156,7 +156,7 @@ export function text(textDef: ConditionalChannelDef<TextFieldDef<string>>, confi
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
-      return formatSignalRef(textDef, textDef.format, 'datum', config);
+      return formatSignalRef(textDef, textDef.format, 'datum', config, textDef.formatType);
     } else if (isValueDef(textDef)) {
       return {value: textDef.value};
     }

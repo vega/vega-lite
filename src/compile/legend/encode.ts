@@ -2,9 +2,10 @@ import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
 import {FieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {TEMPORAL} from '../../type';
+import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
-import {applyMarkConfig, timeFormatExpression} from '../common';
+import {VgValueRef} from '../../vega.schema';
+import {applyMarkConfig, guideLabels, numberFormat, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
@@ -72,17 +73,13 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   const config = model.config;
 
   let labels:any = {};
+  labelsSpec = labelsSpec || {};
 
-  if (fieldDef.type === TEMPORAL) {
-    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    labelsSpec = extend({
-      text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-      }
-    }, labelsSpec || {});
+  const text = guideLabels(fieldDef, config, model, channel, legend);
+  if (text) {
+    labelsSpec.text = text;
   }
-
-  labels = extend(labels, labelsSpec || {});
+  labels = extend(labels, labelsSpec);
 
   return keys(labels).length > 0 ? labels : undefined;
 }
