@@ -115,7 +115,7 @@ describe('interval selections at runtime in unit views', function() {
 
     embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
-    extents = [[1136188800000, 1136275200000, 1136361600000], [1136448000000, 1136534400000]];
+    extents = [[1136187936000, 1136361600000], [1136447136000, 1136535264000]];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i) + toNumber).value;
       assert.sameMembers(store, extents[i]);
