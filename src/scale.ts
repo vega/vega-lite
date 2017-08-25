@@ -625,9 +625,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
-    case Channel.ROW:
-    case Channel.COLUMN:
-      return scaleType === 'band'; // row / column currently supports band only
     case Channel.X:
     case Channel.Y:
     case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
