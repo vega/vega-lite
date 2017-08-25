@@ -4,9 +4,9 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "field": "date",
-      "type": "temporal",
       "timeUnit": "month",
+      "field": "date",
+      "type": "ordinal",
       "axis": {"title": "Month of the year"}
     },
     "y": {

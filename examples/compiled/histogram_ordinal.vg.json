@@ -8,7 +8,10 @@
             "name": "source_0",
             "url": "data/movies.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "IMDB_Rating": "number"
+                }
             },
             "transform": [
                 {

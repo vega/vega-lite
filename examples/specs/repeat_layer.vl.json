@@ -15,8 +15,8 @@
           },
           "x": {
             "timeUnit": "month",
-            "type": "temporal",
-            "field": "date"
+            "field": "date",
+            "type": "ordinal"
           },
           "detail": {
             "timeUnit": "year",
@@ -37,8 +37,8 @@
           },
           "x": {
             "timeUnit": "month",
-            "type": "temporal",
-            "field": "date"
+            "field": "date",
+            "type": "ordinal"
           },
           "color": {"type": "nominal","field": "location"}
         }
