@@ -280,13 +280,13 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
-      const scaleType = model.component.scales[channel].get('type');
+      const scaleType = model.getScaleComponent(channel).get('type');
       return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
     }
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap': {
-      const scaleType = model.component.scales[channel].get('type');
+      const scaleType = model.getScaleComponent(channel).get('type');
       return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
     case 'minExtent': {
@@ -298,7 +298,7 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     case 'orient':
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, properties.orient(channel));
     case 'tickCount': {
-      const scaleType = model.component.scales[channel].get('type');
+      const scaleType = model.getScaleComponent(channel).get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType)
        : undefined;

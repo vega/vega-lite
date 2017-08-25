@@ -37,6 +37,8 @@ function parseUnitScaleRange(model: UnitModel) {
     if (!localScaleCmpt) {
       return;
     }
+    const mergedScaleCmpt = model.getScaleComponent(channel);
+
 
     const specifiedScale = model.specifiedScales[channel];
     const fieldDef = model.fieldDef(channel);
@@ -48,7 +50,7 @@ function parseUnitScaleRange(model: UnitModel) {
     const xyRangeSteps = getXYRangeStep(model);
 
     const rangeWithExplicit = parseRangeForChannel(
-      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,
+      channel, mergedScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,
       localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getName(sizeType), xyRangeSteps
     );
 
