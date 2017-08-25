@@ -4,7 +4,6 @@ import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, ScaleConfig, ScaleType} from '../../scale';
 import {hasDiscreteDomain} from '../../scale';
-import {isDiscreteByDefault} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {contains} from '../../util';
@@ -64,19 +63,11 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'temporal':
       if (channel === 'color') {
-        if (isDiscreteByDefault(fieldDef.timeUnit)) {
-          // For discrete timeUnit, use ordinal scale so that legend produces correct value.
-          // (See https://github.com/vega/vega-lite/issues/2045.)
-          return 'ordinal';
-        }
         return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
-      }
-      if (isDiscreteByDefault(fieldDef.timeUnit)) {
-        return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
       }
       return 'time';
 

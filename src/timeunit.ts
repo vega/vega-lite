@@ -326,18 +326,6 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
   return expression || undefined;
 }
 
-export function isDiscreteByDefault(timeUnit: TimeUnit) {
-  switch (timeUnit) {
-    // These time unit use discrete scale by default
-    case 'hours':
-    case 'day':
-    case 'month':
-    case 'quarter':
-      return true;
-  }
-  return false;
-}
-
 function isUTCTimeUnit(timeUnit: TimeUnit) {
   return timeUnit.substr(0, 3) === 'utc';
 }
