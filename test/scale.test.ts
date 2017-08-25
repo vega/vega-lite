@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Channel, SCALE_CHANNELS, ScaleChannel} from '../src/channel';
+import {SCALE_CHANNELS, ScaleChannel} from '../src/channel';
 import * as scale from '../src/scale';
 import {channelSupportScaleType, CONTINUOUS_TO_CONTINUOUS_SCALES, SCALE_TYPES, ScaleType} from '../src/scale';
 import {some, without} from '../src/util';
@@ -45,16 +45,6 @@ describe('scale', () => {
         assert(some(SCALE_CHANNELS, (channel) => {
           return channelSupportScaleType(channel, scaleType);
         }));
-      }
-    });
-
-    it('row,column should support only band', () => {
-      for (const channel of ['row', 'column'] as Channel[]) {
-        assert(channelSupportScaleType(channel, 'band'));
-        const nonBands = without<ScaleType>(SCALE_TYPES, ['band']);
-        for (const scaleType of nonBands) {
-          assert(!channelSupportScaleType(channel, scaleType));
-        }
       }
     });
 
