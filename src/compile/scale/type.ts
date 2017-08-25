@@ -124,11 +124,7 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
   if (contains([Type.ORDINAL, Type.NOMINAL], type)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (type === Type.TEMPORAL) {
-    if (!fieldDef.timeUnit) {
-      return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
-    } else {
-      return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
-    }
+    return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
   } else if (type === Type.QUANTITATIVE) {
     if (fieldDef.bin) {
       return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
