@@ -573,10 +573,6 @@ export abstract class ModelWithField extends Model {
     return field(fieldDef, opt);
   }
 
-  public abstract hasDiscreteDomain(channel: Channel): boolean;
-
-
-
   protected abstract getMapping(): {[key: string]: any};
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {

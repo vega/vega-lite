@@ -1,23 +1,20 @@
 import {AggregateOp} from '../../aggregate';
-import {isScaleChannel} from '../../channel';
+import {Channel, isScaleChannel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {SummarizeTransform} from '../../transform';
-import {NOMINAL, ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
+import {binRequiresRange} from './bin';
 import {DataFlowNode} from './dataflow';
 
-
-function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
+function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
     dims[field(fieldDef, {})] = true;
     dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
-    // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
-    // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
-    if (fieldDef.type === ORDINAL || fieldDef.type === NOMINAL) {
+    if (binRequiresRange(fieldDef, channel)) {
       dims[field(fieldDef, {binSuffix: 'range'})] = true;
     }
   } else {
@@ -90,7 +87,7 @@ export class AggregateNode extends DataFlowNode {
           }
         }
       } else {
-        addDimension(dims, fieldDef);
+        addDimension(dims, channel, fieldDef);
       }
     });
 

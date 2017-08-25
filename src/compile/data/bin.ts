@@ -1,18 +1,32 @@
 import {BinParams, binToString} from '../../bin';
-import {Channel} from '../../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, extend, flatten, keys, vals} from '../../util';
+import {NOMINAL, ORDINAL} from '../../type';
+import {contains, Dict, duplicate, extend, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
-    const discreteDomain = model.hasDiscreteDomain(channel);
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
+  if (!fieldDef.bin) {
+    console.warn('Only use this method with binned field defs');
+    return false;
+  }
+  if (!contains(NONSPATIAL_SCALE_CHANNELS, channel) && !contains(SPATIAL_SCALE_CHANNELS, channel)) {
+    // range is only needed for scales that have legends or axes
+    return false;
+  }
+  return fieldDef.type === ORDINAL || fieldDef.type === NOMINAL;
+}
 
-    if (discreteDomain) {
+function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
+    if (binRequiresRange(fieldDef, channel)) {
       // read format from axis or legend, if there is no format then use config.numberFormat
 
       const guide = isUnitModel(model) ? (model.axis(channel) || model.legend(channel) || {}) : {};
@@ -93,8 +107,7 @@ export class BinNode extends DataFlowNode {
 
   public static makeBinFromEncoding(model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
-      const fieldDefBin = fieldDef.bin;
-      if (fieldDefBin) {
+      if (fieldDef.bin) {
         const {key, binComponent} = createBinComponent(fieldDef, {model});
         binComponentIndex[key] = {
           ...binComponent,

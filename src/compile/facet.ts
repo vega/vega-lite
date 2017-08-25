@@ -63,10 +63,6 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public hasDiscreteDomain(channel: Channel) {
-    return true;
-  }
-
   public fieldDef(channel: Channel): FieldDef<string> {
     return this.facet[channel];
   }

@@ -98,15 +98,6 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public hasDiscreteDomain(channel: Channel) {
-    if (isScaleChannel(channel)) {
-      const scaleCmpt = this.getScaleComponent(channel);
-      return scaleCmpt && hasDiscreteDomain(scaleCmpt.get('type'));
-    }
-    return false;
-  }
-
-
   public sort(channel: Channel): SortField | SortOrder {
     return (this.getMapping()[channel] || {}).sort;
   }

@@ -102,7 +102,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       if (channelDef.bin) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-        if (contains(['x', 'y'], channel)) {
+        if (contains(['x', 'y'], channel) && channelDef.type === 'quantitative') {
           if (stack && stack.impute) {
             // For stack, we computed bin_mid so we can impute.
             return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});

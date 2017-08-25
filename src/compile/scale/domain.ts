@@ -2,13 +2,13 @@ import {isString} from 'vega-util';
 
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
-import {isScaleChannel, ScaleChannel} from '../../channel';
+import {isScaleChannel, ScaleChannel, SPATIAL_SCALE_CHANNELS} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {isSortField} from '../../sort';
+import {isSortField, SortField} from '../../sort';
 import * as util from '../../util';
 import {
   FieldRefUnionDomain,
@@ -19,6 +19,7 @@ import {
   VgSortField,
   VgUnionSortField,
 } from '../../vega.schema';
+import {binRequiresRange} from '../data/bin';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
@@ -202,12 +203,14 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       return [{
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
-        data: sort && util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
-        field: model.field(channel, {binSuffix: 'range'}),
-        sort: sort || {
+        data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
+        // Use range if we added it and the scale does not support computing a range as a signal.
+        field: model.field(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
+        // we have to use a sort object if sort = true to make the sort correct by bin start
+        sort: sort === true || !isSortField(sort) ? {
           field: model.field(channel, {}),
-          op: 'min' // min or max doesn't matter since same _range would have the same _start
-        }
+          op: 'min' // min or max doesn't matter since we sort by the start of the bin range
+        } : sort
       }];
     } else { // continuous scales
       if (channel === 'x' || channel === 'y') {
@@ -245,7 +248,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): VgSortField {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
