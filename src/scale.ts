@@ -60,17 +60,16 @@ const SCALE_CATEGORY_INDEX: {
 
 export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
 
-export function getScaleCategory(scaleType: ScaleType) {
-  return SCALE_CATEGORY_INDEX[scaleType];
-}
-
 /**
  * Whether the two given scale types can be merged together.
  */
 export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
-  return SCALE_CATEGORY_INDEX[scaleType1] === SCALE_CATEGORY_INDEX[scaleType2];
+  const scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
+  const scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
+  return scaleCategory1 === scaleCategory2 ||
+    (scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time') ||
+    (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time');
 }
-
 
 /**
  * Index for scale predecence -- high score = higher priority for merging.
@@ -87,9 +86,9 @@ const SCALE_PRECEDENCE_INDEX: {
   // time
   time: 0,
   utc: 0,
-  // ordinal-position
-  point: 0,
-  band: 1, // band has higher precedence as it is better for interaction
+  // ordinal-position -- these have higher precedence than continuous scales as they support more types of data
+  point: 10,
+  band: 11, // band has higher precedence as it is better for interaction
   // non grouped types
   'bin-linear': 0,
   sequential: 0,
