@@ -1,13 +1,11 @@
 import {assert} from 'chai';
-
-import * as log from '../../../src/log';
-
 import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
+import * as log from '../../../src/log';
 import {PRIMITIVE_MARKS} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
-import {TimeUnit, TIMEUNITS} from '../../../src/timeunit';
+import {TIMEUNITS} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
 

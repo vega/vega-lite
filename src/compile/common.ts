@@ -1,6 +1,6 @@
 
 import {CellConfig, Config} from '../config';
-import {field, FieldDef, FieldRefOption, isScaleFieldDef, OrderFieldDef} from '../fielddef';
+import {field, FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
@@ -87,7 +87,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
     return {
       signal: `${formatExpr(field(fieldDef, {expr}), format)}`
     };
-  } else if (fieldDef.type === 'temporal') {
+  } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)

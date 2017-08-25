@@ -1,8 +1,7 @@
 import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
-import {FieldDef, isValueDef} from '../../fielddef';
+import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
@@ -73,7 +72,7 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
 
   let labels:any = {};
 
-  if (fieldDef.type === TEMPORAL) {
+  if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     labelsSpec = extend({
       text: {
