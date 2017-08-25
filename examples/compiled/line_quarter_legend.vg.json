@@ -156,13 +156,14 @@
         },
         {
             "name": "color",
-            "type": "ordinal",
+            "type": "sequential",
             "domain": {
                 "data": "source_0",
-                "field": "quarter_date",
-                "sort": true
+                "field": "quarter_date"
             },
-            "range": "ordinal"
+            "range": "ramp",
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

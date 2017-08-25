@@ -4,7 +4,7 @@
   "data": {"url": "data/stocks.csv"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "timeUnit": "quarter"},
+    "x": {"timeUnit": "quarter", "field": "date", "type": "ordinal"},
     "y": {"field": "price", "type": "quantitative", "aggregate": "mean"},
     "color": {"field": "symbol", "type": "nominal"},
     "column": {"field": "date", "type": "temporal", "timeUnit": "year"}

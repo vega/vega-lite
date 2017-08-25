@@ -5,12 +5,12 @@
   "encoding": {
     "y": {
       "field": "time",
-      "type": "temporal",
+      "type": "ordinal",
       "timeUnit": "day"
     },
     "x": {
       "field": "time",
-      "type": "temporal",
+      "type": "ordinal",
       "timeUnit": "hours"
     },
     "size": {

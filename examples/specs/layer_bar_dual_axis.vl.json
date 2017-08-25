@@ -8,7 +8,7 @@
         "x": {
           "timeUnit": "month",
           "field": "date",
-          "type": "temporal"
+          "type": "ordinal"
         },
         "y": {
           "aggregate": "mean",
@@ -26,7 +26,7 @@
         "x": {
           "timeUnit": "month",
           "field": "date",
-          "type": "temporal"
+          "type": "ordinal"
         },
         "y": {
           "aggregate": "mean",

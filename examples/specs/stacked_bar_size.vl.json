@@ -4,9 +4,9 @@
   "mark": "bar",
   "encoding": {
     "x": {
+      "timeUnit": "month",
       "field": "date",
-      "type": "temporal",
-      "timeUnit": "month"
+      "type": "ordinal"
     },
     "y": {
       "aggregate": "count",
