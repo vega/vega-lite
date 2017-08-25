@@ -180,9 +180,8 @@ export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
     console.warn('Only use this method with binned field defs');
     return false;
   }
-  if (!isScaleChannel(channel)) {
-    // range is only needed for scales that have legends or axes
-    return false;
-  }
-  return fieldDef.type === ORDINAL || fieldDef.type === NOMINAL;
+
+  // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
+  // We could check whether the axis or legend exists (not disabled) but that seems overkill.
+  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
 }
