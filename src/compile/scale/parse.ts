@@ -109,7 +109,7 @@ function parseNonUnitScaleCore(model: Model) {
             );
           } else {
             // Otherwise, update conflicting channel to be independent
-            resolve[channel].scale = 'independent';
+            resolve.scale[channel] = 'independent';
             // Remove from the index so they don't get merged
             delete scaleTypeWithExplicitIndex[channel];
           }
