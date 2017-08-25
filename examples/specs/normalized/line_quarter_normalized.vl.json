@@ -15,9 +15,9 @@
     "mark": "point",
     "encoding": {
       "x": {
+        "timeUnit": "quarter",
         "field": "date",
-        "type": "temporal",
-        "timeUnit": "quarter"
+        "type": "ordinal"
       },
       "y": {
         "field": "price",

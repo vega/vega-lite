@@ -6,7 +6,7 @@ import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-import {truncate} from '../../util';
+import {contains, truncate} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
@@ -75,8 +75,8 @@ export function orient(channel: Channel) {
 }
 
 export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
 
-  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     if (fieldDef.bin) {
       // for binned data, we don't want more ticks than maxbins
       return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as BinParams).maxbins})`};
