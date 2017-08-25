@@ -62,7 +62,7 @@ describe('Concat', function() {
         offset: 10,
         columns: 1,
         bounds: 'full',
-        align: 'all'
+        align: 'each'
       });
     });
 
@@ -83,7 +83,7 @@ describe('Concat', function() {
         padding: {row: 10, column: 10},
         offset: 10,
         bounds: 'full',
-        align: 'all'
+        align: 'each'
       });
     });
   });
