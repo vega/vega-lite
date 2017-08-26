@@ -29,3 +29,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Unit Chart Rectangular by @amitkaps](https://bl.ocks.org/amitkaps/d6648bd8ddb1c1e3706d7530126d1e2b)
 * [Unit Chart Stacked by @amitkaps](https://bl.ocks.org/amitkaps/cdc7dacd8f7d9f2a9cff4b10d3279b86)
 * [Unit Chart Small Multiple by @amitkaps](https://bl.ocks.org/amitkaps/67bd6dcb2af300a2b76f1e2351c1afdc)
+* [Dot-dash plot by @g3o2](https://bl.ocks.org/g3o2/bd4362574137061c243a2994ba648fb8)
