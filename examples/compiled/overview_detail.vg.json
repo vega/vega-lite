@@ -600,8 +600,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "round": true
+            ]
         },
         {
             "name": "concat_0_y",
@@ -616,7 +615,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -632,8 +630,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "round": true
+            ]
         },
         {
             "name": "concat_1_y",
@@ -648,7 +645,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

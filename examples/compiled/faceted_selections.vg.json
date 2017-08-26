@@ -801,7 +801,6 @@
                 }
             ],
             "zero": false,
-            "round": true,
             "nice": true
         },
         {
@@ -821,7 +820,6 @@
                 0
             ],
             "zero": false,
-            "round": true,
             "nice": true
         }
     ],

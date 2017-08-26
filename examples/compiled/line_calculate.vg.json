@@ -101,7 +101,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": "month"
         },
         {
@@ -117,7 +116,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

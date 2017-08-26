@@ -136,7 +136,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "zero": false
         },
         {
@@ -156,7 +155,6 @@
                 },
                 0
             ],
-            "round": true,
             "zero": false
         },
         {

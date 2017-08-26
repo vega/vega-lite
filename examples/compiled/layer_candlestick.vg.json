@@ -449,7 +449,6 @@
                 0
             ],
             "zero": false,
-            "round": true,
             "nice": true
         },
         {
@@ -476,7 +475,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": "day"
         },
         {

@@ -1620,7 +1620,6 @@
                     "signal": "concat_0_width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -1642,7 +1641,6 @@
                 },
                 0
             ],
-            "round": true,
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },
@@ -1659,7 +1657,6 @@
                     "signal": "concat_1_width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -1681,7 +1678,6 @@
                 },
                 0
             ],
-            "round": true,
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },
@@ -1699,7 +1695,6 @@
                 }
             ],
             "zero": false,
-            "round": true,
             "nice": true
         },
         {
@@ -1716,7 +1711,6 @@
                 0
             ],
             "zero": false,
-            "round": true,
             "nice": true
         }
     ],

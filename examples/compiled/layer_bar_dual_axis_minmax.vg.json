@@ -256,7 +256,6 @@
                     "signal": "x_step"
                 }
             },
-            "round": true,
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },
@@ -273,7 +272,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -300,7 +298,6 @@
                 0
             ],
             "zero": false,
-            "round": true,
             "nice": true
         }
     ],

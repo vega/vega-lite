@@ -94,7 +94,6 @@
                     "signal": "y_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         }
     ],
