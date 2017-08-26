@@ -664,7 +664,6 @@
                     "signal": "concat_0_width"
                 }
             ],
-            "round": true,
             "nice": "second"
         },
         {
@@ -680,7 +679,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -697,7 +695,6 @@
                     "signal": "concat_1_width"
                 }
             ],
-            "round": true,
             "nice": "minute"
         },
         {
@@ -713,7 +710,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

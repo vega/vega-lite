@@ -81,7 +81,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

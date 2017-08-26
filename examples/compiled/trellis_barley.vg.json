@@ -299,7 +299,6 @@
                 }
             ],
             "zero": false,
-            "round": true,
             "nice": true
         },
         {
@@ -319,7 +318,6 @@
                     "signal": "trellis_barley_y_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         },
         {

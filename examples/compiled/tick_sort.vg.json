@@ -82,7 +82,6 @@
                 }
             ],
             "reverse": true,
-            "round": true,
             "nice": true,
             "zero": true
         }

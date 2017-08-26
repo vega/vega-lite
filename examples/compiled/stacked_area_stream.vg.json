@@ -165,8 +165,7 @@
                     "signal": "width"
                 }
             ],
-            "nice": "month",
-            "round": true
+            "nice": "month"
         },
         {
             "name": "y",
@@ -185,7 +184,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },

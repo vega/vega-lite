@@ -97,7 +97,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": "year"
         },
         {
@@ -113,7 +112,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

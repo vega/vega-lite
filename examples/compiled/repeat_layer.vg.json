@@ -923,7 +923,6 @@
                     "signal": "child_temp_max_x_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         },
         {
@@ -948,7 +947,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -973,7 +971,6 @@
                     "signal": "child_precipitation_x_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         },
         {
@@ -998,7 +995,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -1023,7 +1019,6 @@
                     "signal": "child_wind_x_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         },
         {
@@ -1048,7 +1043,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }
