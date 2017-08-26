@@ -73,8 +73,6 @@ function getDefaultValue(property: keyof Scale, specifiedScale: Scale, scaleCmpt
       return paddingInner(scaleCmpt.get('padding'), channel, scaleConfig);
     case 'paddingOuter':
       return paddingOuter(scaleCmpt.get('padding'), channel, scaleCmpt.get('type'), scaleCmpt.get('paddingInner'), scaleConfig);
-    case 'round':
-      return round(channel, scaleConfig);
     case 'reverse':
       return reverse(scaleCmpt.get('type'), sort);
     case 'zero':
@@ -181,13 +179,6 @@ export function paddingOuter(padding: number, channel: Channel, scaleType: Scale
           Note that step (by default) and cardinality are integers.) */
       return paddingInner / 2;
     }
-  }
-  return undefined;
-}
-
-export function round(channel: Channel, scaleConfig: ScaleConfig) {
-  if (util.contains(['x', 'y'], channel)) {
-    return scaleConfig.round;
   }
   return undefined;
 }

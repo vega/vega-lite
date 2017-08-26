@@ -76,22 +76,6 @@ describe('compile/scale', () => {
     });
   });
 
-  describe('round', () => {
-    it('should return scaleConfig.round for x, y, row, column.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
-        assert(rules.round(c, {round: true}));
-        assert(!rules.round(c, {round: false}));
-      }
-    });
-
-    it('should return undefined other channels (not x, y, row, column).', () => {
-      for (const c of NONSPATIAL_SCALE_CHANNELS) {
-        assert.isUndefined(rules.round(c, {round: true}));
-        assert.isUndefined(rules.round(c, {round: false}));
-      }
-    });
-  });
-
   describe('reverse', () => {
     it('should return true for a continuous scale with sort = "descending".', () => {
       assert.isTrue(rules.reverse('linear', 'descending'));
