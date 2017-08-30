@@ -211,48 +211,57 @@ export function isTimeUnit(t: string): t is TimeUnit {
   return !!TIMEUNIT_INDEX[t];
 }
 
+type DateMethodName = keyof Date;
+
+const SET_DATE_METHOD: Record<LocalSingleTimeUnit, DateMethodName> = {
+  year: 'setFullYear',
+  month: 'setMonth',
+  date: 'setDate',
+  hours: 'setHours',
+  minutes: 'setMinutes',
+  seconds: 'setSeconds',
+  milliseconds: 'setMilliseconds',
+  // Day and quarter have their own special cases
+  quarter: null,
+  day: null,
+};
+
 /**
  * Converts a date to only have the measurements relevant to the specified unit
  * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
  * Note: the base date is Jan 01 1900 00:00:00
  */
-export function convert(unit: LocalTimeUnit, date: Date): Date {
-  const result: Date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
-  TIMEUNIT_PARTS.forEach(function(singleUnit) {
-    if (containsTimeUnit(unit, singleUnit)) {
-      switch (singleUnit) {
+export function convert(unit: TimeUnit, date: Date): Date {
+  const isUTC = isUTCTimeUnit(unit);
+  const result: Date = isUTC ?
+    // start with uniform date
+    new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0)) :
+    new Date(0, 0, 1, 0, 0, 0, 0);
+  TIMEUNIT_PARTS.forEach(function(timeUnitPart) {
+    if (containsTimeUnit(unit, timeUnitPart)) {
+      switch (timeUnitPart) {
         case TimeUnit.DAY:
           throw new Error('Cannot convert to TimeUnits containing \'day\'');
-        case TimeUnit.YEAR:
-          result.setFullYear(date.getFullYear());
-          break;
-        case TimeUnit.QUARTER:
+        case TimeUnit.QUARTER: {
+          const {getDateMethod, setDateMethod} = dateMethods('month', isUTC);
           // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
+          result[setDateMethod]((Math.floor(date[getDateMethod]() / 3)) * 3);
           break;
-        case TimeUnit.MONTH:
-          result.setMonth(date.getMonth());
-          break;
-        case TimeUnit.DATE:
-          result.setDate(date.getDate());
-          break;
-        case TimeUnit.HOURS:
-          result.setHours(date.getHours());
-          break;
-        case TimeUnit.MINUTES:
-          result.setMinutes(date.getMinutes());
-          break;
-        case TimeUnit.SECONDS:
-          result.setSeconds(date.getSeconds());
-          break;
-        case TimeUnit.MILLISECONDS:
-          result.setMilliseconds(date.getMilliseconds());
-          break;
+        }
+        default:
+          const {getDateMethod, setDateMethod} = dateMethods(timeUnitPart, isUTC);
+          result[setDateMethod](date[getDateMethod]());
       }
     }
   });
-
   return result;
+}
+
+function dateMethods(singleUnit: SingleTimeUnit, isUtc: boolean) {
+  const rawSetDateMethod = SET_DATE_METHOD[singleUnit];
+  const setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
+  const getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
+  return {setDateMethod, getDateMethod};
 }
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */

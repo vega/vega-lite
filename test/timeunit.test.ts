@@ -95,6 +95,11 @@ describe('timeUnit', () => {
       assert.equal(date.getTime(), new Date(2000, 9, 1, 0, 0, 0, 0).getTime());
     });
 
+    it('should return expected result for UTCYEARQUARTER', function() {
+      const date: Date = convert(TimeUnit.UTCYEARQUARTER, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
+      assert.equal(date.getTime(), new Date(Date.UTC(2000, 9, 1, 0, 0, 0, 0)).getTime());
+    });
+
     it('should return expected result for YEARQUARTERMONTH', function() {
       const date: Date = convert(TimeUnit.YEARQUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
@@ -103,6 +108,17 @@ describe('timeUnit', () => {
     it('should return expected result for YEARMONTH', function() {
       const date: Date = convert(TimeUnit.YEARMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
+    });
+
+    it('should return expected result for UTCYEARMONTH', function() {
+      const date: Date = convert(TimeUnit.UTCYEARMONTH, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
+      assert.equal(date.getTime(), new Date(Date.UTC(2000, 11, 1, 0, 0, 0, 0)).getTime());
+    });
+
+
+    it('should return expected result for UTCYEARMONTH', function() {
+      const date: Date = convert(TimeUnit.UTCYEAR, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
+      assert.equal(date.getTime(), new Date(Date.UTC(2000, 0, 1, 0, 0, 0, 0)).getTime());
     });
 
     it('should return expected result for YEARMONTHDATE', function() {
