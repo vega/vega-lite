@@ -277,6 +277,7 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
     case 'domain':
       return properties.domain(property, specifiedAxis, isGridAxis, channel);
     case 'format':
+      // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
       const scaleType = model.component.scales[channel].get('type');

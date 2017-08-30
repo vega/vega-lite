@@ -40,7 +40,8 @@ export class ConcatModel extends BaseConcatModel {
       offset: 10,
       ...(this.isVConcat ? {columns: 1} : {}),
       bounds: 'full',
-      align: 'all'
+      // Use align each so it can work with multiple plots with different size
+      align: 'each'
     };
   }
 }

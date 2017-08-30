@@ -405,7 +405,7 @@
         },
         "offset": 10,
         "bounds": "full",
-        "align": "all"
+        "align": "each"
     },
     "marks": [
         {

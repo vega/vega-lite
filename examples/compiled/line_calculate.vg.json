@@ -20,6 +20,10 @@
                     "as": "temp_range"
                 },
                 {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -44,12 +48,8 @@
     ],
     "signals": [
         {
-            "name": "x_step",
-            "value": 21
-        },
-        {
             "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+            "update": "200"
         },
         {
             "name": "height",
@@ -90,19 +90,19 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "time",
             "domain": {
                 "data": "source_0",
-                "field": "month_date",
-                "sort": true
+                "field": "month_date"
             },
-            "range": {
-                "step": {
-                    "signal": "x_step"
+            "range": [
+                0,
+                {
+                    "signal": "width"
                 }
-            },
+            ],
             "round": true,
-            "padding": 0.5
+            "nice": "month"
         },
         {
             "name": "y",
@@ -147,6 +147,18 @@
                     }
                 }
             }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
         },
         {
             "scale": "y",

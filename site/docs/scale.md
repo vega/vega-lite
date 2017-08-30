@@ -134,7 +134,7 @@ For example, the following plot use the `"category20b"` scheme.
 
 The `scheme` property can also be a __scheme parameter object__, which contain the following properties:
 
-{% include table.html props="name,extent,count" source="SchemeParams" %}
+{% include table.html props="name,extent" source="SchemeParams" %}
 
 2) Setting the `range` property to an array of valid CSS color strings.
 

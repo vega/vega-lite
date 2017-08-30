@@ -342,6 +342,8 @@ export interface SchemeParams {
 
   /**
    * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
+   *
+   * @hide
    */
   count?: number;
 }
@@ -623,9 +625,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
-    case Channel.ROW:
-    case Channel.COLUMN:
-      return scaleType === 'band'; // row / column currently supports band only
     case Channel.X:
     case Channel.Y:
     case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification

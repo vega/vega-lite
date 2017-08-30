@@ -1,8 +1,8 @@
 import {Axis} from '../../axis';
 import {Channel, SpatialScaleChannel, X} from '../../channel';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
-import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
+import {NOMINAL, ORDINAL} from '../../type';
 import {contains, keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
@@ -22,7 +22,7 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
   let labelsSpec: any = {};
 
   // Text
-  if (fieldDef.type === TEMPORAL) {
+  if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
     labelsSpec.text =  {
@@ -61,7 +61,7 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
     return ((axis.labelAngle % 360) + 360) % 360;
   } else {
     // auto rotate for X
-    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
+    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||  isTimeFieldDef(fieldDef))) {
       return 270;
     }
   }

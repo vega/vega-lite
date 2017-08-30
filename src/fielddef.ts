@@ -13,7 +13,7 @@ import {LogicalOperand} from './logical';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {isDiscreteByDefault, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -308,8 +308,7 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
     case 'quantitative':
       return !!fieldDef.bin;
     case 'temporal':
-      // TODO: deal with custom scale type case.
-      return isDiscreteByDefault(fieldDef.timeUnit);
+      return false;
   }
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
@@ -506,4 +505,12 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
   }
   throw new Error('channelCompatability not implemented for channel ' + channel);
+}
+
+export function isNumberFieldDef(fieldDef: FieldDef<any>) {
+  return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+}
+
+export function isTimeFieldDef(fieldDef: FieldDef<any>) {
+  return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }

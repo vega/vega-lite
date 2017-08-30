@@ -1,3 +1,4 @@
+import {Flag} from './util';
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
 
@@ -8,6 +9,17 @@ export namespace Type {
   export const NOMINAL: 'nominal' = 'nominal';
 }
 export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+
+const TYPE_INDEX: Flag<Type> = {
+  quantitative: 1,
+  ordinal: 1,
+  temporal: 1,
+  nominal: 1
+};
+
+export function isType(t: any): t is Type {
+  return !!TYPE_INDEX[t];
+}
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
 export const ORDINAL = Type.ORDINAL;

@@ -3,6 +3,7 @@
 
 import {assert} from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
+import {TimeUnit} from '../../../src/timeunit';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
@@ -45,12 +46,19 @@ describe('compile/axis', ()=> {
   });
 
   describe('tickCount', function() {
-    it('should return undefined by default for binned field', function () {
+    it('should return undefined by default for a binned field', () => {
       const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
       assert.deepEqual(tickCount, {signal: 'min(ceil(a/40), 10)'});
     });
 
-    it('should return 5 by default for linear scale', function () {
+    ['month', 'hours', 'day', 'quarter'].forEach((timeUnit: TimeUnit) => {
+        it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
+          const tickCount = properties.tickCount('x', {timeUnit, field: 'a', type: 'temporal'}, 'linear', {signal : 'a'});
+          assert.isUndefined(tickCount);
+        });
+    });
+
+    it('should return size/40 by default for linear scale', () => {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
       assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
     });

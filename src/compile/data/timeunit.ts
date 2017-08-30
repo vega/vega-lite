@@ -1,7 +1,6 @@
 import {field} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
@@ -25,7 +24,7 @@ export class TimeUnitNode extends DataFlowNode {
 
   public static makeFromEncoding(model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
-      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
+      if (fieldDef.timeUnit) {
         const f = field(fieldDef);
         timeUnitComponent[f] = {
           as: f,

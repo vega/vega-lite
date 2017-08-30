@@ -69,6 +69,7 @@
                 {
                     "type": "text",
                     "role": "row-title-text",
+                    "style": "guide-title",
                     "encode": {
                         "update": {
                             "align": {
@@ -76,12 +77,6 @@
                             },
                             "text": {
                                 "value": "Origin / Cylinders"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "fontWeight": {
-                                "value": "bold"
                             },
                             "angle": {
                                 "value": 270
@@ -108,6 +103,7 @@
                 },
                 "offset": 10,
                 "orient": "left",
+                "style": "guide-label",
                 "encode": {
                     "update": {
                         "fontWeight": {
@@ -191,6 +187,7 @@
                         },
                         "offset": 10,
                         "orient": "left",
+                        "style": "guide-label",
                         "encode": {
                             "update": {
                                 "fontWeight": {
