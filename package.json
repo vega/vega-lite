@@ -36,7 +36,7 @@
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "check:examples": "scripts/check-examples.sh",
     "check:schema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts|vg.json)' -delete & rm -rf data",
+    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete & rm -rf data",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "link": "npm link && npm link vega-lite",
 
