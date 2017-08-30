@@ -1,5 +1,4 @@
 import { Channel } from './channel';
-import { ScaleComponentProps } from './compile/scale/component';
 import { DateTime } from './datetime';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
@@ -377,8 +376,8 @@ export interface InterpolateParams {
     type: 'rgb' | 'cubehelix' | 'cubehelix-long';
     gamma?: number;
 }
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[];
-export declare const SCALE_PROPERTIES: (keyof Scale)[];
+export declare const SCALE_PROPERTIES: ("base" | "domain" | "type" | "range" | "clamp" | "exponent" | "interpolate" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse" | "round" | "zero" | "rangeStep" | "scheme")[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("base" | "clamp" | "exponent" | "interpolate" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse" | "round" | "zero")[];
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**
  * Returns undefined if the input channel supports the input scale property name

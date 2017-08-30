@@ -1538,7 +1538,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.18",
+  "version": "2.0.0-beta.19",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -11514,6 +11514,7 @@ exports.defaultTickConfig = {
 },{"./util":114}],104:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var channel_1 = require("./channel");
 var log = require("./log");
 var util_1 = require("./util");
@@ -11646,19 +11647,31 @@ function isSelectionDomain(domain) {
     return domain && domain['selection'];
 }
 exports.isSelectionDomain = isSelectionDomain;
-exports.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = [
-    'reverse', 'round',
+var SCALE_PROPERTY_INDEX = {
+    type: 1,
+    domain: 1,
+    range: 1,
+    rangeStep: 1,
+    scheme: 1,
+    // Other properties
+    reverse: 1,
+    round: 1,
     // quantitative / time
-    'clamp', 'nice',
+    clamp: 1,
+    nice: 1,
     // quantitative
-    'exponent', 'interpolate', 'zero',
-    // ordinal
-    'padding', 'paddingInner', 'paddingOuter',
-];
-exports.SCALE_PROPERTIES = [].concat([
-    'type', 'domain',
-    'range', 'rangeStep', 'scheme'
-], exports.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES);
+    base: 1,
+    exponent: 1,
+    interpolate: 1,
+    zero: 1,
+    // band/point
+    padding: 1,
+    paddingInner: 1,
+    paddingOuter: 1
+};
+exports.SCALE_PROPERTIES = util_1.flagKeys(SCALE_PROPERTY_INDEX);
+var type = SCALE_PROPERTY_INDEX.type, domain = SCALE_PROPERTY_INDEX.domain, range = SCALE_PROPERTY_INDEX.range, rangeStep = SCALE_PROPERTY_INDEX.rangeStep, scheme = SCALE_PROPERTY_INDEX.scheme, NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX = tslib_1.__rest(SCALE_PROPERTY_INDEX, ["type", "domain", "range", "rangeStep", "scheme"]);
+exports.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = util_1.flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 function scaleTypeSupportProperty(scaleType, propName) {
     switch (propName) {
         case 'type':
@@ -11719,6 +11732,7 @@ function channelScalePropertyIncompatability(channel, propName) {
             return undefined;
         case 'type':
         case 'domain':
+        case 'base':
         case 'exponent':
         case 'nice':
         case 'padding':
@@ -11732,7 +11746,7 @@ function channelScalePropertyIncompatability(channel, propName) {
             return undefined; // GOOD!
     }
     /* istanbul ignore next: it should never reach here */
-    throw new Error('Invalid scale property "${propName}".');
+    throw new Error("Invalid scale property \"" + propName + "\".");
 }
 exports.channelScalePropertyIncompatability = channelScalePropertyIncompatability;
 function channelSupportScaleType(channel, scaleType) {
@@ -11754,7 +11768,7 @@ function channelSupportScaleType(channel, scaleType) {
 }
 exports.channelSupportScaleType = channelSupportScaleType;
 
-},{"./channel":12,"./log":101,"./util":114}],105:[function(require,module,exports){
+},{"./channel":12,"./log":101,"./util":114,"tslib":5}],105:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SELECTION_ID = '_vgsid_';
