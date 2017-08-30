@@ -3428,6 +3428,38 @@
       },
       "type": "object"
     },
+    "LocalMultiTimeUnit": {
+      "enum": [
+        "yearquarter",
+        "yearquartermonth",
+        "yearmonth",
+        "yearmonthdate",
+        "yearmonthdatehours",
+        "yearmonthdatehoursminutes",
+        "yearmonthdatehoursminutesseconds",
+        "quartermonth",
+        "monthdate",
+        "hoursminutes",
+        "hoursminutesseconds",
+        "minutesseconds",
+        "secondsmilliseconds"
+      ],
+      "type": "string"
+    },
+    "LocalSingleTimeUnit": {
+      "enum": [
+        "year",
+        "quarter",
+        "month",
+        "day",
+        "date",
+        "hours",
+        "minutes",
+        "seconds",
+        "milliseconds"
+      ],
+      "type": "string"
+    },
     "AndFilter": {
       "additionalProperties": false,
       "properties": {
@@ -3952,6 +3984,16 @@
         }
       },
       "type": "object"
+    },
+    "MultiTimeUnit": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LocalMultiTimeUnit"
+        },
+        {
+          "$ref": "#/definitions/UtcMultiTimeUnit"
+        }
+      ]
     },
     "NamedData": {
       "additionalProperties": false,
@@ -4965,6 +5007,16 @@
       },
       "type": "object"
     },
+    "SingleTimeUnit": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LocalSingleTimeUnit"
+        },
+        {
+          "$ref": "#/definitions/UtcSingleTimeUnit"
+        }
+      ]
+    },
     "SortField": {
       "additionalProperties": false,
       "properties": {
@@ -5412,53 +5464,14 @@
       "type": "object"
     },
     "TimeUnit": {
-      "enum": [
-        "year",
-        "month",
-        "day",
-        "date",
-        "hours",
-        "minutes",
-        "seconds",
-        "milliseconds",
-        "yearmonth",
-        "yearmonthdate",
-        "yearmonthdatehours",
-        "yearmonthdatehoursminutes",
-        "yearmonthdatehoursminutesseconds",
-        "monthdate",
-        "hoursminutes",
-        "hoursminutesseconds",
-        "minutesseconds",
-        "secondsmilliseconds",
-        "quarter",
-        "yearquarter",
-        "quartermonth",
-        "yearquartermonth",
-        "utcyear",
-        "utcmonth",
-        "utcday",
-        "utcdate",
-        "utchours",
-        "utcminutes",
-        "utcseconds",
-        "utcmilliseconds",
-        "utcyearmonth",
-        "utcyearmonthdate",
-        "utcyearmonthdatehours",
-        "utcyearmonthdatehoursminutes",
-        "utcyearmonthdatehoursminutesseconds",
-        "utcmonthdate",
-        "utchoursminutes",
-        "utchoursminutesseconds",
-        "utcminutesseconds",
-        "utcsecondsmilliseconds",
-        "utcquarter",
-        "utcyearquarter",
-        "utcquartermonth",
-        "utcyearquartermonth"
-      ],
-      "type": "string"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SingleTimeUnit"
+        },
+        {
+          "$ref": "#/definitions/MultiTimeUnit"
+        }
+      ]
     },
     "TimeUnitTransform": {
       "additionalProperties": false,
@@ -6098,6 +6111,38 @@
         "url"
       ],
       "type": "object"
+    },
+    "UtcMultiTimeUnit": {
+      "enum": [
+        "utcyearquarter",
+        "utcyearquartermonth",
+        "utcyearmonth",
+        "utcyearmonthdate",
+        "utcyearmonthdatehours",
+        "utcyearmonthdatehoursminutes",
+        "utcyearmonthdatehoursminutesseconds",
+        "utcquartermonth",
+        "utcmonthdate",
+        "utchoursminutes",
+        "utchoursminutesseconds",
+        "utcminutesseconds",
+        "utcsecondsmilliseconds"
+      ],
+      "type": "string"
+    },
+    "UtcSingleTimeUnit": {
+      "enum": [
+        "utcyear",
+        "utcquarter",
+        "utcmonth",
+        "utcday",
+        "utcdate",
+        "utchours",
+        "utcminutes",
+        "utcseconds",
+        "utcmilliseconds"
+      ],
+      "type": "string"
     },
     "VLOnlyConfig": {
       "additionalProperties": false,

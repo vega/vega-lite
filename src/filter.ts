@@ -4,7 +4,7 @@ import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
 import {LogicalOperand} from './logical';
-import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString, logicalExpr} from './util';
 
 
@@ -167,16 +167,18 @@ export function fieldFilterExpression(filter: FieldFilter) {
   throw new Error(`Invalid field filter: ${JSON.stringify(filter)}`);
 }
 
-function valueExpr(v: any, timeUnit: TimeUnit) {
+function valueExpr(v: any, timeUnit: TimeUnit): string {
   if (isDateTime(v)) {
     const expr = dateTimeExpr(v, true);
     return 'time(' + expr + ')';
   }
-  if (isSingleTimeUnit(timeUnit)) {
+  if (isLocalSingleTimeUnit(timeUnit)) {
     const datetime: DateTime = {};
     datetime[timeUnit] = v;
     const expr = dateTimeExpr(datetime, true);
     return 'time(' + expr + ')';
+  } else if (isUtcSingleTimeUnit(timeUnit)) {
+    return valueExpr(v, getLocalTimeUnit(timeUnit));
   }
   return JSON.stringify(v);
 }
