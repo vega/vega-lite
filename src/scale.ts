@@ -2,8 +2,7 @@ import {Channel} from './channel';
 import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
-import {contains, keys, toSet} from './util';
-
+import {contains, Flag, flagKeys, keys, toSet} from './util';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -532,20 +531,34 @@ export interface InterpolateParams {
   gamma?: number;
 }
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | ScaleComponentProps))[] = [
-  'reverse', 'round',
+const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
+  type: 1,
+  domain: 1,
+  range: 1,
+  rangeStep: 1,
+  scheme: 1,
+  // Other properties
+  reverse: 1,
+  round: 1,
   // quantitative / time
-  'clamp', 'nice',
+  clamp: 1,
+  nice: 1,
   // quantitative
-  'exponent', 'interpolate', 'zero', // zero depends on domain
-  // ordinal
-  'padding', 'paddingInner', 'paddingOuter', // padding
-];
+  base: 1,
+  exponent: 1,
+  interpolate: 1,
+  zero: 1, // zero depends on domain
+  // band/point
+  padding: 1,
+  paddingInner: 1,
+  paddingOuter: 1
+};
 
-export const SCALE_PROPERTIES: (keyof Scale)[]= [].concat([
-  'type', 'domain',
-  'range', 'rangeStep', 'scheme'
-], NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES);
+export const SCALE_PROPERTIES = flagKeys(SCALE_PROPERTY_INDEX);
+
+const {type, domain, range, rangeStep, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX} =  SCALE_PROPERTY_INDEX;
+
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
 export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
   switch (propName) {
@@ -607,6 +620,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       return undefined;
     case 'type':
     case 'domain':
+    case 'base':
     case 'exponent':
     case 'nice':
     case 'padding':
@@ -620,7 +634,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       return undefined; // GOOD!
   }
   /* istanbul ignore next: it should never reach here */
-  throw new Error('Invalid scale property "${propName}".');
+  throw new Error(`Invalid scale property "${propName}".`);
 }
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
