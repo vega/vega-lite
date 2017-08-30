@@ -1,0 +1,15 @@
+import { Channel } from '../../channel';
+import { FieldDef } from '../../fielddef';
+import { Domain, NiceTime, Scale, ScaleConfig, ScaleType } from '../../scale';
+import { SortField, SortOrder } from '../../sort';
+import { Model } from '../model';
+import { ScaleComponentProps } from './component';
+export declare function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)): void;
+export declare function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)): void;
+export declare function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime;
+export declare function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig): number;
+export declare function paddingInner(padding: number, channel: Channel, scaleConfig: ScaleConfig): number;
+export declare function paddingOuter(padding: number, channel: Channel, scaleType: ScaleType, paddingInner: number, scaleConfig: ScaleConfig): number;
+export declare function round(channel: Channel, scaleConfig: ScaleConfig): boolean;
+export declare function reverse(scaleType: ScaleType, sort: SortOrder | SortField): boolean;
+export declare function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain): boolean;
