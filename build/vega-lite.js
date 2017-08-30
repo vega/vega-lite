@@ -1538,7 +1538,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.15",
+  "version": "2.0.0-beta.18",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1573,7 +1573,7 @@ module.exports={
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "check:examples": "scripts/check-examples.sh",
     "check:schema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts|vg.json)' -delete & rm -rf data",
+    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "link": "npm link && npm link vega-lite",
 
@@ -1997,6 +1997,7 @@ exports.AxisComponentPart = AxisComponentPart;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
+var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
@@ -2010,7 +2011,7 @@ function labels(model, channel, specifiedLabelsSpec, def) {
     var config = model.config;
     var labelsSpec = {};
     // Text
-    if (fieldDef.type === type_1.TEMPORAL) {
+    if (fielddef_1.isTimeFieldDef(fieldDef)) {
         var isUTCScale = model.getScaleComponent(channel).get('type') === scale_1.ScaleType.UTC;
         labelsSpec.text = {
             signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
@@ -2042,7 +2043,7 @@ function labelAngle(axis, channel, fieldDef) {
     }
     else {
         // auto rotate for X
-        if (channel === channel_1.X && (util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === type_1.TEMPORAL)) {
+        if (channel === channel_1.X && (util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type) || !!fieldDef.bin || fielddef_1.isTimeFieldDef(fieldDef))) {
             return 270;
         }
     }
@@ -2062,7 +2063,7 @@ function labelAlign(angle, orient) {
 }
 exports.labelAlign = labelAlign;
 
-},{"../../channel":12,"../../scale":104,"../../type":113,"../../util":114,"../common":20,"tslib":5}],16:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":96,"../../scale":104,"../../type":113,"../../util":114,"../common":20,"tslib":5}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2303,6 +2304,7 @@ function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
         case 'domain':
             return properties.domain(property, specifiedAxis, isGridAxis, channel);
         case 'format':
+            // We don't include temporal field here as we apply format in encode block
             return common_1.numberFormat(fieldDef, specifiedAxis.format, model.config);
         case 'grid': {
             var scaleType = model.component.scales[channel].get('type');
@@ -2413,7 +2415,7 @@ function orient(channel) {
 }
 exports.orient = orient;
 function tickCount(channel, fieldDef, scaleType, size) {
-    if (!scale_1.hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    if (!scale_1.hasDiscreteDomain(scaleType) && scaleType !== 'log' && !util_1.contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
         if (fieldDef.bin) {
             // for binned data, we don't want more ticks than maxbins
             return { signal: "min(ceil(" + size.signal + "/40), " + fieldDef.bin.maxbins + ")" };
@@ -2644,7 +2646,7 @@ function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
             signal: "" + formatExpr(fielddef_1.field(fieldDef, { expr: expr }), format)
         };
     }
-    else if (fieldDef.type === 'temporal') {
+    else if (fielddef_1.isTimeFieldDef(fieldDef)) {
         var isUTCScale = fielddef_1.isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === scale_1.ScaleType.UTC;
         return {
             signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
@@ -2838,7 +2840,9 @@ var ConcatModel = (function (_super) {
     };
     ConcatModel.prototype.assembleLayout = function () {
         // TODO: allow customization
-        return tslib_1.__assign({ padding: { row: 10, column: 10 }, offset: 10 }, (this.isVConcat ? { columns: 1 } : {}), { bounds: 'full', align: 'all' });
+        return tslib_1.__assign({ padding: { row: 10, column: 10 }, offset: 10 }, (this.isVConcat ? { columns: 1 } : {}), { bounds: 'full', 
+            // Use align each so it can work with multiple plots with different size
+            align: 'each' });
     };
     return ConcatModel;
 }(baseconcat_1.BaseConcatModel));
@@ -3713,11 +3717,11 @@ exports.FilterNode = FilterNode;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var aggregate_1 = require("../../aggregate");
+var fielddef_1 = require("../../fielddef");
 var filter_1 = require("../../filter");
 var log = require("../../log");
 var logical_1 = require("../../logical");
 var transform_1 = require("../../transform");
-var type_1 = require("../../type");
 var util_1 = require("../../util");
 var model_1 = require("../model");
 var dataflow_1 = require("./dataflow");
@@ -3779,10 +3783,10 @@ var ParseNode = (function (_super) {
         if (model_1.isUnitModel(model) || model_1.isFacetModel(model)) {
             // Parse encoded fields
             model.forEachFieldDef(function (fieldDef) {
-                if (fieldDef.type === type_1.TEMPORAL) {
+                if (fielddef_1.isTimeFieldDef(fieldDef)) {
                     parse[fieldDef.field] = 'date';
                 }
-                else if (fieldDef.type === type_1.QUANTITATIVE) {
+                else if (fielddef_1.isNumberFieldDef(fieldDef)) {
                     if (calcFieldMap[fieldDef.field] || aggregate_1.isCountingAggregateOp(fieldDef.aggregate)) {
                         return;
                     }
@@ -3853,7 +3857,7 @@ var ParseNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.ParseNode = ParseNode;
 
-},{"../../aggregate":9,"../../filter":97,"../../log":101,"../../logical":102,"../../transform":112,"../../type":113,"../../util":114,"../model":63,"./dataflow":27,"tslib":5}],31:[function(require,module,exports){
+},{"../../aggregate":9,"../../fielddef":96,"../../filter":97,"../../log":101,"../../logical":102,"../../transform":112,"../../util":114,"../model":63,"./dataflow":27,"tslib":5}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4840,7 +4844,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("../../fielddef");
 var timeunit_1 = require("../../timeunit");
-var type_1 = require("../../type");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
 var TimeUnitNode = (function (_super) {
@@ -4855,7 +4858,7 @@ var TimeUnitNode = (function (_super) {
     };
     TimeUnitNode.makeFromEncoding = function (model) {
         var formula = model.reduceFieldDef(function (timeUnitComponent, fieldDef) {
-            if (fieldDef.type === type_1.TEMPORAL && fieldDef.timeUnit) {
+            if (fieldDef.timeUnit) {
                 var f = fielddef_1.field(fieldDef);
                 timeUnitComponent[f] = {
                     as: f,
@@ -4911,7 +4914,7 @@ var TimeUnitNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.TimeUnitNode = TimeUnitNode;
 
-},{"../../fielddef":96,"../../timeunit":109,"../../type":113,"../../util":114,"./dataflow":27,"tslib":5}],41:[function(require,module,exports){
+},{"../../fielddef":96,"../../timeunit":109,"../../util":114,"./dataflow":27,"tslib":5}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5317,10 +5320,11 @@ function getTitleGroup(model, channel) {
         marks: [{
                 type: 'text',
                 role: channel + "-title-text",
+                style: 'guide-title',
                 encode: {
                     update: tslib_1.__assign({ 
                         // TODO: add title align
-                        align: { value: 'center' }, text: { value: title }, fill: { value: 'black' }, fontWeight: { value: 'bold' } }, (textOrient === 'vertical' ? { angle: { value: 270 } } : {}))
+                        align: { value: 'center' }, text: { value: title } }, (textOrient === 'vertical' ? { angle: { value: 270 } } : {}))
                 }
             }]
     };
@@ -5336,6 +5340,7 @@ function getHeaderGroup(model, channel, headerType, layoutHeader, header) {
                 text: common_1.formatSignalRef(facetFieldDef, format, 'parent', model.config, true),
                 offset: 10,
                 orient: channel === 'row' ? 'left' : 'top',
+                style: 'guide-label',
                 encode: {
                     update: tslib_1.__assign({ fontWeight: { value: 'normal' }, angle: { value: 0 }, fontSize: { value: 10 } }, (channel === 'row' ? {
                         align: { value: 'right' },
@@ -5608,7 +5613,6 @@ var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var mark_1 = require("../../mark");
 var scale_1 = require("../../scale");
-var type_1 = require("../../type");
 var util_1 = require("../../util");
 var common_1 = require("../common");
 var mixins = require("../mark/mixins");
@@ -5664,7 +5668,7 @@ function labels(fieldDef, labelsSpec, model, channel) {
     var legend = model.legend(channel);
     var config = model.config;
     var labels = {};
-    if (fieldDef.type === type_1.TEMPORAL) {
+    if (fielddef_1.isTimeFieldDef(fieldDef)) {
         var isUTCScale = model.getScaleComponent(channel).get('type') === scale_1.ScaleType.UTC;
         labelsSpec = util_1.extend({
             text: {
@@ -5677,7 +5681,7 @@ function labels(fieldDef, labelsSpec, model, channel) {
 }
 exports.labels = labels;
 
-},{"../../channel":12,"../../fielddef":96,"../../mark":103,"../../scale":104,"../../type":113,"../../util":114,"../common":20,"../mark/mixins":56}],49:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":96,"../../mark":103,"../../scale":104,"../../util":114,"../common":20,"../mark/mixins":56}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -5758,6 +5762,7 @@ function getProperty(property, specifiedLegend, channel, model) {
     var fieldDef = model.fieldDef(channel);
     switch (property) {
         case 'format':
+            // We don't include temporal field here as we apply format in encode block
             return common_1.numberFormat(fieldDef, specifiedLegend.format, model.config);
         case 'title':
             return common_1.getSpecifiedOrDefaultValue(specifiedLegend.title, fielddef_1.title(fieldDef, model.config));
@@ -8489,7 +8494,6 @@ var channel_1 = require("../../channel");
 var log = require("../../log");
 var scale_1 = require("../../scale");
 var scale_2 = require("../../scale");
-var timeunit_1 = require("../../timeunit");
 var type_1 = require("../../type");
 var util = require("../../util");
 var util_1 = require("../../util");
@@ -8536,20 +8540,12 @@ function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
             return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
         case 'temporal':
             if (channel === 'color') {
-                if (timeunit_1.isDiscreteByDefault(fieldDef.timeUnit)) {
-                    // For discrete timeUnit, use ordinal scale so that legend produces correct value.
-                    // (See https://github.com/vega/vega-lite/issues/2045.)
-                    return 'ordinal';
-                }
                 return 'sequential';
             }
             else if (channel_1.rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
                 // TODO: consider using quantize (equivalent to binning) once we have it
                 return 'ordinal';
-            }
-            if (timeunit_1.isDiscreteByDefault(fieldDef.timeUnit)) {
-                return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
             }
             return 'time';
         case 'quantitative':
@@ -8598,12 +8594,7 @@ function fieldDefMatchScaleType(specifiedType, fieldDef) {
         return specifiedType === undefined || scale_2.hasDiscreteDomain(specifiedType);
     }
     else if (type === type_1.Type.TEMPORAL) {
-        if (!fieldDef.timeUnit) {
-            return util_1.contains([scale_1.ScaleType.TIME, scale_1.ScaleType.UTC, scale_1.ScaleType.SEQUENTIAL, undefined], specifiedType);
-        }
-        else {
-            return util_1.contains([scale_1.ScaleType.TIME, scale_1.ScaleType.UTC, scale_1.ScaleType.SEQUENTIAL, undefined], specifiedType) || scale_2.hasDiscreteDomain(specifiedType);
-        }
+        return util_1.contains([scale_1.ScaleType.TIME, scale_1.ScaleType.UTC, scale_1.ScaleType.SEQUENTIAL, undefined], specifiedType);
     }
     else if (type === type_1.Type.QUANTITATIVE) {
         if (fieldDef.bin) {
@@ -8615,7 +8606,7 @@ function fieldDefMatchScaleType(specifiedType, fieldDef) {
 }
 exports.fieldDefMatchScaleType = fieldDefMatchScaleType;
 
-},{"../../channel":12,"../../log":101,"../../scale":104,"../../timeunit":109,"../../type":113,"../../util":114}],74:[function(require,module,exports){
+},{"../../channel":12,"../../log":101,"../../scale":104,"../../type":113,"../../util":114}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -10756,8 +10747,7 @@ function isDiscrete(fieldDef) {
         case 'quantitative':
             return !!fieldDef.bin;
         case 'temporal':
-            // TODO: deal with custom scale type case.
-            return timeunit_1.isDiscreteByDefault(fieldDef.timeUnit);
+            return false;
     }
     throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
@@ -10938,6 +10928,14 @@ function channelCompatibility(fieldDef, channel) {
     throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 exports.channelCompatibility = channelCompatibility;
+function isNumberFieldDef(fieldDef) {
+    return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+}
+exports.isNumberFieldDef = isNumberFieldDef;
+function isTimeFieldDef(fieldDef) {
+    return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
+}
+exports.isTimeFieldDef = isTimeFieldDef;
 
 },{"./aggregate":9,"./bin":11,"./channel":12,"./log":101,"./timeunit":109,"./type":113,"./util":114,"tslib":5}],97:[function(require,module,exports){
 "use strict";
@@ -11035,11 +11033,14 @@ function valueExpr(v, timeUnit) {
         var expr = datetime_1.dateTimeExpr(v, true);
         return 'time(' + expr + ')';
     }
-    if (timeunit_1.isSingleTimeUnit(timeUnit)) {
+    if (timeunit_1.isLocalSingleTimeUnit(timeUnit)) {
         var datetime = {};
         datetime[timeUnit] = v;
         var expr = datetime_1.dateTimeExpr(datetime, true);
         return 'time(' + expr + ')';
+    }
+    else if (timeunit_1.isUtcSingleTimeUnit(timeUnit)) {
+        return valueExpr(v, timeunit_1.getLocalTimeUnit(timeUnit));
     }
     return JSON.stringify(v);
 }
@@ -11736,9 +11737,6 @@ function channelScalePropertyIncompatability(channel, propName) {
 exports.channelScalePropertyIncompatability = channelScalePropertyIncompatability;
 function channelSupportScaleType(channel, scaleType) {
     switch (channel) {
-        case channel_1.Channel.ROW:
-        case channel_1.Channel.COLUMN:
-            return scaleType === 'band'; // row / column currently supports band only
         case channel_1.Channel.X:
         case channel_1.Channel.Y:
         case channel_1.Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
@@ -12107,6 +12105,7 @@ exports.stack = stack;
 },{"./aggregate":9,"./channel":12,"./encoding":94,"./fielddef":96,"./log":101,"./mark":103,"./scale":104,"./util":114}],109:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var datetime_1 = require("./datetime");
 var log = require("./log");
 var util_1 = require("./util");
@@ -12160,113 +12159,131 @@ var TimeUnit;
     TimeUnit.UTCYEARQUARTERMONTH = 'utcyearquartermonth';
 })(TimeUnit = exports.TimeUnit || (exports.TimeUnit = {}));
 /** Time Unit that only corresponds to only one part of Date objects. */
-exports.SINGLE_TIMEUNITS = [
-    TimeUnit.YEAR,
-    TimeUnit.QUARTER,
-    TimeUnit.MONTH,
-    TimeUnit.DAY,
-    TimeUnit.DATE,
-    TimeUnit.HOURS,
-    TimeUnit.MINUTES,
-    TimeUnit.SECONDS,
-    TimeUnit.MILLISECONDS
-];
-var SINGLE_TIMEUNIT_INDEX = exports.SINGLE_TIMEUNITS.reduce(function (d, timeUnit) {
-    d[timeUnit] = true;
-    return d;
-}, {});
-function isSingleTimeUnit(timeUnit) {
-    return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
+var LOCAL_SINGLE_TIMEUNIT_INDEX = {
+    year: 1,
+    quarter: 1,
+    month: 1,
+    day: 1,
+    date: 1,
+    hours: 1,
+    minutes: 1,
+    seconds: 1,
+    milliseconds: 1
+};
+exports.TIMEUNIT_PARTS = util_1.flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
+function isLocalSingleTimeUnit(timeUnit) {
+    return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
-exports.isSingleTimeUnit = isSingleTimeUnit;
+exports.isLocalSingleTimeUnit = isLocalSingleTimeUnit;
+var UTC_SINGLE_TIMEUNIT_INDEX = {
+    utcyear: 1,
+    utcquarter: 1,
+    utcmonth: 1,
+    utcday: 1,
+    utcdate: 1,
+    utchours: 1,
+    utcminutes: 1,
+    utcseconds: 1,
+    utcmilliseconds: 1
+};
+function isUtcSingleTimeUnit(timeUnit) {
+    return !!UTC_SINGLE_TIMEUNIT_INDEX[timeUnit];
+}
+exports.isUtcSingleTimeUnit = isUtcSingleTimeUnit;
+var LOCAL_MULTI_TIMEUNIT_INDEX = {
+    yearquarter: 1,
+    yearquartermonth: 1,
+    yearmonth: 1,
+    yearmonthdate: 1,
+    yearmonthdatehours: 1,
+    yearmonthdatehoursminutes: 1,
+    yearmonthdatehoursminutesseconds: 1,
+    quartermonth: 1,
+    monthdate: 1,
+    hoursminutes: 1,
+    hoursminutesseconds: 1,
+    minutesseconds: 1,
+    secondsmilliseconds: 1
+};
+var UTC_MULTI_TIMEUNIT_INDEX = {
+    utcyearquarter: 1,
+    utcyearquartermonth: 1,
+    utcyearmonth: 1,
+    utcyearmonthdate: 1,
+    utcyearmonthdatehours: 1,
+    utcyearmonthdatehoursminutes: 1,
+    utcyearmonthdatehoursminutesseconds: 1,
+    utcquartermonth: 1,
+    utcmonthdate: 1,
+    utchoursminutes: 1,
+    utchoursminutesseconds: 1,
+    utcminutesseconds: 1,
+    utcsecondsmilliseconds: 1
+};
+var UTC_TIMEUNIT_INDEX = tslib_1.__assign({}, UTC_SINGLE_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
+function isUTCTimeUnit(t) {
+    return !!UTC_TIMEUNIT_INDEX[t];
+}
+exports.isUTCTimeUnit = isUTCTimeUnit;
+function getLocalTimeUnit(t) {
+    return t.substr(3);
+}
+exports.getLocalTimeUnit = getLocalTimeUnit;
+var TIMEUNIT_INDEX = tslib_1.__assign({}, LOCAL_SINGLE_TIMEUNIT_INDEX, UTC_SINGLE_TIMEUNIT_INDEX, LOCAL_MULTI_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
+exports.TIMEUNITS = util_1.flagKeys(TIMEUNIT_INDEX);
+function isTimeUnit(t) {
+    return !!TIMEUNIT_INDEX[t];
+}
+exports.isTimeUnit = isTimeUnit;
+var SET_DATE_METHOD = {
+    year: 'setFullYear',
+    month: 'setMonth',
+    date: 'setDate',
+    hours: 'setHours',
+    minutes: 'setMinutes',
+    seconds: 'setSeconds',
+    milliseconds: 'setMilliseconds',
+    // Day and quarter have their own special cases
+    quarter: null,
+    day: null,
+};
 /**
  * Converts a date to only have the measurements relevant to the specified unit
  * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
  * Note: the base date is Jan 01 1900 00:00:00
  */
 function convert(unit, date) {
-    var result = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
-    exports.SINGLE_TIMEUNITS.forEach(function (singleUnit) {
-        if (containsTimeUnit(unit, singleUnit)) {
-            switch (singleUnit) {
+    var isUTC = isUTCTimeUnit(unit);
+    var result = isUTC ?
+        // start with uniform date
+        new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0)) :
+        new Date(0, 0, 1, 0, 0, 0, 0);
+    exports.TIMEUNIT_PARTS.forEach(function (timeUnitPart) {
+        if (containsTimeUnit(unit, timeUnitPart)) {
+            switch (timeUnitPart) {
                 case TimeUnit.DAY:
                     throw new Error('Cannot convert to TimeUnits containing \'day\'');
-                case TimeUnit.YEAR:
-                    result.setFullYear(date.getFullYear());
-                    break;
-                case TimeUnit.QUARTER:
+                case TimeUnit.QUARTER: {
+                    var _a = dateMethods('month', isUTC), getDateMethod_1 = _a.getDateMethod, setDateMethod_1 = _a.setDateMethod;
                     // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-                    result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
+                    result[setDateMethod_1]((Math.floor(date[getDateMethod_1]() / 3)) * 3);
                     break;
-                case TimeUnit.MONTH:
-                    result.setMonth(date.getMonth());
-                    break;
-                case TimeUnit.DATE:
-                    result.setDate(date.getDate());
-                    break;
-                case TimeUnit.HOURS:
-                    result.setHours(date.getHours());
-                    break;
-                case TimeUnit.MINUTES:
-                    result.setMinutes(date.getMinutes());
-                    break;
-                case TimeUnit.SECONDS:
-                    result.setSeconds(date.getSeconds());
-                    break;
-                case TimeUnit.MILLISECONDS:
-                    result.setMilliseconds(date.getMilliseconds());
-                    break;
+                }
+                default:
+                    var _b = dateMethods(timeUnitPart, isUTC), getDateMethod = _b.getDateMethod, setDateMethod = _b.setDateMethod;
+                    result[setDateMethod](date[getDateMethod]());
             }
         }
     });
     return result;
 }
 exports.convert = convert;
-exports.MULTI_TIMEUNITS = [
-    TimeUnit.YEARQUARTER,
-    TimeUnit.YEARQUARTERMONTH,
-    TimeUnit.YEARMONTH,
-    TimeUnit.YEARMONTHDATE,
-    TimeUnit.YEARMONTHDATEHOURS,
-    TimeUnit.YEARMONTHDATEHOURSMINUTES,
-    TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-    TimeUnit.QUARTERMONTH,
-    TimeUnit.HOURSMINUTES,
-    TimeUnit.HOURSMINUTESSECONDS,
-    TimeUnit.MINUTESSECONDS,
-    TimeUnit.SECONDSMILLISECONDS,
-];
-var MULTI_TIMEUNIT_INDEX = exports.MULTI_TIMEUNITS.reduce(function (d, timeUnit) {
-    d[timeUnit] = true;
-    return d;
-}, {});
-function isMultiTimeUnit(timeUnit) {
-    return !!MULTI_TIMEUNIT_INDEX[timeUnit];
+function dateMethods(singleUnit, isUtc) {
+    var rawSetDateMethod = SET_DATE_METHOD[singleUnit];
+    var setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
+    var getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
+    return { setDateMethod: setDateMethod, getDateMethod: getDateMethod };
 }
-exports.isMultiTimeUnit = isMultiTimeUnit;
-exports.TIMEUNITS = [
-    TimeUnit.YEAR,
-    TimeUnit.QUARTER,
-    TimeUnit.MONTH,
-    TimeUnit.DAY,
-    TimeUnit.DATE,
-    TimeUnit.HOURS,
-    TimeUnit.MINUTES,
-    TimeUnit.SECONDS,
-    TimeUnit.MILLISECONDS,
-    TimeUnit.YEARQUARTER,
-    TimeUnit.YEARQUARTERMONTH,
-    TimeUnit.YEARMONTH,
-    TimeUnit.YEARMONTHDATE,
-    TimeUnit.YEARMONTHDATEHOURS,
-    TimeUnit.YEARMONTHDATEHOURSMINUTES,
-    TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-    TimeUnit.QUARTERMONTH,
-    TimeUnit.HOURSMINUTES,
-    TimeUnit.HOURSMINUTESSECONDS,
-    TimeUnit.MINUTESSECONDS,
-    TimeUnit.SECONDSMILLISECONDS,
-];
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 function containsTimeUnit(fullTimeUnit, timeUnit) {
     var index = fullTimeUnit.indexOf(timeUnit);
@@ -12292,7 +12309,7 @@ function fieldExpr(fullTimeUnit, field) {
             return "" + utc + timeUnit + "(" + fieldRef + ")";
         }
     }
-    var d = exports.SINGLE_TIMEUNITS.reduce(function (dateExpr, tu) {
+    var d = exports.TIMEUNIT_PARTS.reduce(function (dateExpr, tu) {
         if (containsTimeUnit(fullTimeUnit, tu)) {
             dateExpr[tu] = func(tu);
         }
@@ -12380,6 +12397,9 @@ function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
             // Add space between quarter and main time format
             expression += " + ' ' + ";
         }
+        // We only use utcFormat for utc scale
+        // For utc time units, the data is already converted as a part of timeUnit transform.
+        // Thus, utc time units should use timeFormat to avoid shifting the time twice.
         if (isUTCScale) {
             expression += "utcFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
         }
@@ -12391,21 +12411,6 @@ function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     return expression || undefined;
 }
 exports.formatExpression = formatExpression;
-function isDiscreteByDefault(timeUnit) {
-    switch (timeUnit) {
-        // These time unit use discrete scale by default
-        case 'hours':
-        case 'day':
-        case 'month':
-        case 'quarter':
-            return true;
-    }
-    return false;
-}
-exports.isDiscreteByDefault = isDiscreteByDefault;
-function isUTCTimeUnit(timeUnit) {
-    return timeUnit.substr(0, 3) === 'utc';
-}
 function normalizeTimeUnit(timeUnit) {
     if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
         log.warn(log.message.dayReplacedWithDate(timeUnit));
@@ -12415,7 +12420,7 @@ function normalizeTimeUnit(timeUnit) {
 }
 exports.normalizeTimeUnit = normalizeTimeUnit;
 
-},{"./datetime":93,"./log":101,"./util":114}],110:[function(require,module,exports){
+},{"./datetime":93,"./log":101,"./util":114,"tslib":5}],110:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -12492,9 +12497,9 @@ exports.normalizeTransform = normalizeTransform;
 
 },{"./filter":97,"./logical":102}],113:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
-Object.defineProperty(exports, "__esModule", { value: true });
 var Type;
 (function (Type) {
     Type.QUANTITATIVE = 'quantitative';
@@ -12502,6 +12507,16 @@ var Type;
     Type.TEMPORAL = 'temporal';
     Type.NOMINAL = 'nominal';
 })(Type = exports.Type || (exports.Type = {}));
+var TYPE_INDEX = {
+    quantitative: 1,
+    ordinal: 1,
+    temporal: 1,
+    nominal: 1
+};
+function isType(t) {
+    return !!TYPE_INDEX[t];
+}
+exports.isType = isType;
 exports.QUANTITATIVE = Type.QUANTITATIVE;
 exports.ORDINAL = Type.ORDINAL;
 exports.TEMPORAL = Type.TEMPORAL;

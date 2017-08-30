@@ -7,6 +7,7 @@ export declare namespace Type {
     const NOMINAL: 'nominal';
 }
 export declare type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+export declare function isType(t: any): t is Type;
 export declare const QUANTITATIVE: "quantitative";
 export declare const ORDINAL: "ordinal";
 export declare const TEMPORAL: "temporal";

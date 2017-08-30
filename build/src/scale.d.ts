@@ -210,6 +210,8 @@ export interface SchemeParams {
     extent?: number[];
     /**
      * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
+     *
+     * @hide
      */
     count?: number;
 }

@@ -225,3 +225,5 @@ export declare function channelCompatibility(fieldDef: FieldDef<Field>, channel:
     compatible: boolean;
     warning?: string;
 };
+export declare function isNumberFieldDef(fieldDef: FieldDef<any>): boolean;
+export declare function isTimeFieldDef(fieldDef: FieldDef<any>): boolean;

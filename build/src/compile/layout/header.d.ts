@@ -45,18 +45,13 @@ export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
     marks: {
         type: string;
         role: string;
+        style: string;
         encode: {
             update: {
                 align: {
                     value: string;
                 };
                 text: {
-                    value: string;
-                };
-                fill: {
-                    value: string;
-                };
-                fontWeight: {
                     value: string;
                 };
             };
