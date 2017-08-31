@@ -28,7 +28,7 @@ function x(model: UnitModel) {
   const xScaleType = xScale ? xScale.get('type') : undefined;
 
   if (isFieldDef(xDef) && xDef.bin && !x2Def) {
-    return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0);
+    return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0, xScale.get('reverse'));
   } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
     /* istanbul ignore else */
     if (xScaleType === ScaleType.BAND) {
@@ -52,7 +52,7 @@ function y(model: UnitModel) {
   const yScaleType = yScale ? yScale.get('type') : undefined;
 
   if (isFieldDef(yDef) && yDef.bin && !y2Def) {
-    return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0);
+    return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0, yScale.get('reverse'));
   } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
     /* istanbul ignore else */
     if (yScaleType === ScaleType.BAND) {
