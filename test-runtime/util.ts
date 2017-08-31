@@ -166,7 +166,8 @@ export function svg(browser: WebdriverIO.Client<void>, path: string, filename: s
 
 export function testRenderFn(browser: WebdriverIO.Client<void>, path: string) {
   return function(filename: string) {
-    // const render = svg(browser, path, filename);
+    // const render =
+      svg(browser, path, filename);
     // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
     // assert.equal(render, file);
   };
