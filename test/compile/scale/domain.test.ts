@@ -361,6 +361,20 @@ describe('compile/scale', () => {
       });
     });
 
+    describe('for ordinal', function() {
+      it('should have correct domain for binned ordinal color', function() {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            color: {field: 'a', bin: true, type: 'ordinal'},
+          }
+        });
+
+        const xDomain = testParseDomainForChannel(model, 'color');
+        assert.deepEqual(xDomain, [{data: 'main', field: 'bin_maxbins_6_a_range', sort: {field: 'bin_maxbins_6_a', op: 'min'}}]);
+      });
+    });
+
     describe('for nominal', function() {
       it('should return correct domain with the provided sort property', function() {
         const sortDef: SortField = {op: 'min' as 'min', field:'Acceleration'};
@@ -733,7 +747,7 @@ describe('compile/scale', () => {
       assert.deepEqual<VgSortField>(sort, {op: 'count'});
     });
 
-    it('should return true if sort specified', () => {
+    it('should return true if sort is not specified', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
@@ -745,7 +759,7 @@ describe('compile/scale', () => {
       assert.deepEqual(sort, true);
     });
 
-    it('should return undefined if sort is not specified', () => {
+    it('should return undefined if sort is specified', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {

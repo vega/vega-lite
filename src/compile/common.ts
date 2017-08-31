@@ -1,4 +1,4 @@
-
+import {Channel, isScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
@@ -6,7 +6,7 @@ import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {isArray} from '../util';
+import {contains, isArray} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
@@ -70,19 +70,14 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   return value;
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
+export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
   if (fieldDef.bin) {
-    if (useBinRange) {
-      // For bin range, no need to apply format as the formula that creates range already include format
-      return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-    } else {
-      const startField = field(fieldDef, {expr});
-      const endField = field(fieldDef, {expr, binSuffix: 'end'});
-      return {
-        signal: binFormatExpression(startField, endField, format, config)
-      };
-    }
+    const startField = field(fieldDef, {expr});
+    const endField = field(fieldDef, {expr, binSuffix: 'end'});
+    return {
+      signal: binFormatExpression(startField, endField, format, config)
+    };
   } else if (fieldDef.type === 'quantitative') {
     return {
       signal: `${formatExpr(field(fieldDef, {expr}), format)}`
@@ -175,4 +170,18 @@ export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
       v1.value : // if title is the same just use one of them
       v1.value + ', ' + v2.value // join title with comma if different
   };
+}
+
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
+  if (!fieldDef.bin) {
+    console.warn('Only use this method with binned field defs');
+    return false;
+  }
+
+  // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
+  // We could check whether the axis or legend exists (not disabled) but that seems overkill.
+  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
 }

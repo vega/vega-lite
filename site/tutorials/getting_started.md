@@ -14,14 +14,6 @@ We suggest that you follow along the tutorial by building a visualization in the
 * TOC
 {:toc}
 
-## `$schema`
-
-Before diving into components illustrating visualizations, we want to introduce the "$schema" property that defines the [JSON schema](http://json-schema.org/) of the visualization specification in a certain version of Vega-Lite. It accepts value as an URL of the schema.
-
-```json
- { "$schema": "https://vega.github.io/schema/vega-lite/v2.json" }
-```
-
 ## The Data
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
