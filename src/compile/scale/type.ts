@@ -85,7 +85,8 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         return 'ordinal';
       }
 
-      // x and y use a linear scale because selections don't work with bin scales
+      // x and y use a linear scale because selections don't work with bin scales.
+      // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
       if (fieldDef.bin && channel !== 'x' && channel !== 'y') {
         return 'bin-linear';
       }

@@ -43,6 +43,20 @@ describe('compile/data/formatparse', () => {
       });
     });
 
+    it('should parse binned fields as numbers.', () => {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal", "bin": true},
+          "y": {"field": "b", "type": "ordinal"}
+        }
+      });
+
+      assert.deepEqual(ParseNode.make(model).parse, {
+        a: 'number'
+      });
+    });
+
     it('should return a correct customized parse.', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json", "format": {"parse": {"c": "number", "d": "date"}}},

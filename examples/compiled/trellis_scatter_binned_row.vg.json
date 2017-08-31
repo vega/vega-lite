@@ -35,11 +35,6 @@
                     }
                 },
                 {
-                    "type": "formula",
-                    "expr": "datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")",
-                    "as": "bin_maxbins_6_Acceleration_range"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
@@ -53,7 +48,7 @@
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_6_Acceleration",
-                        "bin_maxbins_6_Acceleration_range"
+                        "bin_maxbins_6_Acceleration_end"
                     ]
                 }
             ]
@@ -118,7 +113,7 @@
             },
             "title": {
                 "text": {
-                    "signal": "parent[\"bin_maxbins_6_Acceleration_range\"]"
+                    "signal": "parent[\"bin_maxbins_6_Acceleration\"] === null || isNaN(parent[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(parent[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(parent[\"bin_maxbins_6_Acceleration_end\"], \"\")"
                 },
                 "offset": 10,
                 "orient": "left",

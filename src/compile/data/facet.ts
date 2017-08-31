@@ -33,16 +33,15 @@ export class FacetNode extends DataFlowNode {
       this.columnFields = [model.field(COLUMN)];
       this.columnName = model.getName('column_domain');
       if (model.fieldDef(COLUMN).bin) {
-        this.columnFields.push(model.field(COLUMN, {binSuffix: 'range'}));
+        this.columnFields.push(model.field(COLUMN, {binSuffix: 'end'}));
       }
-
     }
 
     if (model.facet.row) {
       this.rowFields = [model.field(ROW)];
       this.rowName = model.getName('row_domain');
       if (model.fieldDef(ROW).bin) {
-        this.rowFields.push(model.field(ROW, {binSuffix: 'range'}));
+        this.rowFields.push(model.field(ROW, {binSuffix: 'end'}));
       }
     }
 
