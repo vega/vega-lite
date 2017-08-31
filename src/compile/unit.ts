@@ -1,21 +1,12 @@
 import {Axis} from '../axis';
-import {
-  Channel,
-  isScaleChannel,
-  NONSPATIAL_SCALE_CHANNELS,
-  SCALE_CHANNELS,
-  ScaleChannel,
-  SingleDefChannel,
-  X,
-  Y,
-} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {isMarkDef, Mark, MarkDef} from '../mark';
-import {Domain, hasDiscreteDomain, Scale} from '../scale';
+import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, UnitSpec} from '../spec';
@@ -97,15 +88,6 @@ export class UnitModel extends ModelWithField {
     const scale = this.specifiedScales[channel];
     return scale ? scale.domain : undefined;
   }
-
-  public hasDiscreteDomain(channel: Channel) {
-    if (isScaleChannel(channel)) {
-      const scaleCmpt = this.getScaleComponent(channel);
-      return scaleCmpt && hasDiscreteDomain(scaleCmpt.get('type'));
-    }
-    return false;
-  }
-
 
   public sort(channel: Channel): SortField | SortOrder {
     return (this.getMapping()[channel] || {}).sort;

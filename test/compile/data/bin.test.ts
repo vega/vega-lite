@@ -80,7 +80,7 @@ describe('compile/data/bin', function() {
         color: {
           bin: {"maxbins": 10},
           field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          type: "ordinal"
         }
       }
     });

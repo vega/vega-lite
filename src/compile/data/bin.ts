@@ -5,14 +5,13 @@ import {field, FieldDef, normalizeBin} from '../../fielddef';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {binFormatExpression} from '../common';
+import {binFormatExpression, binRequiresRange} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
-    const discreteDomain = model.hasDiscreteDomain(channel);
 
-    if (discreteDomain) {
+function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
+    if (binRequiresRange(fieldDef, channel)) {
       // read format from axis or legend, if there is no format then use config.numberFormat
 
       const guide = isUnitModel(model) ? (model.axis(channel) || model.legend(channel) || {}) : {};
@@ -93,8 +92,7 @@ export class BinNode extends DataFlowNode {
 
   public static makeBinFromEncoding(model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
-      const fieldDefBin = fieldDef.bin;
-      if (fieldDefBin) {
+      if (fieldDef.bin) {
         const {key, binComponent} = createBinComponent(fieldDef, {model});
         binComponentIndex[key] = {
           ...binComponent,

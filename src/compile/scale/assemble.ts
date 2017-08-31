@@ -1,10 +1,10 @@
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
-import {isDataRefDomain, isVgRangeStep, isVgSignalRef, VgRange, VgScale} from '../../vega.schema';
+import {isVgRangeStep, isVgSignalRef, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
-import {mergeDomains} from './domain';
+import {assembleDomain} from './domain';
 
 export function assembleScales(model: Model): VgScale[] {
   if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
@@ -43,24 +43,11 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-      const domains = scaleComponent.domains.map(domain => {
-        // Correct references to data as the original domain's data was determined
-        // in parseScale, which happens before parseData. Thus the original data
-        // reference can be incorrect.
-
-        if (isDataRefDomain(domain)) {
-          domain.data = model.lookupDataSource(domain.data);
-        }
-        return domain;
-      });
-
-      // domains is an array that has to be merged into a single vega domain
-      const domain = mergeDomains(domains);
 
       scales.push({
         name,
         type,
-        domain: domain,
+        domain: assembleDomain(model, channel),
         ...(domainRaw ? {domainRaw} : {}),
         range: range,
         ...otherScaleProps

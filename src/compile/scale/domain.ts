@@ -1,5 +1,4 @@
 import {isString} from 'vega-util';
-
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -8,7 +7,7 @@ import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {isSortField} from '../../sort';
+import {isSortField, SortField} from '../../sort';
 import * as util from '../../util';
 import {
   FieldRefUnionDomain,
@@ -19,11 +18,14 @@ import {
   VgSortField,
   VgUnionSortField,
 } from '../../vega.schema';
+import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
+import {binRequiresRange} from '../common';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
-import {ScaleComponentIndex} from './component';
+import {ScaleComponent, ScaleComponentIndex} from './component';
+
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -202,12 +204,14 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       return [{
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
-        data: sort && util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
-        field: model.field(channel, {binSuffix: 'range'}),
-        sort: sort || {
+        data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
+        // Use range if we added it and the scale does not support computing a range as a signal.
+        field: model.field(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
+        // we have to use a sort object if sort = true to make the sort correct by bin start
+        sort: sort === true || !isSortField(sort) ? {
           field: model.field(channel, {}),
-          op: 'min' // min or max doesn't matter since same _range would have the same _start
-        }
+          op: 'min' // min or max doesn't matter since we sort by the start of the bin range
+        } : sort
       }];
     } else { // continuous scales
       if (channel === 'x' || channel === 'y') {
@@ -245,7 +249,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): VgSortField {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -410,10 +414,45 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
  * Return `undefined` otherwise.
  *
  */
-export function getFieldFromDomains(domains: VgNonUnionDomain[]): string {
-  const domain = mergeDomains(domains);
+export function getFieldFromDomain(domain: VgDomain): string {
   if (isDataRefDomain(domain) && isString(domain.field)) {
     return domain.field;
+  } else if (isDataRefUnionedDomain(domain)) {
+    let field;
+    for (const nonUnionDomain of domain.fields) {
+      if (isDataRefDomain(nonUnionDomain) && isString(nonUnionDomain.field)) {
+        if (!field) {
+          field = nonUnionDomain.field;
+        } else if (field !== nonUnionDomain.field) {
+          log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result cell size may be incorrect.');
+          return field;
+        }
+      }
+    }
+    log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result cell size maybe incorrect.');
+    return field;
+  } else if (isFieldRefUnionDomain(domain) && isString) {
+    log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result cell size may be incorrect.');
+    const field = domain.fields[0];
+    return isString(field) ? field : undefined;
   }
+
   return undefined;
+}
+
+export function assembleDomain(model: Model, channel: ScaleChannel) {
+  const scaleComponent = model.component.scales[channel];
+  const domains = scaleComponent.domains.map(domain => {
+    // Correct references to data as the original domain's data was determined
+    // in parseScale, which happens before parseData. Thus the original data
+    // reference can be incorrect.
+
+    if (isDataRefDomain(domain)) {
+      domain.data = model.lookupDataSource(domain.data);
+    }
+    return domain;
+  });
+
+  // domains is an array that has to be merged into a single vega domain
+  return mergeDomains(domains);
 }

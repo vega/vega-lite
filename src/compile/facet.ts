@@ -17,7 +17,8 @@ import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
-import {getFieldFromDomains} from './scale/domain';
+import {assembleScalesForModel} from './scale/assemble';
+import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
@@ -61,10 +62,6 @@ export class FacetModel extends ModelWithField {
 
   public channelHasField(channel: Channel): boolean {
     return !!this.facet[channel];
-  }
-
-  public hasDiscreteDomain(channel: Channel) {
-    return true;
   }
 
   public fieldDef(channel: Channel): FieldDef<string> {
@@ -274,12 +271,13 @@ export class FacetModel extends ModelWithField {
           const range = childScaleComponent.get('range');
 
           if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
-            const field = getFieldFromDomains(childScaleComponent.domains);
+            const domain = assembleDomain(this.child, channel);
+            const field = getFieldFromDomain(domain);
             if (field) {
               fields.push(field);
               ops.push('distinct');
             } else {
-              throw new Error('We do not yet support calculation of size for faceted union domain.');
+              log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
             }
           }
         }
