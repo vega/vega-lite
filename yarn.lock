@@ -5241,7 +5241,7 @@ vega-hierarchy@2:
     vega-util "1"
 
 vega-lite@^2.0.0-beta.11, vega-lite@^2.0.0-beta.14:
-  version "2.0.0-beta.14"
+  version "2.0.0-beta.19"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-beta.14.tgz#a643e0a528806106bc6234c4c48c9de6bd545225"
   dependencies:
     json-stable-stringify "^1.0.1"
