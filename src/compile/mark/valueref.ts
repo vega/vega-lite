@@ -1,16 +1,23 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-
-
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, ConditionalChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef} from '../../fielddef';
-import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
+import {
+  ChannelDef,
+  ConditionalChannelDef,
+  field,
+  FieldDef,
+  FieldRefOption,
+  isFieldDef,
+  isValueDef,
+  TextFieldDef,
+} from '../../fielddef';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgSignalRef, VgValueRef} from '../../vega.schema';
-import {formatSignalRef} from '../common';
+import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 
@@ -110,7 +117,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
           // For non-stack, we can just calculate bin mid on the fly using signal.
           return binMidSignal(channelDef, scaleName);
         }
-        return fieldRef(channelDef, scaleName, isBinScale(scale.get('type')) ? {} : {binSuffix: 'range'});
+        return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
       }
 
       const scaleType = scale.get('type');
