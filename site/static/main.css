@@ -527,7 +527,7 @@ footer .edit-page {
   flex-flow: row wrap;
   width: 100%;
   max-width: 786px;
-  overflow: scroll;
+  overflow: auto;
 }
 .example .example-vis {
   flex: 1 1 0;
