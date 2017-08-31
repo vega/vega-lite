@@ -146,7 +146,6 @@ export declare abstract class ModelWithField extends Model {
     abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
     /** Get "field" reference for vega */
     field(channel: SingleDefChannel, opt?: FieldRefOption): string;
-    abstract hasDiscreteDomain(channel: Channel): boolean;
     protected abstract getMapping(): {
         [key: string]: any;
     };

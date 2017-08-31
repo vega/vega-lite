@@ -1,3 +1,4 @@
+import { Channel } from '../channel';
 import { CellConfig, Config } from '../config';
 import { FieldDef, FieldRefOption, OrderFieldDef } from '../fielddef';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
@@ -13,7 +14,7 @@ export declare function getStyles(mark: MarkDef): string[];
  * Otherwise, return general mark specific config.
  */
 export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P];
-export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean): {
+export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config): {
     signal: string;
 };
 export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {
@@ -41,3 +42,7 @@ export declare function titleMerger(v1: Explicit<string>, v2: Explicit<string>):
     explicit: boolean;
     value: string;
 };
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+export declare function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean;

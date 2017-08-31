@@ -14,7 +14,6 @@ export declare class FacetModel extends ModelWithField {
     constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     private initFacet(facet);
     channelHasField(channel: Channel): boolean;
-    hasDiscreteDomain(channel: Channel): boolean;
     fieldDef(channel: Channel): FieldDef<string>;
     parseData(): void;
     parseLayoutSize(): void;

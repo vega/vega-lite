@@ -2565,6 +2565,7 @@ exports.buildModel = buildModel;
 },{"../log":101,"../spec":107,"./concat":22,"./facet":41,"./layer":42,"./repeat":64,"./unit":87}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var channel_1 = require("../channel");
 var fielddef_1 = require("../fielddef");
 var scale_1 = require("../scale");
 var timeunit_1 = require("../timeunit");
@@ -2626,20 +2627,14 @@ function getMarkConfig(prop, mark, config) {
     return value;
 }
 exports.getMarkConfig = getMarkConfig;
-function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
+function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
     var format = numberFormat(fieldDef, specifiedFormat, config);
     if (fieldDef.bin) {
-        if (useBinRange) {
-            // For bin range, no need to apply format as the formula that creates range already include format
-            return { signal: fielddef_1.field(fieldDef, { expr: expr, binSuffix: 'range' }) };
-        }
-        else {
-            var startField = fielddef_1.field(fieldDef, { expr: expr });
-            var endField = fielddef_1.field(fieldDef, { expr: expr, binSuffix: 'end' });
-            return {
-                signal: binFormatExpression(startField, endField, format, config)
-            };
-        }
+        var startField = fielddef_1.field(fieldDef, { expr: expr });
+        var endField = fielddef_1.field(fieldDef, { expr: expr, binSuffix: 'end' });
+        return {
+            signal: binFormatExpression(startField, endField, format, config)
+        };
     }
     else if (fieldDef.type === 'quantitative') {
         return {
@@ -2734,8 +2729,21 @@ function titleMerger(v1, v2) {
     };
 }
 exports.titleMerger = titleMerger;
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+function binRequiresRange(fieldDef, channel) {
+    if (!fieldDef.bin) {
+        console.warn('Only use this method with binned field defs');
+        return false;
+    }
+    // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
+    // We could check whether the axis or legend exists (not disabled) but that seems overkill.
+    return channel_1.isScaleChannel(channel) && util_1.contains(['ordinal', 'nominal'], fieldDef.type);
+}
+exports.binRequiresRange = binRequiresRange;
 
-},{"../fielddef":96,"../scale":104,"../timeunit":109,"../type":113,"../util":114}],21:[function(require,module,exports){
+},{"../channel":12,"../fielddef":96,"../scale":104,"../timeunit":109,"../type":113,"../util":114}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2855,16 +2863,14 @@ var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
-var type_1 = require("../../type");
 var util_1 = require("../../util");
+var common_1 = require("../common");
 var dataflow_1 = require("./dataflow");
-function addDimension(dims, fieldDef) {
+function addDimension(dims, channel, fieldDef) {
     if (fieldDef.bin) {
         dims[fielddef_1.field(fieldDef, {})] = true;
         dims[fielddef_1.field(fieldDef, { binSuffix: 'end' })] = true;
-        // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
-        // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
-        if (fieldDef.type === type_1.ORDINAL || fieldDef.type === type_1.NOMINAL) {
+        if (common_1.binRequiresRange(fieldDef, channel)) {
             dims[fielddef_1.field(fieldDef, { binSuffix: 'range' })] = true;
         }
     }
@@ -2937,7 +2943,7 @@ var AggregateNode = (function (_super) {
                 }
             }
             else {
-                addDimension(dims, fieldDef);
+                addDimension(dims, channel, fieldDef);
             }
         });
         if ((util_1.keys(dims).length + util_1.keys(meas).length) === 0) {
@@ -3024,7 +3030,7 @@ var AggregateNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.AggregateNode = AggregateNode;
 
-},{"../../channel":12,"../../fielddef":96,"../../log":101,"../../type":113,"../../util":114,"./dataflow":27,"tslib":5}],24:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":96,"../../log":101,"../../util":114,"../common":20,"./dataflow":27,"tslib":5}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3249,8 +3255,7 @@ var common_1 = require("../common");
 var model_1 = require("../model");
 var dataflow_1 = require("./dataflow");
 function rangeFormula(model, fieldDef, channel, config) {
-    var discreteDomain = model.hasDiscreteDomain(channel);
-    if (discreteDomain) {
+    if (common_1.binRequiresRange(fieldDef, channel)) {
         // read format from axis or legend, if there is no format then use config.numberFormat
         var guide = model_1.isUnitModel(model) ? (model.axis(channel) || model.legend(channel) || {}) : {};
         var startField = fielddef_1.field(fieldDef, { expr: 'datum', });
@@ -3297,8 +3302,7 @@ var BinNode = (function (_super) {
     };
     BinNode.makeBinFromEncoding = function (model) {
         var bins = model.reduceFieldDef(function (binComponentIndex, fieldDef, channel) {
-            var fieldDefBin = fieldDef.bin;
-            if (fieldDefBin) {
+            if (fieldDef.bin) {
                 var _a = createBinComponent(fieldDef, { model: model }), key = _a.key, binComponent = _a.binComponent;
                 binComponentIndex[key] = tslib_1.__assign({}, binComponent, binComponentIndex[key], rangeFormula(model, fieldDef, channel, model.config));
             }
@@ -3575,14 +3579,14 @@ var FacetNode = (function (_super) {
             _this.columnFields = [model.field(channel_1.COLUMN)];
             _this.columnName = model.getName('column_domain');
             if (model.fieldDef(channel_1.COLUMN).bin) {
-                _this.columnFields.push(model.field(channel_1.COLUMN, { binSuffix: 'range' }));
+                _this.columnFields.push(model.field(channel_1.COLUMN, { binSuffix: 'end' }));
             }
         }
         if (model.facet.row) {
             _this.rowFields = [model.field(channel_1.ROW)];
             _this.rowName = model.getName('row_domain');
             if (model.fieldDef(channel_1.ROW).bin) {
-                _this.rowFields.push(model.field(channel_1.ROW, { binSuffix: 'range' }));
+                _this.rowFields.push(model.field(channel_1.ROW, { binSuffix: 'end' }));
             }
         }
         for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
@@ -4965,9 +4969,6 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.channelHasField = function (channel) {
         return !!this.facet[channel];
     };
-    FacetModel.prototype.hasDiscreteDomain = function (channel) {
-        return true;
-    };
     FacetModel.prototype.fieldDef = function (channel) {
         return this.facet[channel];
     };
@@ -5337,7 +5338,7 @@ function getHeaderGroup(model, channel, headerType, layoutHeader, header) {
             var facetFieldDef = layoutHeader.facetFieldDef;
             var format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
             title = {
-                text: common_1.formatSignalRef(facetFieldDef, format, 'parent', model.config, true),
+                text: common_1.formatSignalRef(facetFieldDef, format, 'parent', model.config),
                 offset: 10,
                 orient: channel === 'row' ? 'left' : 'top',
                 style: 'guide-label',
@@ -6674,11 +6675,11 @@ function defaultSize(model) {
 
 },{"../../vega.schema":116,"./mixins":56,"./valueref":62,"tslib":5}],62:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
@@ -6759,7 +6760,7 @@ function midPoint(channel, channelDef, scaleName, scale, stack, defaultRef) {
             if (channelDef.bin) {
                 // Use middle only for x an y to place marks in the center between start and end of the bin range.
                 // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-                if (util_1.contains(['x', 'y'], channel)) {
+                if (util_1.contains(['x', 'y'], channel) && channelDef.type === 'quantitative') {
                     if (stack && stack.impute) {
                         // For stack, we computed bin_mid so we can impute.
                         return fieldRef(channelDef, scaleName, { binSuffix: 'mid' });
@@ -6767,7 +6768,7 @@ function midPoint(channel, channelDef, scaleName, scale, stack, defaultRef) {
                     // For non-stack, we can just calculate bin mid on the fly using signal.
                     return binMidSignal(channelDef, scaleName);
                 }
-                return fieldRef(channelDef, scaleName, scale_1.isBinScale(scale.get('type')) ? {} : { binSuffix: 'range' });
+                return fieldRef(channelDef, scaleName, common_1.binRequiresRange(channelDef, channel) ? { binSuffix: 'range' } : {});
             }
             var scaleType = scale.get('type');
             if (scale_1.hasDiscreteDomain(scaleType)) {
@@ -7582,6 +7583,7 @@ var scale_1 = require("../../scale");
 var sort_1 = require("../../sort");
 var util = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
+var common_1 = require("../common");
 var optimize_1 = require("../data/optimize");
 var model_1 = require("../model");
 var selection_1 = require("../selection/selection");
@@ -7746,12 +7748,14 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
             return [{
                     // If sort by aggregation of a specified sort field, we need to use RAW table,
                     // so we can aggregate values for the scale independently from the main aggregation.
-                    data: sort && util.isBoolean(sort) ? model.requestDataName(data_1.MAIN) : model.requestDataName(data_1.RAW),
-                    field: model.field(channel, { binSuffix: 'range' }),
-                    sort: sort || {
+                    data: util.isBoolean(sort) ? model.requestDataName(data_1.MAIN) : model.requestDataName(data_1.RAW),
+                    // Use range if we added it and the scale does not support computing a range as a signal.
+                    field: model.field(channel, common_1.binRequiresRange(fieldDef, channel) ? { binSuffix: 'range' } : {}),
+                    // we have to use a sort object if sort = true to make the sort correct by bin start
+                    sort: sort === true || !sort_1.isSortField(sort) ? {
                         field: model.field(channel, {}),
-                        op: 'min' // min or max doesn't matter since same _range would have the same _start
-                    }
+                        op: 'min' // min or max doesn't matter since we sort by the start of the bin range
+                    } : sort
                 }];
         }
         else {
@@ -7944,7 +7948,7 @@ function getFieldFromDomains(domains) {
 }
 exports.getFieldFromDomains = getFieldFromDomains;
 
-},{"../../aggregate":9,"../../bin":11,"../../channel":12,"../../data":92,"../../datetime":93,"../../log":101,"../../scale":104,"../../sort":106,"../../util":114,"../../vega.schema":116,"../data/optimize":35,"../model":63,"../selection/selection":76,"tslib":5,"vega-util":7}],70:[function(require,module,exports){
+},{"../../aggregate":9,"../../bin":11,"../../channel":12,"../../data":92,"../../datetime":93,"../../log":101,"../../scale":104,"../../sort":106,"../../util":114,"../../vega.schema":116,"../common":20,"../data/optimize":35,"../model":63,"../selection/selection":76,"tslib":5,"vega-util":7}],70:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -8562,7 +8566,8 @@ function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
                 // TODO: consider using quantize (equivalent to binning) once we have it
                 return 'ordinal';
             }
-            // x and y use a linear scale because selections don't work with bin scales
+            // x and y use a linear scale because selections don't work with bin scales.
+            // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
             if (fieldDef.bin && channel !== 'x' && channel !== 'y') {
                 return 'bin-linear';
             }
@@ -9699,7 +9704,6 @@ var vlEncoding = require("../encoding");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
 var mark_1 = require("../mark");
-var scale_1 = require("../scale");
 var stack_1 = require("../stack");
 var util_1 = require("../util");
 var parse_1 = require("./axis/parse");
@@ -9747,13 +9751,6 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.scaleDomain = function (channel) {
         var scale = this.specifiedScales[channel];
         return scale ? scale.domain : undefined;
-    };
-    UnitModel.prototype.hasDiscreteDomain = function (channel) {
-        if (channel_1.isScaleChannel(channel)) {
-            var scaleCmpt = this.getScaleComponent(channel);
-            return scaleCmpt && scale_1.hasDiscreteDomain(scaleCmpt.get('type'));
-        }
-        return false;
     };
     UnitModel.prototype.sort = function (channel) {
         return (this.getMapping()[channel] || {}).sort;
@@ -9898,7 +9895,7 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":12,"../encoding":94,"../fielddef":96,"../mark":103,"../scale":104,"../stack":108,"../util":114,"./axis/parse":16,"./data/parse":37,"./layoutsize/assemble":44,"./layoutsize/parse":45,"./mark/init":53,"./mark/mark":55,"./model":63,"./repeater":65,"./selection/selection":76,"tslib":5}],88:[function(require,module,exports){
+},{"../channel":12,"../encoding":94,"../fielddef":96,"../mark":103,"../stack":108,"../util":114,"./axis/parse":16,"./data/parse":37,"./layoutsize/assemble":44,"./layoutsize/parse":45,"./mark/init":53,"./mark/mark":55,"./model":63,"./repeater":65,"./selection/selection":76,"tslib":5}],88:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");

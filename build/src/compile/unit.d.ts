@@ -37,7 +37,6 @@ export declare class UnitModel extends ModelWithField {
      * @param channel
      */
     scaleDomain(channel: ScaleChannel): Domain;
-    hasDiscreteDomain(channel: Channel): boolean;
     sort(channel: Channel): SortField | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
