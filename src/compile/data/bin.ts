@@ -3,7 +3,7 @@ import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, extend, flatten, keys, vals} from '../../util';
+import {Dict, duplicate, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -124,7 +124,7 @@ export class BinNode extends DataFlowNode {
   }
 
   public merge(other: BinNode) {
-    this.bins = extend(other.bins);
+    this.bins = {...other.bins};
     other.remove();
   }
 

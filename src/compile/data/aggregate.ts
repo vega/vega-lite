@@ -4,7 +4,7 @@ import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {SummarizeTransform} from '../../transform';
 import {NOMINAL, ORDINAL} from '../../type';
-import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
+import {Dict, differ, duplicate, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
@@ -47,7 +47,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
+    return new AggregateNode({...this.dimensions}, duplicate(this.measures));
   }
 
   /**

@@ -5,20 +5,18 @@ import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
 import {UnitSpec} from '../../../src/spec';
-import {extend} from '../../../src/util';
 import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Area', function() {
   function verticalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
-      "encoding": extend(
+      "encoding":
         {
           "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "y": {"aggregate": "count", "type": "quantitative"}
+          "y": {"aggregate": "count", "type": "quantitative"},
+          ...moreEncoding,
         },
-        moreEncoding
-      ),
       "data": {"url": "data/cars.json"}
     };
   }
@@ -138,13 +136,11 @@ describe('Mark: Area', function() {
   function horizontalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
-      "encoding": extend(
-        {
+      "encoding": {
           "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "x": {"aggregate": "count", "type": "quantitative"}
+          "x": {"aggregate": "count", "type": "quantitative"},
+          ...moreEncoding,
         },
-        moreEncoding
-      ),
       "data": {"url": "data/cars.json"}
     };
   }

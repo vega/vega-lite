@@ -4,7 +4,7 @@ import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {Dict, duplicate, extend, keys, stringValue, toSet} from '../../util';
+import {Dict, duplicate, keys, stringValue, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -108,7 +108,7 @@ export class ParseNode extends DataFlowNode {
   }
 
   public merge(other: ParseNode) {
-    this._parse = extend(this._parse, other.parse);
+    this._parse = {...this._parse, ...other.parse};
     other.remove();
   }
   public assembleFormatParse() {

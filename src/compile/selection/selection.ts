@@ -3,7 +3,7 @@ import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
+import {Dict, isString, logicalExpr, stringValue, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
@@ -90,10 +90,10 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     name = varName(name);
-    const selCmpt = selCmpts[name] = extend({}, selDef, {
+    const selCmpt = selCmpts[name] = {...selDef,
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
-    }) as SelectionComponent;
+    } as SelectionComponent;
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.parse) {

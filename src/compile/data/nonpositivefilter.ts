@@ -1,6 +1,6 @@
 import {SCALE_CHANNELS} from '../../channel';
 import {ScaleType} from '../../scale';
-import {Dict, extend, keys, stringValue} from '../../util';
+import {Dict, keys, stringValue} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
@@ -10,7 +10,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
   private _filter: Dict<boolean>;
 
   public clone() {
-    return new NonPositiveFilterNode(extend({}, this._filter));
+    return new NonPositiveFilterNode({...this._filter});
   }
 
   constructor(filter: Dict<boolean>) {

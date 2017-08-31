@@ -3,7 +3,7 @@ import {isScaleChannel} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import {hasContinuousDomain} from '../../scale';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, Dict, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
+import {contains, Dict, differArray, duplicate, hash, keys, stringValue} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -55,7 +55,7 @@ export class NullFilterNode extends DataFlowNode {
     const o = keys(other.filteredFields).map(k => k + ' ' + hash(other.filteredFields[k]));
 
     if (!differArray(t, o)) {
-      this._filteredFields = extend(this._filteredFields, other._filteredFields);
+      this._filteredFields = {...this._filteredFields, ...other._filteredFields};
       other.remove();
     }
   }
