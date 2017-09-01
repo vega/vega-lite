@@ -123,8 +123,7 @@
                     "signal": "x_step"
                 }
             },
-            "padding": 0.5,
-            "round": true
+            "padding": 0.5
         },
         {
             "name": "y",
@@ -139,7 +138,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },

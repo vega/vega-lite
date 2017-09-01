@@ -246,7 +246,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -272,7 +271,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },

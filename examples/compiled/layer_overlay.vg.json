@@ -282,7 +282,6 @@
                     "signal": "x_step"
                 }
             },
-            "round": true,
             "padding": 0.5
         },
         {
@@ -315,7 +314,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

@@ -2,7 +2,7 @@ import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
 import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {extend, keys, without} from '../../util';
+import {keys, without} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
@@ -51,7 +51,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
       delete colorMixins.stroke;
     }
-    extend(symbols, colorMixins);
+    symbols = {...symbols, ...colorMixins};
   }
 
   if (channel !== SHAPE) {
@@ -61,7 +61,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     }
   }
 
-  symbols = extend(symbols, symbolsSpec || {});
+  symbols = {...symbols, ...symbolsSpec};
 
   return keys(symbols).length > 0 ? symbols : undefined;
 }
@@ -74,14 +74,15 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    labelsSpec = extend({
+    labelsSpec = {
       text: {
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-      }
-    }, labelsSpec || {});
+      },
+      ...labelsSpec,
+    };
   }
 
-  labels = extend(labels, labelsSpec || {});
+  labels = {...labels, ...labelsSpec};
 
   return keys(labels).length > 0 ? labels : undefined;
 }

@@ -456,7 +456,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": false
         },
@@ -473,7 +472,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": false
         },

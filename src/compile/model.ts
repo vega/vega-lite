@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, extend, keys, varName} from '../util';
+import {contains, Dict, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,
@@ -40,7 +40,7 @@ import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {getFieldFromDomains} from './scale/domain';
+import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
@@ -443,11 +443,18 @@ export abstract class Model {
 
         if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
           const scaleName = scaleComponent.get('name');
-          const fieldName = getFieldFromDomains(scaleComponent.domains);
-          const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
-          return {
-            signal: sizeExpr(scaleName, scaleComponent, fieldRef)
-          };
+          const domain = assembleDomain(this, channel);
+          const fieldName = getFieldFromDomain(domain);
+          if (fieldName) {
+            const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
+            return {
+              signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+            };
+          } else {
+            log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+            return null;
+          }
+
         }
       }
     }

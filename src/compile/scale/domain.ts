@@ -1,5 +1,4 @@
 import {isString} from 'vega-util';
-
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -19,12 +18,13 @@ import {
   VgSortField,
   VgUnionSortField,
 } from '../../vega.schema';
+import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
-import {ScaleComponentIndex} from './component';
+import {ScaleComponent, ScaleComponentIndex} from './component';
 
 
 export function parseScaleDomain(model: Model) {
@@ -414,10 +414,45 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
  * Return `undefined` otherwise.
  *
  */
-export function getFieldFromDomains(domains: VgNonUnionDomain[]): string {
-  const domain = mergeDomains(domains);
+export function getFieldFromDomain(domain: VgDomain): string {
   if (isDataRefDomain(domain) && isString(domain.field)) {
     return domain.field;
+  } else if (isDataRefUnionedDomain(domain)) {
+    let field;
+    for (const nonUnionDomain of domain.fields) {
+      if (isDataRefDomain(nonUnionDomain) && isString(nonUnionDomain.field)) {
+        if (!field) {
+          field = nonUnionDomain.field;
+        } else if (field !== nonUnionDomain.field) {
+          log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result cell size may be incorrect.');
+          return field;
+        }
+      }
+    }
+    log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result cell size maybe incorrect.');
+    return field;
+  } else if (isFieldRefUnionDomain(domain) && isString) {
+    log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result cell size may be incorrect.');
+    const field = domain.fields[0];
+    return isString(field) ? field : undefined;
   }
+
   return undefined;
+}
+
+export function assembleDomain(model: Model, channel: ScaleChannel) {
+  const scaleComponent = model.component.scales[channel];
+  const domains = scaleComponent.domains.map(domain => {
+    // Correct references to data as the original domain's data was determined
+    // in parseScale, which happens before parseData. Thus the original data
+    // reference can be incorrect.
+
+    if (isDataRefDomain(domain)) {
+      domain.data = model.lookupDataSource(domain.data);
+    }
+    return domain;
+  });
+
+  // domains is an array that has to be merged into a single vega domain
+  return mergeDomains(domains);
 }

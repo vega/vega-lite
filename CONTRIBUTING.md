@@ -22,7 +22,7 @@ You can find [tasks with the "help-wanted" label in the issue tracker](https://g
 
 ### Help Create New Examples
 
-To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull reuqest to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
+To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
 
 ## Documentation and Website
 
@@ -124,19 +124,19 @@ After adding a new example, make sure to run `yarn run build:examples` so that y
   - `compiled` The generated Vega specifications and SVG files of the Vega-Lite examples.
 
 - `scripts/` - Scripts for NPM commands.
-- `site/` - Misc files for serving the website and gallery
+- `site/` - Misc files for serving the website and gallery.
 - `src/` - Main source code directory.
   - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
   Other files under `src/` reflect namespace structure.
   All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.
   For example, `vl.channel.*` methods are in `src/channel.ts`.
   `vl.compile` is in `src/compile/compile.ts`.
-  - All interface for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
+  - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
 
-- `test/` - Code for unit testing. `test`'s structure reflects `src`'s' directory structure.
-For example, `test/compile/` test files inside `src/compile/`.
+- `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
+For example, `test/compile/` tests files inside `src/compile/`.
   - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
-  to allow putting JSON spec in tests directly without getting lint errors.
+  to allow putting JSON specs in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
 
 
@@ -152,26 +152,26 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 
 `npm run lint` and `npm run test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `npm start` and `npm run watch`.
 
-Running `npm run test` automatically includes test coverage summary and generates a report inside `coverage/index.html`.
+`npm run test` includes test coverage and generates a report inside `coverage/index.html`.
 You can see if specific lines are covered in the unit test by running `open coverage/index.html`
-and browse through the report.
+and browsing through the report.
 
-A lot of linting errors can be fixed automatically with running `npm run lint -- --fix`.
+A lot of linting errors can be fixed automatically by running `npm run lint -- --fix`.
 
 ### Watch tasks
 
-During development, it can be convenient to rebuild automatically or run tests in the background.
+During development, it can be convenient to rebuild automatically or to run tests in the background.
 
-You can run `npm run start` to start a watcher task that shows the example gallery.
+`npm run start` starts a watcher task that shows the example gallery.
 Whenever any `.ts` file changes, the watcher:
 (1) re-compiles Vega-Lite
 (2) automatically refreshes the gallery with BrowserSync
 (3) lints and runs tests
-(4) regenerates the JSON schema (`vega-lite-schema.json`)
+(4) regenerates the JSON schema (`vega-lite-schema.json`).
 
 If you only want subset of these actions, you can use:
 
-- `npm run watch` to start a watcher task that do all of above except opening and syncing the gallery.
+- `npm run watch` to start a watcher task that does all of above except opening and syncing the gallery.
 
 - `npm run watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
@@ -179,7 +179,7 @@ If you only want subset of these actions, you can use:
 
 #### Fast iteration testing
 
-To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests and you should run the full tests before committing code.
+To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
 
 ### Website
 
@@ -195,7 +195,7 @@ use `npm run deploy:gh`.
 ## Suggested Programming Environment.
 
 We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin.
-- VSCode has a nice built-in Typescript support!
+- VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
 - Make sure to install [TypeScript Importer](https://marketplace.visualstudio.com/items?itemName=pmneo.tsimporter) and [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint) extensions.
 
@@ -209,7 +209,7 @@ for instructions).
 ## Developing Vega-Lite and Vega-Util
 
 Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
-If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
+If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears).
 
 ```sh
 # first link vega-util global npm
@@ -220,15 +220,15 @@ cd path/to/vega-lite
 npm link vega-util
 ```
 
-Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
+Now all of the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
 ## Pull Requests and Travis
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR. Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
 
 ### Code Coverage
 
-When checking for code coverage, we require that your PR tests covers at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR or `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
+When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
 
 # Note
 

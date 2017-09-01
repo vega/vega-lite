@@ -52,7 +52,12 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         // copyKeyFromObject ensure type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
-        const value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, sort, config.scale);
+        const value = getDefaultValue(
+          property, channel, fieldDef, sort,
+          mergedScaleCmpt.get('type'),
+          mergedScaleCmpt.get('padding'),
+          mergedScaleCmpt.get('paddingInner'),
+          specifiedScale.domain,  config.scale);
         if (value !== undefined) {
           localScaleCmpt.set(property, value, false);
         }
@@ -61,24 +66,26 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
   });
 }
 
-function getDefaultValue(property: keyof Scale, specifiedScale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField, scaleConfig: ScaleConfig) {
+// Note: This method is used in Voyager.
+export function getDefaultValue(
+  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField,
+  scaleType: ScaleType, scalePadding: number, scalePaddingInner: number,
+  specifiedDomain: Scale['domain'], scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'nice':
-      return nice(scaleCmpt.get('type'), channel, fieldDef);
+      return nice(scaleType, channel, fieldDef);
     case 'padding':
-      return padding(channel, scaleCmpt.get('type'), scaleConfig);
+      return padding(channel, scaleType, scaleConfig);
     case 'paddingInner':
-      return paddingInner(scaleCmpt.get('padding'), channel, scaleConfig);
+      return paddingInner(scalePadding, channel, scaleConfig);
     case 'paddingOuter':
-      return paddingOuter(scaleCmpt.get('padding'), channel, scaleCmpt.get('type'), scaleCmpt.get('paddingInner'), scaleConfig);
-    case 'round':
-      return round(channel, scaleConfig);
+      return paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, scaleConfig);
     case 'reverse':
-      return reverse(scaleCmpt.get('type'), sort);
+      return reverse(scaleType, sort);
     case 'zero':
-      return zero(channel, fieldDef, specifiedScale.domain);
+      return zero(channel, fieldDef, specifiedDomain);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -181,13 +188,6 @@ export function paddingOuter(padding: number, channel: Channel, scaleType: Scale
           Note that step (by default) and cardinality are integers.) */
       return paddingInner / 2;
     }
-  }
-  return undefined;
-}
-
-export function round(channel: Channel, scaleConfig: ScaleConfig) {
-  if (util.contains(['x', 'y'], channel)) {
-    return scaleConfig.round;
   }
   return undefined;
 }

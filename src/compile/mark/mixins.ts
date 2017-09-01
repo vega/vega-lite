@@ -139,16 +139,16 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number) {
+export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
   if (channel === 'x') {
     return {
-      x2: ref.bin(fieldDef, scaleName, 'start', spacing),
-      x: ref.bin(fieldDef, scaleName, 'end')
+      x2: ref.bin(fieldDef, scaleName, 'start', reverse ? 0 : spacing),
+      x: ref.bin(fieldDef, scaleName, 'end', reverse ? spacing : 0)
     };
   } else {
     return {
-      y2: ref.bin(fieldDef, scaleName, 'start'),
-      y: ref.bin(fieldDef, scaleName, 'end', spacing)
+      y2: ref.bin(fieldDef, scaleName, 'start', reverse ? spacing : 0),
+      y: ref.bin(fieldDef, scaleName, 'end', reverse ? 0 : spacing)
     };
   }
 }

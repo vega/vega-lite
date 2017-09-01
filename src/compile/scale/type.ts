@@ -17,10 +17,11 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  */
 // NOTE: CompassQL uses this method.
 export function scaleType(
-  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
-  specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
+  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>,
+  mark: Mark, scaleConfig: ScaleConfig
+): ScaleType {
 
-  const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig);
+  const defaultScaleType = defaultType(channel, fieldDef, mark, scaleConfig);
 
   if (!isScaleChannel(channel)) {
     // There is no scale for these channels
@@ -48,8 +49,10 @@ export function scaleType(
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
-  specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
+// NOTE: Voyager uses this method.
+function defaultType(
+  channel: Channel, fieldDef: FieldDef<string>, mark: Mark, scaleConfig: ScaleConfig
+): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -59,7 +62,18 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         }
         return 'ordinal';
       }
-      return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
+
+      if (util.contains(['x', 'y'], channel)) {
+        if (mark === 'rect') {
+          // The rect mark should fit into a band.
+          return 'band';
+        }
+        if (mark === 'bar') {
+          return 'band';
+        }
+      }
+      // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
+      return 'point';
 
     case 'temporal':
       if (channel === 'color') {
@@ -95,29 +109,6 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
   /* istanbul ignore next: should never reach this */
   throw new Error(log.message.invalidFieldType(fieldDef.type));
-}
-
-/**
- * Determines default scale type for nominal/ordinal field.
- * @returns BAND or POINT scale based on channel, mark, and rangeStep
- */
-function discreteToContinuousType(
-    channel: Channel, mark: Mark,
-    specifiedRangeStep: number,
-    scaleConfig: ScaleConfig
-  ): ScaleType {
-
-  if (util.contains(['x', 'y'], channel)) {
-    if (mark === 'rect') {
-      // The rect mark should fit into a band.
-      return 'band';
-    }
-    if (mark === 'bar') {
-      return 'band';
-    }
-  }
-  // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
-  return 'point';
 }
 
 export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef<string>):boolean {

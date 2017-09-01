@@ -121,7 +121,6 @@
                     "signal": "width"
                 }
             ],
-            "round": true,
             "nice": true,
             "zero": true
         },
@@ -138,7 +137,6 @@
                     "signal": "y_step"
                 }
             },
-            "round": true,
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },

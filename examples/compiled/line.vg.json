@@ -81,8 +81,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "round": true
+            ]
         },
         {
             "name": "y",
@@ -97,7 +96,6 @@
                 },
                 0
             ],
-            "round": true,
             "nice": true,
             "zero": true
         }

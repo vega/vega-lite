@@ -6,6 +6,8 @@ declare module 'vega' {
     public logLevel(level: number): View;
     public initialize(dom: Element | string): View;
     public renderer(renderer: string): View;
+    public finalize(): void;
+
     public hover(): View;
     public run(): View;
     public change(name: string, changeset: any): View;
