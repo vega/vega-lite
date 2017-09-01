@@ -131,6 +131,42 @@ describe('Mark: Bar', function() {
     });
   });
 
+  describe('horizontal binned, sort descending', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"bin": true, "field": 'Horsepower', "type": "quantitative", "sort": "descending"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with y and y2', function() {
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      assert.isUndefined(props.height);
+    });
+  });
+
+  describe('horizontal binned, reverse', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"bin": true, "field": 'Horsepower', "type": "quantitative", "scale": {"reverse": true}},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with y and y2', function() {
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      assert.isUndefined(props.height);
+    });
+  });
+
   describe('vertical binned', function() {
     const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": 'data/cars.json'},
@@ -145,6 +181,24 @@ describe('Mark: Bar', function() {
     it('should draw bar with x and x2', function() {
       assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
+      assert.isUndefined(props.width);
+    });
+  });
+
+  describe('vertical binned, sort descending', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "field": 'Horsepower', "type": "quantitative", "sort": "descending"},
+        "y": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with x and x2', function() {
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end', offset: defaultBarConfig.binSpacing});
       assert.isUndefined(props.width);
     });
   });
