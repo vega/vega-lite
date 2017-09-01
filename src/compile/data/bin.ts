@@ -122,7 +122,7 @@ export class BinNode extends DataFlowNode {
   }
 
   public merge(other: BinNode) {
-    this.bins = {...other.bins};
+    this.bins = {...this.bins, ...other.bins};
     other.remove();
   }
 
