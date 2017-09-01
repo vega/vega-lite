@@ -19,7 +19,6 @@ export declare namespace ScaleType {
 }
 export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 export declare const SCALE_TYPES: ScaleType[];
-export declare function getScaleCategory(scaleType: ScaleType): "time" | "linear" | "bin-linear" | "log" | "pow" | "sqrt" | "utc" | "sequential" | "ordinal" | "bin-ordinal" | "point" | "band" | "numeric" | "ordinal-position";
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -181,7 +180,6 @@ export interface ScaleConfig {
     maxStrokeWidth?: number;
 }
 export declare const defaultScaleConfig: {
-    round: boolean;
     textXRangeStep: number;
     rangeStep: number;
     pointPadding: number;
@@ -297,7 +295,7 @@ export interface Scale {
     /**
      * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
      *
-     * __Default value:__ `true` for x and y channels if the scale config's `round` is `true`; `false` otherwise.
+     * __Default value:__ `false`.
      */
     round?: boolean;
     /**

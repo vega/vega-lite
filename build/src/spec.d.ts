@@ -12,7 +12,7 @@ import { TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
 export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
     /**
-     * URL to JSON schema for this Vega-Lite specification.
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
      * @format uri
      */
     $schema?: string;

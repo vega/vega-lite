@@ -28,4 +28,5 @@ export declare function mergeDomains(domains: VgNonUnionDomain[]): VgDomain;
  * Return `undefined` otherwise.
  *
  */
-export declare function getFieldFromDomains(domains: VgNonUnionDomain[]): string;
+export declare function getFieldFromDomain(domain: VgDomain): string;
+export declare function assembleDomain(model: Model, channel: ScaleChannel): VgDomain;

@@ -10,9 +10,9 @@ export declare class FacetNode extends DataFlowNode {
     data: string;
     private readonly columnFields;
     private readonly columnName;
-    private readonly childIndependentFieldWithStep;
     private readonly rowFields;
     private readonly rowName;
+    private readonly childModel;
     /**
      * @param model The facet model.
      * @param name The name that this facet source will have.
@@ -24,6 +24,7 @@ export declare class FacetNode extends DataFlowNode {
      * The name to reference this source is its name.
      */
     getSource(): string;
-    private assembleRowColumnData(channel, crossedDataName);
+    private getChildIndependentFieldsWithStep();
+    private assembleRowColumnData(channel, crossedDataName, childIndependentFieldsWithStep);
     assemble(): VgData[];
 }

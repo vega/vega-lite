@@ -283,7 +283,7 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
 };
-export declare function binnedPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', scaleName: string, spacing: number): {
+export declare function binnedPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', scaleName: string, spacing: number, reverse: boolean): {
     x2: VgValueRef;
     x: VgValueRef;
 } | {

@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.19",
+  "version": "2.0.0-beta.21",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -771,13 +771,13 @@ function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
             // We don't include temporal field here as we apply format in encode block
             return common_1.numberFormat(fieldDef, specifiedAxis.format, model.config);
         case 'grid': {
-            var scaleType = model.component.scales[channel].get('type');
+            var scaleType = model.getScaleComponent(channel).get('type');
             return common_1.getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
         }
         case 'labels':
             return isGridAxis ? false : specifiedAxis.labels;
         case 'labelOverlap': {
-            var scaleType = model.component.scales[channel].get('type');
+            var scaleType = model.getScaleComponent(channel).get('type');
             return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
         }
         case 'minExtent': {
@@ -789,7 +789,7 @@ function getProperty(property, specifiedAxis, channel, model, isGridAxis) {
         case 'orient':
             return common_1.getSpecifiedOrDefaultValue(specifiedAxis.orient, properties.orient(channel));
         case 'tickCount': {
-            var scaleType = model.component.scales[channel].get('type');
+            var scaleType = model.getScaleComponent(channel).get('type');
             var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
             var size = sizeType ? model.getSizeSignalRef(sizeType)
                 : undefined;
@@ -1375,7 +1375,7 @@ var AggregateNode = (function (_super) {
         return _this;
     }
     AggregateNode.prototype.clone = function () {
-        return new AggregateNode(util_1.extend({}, this.dimensions), util_1.duplicate(this.measures));
+        return new AggregateNode(tslib_1.__assign({}, this.dimensions), util_1.duplicate(this.measures));
     };
     AggregateNode.makeFromEncoding = function (model) {
         var isAggregate = false;
@@ -1789,7 +1789,7 @@ var BinNode = (function (_super) {
         var _b;
     };
     BinNode.prototype.merge = function (other) {
-        this.bins = util_1.extend(other.bins);
+        this.bins = tslib_1.__assign({}, this.bins, other.bins);
         other.remove();
     };
     BinNode.prototype.producedFields = function () {
@@ -2019,6 +2019,7 @@ exports.OutputNode = OutputNode;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
+var log = require("../../log");
 var scale_1 = require("../../scale");
 var vega_schema_1 = require("../../vega.schema");
 var domain_1 = require("../scale/domain");
@@ -2038,7 +2039,6 @@ var FacetNode = (function (_super) {
         _this.model = model;
         _this.name = name;
         _this.data = data;
-        _this.childIndependentFieldWithStep = {};
         if (model.facet.column) {
             _this.columnFields = [model.field(channel_1.COLUMN)];
             _this.columnName = model.getName('column_domain');
@@ -2053,23 +2053,7 @@ var FacetNode = (function (_super) {
                 _this.rowFields.push(model.field(channel_1.ROW, { binSuffix: 'end' }));
             }
         }
-        for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
-            var channel = _a[_i];
-            var childScaleComponent = model.child.component.scales[channel];
-            if (childScaleComponent && !childScaleComponent.merged) {
-                var type = childScaleComponent.get('type');
-                var range = childScaleComponent.get('range');
-                if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
-                    var field = domain_1.getFieldFromDomains(childScaleComponent.domains);
-                    if (field) {
-                        _this.childIndependentFieldWithStep[channel] = field;
-                    }
-                    else {
-                        throw new Error('We do not yet support calculation of size for faceted union domain.');
-                    }
-                }
-            }
-        }
+        _this.childModel = model.child;
         return _this;
     }
     Object.defineProperty(FacetNode.prototype, "fields", {
@@ -2092,23 +2076,45 @@ var FacetNode = (function (_super) {
     FacetNode.prototype.getSource = function () {
         return this.name;
     };
-    FacetNode.prototype.assembleRowColumnData = function (channel, crossedDataName) {
-        var childChannel = channel === 'row' ? 'y' : 'x';
+    FacetNode.prototype.getChildIndependentFieldsWithStep = function () {
+        var childIndependentFieldsWithStep = {};
+        for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
+            var channel = _a[_i];
+            var childScaleComponent = this.childModel.component.scales[channel];
+            if (childScaleComponent && !childScaleComponent.merged) {
+                var type = childScaleComponent.get('type');
+                var range = childScaleComponent.get('range');
+                if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
+                    var domain = domain_1.assembleDomain(this.childModel, channel);
+                    var field = domain_1.getFieldFromDomain(domain);
+                    if (field) {
+                        childIndependentFieldsWithStep[channel] = field;
+                    }
+                    else {
+                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                    }
+                }
+            }
+        }
+        return childIndependentFieldsWithStep;
+    };
+    FacetNode.prototype.assembleRowColumnData = function (channel, crossedDataName, childIndependentFieldsWithStep) {
         var aggregateChildField = {};
-        if (this.childIndependentFieldWithStep[childChannel]) {
+        var childChannel = channel === 'row' ? 'y' : 'x';
+        if (childIndependentFieldsWithStep[childChannel]) {
             if (crossedDataName) {
                 aggregateChildField = {
                     // If there is a crossed data, calculate max
-                    fields: ["distinct_" + this.childIndependentFieldWithStep[childChannel]],
+                    fields: ["distinct_" + childIndependentFieldsWithStep[childChannel]],
                     ops: ['max'],
                     // Although it is technically a max, just name it distinct so it's easier to refer to it
-                    as: ["distinct_" + this.childIndependentFieldWithStep[childChannel]]
+                    as: ["distinct_" + childIndependentFieldsWithStep[childChannel]]
                 };
             }
             else {
                 aggregateChildField = {
                     // If there is no crossed data, just calculate distinct
-                    fields: [this.childIndependentFieldWithStep[childChannel]],
+                    fields: [childIndependentFieldsWithStep[childChannel]],
                     ops: ['distinct']
                 };
             }
@@ -2123,10 +2129,11 @@ var FacetNode = (function (_super) {
     FacetNode.prototype.assemble = function () {
         var data = [];
         var crossedDataName = null;
-        if (this.columnName && this.rowName && (this.childIndependentFieldWithStep.x || this.childIndependentFieldWithStep.y)) {
+        var childIndependentFieldsWithStep = this.getChildIndependentFieldsWithStep();
+        if (this.columnName && this.rowName && (childIndependentFieldsWithStep.x || childIndependentFieldsWithStep.y)) {
             // Need to create a cross dataset to correctly calculate cardinality
             crossedDataName = "cross_" + this.columnName + "_" + this.rowName;
-            var fields = [].concat(this.childIndependentFieldWithStep.x ? [this.childIndependentFieldWithStep.x] : [], this.childIndependentFieldWithStep.y ? [this.childIndependentFieldWithStep.y] : []);
+            var fields = [].concat(childIndependentFieldsWithStep.x ? [childIndependentFieldsWithStep.x] : [], childIndependentFieldsWithStep.y ? [childIndependentFieldsWithStep.y] : []);
             var ops = fields.map(function () { return 'distinct'; });
             data.push({
                 name: crossedDataName,
@@ -2140,10 +2147,10 @@ var FacetNode = (function (_super) {
             });
         }
         if (this.columnName) {
-            data.push(this.assembleRowColumnData('column', crossedDataName));
+            data.push(this.assembleRowColumnData('column', crossedDataName, childIndependentFieldsWithStep));
         }
         if (this.rowName) {
-            data.push(this.assembleRowColumnData('row', crossedDataName));
+            data.push(this.assembleRowColumnData('row', crossedDataName, childIndependentFieldsWithStep));
         }
         return data;
     };
@@ -2151,7 +2158,7 @@ var FacetNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.FacetNode = FacetNode;
 
-},{"../../channel":5,"../../scale":97,"../../vega.schema":109,"../scale/domain":62,"./dataflow":20,"tslib":302}],22:[function(require,module,exports){
+},{"../../channel":5,"../../log":94,"../../scale":97,"../../vega.schema":109,"../scale/domain":62,"./dataflow":20,"tslib":302}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2293,7 +2300,7 @@ var ParseNode = (function (_super) {
         configurable: true
     });
     ParseNode.prototype.merge = function (other) {
-        this._parse = util_1.extend(this._parse, other.parse);
+        this._parse = tslib_1.__assign({}, this._parse, other.parse);
         other.remove();
     };
     ParseNode.prototype.assembleFormatParse = function () {
@@ -2422,7 +2429,7 @@ var NonPositiveFilterNode = (function (_super) {
         return _this;
     }
     NonPositiveFilterNode.prototype.clone = function () {
-        return new NonPositiveFilterNode(util_1.extend({}, this._filter));
+        return new NonPositiveFilterNode(tslib_1.__assign({}, this._filter));
     };
     NonPositiveFilterNode.make = function (model) {
         var filter = channel_1.SCALE_CHANNELS.reduce(function (nonPositiveComponent, channel) {
@@ -2513,7 +2520,7 @@ var NullFilterNode = (function (_super) {
         var t = util_1.keys(this._filteredFields).map(function (k) { return k + ' ' + util_1.hash(_this._filteredFields[k]); });
         var o = util_1.keys(other.filteredFields).map(function (k) { return k + ' ' + util_1.hash(other.filteredFields[k]); });
         if (!util_1.differArray(t, o)) {
-            this._filteredFields = util_1.extend(this._filteredFields, other._filteredFields);
+            this._filteredFields = tslib_1.__assign({}, this._filteredFields, other._filteredFields);
             other.remove();
         }
     };
@@ -3352,7 +3359,7 @@ var TimeUnitNode = (function (_super) {
         var _a;
     };
     TimeUnitNode.prototype.merge = function (other) {
-        this.formula = util_1.extend(this.formula, other.formula);
+        this.formula = tslib_1.__assign({}, this.formula, other.formula);
         other.remove();
     };
     TimeUnitNode.prototype.producedFields = function () {
@@ -3600,13 +3607,14 @@ var FacetModel = (function (_super) {
                     var type = childScaleComponent.get('type');
                     var range = childScaleComponent.get('range');
                     if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
-                        var field_1 = domain_1.getFieldFromDomains(childScaleComponent.domains);
+                        var domain = domain_1.assembleDomain(this.child, channel);
+                        var field_1 = domain_1.getFieldFromDomain(domain);
                         if (field_1) {
                             fields.push(field_1);
                             ops.push('distinct');
                         }
                         else {
-                            throw new Error('We do not yet support calculation of size for faceted union domain.');
+                            log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
                         }
                     }
                 }
@@ -4074,6 +4082,7 @@ exports.LegendComponent = LegendComponent;
 },{"../split":79,"tslib":302}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var mark_1 = require("../../mark");
@@ -4117,7 +4126,7 @@ function symbols(fieldDef, symbolsSpec, model, channel) {
         if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
             delete colorMixins.stroke;
         }
-        util_1.extend(symbols, colorMixins);
+        symbols = tslib_1.__assign({}, symbols, colorMixins);
     }
     if (channel !== channel_1.SHAPE) {
         var shapeDef = model.encoding.shape;
@@ -4125,7 +4134,7 @@ function symbols(fieldDef, symbolsSpec, model, channel) {
             symbols.shape = { value: shapeDef.value };
         }
     }
-    symbols = util_1.extend(symbols, symbolsSpec || {});
+    symbols = tslib_1.__assign({}, symbols, symbolsSpec);
     return util_1.keys(symbols).length > 0 ? symbols : undefined;
 }
 exports.symbols = symbols;
@@ -4135,18 +4144,16 @@ function labels(fieldDef, labelsSpec, model, channel) {
     var labels = {};
     if (fielddef_1.isTimeFieldDef(fieldDef)) {
         var isUTCScale = model.getScaleComponent(channel).get('type') === scale_1.ScaleType.UTC;
-        labelsSpec = util_1.extend({
-            text: {
+        labelsSpec = tslib_1.__assign({ text: {
                 signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-            }
-        }, labelsSpec || {});
+            } }, labelsSpec);
     }
-    labels = util_1.extend(labels, labelsSpec || {});
+    labels = tslib_1.__assign({}, labels, labelsSpec);
     return util_1.keys(labels).length > 0 ? labels : undefined;
 }
 exports.labels = labels;
 
-},{"../../channel":5,"../../fielddef":89,"../../mark":96,"../../scale":97,"../../util":107,"../common":13,"../mark/mixins":49}],42:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":89,"../../mark":96,"../../scale":97,"../../util":107,"../common":13,"../mark/mixins":49,"tslib":302}],42:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -4385,7 +4392,7 @@ function x(model, stack) {
         if (fielddef_1.isFieldDef(xDef)) {
             var xScaleType = xScale.get('type');
             if (xDef.bin && !sizeDef && !scale_1.hasDiscreteDomain(xScaleType)) {
-                return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
+                return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing, xScale.get('reverse'));
             }
             else {
                 if (xScaleType === scale_1.ScaleType.BAND) {
@@ -4412,7 +4419,7 @@ function y(model, stack) {
         if (fielddef_1.isFieldDef(yDef)) {
             var yScaleType = yScale.get('type');
             if (yDef.bin && !sizeDef && !scale_1.hasDiscreteDomain(yScaleType)) {
-                return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing);
+                return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing, yScale.get('reverse'));
             }
             else if (yScaleType === scale_1.ScaleType.BAND) {
                 return mixins.bandPosition(yDef, 'y', model);
@@ -4902,17 +4909,17 @@ function centeredBandPosition(channel, model, defaultPosRef, defaultSizeRef) {
     return tslib_1.__assign({}, pointPosition(channel, model, defaultPosRef, centerChannel), nonPosition('size', model, { defaultRef: defaultSizeRef, vgChannel: sizeChannel }));
 }
 exports.centeredBandPosition = centeredBandPosition;
-function binnedPosition(fieldDef, channel, scaleName, spacing) {
+function binnedPosition(fieldDef, channel, scaleName, spacing, reverse) {
     if (channel === 'x') {
         return {
-            x2: ref.bin(fieldDef, scaleName, 'start', spacing),
-            x: ref.bin(fieldDef, scaleName, 'end')
+            x2: ref.bin(fieldDef, scaleName, 'start', reverse ? 0 : spacing),
+            x: ref.bin(fieldDef, scaleName, 'end', reverse ? spacing : 0)
         };
     }
     else {
         return {
-            y2: ref.bin(fieldDef, scaleName, 'start'),
-            y: ref.bin(fieldDef, scaleName, 'end', spacing)
+            y2: ref.bin(fieldDef, scaleName, 'start', reverse ? spacing : 0),
+            y: ref.bin(fieldDef, scaleName, 'end', reverse ? 0 : spacing)
         };
     }
 }
@@ -5003,7 +5010,7 @@ function x(model) {
     var xScale = model.getScaleComponent(channel_1.X);
     var xScaleType = xScale ? xScale.get('type') : undefined;
     if (fielddef_1.isFieldDef(xDef) && xDef.bin && !x2Def) {
-        return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0);
+        return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0, xScale.get('reverse'));
     }
     else if (fielddef_1.isFieldDef(xDef) && xScale && scale_1.hasDiscreteDomain(xScaleType)) {
         /* istanbul ignore else */
@@ -5025,7 +5032,7 @@ function y(model) {
     var yScale = model.getScaleComponent(channel_1.Y);
     var yScaleType = yScale ? yScale.get('type') : undefined;
     if (fielddef_1.isFieldDef(yDef) && yDef.bin && !y2Def) {
-        return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0);
+        return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0, yScale.get('reverse'));
     }
     else if (fielddef_1.isFieldDef(yDef) && yScale && scale_1.hasDiscreteDomain(yScaleType)) {
         /* istanbul ignore else */
@@ -5669,11 +5676,18 @@ var Model = (function () {
                 var range = scaleComponent.get('range');
                 if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
                     var scaleName = scaleComponent.get('name');
-                    var fieldName = domain_1.getFieldFromDomains(scaleComponent.domains);
-                    var fieldRef = fielddef_1.field({ aggregate: 'distinct', field: fieldName }, { expr: 'datum' });
-                    return {
-                        signal: assemble_2.sizeExpr(scaleName, scaleComponent, fieldRef)
-                    };
+                    var domain = domain_1.assembleDomain(this, channel);
+                    var fieldName = domain_1.getFieldFromDomain(domain);
+                    if (fieldName) {
+                        var fieldRef = fielddef_1.field({ aggregate: 'distinct', field: fieldName }, { expr: 'datum' });
+                        return {
+                            signal: assemble_2.sizeExpr(scaleName, scaleComponent, fieldRef)
+                        };
+                    }
+                    else {
+                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                        return null;
+                    }
                 }
             }
         }
@@ -5969,19 +5983,8 @@ function assembleScalesForModel(model) {
         if (domainRaw && selection_1.isRawSelectionDomain(domainRaw)) {
             domainRaw = selection_1.selectionScaleDomain(model, domainRaw);
         }
-        var domains = scaleComponent.domains.map(function (domain) {
-            // Correct references to data as the original domain's data was determined
-            // in parseScale, which happens before parseData. Thus the original data
-            // reference can be incorrect.
-            if (vega_schema_1.isDataRefDomain(domain)) {
-                domain.data = model.lookupDataSource(domain.data);
-            }
-            return domain;
-        });
-        // domains is an array that has to be merged into a single vega domain
-        var domain = domain_1.mergeDomains(domains);
         scales.push(tslib_1.__assign({ name: name,
-            type: type, domain: domain }, (domainRaw ? { domainRaw: domainRaw } : {}), { range: range }, otherScaleProps));
+            type: type, domain: domain_1.assembleDomain(model, channel) }, (domainRaw ? { domainRaw: domainRaw } : {}), { range: range }, otherScaleProps));
         return scales;
     }, []);
 }
@@ -6047,6 +6050,7 @@ var scale_1 = require("../../scale");
 var sort_1 = require("../../sort");
 var util = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
+var vega_schema_2 = require("../../vega.schema");
 var common_1 = require("../common");
 var optimize_1 = require("../data/optimize");
 var model_1 = require("../model");
@@ -6403,14 +6407,50 @@ exports.mergeDomains = mergeDomains;
  * Return `undefined` otherwise.
  *
  */
-function getFieldFromDomains(domains) {
-    var domain = mergeDomains(domains);
+function getFieldFromDomain(domain) {
     if (vega_schema_1.isDataRefDomain(domain) && vega_util_1.isString(domain.field)) {
         return domain.field;
     }
+    else if (vega_schema_2.isDataRefUnionedDomain(domain)) {
+        var field = void 0;
+        for (var _i = 0, _a = domain.fields; _i < _a.length; _i++) {
+            var nonUnionDomain = _a[_i];
+            if (vega_schema_1.isDataRefDomain(nonUnionDomain) && vega_util_1.isString(nonUnionDomain.field)) {
+                if (!field) {
+                    field = nonUnionDomain.field;
+                }
+                else if (field !== nonUnionDomain.field) {
+                    log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result cell size may be incorrect.');
+                    return field;
+                }
+            }
+        }
+        log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result cell size maybe incorrect.');
+        return field;
+    }
+    else if (vega_schema_2.isFieldRefUnionDomain(domain) && vega_util_1.isString) {
+        log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result cell size may be incorrect.');
+        var field = domain.fields[0];
+        return vega_util_1.isString(field) ? field : undefined;
+    }
     return undefined;
 }
-exports.getFieldFromDomains = getFieldFromDomains;
+exports.getFieldFromDomain = getFieldFromDomain;
+function assembleDomain(model, channel) {
+    var scaleComponent = model.component.scales[channel];
+    var domains = scaleComponent.domains.map(function (domain) {
+        // Correct references to data as the original domain's data was determined
+        // in parseScale, which happens before parseData. Thus the original data
+        // reference can be incorrect.
+        if (vega_schema_1.isDataRefDomain(domain)) {
+            domain.data = model.lookupDataSource(domain.data);
+        }
+        return domain;
+    });
+    // domains is an array that has to be merged into a single vega domain
+    return mergeDomains(domains);
+}
+exports.assembleDomain = assembleDomain;
 
 },{"../../aggregate":2,"../../bin":4,"../../channel":5,"../../data":85,"../../datetime":86,"../../log":94,"../../scale":97,"../../sort":99,"../../util":107,"../../vega.schema":109,"../common":13,"../data/optimize":28,"../model":56,"../selection/selection":69,"tslib":302,"vega-util":313}],63:[function(require,module,exports){
 "use strict";
@@ -6473,7 +6513,7 @@ function parseUnitScaleCore(model) {
         }
         if (fieldDef) {
             var specifiedScaleType = specifiedScale.type;
-            var sType = type_1.scaleType(specifiedScale.type, channel, fieldDef, mark, specifiedScale.rangeStep, config.scale);
+            var sType = type_1.scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
             scaleComponents[channel] = new component_1.ScaleComponent(model.scaleName(channel + '', true), { value: sType, explicit: specifiedScaleType === sType });
         }
         return scaleComponents;
@@ -6500,7 +6540,7 @@ function parseNonUnitScaleCore(model) {
                     }
                     else {
                         // Otherwise, update conflicting channel to be independent
-                        resolve[channel].scale = 'independent';
+                        resolve.scale[channel] = 'independent';
                         // Remove from the index so they don't get merged
                         delete scaleTypeWithExplicitIndex[channel];
                     }
@@ -6584,7 +6624,7 @@ function parseUnitScaleProperty(model, property) {
                 localScaleCmpt.copyKeyFromObject(property, specifiedScale);
             }
             else {
-                var value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, sort, config.scale);
+                var value = getDefaultValue(property, channel, fieldDef, sort, mergedScaleCmpt.get('type'), mergedScaleCmpt.get('padding'), mergedScaleCmpt.get('paddingInner'), specifiedScale.domain, config.scale);
                 if (value !== undefined) {
                     localScaleCmpt.set(property, value, false);
                 }
@@ -6592,27 +6632,27 @@ function parseUnitScaleProperty(model, property) {
         }
     });
 }
-function getDefaultValue(property, specifiedScale, scaleCmpt, channel, fieldDef, sort, scaleConfig) {
+// Note: This method is used in Voyager.
+function getDefaultValue(property, channel, fieldDef, sort, scaleType, scalePadding, scalePaddingInner, specifiedDomain, scaleConfig) {
     // If we have default rule-base, determine default value first
     switch (property) {
         case 'nice':
-            return nice(scaleCmpt.get('type'), channel, fieldDef);
+            return nice(scaleType, channel, fieldDef);
         case 'padding':
-            return padding(channel, scaleCmpt.get('type'), scaleConfig);
+            return padding(channel, scaleType, scaleConfig);
         case 'paddingInner':
-            return paddingInner(scaleCmpt.get('padding'), channel, scaleConfig);
+            return paddingInner(scalePadding, channel, scaleConfig);
         case 'paddingOuter':
-            return paddingOuter(scaleCmpt.get('padding'), channel, scaleCmpt.get('type'), scaleCmpt.get('paddingInner'), scaleConfig);
-        case 'round':
-            return round(channel, scaleConfig);
+            return paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, scaleConfig);
         case 'reverse':
-            return reverse(scaleCmpt.get('type'), sort);
+            return reverse(scaleType, sort);
         case 'zero':
-            return zero(channel, fieldDef, specifiedScale.domain);
+            return zero(channel, fieldDef, specifiedDomain);
     }
     // Otherwise, use scale config
     return scaleConfig[property];
 }
+exports.getDefaultValue = getDefaultValue;
 function parseNonUnitScaleProperty(model, property) {
     var localScaleComponents = model.component.scales;
     for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
@@ -6703,13 +6743,6 @@ function paddingOuter(padding, channel, scaleType, paddingInner, scaleConfig) {
     return undefined;
 }
 exports.paddingOuter = paddingOuter;
-function round(channel, scaleConfig) {
-    if (util.contains(['x', 'y'], channel)) {
-        return scaleConfig.round;
-    }
-    return undefined;
-}
-exports.round = round;
 function reverse(scaleType, sort) {
     if (scale_1.hasContinuousDomain(scaleType) && sort === 'descending') {
         // For continuous domain scales, Vega does not support domain sort.
@@ -6768,13 +6801,14 @@ function parseUnitScaleRange(model) {
         if (!localScaleCmpt) {
             return;
         }
+        var mergedScaleCmpt = model.getScaleComponent(channel);
         var specifiedScale = model.specifiedScales[channel];
         var fieldDef = model.fieldDef(channel);
         // Read if there is a specified width/height
         var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
         var specifiedSize = sizeType ? model.component.layoutSize.get(sizeType) : undefined;
         var xyRangeSteps = getXYRangeStep(model);
-        var rangeWithExplicit = parseRangeForChannel(channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getName(sizeType), xyRangeSteps);
+        var rangeWithExplicit = parseRangeForChannel(channel, mergedScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getName(sizeType), xyRangeSteps);
         localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
     });
 }
@@ -6970,8 +7004,8 @@ var util_1 = require("../../util");
  * or determine default type if type is unspecified or inappropriate.
  */
 // NOTE: CompassQL uses this method.
-function scaleType(specifiedType, channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
-    var defaultScaleType = defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig);
+function scaleType(specifiedType, channel, fieldDef, mark, scaleConfig) {
+    var defaultScaleType = defaultType(channel, fieldDef, mark, scaleConfig);
     if (!channel_1.isScaleChannel(channel)) {
         // There is no scale for these channels
         return null;
@@ -6995,7 +7029,8 @@ exports.scaleType = scaleType;
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
+// NOTE: Voyager uses this method.
+function defaultType(channel, fieldDef, mark, scaleConfig) {
     switch (fieldDef.type) {
         case 'nominal':
         case 'ordinal':
@@ -7005,7 +7040,17 @@ function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
                 }
                 return 'ordinal';
             }
-            return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
+            if (util.contains(['x', 'y'], channel)) {
+                if (mark === 'rect') {
+                    // The rect mark should fit into a band.
+                    return 'band';
+                }
+                if (mark === 'bar') {
+                    return 'band';
+                }
+            }
+            // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
+            return 'point';
         case 'temporal':
             if (channel === 'color') {
                 return 'sequential';
@@ -7039,23 +7084,6 @@ function defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig) {
     }
     /* istanbul ignore next: should never reach this */
     throw new Error(log.message.invalidFieldType(fieldDef.type));
-}
-/**
- * Determines default scale type for nominal/ordinal field.
- * @returns BAND or POINT scale based on channel, mark, and rangeStep
- */
-function discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig) {
-    if (util.contains(['x', 'y'], channel)) {
-        if (mark === 'rect') {
-            // The rect mark should fit into a band.
-            return 'band';
-        }
-        if (mark === 'bar') {
-            return 'band';
-        }
-    }
-    // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
-    return 'point';
 }
 function fieldDefMatchScaleType(specifiedType, fieldDef) {
     var type = fieldDef.type;
@@ -7351,10 +7379,7 @@ function parseUnitSelection(model, selDefs) {
             }
         }
         name_1 = util_1.varName(name_1);
-        var selCmpt = selCmpts[name_1] = util_1.extend({}, selDef, {
-            name: name_1,
-            events: util_1.isString(selDef.on) ? vega_event_selector_1.selector(selDef.on, 'scope') : selDef.on,
-        });
+        var selCmpt = selCmpts[name_1] = tslib_1.__assign({}, selDef, { name: name_1, events: util_1.isString(selDef.on) ? vega_event_selector_1.selector(selDef.on, 'scope') : selDef.on });
         transforms_1.forEachTransform(selCmpt, function (txCompiler) {
             if (txCompiler.parse) {
                 txCompiler.parse(model, selDef, selCmpt);
@@ -10020,15 +10045,15 @@ var SCALE_CATEGORY_INDEX = {
     band: 'ordinal-position'
 };
 exports.SCALE_TYPES = util_1.keys(SCALE_CATEGORY_INDEX);
-function getScaleCategory(scaleType) {
-    return SCALE_CATEGORY_INDEX[scaleType];
-}
-exports.getScaleCategory = getScaleCategory;
 /**
  * Whether the two given scale types can be merged together.
  */
 function scaleCompatible(scaleType1, scaleType2) {
-    return SCALE_CATEGORY_INDEX[scaleType1] === SCALE_CATEGORY_INDEX[scaleType2];
+    var scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
+    var scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
+    return scaleCategory1 === scaleCategory2 ||
+        (scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time') ||
+        (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time');
 }
 exports.scaleCompatible = scaleCompatible;
 /**
@@ -10043,9 +10068,9 @@ var SCALE_PRECEDENCE_INDEX = {
     // time
     time: 0,
     utc: 0,
-    // ordinal-position
-    point: 0,
-    band: 1,
+    // ordinal-position -- these have higher precedence than continuous scales as they support more types of data
+    point: 10,
+    band: 11,
     // non grouped types
     'bin-linear': 0,
     sequential: 0,
@@ -10084,7 +10109,6 @@ function isContinuousToContinuous(type) {
 }
 exports.isContinuousToContinuous = isContinuousToContinuous;
 exports.defaultScaleConfig = {
-    round: true,
     textXRangeStep: 90,
     rangeStep: 21,
     pointPadding: 0.5,
@@ -11031,7 +11055,6 @@ var stringify = require("json-stable-stringify");
 var vega_util_1 = require("vega-util");
 var logical_1 = require("./logical");
 var vega_util_2 = require("vega-util");
-exports.extend = vega_util_2.extend;
 exports.isArray = vega_util_2.isArray;
 exports.isObject = vega_util_2.isObject;
 exports.isNumber = vega_util_2.isNumber;
