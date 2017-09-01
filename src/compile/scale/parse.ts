@@ -64,10 +64,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     if (fieldDef) {
       const specifiedScaleType = specifiedScale.type;
-      const sType = scaleType(
-        specifiedScale.type, channel, fieldDef, mark,
-        specifiedScale.rangeStep, config.scale
-      );
+      const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
       scaleComponents[channel] = new ScaleComponent(
         model.scaleName(channel + '', true),
         {value: sType, explicit: specifiedScaleType === sType}
