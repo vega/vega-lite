@@ -90,7 +90,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     name = varName(name);
-    const selCmpt = selCmpts[name] = {...selDef,
+    const selCmpt = selCmpts[name] = {
+      ...selDef,
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
     } as SelectionComponent;
