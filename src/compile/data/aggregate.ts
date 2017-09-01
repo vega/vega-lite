@@ -3,7 +3,7 @@ import {Channel, isScaleChannel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {SummarizeTransform} from '../../transform';
-import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
+import {Dict, differ, duplicate, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from './../unit';
@@ -44,7 +44,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
+    return new AggregateNode({...this.dimensions}, duplicate(this.measures));
   }
 
   /**

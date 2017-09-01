@@ -23,7 +23,7 @@
       target = winSrc.indexOf(type) < 0 ? target : window;
 
       target.dispatchEvent(new MouseEvent('mousemove',
-        vega.extend({}, opts, {clientX: opts.clientX - 5, clientY: opts.clientY - 5})));
+        {...opts, clientX: opts.clientX - 5, clientY: opts.clientY - 5}));
 
       target.dispatchEvent(new MouseEvent('mousemove', opts));
 
@@ -32,7 +32,7 @@
         new MouseEvent(type, opts));
 
       target.dispatchEvent(new MouseEvent('mousemove',
-        vega.extend({}, opts, {clientX: opts.clientX + 5, clientY: opts.clientY + 5})));
+        {...opts, clientX: opts.clientX + 5, clientY: opts.clientY + 5}));
     }
 
     function mark(id, parent) {

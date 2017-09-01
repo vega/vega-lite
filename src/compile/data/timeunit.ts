@@ -1,7 +1,7 @@
 import {field} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, extend, keys, vals} from '../../util';
+import {Dict, duplicate, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -53,7 +53,7 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public merge(other: TimeUnitNode) {
-    this.formula = extend(this.formula, other.formula);
+    this.formula = {...this.formula, ...other.formula};
     other.remove();
   }
 

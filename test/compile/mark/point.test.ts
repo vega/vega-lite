@@ -6,7 +6,6 @@ import {circle, point, square} from '../../../src/compile/mark/point';
 import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {UnitSpec} from '../../../src/spec';
-import {extend} from '../../../src/util';
 import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Point', function() {
@@ -14,13 +13,11 @@ describe('Mark: Point', function() {
   function pointXY(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "point",
-      "encoding": extend(
-        {
+      "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "yield", "type": "quantitative"}
-        },
-        moreEncoding
-      ),
+          "y": {"field": "yield", "type": "quantitative"},
+          ...moreEncoding,
+      },
       "data": {"url": "data/barley.json"}
     };
   }

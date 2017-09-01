@@ -3,7 +3,7 @@ import {isArray, isNumber, isString} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 
-export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
+export {isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
 
 /**
  * Creates an object composed of the picked object properties.

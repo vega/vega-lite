@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {BaseSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, extend, keys, varName} from '../util';
+import {contains, Dict, keys, varName} from '../util';
 import {
   isVgRangeStep,
   VgAxis,
