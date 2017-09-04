@@ -1,4 +1,4 @@
-import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
@@ -59,6 +59,9 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     if (isValueDef(shapeDef)) {
       symbols.shape = {value: shapeDef.value};
     }
+  }
+  if (channel !== OPACITY) {
+    symbols.opacity = model.encoding.opacity;
   }
 
   symbols = {...symbols, ...symbolsSpec};

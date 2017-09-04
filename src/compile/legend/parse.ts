@@ -176,5 +176,21 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     );
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }
+
+  if (mergedLegend.implicit.encode.symbols.update.opacity && mergedLegend.implicit.opacity) {
+    const props =['encode', 'symbols','update', 'opacity'];
+    let isEmpty = true;
+    while (props.length > 0 && isEmpty) {
+      let o = mergedLegend.implicit;
+      for (let i=0; i < props.length-1; i++) {
+        o = o[props[i]];
+      }
+      delete o[props.pop()];
+      if (keys(o).length !== 0) {
+        isEmpty = false;
+      }
+    }
+  }
+
   return mergedLegend;
 }
