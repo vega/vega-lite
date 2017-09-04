@@ -238,3 +238,20 @@ export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
 // Omit from http://ideasintosoftware.com/typescript-advanced-tricks/
 export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
 export type Omit<T, K extends keyof T> = {[P in Diff<keyof T, K>]: T[P]};
+
+/**
+ * Delete nested property of an object, and delete the ancestors of the property if they become empty.
+ */
+export function deleteNestedProperty(obj: any, orderedProps: string[]) {
+  let isEmpty = true;
+  while (orderedProps.length > 0 && isEmpty) {
+    let o = obj;
+    for (let i=0; i < orderedProps.length-1; i++) {
+      o = o[orderedProps[i]];
+    }
+    delete o[orderedProps.pop()];
+    if (keys(o).length !== 0) {
+      isEmpty = false;
+    }
+  }
+}
