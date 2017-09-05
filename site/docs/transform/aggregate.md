@@ -6,39 +6,15 @@ permalink: /docs/aggregate.html
 
 To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an encoding field definition.
 
-Table of Contents
-- [Summarize (Transform)](#summarize)
-- [Aggregate (Encoding)](#aggregate)
+## Documentation Overview
+{:.no_toc}
 
-{:#summarize}
-### Summarize (Transform)
+* TOC
+{:toc}
 
-
-{: .suppress-error}
-```json
-{
-  ...
-  "transform": [
-    {
-      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
-      "groupby": [...]
-    } // Summarize Transform
-     ...
-  ],
-  ...
-}
-```
-
-A `summarize` transform in the `transform` array has the following properties:
-
-{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
-
-#### Aggregated Field Definition for Summarize Transform
-
-{% include table.html props="aggregate,field,as" source="Summarize" %}
 
 {:#aggregate}
-### Aggregate (Encoding)
+## Aggregate (Encoding)
 
 <!-- TODO why aggregation -->
 
@@ -69,8 +45,37 @@ Otherwise, if none of the specified encoding channel contains `aggregate`, the r
 
 <span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
+
+{:#summarize}
+## Summarize (Transform)
+
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {
+      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
+      "groupby": [...]
+    } // Summarize Transform
+     ...
+  ],
+  ...
+}
+```
+
+A `summarize` transform in the `transform` array has the following properties:
+
+{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
+
+### Aggregated Field Definition for Summarize Transform
+
+{% include table.html props="aggregate,field,as" source="Summarize" %}
+
+
 {:#ops}
-### Supported Aggregation Operations
+## Supported Aggregation Operations
 
 The supported **aggregation operations** are:
 
@@ -99,7 +104,7 @@ The supported **aggregation operations** are:
 | argmax    | An input data object containing the maximum field value.|
 
 
-#### Example
+## Example
 
 The following bar chart aggregate mean of `Acceleration`, grouped by `Cylinders` (number of cylinders).
 
