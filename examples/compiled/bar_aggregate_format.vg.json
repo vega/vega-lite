@@ -1,28 +1,38 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Google's stock price over time.",
+    "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
     "style": "cell",
     "data": [
         {
             "name": "source_0",
-            "url": "data/stocks.csv",
+            "url": "data/population.json",
             "format": {
-                "type": "csv",
+                "type": "json",
                 "parse": {
-                    "date": "date",
-                    "price": "number"
+                    "people": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum.symbol==='GOOG'"
+                    "expr": "datum.year == 2000"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
                 }
             ]
         }
@@ -33,21 +43,21 @@
             "update": "200"
         },
         {
+            "name": "y_step",
+            "value": 17
+        },
+        {
             "name": "height",
-            "update": "200"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
         {
             "name": "marks",
-            "type": "line",
+            "type": "rect",
             "style": [
-                "line"
+                "bar"
             ],
-            "sort": {
-                "field": "datum[\"date\"]",
-                "order": "descending"
-            },
             "from": {
                 "data": "source_0"
             },
@@ -55,13 +65,21 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "date"
+                        "field": "sum_people"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
                     },
                     "y": {
                         "scale": "y",
-                        "field": "price"
+                        "field": "age"
                     },
-                    "stroke": {
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     }
                 }
@@ -71,65 +89,51 @@
     "scales": [
         {
             "name": "x",
-            "type": "time",
+            "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "date"
+                "field": "sum_people"
             },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
-            ]
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "price"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
             ],
             "nice": true,
             "zero": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "age",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [
         {
+            "format": ".2e",
+            "title": "population",
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date",
-            "zindex": 1,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            }
+            "zindex": 1
         },
         {
+            "format": ".2e",
             "scale": "x",
             "domain": false,
             "grid": true,
@@ -148,26 +152,8 @@
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "title": "price",
+            "title": "age",
             "zindex": 1
-        },
-        {
-            "scale": "y",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "orient": "left",
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
         }
     ],
     "config": {

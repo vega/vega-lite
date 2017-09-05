@@ -97,7 +97,7 @@ export interface MarkDef {
    * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
    * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
    *
-   * For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).
+   * For more information about each interpolation method, please see [Vega's line interpolation docs](https://vega.github.io/vega/docs/marks/line/).
    */
   interpolate?: Interpolate;
 

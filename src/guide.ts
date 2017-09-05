@@ -4,7 +4,7 @@ import {VgEncodeChannel} from './vega.schema';
 
 export interface Guide {
   /**
-   * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.
+   * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.
    *
    * __Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.
    */
