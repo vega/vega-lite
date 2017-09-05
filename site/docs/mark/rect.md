@@ -15,9 +15,9 @@ permalink: /docs/rect.html
 }
 ```
 
-The `rect` mark represents an arbitrary rectangle. 
+The `rect` mark represents an arbitrary rectangle.
 
-### Heatmap
+## Heatmap
 
 Use the `rect` mark to create a heatmap.
 

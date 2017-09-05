@@ -17,7 +17,7 @@ permalink: /docs/text.html
 
 `text` mark represents each data point with a text instead of a point.
 
-### Scatterplot with Text
+## Scatterplot with Text
 
 Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can make a colored scatterplot with text marks showing the initial character of its origin, instead of [`point`](point.html#color) marks.
 
