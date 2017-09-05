@@ -4,33 +4,17 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Table of Contents
-- [Transform](#transform)
-- [Encoding](#encoding)
+Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform). Time unit is similar to [binning](bin.html) but specifically made to discretize datetimes.
 
-{: #transform}
-### Transform
+## Documentation Overview
+{:.no_toc}
 
-{: .suppress-error}
-```json
-{
-  ...
-  "transform": [
-    {"timeUnit": ..., "field": ..., "as" ...} // TimeUnit Transform
-     ...
-  ],
-  ...
-}
-```
+* TOC
+{:toc}
 
-A `timeUnit` transform in the `transform` array has the following properties:
-
-{% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
-
-**TODO example**
 
 {: #encoding}
-### Encoding
+## Encoding
 
 {: .suppress-error}
 ```json
@@ -51,7 +35,33 @@ A `timeUnit` transform in the `transform` array has the following properties:
 }
 ```
 
-**TODO example**
+The chart below shows the average precipitation in Seattle over multiple years aggregated by month.
+
+<span class="vl-example" data-name="bar_month"></span>
+
+{: #transform}
+## Transform
+
+{: .suppress-error}
+```json
+{
+  ...
+  "transform": [
+    {"timeUnit": ..., "field": ..., "as" ...} // TimeUnit Transform
+     ...
+  ],
+  ...
+}
+```
+
+A `timeUnit` transform in the `transform` array has the following properties:
+
+{% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
+
+In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite cannot automatically format the axis so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
+
+<span class="vl-example" data-name="line_timeunit_transform"></span>
+
 
 ## Date/Time Units
 

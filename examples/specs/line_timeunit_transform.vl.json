@@ -1,0 +1,23 @@
+{
+  "data": {"url": "data/seattle-weather.csv"},
+  "mark": "line",
+  "transform": [{
+    "timeUnit": "month",
+    "field": "date",
+    "as": "month"
+  }],
+  "encoding": {
+    "x": {
+      "field": "month",
+      "type": "temporal",
+      "axis": {
+        "format": "%b"
+      }
+    },
+    "y": {
+      "aggregate": "max",
+      "field": "temp_max",
+      "type": "quantitative"
+    }
+  }
+}
