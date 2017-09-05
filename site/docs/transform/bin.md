@@ -8,6 +8,13 @@ Binning discretizes numeric values into a set of bins. A common use case is to [
 
 There are two ways to define binning in Vega-Lite: [the `bin` property in encoding field definitions](#encoding) and [the `bin` transform](#transform).
 
+## Documentation Overview
+{:.no_toc}
+
+* TOC
+{:toc}
+
+
 {:#encoding}
 ## Binning Encoding Field
 
