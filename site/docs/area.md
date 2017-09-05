@@ -17,10 +17,6 @@ permalink: /docs/area.html
 
 `area` represent multiple data element as a single area shape. Area marks are often used to show change over time, using either a single area or stacked areas.
 
-## Documentation Overview
-
-* TOC
-{:toc}
 
 ### Area Chart
 

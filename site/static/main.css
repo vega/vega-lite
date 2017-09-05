@@ -647,8 +647,3 @@ footer .edit-page {
     margin-top: 0;
   }
 }
-
-/* Hide first item of TOC as it will always be Documentation Overview */
-ul#markdown-toc > li:first-child {
-    display: none;
-}

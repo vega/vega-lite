@@ -14,6 +14,7 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 | [resolve](#resolving-selections-in-data-driven-views) | String | A strategy for how the selection's data query should be constructed, when used within a multiview or layered display. |
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}
