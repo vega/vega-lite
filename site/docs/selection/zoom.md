@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Zooming an Interval Selection
-permalink: /docs/selection-zoom.html
+permalink: /docs/zoom.html
 ---
 
 The `zoom` selection transformation allows a user to interactively resize an interval selection. It can take one of the following values:

@@ -70,7 +70,7 @@ By default, Vega-Lite use the following scale types for the following [data type
 bar and rect marks, which use `"band"` scales.
 </span>
 <span class="note-line">
-<sup>3</sup> For static plots, both `"linear"` and `"bin-linear"` work with binned fields on x and y.  However, [panning](selection-translate.html) and [zooming](selection-zoom.html) do not work with discretized scales such as `"bin-linear"`, thus we use `"linear"` as the default scale type for binned fields on x and y.
+<sup>3</sup> For static plots, both `"linear"` and `"bin-linear"` work with binned fields on x and y.  However, [panning](translate.html) and [zooming](zoom.html) do not work with discretized scales such as `"bin-linear"`, thus we use `"linear"` as the default scale type for binned fields on x and y.
 </span>
 
 {:#domain}
