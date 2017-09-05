@@ -15,17 +15,14 @@ permalink: /docs/rule.html
 }
 ```
 
-The `rule` mark represents each data point as a line. It can be used in two ways. First, as a line that spans the complete width or height of a view. This is useful for adding annotations. Second, a rule can be used to draw a line between two positions.
+The `rule` mark represents each data point as a line. It can be used in two ways. First, as a line that spans the complete width or height of a view. This is useful for adding annotations. Second, a rule can be used to draw a line segment between two positions.
 
 
-### Usage similar to `tick`
+### Rules as annotations
 
 The rule mark can be used similar to a [`tick`](tick.html) mark. The difference is that a rule mark automatically spans the complete width or height of a single view such that no dimension is required. We can sue this for example to show the average price of different stocks.
 
 <span class="vl-example" data-name="rule_color_mean"></span>
-
-
-### Rules as annotations
 
 The fact that rule marks span the width or the height of a single view make them perfect for adding annotations to charts using [layering]({{site.baseurl}}/docs/layer.html).
 
