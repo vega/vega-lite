@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Translating an Interval Selection
-permalink: /docs/selection-translate.html
+permalink: /docs/translate.html
 ---
 
 The `translate` selection transformation allows a user to interactively move an interval selection back-and-forth. It can take one of the following values:

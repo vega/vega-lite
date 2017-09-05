@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Bind a Selection
-permalink: /docs/selection-bind.html
+permalink: /docs/bind.html
 ---
 
 Using the `bind` property, selections can be bound in two ways:
@@ -12,7 +12,7 @@ Using the `bind` property, selections can be bound in two ways:
 
 ## Input Element Binding
 
-With single selections, the `bind` property follows the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) to establish a two-way binding between input elements and the selection. One input element per [projection](selection-project.html) is generated and can be used to manipulate the selection; any direct manipulation interactions (e.g., clicking on the visualization) will similarly update the input element.
+With single selections, the `bind` property follows the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) to establish a two-way binding between input elements and the selection. One input element per [projection](project.html) is generated and can be used to manipulate the selection; any direct manipulation interactions (e.g., clicking on the visualization) will similarly update the input element.
 
 For instance, in the example below, `org` selects a single `Origin` data value, and is bound to a dropdown menu with three options to choose from.
 
@@ -24,7 +24,7 @@ If multiple projections are specified, customized bindings can be specified by m
 
 ## Scale Binding
 
-With interval selections, the `bind` property can be set to the value `"scales"` to enable a two-way binding between the selection and the scales used within the same view. This binding first populates the interval selection with the scale domains, and then uses the selection to drive the scale domains. As a result, the view now functions like an interval selection and can be [panned](selection-translate.html) and [zoomed](selection-zoom.html).
+With interval selections, the `bind` property can be set to the value `"scales"` to enable a two-way binding between the selection and the scales used within the same view. This binding first populates the interval selection with the scale domains, and then uses the selection to drive the scale domains. As a result, the view now functions like an interval selection and can be [panned](translate.html) and [zoomed](zoom.html).
 
 <div class="vl-example" data-name="selection_translate_scatterplot_drag"></div>
 

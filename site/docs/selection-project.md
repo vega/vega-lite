@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Project a Selection
-permalink: /docs/selection-project.html
+permalink: /docs/project.html
 ---
 
 A [selection's type](selection.html#selection-types) determines which data values fall within it by default:

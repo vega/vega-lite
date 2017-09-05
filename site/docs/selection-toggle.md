@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Toggling a Multi Selection
-permalink: /docs/selection-toggle.html
+permalink: /docs/toggle.html
 ---
 
 The `toggle` selection transformation inserts or removes data values from a multi selection if they, respectively, are or are not already members of it.
