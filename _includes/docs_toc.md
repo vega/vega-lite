@@ -42,6 +42,7 @@
     - [Square]({{site.baseurl}}/docs/square.html)
     - [Text]({{site.baseurl}}/docs/text.html)
     - [Tick]({{site.baseurl}}/docs/tick.html)
+    - [Rule]({{site.baseurl}}/docs/rule.html)
 - [Encoding]({{site.baseurl}}/docs/encoding.html)
     - [Encoding Channels]({{site.baseurl}}/docs/encoding.html#channels)
     - [Channel Definition]({{site.baseurl}}/docs/encoding.html#channel-definition)

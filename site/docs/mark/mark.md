@@ -46,7 +46,7 @@ A mark definition object can contains the following values.
 ## Supported Mark Types
 {:#mark-type}
 
-The supported mark types are [`point`](point.html), [`circle`](circle.html), [`square`](square.html), [`text`](text.html), [`tick`](tick.html), [`bar`](bar.html), [`rectangle`](rectangle.html), [`line`](line.html), and [`area`](area.html). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+The supported mark types are [`point`](point.html), [`circle`](circle.html), [`square`](square.html), [`text`](text.html), [`tick`](tick.html), [`bar`](bar.html), [`rectangle`](rectangle.html), [`line`](line.html), [`rule`](rule.html), and [`area`](area.html). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
