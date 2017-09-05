@@ -11,6 +11,7 @@ Vega-Lite specifications are JSON objects that describe a diverse range of inter
 These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}

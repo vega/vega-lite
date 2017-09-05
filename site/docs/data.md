@@ -10,6 +10,7 @@ Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.git
 Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data).
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}

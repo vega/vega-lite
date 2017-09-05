@@ -9,6 +9,7 @@ permalink: /docs/size.html
 This page describe how to adjust width and height of visualizations in Vega-lite.
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}

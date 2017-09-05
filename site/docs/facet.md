@@ -14,6 +14,7 @@ First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view compo
 Second, as a shortcut you can use the [`column` or `row` encoding channels](#facet-channels).
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}

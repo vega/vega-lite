@@ -17,10 +17,6 @@ permalink: /docs/bar.html
 
 The `bar` mark encodes x and y channels with a pair of discrete and continuous fields. Bar marks are useful in a wide variety of visualizations, including bar charts and timelines.
 
-## Documentation Overview
-
-* TOC
-{:toc}
 
 ### Single Bar Chart
 

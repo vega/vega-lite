@@ -40,6 +40,7 @@ For more information about guides that visualize the scales, please see the [axe
 
 
 ## Documentation Overview
+{:.no_toc}
 
 * TOC
 {:toc}
