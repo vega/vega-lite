@@ -5,9 +5,6 @@ title: Filter Transform
 permalink: /docs/filter.html
 ---
 
-{:#filter}
-### Filter
-
 {: .suppress-error}
 ```json
 {
@@ -20,22 +17,22 @@ permalink: /docs/filter.html
 }
 ```
 
-Vega-Lite filter transform the following property:
+Vega-Lite filter transforms can have the following properties:
 
 {% include table.html props="filter" source="FilterTransform" %}
 
-A `filter` property can be (1) a filter predicate object including equal filters, range filters and one-of filters (2) [Vega Expression](https://vega.github.io/vega/docs/expressions/) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
+The `filter` property can be (1) a filter predicate object including equal filters, range filters and one-of filters (2) [Vega Expression](https://vega.github.io/vega/docs/expressions/) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
 
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+In filter objects, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#filter}
-#### Filter Expression
+## Filter Expression
 
 For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
 
 {:#equalfilter}
-#### Equal Filter
+### Equal Filter
 
 {% include table.html props="field,equal,timeUnit" source="EqualFilter" %}
 
@@ -47,7 +44,7 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 ```
 
 {:#rangefilter}
-#### Range Filter
+### Range Filter
 
 {% include table.html props="field,range,timeUnit" source="RangeFilter" %}
 
@@ -60,7 +57,7 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 
 
 {:#oneoffilter}
-#### One-Of Filter
+### One-Of Filter
 
 {% include table.html props="field,oneOf,timeUnit" source="OneOfFilter" %}
 

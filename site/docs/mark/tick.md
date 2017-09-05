@@ -17,13 +17,13 @@ permalink: /docs/tick.html
 
 The `tick` mark represents each data point as a short line. This is a useful mark for displaying the distribution of values in a field.
 
-### Dot Plot
+## Dot Plot
 
 For example, the following dot plot uses tick marks to show the distribution of each car's Horsepower.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
-### Strip Plot
+## Strip Plot
 
 <!-- TODO: better explain this -->
 The following strip-plot use `tick` mark to represent its data.
