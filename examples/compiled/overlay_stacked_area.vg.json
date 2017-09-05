@@ -416,6 +416,15 @@
         {
             "fill": "color",
             "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            },
             "stroke": "color"
         }
     ],

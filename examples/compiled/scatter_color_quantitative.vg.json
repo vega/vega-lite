@@ -168,7 +168,16 @@
         {
             "stroke": "color",
             "title": "Displacement",
-            "type": "gradient"
+            "type": "gradient",
+            "encode": {
+                "gradient": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

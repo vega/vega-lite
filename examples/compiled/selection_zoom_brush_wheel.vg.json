@@ -555,6 +555,9 @@
                     "update": {
                         "shape": {
                             "value": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.7
                         }
                     }
                 }
@@ -578,7 +581,10 @@
                             {
                                 "value": "grey"
                             }
-                        ]
+                        ],
+                        "opacity": {
+                            "value": 0.7
+                        }
                     }
                 }
             }

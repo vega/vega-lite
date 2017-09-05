@@ -203,7 +203,16 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "a"
+            "title": "a",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {
