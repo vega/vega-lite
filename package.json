@@ -49,7 +49,7 @@
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-to-json-schema --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
@@ -110,7 +110,7 @@
     "tslint": "5.4.3",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.2",
-    "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
+    "ts-json-schema-generator": "^0.9.0",
     "uglify-js": "^3.0.27",
     "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
