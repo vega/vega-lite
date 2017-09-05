@@ -5407,6 +5407,33 @@ vega@^3.0.0, vega@^3.0.0-rc5:
     vega-wordcloud "2"
     yargs "4"
 
+vega@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.2.tgz#51233d2aabf1b13b2aaffe66845838639474364f"
+  dependencies:
+    vega-crossfilter "2"
+    vega-dataflow "3"
+    vega-datasets vega/vega-datasets#gh-pages
+    vega-encode "2"
+    vega-expression "2"
+    vega-force "2"
+    vega-geo "2"
+    vega-hierarchy "2"
+    vega-loader "2"
+    vega-parser "2"
+    vega-projection "1"
+    vega-runtime "2"
+    vega-scale "2"
+    vega-scenegraph "2"
+    vega-statistics "1"
+    vega-transforms "1"
+    vega-util "1"
+    vega-view "2"
+    vega-view-transforms "1"
+    vega-voronoi "2"
+    vega-wordcloud "2"
+    yargs "4"
+
 verror@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.10.0.tgz#3a105ca17053af55d6e270c1f8288682e18da400"
