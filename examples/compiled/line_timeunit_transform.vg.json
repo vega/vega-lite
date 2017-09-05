@@ -1,0 +1,203 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/seattle-weather.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "month",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"month\"])",
+                    "as": "month"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"month\"] !== null && !isNaN(datum[\"month\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "max_temp_max"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "line",
+            "style": [
+                "line"
+            ],
+            "sort": {
+                "field": "datum[\"month\"]",
+                "order": "descending"
+            },
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "month"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "max_temp_max"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "month"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "max_temp_max"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "title": "month",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "MAX(temp_max)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainColor": "#888",
+            "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
