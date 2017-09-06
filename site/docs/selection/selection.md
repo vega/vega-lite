@@ -62,6 +62,8 @@ In this example, a selection (named `paintbrush`) is used to resize the points i
 
 <div class="vl-example" data-name="paintbrush_simple"></div>
 
+See the [`condition`](condition.html) documentation for more information.
+
 ### Filtering Data
 
 Selections in one view can also be used to filter input data to another view. In the example below, two scatterplots are concatenated vertically. An interval selection (named `brush`) is defined in the first plot and is used to filter the points in the second. Thus, the `Acceleration x Displacement` scatterplot only visualizes points that fall within the brushed region.

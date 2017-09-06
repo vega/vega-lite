@@ -168,3 +168,5 @@ Padding:
 SelectionDef:
   name: Selection
   link: selection.html
+SelectionOperand:
+  name: "String | Object"

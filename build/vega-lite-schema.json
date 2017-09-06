@@ -1183,7 +1183,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand"
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#composing-multiple-selections)."
         },
         "sort": {
           "anyOf": [
@@ -1245,7 +1246,8 @@
           "type": "string"
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand"
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#composing-multiple-selections)."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1266,7 +1268,8 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand"
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#composing-multiple-selections)."
         },
         "value": {
           "description": "A constant value in visual domain.",
