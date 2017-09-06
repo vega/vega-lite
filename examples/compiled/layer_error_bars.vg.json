@@ -19,13 +19,7 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"yield\"])",
                     "as": "yield"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "data_0",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -44,20 +38,14 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_1",
             "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"yield\"])",
                     "as": "yield"
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "data_2",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -101,7 +89,7 @@
                 "point"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -113,11 +101,8 @@
                         "scale": "y",
                         "field": "variety"
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
-                        "value": "transparent"
+                        "value": "black"
                     }
                 }
             }
@@ -129,7 +114,7 @@
                 "rule"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -159,15 +144,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_1",
+                        "data": "data_0",
                         "field": "mean_yield"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_1",
                         "field": "ci0_yield"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_1",
                         "field": "ci1_yield"
                     }
                 ],
@@ -192,7 +177,7 @@
                         "field": "variety"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "variety"
                     }
                 ],

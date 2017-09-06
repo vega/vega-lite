@@ -15,30 +15,34 @@ permalink: /docs/rule.html
 }
 ```
 
-The `rule` mark represents each data point as a line. It can be used in two ways. First, as a line that spans the complete width or height of a view. This is useful for adding annotations. Second, a rule can be used to draw a line segment between two positions.
+The `rule` mark represents each data point as a line segment. It can be used in two ways. First, as a line segment that spans the complete width or height of a view. Second, a rule can be used to draw a line segment between two positions.
 
 
-### Rules as annotations
+### Width/Height-Spanning Rules
 
-The rule mark can be used similar to a [`tick`](tick.html) mark. The difference is that a rule mark automatically spans the complete width or height of a single view such that no dimension is required. We can sue this for example to show the average price of different stocks.
+If the `rule` mark only has `y` encoding, the output view produces horizontal rules that  spans the complete width.  Similarly, if the `rule` mark only has `x` encoding, the output view produces vertical rules that spans the height.
+
+For example, we can use rules to show the average price of different stocks akin to [`tick`](tick.html) marks.
 
 <span class="vl-example" data-name="rule_color_mean"></span>
 
-The fact that rule marks span the width or the height of a single view make them perfect for adding annotations to charts using [layering]({{site.baseurl}}/docs/layer.html).
-
-Here is an example where we use the spec from above to show the average value of stocks alongside the price curve.
+The fact that rule marks span the width or the height of a single view make them useful as an annotation [layer](layer.html).  For example, we can use rules to show average values of different stocks alongside the price curve.
 
 <span class="vl-example" data-name="layer_line_color_rule"></span>
 
+<!--We can also use a rule mark to show global mean value over a histogram.
 
-### Rules with two positional encodings
+<span class="vl-example" data-name="layer_histogram_global_mean"></span>
+-->
 
-Rules can encode two positions for x and y. This is useful to show multiple measures for a single ordinal value.
+### Ranged Rules
 
-For example, we can show the extent of horsepowers for cars from different locations.
+To control the spans of horizontal/vertical rules, `x` and `x2`/`y` and `y2` channels can be specified.
+
+For example, we can use `y` and `y2` show the `"min"` and `"max"` values of horsepowers for cars from different locations.
 
 <span class="vl-example" data-name="rule_extent"></span>
 
-Rules as extent are useful to create error bars. In the example below, we visualize the [95% confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) as a measure of the spread of the average yields for a variety of barley strains.
+We can also use rule to create error bars. In the example below, we use the [`ci0` and `ci1` aggregation operators](aggregate.html#ops) to visualize the [95% confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) as a measure of the spread of the average yields for a variety of barley strains.
 
 <span class="vl-example" data-name="layer_error_bars"></span>

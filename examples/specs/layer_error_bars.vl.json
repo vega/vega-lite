@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/barley.json"},
   "layer": [{
-    "mark": "point",
+    "mark": {"type": "point", "filled": true},
     "encoding": {
       "x": {
         "aggregate": "mean", "field": "yield", "type": "quantitative",
@@ -10,9 +10,9 @@
         "axis": {"title": "Barley Yield"}
       },
       "y": {
-        "field": "variety", "type": "ordinal",
-        "sort": {"field": "yield","op": "mean", "order": "descending"}
-      }
+        "field": "variety", "type": "ordinal"
+      },
+      "color": {"value": "black"}
     }
   }, {
     "mark": "rule",
@@ -25,8 +25,7 @@
         "aggregate": "ci1", "field": "yield", "type": "quantitative"
       },
       "y": {
-        "field": "variety", "type": "ordinal",
-        "sort": {"field": "yield","op": "mean", "order": "descending"}
+        "field": "variety", "type": "ordinal"
       }
     }
   }]
