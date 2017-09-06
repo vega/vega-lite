@@ -212,7 +212,6 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 }
 
 export interface TextFieldDef<F> extends FieldDef<F> {
-  // FIXME: add more reference to Vega's format pattern or d3's format pattern.
   /**
    * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
    */
