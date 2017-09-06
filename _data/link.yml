@@ -198,3 +198,12 @@ SelectionDef:
   link: selection.html
 SelectionOperand:
   name: "String | Object"
+SingleSelectionConfig:
+  name: Selection
+  link: "selection.html#definition"
+MultiSelectionConfig:
+  name: Selection
+  link: "selection.html#definition"
+IntervalSelectionConfig:
+  name: Selection
+  link: "selection.html#definition"

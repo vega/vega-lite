@@ -20,6 +20,7 @@ permalink: /docs/selection.html
 
 Selections are the basic building block in Vega-Lite's _grammar of interaction._ They map user input (e.g., mouse moves and clicks, touch presses, etc.) into data queries, which can subsequently be used to drive conditional encoding rules, filter data points, or determine scale domains.
 
+{:#definition}
 | Property                 | Type                | Description    |
 | :----------------------- | :-----------------: | :------------- |
 | [type](#selection-types) | String | _**Required.**_ Determines the default event processing and data query for the selection. |

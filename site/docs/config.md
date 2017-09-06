@@ -9,16 +9,17 @@ permalink: /docs/config.html
 ```json
 {
   ...,
-  "config": {          // Configuration Object
-    ...                // - Top-level Configuration
-    "cell": { ... },   // - Cell Configuration
-    "axis": { ... },   // - Axis Configuration
-    "legend": { ... }, // - Legend Configuration
-    "mark": { ... },   // - Mark Configuration
-    "style": { ... },   // - Mark Style Configuration
-    "range": { ... },  // - Scale Range Configuration
-    "scale": { ... },  // - Scale Configuration
-    "title": { ... }   // - title Configuration
+  "config": {             // Configuration Object
+    ...                   // - Top-level Configuration
+    "selection": { ... }, // - Selection Configuration
+    "cell": { ... },      // - Cell Configuration
+    "axis": { ... },      // - Axis Configuration
+    "legend": { ... },    // - Legend Configuration
+    "mark": { ... },      // - Mark Configuration
+    "style": { ... },     // - Mark Style Configuration
+    "range": { ... },     // - Scale Range Configuration
+    "scale": { ... },     // - Scale Configuration
+    "title": { ... }      // - title Configuration
   }
 }
 ```
@@ -39,6 +40,24 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 <!-- TODO: move range to its own section -->
+
+{:#selection-config}
+## Selection Configuration
+
+{: .suppress-error}
+```json
+{
+  ...,
+  "config": {          // Configuration Object
+    "selection": { ... },   // - Selection Configuration
+    ...
+  }
+}
+```
+
+The selection configuration determines the default properties and transformations applied to [selections](selection.html).
+
+{% include table.html props="single,multi,interval" source="SelectionConfig" %}
 
 {:#cell-config}
 ## Cell Configuration
