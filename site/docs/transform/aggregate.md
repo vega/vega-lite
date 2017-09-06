@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an encoding field definition.
+To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an [encoding field definition](encoding.html#field-def).
 
 ## Documentation Overview
 {:.no_toc}
@@ -20,6 +20,7 @@ To aggregate data in Vega-Lite, users can either use a `summarize` transform as 
 
 {: .suppress-error}
 ```json
+// A Single View Specification
 {
   "data": ... ,
   "mark": ... ,
@@ -37,11 +38,17 @@ To aggregate data in Vega-Lite, users can either use a `summarize` transform as 
 }
 ```
 
-`aggregate` property of the channel definition can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
+The `aggregate` property of a field definition can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
 
-If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process. Additional summary and group-by fields can be specified using the `detail` channel.
+If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process.
 
-Otherwise, if none of the specified encoding channel contains `aggregate`, the resulting visualization shows raw data without aggregation.
+For example, the following bar chart aggregates mean of `Acceleration`, grouped by the number of `Cylinders`.
+
+<div class="vl-example" data-name="bar_aggregate_vertical"></div>
+
+The `detail` channel can be used to specify additional summary and group-by fields without mapping the field(s) to any visual properties.  For example, the following plots add `Origin` as a group by field.
+
+<div class="vl-example" data-name="scatter_aggregate_detail"></div>
 
 <span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
@@ -52,13 +59,15 @@ Otherwise, if none of the specified encoding channel contains `aggregate`, the r
 
 {: .suppress-error}
 ```json
+// A View Specification
 {
   ...
   "transform": [
     {
+      // Summarize Transform
       "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
       "groupby": [...]
-    } // Summarize Transform
+    }
      ...
   ],
   ...
@@ -69,10 +78,10 @@ A `summarize` transform in the `transform` array has the following properties:
 
 {% include table.html props="summarize,groupby" source="SummarizeTransform" %}
 
-### Aggregated Field Definition for Summarize Transform
+{:#summarize-field}
+### Aggregate Field Definition for Summarize Transform
 
 {% include table.html props="aggregate,field,as" source="Summarize" %}
-
 
 {:#ops}
 ## Supported Aggregation Operations
@@ -102,12 +111,3 @@ The supported **aggregation operations** are:
 | max       | The maximum field value.|
 | argmin    | An input data object containing the minimum field value.|
 | argmax    | An input data object containing the maximum field value.|
-
-
-## Example
-
-The following bar chart aggregate mean of `Acceleration`, grouped by `Cylinders` (number of cylinders).
-
-<div class="vl-example" data-name="bar_aggregate_vertical"></div>
-
-<!-- TODO make scatter_aggregate_detail -->

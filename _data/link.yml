@@ -37,7 +37,8 @@ FilterOperand:
   name: Filter
   link: "transform.html#filter"
 Summarize:
-  link: "transform.html#aggregated-field-definition-for-summarize-transform"
+  name: SummarizeFieldDef
+  link: "transform.html#summarize-field"
 TimeUnit:
   link: timeunit.html
 

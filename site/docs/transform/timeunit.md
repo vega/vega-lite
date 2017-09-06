@@ -4,7 +4,7 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform). Time unit is similar to [binning](bin.html) but specifically made to discretize datetimes.
+Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform). Time unit is similar to [binning](bin.html) but specifically made to discretize date-time values.
 
 ## Documentation Overview
 {:.no_toc}
