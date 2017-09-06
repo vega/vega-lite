@@ -5,6 +5,19 @@ title: Interactive Plots with Selections
 permalink: /docs/selection.html
 ---
 
+{: .suppress-error}
+```json
+// Specification of a Single View
+{
+  ...,
+  "selection": {  // Key-value mappings between selection names and definitions.
+    ...: {"type": "single"},
+    ...
+  },
+  ...
+}
+```
+
 Selections are the basic building block in Vega-Lite's _grammar of interaction._ They map user input (e.g., mouse moves and clicks, touch presses, etc.) into data queries, which can subsequently be used to drive conditional encoding rules, filter data points, or determine scale domains.
 
 | Property                 | Type                | Description    |
@@ -12,6 +25,7 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 | [type](#selection-types) | String | _**Required.**_ Determines the default event processing and data query for the selection. |
 | [on](#selection-on)      | [Vega Event Stream](https://vega.github.io/vega/docs/event-streams/) | Alternate user input events that should trigger the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters). |
 | [resolve](#resolving-selections-in-data-driven-views) | String | A strategy for how the selection's data query should be constructed, when used within a multiview or layered display. |
+| [mark](#mark) | Object | For interval selections only, an object to customize the appearance of the rectangle mark. |
 
 ## Documentation Overview
 {:.no_toc}
@@ -40,6 +54,7 @@ While selection types provide useful defaults, it can often be useful to overrid
 
 <div class="vl-example" data-name="selection_type_single_dblclick"></div>
 
+{:#mark}
 Every interval selection also adds a rectangle mark to the visualization, to depict the extents of the selected region. The appearance of this mark can be customized with the following properties, specified under `mark`.
 
 {% include table.html props="fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
