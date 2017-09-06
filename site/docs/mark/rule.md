@@ -22,7 +22,7 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 
 If the `rule` mark only has `y` encoding, the output view produces horizontal rules that  spans the complete width.  Similarly, if the `rule` mark only has `x` encoding, the output view produces vertical rules that spans the height.
 
-For example, we can use rules to show the average price of different stocks akin to [`tick`](tick.html) marks.
+We can use rules to show the average price of different stocks akin to [`tick`](tick.html) marks.
 
 <span class="vl-example" data-name="rule_color_mean"></span>
 
