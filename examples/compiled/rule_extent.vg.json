@@ -1,0 +1,178 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Minimum and maxmimum horsepower of cars from different origins.",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "ops": [
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "Horsepower",
+                        "Horsepower"
+                    ],
+                    "as": [
+                        "min_Horsepower",
+                        "max_Horsepower"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Origin"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "min_Horsepower"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "max_Horsepower"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "min_Horsepower",
+                    "max_Horsepower"
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "Origin",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "MIN(Horsepower)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainColor": "#888",
+            "tickColor": "#888"
+        },
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

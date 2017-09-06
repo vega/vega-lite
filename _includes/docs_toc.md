@@ -39,6 +39,7 @@
     - [Line]({{site.baseurl}}/docs/line.html)
     - [Point]({{site.baseurl}}/docs/point.html)
     - [Rect]({{site.baseurl}}/docs/rect.html)
+    - [Rule]({{site.baseurl}}/docs/rule.html)
     - [Square]({{site.baseurl}}/docs/square.html)
     - [Text]({{site.baseurl}}/docs/text.html)
     - [Tick]({{site.baseurl}}/docs/tick.html)

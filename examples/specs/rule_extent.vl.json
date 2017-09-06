@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Minimum and maxmimum horsepower of cars from different origins.",
+  "data": {"url": "data/cars.json"},
+  "mark": "rule",
+  "encoding": {
+    "x": {"field": "Origin","type": "nominal"},
+    "y": {"field": "Horsepower", "aggregate": "min", "type": "quantitative"},
+    "y2": {"field": "Horsepower", "aggregate": "max", "type": "quantitative"}
+  }
+}
