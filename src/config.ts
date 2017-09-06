@@ -153,15 +153,12 @@ export interface VLOnlyConfig {
   invalidValues?: 'filter';
 
   /**
-   * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
-   *
-   * __Default value:__ `"s"` (except for text marks that encode a count field, the default value is `"d"`).
-   *
+   * D3 Number format for axis labels and text tables. For example "s" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    */
   numberFormat?: string;
 
   /**
-   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)).
+   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).
    *
    * __Default value:__ `'%b %d, %Y'`.
    *

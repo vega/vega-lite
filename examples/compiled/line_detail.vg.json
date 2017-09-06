@@ -139,7 +139,7 @@
                 "labels": {
                     "update": {
                         "text": {
-                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                            "signal": "timeFormat(datum.value, '%Y')"
                         },
                         "angle": {
                             "value": 270
