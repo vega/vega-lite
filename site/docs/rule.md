@@ -38,3 +38,7 @@ Rules can encode two positions for x and y. This is useful to show multiple meas
 For example, we can show the extent of horsepowers for cars from different locations.
 
 <span class="vl-example" data-name="rule_extent"></span>
+
+Rules as extent are useful to create error bars. In the example below, we visualize the [95% confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) as a measure of the spread of the average yields for a variety of barley strains.
+
+<span class="vl-example" data-name="layer_error_bars"></span>
