@@ -46,7 +46,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
     },
     viewConfig: {
       loader: new vega.loader({
-        baseURL: window.location.origin + BASEURL
+        baseURL: BASEURL
       })
     }
   }).then(result => {
