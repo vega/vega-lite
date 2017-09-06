@@ -4810,20 +4810,18 @@
       "additionalProperties": false,
       "properties": {
         "interval": {
-          "$ref": "#/definitions/IntervalSelectionConfig"
+          "$ref": "#/definitions/IntervalSelectionConfig",
+          "description": "The default definition for an `interval` selection. All properties for a\nselection definition (except `type`) may be specified here.\n\nFor instance, `\"translate\": false` to disable the ability to move\ninterval selections by default."
         },
         "multi": {
-          "$ref": "#/definitions/MultiSelectionConfig"
+          "$ref": "#/definitions/MultiSelectionConfig",
+          "description": "The default definition for a `multi` selection. All properties for a\nselection definition (except `type`) may be specified here.\n\nFor instance, `\"toggle\": \"event.altKey\"` to add additional values to\nmulti selections when clicking with the alt-key pressed by default."
         },
         "single": {
-          "$ref": "#/definitions/SingleSelectionConfig"
+          "$ref": "#/definitions/SingleSelectionConfig",
+          "description": "The default definition for a `single` selection. All properties for a\nselection definition (except `type`) may be specified here.\n\nFor instance, `\"on\": \"dblclick\"` to populate single selections on double-click by default."
         }
       },
-      "required": [
-        "single",
-        "multi",
-        "interval"
-      ],
       "type": "object"
     },
     "SelectionDef": {

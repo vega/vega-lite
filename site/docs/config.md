@@ -27,6 +27,7 @@ Vega-Lite's `config` object lists configuration properties of a visualization.
 This page outlines different types of config properties:
 
 - [Top-level Configuration](#top-level-config)
+- [Selection Configuration](#selection-config)
 - [Cell Configuration](#cell-config)
 - [Mark Configuration](#mark-config)
 - [Scale Configuration](#scale-config)
@@ -47,6 +48,11 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 <!-- TODO: move range to its own section -->
+
+{:#selection-config}
+## Selection Configuration  (`config.selection.*`)
+
+The selection configuration determines the default properties and transformations applied to [selections](selection.html). For a full list of configuration options, please see the [corresponding section of the selection documentation](selection.html#selection-configuration).
 
 {:#cell-config}
 ## Cell Configuration  (`config.cell.*`)
@@ -100,7 +106,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 <!-- one example for custom fill/stroke -->
 
 {:#interpolate}
-### Interpolation (for Line and Area Marks)
+#### Interpolation (for Line and Area Marks)
 
 {% include table.html props="interpolate,tension" source="MarkConfig" %}
 
@@ -210,24 +216,24 @@ vg.embed('#horizontal_line', {
 {:#scale-config}
 ## Scale Configuration  (`config.scale.*`)
 
-Scale configuration determines default properties for all [scales](scale.html).
-For a full list of scale configuration, please see the [Scale Config section in the scale page](scale.html#config).
+The scale configuration determines the default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
 
 {:#scale-range-config}
 ## Scale Range Configuration  (`config.range.*`)
 
-Scale range configuration defines default range array or scheme for using with scales. For a full list of scale range configuration, please see the [Range Config section in the scale page](scale.html#config).
+The scale range configuration defines the default range array or scheme for using with scales. For a full list of scale range configuration options, please see the [corresponding section section of the scale documentation](scale.html#config).
 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
 
-Axis configuration determines default properties for `x` and `y` [axes](axis.html).
-For a full list of axis configuration, please see the [Axis Config section in the axis page](axis.html#axis-config).
+The axis configuration determines the default properties for `x` and `y` [axes](axis.html).
+For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config).
 
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
 
-Legend configuration determines default properties for [legends](legend.html). Please see [legend config](legend.html#legend-config) for each property name and default values.
+The legend configuration determines the default properties for [legends](legend.html). For a full list of legend configuration options, please see the [corresponding section of the legend documentation](legend.html#legend-config).
+
 <!--
 {:#title-config}
 ## Title Configuration  (`config.title.*`)

@@ -177,9 +177,29 @@ export interface IntervalSelection extends IntervalSelectionConfig {
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
 export interface SelectionConfig {
-  single: SingleSelectionConfig;
-  multi: MultiSelectionConfig;
-  interval: IntervalSelectionConfig;
+  /**
+   * The default definition for a `single` selection. All properties for a
+   * selection definition (except `type`) may be specified here.
+   *
+   * For instance, `"on": "dblclick"` to populate single selections on double-click by default.
+   */
+  single?: SingleSelectionConfig;
+  /**
+   * The default definition for a `multi` selection. All properties for a
+   * selection definition (except `type`) may be specified here.
+   *
+   * For instance, `"toggle": "event.altKey"` to add additional values to
+   * multi selections when clicking with the alt-key pressed by default.
+   */
+  multi?: MultiSelectionConfig;
+  /**
+   * The default definition for an `interval` selection. All properties for a
+   * selection definition (except `type`) may be specified here.
+   *
+   * For instance, `"translate": false` to disable the ability to move
+   * interval selections by default.
+   */
+  interval?: IntervalSelectionConfig;
 }
 
 export const defaultConfig:SelectionConfig = {
