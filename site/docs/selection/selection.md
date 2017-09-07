@@ -26,6 +26,7 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 * TOC
 {:toc}
 
+{:#type}
 ## Selection Types
 
 Selections are defined within single views, and their simplest definition consists of a **name** and a **type**. The selection type determines the default events that trigger a selection and the resultant data query.
@@ -166,3 +167,24 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
   * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect')">`intersect`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
 
 <div id="selection_resolution" class="vl-example" data-name="selection_resolution_global"></div>
+
+
+{:#config}
+## Selection Configuration
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...,
+  "config": {          // Configuration Object
+    "selection": { ... },   // - Selection Configuration
+    ...
+  }
+}
+```
+
+The `selection` property of the [`config`](config.html) object determines the default properties and transformations applied to different types of [selections](selection.html).
+The selection config can contain the following properties:
+
+{% include table.html props="single,multi,interval" source="SelectionConfig" %}

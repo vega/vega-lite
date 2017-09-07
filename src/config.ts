@@ -174,7 +174,7 @@ export interface VLOnlyConfig {
    */
   scale?: ScaleConfig;
 
-  /** Selection Config */
+  /** An object hash for defining default properties for each type of selections. */
   selection?: SelectionConfig;
 
   /** Default stack offset for stackable mark. */

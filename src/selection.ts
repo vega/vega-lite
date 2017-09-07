@@ -174,25 +174,25 @@ export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
 export interface SelectionConfig {
   /**
-   * The default definition for a `single` selection. All properties and transformations
+   * The default definition for a [`single`](selection.html#type) selection. All properties and transformations
    *  for a single selection definition (except `type`) may be specified here.
    *
-   * For instance, `"on": "dblclick"` to populate single selections on double-click by default.
+   * For instance, setting `single` to `{"on": "dblclick"}` populates single selections on double-click by default.
    */
   single?: SingleSelectionConfig;
   /**
-   * The default definition for a `multi` selection. All properties and transformations
+   * The default definition for a [`multi`](selection.html#type) selection. All properties and transformations
    * for a multi selection definition (except `type`) may be specified here.
    *
-   * For instance, `"toggle": "event.altKey"` to add additional values to
+   * For instance, setting `multi` to `{"toggle": "event.altKey"}` adds additional values to
    * multi selections when clicking with the alt-key pressed by default.
    */
   multi?: MultiSelectionConfig;
   /**
-   * The default definition for an `interval` selection. All properties and transformations
+   * The default definition for an [`interval`](selection.html#type) selection. All properties and transformations
    * for an interval selection definition (except `type`) may be specified here.
    *
-   * For instance, `"translate": false` to disable the ability to move
+   * For instance, setting `interval` to `{"translate": false}` disables the ability to move
    * interval selections by default.
    */
   interval?: IntervalSelectionConfig;

@@ -11,7 +11,6 @@ permalink: /docs/config.html
   ...,
   "config": {             // Configuration Object
     ...                   // - Top-level Configuration
-    "selection": { ... }, // - Selection Configuration
     "cell": { ... },      // - Cell Configuration
     "axis": { ... },      // - Axis Configuration
     "legend": { ... },    // - Legend Configuration
@@ -19,6 +18,7 @@ permalink: /docs/config.html
     "style": { ... },     // - Mark Style Configuration
     "range": { ... },     // - Scale Range Configuration
     "scale": { ... },     // - Scale Configuration
+    "selection": { ... }, // - Selection Configuration
     "title": { ... }      // - title Configuration
   }
 }
@@ -37,27 +37,6 @@ A Vega-Lite `config` object can have the following top-level properties:
 {:#format}
 
 {% include table.html props="autoResize,background,countTitle,invalidValues,numberFormat,padding,timeFormat" source="Config" %}
-
-<!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
-<!-- TODO: move range to its own section -->
-
-{:#selection-config}
-## Selection Configuration
-
-{: .suppress-error}
-```json
-{
-  ...,
-  "config": {          // Configuration Object
-    "selection": { ... },   // - Selection Configuration
-    ...
-  }
-}
-```
-
-The selection configuration determines the default properties and transformations applied to [selections](selection.html).
-
-{% include table.html props="single,multi,interval" source="SelectionConfig" %}
 
 {:#cell-config}
 ## Cell Configuration
@@ -119,6 +98,12 @@ In addition to the default mark properties above, default values can be further 
 ## Scale and Scale Range Configuration
 
 {% include table.html props="scale,range" source="Config" %}
+
+
+{:#selection-config}
+## Selection Configuration
+
+{% include table.html props="selection" source="Config" %}
 
 {:#title-config}
 ## Title Configuration

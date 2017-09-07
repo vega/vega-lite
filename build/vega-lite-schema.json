@@ -1525,7 +1525,7 @@
         },
         "selection": {
           "$ref": "#/definitions/SelectionConfig",
-          "description": "Selection Config "
+          "description": "An object hash for defining default properties for each type of selections. "
         },
         "square": {
           "$ref": "#/definitions/MarkConfig",
@@ -2777,7 +2777,7 @@
         },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
-          "description": "An nterval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
+          "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
           "$ref": "#/definitions/VgEventStream",
@@ -2839,7 +2839,7 @@
         },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
-          "description": "An nterval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
+          "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
           "$ref": "#/definitions/VgEventStream",
@@ -4603,15 +4603,15 @@
       "properties": {
         "interval": {
           "$ref": "#/definitions/IntervalSelectionConfig",
-          "description": "The default definition for an `interval` selection. All properties and transformations\nfor an interval selection definition (except `type`) may be specified here.\n\nFor instance, `\"translate\": false` to disable the ability to move\ninterval selections by default."
+          "description": "The default definition for an [`interval`](selection.html#type) selection. All properties and transformations\nfor an interval selection definition (except `type`) may be specified here.\n\nFor instance, setting `interval` to `{\"translate\": false}` disables the ability to move\ninterval selections by default."
         },
         "multi": {
           "$ref": "#/definitions/MultiSelectionConfig",
-          "description": "The default definition for a `multi` selection. All properties and transformations\nfor a multi selection definition (except `type`) may be specified here.\n\nFor instance, `\"toggle\": \"event.altKey\"` to add additional values to\nmulti selections when clicking with the alt-key pressed by default."
+          "description": "The default definition for a [`multi`](selection.html#type) selection. All properties and transformations\nfor a multi selection definition (except `type`) may be specified here.\n\nFor instance, setting `multi` to `{\"toggle\": \"event.altKey\"}` adds additional values to\nmulti selections when clicking with the alt-key pressed by default."
         },
         "single": {
           "$ref": "#/definitions/SingleSelectionConfig",
-          "description": "The default definition for a `single` selection. All properties and transformations\n  for a single selection definition (except `type`) may be specified here.\n\nFor instance, `\"on\": \"dblclick\"` to populate single selections on double-click by default."
+          "description": "The default definition for a [`single`](selection.html#type) selection. All properties and transformations\n  for a single selection definition (except `type`) may be specified here.\n\nFor instance, setting `single` to `{\"on\": \"dblclick\"}` populates single selections on double-click by default."
         }
       },
       "type": "object"
@@ -5971,7 +5971,7 @@
         },
         "selection": {
           "$ref": "#/definitions/SelectionConfig",
-          "description": "Selection Config "
+          "description": "An object hash for defining default properties for each type of selections. "
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
