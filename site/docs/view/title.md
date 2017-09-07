@@ -21,3 +21,23 @@ A `title` parameter object can contain the following properties:
 For example, we can customize the `anchor` of the title of a bar chart.
 
 <span class="vl-example" data-name="bar_title_start"></span>
+
+{:#config}
+## Title Config
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "title": : {
+      ...
+    }
+  }
+}
+```
+
+To provide themes for all titles, the title config `config: {title: {...}}` can contain the following properties:
+
+{% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %}

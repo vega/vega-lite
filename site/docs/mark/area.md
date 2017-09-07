@@ -7,6 +7,7 @@ permalink: /docs/area.html
 
 {: .suppress-error}
 ```json
+// Single View Specification
 {
   "data": ... ,
   "mark": "area",
@@ -47,3 +48,23 @@ You can also create a normalized stacked area chart by setting `"stack"` to `"no
 We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `"stack"` to `"center"` in the encoding channel.
 
 <span class="vl-example" data-name="stacked_area_stream"></span>
+
+
+{:#config}
+## Area Config
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "area": ...,
+    ...
+  }
+}
+```
+
+The `area` property of the top-level [`config`](config.html) object sets the default properties for all area marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+
+For the list of all supported properties, please see the [mark config documentation](mark.html#config).

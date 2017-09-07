@@ -7,6 +7,7 @@ permalink: /docs/bar.html
 
 {: .suppress-error}
 ```json
+// Single View Specification
 {
   "data": ... ,
   "mark": "bar",
@@ -81,3 +82,28 @@ You can also create a normalized stacked bar chart by setting [`stack`](stack.ht
 [Faceting](facet.html) a bar chart produces a grouped bar chart.
 
 <span class="vl-example" data-name="bar_grouped"></span>
+
+{:#config}
+## Bar Config
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "bar": ...,
+    ...
+  }
+}
+```
+
+The `bar` property of the top-level [`config`](config.html) object sets the default properties for all bar marks.  If [mark property encoding channels](encoding.html#mark-prop)are specified for marks, these config values will be overridden.
+
+Besides standard [mark config properties](mark.html#config), bar config can contain the following additional properties:
+
+{% include table.html props="binSpacing,continuousBandSize,discreteBandSize" source="BarConfig" %}
+
+### Example: Histogram without Spacing between bars
+
+<span class="vl-example" data-name="histogram_no_spacing"></span>

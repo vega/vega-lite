@@ -380,7 +380,7 @@
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Generic axis config. "
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
@@ -1425,7 +1425,7 @@
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Generic axis config. "
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
@@ -1484,7 +1484,7 @@
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
-          "description": "Legend Config "
+          "description": "Legend configuration, which determines default properties for all [legends](legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](legend.html#config)."
         },
         "line": {
           "$ref": "#/definitions/MarkConfig",
@@ -1508,7 +1508,7 @@
         },
         "range": {
           "$ref": "#/definitions/RangeConfig",
-          "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties."
+          "description": "An object hash that defines default range arrays or schemes for using with scales.\nFor a full list of scale range configuration options, please see the [corresponding section of the scale documentation](scale.html#config)."
         },
         "rect": {
           "$ref": "#/definitions/MarkConfig",
@@ -1520,7 +1520,7 @@
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
-          "description": "Scale Config "
+          "description": "Scale configuration determines default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config)."
         },
         "selection": {
           "$ref": "#/definitions/SelectionConfig",
@@ -1552,7 +1552,7 @@
         },
         "title": {
           "$ref": "#/definitions/VgTitleConfig",
-          "description": "Title Config"
+          "description": "Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config)."
         }
       },
       "type": "object"
@@ -5114,7 +5114,7 @@
           "type": "number"
         },
         "bandSize": {
-          "description": "The width of the ticks.\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
+          "description": "The width of the ticks.\n\n__Default value:__  2/3 of rangeStep.",
           "minimum": 0,
           "type": "number"
         },
@@ -5958,7 +5958,7 @@
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
-          "description": "Scale Config "
+          "description": "Scale configuration determines default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config)."
         },
         "selection": {
           "$ref": "#/definitions/SelectionConfig",

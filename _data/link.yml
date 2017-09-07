@@ -59,9 +59,34 @@ Orient:
 Mark:
   name: String
 
-# Encoding
+# Config
+
 Config:
   link: config.html
+AxisConfig:
+  link: "axis.html#config"
+VgAxisConfig:
+  name: AxisConfig
+  link: "axis.html#config"
+LegendConfig:
+  link: "legend.html#config"
+MarkConfig:
+  link: "mark.html#config"
+BarConfig:
+  link: "bar.html#config"
+RangeConfig:
+  link: "scale.html#range-config"
+ScaleConfig:
+  link: "scale.html#config"
+TextConfig:
+  link: "text.html#config"
+TickConfig:
+  link: "tick.html#config"
+VgTitleConfig:
+  name: TitleConfig
+  link: "title.html#config"
+
+# Encoding
 EncodingWithFacet:
   name: Encoding
   link: encoding.html
