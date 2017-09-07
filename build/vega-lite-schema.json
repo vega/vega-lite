@@ -2223,7 +2223,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/FilterOperand",
-          "description": "The `filter` property must be either (1) a filter object for [equal-filters](#equalfilter),\n[range-filters](#rangefilter), [one-of filters](#oneoffilter), or [selection filters](#selectionfilter);\n(2) a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string,\nwhere `datum` can be used to refer to the current data object; or (3) an array of\nfilters (either objects or expression strings) that must all be true for a datum to pass\nthe filter and be included."
+          "description": "The `filter` property must be either (1) a filter object for [equal-filters](filter.html#equalfilter),\n[range-filters](filter.html#rangefilter), [one-of filters](filter.html#oneoffilter), or [selection filters](filter.html#selectionfilter);\n(2) a [Vega Expression](filter.html#expression) string,\nwhere `datum` can be used to refer to the current data object; or (3) an array of filters (either objects or expression strings) that must all be true for a datum to pass the filter and be included."
         }
       },
       "required": [
