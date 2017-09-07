@@ -88,7 +88,7 @@ Selections in one view can also be used to filter input data to another view. In
 
 ### Scale Domains
 
-With multiview displays, selections can also be used to determine the domains of scales in other views. For example, in the specification below, the bottom plot contains an interval selection named `brush`, and the top plot shows only these selected points. This technique is called an overview+detail display.
+With multiview displays, selections can also be used to determine the domains of scales in other views. For example, in the specification below, the bottom plot contains an interval selection named `brush`. We use this `brush` selection to parameterize the  `domain` of the top plot's x-scale to make it show only the selected interval. This technique is called an overview+detail display.
 
 <div class="vl-example" data-name="overview_detail"></div>
 
