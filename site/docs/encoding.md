@@ -134,7 +134,7 @@ To map a constant value to an encoding channel, the channel's value definition m
 ## Position Channels
 
 `x` and `y` position channels determine the position of the marks, or width/height of horizontal/vertical `"area"` and `"bar"`.
-In addition, `x2` and `y2` specify the span of ranged marks.
+In addition, `x2` and `y2` can specify the span of ranged [`area`](area.html#ranged), [`bar`](bar.html#ranged), [`rect`](rect.html#ranged), and [`rule`](rule.html#ranged).
 
 By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis](axis.html) for each field mapped to a position channel. If unspecified, properties of scales and axes are determined based on a set of rules by the compiler. `scale` and `axis` properties of the field definition can be used to customize their properties.
 
