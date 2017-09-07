@@ -10,7 +10,7 @@ permalink: /docs/filter.html
 {
   ...
   "transform": [
-    {"filter": ...} // Calculate Transform
+    {"filter": ...} // Filter Transform
      ...
   ],
   ...
@@ -21,10 +21,7 @@ Vega-Lite filter transforms can have the following properties:
 
 {% include table.html props="filter" source="FilterTransform" %}
 
-The `filter` property can be (1) a filter predicate object including equal filters, range filters and one-of filters (2) [Vega Expression](https://vega.github.io/vega/docs/expressions/) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
-
-
-In filter objects, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+For a filter object, either a [`selection` name](#selectionfilter) or `field` must be provided. The latter takes one of the filter operators (`equal`, `in`, `range`). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#filter}
 ## Filter Expression
@@ -50,10 +47,10 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 
 **Examples**
 
-- `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range [0,5] (0 ≤ x ≤ 5).
-- `{"field": "x", "range": [null, 5]}` checks if the `x` field's value is in range [-Infinity,5] (x ≤ 5).
-- `{"timeUnit": "year", "field": "date", "range": [2006, 2008] }` checks if the `date`'s value is between year 2006 and 2008.
-- `{"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }` checks if the `date`'s value is between Jan 1, 2006  and Feb 20, 2008.
+- `{"filter": {"field": "x", "range": [0, 5]}}` checks if the `x` field's value is in range [0,5] (0 ≤ x ≤ 5).
+- `{"filter": {"field": "x", "range": [null, 5]}}` checks if the `x` field's value is in range [-Infinity,5] (x ≤ 5).
+- `{"filter": {"timeUnit": "year", "field": "date", "range": [2006, 2008] }}` checks if the `date`'s value is between year 2006 and 2008.
+- `{"filter": {"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }}` checks if the `date`'s value is between Jan 1, 2006  and Feb 20, 2008.
 
 
 {:#oneoffilter}
@@ -61,4 +58,15 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 
 {% include table.html props="field,oneOf,timeUnit" source="OneOfFilter" %}
 
-For example, `{"field": "car_color", "oneOf":["red", "yellow"]}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
+For example, `{"filter": {"field": "car_color", "oneOf":["red", "yellow"]}}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
+
+{:#selectionfilter}
+#### Selection Filter
+
+{% include table.html props="selection" source="SelectionFilter" %}
+
+For example, with `{"filter": {"selection": "brush"}}`, only data values that fall within the selection named `brush` will remain in the dataset as shown below.
+
+<div class="vl-example" data-name="selection_filter"></div>
+
+All [selection composition](selection.html#composing-multiple-selections) can be used here as well. For instance, `{"filter": {"selection": {"and": ["alex", "morgan"]}}}` filters for data values that are within both the `alex` and `morgan` selections.
