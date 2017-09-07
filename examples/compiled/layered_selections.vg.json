@@ -844,16 +844,16 @@
         {
             "stroke": "color",
             "title": "Cylinders",
-            "fill": "color",
             "encode": {
                 "symbols": {
                     "update": {
-                        "shape": {
-                            "value": "square"
+                        "opacity": {
+                            "value": 0.7
                         }
                     }
                 }
-            }
+            },
+            "fill": "color"
         }
     ],
     "config": {

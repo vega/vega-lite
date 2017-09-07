@@ -2540,7 +2540,16 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "species"
+            "title": "species",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

@@ -195,6 +195,9 @@
                     "update": {
                         "stroke": {
                             "value": "#4c78a8"
+                        },
+                        "opacity": {
+                            "value": 0.7
                         }
                     }
                 }

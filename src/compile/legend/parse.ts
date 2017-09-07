@@ -1,7 +1,7 @@
 import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
-import {keys} from '../../util';
+import {deleteNestedProperty, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {isUnitModel, Model} from '../model';
@@ -65,9 +65,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonspatialScale
 
   // 2) Add mark property definition groups
   const legendEncoding = legend.encoding || {};
-  const legendEncode = ['labels', 'legend', 'title', 'symbols'].reduce((e: VgLegendEncode, part) => {
+  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: VgLegendEncode, part) => {
     const value = encode[part] ?
-      encode[part](fieldDef, legendEncoding[part], model, channel) : // apply rule
+      encode[part](fieldDef, legendEncoding[part], model, channel, legendCmpt) : // apply rule
       legendEncoding[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       e[part] = {update: value};
@@ -155,6 +155,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     // Cannot merge due to inconsistent orient
     return undefined;
   }
+  let typeMerged = false;
   // Otherwise, let's merge
   for (const prop of VG_LEGEND_PROPERTIES) {
     const mergedValueWithExplicit = mergeValuesWithExplicit<VgLegend, any>(
@@ -169,6 +170,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
             return titleMerger(v1, v2);
           case 'type':
             // There are only two types. If we have different types, then prefer symbol over gradient.
+            typeMerged = true;
             return makeImplicit('symbol');
         }
         return defaultTieBreaker<VgLegend, any>(v1, v2, prop, 'legend');
@@ -176,5 +178,16 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     );
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }
+  if (typeMerged) {
+    if(((mergedLegend.implicit || {}).encode || {}).gradient) {
+      deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
+    }
+    if (((mergedLegend.explicit || {}).encode || {}).gradient) {
+      deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
+    }
+  }
+
+
   return mergedLegend;
 }
+

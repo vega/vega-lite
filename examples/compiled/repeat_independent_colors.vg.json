@@ -175,7 +175,16 @@
             "legends": [
                 {
                     "stroke": "child_Origin_color",
-                    "title": "Origin"
+                    "title": "Origin",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "opacity": {
+                                    "value": 0.7
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },
@@ -282,7 +291,16 @@
             "legends": [
                 {
                     "stroke": "child_Cylinders_color",
-                    "title": "Cylinders"
+                    "title": "Cylinders",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "opacity": {
+                                    "value": 0.7
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         }
