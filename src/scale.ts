@@ -345,7 +345,28 @@ export interface SchemeParams {
   count?: number;
 }
 
-export type SelectionDomain = {selection: string, field?: string} | {selection: string, encoding?: string};
+export type SelectionDomain = {
+  /**
+   * The name of a selection.
+   */
+  selection: string,
+  /**
+   * The field name to extract selected values for, when a selection is [projected](project.html)
+   * over multiple fields or encodings.
+   */
+  field?: string
+} | {
+  /**
+   * The name of a selection.
+   */
+  selection: string,
+  /**
+   * The encoding channel to extract selected values for, when a selection is [projected](project.html)
+   * over multiple fields or encodings.
+   */
+  encoding?: string
+};
+
 export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | SchemeParams;
 
@@ -382,8 +403,9 @@ export interface Scale {
    * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).
    *
    * For _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.
+   *
+   * The `selection` property can be used to [interactively determine](selection.html#scale-domains) the scale domain.
    */
-  // FIXME: Arvind -- Please describe "SelectionDomain"
   domain?: number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 
 
