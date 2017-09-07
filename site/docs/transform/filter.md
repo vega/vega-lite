@@ -17,16 +17,21 @@ permalink: /docs/filter.html
 }
 ```
 
-Vega-Lite filter transforms can have the following properties:
+Vega-Lite filter transforms must have the `filter` property.
 
 {% include table.html props="filter" source="FilterTransform" %}
 
-For a filter object, either a [`selection` name](#selectionfilter) or `field` must be provided. The latter takes one of the filter operators (`equal`, `in`, `range`). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
-{:#filter}
+{:#expression}
 ## Filter Expression
 
 For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
+
+
+## Filter Object
+
+
+For a filter object, either a `field` or [`selection` name](#selectionfilter)  must be provided. The former takes one of the filter operators ([`equal`](#equalfilter), [`range`](#rangefilter), or [`oneOf`](#oneofilter)). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#equalfilter}
 ### Equal Filter
@@ -61,7 +66,7 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 For example, `{"filter": {"field": "car_color", "oneOf":["red", "yellow"]}}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
 
 {:#selectionfilter}
-#### Selection Filter
+### Selection Filter
 
 {% include table.html props="selection" source="SelectionFilter" %}
 

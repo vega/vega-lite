@@ -8,12 +8,10 @@ import {TimeUnit} from './timeunit';
 
 export interface FilterTransform {
   /**
-   * The `filter` property must be either (1) a filter object for [equal-filters](#equalfilter),
-   * [range-filters](#rangefilter), [one-of filters](#oneoffilter), or [selection filters](#selectionfilter);
-   * (2) a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string,
-   * where `datum` can be used to refer to the current data object; or (3) an array of
-   * filters (either objects or expression strings) that must all be true for a datum to pass
-   * the filter and be included.
+   * The `filter` property must be either (1) a filter object for [equal-filters](filter.html#equalfilter),
+   * [range-filters](filter.html#rangefilter), [one-of filters](filter.html#oneoffilter), or [selection filters](filter.html#selectionfilter);
+   * (2) a [Vega Expression](filter.html#expression) string,
+   * where `datum` can be used to refer to the current data object; or (3) an array of filters (either objects or expression strings) that must all be true for a datum to pass the filter and be included.
    */
   filter: LogicalOperand<Filter>;
 }
