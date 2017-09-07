@@ -8,6 +8,7 @@ export type SelectionResolution = 'global' | 'union' | 'intersect';
 export interface BaseSelectionDef {
   /**
    * A Vega event stream (object or selector) that triggers the selection.
+   * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)
    */
   on?: any;
   /**

@@ -704,7 +704,7 @@
           "type": "array"
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -2962,7 +2962,7 @@
           "description": "Each (unbound) interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -3023,7 +3023,7 @@
           "description": "Each (unbound) interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -3925,7 +3925,7 @@
           "type": "boolean"
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -3972,7 +3972,7 @@
           "type": "boolean"
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -4949,7 +4949,7 @@
           "type": "boolean"
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -5003,7 +5003,7 @@
           "type": "boolean"
         },
         "on": {
-          "description": "A Vega event stream (object or selector) that triggers the selection."
+          "description": "A Vega event stream (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
