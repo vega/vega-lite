@@ -3640,7 +3640,7 @@
       "additionalProperties": false,
       "properties": {
         "clip": {
-          "description": "Should a mark be clipped to the enclosing group’s width and height?",
+          "description": "Whether a mark be clipped to the enclosing group’s width and height.",
           "type": "boolean"
         },
         "filled": {
@@ -3653,7 +3653,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "TODO"
+          "description": "Orientation of the marks."
         },
         "style": {
           "anyOf": [
@@ -3667,7 +3667,7 @@
               "type": "array"
             }
           ],
-          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any properties explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default.  If"
+          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",

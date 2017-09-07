@@ -157,7 +157,6 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
             "title": "Origin",
             "zindex": 1

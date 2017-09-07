@@ -18,7 +18,6 @@ The supported `mark` types are
 [`"square"`](square.html),
 [`"text"`](text.html),
 and [`"tick"`](tick.html).
-
 In general, one mark instance is generated per input data element. However, line and area marks represent multiple data elements as a contiguous line or shape.
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->

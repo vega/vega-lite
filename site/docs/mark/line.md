@@ -26,34 +26,45 @@ The `line` mark represents the data points stored in a field with a line connect
 
 ## Line Chart
 
-Using `line` with one ordinal field (typically on `x`) and another quantitative field (typically on `y`) produces a simple line chart with a single line.
+Using `line` with one temporal or ordinal field (typically on `x`) and another quantitative field (typically on `y`) produces a simple line chart with a single line.
 
 <span class="vl-example" data-name="line"></span>
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
 
-## Colored Line Chart
+### Multi-series Colored Line Chart
 
-In the example below, we group points using a new field mapped to `color`. This produces a line chart with different colors for each line.
+Adding a field to a [mark property channel](encoding.html#mark-prop) such as `color` groups data points into different series, producing a multi-series colored line chart.
 
 <span class="vl-example" data-name="line_color"></span>
 
 {:#line-detail}
-## Line Chart with Multiple Lines
+## Multi-series Line Chart with the Detail Channel
 
-Alternatively, we can map the same field to `detail`, creating multiple lines but with the same color instead.
+To group lines by a field without mapping the field to any visual properties, we can map the field to the [`detail`](encoding.html#detail) channel to create a multi-series line chart with the same color.
 
 <span class="vl-example" data-name="line_detail"></span>
 
 {:#connected-scatter-plot}
 ## Connected Scatter Plot (Line Chart with Custom Path)
 
-By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples. However, a field can be mapped to the `order` channel for determining a custom path.
+As shown in previous example, the line's path (order of points in the line) is determined by data values on the temporal/ordinal field by default. However, a field can be mapped to the [`order`](encoding.html#order) channel for determining a custom path.
 
 For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also [`layer`](layer.html) point marks over the line marks to highlight each data point.
 
 <span class="vl-example" data-name="scatter_connected"></span>
 
+## Line interpolation
+
+The `interpolate` property of a [mark definition](mark.html#mark-def) can be used to change line interpolation method.  For example, we can set `interpolate` to `"monotone"`.
+
+<span class="vl-example" data-name="line_monotone"></span>
+
+We can also set `interpolate` to `"step-after"` to create a step-chart.
+
+<span class="vl-example" data-name="line_step"></span>
+
+For the list of all supported `interpolate` properties, please see the [mark definition](mark.html#mark-def) documentation.
 
 {:#config}
 ## Line Config

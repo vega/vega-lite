@@ -41,6 +41,7 @@ The fact that rule marks span the width or the height of a single view make them
 <span class="vl-example" data-name="layer_histogram_global_mean"></span>
 -->
 
+{:#ranged}
 ## Ranged Rules
 
 To control the spans of horizontal/vertical rules, `x` and `x2`/`y` and `y2` channels can be specified.
@@ -53,7 +54,9 @@ We can also use rule to create error bars. In the example below, we use the [`ci
 
 <span class="vl-example" data-name="layer_error_bars"></span>
 
+Alternatively, we can create error bars showing one standard deviation (`stdev`) over and below the mean value.
 
+<span class="vl-example" data-name="layer_error_bars_dev"></span>
 
 {:#config}
 ## Rule Config

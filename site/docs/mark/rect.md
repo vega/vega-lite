@@ -18,11 +18,32 @@ permalink: /docs/rect.html
 
 The `rect` mark represents an arbitrary rectangle.
 
-## Heatmap
+## Documentation Overview
+{:.no_toc}
 
-Use the `rect` mark to create a heatmap.
+* TOC
+{:toc}
+
+### Heatmap
+
+Use the `rect` marks with discrete fields on `x` and `y` channels creates a heatmap.
 
 <span class="vl-example" data-name="rect_heatmap"></span>
+
+{:#ranged}
+### Ranged Rectangles
+
+Specifying both `x` and `x2` and/or `y` and `y2` creates a rectangle that spans over certain x and/or y values.
+
+For example, we can use `rect` to create an annotation [`layer`](layer.html) that provides a shading between global `min` and `max` values.
+
+<span class="vl-example" data-name="layer_rect_extent"></span>
+
+We can also use `rect` to show a band covering one standard deviation over and below the global mean value.
+
+<span class="vl-example" data-name="layer_global_mean_dev"></span>
+
+
 {:#config}
 ## Rect Config
 
