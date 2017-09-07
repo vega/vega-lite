@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {expression, isEqualFilter, isOneOfFilter, isRangeFilter} from '../src/filter';
+import {expression, fieldFilterExpression, isEqualFilter, isOneOfFilter, isRangeFilter} from '../src/filter';
 import {TimeUnit} from '../src/timeunit';
 
 describe('filter', () => {
@@ -101,9 +101,9 @@ describe('filter', () => {
     });
 
 
-    it('should return undefined for a RangeFilter with no bound', () => {
+    it('should return true for a RangeFilter with no bound', () => {
       const expr = expression(null, {field: 'x', range: [null, null]});
-      assert.equal(expr, undefined);
+      assert.equal(expr, 'true');
     });
 
     it('should return a correct expression for an expression filter', () => {
@@ -134,5 +134,13 @@ describe('filter', () => {
 
     assert.equal(expr, '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
       '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))');
+  });
+
+
+  describe('fieldFilterExpression', () => {
+    it('generates a range predicate using inequalities when useInRange=false', () => {
+      const expr = fieldFilterExpression({field: 'x', range: [0, 5]}, false);
+      assert.equal(expr, 'datum["x"] >= 0 && datum["x"] <= 5');
+    });
   });
 });
