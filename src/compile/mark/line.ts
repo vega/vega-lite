@@ -1,14 +1,17 @@
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
+import * as ref from './valueref';
 
 
 export const line: MarkCompiler = {
   vgMark: 'line',
   encodeEntry: (model: UnitModel) => {
+    const {width, height} = model;
+
     return {
-      ...mixins.pointPosition('x', model, 'zeroOrMin'),
-      ...mixins.pointPosition('y', model, 'zeroOrMin'),
+      ...mixins.pointPosition('x', model, ref.mid(width)),
+      ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
       ...mixins.nonPosition('opacity', model),
