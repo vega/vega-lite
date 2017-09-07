@@ -74,4 +74,4 @@ For example, with `{"filter": {"selection": "brush"}}`, only data values that fa
 
 <div class="vl-example" data-name="selection_filter"></div>
 
-All [selection composition](selection.html#composing-multiple-selections) can be used here as well. For instance, `{"filter": {"selection": {"and": ["alex", "morgan"]}}}` filters for data values that are within both the `alex` and `morgan` selections.
+All [selection composition](selection.html#compose) can be used here as well. For instance, `{"filter": {"selection": {"and": ["alex", "morgan"]}}}` filters for data values that are within both the `alex` and `morgan` selections.

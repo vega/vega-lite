@@ -36,7 +36,7 @@ export type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef
 
 export type Condition<T> = {
   /**
-   * A [selection name](selection.html), or a series of [composed selections](selection.html#composing-multiple-selections).
+   * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
    */
   selection: LogicalOperand<string>;
 } & T;

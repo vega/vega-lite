@@ -20,14 +20,6 @@ permalink: /docs/selection.html
 
 Selections are the basic building block in Vega-Lite's _grammar of interaction._ They map user input (e.g., mouse moves and clicks, touch presses, etc.) into data queries, which can subsequently be used to drive conditional encoding rules, filter data points, or determine scale domains.
 
-{:#definition}
-| Property                 | Type                | Description    |
-| :----------------------- | :-----------------: | :------------- |
-| [type](#selection-types) | String | _**Required.**_ Determines the default event processing and data query for the selection. |
-| [on](#selection-on)      | [Vega Event Stream](https://vega.github.io/vega/docs/event-streams/) | Alternate user input events that should trigger the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters). |
-| [resolve](#resolving-selections-in-data-driven-views) | String | A strategy for how the selection's data query should be constructed, when used within a multiview or layered display. |
-| [mark](#mark) | Object | For interval selections only, an object to customize the appearance of the rectangle mark. |
-
 ## Documentation Overview
 {:.no_toc}
 
@@ -36,11 +28,11 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 
 ## Selection Types
 
-Selections are defined within single views, and their simplest definition consists of a **name** and a **type**. The selection type determines the default events that trigger a selection and the resultant data query. Vega-Lite currently supports three selection types:
+Selections are defined within single views, and their simplest definition consists of a **name** and a **type**. The selection type determines the default events that trigger a selection and the resultant data query.
 
-  * `single` -- to select a single discrete data value on `click`.
-  * `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
-  * `interval` -- to select a continuous range of data values on `drag`.
+| Property | Type   | Description    |
+| :--------| :----: | :------------- |
+| type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
 
 For example, try the different types against the example selection (named `pts`) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)">
   <option>single</option>
@@ -50,12 +42,20 @@ For example, try the different types against the example selection (named `pts`)
 
 <div id="selection_type" class="vl-example" data-name="selection_type_single"></div>
 
-<a id="selection-on"></a>
-While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The `on` property can be used to specify alternate events to trigger a selection. For instance, a single rectangle in the heatmap below can now be selected on double-click instead.
+## Selection Properties
+
+{:#selection-on}
+While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The following properties are available to do so:
+
+{% include table.html props="on,resolve,mark" source="IntervalSelection" %}
+
+For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on double-click instead.
 
 <div class="vl-example" data-name="selection_type_single_dblclick"></div>
 
-{:#mark}
+{:#interval-mark}
+### Interval Selection Marks
+
 Every interval selection also adds a rectangle mark to the visualization, to depict the extents of the selected region. The appearance of this mark can be customized with the following properties, specified under `mark`.
 
 {% include table.html props="fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
@@ -66,7 +66,23 @@ _Note:_ the two intervals do not have any effect on the visualization yet (we'll
 
 <div class="vl-example" data-name="interval_mark_style"></div>
 
-Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include: [bind](bind.html), [nearest](nearest.html), [project](project.html), [toggle](toggle.html), [translate](translate.html), and [zoom](zoom.html).
+## Selection Transformations
+
+Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include:
+
+* For `single` selections:
+  * [`bind`](bind.html) to input elements (also known as dynamic query widgets).
+  * [`nearest`](nearest.html) to accelerate selecting values.
+  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+* For `multi` selections:
+  * [`toggle`](toggle.html) to insert or remove data values based on their membership within the selection.
+  * [`nearest`](nearest.html) to accelerate selecting values.
+  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+* For `interval` selections:
+  * [`bind`](bind.html) to scale functions to enable panning &amp; zooming.
+  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+  * [`translate`](translate.html) to move the selection back-and-forth.
+  * [`zoom`](zoom.html) to resize the selection.
 
 ## Using Selections
 
@@ -113,6 +129,7 @@ If the selection is [projected](project.html) over _multiple_ fields or encoding
 
 _Note:_ For a selection to manipulate the scales of its own view, use the [bind](bind.html#scale-binding) operator instead.
 
+{:#compose}
 ### Composing Multiple Selections
 
 So far, we have only considered how to use one selection at a time. Vega-Lite also supports combining multiple selections using the `not`, `or`, and `and` logical composition operators.
@@ -135,6 +152,7 @@ When using selections with filter operators, logical composition can be used to 
 
 _Note:_ Logical composition is **not** supported when selections are used to drive scale domains.
 
+{:#resolve}
 ## Resolving Selections in Data-Driven Views
 
 When a selection is defined within a data-driven view (i.e., a view that is part of a [facet](facet.html) or [repeat](repeat.html)), the desired behaviour can be ambiguous. Consider the scatterplot matrix (SPLOM) example below, which has an interval selection named `brush`. Should there be only one brush across all cells, or should each cell have its own brush? In the latter case, how should points be highlighted in all the other cells?
