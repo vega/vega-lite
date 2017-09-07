@@ -217,7 +217,7 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   title?: VgTitleConfig;
 
-  /** Style Config */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
   style?: StyleConfigIndex;
 
   /**

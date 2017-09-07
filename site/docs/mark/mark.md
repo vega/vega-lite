@@ -146,41 +146,37 @@ The rest of this section describe groups of properties supported by the `mark` c
 
 
 
-<!-- TODO: write better explanation for default behavior -->
+{:#style-config}
+## Mark Style Config
 
-<!-- TODO: think about better example -->
-<!--
-#### Example: `"horizontal"` orient in the line.
+{: .suppress-error}
 ```json
 {
-  "data": {"url": "data/cars.json"},
-  "mark": "line",
-  "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-  },
+  // Top Level Specification
   "config": {
-    "mark": {"orient": "horizontal"}
+    "style": {
+      ...
+    }
+    ...
   }
 }
-
 ```
-<script>
-vg.embed('#horizontal_line', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/cars.json"},
-    "mark": "point",
-    "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-    },
-    "config": {
-      "mark": {"filled": true}
+
+
+
+
+In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block in the config object. Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
+
+For example, to set a default shape and stroke width for `point` marks with a style named `"triangle"`:
+
+{: .suppress-error}
+```json
+{
+  "style": {
+    "triangle": {
+      "shape": "triangle-up",
+      "strokeWidth": 2
     }
   }
-});
-</script>
-<div id="horizontal_line"></div>
----->
-
+}
+```
