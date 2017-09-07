@@ -13,6 +13,10 @@
       "title": "Histogram"
     },
     {
+      "name": "bar_gantt",
+      "title": "Gantt Chart"
+    },
+    {
       "name": "bar_grouped",
       "title": "Grouped Bar Chart"
     },
@@ -69,8 +73,12 @@
       "title": "Slope Graph"
     },
     {
+      "name": "line_step",
+      "title": "Step Chart"
+    },
+    {
       "name": "scatter_connected",
-      "title": "Connected Scatterplot"
+      "title": "Connected Scatterplot (Lines with Custom Paths)"
     },
     {
       "name": "area",
@@ -85,11 +93,11 @@
     },
     {
       "name": "rect_binned_heatmap",
-      "title": "Binned heatmap"
+      "title": "Table Binned heatmap"
     },
     {
       "name": "github_punchcard",
-      "title": "Github punch card visualization"
+      "title": "Table Bubble Plot (Github Punch Card)"
     }
   ],
   "Stack": [
@@ -126,18 +134,6 @@
       "galleryParameters": {
         "backgroundSize": "110%"
       }
-    }
-  ],
-  "Statistical": [
-    {
-      "name": "errorbar_aggregate",
-      "title": "Error Bars",
-      "galleryParameters": {
-        "backgroundSize": "150%"
-      }
-    }, {
-      "name": "errorbar_horizontal_aggregate",
-      "title": "Horizontal Error Bars"
     }
   ],
   "Trellis": [
@@ -182,6 +178,26 @@
     {
       "name": "layer_candlestick",
       "title": "Candlestick Chart"
+    },
+    {
+      "name": "layer_error_bars",
+      "title": "Error Bars showing Confidence Interval"
+    },
+    {
+      "name": "layer_error_bars_dev",
+      "title": "Error Bars showing Standard Deviation"
+    },
+    {
+      "name": "layer_global_mean_dev",
+      "title": "Scatterplot with Mean and Standard Deviation Overlay"
+    },
+    {
+      "name": "layer_area_ci",
+      "title": "Line chart with Confidence Interval Band"
+    },
+    {
+      "name": "layered_falkensee",
+      "title": "Falkensee"
     }
   ],
   "Composition": [

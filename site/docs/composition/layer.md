@@ -39,6 +39,8 @@ To layer these two charts on top of each other, we have to put the two specifica
 
 <div class="vl-example" data-name="layer_line_color_rule"></div>
 
+See [the example gallery](examples.html#layering) for more layering examples.
+
 ### Combined Scales and Guides
 
 When you have different scales in different layers, the scale domains are unioned so that all layers can use the same scale. In the example above, Vega-Lite automatically uses a common y-axis and color legend. We can disable this by setting the `resolve` property.
@@ -48,8 +50,3 @@ The default [resolutions](resolve.html) for layer are shared scales, axes, and l
 In the chart below, we set the y-scales of the different layers to be independent with `"resolve": {"y": {"scale": "independent"}}`.
 
 <div class="vl-example" data-name="layer_bar_dual_axis"></div>
-
-### Advanced Layering Example
-
-The population of the German city of Falkensee over time. Based on a [visualization built using Vega](https://vega.github.io/vega/examples/falkensee-population/).
-<div class="vl-example" data-name="layered_falkensee">
