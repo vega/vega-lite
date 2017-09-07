@@ -4,11 +4,13 @@
   "selection": {
     "alex": {
       "type": "interval",
-      "on": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+      "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+      "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
     },
     "morgan": {
       "type": "interval",
       "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+      "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
       "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
     }
   },
