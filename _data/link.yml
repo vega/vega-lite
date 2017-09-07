@@ -158,7 +158,7 @@ ScaleType:
 SchemeParams:
   link: "scale.html#scheme-params"
 SelectionDomain:
-  name: Object
+  link: "selection.html#scale-domains"
 Interpolate:
   name: String
 InterpolateParams:

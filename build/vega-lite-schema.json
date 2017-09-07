@@ -4254,7 +4254,7 @@
               "$ref": "#/definitions/SelectionDomain"
             }
           ],
-          "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values."
+          "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.\n\nThe `selection` property can be used to [interactively determine](selection.html#scale-domains) the scale domain."
         },
         "exponent": {
           "description": "The exponent of the `pow` scale.",
@@ -4630,9 +4630,11 @@
           "additionalProperties": false,
           "properties": {
             "field": {
+              "description": "The field name to extract selected values for, when a selection is [projected](project.html)\nover multiple fields or encodings.",
               "type": "string"
             },
             "selection": {
+              "description": "The name of a selection.",
               "type": "string"
             }
           },
@@ -4645,9 +4647,11 @@
           "additionalProperties": false,
           "properties": {
             "encoding": {
+              "description": "The encoding channel to extract selected values for, when a selection is [projected](project.html)\nover multiple fields or encodings.",
               "type": "string"
             },
             "selection": {
+              "description": "The name of a selection.",
               "type": "string"
             }
           },
