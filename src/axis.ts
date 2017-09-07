@@ -114,7 +114,9 @@ export const AXIS_PROPERTIES:(keyof (VgAxis|Axis))[] = [
 export const VG_AXIS_PROPERTIES: (keyof VgAxis)[] = [].concat(AXIS_PROPERTIES, ['gridScale']);
 
 export interface AxisConfigMixins {
-  /** Generic axis config. */
+  /**
+   * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config).
+   */
   axis?: AxisConfig;
 
   /**

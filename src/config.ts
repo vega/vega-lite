@@ -169,7 +169,9 @@ export interface VLOnlyConfig {
   /** Cell Config */
   cell?: CellConfig;
 
-  /** Scale Config */
+  /**
+   * Scale configuration determines default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
+   */
   scale?: ScaleConfig;
 
   /** Selection Config */
@@ -200,18 +202,18 @@ export interface OverlayConfig {
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
-   * Scale range config, or properties defining named range arrays
-   * that can be used within scale range definitions
-   * (such as `{"type": "ordinal", "range": "category"}`).
-   * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
+   * An object hash that defines default range arrays or schemes for using with scales.
+   * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
    */
   range?: RangeConfig;
 
-  /** Legend Config */
+  /**
+   * Legend configuration, which determines default properties for all [legends](legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](legend.html#config).
+   */
   legend?: LegendConfig;
 
   /**
-   * Title Config
+   * Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config).
    */
   title?: VgTitleConfig;
 

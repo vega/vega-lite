@@ -261,7 +261,8 @@ export interface TextConfig extends MarkConfig {
 export interface TickConfig extends MarkConfig {
   /**
    * The width of the ticks.
-   * If this value is undefined (by default,), we use 2/3 of rangeStep by default.
+   *
+   * __Default value:__  2/3 of rangeStep.
    * @minimum 0
    */
   bandSize?: number;

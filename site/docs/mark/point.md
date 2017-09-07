@@ -45,5 +45,22 @@ For example, this specification encodes the field `Origin` with both `color` and
 
 <span class="vl-example" data-name="scatter_colored_with_shape"></span>
 
-Note that `point` marks have a border but no fill by default.
-See [this section for an example with filled `point` marks](config.html#config.mark.filled).
+{:#config}
+## Point Config
+
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "point": ...,
+    ...
+  }
+}
+```
+
+The `point` property of the top-level [`config`](config.html) object sets the default properties for all point marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+
+For the list of all supported properties, please see the [mark config documentation](mark.html#config).

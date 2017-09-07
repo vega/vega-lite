@@ -53,3 +53,24 @@ By default, the line's path (order of points in the line) is determined by data 
 For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also [`layer`](layer.html) point marks over the line marks to highlight each data point.
 
 <span class="vl-example" data-name="scatter_connected"></span>
+
+
+{:#config}
+## Line Config
+
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "line": ...,
+    ...
+  }
+}
+```
+
+The `line` property of the top-level [`config`](config.html) object sets the default properties for all line marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+
+For the list of all supported properties, please see the [mark config documentation](mark.html#config).
