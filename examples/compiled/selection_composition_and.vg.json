@@ -226,6 +226,9 @@
                         {
                             "source": "scope",
                             "type": "mousedown",
+                            "filter": [
+                                "!event.shiftKey"
+                            ],
                             "markname": "alex_brush"
                         }
                     ],
@@ -240,17 +243,19 @@
                 {
                     "events": [
                         {
-                            "source": "window",
+                            "source": "scope",
                             "type": "mousemove",
-                            "consume": true,
                             "between": [
                                 {
                                     "source": "scope",
                                     "type": "mousedown",
+                                    "filter": [
+                                        "!event.shiftKey"
+                                    ],
                                     "markname": "alex_brush"
                                 },
                                 {
-                                    "source": "window",
+                                    "source": "scope",
                                     "type": "mouseup"
                                 }
                             ]
@@ -467,6 +472,9 @@
                         {
                             "source": "scope",
                             "type": "mousedown",
+                            "filter": [
+                                "event.shiftKey"
+                            ],
                             "markname": "morgan_brush"
                         }
                     ],
@@ -481,17 +489,19 @@
                 {
                     "events": [
                         {
-                            "source": "window",
+                            "source": "scope",
                             "type": "mousemove",
-                            "consume": true,
                             "between": [
                                 {
                                     "source": "scope",
                                     "type": "mousedown",
+                                    "filter": [
+                                        "event.shiftKey"
+                                    ],
                                     "markname": "morgan_brush"
                                 },
                                 {
-                                    "source": "window",
+                                    "source": "scope",
                                     "type": "mouseup"
                                 }
                             ]
