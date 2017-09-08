@@ -116,7 +116,13 @@ export interface MarkDef {
   clip?: boolean;
 }
 
-export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
+/** @hide */
+export type HiddenComposite = CompositeMark | CompositeMarkDef;
+
+export type AnyMark =
+  HiddenComposite |
+  Mark |
+  MarkDef;
 
 export function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef) {
   return mark['type'];

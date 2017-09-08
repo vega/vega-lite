@@ -6,9 +6,6 @@
       "anyOf": [
         {
           "$ref": "#/definitions/AggregateOp"
-        },
-        {
-          "$ref": "#/definitions/CompositeAggregate"
         }
       ]
     },
@@ -48,12 +45,6 @@
     },
     "AnyMark": {
       "anyOf": [
-        {
-          "$ref": "#/definitions/CompositeMark"
-        },
-        {
-          "$ref": "#/definitions/CompositeMarkDef"
-        },
         {
           "$ref": "#/definitions/Mark"
         },
@@ -433,12 +424,6 @@
         }
       },
       "type": "object"
-    },
-    "BOXPLOT": {
-      "enum": [
-        "box-plot"
-      ],
-      "type": "string"
     },
     "BarConfig": {
       "additionalProperties": false,
@@ -946,34 +931,6 @@
       },
       "type": "object"
     },
-    "BoxPlotDef": {
-      "additionalProperties": false,
-      "properties": {
-        "extent": {
-          "anyOf": [
-            {
-              "enum": [
-                "min-max"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "orient": {
-          "$ref": "#/definitions/Orient"
-        },
-        "type": {
-          "$ref": "#/definitions/BOXPLOT"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
@@ -1029,24 +986,8 @@
       ],
       "type": "object"
     },
-    "CompositeAggregate": {
-      "$ref": "#/definitions/BOXPLOT"
-    },
-    "CompositeMark": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BOXPLOT"
-        },
-        {
-          "$ref": "#/definitions/ERRORBAR"
-        }
-      ]
-    },
     "CompositeMarkConfigMixins": {
       "$ref": "#/definitions/BoxPlotConfigMixins"
-    },
-    "CompositeMarkDef": {
-      "$ref": "#/definitions/BoxPlotDef"
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -1676,12 +1617,6 @@
       "maximum": 7,
       "minimum": 1,
       "type": "number"
-    },
-    "ERRORBAR": {
-      "enum": [
-        "error-bar"
-      ],
-      "type": "string"
     },
     "Encoding": {
       "additionalProperties": false,
