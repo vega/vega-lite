@@ -216,31 +216,6 @@
             "labelOverlap": true,
             "orient": "bottom",
             "tickCount": {
-                "signal": "min(ceil(width/40), 10)"
-            },
-            "title": "BIN(IMDB_Rating)",
-            "zindex": 1,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "scale": "x",
-            "labelOverlap": true,
-            "orient": "top",
-            "tickCount": {
                 "signal": "ceil(width/40)"
             },
             "title": "MEAN(IMDB_Rating)",

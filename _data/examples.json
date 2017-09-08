@@ -162,6 +162,10 @@
       "title": "Error Bars showing Standard Deviation"
     },
     {
+      "name": "layer_histogram_global_mean",
+      "title": "Histogram with a Global Mean Overlay"
+    },
+    {
       "name": "layer_global_mean_dev",
       "title": "Scatterplot with Mean and Standard Deviation Overlay"
     },
