@@ -165,6 +165,24 @@ describe('Mark', function() {
         order: 'descending'
       });
     });
+
+    it('should not order by a missing dimension', function () {
+      const model = parseUnitModelWithScale({
+        "data": {"url": "data/movies.json"},
+        "mark": "line",
+        "encoding": {
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.deepEqual(getPathSort(model), undefined);
+    });
   });
   });
 });
