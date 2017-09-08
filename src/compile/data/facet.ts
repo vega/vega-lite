@@ -85,7 +85,7 @@ export class FacetNode extends DataFlowNode {
           if (field) {
             childIndependentFieldsWithStep[channel] = field;
           } else {
-            log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
           }
         }
       }

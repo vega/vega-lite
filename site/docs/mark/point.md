@@ -20,7 +20,7 @@ permalink: /docs/point.html
 
 ## Dot Plot
 
-Mapping a field to either only `x` (or only `y`) of `point` mark creates a **dot plot**.
+Mapping a field to either only `x` or only `y` of `point` marks creates a **dot plot**.
 
 <span class="vl-example" data-name="point_1d"></span>
 
@@ -29,6 +29,11 @@ Mapping a field to either only `x` (or only `y`) of `point` mark creates a **dot
 Mapping fields to both the `x` and `y` channels creates a scatter plot.
 
 <span class="vl-example" data-name="scatter"></span>
+
+
+By default, `point` marks only have borders and are transparent inside.  You can create a filled point by setting `filled` to `true`.
+
+<span class="vl-example" data-name="point_filled"></span>
 
 ## Bubble Plot
 
@@ -45,5 +50,22 @@ For example, this specification encodes the field `Origin` with both `color` and
 
 <span class="vl-example" data-name="scatter_colored_with_shape"></span>
 
-Note that `point` marks have a border but no fill by default.
-See [this section for an example with filled `point` marks](config.html#config.mark.filled).
+{:#config}
+## Point Config
+
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "point": ...,
+    ...
+  }
+}
+```
+
+The `point` property of the top-level [`config`](config.html) object sets the default properties for all point marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+
+For the list of all supported properties, please see the [mark config documentation](mark.html#config).

@@ -327,14 +327,14 @@ Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`sch
 
 ### Scale Config
 
-To provide themes for all scales, the scale config `config: {scale: {...}}` can contain the following properties:
+To provide themes for all scales, the scale config (`config: {scale: {...}}`) can contain the following properties:
 
 {% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,pointPadding,rangeStep,round,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#range-config}
 ### Range Config
 
-Scale range configuration `config: {range: {...}}` defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid [`range`](#range) or, for named color ranges, [Vega scheme definitions](https://vega.github.io/vega/docs/schemes/#scheme-properties).
+The scale range configuration (`config: {range: {...}}`) defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid [`range`](#range) or, for named color ranges, [Vega scheme definitions](https://vega.github.io/vega/docs/schemes/#scheme-properties).
 
 By default, Vega-Lite (via Vega) includes the following pre-defined named ranges:
 

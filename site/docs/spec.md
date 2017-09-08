@@ -33,7 +33,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
 
 
 ## Single View Specifications
-{:#single-view-spec}
+{:#single}
 
 {: .suppress-error}
 ```json
@@ -85,3 +85,34 @@ To create layered and multi-view graphics, please refer to the following pages:
 - [`facet`](facet.html)
 - [`concat`](concat.html)
 - [`repeat`](repeat.html)
+
+
+
+{:#config}
+## View Configuration
+
+{: .suppress-error}
+```json
+// Top-level View Specification
+{
+  ...,
+  "config": {          // Configuration Object
+    "view": { ... },   // - View Configuration
+    ...
+  }
+}
+```
+
+The style of a single view visualization can be customized by specifying the `view ` property of the `config` object.
+
+### Default View Size
+
+The `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
+
+{% include table.html props="width,height" source="ViewConfig" %}
+
+**For more information about view size, please see the [size](size.html) documentation.**
+
+### View Styles
+
+{% include table.html props="clip,fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="ViewConfig" %}

@@ -34,7 +34,7 @@ When the top-level `width` property is specified, the width of the single plot i
 
 If the top-level `width` / `height` property is not specified, the width / height of a single view is determined by the properties of the `x` / `y` channel:
 
-- If `x` / `y` axis has a continuous scale (either quantitative or time), the width/height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property.
+- If `x` / `y` axis has a continuous scale (either quantitative or time), the width/height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property.
 
 - If the `x` / `y` channel has a [discrete scale](scale.html#discrete) (`point` or `band`) with a numeric `rangeStep` value (default), the width / height is is determined based on the scale's `rangeStep`, `paddingInner`, `paddingOuter` and the cardinality of the encoded field (the number of possible distinct values of the field).
 
@@ -44,7 +44,7 @@ This example shows a plot with a continuous y-scale and a discrete x-scale:
 
 <span class="vl-example" data-name="bar_size_default"></span>
 
-- If the `x` / `y` channel has a discrete scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
+- If the `x` / `y` channel has a discrete scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property and the band of the scale will be adjusted to fit to the width.
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 

@@ -13,6 +13,10 @@
       "title": "Histogram"
     },
     {
+      "name": "bar_gantt",
+      "title": "Gantt Chart"
+    },
+    {
       "name": "bar_grouped",
       "title": "Grouped Bar Chart"
     },
@@ -26,17 +30,11 @@
     },
     {
       "name": "scatter_binned",
-      "title": "Binned Scatterplot",
-      "galleryParameters": {
-        "backgroundSize": "110%"
-      }
+      "title": "Binned Scatterplot"
     },
     {
       "name": "scatter_colored_with_shape",
-      "title": "Colored Scatterplot",
-      "galleryParameters": {
-        "backgroundSize": "110%"
-      }
+      "title": "Colored Scatterplot"
     },
     {
       "name": "scatter_bubble",
@@ -44,17 +42,11 @@
     },
     {
       "name": "bubble_health_income",
-      "title": "Gapminder Bubble Plot",
-      "galleryParameters": {
-        "backgroundSize": "160%"
-      }
+      "title": "Gapminder Bubble Plot"
     },
     {
       "name": "tick_strip",
-      "title": "Strip Plot",
-      "galleryParameters": {
-        "backgroundSize": "contain"
-      }
+      "title": "Strip Plot"
     },
     {
       "name": "line",
@@ -69,8 +61,12 @@
       "title": "Slope Graph"
     },
     {
+      "name": "line_step",
+      "title": "Step Chart"
+    },
+    {
       "name": "scatter_connected",
-      "title": "Connected Scatterplot"
+      "title": "Connected Scatterplot (Lines with Custom Paths)"
     },
     {
       "name": "area",
@@ -79,17 +75,15 @@
     {
       "name": "rect_heatmap",
       "title": "Table Heatmap",
-      "galleryParameters": {
-        "backgroundSize": "110%"
-      }
+      "style": "background-size: auto"
     },
     {
       "name": "rect_binned_heatmap",
-      "title": "Binned heatmap"
+      "title": "Table Binned heatmap"
     },
     {
       "name": "github_punchcard",
-      "title": "Github punch card visualization"
+      "title": "Table Bubble Plot (Github Punch Card)"
     }
   ],
   "Stack": [
@@ -99,10 +93,7 @@
     },
     {
       "name": "stacked_bar_h",
-      "title": "Horizontal Stacked Bar Chart",
-      "galleryParameters": {
-        "backgroundSize": "120%"
-      }
+      "title": "Horizontal Stacked Bar Chart"
     },
     {
       "name": "stacked_bar_normalize",
@@ -122,30 +113,12 @@
     },
     {
       "name": "bar_layered_transparent",
-      "title": "Layered Bar Chart",
-      "galleryParameters": {
-        "backgroundSize": "110%"
-      }
-    }
-  ],
-  "Statistical": [
-    {
-      "name": "errorbar_aggregate",
-      "title": "Error Bars",
-      "galleryParameters": {
-        "backgroundSize": "150%"
-      }
-    }, {
-      "name": "errorbar_horizontal_aggregate",
-      "title": "Horizontal Error Bars"
+      "title": "Layered Bar Chart"
     }
   ],
   "Trellis": [
     { "name": "trellis_anscombe",
-      "title": "Anscombe's Quartet",
-      "galleryParameters": {
-        "backgroundSize": "130%"
-      }
+      "title": "Anscombe's Quartet"
     },
     {
       "name": "trellis_bar",
@@ -153,10 +126,7 @@
     },
     {
       "name": "trellis_stacked_bar",
-      "title": "Trellis Stacked Bar Chart",
-      "galleryParameters": {
-        "backgroundSize": "150%"
-      }
+      "title": "Trellis Stacked Bar Chart"
     },
     {
       "name": "trellis_scatter",
@@ -182,6 +152,26 @@
     {
       "name": "layer_candlestick",
       "title": "Candlestick Chart"
+    },
+    {
+      "name": "layer_error_bars",
+      "title": "Error Bars showing Confidence Interval"
+    },
+    {
+      "name": "layer_error_bars_dev",
+      "title": "Error Bars showing Standard Deviation"
+    },
+    {
+      "name": "layer_global_mean_dev",
+      "title": "Scatterplot with Mean and Standard Deviation Overlay"
+    },
+    {
+      "name": "layer_area_ci",
+      "title": "Line chart with Confidence Interval Band"
+    },
+    {
+      "name": "layered_falkensee",
+      "title": "Falkensee"
     }
   ],
   "Composition": [
