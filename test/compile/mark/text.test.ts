@@ -141,7 +141,7 @@ describe('Mark: Text', function() {
     const childModel = model.children[0] as UnitModel;
     const props = text.encodeEntry(childModel);
 
-    it('should fit cell on x', function() {
+    it('should fit the view on x', function() {
       assert.deepEqual(props.x, {field: {group: 'width'}, offset: -5});
     });
 

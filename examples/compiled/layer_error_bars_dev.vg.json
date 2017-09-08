@@ -1,0 +1,246 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/barley.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "ops": [
+                        "mean",
+                        "stdev"
+                    ],
+                    "fields": [
+                        "yield",
+                        "yield"
+                    ],
+                    "as": [
+                        "mean",
+                        "stdev"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.mean-datum.stdev",
+                    "as": "lower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.mean+datum.stdev",
+                    "as": "upper"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"mean\"])",
+                    "as": "mean"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"mean\"] !== null && !isNaN(datum[\"mean\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper\"])",
+                    "as": "upper"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lower\"])",
+                    "as": "lower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upper\"] !== null && !isNaN(datum[\"upper\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "mean"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "variety"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "upper"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "variety"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "lower"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "mean"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upper"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "lower"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "zero": false,
+            "nice": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "variety"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "variety"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "padding": 0.5
+        }
+    ],
+    "axes": [
+        {
+            "title": "Barley Yield",
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "title": "variety",
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

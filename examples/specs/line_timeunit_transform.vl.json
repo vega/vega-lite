@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Google's stock price over time. Used to demonstrate the time unit transform.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "mark": "line",
+  "transform": [{
+    "timeUnit": "month",
+    "field": "date",
+    "as": "month"
+  }],
+  "encoding": {
+    "x": {
+      "field": "month",
+      "type": "temporal",
+      "axis": {
+        "format": "%b"
+      }
+    },
+    "y": {
+      "aggregate": "max",
+      "field": "temp_max",
+      "type": "quantitative"
+    }
+  }
+}

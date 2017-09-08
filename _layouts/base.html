@@ -9,7 +9,7 @@
     <meta name="description" content="{{ site.description }}">
 
     <script>
-      var BASEURL = "{{site.baseurl}}";
+      var BASEURL = window.location.origin + "{{site.baseurl}}";
     </script>
 
     <title> {{site.title}}{% if page.title %}:{% endif %} {{page.title}} </title>

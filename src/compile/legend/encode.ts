@@ -1,4 +1,4 @@
-import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
@@ -6,9 +6,14 @@ import {keys, without} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {LegendComponent} from './component';
 
 
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel) {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
+  if (legendCmpt.get('type') === 'gradient') {
+    return undefined;
+  }
+
   let symbols:any = {};
   const mark = model.mark();
 
@@ -61,12 +66,33 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     }
   }
 
+  if (channel !== OPACITY) {
+    const opacityDef = model.encoding.opacity;
+    if (isValueDef(opacityDef)) {
+      symbols.opacity = {value: opacityDef.value};
+    }
+  }
+
   symbols = {...symbols, ...symbolsSpec};
 
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonspatialScaleChannel) {
+export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
+  let gradient:any = {};
+
+  if (legendCmpt.get('type') === 'gradient') {
+    const opacityDef = model.encoding.opacity;
+    if (isValueDef(opacityDef)) {
+      gradient.opacity = {value: opacityDef.value};
+    }
+  }
+
+  gradient = {...gradient, ...gradientSpec};
+  return keys(gradient).length > 0 ? gradient : undefined;
+}
+
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonspatialScaleChannel, legendCmpt: LegendComponent) {
   const legend = model.legend(channel);
   const config = model.config;
 

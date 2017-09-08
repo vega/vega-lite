@@ -66,8 +66,8 @@ export interface LayoutSizeMixins {
    *
    * __Default value:__ This will be determined by the following rules:
    *
-   * - For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).
-   * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).
+   * - For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).
+   * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).
    * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
    *
    * __Note:__ For plot with `row` and `column` channels, this represents the width of a single view.
@@ -80,11 +80,11 @@ export interface LayoutSizeMixins {
    * The height of a visualization.
    *
    * __Default value:__
-   * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
-   * - For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).
+   * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).
+   * - For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).
    * - If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.
    *
-   * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
+   * __Note__: For plot with `row` and `column` channels, this represents the height of a single view.
    *
    * __See also:__ The documentation for [width and height](size.html) contains more examples.
    */
@@ -138,7 +138,8 @@ export type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   facet: Facet<Field>;
 
-  spec: GenericSpec<U>;
+  spec: GenericLayerSpec<U> | U;
+  // TODO: replace this with GenericSpec<U> once we support all cases;
 
   resolve?: Resolve;
 }
@@ -242,7 +243,8 @@ function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Confi
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
-    spec: normalize(subspec, config)
+    // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+    spec: normalize(subspec, config) as any
   };
 }
 

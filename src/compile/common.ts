@@ -1,5 +1,5 @@
 import {Channel, isScaleChannel} from '../channel';
-import {CellConfig, Config} from '../config';
+import {Config, ViewConfig} from '../config';
 import {field, FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
@@ -13,7 +13,7 @@ import {UnitModel} from './unit';
 
 
 export function applyConfig(e: VgEncodeEntry,
-    config: CellConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
+    config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
     propsList: string[]) {
   for (const property of propsList) {
     const value = config[property];

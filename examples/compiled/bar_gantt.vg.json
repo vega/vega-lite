@@ -1,0 +1,175 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A simple bar chart with ranged data (aka Gantt Chart).",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "task": "A",
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "task": "B",
+                    "start": 3,
+                    "end": 8
+                },
+                {
+                    "task": "C",
+                    "start": 8,
+                    "end": 10
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"start\"])",
+                    "as": "start"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"end\"])",
+                    "as": "end"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "start"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "end"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "task"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "fields": [
+                    "start",
+                    "end"
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "task",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "title": "start",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "title": "task",
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

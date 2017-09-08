@@ -1,6 +1,6 @@
 import {Axis} from '../../axis';
 import {BinParams} from '../../bin';
-import {Channel, X, Y} from '../../channel';
+import {SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
@@ -11,7 +11,7 @@ import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 
-export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
+export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: SpatialScaleChannel) {
   if (isGridAxis) {
     return false;
   }
@@ -30,9 +30,9 @@ export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
   return !hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 
-export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
+export function gridScale(model: UnitModel, channel: SpatialScaleChannel, isGridAxis: boolean) {
   if (isGridAxis) {
-    const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
+    const gridChannel: SpatialScaleChannel = channel === 'x' ? 'y' : 'x';
     if (model.getScaleComponent(gridChannel)) {
       return model.scaleName(gridChannel);
     }
@@ -41,9 +41,9 @@ export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolea
 }
 
 
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, scaleType: ScaleType) {
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: SpatialScaleChannel, scaleType: ScaleType) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
-  if ((channel === 'x' || channel === 'y') && fieldDef.type !== 'nominal') {
+  if (fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
       return 'greedy';
     }
@@ -63,7 +63,7 @@ export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean) {
   }
 }
 
-export function orient(channel: Channel) {
+export function orient(channel: SpatialScaleChannel) {
   switch (channel) {
     case X:
       return 'bottom';
@@ -74,7 +74,7 @@ export function orient(channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: Channel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+export function tickCount(channel: SpatialScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
 
     if (fieldDef.bin) {

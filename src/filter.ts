@@ -131,7 +131,8 @@ export function expression(model: Model, filterOp: LogicalOperand<Filter>, node?
   });
 }
 
-export function fieldFilterExpression(filter: FieldFilter) {
+// This method is used by Voyager.  Do not change its behavior without changing Voyager.
+export function fieldFilterExpression(filter: FieldFilter, useInRange=true) {
   const fieldExpr = filter.timeUnit ?
     // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
@@ -151,16 +152,21 @@ export function fieldFilterExpression(filter: FieldFilter) {
     const lower = filter.range[0];
     const upper = filter.range[1];
 
-    if (lower !== null &&  upper !== null) {
+    if (lower !== null &&  upper !== null && useInRange) {
       return 'inrange(' + fieldExpr + ', [' +
         valueExpr(lower, filter.timeUnit) + ', ' +
         valueExpr(upper, filter.timeUnit) + '])';
-    } else if (lower !== null) {
-      return fieldExpr + ' >= ' + lower;
-    } else if (upper !== null) {
-      return fieldExpr + ' <= ' + upper;
     }
-    return undefined;
+
+    const exprs = [];
+    if (lower !== null) {
+      exprs.push(`${fieldExpr} >= ${valueExpr(lower, filter.timeUnit)}`);
+    }
+    if (upper !== null) {
+      exprs.push(`${fieldExpr} <= ${valueExpr(upper, filter.timeUnit)}`);
+    }
+
+    return exprs.length > 0 ? exprs.join(' && ') : 'true';
   }
 
   /* istanbul ignore next: it should never reach here */

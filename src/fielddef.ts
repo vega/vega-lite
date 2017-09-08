@@ -35,6 +35,9 @@ export type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef
 
 
 export type Condition<T> = {
+  /**
+   * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
+   */
   selection: LogicalOperand<string>;
 } & T;
 
@@ -88,7 +91,10 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-export type Aggregate = AggregateOp | CompositeAggregate;
+/** @hide */
+export type HiddenCompositeAggregate = CompositeAggregate;
+
+export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
 export interface FieldDefBase<F> {
 
@@ -212,7 +218,6 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 }
 
 export interface TextFieldDef<F> extends FieldDef<F> {
-  // FIXME: add more reference to Vega's format pattern or d3's format pattern.
   /**
    * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
    */

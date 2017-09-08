@@ -11,6 +11,8 @@ export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
 export interface Legend extends VgLegendBase, Guide {
   /**
    * Optional mark definitions for custom legend encoding.
+   *
+   * @hide
    */
   encoding?: LegendEncoding;
 
@@ -25,7 +27,9 @@ export interface Legend extends VgLegendBase, Guide {
   values?: number[] | string[] | DateTime[];
 
   /**
-   * The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.
+   * The type of the legend. Use `"symbol"` to create a discrete legend and `"gradient"` for a continuous color gradient.
+   *
+   * __Default value:__ `"gradient"` for non-binned quantitative fields and temporal fields; `"symbol"` otherwise.
    */
   type?: 'symbol' | 'gradient';
 

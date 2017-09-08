@@ -122,4 +122,46 @@ describe('Mark: Line', function() {
       assert.deepEqual(props.x, {scale: X, field: 'sum_yield_end'});
     });
   });
+
+  describe('with x', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "mark": "line",
+      "encoding": {"x": {"field": "year", "type": "ordinal"}},
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = line.encodeEntry(model);
+
+    it('should be centered on y', function() {
+      assert.deepEqual(props.y, {
+        mult: 0.5,
+        signal: 'height'
+      });
+    });
+
+    it('should scale on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'year'});
+    });
+  });
+
+  describe('with y', function() {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "mark": "line",
+      "encoding": {"y": {"field": "year", "type": "ordinal"}},
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = line.encodeEntry(model);
+
+    it('should be centered on x', function() {
+      assert.deepEqual(props.x, {
+        mult: 0.5,
+        signal: 'width'
+      });
+    });
+
+    it('should scale on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'year'});
+    });
+  });
 });

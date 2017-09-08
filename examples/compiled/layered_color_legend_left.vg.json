@@ -296,14 +296,19 @@
             "orient": "left",
             "stroke": "color",
             "title": "symbol",
-            "fill": "color"
+            "fill": "color",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {
-        "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888"
-        },
         "axisY": {
             "minExtent": 30
         }

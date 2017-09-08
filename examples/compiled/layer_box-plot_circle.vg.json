@@ -1,0 +1,441 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "q1",
+                        "q3",
+                        "median",
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "people",
+                        "people",
+                        "people",
+                        "people",
+                        "people"
+                    ],
+                    "as": [
+                        "lowerBox",
+                        "upperBox",
+                        "midBox",
+                        "lowerWhisker",
+                        "upperWhisker"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerWhisker\"])",
+                    "as": "lowerWhisker"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lowerWhisker\"] !== null && !isNaN(datum[\"lowerWhisker\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperWhisker\"])",
+                    "as": "upperWhisker"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upperBox\"] !== null && !isNaN(datum[\"upperBox\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lowerBox\"] !== null && !isNaN(datum[\"lowerBox\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"midBox\"])",
+                    "as": "midBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"midBox\"] !== null && !isNaN(datum[\"midBox\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "500"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_layer_0_marks",
+            "type": "rule",
+            "style": [
+                "boxWhisker"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "lowerWhisker"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "lowerBox"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_0_layer_1_marks",
+            "type": "rule",
+            "style": [
+                "boxWhisker"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "upperBox"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "upperWhisker"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_0_layer_2_marks",
+            "type": "rect",
+            "style": [
+                "box"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "lowerBox"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "upperBox"
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "height": {
+                        "value": 14
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_0_layer_3_marks",
+            "type": "rect",
+            "style": [
+                "boxMid"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "midBox"
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "height": {
+                        "value": 14
+                    },
+                    "width": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_5"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "people"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "shape": {
+                        "value": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.1
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "lowerWhisker"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "lowerBox"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "upperBox"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "upperWhisker"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "lowerBox"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "upperBox"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "midBox"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "people"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "age"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "title": "population",
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "title": "age",
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

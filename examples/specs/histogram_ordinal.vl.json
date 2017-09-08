@@ -6,11 +6,7 @@
     "x": {
       "bin": true,
       "field": "IMDB_Rating",
-      "type": "ordinal",
-      "sort": {
-        "op": "count",
-        "order": "descending"
-      }
+      "type": "ordinal"
     },
     "y": {
       "aggregate": "count",

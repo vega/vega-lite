@@ -157,7 +157,6 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
             "title": "Origin",
             "zindex": 1
@@ -171,10 +170,6 @@
         }
     ],
     "config": {
-        "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888"
-        },
         "axisY": {
             "minExtent": 30
         }

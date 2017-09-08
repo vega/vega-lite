@@ -844,23 +844,19 @@
         {
             "stroke": "color",
             "title": "Cylinders",
-            "fill": "color",
             "encode": {
                 "symbols": {
                     "update": {
-                        "shape": {
-                            "value": "square"
+                        "opacity": {
+                            "value": 0.7
                         }
                     }
                 }
-            }
+            },
+            "fill": "color"
         }
     ],
     "config": {
-        "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888"
-        },
         "axisY": {
             "minExtent": 30
         }

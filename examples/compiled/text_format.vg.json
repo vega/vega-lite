@@ -1,0 +1,115 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ],
+                    "as": [
+                        "mean_Horsepower"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "90"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "field": {
+                            "group": "width"
+                        },
+                        "offset": -5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Origin"
+                    },
+                    "text": {
+                        "signal": "format(datum[\"mean_Horsepower\"], \".2f\")"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "align": {
+                        "value": "right"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "padding": 0.5
+        }
+    ],
+    "axes": [
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "title": "Origin",
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

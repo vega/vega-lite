@@ -265,6 +265,9 @@
                     "update": {
                         "shape": {
                             "value": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.7
                         }
                     }
                 }
@@ -272,10 +275,6 @@
         }
     ],
     "config": {
-        "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888"
-        },
         "axisY": {
             "minExtent": 30
         }

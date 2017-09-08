@@ -36,13 +36,7 @@
                     "type": "formula",
                     "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\")",
                     "as": "bin_maxbins_10_IMDB_Rating_range"
-                }
-            ]
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -85,7 +79,7 @@
                 "bar"
             ],
             "from": {
-                "data": "data_0"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
@@ -120,8 +114,8 @@
                 "data": "source_0",
                 "field": "bin_maxbins_10_IMDB_Rating_range",
                 "sort": {
-                    "op": "count",
-                    "order": "descending"
+                    "field": "bin_maxbins_10_IMDB_Rating",
+                    "op": "min"
                 }
             },
             "range": {
@@ -136,7 +130,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "data_0",
+                "data": "source_0",
                 "field": "count_*"
             },
             "range": [
@@ -199,10 +193,6 @@
         }
     ],
     "config": {
-        "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888"
-        },
         "axisY": {
             "minExtent": 30
         }

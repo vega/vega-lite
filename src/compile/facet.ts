@@ -277,7 +277,7 @@ export class FacetModel extends ModelWithField {
               fields.push(field);
               ops.push('distinct');
             } else {
-              log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+              log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
             }
           }
         }

@@ -209,13 +209,11 @@ export interface VgAxis {
 
   ticks?: boolean;
   tickCount?: number;
-  tickExtra?: boolean;
   tickSize?: number;
 
   title?: string;
   titleAlign?: string;
   titleAngle?: number;
-  titleMaxLength?: number;
   titlePadding?: number;
 
   values?: any[] | VgSignalRef;
@@ -391,28 +389,31 @@ export type VgBinding = VgCheckboxBinding | VgRadioBinding |
  */
 export interface VgAxisBase {
   /**
-   * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).
+   * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.
+   *
+   * __Default value:__ `true`
    */
   domain?: boolean;
 
   /**
    * A boolean flag indicating if grid lines should be included as part of the axis
    *
-   * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
+   * __Default value:__ `true` for [continuous scales](scale.html#continuous) that are not binned; otherwise, `false`.
    */
   grid?: boolean;
 
   /**
-   * A boolean flag indicating if labels should be included as part of the axis (default true).
+   * A boolean flag indicating if labels should be included as part of the axis.
    *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).
+   * __Default value:__  `true`.
    */
   labels?: boolean;
 
   /**
    * The rotation angle of the axis labels.
    *
-   * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
+   * __Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.
+   *
    * @minimum -360
    * @maximum 360
    */
@@ -421,9 +422,14 @@ export interface VgAxisBase {
   /**
    * The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
    *
-   * __Default value:__ `true` for x-axes with horizontal labels, otherwise `false`.
+   * __Default value:__ `true` for non-nominal fields with non-log scales; `"greedy"` for log scales; otherwise `false`.
    */
   labelOverlap?: boolean | 'parity' | 'greedy';
+
+  /**
+   * The padding, in pixels, between axis and text labels.
+   */
+  labelPadding?: number;
 
   /**
    * Boolean value that determines whether the axis should include ticks.
@@ -431,14 +437,7 @@ export interface VgAxisBase {
   ticks?: boolean;
 
   /**
-   * Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `"bandPostion": 1` and an axis `"padding"` value of `0`.
-   */
-  tickExtra?: boolean;
-
-  /**
-   * The size, in pixels, of major, minor and end ticks.
-   *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).
+   * The size in pixels of axis ticks.
    *
    * @minimum 0
    */
@@ -455,12 +454,10 @@ export interface VgAxisBase {
   titleAngle?: number;
 
   /**
-   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
-   *
-   * __Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)
+   * Max length for axis title if the title is automatically generated from the field's description.
    *
    * @minimum 0
-   * @TJS-type integer
+   * __Default value:__ `undefined`.
    */
   titleMaxLength?: number;
 
@@ -472,7 +469,7 @@ export interface VgAxisBase {
   /**
    * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
    *
-   * __Default value:__ `30`
+   * __Default value:__ `30` for y-axis; `undefined` for x-axis.
    */
   minExtent?: number;
 
@@ -549,8 +546,6 @@ export interface VgAxisConfig extends VgAxisBase {
   /**
    * The font size of the label, in pixels.
    *
-   * __Default value:__ `10`.
-   *
    * @minimum 0
    */
   labelFontSize?: number;
@@ -559,11 +554,6 @@ export interface VgAxisConfig extends VgAxisBase {
    * Maximum allowed pixel width of axis tick labels.
    */
   labelLimit?: number;
-
-  /**
-   * Padding in pixels between axis ticks and tick labels.
-   */
-  labelPadding?: number;
 
   /**
    * Boolean flag indicating if pixel position values should be rounded to the nearest integer.
@@ -595,8 +585,6 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * Font size of the title.
-   *
-   * __Default value:__ `10`.
    *
    * @minimum 0
    */
@@ -637,9 +625,9 @@ export interface VgLegendBase {
   fillColor?: string;
 
   /**
-   * The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
    *
-   * __Default value:__  `"right"`
+   * __Default value:__ `"right"`
    */
   orient?: LegendOrient;
 

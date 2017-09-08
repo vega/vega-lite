@@ -65,19 +65,6 @@ export class Split<T extends object> {
       this.set(key, s[key], true);
     }
   }
-
-  public extend(mixins: T, explicit: boolean) {
-    return new Split<T>(
-      explicit ? {
-        ...this.explicit as any,
-        ...mixins as any
-      } : this.explicit,
-      explicit ? this.implicit : {
-        ...this.implicit as any,
-        ...mixins as any
-      }
-    );
-  }
 }
 
 export interface Explicit<T> {

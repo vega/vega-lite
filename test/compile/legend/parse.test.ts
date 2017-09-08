@@ -37,6 +37,12 @@ describe('compile/legend', function() {
         const model = parseUnitModelWithScale(s);
 
         const def = legendParse.parseLegendForChannel(model, channel).combine();
+
+        if (channel !== OPACITY) {
+          assert.equal(def.encode.symbols.update.opacity.value, 0.7);
+        } else {
+          assert.isUndefined(def.encode.symbols.update.opacity);
+        }
         assert.isObject(def);
         assert.equal(def.title, "a");
       });

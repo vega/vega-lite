@@ -1,0 +1,424 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number",
+                    "Acceleration": "number"
+                }
+            }
+        },
+        {
+            "name": "column_domain",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_child_width",
+            "update": "200"
+        },
+        {
+            "name": "child_child_height",
+            "update": "200"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "headerBand": {
+            "column": 0.5
+        },
+        "offset": 10,
+        "columns": {
+            "signal": "length(data('column_domain'))"
+        },
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "name": "column_title",
+            "role": "column-title",
+            "type": "group",
+            "marks": [
+                {
+                    "type": "text",
+                    "role": "column-title-text",
+                    "style": "guide-title",
+                    "encode": {
+                        "update": {
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "Origin"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column_domain"
+            },
+            "sort": {
+                "field": "datum[\"Origin\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "''+parent[\"Origin\"]"
+                },
+                "offset": 10,
+                "orient": "top",
+                "style": "guide-label",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"Origin\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "data": [
+                {
+                    "name": "child_row_domain",
+                    "source": "facet",
+                    "transform": [
+                        {
+                            "type": "aggregate",
+                            "groupby": [
+                                "Cylinders"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full",
+                "align": "all"
+            },
+            "marks": [
+                {
+                    "name": "child_row_title",
+                    "role": "row-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-title-text",
+                            "style": "guide-title",
+                            "encode": {
+                                "update": {
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "text": {
+                                        "value": "Cylinders"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "child_row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "from": {
+                        "data": "child_row_domain"
+                    },
+                    "sort": {
+                        "field": "datum[\"Cylinders\"]",
+                        "order": "ascending"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "''+parent[\"Cylinders\"]"
+                        },
+                        "offset": 10,
+                        "orient": "left",
+                        "style": "guide-label",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "labelOverlap": true,
+                            "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
+                            "title": "Acceleration",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "child_column_footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_child_width"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "labelOverlap": true,
+                            "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
+                            "title": "Horsepower",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "child_cell",
+                    "type": "group",
+                    "style": "cell",
+                    "from": {
+                        "facet": {
+                            "name": "child_facet",
+                            "data": "facet",
+                            "groupby": [
+                                "Cylinders"
+                            ]
+                        }
+                    },
+                    "sort": {
+                        "field": [
+                            "datum[\"Cylinders\"]"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "data": [
+                        {
+                            "source": "child_facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "filter",
+                                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                                }
+                            ]
+                        }
+                    ],
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_child_width"
+                            },
+                            "height": {
+                                "signal": "child_child_height"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_child_marks",
+                            "type": "symbol",
+                            "style": [
+                                "point"
+                            ],
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "Horsepower"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "Acceleration"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "grid": true,
+                            "labels": false,
+                            "maxExtent": 0,
+                            "minExtent": 0,
+                            "orient": "bottom",
+                            "tickCount": {
+                                "signal": "ceil(child_child_width/40)"
+                            },
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        },
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "grid": true,
+                            "labels": false,
+                            "maxExtent": 0,
+                            "minExtent": 0,
+                            "orient": "left",
+                            "tickCount": {
+                                "signal": "ceil(child_child_height/40)"
+                            },
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Horsepower"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "child_child_width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Acceleration"
+            },
+            "range": [
+                {
+                    "signal": "child_child_height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

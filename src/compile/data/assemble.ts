@@ -20,6 +20,7 @@ import {TimeUnitNode} from './timeunit';
 /**
  * Print debug information for dataflow tree.
  */
+// tslint:disable-next-line
 function debug(node: DataFlowNode) {
   console.log(`${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${
     (node.children.map(c => {
