@@ -138,7 +138,8 @@ export type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   facet: Facet<Field>;
 
-  spec: GenericSpec<U>;
+  spec: GenericLayerSpec<U> | U;
+  // TODO: replace this with GenericSpec<U> once we support all cases;
 
   resolve?: Resolve;
 }
@@ -242,7 +243,8 @@ function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Confi
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
-    spec: normalize(subspec, config)
+    // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+    spec: normalize(subspec, config) as any
   };
 }
 
