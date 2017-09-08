@@ -16,7 +16,7 @@ describe('config', () => {
         opacity: 0.5,
         ...defaultConfig.bar
       },
-      cell: {
+      view: {
         fill: '#eee'
       },
       title: {
@@ -43,6 +43,7 @@ describe('config', () => {
       assert.isUndefined(output.style.bar['binSpacing'], `VL only Bar config should be removed`);
       assert.isUndefined(output.style.cell['width'], `VL only cell config should be removed`);
       assert.isUndefined(output.style.cell['height'], `VL only cell config should be removed`);
+      assert.equal(output.style.cell['fill'], '#eee', `config.view should be redirect to config.style.cell`);
 
       assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
     });

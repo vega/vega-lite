@@ -103,9 +103,7 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
       // For discrete domain with range.step, use dynamic width/height
       return 'range-step';
     } else {
-      // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
-      // Otherwise, read this from cell config
-      return config.cell[sizeType];
+      return config.view[sizeType];
     }
   } else {
     // No scale - set default size

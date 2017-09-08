@@ -37,28 +37,28 @@ describe('compile/layout', () => {
       assert.deepEqual(model.component.layoutSize.implicit.height, 23);
     });
 
-    it('should have width/height = config.cell.width/height for non-ordinal x,y', () => {
+    it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
           y: {field: 'b', type: 'quantitative'}
         },
-        config: {cell: {width: 123, height: 456}}
+        config: {view: {width: 123, height: 456}}
       });
 
       assert.deepEqual(model.component.layoutSize.implicit.width, 123);
       assert.deepEqual(model.component.layoutSize.implicit.height, 456);
     });
 
-    it('should have width/height = config.cell.width/height for non-ordinal x,y', () => {
+    it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
           x: {field: 'a', type: 'ordinal', scale: {rangeStep: null}},
           y: {field: 'b', type: 'ordinal', scale: {rangeStep: null}}
         },
-        config: {cell: {width: 123, height: 456}}
+        config: {view: {width: 123, height: 456}}
       });
 
       assert.deepEqual(model.component.layoutSize.implicit.width, 123);
@@ -72,7 +72,7 @@ describe('compile/layout', () => {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'ordinal'}
         },
-        config: {cell: {width: 123, height: 456}}
+        config: {view: {width: 123, height: 456}}
       });
 
       assert.deepEqual(model.component.layoutSize.get('width'), 'range-step');

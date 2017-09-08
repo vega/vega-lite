@@ -87,7 +87,7 @@ describe('compile/scale', () => {
       it('should return default topLevelSize if rangeStep config is null', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
-            parseRangeForChannel('x', scaleType, NOMINAL, {}, {cell: {width: 200}, scale: {rangeStep: null}}, undefined, 'point', undefined, 'plot_width', []).value,
+            parseRangeForChannel('x', scaleType, NOMINAL, {}, {view: {width: 200}, scale: {rangeStep: null}}, undefined, 'point', undefined, 'plot_width', []).value,
             [0, {signal: 'plot_width'}]
           );
         }
@@ -96,7 +96,7 @@ describe('compile/scale', () => {
       it('should return default topLevelSize for text if textXRangeStep config is null', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
-            parseRangeForChannel('x', scaleType, NOMINAL, {}, {cell: {width: 200}, scale: {textXRangeStep: null}}, undefined, 'text', undefined, 'plot_width', []).value,
+            parseRangeForChannel('x', scaleType, NOMINAL, {}, {view: {width: 200}, scale: {textXRangeStep: null}}, undefined, 'text', undefined, 'plot_width', []).value,
             [0, {signal: 'plot_width'}]
           );
         }

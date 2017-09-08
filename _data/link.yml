@@ -89,6 +89,9 @@ TickConfig:
 VgTitleConfig:
   name: TitleConfig
   link: "title.html#config"
+ViewConfig:
+  name: ViewConfig
+  link: "spec.html#config"
 
 # Encoding
 EncodingWithFacet:

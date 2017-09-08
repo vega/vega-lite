@@ -117,7 +117,6 @@ function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config
   if (config.scale.rangeStep && config.scale.rangeStep !== null) {
     return {value: config.scale.rangeStep - 1};
   }
-  // TODO: this should depends on cell's width / height?
   return {value: 20};
 }
 
