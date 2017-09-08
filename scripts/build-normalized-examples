@@ -27,7 +27,7 @@ examples.forEach(function(example) {
     const fullSpec = vl.spec.normalize(spec, config);
     const postNormalized = stringify(fullSpec);
 
-    console.log(preNormalized, postNormalized);
+    // console.log(preNormalized, postNormalized);
     if (preNormalized !== postNormalized) {
       const postNormalizedOutput = JSON.stringify(fullSpec, null, 2);
       // -8 is cutting .vl.json
