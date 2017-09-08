@@ -154,8 +154,6 @@
     ],
     "config": {
         "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888",
             "domain": false,
             "grid": false
         },

@@ -242,9 +242,9 @@ export const defaultConfig: Config = {
   line: {},
   point: {},
   rect: {},
-  rule: {color: 'black'},
+  rule: {color: 'black'}, // Need this to override default color in mark config
   square: {},
-  text: {color: 'black'},
+  text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
 
   box: {size: 14},
@@ -252,10 +252,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
-  axis: {
-    domainColor: '#888',
-    tickColor: '#888'
-  },
+  axis: {},
   axisX: {},
   axisY: {minExtent: 30},
   axisLeft: {},
