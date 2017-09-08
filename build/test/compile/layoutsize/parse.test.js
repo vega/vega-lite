@@ -32,26 +32,26 @@ describe('compile/layout', function () {
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.width, 23);
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.height, 23);
         });
-        it('should have width/height = config.cell.width/height for non-ordinal x,y', function () {
+        it('should have width/height = config.view.width/height for non-ordinal x,y', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'quantitative' },
                     y: { field: 'b', type: 'quantitative' }
                 },
-                config: { cell: { width: 123, height: 456 } }
+                config: { view: { width: 123, height: 456 } }
             });
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.width, 123);
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.height, 456);
         });
-        it('should have width/height = config.cell.width/height for non-ordinal x,y', function () {
+        it('should have width/height = config.view.width/height for non-ordinal x,y', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'ordinal', scale: { rangeStep: null } },
                     y: { field: 'b', type: 'ordinal', scale: { rangeStep: null } }
                 },
-                config: { cell: { width: 123, height: 456 } }
+                config: { view: { width: 123, height: 456 } }
             });
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.width, 123);
             chai_1.assert.deepEqual(model.component.layoutSize.implicit.height, 456);
@@ -63,7 +63,7 @@ describe('compile/layout', function () {
                     x: { field: 'a', type: 'ordinal' },
                     y: { field: 'b', type: 'ordinal' }
                 },
-                config: { cell: { width: 123, height: 456 } }
+                config: { view: { width: 123, height: 456 } }
             });
             chai_1.assert.deepEqual(model.component.layoutSize.get('width'), 'range-step');
             chai_1.assert.deepEqual(model.component.layoutSize.get('height'), 'range-step');

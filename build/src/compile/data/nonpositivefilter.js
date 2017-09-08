@@ -5,7 +5,7 @@ var channel_1 = require("../../channel");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var NonPositiveFilterNode = (function (_super) {
+var NonPositiveFilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(NonPositiveFilterNode, _super);
     function NonPositiveFilterNode(filter) {
         var _this = _super.call(this) || this;

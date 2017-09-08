@@ -37,9 +37,9 @@ export interface MarkDef {
     type: Mark;
     /**
      *
-     * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any properties explicitly defined within the `encoding` will override a style default.
+     * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
      *
-     * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.  If
+     * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
      */
     style?: string | string[];
     /**
@@ -49,7 +49,7 @@ export interface MarkDef {
      */
     filled?: boolean;
     /**
-     * TODO
+     * Orientation of the marks.
      */
     orient?: Orient;
     /**
@@ -68,7 +68,7 @@ export interface MarkDef {
      * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
      * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
      *
-     * For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).
+     * For more information about each interpolation method, please see [Vega's line interpolation docs](https://vega.github.io/vega/docs/marks/line/).
      */
     interpolate?: Interpolate;
     /**
@@ -81,11 +81,13 @@ export interface MarkDef {
      */
     tension?: number;
     /**
-     * Should a mark be clipped to the enclosing group’s width and height?
+     * Whether a mark be clipped to the enclosing group’s width and height.
      */
     clip?: boolean;
 }
-export declare type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
+/** @hide */
+export declare type HiddenComposite = CompositeMark | CompositeMarkDef;
+export declare type AnyMark = HiddenComposite | Mark | MarkDef;
 export declare function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef);
 export declare function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark;
 export declare const STROKE_CONFIG: string[];
@@ -183,7 +185,8 @@ export interface TextConfig extends MarkConfig {
 export interface TickConfig extends MarkConfig {
     /**
      * The width of the ticks.
-     * If this value is undefined (by default,), we use 2/3 of rangeStep by default.
+     *
+     * __Default value:__  2/3 of rangeStep.
      * @minimum 0
      */
     bandSize?: number;

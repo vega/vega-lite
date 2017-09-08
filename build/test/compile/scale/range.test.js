@@ -60,13 +60,13 @@ describe('compile/scale', function () {
             it('should return default topLevelSize if rangeStep config is null', function () {
                 for (var _i = 0, _a = ['point', 'band']; _i < _a.length; _i++) {
                     var scaleType = _a[_i];
-                    chai_1.assert.deepEqual(range_1.parseRangeForChannel('x', scaleType, type_1.NOMINAL, {}, { cell: { width: 200 }, scale: { rangeStep: null } }, undefined, 'point', undefined, 'plot_width', []).value, [0, { signal: 'plot_width' }]);
+                    chai_1.assert.deepEqual(range_1.parseRangeForChannel('x', scaleType, type_1.NOMINAL, {}, { view: { width: 200 }, scale: { rangeStep: null } }, undefined, 'point', undefined, 'plot_width', []).value, [0, { signal: 'plot_width' }]);
                 }
             });
             it('should return default topLevelSize for text if textXRangeStep config is null', function () {
                 for (var _i = 0, _a = ['point', 'band']; _i < _a.length; _i++) {
                     var scaleType = _a[_i];
-                    chai_1.assert.deepEqual(range_1.parseRangeForChannel('x', scaleType, type_1.NOMINAL, {}, { cell: { width: 200 }, scale: { textXRangeStep: null } }, undefined, 'text', undefined, 'plot_width', []).value, [0, { signal: 'plot_width' }]);
+                    chai_1.assert.deepEqual(range_1.parseRangeForChannel('x', scaleType, type_1.NOMINAL, {}, { view: { width: 200 }, scale: { textXRangeStep: null } }, undefined, 'text', undefined, 'plot_width', []).value, [0, { signal: 'plot_width' }]);
                 }
             });
             it('should drop rangeStep for continuous scales', function () {

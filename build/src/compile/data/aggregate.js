@@ -39,7 +39,7 @@ function mergeMeasures(parentMeasures, childMeasures) {
         }
     }
 }
-var AggregateNode = (function (_super) {
+var AggregateNode = /** @class */ (function (_super) {
     tslib_1.__extends(AggregateNode, _super);
     /**
      * @param dimensions string set for dimensions

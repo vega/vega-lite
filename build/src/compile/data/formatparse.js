@@ -37,7 +37,7 @@ function parseExpression(field, parse) {
         return null;
     }
 }
-var ParseNode = (function (_super) {
+var ParseNode = /** @class */ (function (_super) {
     tslib_1.__extends(ParseNode, _super);
     function ParseNode(parse) {
         var _this = _super.call(this) || this;

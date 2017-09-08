@@ -5,7 +5,7 @@ var spec_1 = require("../spec");
 var baseconcat_1 = require("./baseconcat");
 var buildmodel_1 = require("./buildmodel");
 var parse_1 = require("./layoutsize/parse");
-var ConcatModel = (function (_super) {
+var ConcatModel = /** @class */ (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
     function ConcatModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;

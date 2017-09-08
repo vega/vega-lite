@@ -11,7 +11,7 @@ var parse_3 = require("./layoutsize/parse");
 var model_1 = require("./model");
 var selection_1 = require("./selection/selection");
 var unit_1 = require("./unit");
-var LayerModel = (function (_super) {
+var LayerModel = /** @class */ (function (_super) {
     tslib_1.__extends(LayerModel, _super);
     function LayerModel(spec, parent, parentGivenName, parentGivenSize, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;

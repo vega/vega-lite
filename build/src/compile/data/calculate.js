@@ -6,7 +6,7 @@ var dataflow_1 = require("./dataflow");
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
-var CalculateNode = (function (_super) {
+var CalculateNode = /** @class */ (function (_super) {
     tslib_1.__extends(CalculateNode, _super);
     function CalculateNode(transform) {
         var _this = _super.call(this) || this;

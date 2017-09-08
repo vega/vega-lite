@@ -79,7 +79,7 @@ describe('compile/layout', function () {
                     value: 21
                 }]);
         });
-        it('should return static cell size for ordinal x-scale with null', function () {
+        it('should return static view size for ordinal x-scale with null', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
@@ -89,7 +89,7 @@ describe('compile/layout', function () {
             var size = assemble_1.sizeSignals(model, 'width');
             chai_1.assert.deepEqual(size, [{ name: 'width', update: '200' }]);
         });
-        it('should return static cell size for ordinal y-scale with null', function () {
+        it('should return static view size for ordinal y-scale with null', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
@@ -99,7 +99,7 @@ describe('compile/layout', function () {
             var size = assemble_1.sizeSignals(model, 'height');
             chai_1.assert.deepEqual(size, [{ name: 'height', update: '200' }]);
         });
-        it('should return static cell size for ordinal scale with top-level width', function () {
+        it('should return static view size for ordinal scale with top-level width', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 width: 205,
                 mark: 'point',
@@ -110,7 +110,7 @@ describe('compile/layout', function () {
             var size = assemble_1.sizeSignals(model, 'width');
             chai_1.assert.deepEqual(size, [{ name: 'width', update: '205' }]);
         });
-        it('should return static cell size for ordinal scale with top-level width even if there is numeric rangeStep', function () {
+        it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', function () {
             log.runLocalLogger(function (localLogger) {
                 var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                     width: 205,
@@ -124,7 +124,7 @@ describe('compile/layout', function () {
                 chai_1.assert.equal(localLogger.warns[0], log.message.rangeStepDropped(channel_1.X));
             });
         });
-        it('should return static cell width for non-ordinal x-scale', function () {
+        it('should return static view width for non-ordinal x-scale', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
@@ -134,7 +134,7 @@ describe('compile/layout', function () {
             var size = assemble_1.sizeSignals(model, 'width');
             chai_1.assert.deepEqual(size, [{ name: 'width', update: '200' }]);
         });
-        it('should return static cell size for non-ordinal y-scale', function () {
+        it('should return static view size for non-ordinal y-scale', function () {
             var model = util_1.parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {

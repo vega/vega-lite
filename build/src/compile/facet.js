@@ -17,7 +17,7 @@ var model_1 = require("./model");
 var repeater_1 = require("./repeater");
 var resolve_1 = require("./resolve");
 var domain_1 = require("./scale/domain");
-var FacetModel = (function (_super) {
+var FacetModel = /** @class */ (function (_super) {
     tslib_1.__extends(FacetModel, _super);
     function FacetModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;
@@ -222,7 +222,7 @@ var FacetModel = (function (_super) {
                             ops.push('distinct');
                         }
                         else {
-                            log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                         }
                     }
                 }

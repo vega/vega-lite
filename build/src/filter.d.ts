@@ -66,5 +66,5 @@ export declare function isFieldFilter(filter: Filter): filter is OneOfFilter | E
  * Converts a filter into an expression.
  */
 export declare function expression(model: Model, filterOp: LogicalOperand<Filter>, node?: DataFlowNode): string;
-export declare function fieldFilterExpression(filter: FieldFilter): string;
+export declare function fieldFilterExpression(filter: FieldFilter, useInRange?: boolean): string;
 export declare function normalizeFilter(f: Filter): Filter;

@@ -1,30 +1,18 @@
 import { SingleDefChannel } from './channel';
-import { VgBinding } from './vega.schema';
+import { VgBinding, VgEventStream } from './vega.schema';
 export declare const SELECTION_ID = "_vgsid_";
 export declare type SelectionType = 'single' | 'multi' | 'interval';
 export declare type SelectionResolution = 'global' | 'union' | 'intersect';
 export interface BaseSelectionDef {
     /**
-     * A Vega event stream (object or selector) that triggers the selection.
+     * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
+     * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).
      */
-    on?: any;
+    on?: VgEventStream;
     /**
      * With layered and multi-view displays, a strategy that determines how
      * selections' data queries are resolved when applied in a filter transform,
-     * conditional encoding rule, or scale domain. One of: "global", "union",
-     * "intersect", "union_others", or "intersect_others".
-     *
-     * __global__: Only one instance of the selection exists across all
-     * views. When a user interacts within a new view, any previous selections
-     * are overridden.
-     *
-     * __union__: Each view contains its own selection, and a data value is
-     * considered to be selected if it falls within _any_ of these selection
-     * instances.
-     *
-     * __intersect__: Each view contains its own selection, and a data value is
-     * considered to be selected if it falls within _all_ of these selection
-     * instances.
+     * conditional encoding rule, or scale domain.
      *
      */
     resolve?: SelectionResolution;
@@ -45,6 +33,8 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
      * (also known as dynamic query widgets). A binding takes the form of
      * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
      * or can be a mapping between projected field/encodings and binding definitions.
+     *
+     * See the [bind transform](bind.html) documentation for more information.
      */
     bind?: VgBinding | {
         [key: string]: VgBinding;
@@ -52,6 +42,8 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
     /**
      * When true, an invisible voronoi diagram is computed to accelerate discrete
      * selection. The data value _nearest_ the mouse cursor is added to the selection.
+     *
+     * See the [nearest transform](nearest.html) documentation for more information.
      */
     nearest?: boolean;
 }
@@ -63,11 +55,15 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
      *
      * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
      * data values are toggled when a user interacts with the shift-key pressed).
+     *
+     * See the [toggle transform](toggle.html) documentation for more information.
      */
     toggle?: string | boolean;
     /**
      * When true, an invisible voronoi diagram is computed to accelerate discrete
      * selection. The data value _nearest_ the mouse cursor is added to the selection.
+     *
+     * See the [nearest transform](nearest.html) documentation for more information.
      */
     nearest?: boolean;
 }
@@ -138,7 +134,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
      */
     bind?: 'scales';
     /**
-     * Each (unbound) interval selection also adds a rectangle mark to depict the
+     * An interval selection also adds a rectangle mark to depict the
      * extents of the interval. The `mark` property can be used to customize the
      * appearance of the mark.
      */
@@ -155,8 +151,28 @@ export interface IntervalSelection extends IntervalSelectionConfig {
 }
 export declare type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 export interface SelectionConfig {
-    single: SingleSelectionConfig;
-    multi: MultiSelectionConfig;
-    interval: IntervalSelectionConfig;
+    /**
+     * The default definition for a [`single`](selection.html#type) selection. All properties and transformations
+     *  for a single selection definition (except `type`) may be specified here.
+     *
+     * For instance, setting `single` to `{"on": "dblclick"}` populates single selections on double-click by default.
+     */
+    single?: SingleSelectionConfig;
+    /**
+     * The default definition for a [`multi`](selection.html#type) selection. All properties and transformations
+     * for a multi selection definition (except `type`) may be specified here.
+     *
+     * For instance, setting `multi` to `{"toggle": "event.altKey"}` adds additional values to
+     * multi selections when clicking with the alt-key pressed by default.
+     */
+    multi?: MultiSelectionConfig;
+    /**
+     * The default definition for an [`interval`](selection.html#type) selection. All properties and transformations
+     * for an interval selection definition (except `type`) may be specified here.
+     *
+     * For instance, setting `interval` to `{"translate": false}` disables the ability to move
+     * interval selections by default.
+     */
+    interval?: IntervalSelectionConfig;
 }
 export declare const defaultConfig: SelectionConfig;

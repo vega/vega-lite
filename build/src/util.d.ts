@@ -45,7 +45,7 @@ export declare type StringSet = Dict<boolean>;
 export declare function differ<T>(dict: Dict<T>, other: Dict<T>): boolean;
 export declare function hasIntersection(a: StringSet, b: StringSet): boolean;
 export declare function differArray<T>(array: T[], other: T[]): boolean;
-export declare const keys: (o: any) => string[];
+export declare const keys: (o: {}) => string[];
 export declare function vals<T>(x: {
     [key: string]: T;
 }): T[];
@@ -70,3 +70,7 @@ export declare type Diff<T extends string, U extends string> = ({
 export declare type Omit<T, K extends keyof T> = {
     [P in Diff<keyof T, K>]: T[P];
 };
+/**
+ * Delete nested property of an object, and delete the ancestors of the property if they become empty.
+ */
+export declare function deleteNestedProperty(obj: any, orderedProps: string[]): void;

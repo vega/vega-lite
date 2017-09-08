@@ -27,6 +27,9 @@ export interface ValueDef {
  */
 export declare type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F>;
 export declare type Condition<T> = {
+    /**
+     * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
+     */
     selection: LogicalOperand<string>;
 } & T;
 /**
@@ -71,7 +74,9 @@ export declare type RepeatRef = {
 };
 export declare type Field = string | RepeatRef;
 export declare function isRepeatRef(field: Field): field is RepeatRef;
-export declare type Aggregate = AggregateOp | CompositeAggregate;
+/** @hide */
+export declare type HiddenCompositeAggregate = CompositeAggregate;
+export declare type Aggregate = AggregateOp | HiddenCompositeAggregate;
 export interface FieldDefBase<F> {
     /**
      * __Required.__ A string defining the name of the field from which to pull a data value

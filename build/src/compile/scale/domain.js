@@ -382,16 +382,16 @@ function getFieldFromDomain(domain) {
                     field = nonUnionDomain.field;
                 }
                 else if (field !== nonUnionDomain.field) {
-                    log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result cell size may be incorrect.');
+                    log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result view size may be incorrect.');
                     return field;
                 }
             }
         }
-        log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result cell size maybe incorrect.');
+        log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result view size maybe incorrect.');
         return field;
     }
     else if (vega_schema_2.isFieldRefUnionDomain(domain) && vega_util_1.isString) {
-        log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result cell size may be incorrect.');
+        log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.');
         var field = domain.fields[0];
         return vega_util_1.isString(field) ? field : undefined;
     }

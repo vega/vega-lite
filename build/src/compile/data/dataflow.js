@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 /**
  * A node in the dataflow tree.
  */
-var DataFlowNode = (function () {
+var DataFlowNode = /** @class */ (function () {
     function DataFlowNode(debugName) {
         this.debugName = debugName;
         this._children = [];
@@ -93,7 +93,7 @@ var DataFlowNode = (function () {
     return DataFlowNode;
 }());
 exports.DataFlowNode = DataFlowNode;
-var OutputNode = (function (_super) {
+var OutputNode = /** @class */ (function (_super) {
     tslib_1.__extends(OutputNode, _super);
     /**
      * @param source The name of the source. Will change in assemble.

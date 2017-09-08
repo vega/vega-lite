@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var baseconcat_1 = require("./baseconcat");
 var buildmodel_1 = require("./buildmodel");
 var parse_1 = require("./layoutsize/parse");
-var RepeatModel = (function (_super) {
+var RepeatModel = /** @class */ (function (_super) {
     tslib_1.__extends(RepeatModel, _super);
     function RepeatModel(spec, parent, parentGivenName, repeatValues, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;

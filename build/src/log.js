@@ -12,7 +12,7 @@ var current = main;
 /**
  * Logger tool for checking if the code throws correct warning
  */
-var LocalLogger = (function () {
+var LocalLogger = /** @class */ (function () {
     function LocalLogger() {
         this.warns = [];
         this.infos = [];

@@ -21,7 +21,7 @@ var assemble_4 = require("./scale/assemble");
 var domain_1 = require("./scale/domain");
 var parse_2 = require("./scale/parse");
 var split_1 = require("./split");
-var NameMap = (function () {
+var NameMap = /** @class */ (function () {
     function NameMap() {
         this.nameMap = {};
     }
@@ -71,7 +71,7 @@ function isLayerModel(model) {
     return model && model.type === 'layer';
 }
 exports.isLayerModel = isLayerModel;
-var Model = (function () {
+var Model = /** @class */ (function () {
     function Model(spec, parent, parentGivenName, config, resolve) {
         var _this = this;
         this.children = [];
@@ -316,7 +316,7 @@ var Model = (function () {
                         };
                     }
                     else {
-                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                        log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                         return null;
                     }
                 }
@@ -399,7 +399,7 @@ var Model = (function () {
 }());
 exports.Model = Model;
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
-var ModelWithField = (function (_super) {
+var ModelWithField = /** @class */ (function (_super) {
     tslib_1.__extends(ModelWithField, _super);
     function ModelWithField() {
         return _super !== null && _super.apply(this, arguments) || this;

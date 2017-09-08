@@ -1538,7 +1538,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.21",
+  "version": "2.0.0-rc0",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1586,7 +1586,7 @@ module.exports={
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-to-json-schema --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
@@ -1642,12 +1642,12 @@ module.exports={
     "nodemon": "^1.11.0",
     "nyc": "^11.1.0",
     "source-map-support": "^0.4.15",
+    "ts-json-schema-generator": "^0.12.0",
     "ts-node": "^3.2.1",
     "tsify": "^3.0.1",
     "tslint": "5.4.3",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.2",
-    "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.8.0",
     "uglify-js": "^3.0.27",
     "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
@@ -1655,7 +1655,7 @@ module.exports={
     "vega-tooltip": "^0.4.2",
     "watchify": "^3.9.0",
     "wdio-chromedriver-service": "^0.1.0",
-    "wdio-dot-reporter": "0.0.8",
+    "wdio-dot-reporter": "0.0.9",
     "wdio-mocha-framework": "^0.5.10",
     "wdio-static-server-service": "^1.0.1",
     "webdriverio": "^4.8.0",
@@ -1743,7 +1743,7 @@ exports.AXIS_PROPERTY_TYPE = {
     title: 'main'
 };
 exports.AXIS_PROPERTIES = [
-    'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'tickExtra', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
+    'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
 exports.VG_AXIS_PROPERTIES = [].concat(exports.AXIS_PROPERTIES, ['gridScale']);
 
@@ -1983,7 +1983,7 @@ exports.assembleAxes = assembleAxes;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var split_1 = require("../split");
-var AxisComponentPart = (function (_super) {
+var AxisComponentPart = /** @class */ (function (_super) {
     tslib_1.__extends(AxisComponentPart, _super);
     function AxisComponentPart() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2383,7 +2383,7 @@ function gridScale(model, channel, isGridAxis) {
 exports.gridScale = gridScale;
 function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
     // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
-    if ((channel === 'x' || channel === 'y') && fieldDef.type !== 'nominal') {
+    if (fieldDef.type !== 'nominal') {
         if (scaleType === 'log') {
             return 'greedy';
         }
@@ -2459,7 +2459,7 @@ var util_1 = require("../util");
 var parse_1 = require("./data/parse");
 var assemble_1 = require("./layoutsize/assemble");
 var model_1 = require("./model");
-var BaseConcatModel = (function (_super) {
+var BaseConcatModel = /** @class */ (function (_super) {
     tslib_1.__extends(BaseConcatModel, _super);
     function BaseConcatModel(spec, parent, parentGivenName, config, resolve) {
         return _super.call(this, spec, parent, parentGivenName, config, resolve) || this;
@@ -2829,7 +2829,7 @@ var spec_1 = require("../spec");
 var baseconcat_1 = require("./baseconcat");
 var buildmodel_1 = require("./buildmodel");
 var parse_1 = require("./layoutsize/parse");
-var ConcatModel = (function (_super) {
+var ConcatModel = /** @class */ (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
     function ConcatModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;
@@ -2898,7 +2898,7 @@ function mergeMeasures(parentMeasures, childMeasures) {
         }
     }
 }
-var AggregateNode = (function (_super) {
+var AggregateNode = /** @class */ (function (_super) {
     tslib_1.__extends(AggregateNode, _super);
     /**
      * @param dimensions string set for dimensions
@@ -3053,6 +3053,7 @@ var timeunit_1 = require("./timeunit");
 /**
  * Print debug information for dataflow tree.
  */
+// tslint:disable-next-line
 function debug(node) {
     console.log("" + node.constructor.name + (node.debugName ? " (" + node.debugName + ")" : '') + " -> " + (node.children.map(function (c) {
         return "" + c.constructor.name + (c.debugName ? " (" + c.debugName + ")" : '');
@@ -3290,7 +3291,7 @@ function createBinComponent(t, params) {
     var binComponent = tslib_1.__assign({ bin: bin, field: t.field, as: [fielddef_1.field(t, {}), fielddef_1.field(t, { binSuffix: 'end' })] }, signal ? { signal: signal } : {}, extentSignal ? { extentSignal: extentSignal } : {});
     return { key: key, binComponent: binComponent };
 }
-var BinNode = (function (_super) {
+var BinNode = /** @class */ (function (_super) {
     tslib_1.__extends(BinNode, _super);
     function BinNode(bins) {
         var _this = _super.call(this) || this;
@@ -3378,7 +3379,7 @@ var dataflow_1 = require("./dataflow");
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
-var CalculateNode = (function (_super) {
+var CalculateNode = /** @class */ (function (_super) {
     tslib_1.__extends(CalculateNode, _super);
     function CalculateNode(transform) {
         var _this = _super.call(this) || this;
@@ -3411,7 +3412,7 @@ var tslib_1 = require("tslib");
 /**
  * A node in the dataflow tree.
  */
-var DataFlowNode = (function () {
+var DataFlowNode = /** @class */ (function () {
     function DataFlowNode(debugName) {
         this.debugName = debugName;
         this._children = [];
@@ -3500,7 +3501,7 @@ var DataFlowNode = (function () {
     return DataFlowNode;
 }());
 exports.DataFlowNode = DataFlowNode;
-var OutputNode = (function (_super) {
+var OutputNode = /** @class */ (function (_super) {
     tslib_1.__extends(OutputNode, _super);
     /**
      * @param source The name of the source. Will change in assemble.
@@ -3563,7 +3564,7 @@ var dataflow_1 = require("./dataflow");
 /**
  * A node that helps us track what fields we are faceting by.
  */
-var FacetNode = (function (_super) {
+var FacetNode = /** @class */ (function (_super) {
     tslib_1.__extends(FacetNode, _super);
     /**
      * @param model The facet model.
@@ -3627,7 +3628,7 @@ var FacetNode = (function (_super) {
                         childIndependentFieldsWithStep[channel] = field;
                     }
                     else {
-                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                        log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                     }
                 }
             }
@@ -3701,7 +3702,7 @@ var tslib_1 = require("tslib");
 var filter_1 = require("../../filter");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var FilterNode = (function (_super) {
+var FilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(FilterNode, _super);
     function FilterNode(model, filter) {
         var _this = _super.call(this) || this;
@@ -3763,7 +3764,7 @@ function parseExpression(field, parse) {
         return null;
     }
 }
-var ParseNode = (function (_super) {
+var ParseNode = /** @class */ (function (_super) {
     tslib_1.__extends(ParseNode, _super);
     function ParseNode(parse) {
         var _this = _super.call(this) || this;
@@ -3874,7 +3875,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var selection_1 = require("../../selection");
 var dataflow_1 = require("./dataflow");
-var IdentifierNode = (function (_super) {
+var IdentifierNode = /** @class */ (function (_super) {
     tslib_1.__extends(IdentifierNode, _super);
     function IdentifierNode() {
         return _super.call(this) || this;
@@ -3901,7 +3902,7 @@ var vega_util_1 = require("vega-util");
 var log = require("../../log");
 var dataflow_1 = require("./dataflow");
 var source_1 = require("./source");
-var LookupNode = (function (_super) {
+var LookupNode = /** @class */ (function (_super) {
     tslib_1.__extends(LookupNode, _super);
     function LookupNode(transform, secondary) {
         var _this = _super.call(this) || this;
@@ -3957,7 +3958,7 @@ var channel_1 = require("../../channel");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var NonPositiveFilterNode = (function (_super) {
+var NonPositiveFilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(NonPositiveFilterNode, _super);
     function NonPositiveFilterNode(filter) {
         var _this = _super.call(this) || this;
@@ -4014,7 +4015,7 @@ var scale_1 = require("../../scale");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var NullFilterNode = (function (_super) {
+var NullFilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(NullFilterNode, _super);
     function NullFilterNode(fields) {
         var _this = _super.call(this) || this;
@@ -4612,7 +4613,7 @@ var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var SourceNode = (function (_super) {
+var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this) || this;
@@ -4715,7 +4716,7 @@ function getStackByFields(model) {
         return fields;
     }, []);
 }
-var StackNode = (function (_super) {
+var StackNode = /** @class */ (function (_super) {
     tslib_1.__extends(StackNode, _super);
     function StackNode(stack) {
         var _this = _super.call(this) || this;
@@ -4857,7 +4858,7 @@ var fielddef_1 = require("../../fielddef");
 var timeunit_1 = require("../../timeunit");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var TimeUnitNode = (function (_super) {
+var TimeUnitNode = /** @class */ (function (_super) {
     tslib_1.__extends(TimeUnitNode, _super);
     function TimeUnitNode(formula) {
         var _this = _super.call(this) || this;
@@ -4945,7 +4946,7 @@ var model_1 = require("./model");
 var repeater_1 = require("./repeater");
 var resolve_1 = require("./resolve");
 var domain_1 = require("./scale/domain");
-var FacetModel = (function (_super) {
+var FacetModel = /** @class */ (function (_super) {
     tslib_1.__extends(FacetModel, _super);
     function FacetModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;
@@ -5150,7 +5151,7 @@ var FacetModel = (function (_super) {
                             ops.push('distinct');
                         }
                         else {
-                            log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                         }
                     }
                 }
@@ -5206,7 +5207,7 @@ var parse_3 = require("./layoutsize/parse");
 var model_1 = require("./model");
 var selection_1 = require("./selection/selection");
 var unit_1 = require("./unit");
-var LayerModel = (function (_super) {
+var LayerModel = /** @class */ (function (_super) {
     tslib_1.__extends(LayerModel, _super);
     function LayerModel(spec, parent, parentGivenName, parentGivenSize, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;
@@ -5555,9 +5556,7 @@ function defaultUnitSize(model, sizeType) {
             return 'range-step';
         }
         else {
-            // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
-            // Otherwise, read this from cell config
-            return config.cell[sizeType];
+            return config.view[sizeType];
         }
     }
     else {
@@ -5606,7 +5605,7 @@ exports.assembleLegends = assembleLegends;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var split_1 = require("../split");
-var LegendComponent = (function (_super) {
+var LegendComponent = /** @class */ (function (_super) {
     tslib_1.__extends(LegendComponent, _super);
     function LegendComponent() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5626,7 +5625,10 @@ var scale_1 = require("../../scale");
 var util_1 = require("../../util");
 var common_1 = require("../common");
 var mixins = require("../mark/mixins");
-function symbols(fieldDef, symbolsSpec, model, channel) {
+function symbols(fieldDef, symbolsSpec, model, channel, legendCmpt) {
+    if (legendCmpt.get('type') === 'gradient') {
+        return undefined;
+    }
     var symbols = {};
     var mark = model.mark();
     switch (mark) {
@@ -5670,11 +5672,29 @@ function symbols(fieldDef, symbolsSpec, model, channel) {
             symbols.shape = { value: shapeDef.value };
         }
     }
+    if (channel !== channel_1.OPACITY) {
+        var opacityDef = model.encoding.opacity;
+        if (fielddef_1.isValueDef(opacityDef)) {
+            symbols.opacity = { value: opacityDef.value };
+        }
+    }
     symbols = tslib_1.__assign({}, symbols, symbolsSpec);
     return util_1.keys(symbols).length > 0 ? symbols : undefined;
 }
 exports.symbols = symbols;
-function labels(fieldDef, labelsSpec, model, channel) {
+function gradient(fieldDef, gradientSpec, model, channel, legendCmpt) {
+    var gradient = {};
+    if (legendCmpt.get('type') === 'gradient') {
+        var opacityDef = model.encoding.opacity;
+        if (fielddef_1.isValueDef(opacityDef)) {
+            gradient.opacity = { value: opacityDef.value };
+        }
+    }
+    gradient = tslib_1.__assign({}, gradient, gradientSpec);
+    return util_1.keys(gradient).length > 0 ? gradient : undefined;
+}
+exports.gradient = gradient;
+function labels(fieldDef, labelsSpec, model, channel, legendCmpt) {
     var legend = model.legend(channel);
     var config = model.config;
     var labels = {};
@@ -5751,9 +5771,9 @@ function parseLegendForChannel(model, channel) {
     });
     // 2) Add mark property definition groups
     var legendEncoding = legend.encoding || {};
-    var legendEncode = ['labels', 'legend', 'title', 'symbols'].reduce(function (e, part) {
+    var legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(function (e, part) {
         var value = encode[part] ?
-            encode[part](fieldDef, legendEncoding[part], model, channel) :
+            encode[part](fieldDef, legendEncoding[part], model, channel, legendCmpt) :
             legendEncoding[part]; // no rule -- just default values
         if (value !== undefined && util_1.keys(value).length > 0) {
             e[part] = { update: value };
@@ -5831,6 +5851,7 @@ function mergeLegendComponent(mergedLegend, childLegend) {
         // Cannot merge due to inconsistent orient
         return undefined;
     }
+    var typeMerged = false;
     var _loop_2 = function (prop) {
         var mergedValueWithExplicit = split_2.mergeValuesWithExplicit(mergedLegend.getWithExplicit(prop), childLegend.getWithExplicit(prop), prop, 'legend', 
         // Tie breaker function
@@ -5840,6 +5861,7 @@ function mergeLegendComponent(mergedLegend, childLegend) {
                     return common_1.titleMerger(v1, v2);
                 case 'type':
                     // There are only two types. If we have different types, then prefer symbol over gradient.
+                    typeMerged = true;
                     return split_1.makeImplicit('symbol');
             }
             return split_2.defaultTieBreaker(v1, v2, prop, 'legend');
@@ -5850,6 +5872,14 @@ function mergeLegendComponent(mergedLegend, childLegend) {
     for (var _i = 0, VG_LEGEND_PROPERTIES_1 = legend_1.VG_LEGEND_PROPERTIES; _i < VG_LEGEND_PROPERTIES_1.length; _i++) {
         var prop = VG_LEGEND_PROPERTIES_1[_i];
         _loop_2(prop);
+    }
+    if (typeMerged) {
+        if (((mergedLegend.implicit || {}).encode || {}).gradient) {
+            util_1.deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
+        }
+        if (((mergedLegend.explicit || {}).encode || {}).gradient) {
+            util_1.deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
+        }
     }
     return mergedLegend;
 }
@@ -5987,7 +6017,6 @@ function defaultSizeRef(scaleName, scale, config) {
     if (config.scale.rangeStep && config.scale.rangeStep !== null) {
         return { value: config.scale.rangeStep - 1 };
     }
-    // TODO: this should depends on cell's width / height?
     return { value: 20 };
 }
 
@@ -6137,16 +6166,18 @@ function orient(mark, encoding, scales, specifiedOrient) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
+var ref = require("./valueref");
 exports.line = {
     vgMark: 'line',
     encodeEntry: function (model) {
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, 'zeroOrMin'), mixins.pointPosition('y', model, 'zeroOrMin'), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
+        var width = model.width, height = model.height;
+        return tslib_1.__assign({}, mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
             vgChannel: 'strokeWidth' // VL's line size is strokeWidth
         }), mixins.markDefProperties(model.markDef, ['interpolate', 'tension']));
     }
 };
 
-},{"./mixins":56,"tslib":5}],55:[function(require,module,exports){
+},{"./mixins":56,"./valueref":62,"tslib":5}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6926,7 +6957,7 @@ var assemble_4 = require("./scale/assemble");
 var domain_1 = require("./scale/domain");
 var parse_2 = require("./scale/parse");
 var split_1 = require("./split");
-var NameMap = (function () {
+var NameMap = /** @class */ (function () {
     function NameMap() {
         this.nameMap = {};
     }
@@ -6976,7 +7007,7 @@ function isLayerModel(model) {
     return model && model.type === 'layer';
 }
 exports.isLayerModel = isLayerModel;
-var Model = (function () {
+var Model = /** @class */ (function () {
     function Model(spec, parent, parentGivenName, config, resolve) {
         var _this = this;
         this.children = [];
@@ -7221,7 +7252,7 @@ var Model = (function () {
                         };
                     }
                     else {
-                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                        log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                         return null;
                     }
                 }
@@ -7304,7 +7335,7 @@ var Model = (function () {
 }());
 exports.Model = Model;
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
-var ModelWithField = (function (_super) {
+var ModelWithField = /** @class */ (function (_super) {
     tslib_1.__extends(ModelWithField, _super);
     function ModelWithField() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7346,7 +7377,7 @@ var tslib_1 = require("tslib");
 var baseconcat_1 = require("./baseconcat");
 var buildmodel_1 = require("./buildmodel");
 var parse_1 = require("./layoutsize/parse");
-var RepeatModel = (function (_super) {
+var RepeatModel = /** @class */ (function (_super) {
     tslib_1.__extends(RepeatModel, _super);
     function RepeatModel(spec, parent, parentGivenName, repeatValues, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, spec.resolve) || this;
@@ -7556,7 +7587,7 @@ exports.assembleScaleRange = assembleScaleRange;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var split_1 = require("../split");
-var ScaleComponent = (function (_super) {
+var ScaleComponent = /** @class */ (function (_super) {
     tslib_1.__extends(ScaleComponent, _super);
     function ScaleComponent(name, typeWithExplicit) {
         var _this = _super.call(this, {}, // no initial explicit property
@@ -7956,16 +7987,16 @@ function getFieldFromDomain(domain) {
                     field = nonUnionDomain.field;
                 }
                 else if (field !== nonUnionDomain.field) {
-                    log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result cell size may be incorrect.');
+                    log.warn('Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result view size may be incorrect.');
                     return field;
                 }
             }
         }
-        log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result cell size maybe incorrect.');
+        log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result view size maybe incorrect.');
         return field;
     }
     else if (vega_schema_2.isFieldRefUnionDomain(domain) && vega_util_1.isString) {
-        log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result cell size may be incorrect.');
+        log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.');
         var field = domain.fields[0];
         return vega_util_1.isString(field) ? field : undefined;
     }
@@ -9604,7 +9635,7 @@ var util_1 = require("../util");
  * This is important for scale/axis/legend merging as
  * we want to prioritize properties that users explicitly specified.
  */
-var Split = (function () {
+var Split = /** @class */ (function () {
     function Split(explicit, implicit) {
         if (explicit === void 0) { explicit = {}; }
         if (implicit === void 0) { implicit = {}; }
@@ -9657,9 +9688,6 @@ var Split = (function () {
         if (s[key] !== undefined) {
             this.set(key, s[key], true);
         }
-    };
-    Split.prototype.extend = function (mixins, explicit) {
-        return new Split(explicit ? tslib_1.__assign({}, this.explicit, mixins) : this.explicit, explicit ? this.implicit : tslib_1.__assign({}, this.implicit, mixins));
     };
     return Split;
 }());
@@ -9743,7 +9771,7 @@ var selection_1 = require("./selection/selection");
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-var UnitModel = (function (_super) {
+var UnitModel = /** @class */ (function (_super) {
     tslib_1.__extends(UnitModel, _super);
     function UnitModel(spec, parent, parentGivenName, parentGivenSize, repeater, config) {
         if (parentGivenSize === void 0) { parentGivenSize = {}; }
@@ -10261,7 +10289,7 @@ var scale_1 = require("./scale");
 var selection_1 = require("./selection");
 var title_1 = require("./title");
 var util_1 = require("./util");
-exports.defaultCellConfig = {
+exports.defaultViewConfig = {
     width: 200,
     height: 200
 };
@@ -10270,7 +10298,7 @@ exports.defaultConfig = {
     timeFormat: '%b %d, %Y',
     countTitle: 'Number of Records',
     invalidValues: 'filter',
-    cell: exports.defaultCellConfig,
+    view: exports.defaultViewConfig,
     mark: mark.defaultMarkConfig,
     area: {},
     bar: mark.defaultBarConfig,
@@ -10286,10 +10314,7 @@ exports.defaultConfig = {
     boxWhisker: {},
     boxMid: { color: 'white' },
     scale: scale_1.defaultScaleConfig,
-    axis: {
-        domainColor: '#888',
-        tickColor: '#888'
-    },
+    axis: {},
     axisX: {},
     axisY: { minExtent: 30 },
     axisLeft: {},
@@ -10306,13 +10331,13 @@ function initConfig(config) {
     return util_1.mergeDeep(util_1.duplicate(exports.defaultConfig), config);
 }
 exports.initConfig = initConfig;
-var MARK_STYLES = ['cell'].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_STYLES);
+var MARK_STYLES = ['view'].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_STYLES);
 var VL_ONLY_CONFIG_PROPERTIES = [
     'padding', 'numberFormat', 'timeFormat', 'countTitle',
     'stack', 'scale', 'selection', 'invalidValues',
     'overlay' // FIXME: Redesign and unhide this
 ];
-var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ cell: ['width', 'height'] }, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
 function stripAndRedirectConfig(config) {
     config = util_1.duplicate(config);
     for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
@@ -10373,6 +10398,9 @@ function stripAndRedirectConfig(config) {
 exports.stripAndRedirectConfig = stripAndRedirectConfig;
 function redirectConfig(config, prop, toProp) {
     var propConfig = prop === 'title' ? title_1.extractTitleConfig(config.title).mark : config[prop];
+    if (prop === 'view') {
+        toProp = 'cell'; // View's default style is "cell"
+    }
     var style = tslib_1.__assign({}, propConfig, config.style[prop]);
     // set config.style if it is not an empty object
     if (util_1.keys(style).length > 0) {
@@ -11013,7 +11041,9 @@ function expression(model, filterOp, node) {
     });
 }
 exports.expression = expression;
-function fieldFilterExpression(filter) {
+// This method is used by Voyager.  Do not change its behavior without changing Voyager.
+function fieldFilterExpression(filter, useInRange) {
+    if (useInRange === void 0) { useInRange = true; }
     var fieldExpr = filter.timeUnit ?
         // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
         // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
@@ -11033,18 +11063,19 @@ function fieldFilterExpression(filter) {
     else if (isRangeFilter(filter)) {
         var lower = filter.range[0];
         var upper = filter.range[1];
-        if (lower !== null && upper !== null) {
+        if (lower !== null && upper !== null && useInRange) {
             return 'inrange(' + fieldExpr + ', [' +
                 valueExpr(lower, filter.timeUnit) + ', ' +
                 valueExpr(upper, filter.timeUnit) + '])';
         }
-        else if (lower !== null) {
-            return fieldExpr + ' >= ' + lower;
+        var exprs = [];
+        if (lower !== null) {
+            exprs.push(fieldExpr + " >= " + valueExpr(lower, filter.timeUnit));
         }
-        else if (upper !== null) {
-            return fieldExpr + ' <= ' + upper;
+        if (upper !== null) {
+            exprs.push(fieldExpr + " <= " + valueExpr(upper, filter.timeUnit));
         }
-        return undefined;
+        return exprs.length > 0 ? exprs.join(' && ') : 'true';
     }
     /* istanbul ignore next: it should never reach here */
     throw new Error("Invalid field filter: " + JSON.stringify(filter));
@@ -11130,7 +11161,7 @@ var current = main;
 /**
  * Logger tool for checking if the code throws correct warning
  */
-var LocalLogger = (function () {
+var LocalLogger = /** @class */ (function () {
     function LocalLogger() {
         this.warns = [];
         this.infos = [];
@@ -11888,7 +11919,9 @@ function normalize(spec, config) {
 exports.normalize = normalize;
 function normalizeFacet(spec, config) {
     var subspec = spec.spec, rest = tslib_1.__rest(spec, ["spec"]);
-    return tslib_1.__assign({}, rest, { spec: normalize(subspec, config) });
+    return tslib_1.__assign({}, rest, { 
+        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+        spec: normalize(subspec, config) });
 }
 function normalizeLayer(spec, config) {
     var layer = spec.layer, rest = tslib_1.__rest(spec, ["layer"]);
@@ -12820,6 +12853,23 @@ function logicalExpr(op, cb) {
     }
 }
 exports.logicalExpr = logicalExpr;
+/**
+ * Delete nested property of an object, and delete the ancestors of the property if they become empty.
+ */
+function deleteNestedProperty(obj, orderedProps) {
+    var isEmpty = true;
+    while (orderedProps.length > 0 && isEmpty) {
+        var o = obj;
+        for (var i = 0; i < orderedProps.length - 1; i++) {
+            o = o[orderedProps[i]];
+        }
+        delete o[orderedProps.pop()];
+        if (exports.keys(o).length !== 0) {
+            isEmpty = false;
+        }
+    }
+}
+exports.deleteNestedProperty = deleteNestedProperty;
 
 },{"./logical":102,"json-stable-stringify":1,"vega-util":7}],115:[function(require,module,exports){
 "use strict";

@@ -16,7 +16,7 @@ function getStackByFields(model) {
         return fields;
     }, []);
 }
-var StackNode = (function (_super) {
+var StackNode = /** @class */ (function (_super) {
     tslib_1.__extends(StackNode, _super);
     function StackNode(stack) {
         var _this = _super.call(this) || this;

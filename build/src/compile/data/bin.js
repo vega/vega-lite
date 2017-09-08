@@ -43,7 +43,7 @@ function createBinComponent(t, params) {
     var binComponent = tslib_1.__assign({ bin: bin, field: t.field, as: [fielddef_1.field(t, {}), fielddef_1.field(t, { binSuffix: 'end' })] }, signal ? { signal: signal } : {}, extentSignal ? { extentSignal: extentSignal } : {});
     return { key: key, binComponent: binComponent };
 }
-var BinNode = (function (_super) {
+var BinNode = /** @class */ (function (_super) {
     tslib_1.__extends(BinNode, _super);
     function BinNode(bins) {
         var _this = _super.call(this) || this;

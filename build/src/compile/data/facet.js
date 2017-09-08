@@ -10,7 +10,7 @@ var dataflow_1 = require("./dataflow");
 /**
  * A node that helps us track what fields we are faceting by.
  */
-var FacetNode = (function (_super) {
+var FacetNode = /** @class */ (function (_super) {
     tslib_1.__extends(FacetNode, _super);
     /**
      * @param model The facet model.
@@ -74,7 +74,7 @@ var FacetNode = (function (_super) {
                         childIndependentFieldsWithStep[channel] = field;
                     }
                     else {
-                        log.warn('Unknown field for ${channel}.  Cannot calculate cell size.');
+                        log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
                     }
                 }
             }

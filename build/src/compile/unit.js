@@ -20,7 +20,7 @@ var selection_1 = require("./selection/selection");
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-var UnitModel = (function (_super) {
+var UnitModel = /** @class */ (function (_super) {
     tslib_1.__extends(UnitModel, _super);
     function UnitModel(spec, parent, parentGivenName, parentGivenSize, repeater, config) {
         if (parentGivenSize === void 0) { parentGivenSize = {}; }

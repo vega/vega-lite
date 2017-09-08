@@ -16,7 +16,6 @@ export declare class Split<T extends object> {
     set<K extends keyof T>(key: K, value: T[K], explicit: boolean): this;
     copyKeyFromSplit<S extends object, K extends keyof (T | S)>(key: K, s: Split<S>): void;
     copyKeyFromObject<S, K extends keyof (T | S)>(key: K, s: S): void;
-    extend(mixins: T, explicit: boolean): Split<T>;
 }
 export interface Explicit<T> {
     explicit: boolean;

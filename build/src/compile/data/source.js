@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var SourceNode = (function (_super) {
+var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this) || this;

@@ -31,7 +31,7 @@ describe('compile/data/facet', function () {
                 'resolve': {
                     'scale': { 'x': 'independent' }
                 },
-                'config': { 'cell': { 'fill': 'yellow' } }
+                'config': { 'view': { 'fill': 'yellow' } }
             });
             var node = new facet_1.FacetNode(model, 'facetName', 'dataName');
             var data = node.assemble();

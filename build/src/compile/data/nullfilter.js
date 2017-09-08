@@ -6,7 +6,7 @@ var scale_1 = require("../../scale");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var NullFilterNode = (function (_super) {
+var NullFilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(NullFilterNode, _super);
     function NullFilterNode(fields) {
         var _this = _super.call(this) || this;

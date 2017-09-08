@@ -5,7 +5,7 @@ var vega_util_1 = require("vega-util");
 var log = require("../../log");
 var dataflow_1 = require("./dataflow");
 var source_1 = require("./source");
-var LookupNode = (function (_super) {
+var LookupNode = /** @class */ (function (_super) {
     tslib_1.__extends(LookupNode, _super);
     function LookupNode(transform, secondary) {
         var _this = _super.call(this) || this;

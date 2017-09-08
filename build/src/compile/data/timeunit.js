@@ -5,7 +5,7 @@ var fielddef_1 = require("../../fielddef");
 var timeunit_1 = require("../../timeunit");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var TimeUnitNode = (function (_super) {
+var TimeUnitNode = /** @class */ (function (_super) {
     tslib_1.__extends(TimeUnitNode, _super);
     function TimeUnitNode(formula) {
         var _this = _super.call(this) || this;

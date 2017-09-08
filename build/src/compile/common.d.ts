@@ -1,12 +1,12 @@
 import { Channel } from '../channel';
-import { CellConfig, Config } from '../config';
+import { Config, ViewConfig } from '../config';
 import { FieldDef, FieldRefOption, OrderFieldDef } from '../fielddef';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
 import { TimeUnit } from '../timeunit';
 import { VgEncodeEntry, VgSort } from '../vega.schema';
 import { Explicit } from './split';
 import { UnitModel } from './unit';
-export declare function applyConfig(e: VgEncodeEntry, config: CellConfig | MarkConfig | TextConfig, propsList: string[]): VgEncodeEntry;
+export declare function applyConfig(e: VgEncodeEntry, config: ViewConfig | MarkConfig | TextConfig, propsList: string[]): VgEncodeEntry;
 export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]): VgEncodeEntry;
 export declare function getStyles(mark: MarkDef): string[];
 /**

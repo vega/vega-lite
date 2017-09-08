@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var filter_1 = require("../../filter");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var FilterNode = (function (_super) {
+var FilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(FilterNode, _super);
     function FilterNode(model, filter) {
         var _this = _super.call(this) || this;
