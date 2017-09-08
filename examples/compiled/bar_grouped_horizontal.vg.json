@@ -331,8 +331,6 @@
     ],
     "config": {
         "axis": {
-            "domainColor": "#888",
-            "tickColor": "#888",
             "domainWidth": 1
         },
         "axisY": {
