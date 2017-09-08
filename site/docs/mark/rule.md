@@ -36,10 +36,9 @@ The fact that rule marks span the width or the height of a single view make them
 
 <span class="vl-example" data-name="layer_line_color_rule"></span>
 
-<!--We can also use a rule mark to show global mean value over a histogram.
+We can also use a rule mark to show global mean value over a histogram.
 
 <span class="vl-example" data-name="layer_histogram_global_mean"></span>
--->
 
 {:#ranged}
 ## Ranged Rules
