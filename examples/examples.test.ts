@@ -49,8 +49,11 @@ describe('Examples', function() {
   examples.forEach(function(example: string) {
     if (
       path.extname(example) !== '.json' ||
-      // Do not validate overlay example until we have redesign it
-      example.indexOf('overlay') >= 0) {
+      // Do not validate overlay example until we have redesigned it
+      example.indexOf('overlay') >= 0 ||
+      // Also ignore box-plot examples until we support selections
+      example.indexOf('box-plot') >= 0
+      ) {
       return;
     }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));

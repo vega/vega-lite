@@ -91,7 +91,10 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-export type Aggregate = AggregateOp | CompositeAggregate;
+/** @hide */
+export type HiddenCompositeAggregate = CompositeAggregate;
+
+export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
 export interface FieldDefBase<F> {
 

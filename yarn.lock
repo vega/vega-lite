@@ -4963,9 +4963,9 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-json-schema-generator@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.11.0.tgz#ba3a5476e2d840f706576feab233b3e6e990237e"
+ts-json-schema-generator@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.12.0.tgz#e36189a38cf5c4551f95f0b93d0cf46f708fa7ad"
   dependencies:
     commander "~2.11.0"
     glob "~7.1.2"
