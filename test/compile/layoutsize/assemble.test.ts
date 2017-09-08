@@ -89,7 +89,7 @@ describe('compile/layout', () => {
       }]);
     });
 
-    it('should return static cell size for ordinal x-scale with null', () => {
+    it('should return static view size for ordinal x-scale with null', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
@@ -102,7 +102,7 @@ describe('compile/layout', () => {
     });
 
 
-    it('should return static cell size for ordinal y-scale with null', () => {
+    it('should return static view size for ordinal y-scale with null', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
@@ -114,7 +114,7 @@ describe('compile/layout', () => {
       assert.deepEqual(size, [{name: 'height', update: '200'}]);
     });
 
-    it('should return static cell size for ordinal scale with top-level width', () => {
+    it('should return static view size for ordinal scale with top-level width', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         width: 205,
         mark: 'point',
@@ -127,7 +127,7 @@ describe('compile/layout', () => {
       assert.deepEqual(size, [{name: 'width', update: '205'}]);
     });
 
-    it('should return static cell size for ordinal scale with top-level width even if there is numeric rangeStep', () => {
+    it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', () => {
       log.runLocalLogger((localLogger) => {
         const model = parseUnitModelWithScaleAndLayoutSize({
           width: 205,
@@ -143,7 +143,7 @@ describe('compile/layout', () => {
       });
     });
 
-    it('should return static cell width for non-ordinal x-scale', () => {
+    it('should return static view width for non-ordinal x-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
@@ -156,7 +156,7 @@ describe('compile/layout', () => {
     });
 
 
-    it('should return static cell size for non-ordinal y-scale', () => {
+    it('should return static view size for non-ordinal y-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {

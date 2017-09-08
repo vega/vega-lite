@@ -27,5 +27,5 @@
   "resolve": {
     "scale": {"x": "independent"}
   },
-  "config": {"cell": {"fill": "yellow"}}
+  "config": {"view": {"fill": "yellow"}}
 }

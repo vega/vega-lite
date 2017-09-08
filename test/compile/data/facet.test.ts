@@ -30,7 +30,7 @@ describe('compile/data/facet', function() {
         'resolve': {
           'scale': {'x': 'independent'}
         },
-        'config': {'cell': {'fill': 'yellow'}}
+        'config': {'view': {'fill': 'yellow'}}
       });
 
       const node = new FacetNode(model, 'facetName', 'dataName');

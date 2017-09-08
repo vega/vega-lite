@@ -1029,55 +1029,6 @@
       ],
       "type": "object"
     },
-    "CellConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "clip": {
-          "description": "Whether the view should be clipped.",
-          "type": "boolean"
-        },
-        "fill": {
-          "description": "The fill color.\n\n__Default value:__ (none)",
-          "type": "string"
-        },
-        "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ (none)",
-          "type": "number"
-        },
-        "height": {
-          "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
-          "type": "number"
-        },
-        "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ (none)",
-          "type": "string"
-        },
-        "strokeDash": {
-          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.\n\n__Default value:__ (none)",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "strokeDashOffset": {
-          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
-          "type": "number"
-        },
-        "strokeOpacity": {
-          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ (none)",
-          "type": "number"
-        },
-        "strokeWidth": {
-          "description": "The stroke width, in pixels.\n\n__Default value:__ (none)",
-          "type": "number"
-        },
-        "width": {
-          "description": "The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
     "CompositeAggregate": {
       "$ref": "#/definitions/BOXPLOT"
     },
@@ -1464,10 +1415,6 @@
           "$ref": "#/definitions/BarConfig",
           "description": "Bar-Specific Config "
         },
-        "cell": {
-          "$ref": "#/definitions/CellConfig",
-          "description": "Cell Config "
-        },
         "circle": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Circle-Specific Config "
@@ -1554,6 +1501,10 @@
         "title": {
           "$ref": "#/definitions/VgTitleConfig",
           "description": "Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config)."
+        },
+        "view": {
+          "$ref": "#/definitions/ViewConfig",
+          "description": "Default properties for [single view plots](spec.html#single). "
         }
       },
       "type": "object"
@@ -2360,7 +2311,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -2403,7 +2354,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2499,7 +2450,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2536,7 +2487,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2562,7 +2513,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2599,7 +2550,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2870,11 +2821,11 @@
       "additionalProperties": false,
       "properties": {
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5408,7 +5359,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -5449,7 +5400,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5627,7 +5578,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -5674,7 +5625,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5946,10 +5897,6 @@
     "VLOnlyConfig": {
       "additionalProperties": false,
       "properties": {
-        "cell": {
-          "$ref": "#/definitions/CellConfig",
-          "description": "Cell Config "
-        },
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
@@ -5980,6 +5927,10 @@
         "timeFormat": {
           "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\n__Default value:__ `'%b %d, %Y'`.",
           "type": "string"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewConfig",
+          "description": "Default properties for [single view plots](spec.html#single). "
         }
       },
       "type": "object"
@@ -6801,6 +6752,55 @@
         "orient": {
           "$ref": "#/definitions/TitleOrient",
           "description": "Default title orientation (\"top\", \"bottom\", \"left\", or \"right\")"
+        }
+      },
+      "type": "object"
+    },
+    "ViewConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "clip": {
+          "description": "Whether the view should be clipped.",
+          "type": "boolean"
+        },
+        "fill": {
+          "description": "The fill color.\n\n__Default value:__ (none)",
+          "type": "string"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ (none)",
+          "type": "number"
+        },
+        "height": {
+          "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "stroke": {
+          "description": "The stroke color.\n\n__Default value:__ (none)",
+          "type": "string"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.\n\n__Default value:__ (none)",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ (none)",
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.\n\n__Default value:__ (none)",
+          "type": "number"
+        },
+        "width": {
+          "description": "The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
+          "type": "number"
         }
       },
       "type": "object"

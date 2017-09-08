@@ -14,7 +14,7 @@ import {duplicate, isObject, keys, mergeDeep} from './util';
 import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
 
 
-export interface CellConfig {
+export interface ViewConfig {
   /**
    * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
    *
@@ -94,7 +94,7 @@ export interface CellConfig {
   strokeDashOffset?: number;
 }
 
-export const defaultCellConfig: CellConfig = {
+export const defaultViewConfig: ViewConfig = {
   width: 200,
   height: 200
 };
@@ -166,8 +166,8 @@ export interface VLOnlyConfig {
   timeFormat?: string;
 
 
-  /** Cell Config */
-  cell?: CellConfig;
+  /** Default properties for [single view plots](spec.html#single). */
+  view?: ViewConfig;
 
   /**
    * Scale configuration determines default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
@@ -233,7 +233,7 @@ export const defaultConfig: Config = {
 
   invalidValues: 'filter',
 
-  cell: defaultCellConfig,
+  view: defaultViewConfig,
 
   mark: mark.defaultMarkConfig,
   area: {},
@@ -275,7 +275,7 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_STYLES = ['cell'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as ('cell' | Mark | CompositeMarkStyle)[];
+const MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as ('view' | Mark | CompositeMarkStyle)[];
 
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
@@ -285,7 +285,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
 ];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  cell: ['width', 'height'],
+  view: ['width', 'height'],
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
   ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };
@@ -350,8 +350,12 @@ export function stripAndRedirectConfig(config: Config) {
   return keys(config).length > 0 ? config : undefined;
 }
 
-function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title' | 'cell', toProp?: string) {
+function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title' | 'view', toProp?: string) {
   const propConfig: VgMarkConfig = prop === 'title' ? extractTitleConfig(config.title).mark : config[prop];
+
+  if (prop === 'view') {
+    toProp = 'cell'; // View's default style is "cell"
+  }
 
   const style: VgMarkConfig = {
     ...propConfig,

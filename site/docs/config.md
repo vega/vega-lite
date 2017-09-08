@@ -11,7 +11,6 @@ permalink: /docs/config.html
   ...,
   "config": {             // Configuration Object
     ...                   // - Top-level Configuration
-    "cell": { ... },      // - Cell Configuration
     "axis": { ... },      // - Axis Configuration
     "legend": { ... },    // - Legend Configuration
     "mark": { ... },      // - Mark Configuration
@@ -19,7 +18,8 @@ permalink: /docs/config.html
     "range": { ... },     // - Scale Range Configuration
     "scale": { ... },     // - Scale Configuration
     "selection": { ... }, // - Selection Configuration
-    "title": { ... }      // - title Configuration
+    "title": { ... },     // - title Configuration
+    "view": { ... }       // - View Configuration
   }
 }
 ```
@@ -37,36 +37,6 @@ A Vega-Lite `config` object can have the following top-level properties:
 {:#format}
 
 {% include table.html props="autoResize,background,countTitle,invalidValues,numberFormat,padding,timeFormat" source="Config" %}
-
-{:#cell-config}
-## Cell Configuration
-
-{: .suppress-error}
-```json
-{
-  ...,
-  "config": {          // Configuration Object
-    "cell": { ... },   // - Cell Configuration
-    ...
-  }
-}
-```
-
-At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
-Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each single plot and each plot in a trellis plot.
-
-### Cell Size Configuration
-
-`width` and `height` property of the cell configuration determine the width of a visualization with a continuous x-scale and the height of a visualization with a continuous y-scale respectively.
-
-{% include table.html props="width,height" source="CellConfig" %}
-
-**For more information about visualization's size, please see [Customizing Size](size.html) page.**
-
-### Cell Style Configuration
-
-{% include table.html props="clip,fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="CellConfig" %}
-
 
 {:#axis-config}
 ## Axis Configurations
@@ -109,3 +79,7 @@ In addition to the default mark properties above, default values can be further 
 ## Title Configuration
 
 {% include table.html props="title" source="Config" %}
+
+## View Configuration
+
+{% include table.html props="view" source="Config" %}
