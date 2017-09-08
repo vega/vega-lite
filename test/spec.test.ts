@@ -592,7 +592,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(spec), [
+    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -623,7 +623,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
+    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -655,7 +655,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
+    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -674,7 +674,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(facetSpec), [
+    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

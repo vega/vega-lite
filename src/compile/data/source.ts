@@ -15,9 +15,7 @@ export class SourceNode extends DataFlowNode {
     data = data || {name: 'source'};
 
     if (isInlineData(data)) {
-      this._data = {
-        values: data.values
-      };
+      this._data = data;
     } else if (isUrlData(data)) {
       // Extract extension from URL using snippet from
       // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
@@ -73,7 +71,7 @@ export class SourceNode extends DataFlowNode {
   }
 
   /**
-   * Return a unique identifir for this data source.
+   * Return a unique identifier for this data source.
    */
   public hash() {
     if (isInlineData(this._data)) {

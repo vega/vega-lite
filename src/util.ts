@@ -41,7 +41,22 @@ export function hash(a: any) {
   if (isString(a) || isNumber(a) || isBoolean(a)) {
     return String(a);
   }
-  return stringify(a);
+
+  const str = stringify(a);
+
+  // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
+  if (str.length < 100) {
+    return str;
+  }
+
+  // from http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    h = ((h<<5)-h)+char;
+    h = h & h; // Convert to 32bit integer
+  }
+  return h;
 }
 
 export function contains<T>(array: T[], item: T) {
@@ -121,10 +136,10 @@ function deepMerge_(dest: any, src: any) {
   return dest;
 }
 
-export function unique<T>(values: T[], f: (item: T) => string): T[] {
+export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
   const results: any[] = [];
   const u = {};
-  let v: string;
+  let v: string | number;
   for (const val of values) {
     v = f(val);
     if (v in u) {
