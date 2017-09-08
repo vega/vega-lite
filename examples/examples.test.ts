@@ -43,6 +43,7 @@ function validateVega(spec: TopLevelExtendedSpec) {
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
 
+const suffixLength = '_future.vl.json'.length;
 describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
@@ -52,7 +53,9 @@ describe('Examples', function() {
       // Do not validate overlay example until we have redesigned it
       example.indexOf('overlay') >= 0 ||
       // Also ignore box-plot examples until we support selections
-      example.indexOf('box-plot') >= 0
+      example.indexOf('box-plot') >= 0 ||
+      // Also ignore all examples with "_future" suffix
+      example.lastIndexOf('_future.vl.json') === example.length - suffixLength
       ) {
       return;
     }

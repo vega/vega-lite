@@ -2159,7 +2159,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayerSpec"
+            },
+            {
+              "$ref": "#/definitions/CompositeUnitSpec"
+            }
+          ]
         },
         "title": {
           "anyOf": [
@@ -5388,7 +5395,14 @@
           "$ref": "#/definitions/Resolve"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayerSpec"
+            },
+            {
+              "$ref": "#/definitions/CompositeUnitSpec"
+            }
+          ]
         },
         "title": {
           "anyOf": [
