@@ -2,7 +2,8 @@
   "Basic": [
     {
       "name": "bar",
-      "title": "Simple Bar Chart"
+      "title": "Simple Bar Chart",
+      "style": "background-size: auto 110%; background-position: center center !important;"
     },
     {
       "name": "bar_aggregate",
@@ -14,7 +15,8 @@
     },
     {
       "name": "bar_gantt",
-      "title": "Gantt Chart"
+      "title": "Gantt Chart",
+      "style": "background-size: auto 75%; background-position-y: center !important;"
     },
     {
       "name": "bar_grouped",
@@ -46,7 +48,8 @@
     },
     {
       "name": "tick_strip",
-      "title": "Strip Plot"
+      "title": "Strip Plot",
+      "style": "background-size: auto 85%; background-position-y: center !important;"
     },
     {
       "name": "line",
@@ -147,7 +150,8 @@
       "title": "Mean overlay over precipitation chart"
     },{
       "name": "layer_text_heatmap",
-      "title": "Layering text over heatmap"
+      "title": "Layering text over heatmap",
+      "style": "background-size: auto 55%; background-position-y: center !important;"
     },
     {
       "name": "layer_candlestick",
@@ -175,7 +179,8 @@
     },
     {
       "name": "layered_falkensee",
-      "title": "Falkensee"
+      "title": "Falkensee",
+      "style": "background-size: auto 90%; background-position-y: center !important;"
     }
   ],
   "Composition": [

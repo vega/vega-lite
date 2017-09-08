@@ -505,7 +505,7 @@ footer .edit-page {
   display: block;
   width: 100%;
   /* hack to make height depend on width, golden ratio*/
-  padding-bottom: 61.8%;
+  padding-bottom: 75%;
   background-repeat: no-repeat;
   margin-bottom: 5px;
   overflow: hidden;
