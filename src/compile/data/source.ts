@@ -1,5 +1,5 @@
-import {Data, DataFormat, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains, hash} from '../../util';
+import {Data, DataFormat, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
+import {contains, duplicate, hash, keys} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
@@ -20,34 +20,36 @@ export class SourceNode extends DataFlowNode {
     data = data || {name: 'source'};
 
     if (isInlineData(data)) {
-      this._data = data;
+      this._data = {values: data.values};
     } else if (isUrlData(data)) {
-      // Extract extension from URL using snippet from
-      // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-      let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
-      if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
-        defaultExtension = 'json';
+      this._data = {url: data.url};
+
+      if (!data.format || !data.format.type) {
+        // Extract extension from URL using snippet from
+        // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+        let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
+        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+          defaultExtension = 'json';
+        }
+
+        if (defaultExtension !== 'json') {
+          if (!data.format) {
+            data.format = {};
+          }
+          data.format.type = defaultExtension as DataFormatType;
+        }
       }
-      const dataFormat = data.format || {};
-
-      // For backward compatibility for former `data.formatType` property
-      const formatType: DataFormat = dataFormat.type || data['formatType'];
-      const {property, feature, mesh} = dataFormat;
-
-      const format = {
-        type: formatType ? formatType : defaultExtension,
-        ...(property ? {property} : {}),
-        ...(feature ? {feature} : {}),
-        ...(mesh ? {mesh} : {}),
-      };
-
-      this._data = {
-        url: data.url,
-        format
-      };
     } else if (isNamedData(data)) {
       this._name = data.name;
       this._data = {};
+    }
+
+    if (data.format) {
+      const {parse = null, ...format} = data.format || {};
+
+      if (keys(format).length > 0) {
+        this._data.format = format;
+      }
     }
   }
 
@@ -86,7 +88,7 @@ export class SourceNode extends DataFlowNode {
       }
       return hash(this._data);
     } else if (isUrlData(this._data)) {
-      return `${this._data.url} ${hash(this._data.format)}`;
+      return hash([this._data.url, this._data.format]);
     } else {
       return this._name;
     }

@@ -1,5 +1,6 @@
 import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
+import {DataFormatType} from './data';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
@@ -9,9 +10,15 @@ import {isArray} from './util';
 export interface VgData {
   name: string;
   source?: string;
-  values?: any;
-  format?: any;
-  url?: any;
+  values?: any[] | string;
+  format?: {
+    type?: string;
+    parse?: string | object;
+    property?: string;
+    feature?: string;
+    mesh?: string;
+  };
+  url?: string;
   transform?: VgTransform[];
 }
 
