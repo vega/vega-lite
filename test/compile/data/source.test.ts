@@ -27,14 +27,14 @@ describe('compile/data/source', function() {
 
     describe('with link to url', function() {
       const source = parse({
-        url: 'http://foo.bar',
+        url: 'http://foo.bar/file.csv',
       });
 
-      it('should have format.type json', function() {
-        assert.equal(source.data.format.type, 'json');
+      it('should have format.type csv', function() {
+        assert.equal(source.data.format.type, 'csv');
       });
       it('should have correct url', function() {
-        assert.equal(source.data.url, 'http://foo.bar');
+        assert.equal(source.data.url, 'http://foo.bar/file.csv');
       });
     });
 

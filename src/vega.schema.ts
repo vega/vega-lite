@@ -1,6 +1,5 @@
 import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
-import {DataFormatType} from './data';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';

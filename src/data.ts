@@ -83,10 +83,10 @@ export interface InlineData {
    */
   format?: DataFormat;
   /**
-   * The full data set, included inline. This can be an array of objects or primitive values.
+   * The full data set, included inline. This can be a string or an array of objects or primitive values.
    * Arrays of primitive values are ingested as objects with a `data` property.
    */
-  values: any[];
+  values: any[] | string;
 }
 
 export interface NamedData {

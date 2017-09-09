@@ -2592,10 +2592,17 @@
           "description": "An object that specifies the format for parsing the data values."
         },
         "values": {
-          "description": "The full data set, included inline. This can be an array of objects or primitive values.\nArrays of primitive values are ingested as objects with a `data` property.",
-          "items": {
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The full data set, included inline. This can be a string or an array of objects or primitive values.\nArrays of primitive values are ingested as objects with a `data` property."
         }
       },
       "required": [
