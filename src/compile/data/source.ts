@@ -3,14 +3,19 @@ import {contains, hash} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
+let counter = 0;
 
 export class SourceNode extends DataFlowNode {
   private _data: Partial<VgData>;
 
   private _name: string;
 
+  private _id: number;
+
   constructor(data: Data) {
     super();
+
+    this._id = counter++;
 
     data = data || {name: 'source'};
 
@@ -75,6 +80,10 @@ export class SourceNode extends DataFlowNode {
    */
   public hash() {
     if (isInlineData(this._data)) {
+      // We want to avoid hashes of very large dataset. We will not merge large embedded datasets.
+      if (this._data.values.length > 1000) {
+        return hash([this._data.format, this._id]);
+      }
       return hash(this._data);
     } else if (isUrlData(this._data)) {
       return `${this._data.url} ${hash(this._data.format)}`;
