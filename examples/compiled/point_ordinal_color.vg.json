@@ -37,7 +37,10 @@
                     "x": 6,
                     "y": 6
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",
