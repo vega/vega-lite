@@ -24,6 +24,10 @@ export class SourceNode extends DataFlowNode {
     } else if (isUrlData(data)) {
       this._data = {url: data.url};
 
+      if (!data.format) {
+        data.format = {};
+      }
+
       if (!data.format || !data.format.type) {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
@@ -32,24 +36,21 @@ export class SourceNode extends DataFlowNode {
           defaultExtension = 'json';
         }
 
-        if (defaultExtension !== 'json') {
-          if (!data.format) {
-            data.format = {};
-          }
-          data.format.type = defaultExtension as DataFormatType;
-        }
+        data.format.type = defaultExtension as DataFormatType;
       }
     } else if (isNamedData(data)) {
       this._name = data.name;
       this._data = {};
     }
 
-    if (data.format) {
-      const {parse = null, ...format} = data.format || {};
+    if (!isNamedData(data)) {
+      const {parse = null, ...format} = {
+        // https://github.com/vega/vega-parser/pull/60
+        type: 'json',
+        ...data.format || {}
+      };
 
-      if (keys(format).length > 0) {
-        this._data.format = format;
-      }
+      this._data.format = format;
     }
   }
 
