@@ -154,11 +154,11 @@
       "style": "background-size: auto 55%; background-position-y: center !important;"
     },
     {
-      "name": "normalized/box-plot_minmax_2D_vertical_normalized",
+      "name": "box-plot_minmax_2D_vertical_normalized",
       "title": "Box Plot with Min/Max Whiskers"
     },
     {
-      "name": "normalized/box-plot_tukey_2D_vertical_normalized",
+      "name": "box-plot_tukey_2D_vertical_normalized",
       "title": "Tukey Box Plot (1.5 IQR)"
     },
     {

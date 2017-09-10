@@ -1,0 +1,397 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "q1",
+                        "q3",
+                        "median",
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "people",
+                        "people",
+                        "people",
+                        "people",
+                        "people"
+                    ],
+                    "as": [
+                        "lowerBox",
+                        "upperBox",
+                        "midBox",
+                        "lowerWhisker",
+                        "upperWhisker"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerWhisker\"])",
+                    "as": "lowerWhisker"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lowerWhisker\"] !== null && !isNaN(datum[\"lowerWhisker\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperWhisker\"])",
+                    "as": "upperWhisker"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upperBox\"] !== null && !isNaN(datum[\"upperBox\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lowerBox\"] !== null && !isNaN(datum[\"lowerBox\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"midBox\"])",
+                    "as": "midBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"midBox\"] !== null && !isNaN(datum[\"midBox\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rule",
+            "style": [
+                "boxWhisker"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "lowerWhisker"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "lowerBox"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rule",
+            "style": [
+                "boxWhisker"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "upperBox"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "upperWhisker"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "rect",
+            "style": [
+                "box"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "width": {
+                        "value": 5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "lowerBox"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "upperBox"
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "rect",
+            "style": [
+                "boxMid"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "midBox"
+                    },
+                    "width": {
+                        "value": 5
+                    },
+                    "height": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "age"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "lowerWhisker"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "lowerBox"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upperBox"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upperWhisker"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "lowerBox"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "upperBox"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "midBox"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "title": "age",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "population",
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
