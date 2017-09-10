@@ -36,6 +36,7 @@ export class SourceNode extends DataFlowNode {
           defaultExtension = 'json';
         }
 
+        // defaultExtension has type string but we ensure that it is DataFormatType above
         data.format.type = defaultExtension as DataFormatType;
       }
     } else if (isNamedData(data)) {
