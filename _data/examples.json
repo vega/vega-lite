@@ -217,6 +217,10 @@
     {
       "name": "interactive_splom",
       "title": "Scatterplot Matrix"
+    },
+    {
+      "name": "concat_layer.vl.json",
+      "title": "Interactive Dashboard"
     }
   ]
 }
