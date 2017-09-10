@@ -6,12 +6,23 @@ import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
-import {ConcatSpec, FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
+import {
+  ConcatSpec,
+  FacetSpec,
+  LayerSpec,
+  normalize,
+  RepeatSpec,
+  TopLevel,
+  TopLevelExtendedSpec,
+  UnitSpec,
+} from '../src/spec';
+import {normalizeAutoSize} from '../src/toplevelprops';
+
 
 export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   const config = initConfig(inputSpec.config);
   const spec = normalize(inputSpec, config);
-  return buildModel(spec, null, '', undefined, undefined, config);
+  return buildModel(spec, null, '', undefined, undefined, config, normalizeAutoSize(inputSpec.autosize).type === 'fit');
 }
 
 export function parseModelWithScale(inputSpec: TopLevelExtendedSpec): Model {
@@ -21,7 +32,7 @@ export function parseModelWithScale(inputSpec: TopLevelExtendedSpec): Model {
 }
 
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {
-  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
+  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config), normalizeAutoSize(spec.autosize).type === 'fit');
 }
 
 export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
@@ -45,7 +56,7 @@ export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<UnitSpec>) {
 
 
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
-  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
+  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config), normalizeAutoSize(spec.autosize).type === 'fit');
 }
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {

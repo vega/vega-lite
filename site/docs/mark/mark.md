@@ -33,7 +33,7 @@ In general, one mark instance is generated per input data element. However, line
 }
 ```
 
-The `mark` property of a [single view specification](spec.html#single-view-spec) can either be (1) a string describing a mark type or (2) a [mark definition object](#mark-def).
+The `mark` property of a [single view specification](spec.html#single) can either be (1) a string describing a mark type or (2) a [mark definition object](#mark-def).
 
 For example, a bar chart has `mark` as a simple string `"bar"`.
 

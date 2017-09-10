@@ -53,6 +53,36 @@
         }
       ]
     },
+    "AutoSizeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "contains": {
+          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
+          "enum": [
+            "content",
+            "padding"
+          ],
+          "type": "string"
+        },
+        "resize": {
+          "description": "A boolean flag indicating if autosize layout should be re-calculated on every view update.\n\n__Default value__: `false`",
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/AutosizeType",
+          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"` or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
+        }
+      },
+      "type": "object"
+    },
+    "AutosizeType": {
+      "enum": [
+        "pad",
+        "fit",
+        "none"
+      ],
+      "type": "string"
+    },
     "Axis": {
       "additionalProperties": false,
       "properties": {
@@ -1312,9 +1342,16 @@
           "$ref": "#/definitions/MarkConfig",
           "description": "Area-Specific Config "
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
@@ -5325,9 +5362,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5409,9 +5453,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5486,9 +5537,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5555,9 +5613,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5640,9 +5705,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5710,9 +5782,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5796,9 +5875,16 @@
     "TopLevelProperties": {
       "additionalProperties": false,
       "properties": {
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",

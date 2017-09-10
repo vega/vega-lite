@@ -31,7 +31,6 @@ export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   config?: Config;
 };
 
-
 export interface BaseSpec {
   /**
    * Title for the plot.

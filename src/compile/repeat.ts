@@ -37,7 +37,7 @@ export class RepeatModel extends BaseConcatModel {
           column: columnField
         };
 
-        children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config));
+        children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false));
       }
     }
 

@@ -53,7 +53,7 @@ export class UnitModel extends ModelWithField {
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
-    parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config, public fit: boolean) {
 
     super(spec, parent, parentGivenName, config, undefined);
     this.initSize({

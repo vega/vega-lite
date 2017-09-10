@@ -1,3 +1,4 @@
+import {isString} from 'util';
 /**
  * @minimum 0
  */
@@ -20,15 +21,55 @@ export interface TopLevelProperties {
   padding?: Padding;
 
   /**
-   * Resize is a boolean indicating if autosize layout should be re-calculated on every update.
+   * Sets how the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
+   * Object values can additionally specify parameters for content sizing and automatic resizing.
+   * `"fit"` is only supported for single and layered views that don't use `rangeStep`.
+   *
+   * __Default value__: `pad`
+   */
+  autosize?: AutosizeType | AutoSizeParams;
+}
+
+export type AutosizeType = 'pad' | 'fit' | 'none';
+
+export interface AutoSizeParams {
+  /**
+   * The sizing format type. One of `"pad"`, `"fit"` or `"none"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.
+   *
+   * __Default value__: `"pad"`
+   */
+  type?: AutosizeType;
+
+  /**
+   * A boolean flag indicating if autosize layout should be re-calculated on every view update.
    *
    * __Default value__: `false`
    */
-  autoResize?: boolean;
+  resize?: boolean;
+
+  /**
+   * Determines how size calculation should be performed, one of `"content"` or `"padding"`. The default setting (`"content"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `"padding"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.
+   *
+   * __Default value__: `"content"`
+   */
+  contains?: 'content' | 'padding';
+}
+
+export function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams): AutoSizeParams {
+  if (!autosize) {
+    return autosize = {
+      type: 'pad'
+    };
+  } else if (isString(autosize)) {
+    return {
+      type: autosize
+    };
+  }
+  return {type: 'pad', ...autosize};
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
-  'background', 'padding', 'autoResize'
+  'background', 'padding', 'autosize'
 ];
 
 export function extractTopLevelProperties<T extends TopLevelProperties>(t: T) {
