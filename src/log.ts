@@ -98,6 +98,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // FIT
+  export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+
+  export const FIT_DATA_DRIVEN = 'Cannot use "rangeStep" when "autosize" is "fit".';
+
   // SELECTION
   export function cannotProjectOnChannelWithoutField(channel: Channel) {
     return `Cannot project a selection on encoding channel "${channel}", which has no field.`;

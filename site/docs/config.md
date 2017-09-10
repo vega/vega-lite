@@ -36,7 +36,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 {:#format}
 
-{% include table.html props="autoResize,background,countTitle,invalidValues,numberFormat,padding,timeFormat" source="Config" %}
+{% include table.html props="autosize,background,countTitle,invalidValues,numberFormat,padding,timeFormat" source="Config" %}
 
 {:#axis-config}
 ## Axis Configurations

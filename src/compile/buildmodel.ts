@@ -10,17 +10,17 @@ import {RepeaterValue} from './repeater';
 import {UnitModel} from './unit';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string,
-  unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config): Model {
+  unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, repeater, config);
   }
 
   if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName, unitSize, repeater, config);
+    return new LayerModel(spec, parent, parentGivenName, unitSize, repeater, config, fit);
   }
 
   if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName, unitSize, repeater, config);
+    return new UnitModel(spec, parent, parentGivenName, unitSize, repeater, config, fit);
   }
 
   if (isRepeatSpec(spec)) {
