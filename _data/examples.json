@@ -154,6 +154,14 @@
       "style": "background-size: auto 55%; background-position-y: center !important;"
     },
     {
+      "name": "box-plot_minmax_2D_vertical_normalized",
+      "title": "Box Plot with Min/Max Whiskers"
+    },
+    {
+      "name": "box-plot_tukey_2D_vertical_normalized",
+      "title": "Tukey Box Plot (1.5 IQR)"
+    },
+    {
       "name": "layer_candlestick",
       "title": "Candlestick Chart"
     },
@@ -217,6 +225,14 @@
     {
       "name": "interactive_splom",
       "title": "Scatterplot Matrix"
+    },
+    {
+      "name": "concat_layer.vl.json",
+      "title": "Interactive Dashboard with Cross Highlight"
+    },
+    {
+      "name": "concat_bar_layer_circle.vl.json",
+      "title": "Interactive Dashboard with Cross Highlight 2"
     }
   ]
 }

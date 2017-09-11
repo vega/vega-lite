@@ -30,7 +30,10 @@
                     "a": "a3",
                     "b": "b2"
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "cross_column_domain_row_domain",

@@ -206,7 +206,10 @@
                     "signal": "long",
                     "ret": 6.73758865248228
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",

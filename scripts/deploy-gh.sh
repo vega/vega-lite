@@ -24,3 +24,4 @@ fi
 # push and return to master!
 git push
 git checkout master
+npm run data

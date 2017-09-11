@@ -44,7 +44,10 @@
                     "a": "I",
                     "b": 52
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",

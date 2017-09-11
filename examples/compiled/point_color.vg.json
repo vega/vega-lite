@@ -10,7 +10,10 @@
                 {
                     "a": 2
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         }
     ],
     "signals": [

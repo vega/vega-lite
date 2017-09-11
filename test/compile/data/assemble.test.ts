@@ -24,9 +24,8 @@ describe('compile/data/assemble', () => {
         ancestorParse: {}
       });
 
-      assert.deepEqual(data, [{
-        name: 'foo'
-      }]);
+      assert.equal(data.length, 1);
+      assert.equal(data[0].name, "foo");
     });
 
     it('should assemble raw and main output', () => {

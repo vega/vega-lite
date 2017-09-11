@@ -1,50 +1,57 @@
-import {Data, DataFormat, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains, hash} from '../../util';
+import {Data, DataFormat, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
+import {contains, duplicate, hash, keys} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
+let counter = 0;
 
 export class SourceNode extends DataFlowNode {
   private _data: Partial<VgData>;
 
   private _name: string;
 
+  private _id: number;
+
   constructor(data: Data) {
     super();
+
+    this._id = counter++;
 
     data = data || {name: 'source'};
 
     if (isInlineData(data)) {
-      this._data = {
-        values: data.values
-      };
+      this._data = {values: data.values};
     } else if (isUrlData(data)) {
-      // Extract extension from URL using snippet from
-      // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-      let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
-      if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
-        defaultExtension = 'json';
+      this._data = {url: data.url};
+
+      if (!data.format) {
+        data.format = {};
       }
-      const dataFormat = data.format || {};
 
-      // For backward compatibility for former `data.formatType` property
-      const formatType: DataFormat = dataFormat.type || data['formatType'];
-      const {property, feature, mesh} = dataFormat;
+      if (!data.format || !data.format.type) {
+        // Extract extension from URL using snippet from
+        // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+        let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
+        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+          defaultExtension = 'json';
+        }
 
-      const format = {
-        type: formatType ? formatType : defaultExtension,
-        ...(property ? {property} : {}),
-        ...(feature ? {feature} : {}),
-        ...(mesh ? {mesh} : {}),
-      };
-
-      this._data = {
-        url: data.url,
-        format
-      };
+        // defaultExtension has type string but we ensure that it is DataFormatType above
+        data.format.type = defaultExtension as DataFormatType;
+      }
     } else if (isNamedData(data)) {
       this._name = data.name;
       this._data = {};
+    }
+
+    if (!isNamedData(data)) {
+      const {parse = null, ...format} = {
+        // https://github.com/vega/vega-parser/pull/60
+        type: 'json',
+        ...data.format || {}
+      };
+
+      this._data.format = format;
     }
   }
 
@@ -73,13 +80,17 @@ export class SourceNode extends DataFlowNode {
   }
 
   /**
-   * Return a unique identifir for this data source.
+   * Return a unique identifier for this data source.
    */
   public hash() {
     if (isInlineData(this._data)) {
+      // We want to avoid hashes of very large dataset. We will not merge large embedded datasets.
+      if (this._data.values.length > 1000) {
+        return hash([this._data.format, this._id]);
+      }
       return hash(this._data);
     } else if (isUrlData(this._data)) {
-      return `${this._data.url} ${hash(this._data.format)}`;
+      return hash([this._data.url, this._data.format]);
     } else {
       return this._name;
     }

@@ -12,9 +12,8 @@ Data:
   link: data.html
 DataFormat:
   link: data.html#format
-DataUrlFormat:
-  name: DataFormat
-  link: "data.html#format"
+DataFormatType:
+  name: String
 
 TitleParams:
   link: "title.html#params"
