@@ -124,10 +124,10 @@ export function getPathSort(model: UnitModel) {
         expr: 'datum'
       });
 
-    return {
+    return sortField ? {
       field: sortField,
       order: 'descending'
-    };
+    } : undefined;
   }
 }
 
