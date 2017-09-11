@@ -7,9 +7,9 @@ import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
 
 export function assembleLegends(model: Model): VgLegend[] {
-
   const legendComponentIndex = model.component.legends;
   const legendByDomain: {[domainHash: string]: LegendComponent[]} = {};
+
   keys(legendComponentIndex).forEach((channel: NonspatialScaleChannel) => {
     const scaleComponent = model.getScaleComponent(channel);
     const domainHash = stringify(scaleComponent.domains);

@@ -2,11 +2,12 @@ import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
 import {flatten, keys} from '../util';
-import {VgData, VgLayout, VgSignal, VgTitle} from '../vega.schema';
+import {VgData, VgLayout, VgLegend, VgSignal, VgTitle} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
+import {assembleLegends} from './legend/assemble';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
 import {assembleLayerSelectionMarks} from './selection/selection';
@@ -127,5 +128,11 @@ export class LayerModel extends Model {
     return assembleLayerSelectionMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
     })));
+  }
+
+  public assembleLegends(): VgLegend[] {
+    return this.children.reduce((legends, child) => {
+      return legends.concat(child.assembleLegends());
+    }, assembleLegends(this));
   }
 }
