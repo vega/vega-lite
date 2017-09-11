@@ -219,40 +219,11 @@
                     "type": "formula",
                     "expr": "datum.open > datum.close",
                     "as": "isIncrease"
-                },
-                {
-                    "type": "formula",
-                    "expr": "(datum.open + datum.close)/2",
-                    "as": "mid"
                 }
             ]
         },
         {
             "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"mid\"])",
-                    "as": "mid"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "mid"
-                    ],
-                    "as": [
-                        "mean_mid"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_2",
             "source": "data_0",
             "transform": [
                 {
@@ -282,7 +253,7 @@
             ]
         },
         {
-            "name": "data_3",
+            "name": "data_2",
             "source": "data_0",
             "transform": [
                 {
@@ -335,35 +306,6 @@
             "encode": {
                 "update": {
                     "x": {
-                        "value": 0
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "mean_mid"
-                    },
-                    "x2": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "stroke": {
-                        "value": "fff"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "x": {
                         "scale": "x",
                         "field": "yearmonthdate_date"
                     },
@@ -383,13 +325,13 @@
             }
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_1_marks",
             "type": "rect",
             "style": [
                 "bar"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -418,28 +360,50 @@
     ],
     "scales": [
         {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "fields": [
+                    {
+                        "signal": "{data: datetime(2009, 4, 31, 0, 0, 0, 0)}"
+                    },
+                    {
+                        "signal": "{data: datetime(2009, 6, 1, 0, 0, 0, 0)}"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "yearmonthdate_date"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": "day"
+        },
+        {
             "name": "y",
             "type": "linear",
             "domain": {
                 "fields": [
                     {
                         "data": "data_1",
-                        "field": "mean_mid"
-                    },
-                    {
-                        "data": "data_2",
                         "field": "low"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "high"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_2",
                         "field": "open"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_2",
                         "field": "close"
                     }
                 ],
@@ -455,42 +419,16 @@
             "nice": true
         },
         {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "fields": [
-                    {
-                        "signal": "{data: datetime(2009, 4, 31, 0, 0, 0, 0)}"
-                    },
-                    {
-                        "signal": "{data: datetime(2009, 6, 1, 0, 0, 0, 0)}"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "yearmonthdate_date"
-                    }
-                ],
-                "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": "day"
-        },
-        {
             "name": "color",
             "type": "ordinal",
             "domain": {
                 "fields": [
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "isIncrease"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_2",
                         "field": "isIncrease"
                     }
                 ],
@@ -538,13 +476,13 @@
             "gridScale": "y"
         },
         {
-            "title": "",
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "title": "low, open",
             "zindex": 1
         },
         {
