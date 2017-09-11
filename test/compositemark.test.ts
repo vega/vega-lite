@@ -237,6 +237,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
@@ -466,6 +467,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
@@ -592,6 +594,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5},
             }
           }
@@ -716,6 +719,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
@@ -840,6 +844,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5},
             }
           }
@@ -963,6 +968,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
@@ -1086,6 +1092,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5},
             }
           }
@@ -1206,6 +1213,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 14}
             }
           }
@@ -1321,6 +1329,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 14}
             }
           }
@@ -1436,6 +1445,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 14}
             }
           }
@@ -1568,6 +1578,7 @@ describe("normalizeBoxIQR", () => {
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
@@ -1708,6 +1719,7 @@ describe("normalizeBoxIQR", () => {
                 "field": "midBox",
                 "type": "quantitative"
               },
+              "color": {"value": "white"},
               "size": {"value": 5}
             }
           }
