@@ -24,7 +24,7 @@
               "title": "All Movies"
             }
           },
-          "opacity": {"value": "0.4"}
+          "opacity": {"value": 0.4}
         }
       }, {
         "transform": [{

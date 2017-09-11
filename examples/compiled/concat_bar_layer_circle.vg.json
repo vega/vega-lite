@@ -274,7 +274,7 @@
                                 "value": "circle"
                             },
                             "opacity": {
-                                "value": "0.4"
+                                "value": 0.4
                             }
                         }
                     }
@@ -361,7 +361,7 @@
                                     "value": "#4c78a8"
                                 },
                                 "opacity": {
-                                    "value": "0.4"
+                                    "value": 0.4
                                 }
                             }
                         }
