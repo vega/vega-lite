@@ -122,6 +122,9 @@
               "field": "age",
               "type": "ordinal"
             },
+            "color": {
+              "value": "white"
+            },
             "size": {
               "value": 14
             }
