@@ -1,0 +1,405 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Acceleration\"])",
+                    "as": "Acceleration"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_maxbins_10_Acceleration",
+                        "bin_maxbins_10_Acceleration_end"
+                    ],
+                    "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
+                    }
+                },
+                {
+                    "type": "extent",
+                    "field": "Horsepower",
+                    "signal": "layer_0_bin_maxbins_10_Horsepower_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Horsepower",
+                    "as": [
+                        "bin_maxbins_10_Horsepower",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "signal": "layer_0_bin_maxbins_10_Horsepower_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "layer_0_bin_maxbins_10_Horsepower_extent"
+                    }
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_Acceleration",
+                        "bin_maxbins_10_Acceleration_end",
+                        "bin_maxbins_10_Horsepower",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Acceleration\"])",
+                    "as": "Acceleration"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_maxbins_10_Acceleration",
+                        "bin_maxbins_10_Acceleration_end"
+                    ],
+                    "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
+                    }
+                },
+                {
+                    "type": "extent",
+                    "field": "Horsepower",
+                    "signal": "layer_1_bin_maxbins_10_Horsepower_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Horsepower",
+                    "as": [
+                        "bin_maxbins_10_Horsepower",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "signal": "layer_1_bin_maxbins_10_Horsepower_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "layer_1_bin_maxbins_10_Horsepower_extent"
+                    }
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.Origin === 'Japan'"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_Acceleration",
+                        "bin_maxbins_10_Acceleration_end",
+                        "bin_maxbins_10_Horsepower",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
+                    },
+                    "y": {
+                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "size": {
+                        "scale": "size",
+                        "field": "count_*"
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
+                    },
+                    "y": {
+                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
+                    },
+                    "fill": {
+                        "value": "firebrick"
+                    },
+                    "size": {
+                        "scale": "size",
+                        "field": "count_*"
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_Acceleration"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_Acceleration_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_Acceleration"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_Acceleration_end"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "zero": false
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_Horsepower"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_Horsepower_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_Horsepower"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_Horsepower_end"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "zero": false
+        },
+        {
+            "name": "size",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "count_*"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "count_*"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                361
+            ],
+            "nice": false,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "min(ceil(width/40), 10)"
+            },
+            "title": "BIN(Acceleration)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "min(ceil(height/40), 10)"
+            },
+            "title": "BIN(Horsepower)",
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "title": "All Cars",
+            "size": "size",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "fill": {
+                            "value": "#4c78a8"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Cars from Japan",
+            "size": "size",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "fill": {
+                            "value": "firebrick"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

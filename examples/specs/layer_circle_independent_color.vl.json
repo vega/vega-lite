@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
+  "data": {"url": "data/cars.json"},
+  "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "bin": true,
+          "field": "Acceleration",
+          "type": "quantitative"
+        },
+        "y": {
+          "bin": true,
+          "field": "Horsepower",
+          "type": "quantitative"
+        },
+        "size": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "legend": {"title": "All Cars"}
+        }
+      }
+    },
+    {
+      "transform": [{
+        "filter": "datum.Origin === 'Japan'"
+      }],
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "bin": true,
+          "field": "Acceleration",
+          "type": "quantitative"
+        },
+        "y": {
+          "bin": true,
+          "field": "Horsepower",
+          "type": "quantitative"
+        },
+        "size": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "legend": {"title": "Cars from Japan"}
+        },
+        "color": {
+          "value": "firebrick"
+        }
+      }
+    }
+  ],
+  "resolve": {"legend": {"size": "independent"}}
+}
