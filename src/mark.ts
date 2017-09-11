@@ -63,7 +63,7 @@ export interface MarkDef {
 
   /**
    *
-   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
    * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
    */
@@ -163,6 +163,8 @@ export interface MarkConfig extends VgMarkConfig {
    *
    * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
    *
+   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
+   *
    */
   filled?: boolean;
 
@@ -170,6 +172,8 @@ export interface MarkConfig extends VgMarkConfig {
    * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
+   *
+   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
    */
   color?: string;
 }

@@ -448,7 +448,7 @@
           "type": "number"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "continuousBandSize": {
@@ -480,7 +480,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -791,7 +791,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -813,7 +813,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -3392,7 +3392,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -3414,7 +3414,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -3598,7 +3598,7 @@
               "type": "array"
             }
           ],
-          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
+          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",
@@ -4868,7 +4868,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -4890,7 +4890,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -5060,7 +5060,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -5082,7 +5082,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {

@@ -162,10 +162,9 @@ The rest of this section describe groups of properties supported by the `mark` c
 }
 ```
 
+In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` property in the config object.
 
-
-
-In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block in the config object. Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
+{% include table.html props="style" source="Config" %}
 
 For example, to set a default shape and stroke width for `point` marks with a style named `"triangle"`:
 
@@ -180,3 +179,5 @@ For example, to set a default shape and stroke width for `point` marks with a st
   }
 }
 ```
+
+Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
