@@ -22,10 +22,20 @@ export interface DataFormatBase {
 }
 
 export interface CsvDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
   type?: 'csv' | 'tsv';
 }
 
 export interface JsonDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
   type?: 'json';
   /**
    * The JSON property containing the desired data.
@@ -37,6 +47,11 @@ export interface JsonDataFormat extends DataFormatBase {
 }
 
 export interface TopoDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
   type?: 'topojson';
   /**
    * The name of the TopoJSON object set to convert to a GeoJSON feature collection.
@@ -55,11 +70,6 @@ export interface TopoDataFormat extends DataFormatBase {
 
 export type DataFormat = CsvDataFormat | JsonDataFormat | TopoDataFormat;
 
-/**
- * Type of input data: `"json"`, `"csv"`, `"tsv"`.
- * The default format type is determined by the extension of the file URL.
- * If no extension is detected, `"json"` will be used by default.
- */
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export type Data = UrlData | InlineData | NamedData;
