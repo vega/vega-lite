@@ -47,7 +47,19 @@ Read our [introduction article to Vega-Lite v1 on Medium](https://medium.com/p/4
 ## Example
 
 <div id="carousel" class="carousel">
-  <p>With Vega-Lite, we can start with a <a class="slide-nav" data-slide="1" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="2">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="3">an interactive moving average for a dragged region</a>.</p>
+  <p>
+  With Vega-Lite, we create an interactive chart in just a few steps. In this example, we create an interactive chart showing monthly precipitation in Seattle and a moving average for a dragged region. (Click the "Step" links to see each step.)
+  </p>
+  <p>
+    <a class="slide-nav" data-slide="1" data-state="active">Step 1.</a>
+    We can first create a bar chart of the average monthly precipitation in Seattle.
+    <br/>
+    <a class="slide-nav" data-slide="2">Step 2.</a>
+    We can then use the <a href="docs/layer.html"><code>layer</code></a> operator to overlay a rule for the overall yearly average.
+    <br/>
+    <a class="slide-nav" data-slide="3">Step 3.</a>
+    Finally, we can add a <a href="docs/selection.html"><code>selection</code></a> to make the rule shows moving average for a dragged region.
+  </p>
 
   <div class="slides">
     <div class="slide" data-state="active">
