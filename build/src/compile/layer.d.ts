@@ -1,6 +1,6 @@
 import { Config } from '../config';
 import { LayerSpec, LayoutSizeMixins } from '../spec';
-import { VgData, VgLayout, VgSignal, VgTitle } from '../vega.schema';
+import { VgData, VgLayout, VgLegend, VgSignal, VgTitle } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeater';
 export declare class LayerModel extends Model {
@@ -19,4 +19,5 @@ export declare class LayerModel extends Model {
     assembleTitle(): VgTitle;
     assembleLayout(): VgLayout;
     assembleMarks(): any[];
+    assembleLegends(): VgLegend[];
 }

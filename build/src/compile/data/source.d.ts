@@ -4,6 +4,7 @@ import { DataFlowNode } from './dataflow';
 export declare class SourceNode extends DataFlowNode {
     private _data;
     private _name;
+    private _id;
     constructor(data: Data);
     readonly data: Partial<VgData>;
     hasName(): boolean;
@@ -11,8 +12,8 @@ export declare class SourceNode extends DataFlowNode {
     parent: DataFlowNode;
     remove(): void;
     /**
-     * Return a unique identifir for this data source.
+     * Return a unique identifier for this data source.
      */
-    hash(): string;
+    hash(): string | number;
     assemble(): VgData;
 }

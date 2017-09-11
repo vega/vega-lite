@@ -6,9 +6,15 @@ import { StackOffset } from './stack';
 export interface VgData {
     name: string;
     source?: string;
-    values?: any;
-    format?: any;
-    url?: any;
+    values?: any[] | string;
+    format?: {
+        type?: string;
+        parse?: string | object;
+        property?: string;
+        feature?: string;
+        mesh?: string;
+    };
+    url?: string;
     transform?: VgTransform[];
 }
 export declare type VgParentRef = {

@@ -16,7 +16,7 @@ export declare function pick(obj: object, props: string[]): {};
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
 export declare function omit(obj: object, props: string[]): object;
-export declare function hash(a: any): string;
+export declare function hash(a: any): string | number;
 export declare function contains<T>(array: T[], item: T): boolean;
 /** Returns the array without the elements in item */
 export declare function without<T>(array: T[], excludedItems: T[]): T[];
@@ -34,7 +34,7 @@ export declare function flatten(arrays: any[]): any;
  * recursively merges src into dest
  */
 export declare function mergeDeep<T>(dest: T, ...src: Partial<T>[]): T;
-export declare function unique<T>(values: T[], f: (item: T) => string): T[];
+export declare function unique<T>(values: T[], f: (item: T) => string | number): T[];
 export interface Dict<T> {
     [key: string]: T;
 }

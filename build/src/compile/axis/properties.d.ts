@@ -25,4 +25,4 @@ export declare function title(maxLength: number, fieldDef: FieldDef<string>, con
 export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>): number[] | DateTime[] | {
     signal: string;
 }[];
-export declare function zindex(isGridAxis: boolean): 1 | 0;
+export declare function zindex(isGridAxis: boolean): 0 | 1;

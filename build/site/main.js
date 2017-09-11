@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-rc1",
+  "version": "2.0.0-rc2",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -3077,36 +3077,41 @@ var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
+var counter = 0;
 var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this) || this;
+        _this._id = counter++;
         data = data || { name: 'source' };
         if (data_1.isInlineData(data)) {
-            _this._data = {
-                values: data.values
-            };
+            _this._data = { values: data.values };
         }
         else if (data_1.isUrlData(data)) {
-            // Extract extension from URL using snippet from
-            // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-            var defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
-            if (!util_1.contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
-                defaultExtension = 'json';
+            _this._data = { url: data.url };
+            if (!data.format) {
+                data.format = {};
             }
-            var dataFormat = data.format || {};
-            // For backward compatibility for former `data.formatType` property
-            var formatType = dataFormat.type || data['formatType'];
-            var property = dataFormat.property, feature = dataFormat.feature, mesh = dataFormat.mesh;
-            var format = tslib_1.__assign({ type: formatType ? formatType : defaultExtension }, (property ? { property: property } : {}), (feature ? { feature: feature } : {}), (mesh ? { mesh: mesh } : {}));
-            _this._data = {
-                url: data.url,
-                format: format
-            };
+            if (!data.format || !data.format.type) {
+                // Extract extension from URL using snippet from
+                // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+                var defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
+                if (!util_1.contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+                    defaultExtension = 'json';
+                }
+                // defaultExtension has type string but we ensure that it is DataFormatType above
+                data.format.type = defaultExtension;
+            }
         }
         else if (data_1.isNamedData(data)) {
             _this._name = data.name;
             _this._data = {};
+        }
+        if (!data_1.isNamedData(data)) {
+            var _a = tslib_1.__assign({ 
+                // https://github.com/vega/vega-parser/pull/60
+                type: 'json' }, data.format || {}), _b = _a.parse, parse = _b === void 0 ? null : _b, format = tslib_1.__rest(_a, ["parse"]);
+            _this._data.format = format;
         }
         return _this;
     }
@@ -3141,14 +3146,18 @@ var SourceNode = /** @class */ (function (_super) {
         throw new Error('Source nodes are roots and cannot be removed.');
     };
     /**
-     * Return a unique identifir for this data source.
+     * Return a unique identifier for this data source.
      */
     SourceNode.prototype.hash = function () {
         if (data_1.isInlineData(this._data)) {
+            // We want to avoid hashes of very large dataset. We will not merge large embedded datasets.
+            if (this._data.values.length > 1000) {
+                return util_1.hash([this._data.format, this._id]);
+            }
             return util_1.hash(this._data);
         }
         else if (data_1.isUrlData(this._data)) {
-            return this._data.url + " " + util_1.hash(this._data.format);
+            return util_1.hash([this._data.url, this._data.format]);
         }
         else {
             return this._name;
@@ -3668,6 +3677,7 @@ var parse_1 = require("./axis/parse");
 var parse_2 = require("./data/parse");
 var assemble_1 = require("./layoutsize/assemble");
 var parse_3 = require("./layoutsize/parse");
+var assemble_2 = require("./legend/assemble");
 var model_1 = require("./model");
 var selection_1 = require("./selection/selection");
 var unit_1 = require("./unit");
@@ -3765,11 +3775,16 @@ var LayerModel = /** @class */ (function (_super) {
             return child.assembleMarks();
         })));
     };
+    LayerModel.prototype.assembleLegends = function () {
+        return this.children.reduce(function (legends, child) {
+            return legends.concat(child.assembleLegends());
+        }, assemble_2.assembleLegends(this));
+    };
     return LayerModel;
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../log":94,"../spec":100,"../util":107,"./axis/parse":9,"./data/parse":30,"./layoutsize/assemble":37,"./layoutsize/parse":38,"./model":56,"./selection/selection":69,"./unit":80,"tslib":335}],36:[function(require,module,exports){
+},{"../log":94,"../spec":100,"../util":107,"./axis/parse":9,"./data/parse":30,"./layoutsize/assemble":37,"./layoutsize/parse":38,"./legend/assemble":39,"./model":56,"./selection/selection":69,"./unit":80,"tslib":335}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4757,10 +4772,12 @@ function getPathSort(model) {
                 binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
                 expr: 'datum'
             });
-        return {
-            field: sortField,
-            order: 'descending'
-        };
+        return sortField ?
+            {
+                field: sortField,
+                order: 'descending'
+            } :
+            undefined;
     }
 }
 exports.getPathSort = getPathSort;
@@ -8875,9 +8892,6 @@ function redirectConfig(config, prop, toProp) {
 
 },{"./compositemark":83,"./compositemark/index":83,"./guide":91,"./legend":93,"./mark":96,"./scale":97,"./selection":98,"./title":103,"./util":107,"tslib":335}],85:[function(require,module,exports){
 "use strict";
-/*
- * Constants and utilities for data.
- */
 Object.defineProperty(exports, "__esModule", { value: true });
 function isUrlData(data) {
     return !!data['url'];
@@ -11131,7 +11145,19 @@ function hash(a) {
     if (vega_util_1.isString(a) || vega_util_1.isNumber(a) || isBoolean(a)) {
         return String(a);
     }
-    return stringify(a);
+    var str = stringify(a);
+    // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
+    if (str.length < 100) {
+        return str;
+    }
+    // from http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+    var h = 0;
+    for (var i = 0; i < str.length; i++) {
+        var char = str.charCodeAt(i);
+        h = ((h << 5) - h) + char;
+        h = h & h; // Convert to 32bit integer
+    }
+    return h;
 }
 exports.hash = hash;
 function contains(array, item) {
