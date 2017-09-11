@@ -229,6 +229,10 @@
     {
       "name": "concat_layer.vl.json",
       "title": "Interactive Dashboard with Cross Highlight"
+    },
+    {
+      "name": "concat_bar_layer_circle.vl.json",
+      "title": "Interactive Dashboard with Cross Highlight 2"
     }
   ]
 }
