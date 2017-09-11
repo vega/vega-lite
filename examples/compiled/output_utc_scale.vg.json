@@ -28,7 +28,10 @@
                     "date": "Sun, 02 Jan 2012 03:00:00",
                     "price": 200
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",

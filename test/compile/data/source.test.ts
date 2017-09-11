@@ -20,21 +20,47 @@ describe('compile/data/source', function() {
         assert.deepEqual(source.data.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
-      it('should have no source.format.type', function(){
-        assert.deepEqual(source.data.format, undefined);
+      // https://github.com/vega/vega-parser/pull/60
+      // it('should have no source.format.type', function() {
+      //   assert.deepEqual(source.data.format, undefined);
+      // });
+    });
+
+    describe('with explicit values as CSV', function() {
+      const source = parse({
+        values: "a\n1\n2\n3",
+        format: {type: 'csv'}
+      });
+
+      it('should have values', function() {
+        assert.deepEqual(source.data.values, "a\n1\n2\n3");
+      });
+
+      it('should have correct type', function() {
+        assert.equal(source.data.format.type, 'csv');
       });
     });
 
     describe('with link to url', function() {
       const source = parse({
-        url: 'http://foo.bar',
+        url: 'http://foo.bar/file.csv',
+      });
+
+      it('should have format.type csv', function() {
+        assert.equal(source.data.format.type, 'csv');
+      });
+      it('should have correct url', function() {
+        assert.equal(source.data.url, 'http://foo.bar/file.csv');
+      });
+    });
+
+    describe('without file ending', function() {
+      const source = parse({
+        url: 'http://foo.bar/file.baz',
       });
 
       it('should have format.type json', function() {
         assert.equal(source.data.format.type, 'json');
-      });
-      it('should have correct url', function() {
-        assert.equal(source.data.url, 'http://foo.bar');
       });
     });
 

@@ -22,7 +22,6 @@
     "prefer-const": true,
     "no-duplicate-variable": true,
     "no-conditional-assignment": true,
-    "no-bitwise": true,
     "no-consecutive-blank-lines": [true, 3],
     "no-console": [
       true,

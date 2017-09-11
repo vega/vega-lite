@@ -9,6 +9,24 @@
             "name": "source_0",
             "values": [
                 {
+                    "start": "1933",
+                    "end": "1945",
+                    "event": "Nazi Rule"
+                },
+                {
+                    "start": "1948",
+                    "end": "1989",
+                    "event": "GDR (East Germany)"
+                }
+            ],
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "source_1",
+            "values": [
+                {
                     "year": "1875",
                     "population": 1309
                 },
@@ -160,87 +178,14 @@
                     "year": "2014",
                     "population": 41777
                 }
-            ]
-        },
-        {
-            "name": "source_1",
-            "values": [
-                {
-                    "start": "1933",
-                    "end": "1945",
-                    "event": "Nazi Rule"
-                },
-                {
-                    "start": "1948",
-                    "end": "1989",
-                    "event": "GDR (East Germany)"
-                }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",
             "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"year\"],'%Y')",
-                    "as": "year"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"population\"])",
-                    "as": "population"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_year",
-                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"population\"])",
-                    "as": "population"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_year",
-                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "source_1",
             "transform": [
                 {
                     "type": "formula",
@@ -267,6 +212,67 @@
                     "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
                 }
             ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"year\"],'%Y')",
+                    "as": "year"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"population\"])",
+                    "as": "population"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_year",
+                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"population\"])",
+                    "as": "population"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_year",
+                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
+                }
+            ]
         }
     ],
     "signals": [
@@ -287,7 +293,7 @@
                 "rect"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -325,7 +331,7 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -350,7 +356,7 @@
                 "point"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -382,19 +388,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_3",
+                        "data": "data_0",
                         "field": "year_start"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_0",
                         "field": "year_end"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "year_year"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "year_year"
                     }
                 ],
@@ -412,7 +418,7 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "data_3",
+                "data": "data_0",
                 "field": "event",
                 "sort": true
             },
@@ -424,11 +430,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "population"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "population"
                     }
                 ],

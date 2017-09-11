@@ -6,46 +6,9 @@
     "data": [
         {
             "name": "source_0",
-            "values": [
-                {
-                    "a": "C",
-                    "b": 2
-                },
-                {
-                    "a": "C",
-                    "b": 7
-                },
-                {
-                    "a": "C",
-                    "b": 4
-                },
-                {
-                    "a": "D",
-                    "b": 1
-                },
-                {
-                    "a": "D",
-                    "b": 2
-                },
-                {
-                    "a": "D",
-                    "b": 6
-                },
-                {
-                    "a": "E",
-                    "b": 8
-                },
-                {
-                    "a": "E",
-                    "b": 4
-                },
-                {
-                    "a": "E",
-                    "b": 7
-                }
-            ],
+            "values": "a\n1\n2\n3\n4",
             "format": {
-                "type": "json"
+                "type": "csv"
             }
         },
         {
@@ -54,24 +17,20 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"b\"])",
-                    "as": "b"
+                    "expr": "toNumber(datum[\"a\"])",
+                    "as": "a"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                    "expr": "datum[\"a\"] !== null && !isNaN(datum[\"a\"])"
                 }
             ]
         }
     ],
     "signals": [
         {
-            "name": "x_step",
-            "value": 21
-        },
-        {
             "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+            "update": "21"
         },
         {
             "name": "height",
@@ -91,12 +50,12 @@
             "encode": {
                 "update": {
                     "x": {
-                        "scale": "x",
-                        "field": "a"
+                        "signal": "width",
+                        "mult": 0.5
                     },
                     "y": {
                         "scale": "y",
-                        "field": "b"
+                        "field": "a"
                     },
                     "stroke": {
                         "value": "#4c78a8"
@@ -113,26 +72,11 @@
     ],
     "scales": [
         {
-            "name": "x",
-            "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "a",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
             "name": "y",
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "b"
+                "field": "a"
             },
             "range": [
                 {
@@ -146,34 +90,13 @@
     ],
     "axes": [
         {
-            "scale": "x",
-            "orient": "bottom",
-            "title": "a",
-            "zindex": 1,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            }
-        },
-        {
             "scale": "y",
             "labelOverlap": true,
             "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "b",
+            "title": "a",
             "zindex": 1
         },
         {
@@ -188,8 +111,7 @@
                 "signal": "ceil(height/40)"
             },
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

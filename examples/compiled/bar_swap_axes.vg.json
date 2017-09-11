@@ -43,7 +43,10 @@
                     "a": "E",
                     "b": 7
                 }
-            ]
+            ],
+            "format": {
+                "type": "json"
+            }
         },
         {
             "name": "data_0",

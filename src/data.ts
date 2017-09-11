@@ -1,8 +1,9 @@
+import {VgData} from './vega.schema';
 /*
  * Constants and utilities for data.
  */
 
-export interface DataFormat {
+export interface DataFormatBase {
   /**
    * If set to auto (the default), perform automatic type inference to determine the desired data types.
    * Alternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `"number"`, `"boolean"` or `"date"`).
@@ -12,7 +13,30 @@ export interface DataFormat {
    * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
    */
   parse?: 'auto' | object;
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: DataFormatType;
+}
 
+export interface CsvDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: 'csv' | 'tsv';
+}
+
+export interface JsonDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: 'json';
   /**
    * The JSON property containing the desired data.
    * This parameter can be used when the loaded JSON file may have surrounding structure or meta-data.
@@ -20,7 +44,15 @@ export interface DataFormat {
    * from the loaded JSON object.
    */
   property?: string;
+}
 
+export interface TopoDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: 'topojson';
   /**
    * The name of the TopoJSON object set to convert to a GeoJSON feature collection.
    * For example, in a map of the world, there may be an object set named `"countries"`.
@@ -36,14 +68,7 @@ export interface DataFormat {
   mesh?: string;
 }
 
-export interface DataUrlFormat extends DataFormat {
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
-  type?: DataFormatType;
-}
+export type DataFormat = CsvDataFormat | JsonDataFormat | TopoDataFormat;
 
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
@@ -53,7 +78,7 @@ export interface UrlData {
   /**
    * An object that specifies the format for parsing the data file.
    */
-  format?: DataUrlFormat;
+  format?: DataFormat;
 
   /**
    * An URL from which to load the data set. Use the `format.type` property
@@ -68,10 +93,10 @@ export interface InlineData {
    */
   format?: DataFormat;
   /**
-   * The full data set, included inline. This can be an array of objects or primitive values.
+   * The full data set, included inline. This can be a string or an array of objects or primitive values.
    * Arrays of primitive values are ingested as objects with a `data` property.
    */
-  values: any[];
+  values: any[] | string;
 }
 
 export interface NamedData {
@@ -85,11 +110,11 @@ export interface NamedData {
   name: string;
 }
 
-export function isUrlData(data: Partial<Data>): data is UrlData {
+export function isUrlData(data: Partial<Data> | Partial<VgData>): data is UrlData {
   return !!data['url'];
 }
 
-export function isInlineData(data: Partial<Data>): data is InlineData {
+export function isInlineData(data: Partial<Data> | Partial<VgData>): data is InlineData {
   return !!data['values'];
 }
 
