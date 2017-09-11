@@ -108,7 +108,7 @@ The `mark` property of the [`config`](config.html) object sets the default prope
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
 
-The rest of this section describe groups of properties supported by the `mark` config and all mark-specific configs.  Besides the properties listed below, the following types of marks contain additional mark-specific config properties: [`"bar"`](bar.html#config), [`"text"`](text.html#config), and [`"tick"`](tick.html#config).
+The rest of this section describe groups of properties supported by the `mark` config and all mark-specific configs.  Besides the properties listed below, [`"bar"`](bar.html#config), [`"text"`](text.html#config), and [`"tick"`](tick.html#config) marks contain additional mark-specific config properties:
 
 ### Color
 
@@ -144,6 +144,10 @@ The rest of this section describe groups of properties supported by the `mark` c
 
 {% include table.html props="size" source="MarkConfig" %}
 
+
+### Text Config (for Text Marks)
+
+{% include table.html props="angle,align,baseline,dx,dy,font,fontSize,fontStyle,fontWeight,radius,text,theta" source="MarkConfig" %}
 
 
 {:#style-config}

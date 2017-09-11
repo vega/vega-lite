@@ -4849,13 +4849,8 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "description": "The horizontal text alignment.",
-          "enum": [
-            "left",
-            "center",
-            "right"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/HorizontalAlign",
+          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -4872,11 +4867,11 @@
           "type": "string"
         },
         "dx": {
-          "description": "The horizontal offset in pixels (before rotation), between the text and anchor point.",
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
         },
         "dy": {
-          "description": "The vertical offset in pixels (before rotation), between the text and anchor point.",
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
         },
         "fill": {
