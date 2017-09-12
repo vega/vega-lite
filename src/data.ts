@@ -93,10 +93,10 @@ export interface InlineData {
    */
   format?: DataFormat;
   /**
-   * The full data set, included inline. This can be a string or an array of objects or primitive values.
-   * Arrays of primitive values are ingested as objects with a `data` property.
+   * The full data set, included inline. This can be an array of objects or primitive values or a string.
+   * Arrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type.
    */
-  values: any[] | string;
+  values: number[] | string[] | boolean[] | object[] | string;
 }
 
 export interface NamedData {
