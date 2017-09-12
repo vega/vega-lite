@@ -60,7 +60,7 @@ The `mark` property of the [`config`](config.html) object sets the default prope
 
 {% include table.html props="mark,area,bar,circle,line,point,rect,rule,square,text,tick" source="Config" %}
 
-In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block. Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
+In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block. Styles can then be invoked by including a `style` property within a [mark definition object](mark.html#mark-def).
 
 {% include table.html props="style" source="Config" %}
 

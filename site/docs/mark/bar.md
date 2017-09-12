@@ -104,7 +104,7 @@ For example, we can use ranged bars to create a gantt chart.
 }
 ```
 
-The `bar` property of the top-level [`config`](config.html) object sets the default properties for all bar marks.  If [mark property encoding channels](encoding.html#mark-prop)are specified for marks, these config values will be overridden.
+The `bar` property of the top-level [`config`](config.html) object sets the default properties for all bar marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 Besides standard [mark config properties](mark.html#config), bar config can contain the following additional properties:
 
