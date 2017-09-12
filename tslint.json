@@ -1,4 +1,8 @@
 {
+  "tslint.options": {
+    "project": "tsconfig.json",
+    "typeCheck": true
+  },
   "extends": [
     "tslint-eslint-rules"
   ],
