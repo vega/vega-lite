@@ -10,6 +10,7 @@ import {
   isRepeatRef,
   LegendFieldDef,
 } from '../fielddef';
+import {ChannelDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {isArray} from '../util';
@@ -68,32 +69,30 @@ function replaceRepeaterInFieldDef(fieldDef: LegendFieldDef<Field>, repeater: Re
 
 type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
 
-type FieldDefTypes<F> = LegendFieldDef<F> | FieldDef<F>[] | ConditionalFieldDef<FieldDef<F>> | ConditionalValueDef<FieldDef<F>>;
-
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
   for (const channel in mapping) {
     if (mapping.hasOwnProperty(channel)) {
-      const fieldDef: FieldDefTypes<Field> = mapping[channel];
+      const channelDef: ChannelDef<Field> = mapping[channel];
 
-      if (isArray<FieldDef<Field>>(fieldDef)) {
-        out[channel] = fieldDef.map(fd => replaceRepeaterInFieldDef(fd, repeater))
+      if (isArray<FieldDef<Field>>(channelDef)) {
+        out[channel] = channelDef.map(fd => replaceRepeaterInFieldDef(fd, repeater))
           .filter(fd => fd !== null);
-      } else if (isConditionalDef(fieldDef) && isFieldDef(fieldDef.condition)) {
-        const fd = replaceRepeaterInFieldDef(fieldDef.condition, repeater);
+      } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+        const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
         if (fd !== null) {
           out[channel] = {
-            ...fieldDef,
+            ...channelDef,
             condition: fd
           };
         }
-      } else if (isFieldDef(fieldDef)) {
-        const fd = replaceRepeaterInFieldDef(fieldDef, repeater);
+      } else if (isFieldDef(channelDef)) {
+        const fd = replaceRepeaterInFieldDef(channelDef, repeater);
         if (fd !== null) {
           out[channel] = fd;
         }
       } else {
-        out[channel] = fieldDef;
+        out[channel] = channelDef;
       }
     }
   }
