@@ -119,7 +119,7 @@ describe('Compile', function() {
           "y": {"field": "b", "type": "quantitative"}
         }
       }).spec;
-      assert.equal(localLogger.warns[0], log.message.FIT_DATA_DRIVEN);
+      assert.equal(localLogger.warns[0], log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
       assert.equal(spec.width, 200);
       assert.equal(spec.height, 200);
     }));

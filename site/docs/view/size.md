@@ -17,6 +17,8 @@ This page describe how to adjust width and height of visualizations in Vega-lite
 ## Width and Height of Single and Layered Plots
 
 [Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size.
+By default, `width` and `height` set the size of the data rectangle (plotting) dimensions.
+To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
 
 ### Explicitly Specified Width and Height
 
