@@ -165,7 +165,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    *
    * @nullable
    */
-  sort?: SortOrder | SortField;
+  sort?: SortOrder | SortField<F>;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {

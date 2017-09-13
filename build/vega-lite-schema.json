@@ -4788,8 +4788,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "The data field to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference.",
-          "type": "string"
+          "$ref": "#/definitions/Field",
+          "description": "The data field to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
