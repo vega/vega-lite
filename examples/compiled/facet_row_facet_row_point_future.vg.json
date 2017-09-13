@@ -40,11 +40,11 @@
     "signals": [
         {
             "name": "child_child_width",
-            "update": "200"
+            "value": 200
         },
         {
             "name": "child_child_height",
-            "update": "200"
+            "value": 200
         }
     ],
     "layout": {

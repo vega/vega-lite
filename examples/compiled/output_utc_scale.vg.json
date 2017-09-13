@@ -3,6 +3,8 @@
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -57,16 +59,6 @@
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), hours(datum[\"date\"]), minutes(datum[\"date\"]), 0, 0)"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

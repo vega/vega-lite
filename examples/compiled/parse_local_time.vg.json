@@ -3,6 +3,7 @@
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
+    "width": 21,
     "style": "cell",
     "data": [
         {
@@ -37,10 +38,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "21"
-        },
         {
             "name": "y_step",
             "value": 21

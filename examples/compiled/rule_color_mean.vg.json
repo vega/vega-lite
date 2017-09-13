@@ -3,6 +3,8 @@
     "description": "Average Stock prices of 5 Tech Companies.",
     "autosize": "pad",
     "padding": 5,
+    "width": 21,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -31,16 +33,6 @@
                     ]
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "21"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

@@ -2,6 +2,8 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "width": 21,
+    "height": 21,
     "style": "cell",
     "data": [
         {
@@ -12,16 +14,6 @@
             "format": {
                 "type": "json"
             }
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "21"
-        },
-        {
-            "name": "height",
-            "update": "21"
         }
     ],
     "marks": [

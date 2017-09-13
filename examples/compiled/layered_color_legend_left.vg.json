@@ -3,6 +3,8 @@
     "description": "Stock price over time with color legend orient = left.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -51,16 +53,6 @@
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

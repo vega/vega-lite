@@ -77,6 +77,17 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
 
+  let layoutSignals = model.assembleLayoutSignals();
+
+  // move width and height signals with values to top level
+  layoutSignals = layoutSignals.filter(signal => {
+    if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
+      topLevelProps[signal.name] = signal.value;
+      return false;
+    }
+    return true;
+  });
+
   const output = {
     $schema: 'https://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
@@ -91,7 +102,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
       assembleRootData(model.component.data)
     ),
     ...model.assembleGroup([
-      ...model.assembleLayoutSignals(),
+      ...layoutSignals,
       ...model.assembleSelectionTopLevelSignals([])
     ]),
     ...(vgConfig ? {config: vgConfig} : {})

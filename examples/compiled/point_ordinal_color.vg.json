@@ -2,6 +2,8 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -61,16 +63,6 @@
                     "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

@@ -191,19 +191,19 @@
     "signals": [
         {
             "name": "concat_0_width",
-            "update": "200"
+            "value": 200
         },
         {
             "name": "concat_0_height",
-            "update": "200"
+            "value": 200
         },
         {
             "name": "concat_1_width",
-            "update": "330"
+            "value": 330
         },
         {
             "name": "concat_1_height",
-            "update": "120"
+            "value": 120
         },
         {
             "name": "unit",

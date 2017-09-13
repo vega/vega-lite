@@ -3,6 +3,7 @@
     "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
     "autosize": "pad",
     "padding": 5,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -42,10 +43,6 @@
         {
             "name": "width",
             "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

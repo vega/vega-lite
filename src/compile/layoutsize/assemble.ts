@@ -12,7 +12,7 @@ export function assembleLayoutSignals(model: Model): VgSignal[] {
 }
 
 export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSignal[] {
-  const channel = sizeType==='width' ? 'x' : 'y';
+  const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
   if (!size || size === 'merged') {
     return [];
@@ -55,7 +55,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
   } else {
     return [{
       name,
-      update: `${size}`
+      value: size
     }];
   }
 }

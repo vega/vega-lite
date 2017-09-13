@@ -3,6 +3,7 @@
     "description": "A simple bar chart with embedded data.",
     "autosize": "pad",
     "padding": 5,
+    "height": 200,
     "title": {
         "text": "A Simple Bar Chart"
     },
@@ -76,10 +77,6 @@
         {
             "name": "width",
             "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [
