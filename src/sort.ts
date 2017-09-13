@@ -5,7 +5,7 @@ export type SortOrder = 'ascending' | 'descending' | null;
 
 export interface SortField<Field> {
   /**
-   * The data field to sort by.
+   * The data [field](field.html) to sort by.
    *
    * __Default value:__ If unspecified, defaults to the field specified in the outer data reference.
    */
