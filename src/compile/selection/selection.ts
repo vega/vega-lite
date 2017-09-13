@@ -189,17 +189,16 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
-    selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
+    marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
     forEachTransform(selCmpt, (txCompiler) => {
       if (txCompiler.marks) {
-        selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
+        marks = txCompiler.marks(model, selCmpt, marks);
       }
     });
   });
 
-  return selMarks;
+  return marks;
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {

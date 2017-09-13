@@ -103,6 +103,10 @@ export namespace message {
     return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
   }
 
+  export function nearestNotSupportForContinuous(mark: string) {
+    return `The "nearest" transform is not supported for ${mark} marks.`;
+  }
+
   export function selectionNotFound(name: string) {
     return `Cannot find a selection named "${name}"`;
   }

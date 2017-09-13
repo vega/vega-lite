@@ -44,6 +44,26 @@
                     "as": "date"
                 },
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
                     "type": "filter",
                     "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
                 },
@@ -54,7 +74,7 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_3",
             "source": "source_0",
             "transform": [
                 {
@@ -107,7 +127,7 @@
                             "type": "mousemove"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
                     "force": true
                 }
             ]
@@ -181,57 +201,89 @@
                             }
                         }
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "opacity": {
+                        "value": 0
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_voronoi",
+            "type": "path",
+            "from": {
+                "data": "layer_1_marks"
+            },
+            "encode": {
+                "enter": {
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "strokeWidth": {
+                        "value": 0.35
+                    },
+                    "stroke": {
+                        "value": "transparent"
+                    },
+                    "isVoronoi": {
+                        "value": true
+                    }
+                }
+            },
+            "transform": [
                 {
-                    "name": "layer_0_voronoi",
-                    "type": "path",
-                    "from": {
-                        "data": "layer_0_marks"
+                    "type": "voronoi",
+                    "x": "datum.x",
+                    "y": {
+                        "expr": "0"
                     },
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "strokeWidth": {
-                                "value": 0.35
-                            },
-                            "stroke": {
-                                "value": "transparent"
-                            },
-                            "isVoronoi": {
-                                "value": true
-                            }
-                        }
-                    },
-                    "transform": [
+                    "size": [
                         {
-                            "type": "voronoi",
-                            "x": "datum.x",
-                            "y": {
-                                "expr": "0"
-                            },
-                            "size": [
-                                {
-                                    "signal": "width"
-                                },
-                                {
-                                    "signal": "height"
-                                }
-                            ]
+                            "signal": "width"
+                        },
+                        {
+                            "signal": "height"
                         }
                     ]
                 }
             ]
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_2_marks",
             "type": "rule",
             "style": [
                 "rule"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -254,13 +306,13 @@
             }
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_3_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -298,6 +350,10 @@
                     {
                         "data": "data_2",
                         "field": "date"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "date"
                     }
                 ],
                 "sort": true
@@ -313,8 +369,17 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "data_0",
-                "field": "price"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 {
@@ -329,8 +394,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "data_0",
-                "field": "symbol",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "symbol"
+                    }
+                ],
                 "sort": true
             },
             "range": "category"
@@ -366,7 +439,16 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "symbol"
+            "title": "symbol",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {
