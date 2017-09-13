@@ -3,6 +3,8 @@
     "description": "The population of the German city of Falkensee over time",
     "autosize": "pad",
     "padding": 5,
+    "width": 500,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -273,16 +275,6 @@
                     "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "500"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

@@ -3,6 +3,8 @@
     "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
     "autosize": "pad",
     "padding": 5,
+    "width": 320,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -281,16 +283,6 @@
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "320"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [

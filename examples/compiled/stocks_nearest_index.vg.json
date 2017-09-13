@@ -2,6 +2,8 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "width": 600,
+    "height": 300,
     "style": "cell",
     "data": [
         {
@@ -74,14 +76,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "600"
-        },
-        {
-            "name": "height",
-            "update": "300"
-        },
         {
             "name": "unit",
             "value": {},

@@ -27,16 +27,8 @@ describe('Compile', function() {
 
       assert.equal(spec.padding, 5);
       assert.equal(spec.autosize, 'pad');
-      assert.deepEqual(spec.signals, [
-        {
-          name: 'width',
-          update: "21"
-        },
-        {
-          name: 'height',
-          update: "21"
-        }
-      ]);
+      assert.equal(spec.width, 21);
+      assert.equal(spec.height, 21);
       assert.deepEqual(spec.title, {text: 'test'});
 
       assert.equal(spec.data.length, 1); // just source
@@ -55,19 +47,31 @@ describe('Compile', function() {
 
       assert.equal(spec.padding, 123);
       assert.equal(spec.autosize, 'pad');
-      assert.deepEqual(spec.signals, [
-        {
-          name: 'width',
-          update: "21"
-        },
-        {
-          name: 'height',
-          update: "21"
-        }
-      ]);
+      assert.equal(spec.width, 21);
+      assert.equal(spec.height, 21);
 
       assert.equal(spec.data.length, 1); // just source.
       assert.equal(spec.marks.length, 1); // just the root group
+    });
+
+    it('should use size signal for bar chart width', () => {
+      const spec = compile({
+        "data": {"values": [{"a": "A","b": 28}]},
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      }).spec;
+
+      assert.deepEqual(spec.signals, [{
+        name: 'x_step',
+        value: 21
+      }, {
+        name: 'width',
+        update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
+      }]);
+      assert.equal(spec.height, 200);
     });
 
     it('should set resize to true if requested', () => {

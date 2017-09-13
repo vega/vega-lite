@@ -36,11 +36,11 @@
     "signals": [
         {
             "name": "child_width",
-            "update": "75"
+            "value": 75
         },
         {
             "name": "child_height",
-            "update": "75"
+            "value": 75
         }
     ],
     "layout": {

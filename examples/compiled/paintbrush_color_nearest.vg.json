@@ -3,6 +3,8 @@
     "description": "Select multiple points with the shift key.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -31,14 +33,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "200"
-        },
         {
             "name": "unit",
             "value": {},

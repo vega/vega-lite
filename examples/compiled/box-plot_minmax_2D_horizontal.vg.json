@@ -3,6 +3,7 @@
     "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
     "style": "cell",
     "data": [
         {
@@ -118,10 +119,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
         {
             "name": "y_step",
             "value": 21

@@ -3,6 +3,8 @@
     "description": "A bubble plot showing the correlation between health and income for 187 countries in the world (modified from an example in Lisa Charlotte Rost's blog post 'One Chart, Twelve Charting Libraries' --http://lisacharlotterost.github.io/2016/05/17/one-chart-code/).",
     "autosize": "pad",
     "padding": 5,
+    "width": 500,
+    "height": 300,
     "style": "cell",
     "data": [
         {
@@ -32,14 +34,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "500"
-        },
-        {
-            "name": "height",
-            "update": "300"
-        },
         {
             "name": "unit",
             "value": {},
