@@ -1,14 +1,12 @@
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
-import {LayoutSizeMixins, normalize, Spec, TopLevel, TopLevelExtendedSpec} from '../spec';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
 import {keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
-import {LayerModel} from './layer';
 import {Model} from './model';
-import {UnitModel} from './unit';
 
 /**
  * Module for compiling Vega-lite spec into Vega spec.
@@ -26,12 +24,12 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     // 2. Convert input spec into a normalized form
     // (Normalize autosize to be a autosize properties object.)
     // (Decompose all extended unit specs into composition of unit spec.)
-    inputSpec.autosize = normalizeAutoSize(inputSpec.autosize);
     const spec = normalize(inputSpec, config);
 
     // 3. Instantiate the models with default config by doing a top-down traversal.
     // This allows us to pass properties that child models derive from their parents via their constructors.
-    const model = buildModel(spec, null, '', undefined, undefined, config, normalizeAutoSize(inputSpec.autosize).type === 'fit');
+    const autosize = normalizeAutoSize(inputSpec.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+    const model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 
     // 4. Parse parts of each model to produce components that can be merged
     // and assembled easily as a part of a model.
@@ -47,7 +45,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     optimizeDataflow(model.component.data);
 
     // 6. Assemble a Vega Spec from the parsed components.
-    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config));
+    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
   } finally {
     // Reset the singleton logger if a logger is provided
     if (logger) {
@@ -57,10 +55,11 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
 }
 
 
-function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
+function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, autosize: AutoSizeParams) {
   return {
+    autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize,
     ...extractTopLevelProperties(config),
-    ...extractTopLevelProperties(topLevelSpec),
+    ...extractTopLevelProperties(topLevelSpec)
   };
 }
 
@@ -75,10 +74,6 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
 
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
-
-  const {autosize: _a, ...topLevelProps} = topLevelProperties;
-  const autosize = normalizeAutoSize(_a);
-
   const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
 
@@ -87,25 +82,16 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   // move width and height signals with values to top level
   layoutSignals = layoutSignals.filter(signal => {
     if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
-      topLevelProps[signal.name] = signal.value;
+      topLevelProperties[signal.name] = signal.value;
       return false;
     }
     return true;
   });
 
-  if (autosize.type === 'fit') {
-    if (!(model instanceof UnitModel) && !(model instanceof LayerModel)) {
-      log.warn(log.message.FIT_NON_SINGLE);
-
-      autosize.type = 'pad';
-    }
-  }
-
   const output = {
     $schema: 'https://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
-    autosize: keys(autosize).length === 1 ? autosize.type : autosize,
-    ...topLevelProps,
+    ...topLevelProperties,
     ...(title? {title} : {}),
     ...(style? {style} : {}),
     data: [].concat(

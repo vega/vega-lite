@@ -1,4 +1,6 @@
 import {isString} from 'util';
+import * as log from './log';
+
 /**
  * @minimum 0
  */
@@ -55,21 +57,30 @@ export interface AutoSizeParams {
   contains?: 'content' | 'padding';
 }
 
-export function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams): AutoSizeParams {
+export function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean): AutoSizeParams {
   if (!autosize) {
-    return autosize = {
+    return {
       type: 'pad'
     };
-  } else if (isString(autosize)) {
-    return {
-      type: autosize
-    };
   }
-  return {type: 'pad', ...autosize};
+  const autoSizeParams: AutoSizeParams = {
+    type: 'pad',
+    ...(isString(autosize) ? {type: autosize} : autosize)
+  };
+
+  if (autoSizeParams.type === 'fit') {
+    if (!isUnitOrLayer) {
+      log.warn(log.message.FIT_NON_SINGLE);
+      autoSizeParams.type = 'pad';
+    }
+  }
+
+  return autoSizeParams;
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
-  'background', 'padding', 'autosize'
+  'background', 'padding'
+  // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 
 export function extractTopLevelProperties<T extends TopLevelProperties>(t: T) {
