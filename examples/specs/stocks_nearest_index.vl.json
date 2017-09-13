@@ -5,6 +5,14 @@
   "data": {"url": "data/stocks.csv"},
   "layer": [
     {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
+      }
+    },
+    {
       "selection": {
         "index": {
           "type": "single", "on": "mousemove",
@@ -12,11 +20,12 @@
           "nearest": true
         }
       },
-      "mark": "line",
+      "mark": "point",
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
         "y": {"field": "price", "type": "quantitative"},
-        "color": {"field": "symbol", "type": "nominal"}
+        "color": {"field": "symbol", "type": "nominal"},
+        "opacity": {"value": 0}
       }
     },
     {
