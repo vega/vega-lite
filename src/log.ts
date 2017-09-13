@@ -101,7 +101,7 @@ export namespace message {
   // FIT
   export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
 
-  export const FIT_DATA_DRIVEN = 'Cannot use "rangeStep" when "autosize" is "fit".';
+  export const CANNOT_FIX_RANGE_STEP_WITH_FIT = 'Cannot use a fixed value of "rangeStep" when "autosize" is "fit".';
 
   // SELECTION
   export function cannotProjectOnChannelWithoutField(channel: Channel) {

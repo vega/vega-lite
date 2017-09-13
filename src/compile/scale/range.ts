@@ -61,7 +61,7 @@ function parseUnitScaleRange(model: UnitModel) {
     // if autosize is fit, size cannot be data driven
     const rangeStep = util.contains(['point', 'band'], scaleType) || !!specifiedScale.rangeStep;
     if (sizeType && model.fit && !sizeSpecified && rangeStep) {
-      log.warn(log.message.FIT_DATA_DRIVEN);
+      log.warn(log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
       sizeSpecified = true;
     }
 
