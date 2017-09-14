@@ -62,7 +62,7 @@
                         "field": "yearmonth_date"
                     },
                     "width": {
-                        "value": 2
+                        "value": 5
                     },
                     "y": {
                         "scale": "y",
