@@ -246,7 +246,7 @@ export interface BarConfig extends MarkConfig {
 
 export const defaultBarConfig: BarConfig = {
   binSpacing: 1,
-  continuousBandSize: 2
+  continuousBandSize: 5
 };
 
 export interface TextConfig extends MarkConfig {

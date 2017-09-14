@@ -190,7 +190,7 @@ describe('compile/scale', () => {
         it('should return [continuousBandSize, xRangeStep-1] by default since min/maxSize config are not specified', () => {
           assert.deepEqual(
             parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'bar', false, 'plot_width', []).value,
-            [defaultConfig.bar.continuousBandSize, defaultConfig.scale.rangeStep - 1]
+            [2, defaultConfig.scale.rangeStep - 1]
           );
         });
       });
