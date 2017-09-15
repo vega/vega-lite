@@ -230,7 +230,7 @@ export interface BarConfig extends MarkConfig {
   /**
    * The default size of the bars on continuous scales.
    *
-   * __Default value:__ `2`
+   * __Default value:__ `5`
    *
    * @minimum 0
    */

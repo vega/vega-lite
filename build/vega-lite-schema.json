@@ -482,7 +482,7 @@
           "type": "string"
         },
         "continuousBandSize": {
-          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `2`",
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
           "minimum": 0,
           "type": "number"
         },
