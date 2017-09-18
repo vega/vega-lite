@@ -6,9 +6,9 @@ import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {
   channelSignalName,
+  positionalProjections,
   SelectionCompiler,
   SelectionComponent,
-  spatialProjections,
   STORE,
   TUPLE,
   unitName,
@@ -98,7 +98,7 @@ const interval:SelectionCompiler = {
 
   marks: function(model, selCmpt, marks) {
     const name = selCmpt.name;
-    const {xi, yi} = spatialProjections(selCmpt);
+    const {xi, yi} = positionalProjections(selCmpt);
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.

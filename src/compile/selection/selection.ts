@@ -332,7 +332,7 @@ export function channelSignalName(selCmpt: SelectionComponent, channel: Channel,
   return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
 }
 
-export function spatialProjections(selCmpt: SelectionComponent) {
+export function positionalProjections(selCmpt: SelectionComponent) {
   let x:ProjectComponent = null;
   let xi:number = null;
   let y:ProjectComponent = null;

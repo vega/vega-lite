@@ -1,5 +1,5 @@
 import {Axis, AXIS_PROPERTIES, AXIS_PROPERTY_TYPE, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
-import {SPATIAL_SCALE_CHANNELS, SpatialScaleChannel} from '../../channel';
+import {POSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
 import {keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
@@ -16,7 +16,7 @@ type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
-  return SPATIAL_SCALE_CHANNELS.reduce(function(axis, channel) {
+  return POSITION_SCALE_CHANNELS.reduce(function(axis, channel) {
     if (model.axis(channel)) {
       const axisComponent: AxisComponent = {};
       // TODO: support multiple axis
@@ -53,7 +53,7 @@ export function parseLayerAxis(model: LayerModel) {
   for (const child of model.children) {
     child.parseAxisAndHeader();
 
-    keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
+    keys(child.component.axes).forEach((channel: PositionScaleChannel) => {
       resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
       if (resolve.axis[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
@@ -72,7 +72,7 @@ export function parseLayerAxis(model: LayerModel) {
   }
 
   // Move axes to layer's axis component and merge shared axes
-  ['x', 'y'].forEach((channel: SpatialScaleChannel) => {
+  ['x', 'y'].forEach((channel: PositionScaleChannel) => {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis
@@ -202,16 +202,16 @@ function hasAxisPart(axis: AxisComponentPart, part: AxisPart) {
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseGridAxis(channel: SpatialScaleChannel, model: UnitModel): AxisComponentPart {
+export function parseGridAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponentPart {
   // FIXME: support adding ticks for grid axis that are inner axes of faceted plots.
   return parseAxis(channel, model, true);
 }
 
-export function parseMainAxis(channel: SpatialScaleChannel, model: UnitModel): AxisComponentPart {
+export function parseMainAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponentPart {
   return parseAxis(channel, model, false);
 }
 
-function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): AxisComponentPart {
+function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: boolean): AxisComponentPart {
   const axis = model.axis(channel);
 
   const axisComponent = new AxisComponentPart(
@@ -264,7 +264,7 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
   return axisComponent;
 }
 
-function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
+function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
   const fieldDef = model.fieldDef(channel);
 
   if ((isGridAxis && AXIS_PROPERTY_TYPE[property] === 'main') ||

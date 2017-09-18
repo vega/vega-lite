@@ -1,4 +1,4 @@
-import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from './channel';
+import {NonPositionScaleChannel, PositionScaleChannel, ScaleChannel} from './channel';
 
 
 export type ResolveMode = 'independent' | 'shared';
@@ -16,9 +16,9 @@ export type ScaleResolveMap = {
 };
 
 export type AxisResolveMap = {
-  [C in SpatialScaleChannel]?: ResolveMode
+  [C in PositionScaleChannel]?: ResolveMode
 };
 
 export type LegendResolveMap = {
-  [C in NonspatialScaleChannel]?: ResolveMode
+  [C in NonPositionScaleChannel]?: ResolveMode
 };

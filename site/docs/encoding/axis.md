@@ -5,7 +5,7 @@ title: Axis
 permalink: /docs/axis.html
 ---
 
-Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
+Axes provide axis lines, ticks and labels to convey how a positional range represents a data range. Simply put, axes visualize scales.
 
 By default, Vega-Lite automatically creates axes with default properties for `x` and `y` channels when they encode data fields.
 User can set the `axis` property of x- or y-[field definition](encoding.html#field) to an object to customize [axis properties](#axis-properties) or set `axis` to `null` to remove the axis.

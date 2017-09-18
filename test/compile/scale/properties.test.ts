@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {Channel, NONSPATIAL_SCALE_CHANNELS} from '../../../src/channel';
+import {Channel, NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
 import {ScaleType} from '../../../src/scale';
 
 import * as rules from '../../../src/compile/scale/properties';
@@ -43,7 +43,7 @@ describe('compile/scale', () => {
     });
 
     it('should be undefined for non-xy channels.', () => {
-      for (const c of NONSPATIAL_SCALE_CHANNELS) {
+      for (const c of NONPOSITION_SCALE_CHANNELS) {
         assert.equal(rules.paddingInner(undefined, c, {bandPaddingInner: 15}), undefined);
       }
     });
@@ -68,7 +68,7 @@ describe('compile/scale', () => {
     });
 
     it('should be undefined for non-xy channels.', () => {
-      for (const c of NONSPATIAL_SCALE_CHANNELS) {
+      for (const c of NONPOSITION_SCALE_CHANNELS) {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.equal(rules.paddingOuter(undefined, c, scaleType, 0, {}), undefined);
         }

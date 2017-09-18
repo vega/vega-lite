@@ -1,5 +1,5 @@
 import * as stringify from 'json-stable-stringify';
-import {NonspatialScaleChannel} from '../../channel';
+import {NonPositionScaleChannel} from '../../channel';
 import {flatten, keys, vals} from '../../util';
 import {VgLegend} from '../../vega.schema';
 import {Model} from '../model';
@@ -10,7 +10,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
   const legendByDomain: {[domainHash: string]: LegendComponent[]} = {};
 
-  keys(legendComponentIndex).forEach((channel: NonspatialScaleChannel) => {
+  keys(legendComponentIndex).forEach((channel: NonPositionScaleChannel) => {
     const scaleComponent = model.getScaleComponent(channel);
     const domainHash = stringify(scaleComponent.domains);
     if (legendByDomain[domainHash]) {

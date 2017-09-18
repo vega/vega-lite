@@ -1,5 +1,5 @@
 import {SUM_OPS} from './aggregate';
-import {NONSPATIAL_CHANNELS, NonSpatialChannel, X, X2, Y, Y2} from './channel';
+import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import {Field, FieldDef, getFieldDef, isFieldDef, PositionFieldDef} from './fielddef';
 import * as log from './log';
@@ -20,7 +20,7 @@ export interface StackProperties {
   /** Stack-by fields e.g., color, detail */
   stackBy: {
     fieldDef: FieldDef<string>,
-    channel: NonSpatialChannel
+    channel: NonPositionChannel
   }[];
 
   /**
@@ -53,7 +53,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Should have grouping level of detail
-  const stackBy = NONSPATIAL_CHANNELS.reduce((sc, channel) => {
+  const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((cDef) => {
