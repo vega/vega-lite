@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
+import {Channel, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
@@ -151,7 +151,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initLegend(encoding: Encoding<string>): LegendIndex {
-    return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
+    return NONPOSITION_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (channelDef) {
         const legend = isFieldDef(channelDef) ? channelDef.legend :

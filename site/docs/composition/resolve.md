@@ -13,8 +13,8 @@ Vega-Lite determines whether scale domains should be unioned. If the scale domai
   "resolve": {
     CHANNEL: {
       "scale": ...,  // Scale resolution
-      "axis": ...,  // Axis resolution for spatial channels
-      "legend": ...  // Legend resolution for non-spatial channels
+      "axis": ...,  // Axis resolution for position channels
+      "legend": ...  // Legend resolution for non-position channels
     }
   }
 }

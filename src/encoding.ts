@@ -210,8 +210,7 @@ export function forEach(mapping: any,
     return;
   }
 
-  keys(mapping).forEach((c: any) => {
-    const channel: Channel = c;
+  keys(mapping).forEach((channel: Channel) => {
     if (isArray(mapping[channel])) {
       mapping[channel].forEach(function(channelDef: ChannelDef<string>) {
         f.call(thisArg, channelDef, channel);
@@ -229,8 +228,7 @@ export function reduce<T, U>(mapping: U,
     return init;
   }
 
-  return keys(mapping).reduce((r: T, c: any) => {
-    const channel: Channel = c;
+  return keys(mapping).reduce((r: T, channel: Channel) => {
     if (isArray(mapping[channel])) {
       return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef<string>) {
         return f.call(thisArg, r1, channelDef, channel);

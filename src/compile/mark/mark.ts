@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {NONSPATIAL_CHANNELS} from '../../channel';
+import {NONPOSITION_CHANNELS} from '../../channel';
 import {MAIN} from '../../data';
 import {isAggregate} from '../../encoding';
 import {field, getFieldDef} from '../../fielddef';
@@ -160,7 +160,7 @@ function parseNonPathMark(model: UnitModel) {
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
-  return NONSPATIAL_CHANNELS.reduce(function(details, channel) {
+  return NONPOSITION_CHANNELS.reduce(function(details, channel) {
     const {encoding} = model;
     if (channel === 'order') {
       return details;

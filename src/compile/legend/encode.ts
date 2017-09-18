@@ -1,4 +1,4 @@
-import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE} from '../../channel';
+import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
@@ -92,7 +92,7 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   return keys(gradient).length > 0 ? gradient : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonspatialScaleChannel, legendCmpt: LegendComponent) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, legendCmpt: LegendComponent) {
   const legend = model.legend(channel);
   const config = model.config;
 

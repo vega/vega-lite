@@ -1,4 +1,4 @@
-import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
+import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {deleteNestedProperty, keys} from '../../util';
@@ -47,7 +47,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   return null;
 }
 
-export function parseLegendForChannel(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
+export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
@@ -82,7 +82,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonspatialScale
   return legendCmpt;
 }
 
-function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
+function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonPositionScaleChannel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
@@ -107,7 +107,7 @@ function parseNonUnitLegend(model: Model) {
   for (const child of model.children) {
     parseLegend(child);
 
-    keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
+    keys(child.component.legends).forEach((channel: NonPositionScaleChannel) => {
       resolve.legend[channel] = parseGuideResolve(model.component.resolve, channel);
 
       if (resolve.legend[channel] === 'shared') {
@@ -126,7 +126,7 @@ function parseNonUnitLegend(model: Model) {
     });
   }
 
-  keys(legends).forEach((channel: NonspatialScaleChannel) => {
+  keys(legends).forEach((channel: NonPositionScaleChannel) => {
     for (const child of model.children) {
       if (!child.component.legends[channel]) {
         // skip if the child does not have a particular legend

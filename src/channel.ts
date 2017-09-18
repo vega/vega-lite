@@ -105,39 +105,39 @@ export function isChannel(str: string): str is Channel {
 export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 
 
-// NONSPATIAL_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
+// NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const {
   x: _x, y: _y,
   // x2 and y2 share the same scale as x and y
   x2: _x2, y2: _y2,
   // The rest of unit channels then have scale
-  ...NONSPATIAL_CHANNEL_INDEX
+  ...NONPOSITION_CHANNEL_INDEX
 } = UNIT_CHANNEL_INDEX;
 
-export const NONSPATIAL_CHANNELS = flagKeys(NONSPATIAL_CHANNEL_INDEX);
-export type NonSpatialChannel = typeof NONSPATIAL_CHANNELS[0];
+export const NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
+export type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 
-// SPATIAL_SCALE_CHANNELS = X and Y;
-const SPATIAL_SCALE_CHANNEL_INDEX: {x:1, y:1} = {x:1, y:1};
-export const SPATIAL_SCALE_CHANNELS = flagKeys(SPATIAL_SCALE_CHANNEL_INDEX);
-export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
+// POSITION_SCALE_CHANNELS = X and Y;
+const POSITION_SCALE_CHANNEL_INDEX: {x:1, y:1} = {x:1, y:1};
+export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
+export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
-// NON_SPATIAL_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
+// NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
 const {
     // x2 and y2 share the same scale as x and y
   // text and tooltip has format instead of scale
   text: _t, tooltip: _tt,
   // detail and order have no scale
   detail: _dd, order: _oo,
-  ...NONSPATIAL_SCALE_CHANNEL_INDEX
-} = NONSPATIAL_CHANNEL_INDEX;
-export const NONSPATIAL_SCALE_CHANNELS = flagKeys(NONSPATIAL_SCALE_CHANNEL_INDEX);
-export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
+  ...NONPOSITION_SCALE_CHANNEL_INDEX
+} = NONPOSITION_CHANNEL_INDEX;
+export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
+export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
-  ...SPATIAL_SCALE_CHANNEL_INDEX,
-  ...NONSPATIAL_SCALE_CHANNEL_INDEX
+  ...POSITION_SCALE_CHANNEL_INDEX,
+  ...NONPOSITION_SCALE_CHANNEL_INDEX
 };
 
 /** List of channels with scales */

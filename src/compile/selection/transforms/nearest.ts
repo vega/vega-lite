@@ -1,5 +1,5 @@
 import * as log from '../../../log';
-import {spatialProjections} from '../selection';
+import {positionalProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
@@ -10,7 +10,7 @@ const nearest:TransformCompiler = {
   },
 
   marks: function(model, selCmpt, marks) {
-    const {x, y} = spatialProjections(selCmpt);
+    const {x, y} = positionalProjections(selCmpt);
     const markType = model.mark();
     if (markType === 'line' || markType === 'area') {
       log.warn(log.message.nearestNotSupportForContinuous(markType));
