@@ -44,6 +44,7 @@ export declare type StringSet = Dict<boolean>;
  */
 export declare function differ<T>(dict: Dict<T>, other: Dict<T>): boolean;
 export declare function hasIntersection(a: StringSet, b: StringSet): boolean;
+export declare function isNumeric(num: string | number): boolean;
 export declare function differArray<T>(array: T[], other: T[]): boolean;
 export declare const keys: (o: {}) => string[];
 export declare function vals<T>(x: {

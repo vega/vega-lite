@@ -46,12 +46,12 @@ export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
 export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
 export declare function isChannel(str: string): str is Channel;
 export declare const UNIT_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
-export declare const NONSPATIAL_CHANNELS: ("text" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
-export declare type NonSpatialChannel = typeof NONSPATIAL_CHANNELS[0];
-export declare const SPATIAL_SCALE_CHANNELS: ("x" | "y")[];
-export declare type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
-export declare const NONSPATIAL_SCALE_CHANNELS: ("color" | "opacity" | "size" | "shape")[];
-export declare type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
+export declare const NONPOSITION_CHANNELS: ("text" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
+export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
+export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];
+export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
+export declare const NONPOSITION_SCALE_CHANNELS: ("color" | "opacity" | "size" | "shape")[];
+export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 /** List of channels with scales */
 export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];

@@ -1,4 +1,4 @@
-import { NONSPATIAL_SCALE_CHANNELS } from '../../channel';
+import { NONPOSITION_SCALE_CHANNELS } from '../../channel';
 import { FieldDef } from '../../fielddef';
 import { MarkDef } from '../../mark';
 import { VgEncodeEntry, VgValueRef } from '../../vega.schema';
@@ -9,7 +9,7 @@ export declare function valueIfDefined(prop: string, value: string | number | bo
 /**
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
-export declare function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model: UnitModel, opt?: {
+export declare function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model: UnitModel, opt?: {
     defaultValue?: number | string | boolean;
     vgChannel?: string;
     defaultRef?: VgValueRef;

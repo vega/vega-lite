@@ -42,7 +42,10 @@ export declare function debug(..._: any[]): void;
  */
 export declare namespace message {
     const INVALID_SPEC = "Invalid spec";
+    const FIT_NON_SINGLE = "Autosize \"fit\" only works for single views and layered views.";
+    const CANNOT_FIX_RANGE_STEP_WITH_FIT = "Cannot use a fixed value of \"rangeStep\" when \"autosize\" is \"fit\".";
     function cannotProjectOnChannelWithoutField(channel: Channel): string;
+    function nearestNotSupportForContinuous(mark: string): string;
     function selectionNotFound(name: string): string;
     function noSuchRepeatedValue(field: string): string;
     function cannotSetTitleAnchor(type: string): string;

@@ -22,6 +22,7 @@ import { ScaleIndex } from './scale/component';
  * Internal model of Vega-Lite specification for the compiler.
  */
 export declare class UnitModel extends ModelWithField {
+    fit: boolean;
     readonly type: 'unit';
     readonly markDef: MarkDef;
     readonly encoding: Encoding<string>;
@@ -31,7 +32,7 @@ export declare class UnitModel extends ModelWithField {
     protected specifiedLegends: LegendIndex;
     readonly selection: Dict<SelectionDef>;
     children: Model[];
-    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config);
+    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
     /**
      * Return specified Vega-lite scale domain for a particular channel
      * @param channel

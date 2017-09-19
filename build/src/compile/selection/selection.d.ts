@@ -55,7 +55,7 @@ export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRe
 export declare function unitName(model: Model): string;
 export declare function requiresSelectionId(model: Model): boolean;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;
-export declare function spatialProjections(selCmpt: SelectionComponent): {
+export declare function positionalProjections(selCmpt: SelectionComponent): {
     x: ProjectComponent;
     xi: number;
     y: ProjectComponent;

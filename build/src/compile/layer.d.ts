@@ -6,7 +6,7 @@ import { RepeaterValue } from './repeater';
 export declare class LayerModel extends Model {
     readonly type: 'layer';
     readonly children: Model[];
-    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config);
+    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
     parseData(): void;
     parseLayoutSize(): void;
     parseSelection(): void;

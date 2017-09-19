@@ -1,4 +1,4 @@
-import { NonSpatialChannel } from './channel';
+import { NonPositionChannel } from './channel';
 import { Encoding } from './encoding';
 import { Field, FieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
@@ -11,7 +11,7 @@ export interface StackProperties {
     /** Stack-by fields e.g., color, detail */
     stackBy: {
         fieldDef: FieldDef<string>;
-        channel: NonSpatialChannel;
+        channel: NonPositionChannel;
     }[];
     /**
      * See `"stack"` property of Position Field Def.

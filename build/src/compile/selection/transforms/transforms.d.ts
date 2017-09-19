@@ -8,6 +8,6 @@ export interface TransformCompiler {
     signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: any[]) => any[];
     topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
     modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
-    marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[], selMarks: any[]) => any[];
+    marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
 export declare function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void): void;
