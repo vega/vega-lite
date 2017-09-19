@@ -53,16 +53,6 @@ Mapping a field to `text` channel of text mark sets the mark's text value. For e
 
 The `text` property of the top-level [`config`](config.html) object sets the default properties for all text marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-Besides standard [mark config properties](mark.html#config), text config can contain the following group of properties:
+Besides standard [mark config properties](mark.html#config), text config can contain `shortTimeLabels`.
 
-### Text Position
-
-{% include table.html props="angle,align,baseline,dx,dy,radius,theta" source="MarkConfig" %}
-
-### Font Style
-
-{% include table.html props="font,fontSize,fontStyle,fontWeight" source="MarkConfig" %}
-
-### Text Value
-
-{% include table.html props="text" source="MarkConfig" %}
+{% include table.html props="shortTimeLabels" source="TextConfig" %}

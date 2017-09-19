@@ -77,7 +77,7 @@
     "signals": [
         {
             "name": "child_width",
-            "update": "200"
+            "value": 200
         },
         {
             "name": "y_step",

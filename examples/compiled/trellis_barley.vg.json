@@ -53,7 +53,7 @@
     "signals": [
         {
             "name": "trellis_barley_child_width",
-            "update": "200"
+            "value": 200
         },
         {
             "name": "trellis_barley_y_step",

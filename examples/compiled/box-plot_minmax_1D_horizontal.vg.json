@@ -3,6 +3,8 @@
     "description": "A 1D horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 21,
     "style": "cell",
     "data": [
         {
@@ -113,16 +115,6 @@
                     "expr": "datum[\"midBox\"] !== null && !isNaN(datum[\"midBox\"])"
                 }
             ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "21"
         }
     ],
     "marks": [
@@ -242,7 +234,7 @@
                         "value": 1
                     },
                     "fill": {
-                        "value": "#4c78a8"
+                        "value": "white"
                     },
                     "opacity": {
                         "value": 0.7

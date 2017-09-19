@@ -1,4 +1,5 @@
-import {spatialProjections} from '../selection';
+import * as log from '../../../log';
+import {positionalProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
@@ -8,12 +9,14 @@ const nearest:TransformCompiler = {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
-  marks: function(model, selCmpt, marks, selMarks) {
-    const {x, y} = spatialProjections(selCmpt);
-    const mark = marks[0];
-    const index = selMarks.indexOf(mark);
-    const isPathgroup = mark.name === model.getName('pathgroup');
-    const exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0);
+  marks: function(model, selCmpt, marks) {
+    const {x, y} = positionalProjections(selCmpt);
+    const markType = model.mark();
+    if (markType === 'line' || markType === 'area') {
+      log.warn(log.message.nearestNotSupportForContinuous(markType));
+      return marks;
+    }
+
     const cellDef = {
       name: model.getName(VORONOI),
       type: 'path',
@@ -34,14 +37,22 @@ const nearest:TransformCompiler = {
       }]
     };
 
-    if (isPathgroup && !mark.marks.filter(exists).length) {
-      mark.marks.push(cellDef);
-      selMarks.splice(index, 1, mark);
-    } else if (!isPathgroup && !selMarks.filter(exists).length) {
-      selMarks.splice(index + 1, 0, cellDef);
+    let index = 0;
+    let exists = false;
+    marks.forEach((mark, i) => {
+      const name = mark.name || '';
+      if (name === model.component.mark[0].name) {
+        index = i;
+      } else if (name.indexOf(VORONOI) >= 0) {
+        exists = true;
+      }
+    });
+
+    if (!exists) {
+      marks.splice(index + 1, 0, cellDef);
     }
 
-    return selMarks;
+    return marks;
   }
 };
 

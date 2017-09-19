@@ -1,5 +1,5 @@
 import {Axis} from '../../axis';
-import {Channel, SpatialScaleChannel, X} from '../../channel';
+import {Channel, PositionScaleChannel, X} from '../../channel';
 import {FieldDef, isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
@@ -9,7 +9,7 @@ import {timeFormatExpression} from '../common';
 import {Split} from '../split';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
+export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :

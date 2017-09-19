@@ -12,7 +12,7 @@ export interface TransformCompiler {
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
   // tupleExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
-  marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[], selMarks: any[]) => any[];
+  marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[]) => any[];
 }
 
 import inputs from './inputs';

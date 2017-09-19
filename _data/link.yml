@@ -3,15 +3,19 @@
 # Spec
 CompositeUnitSpec:
   name: SingleViewSpec
-  link: spec.html#single
+  link: "spec.html#single"
 LayerSpec:
   link: layer.html
+AutosizeType:
+  name: String
+AutoSizeParams:
+  link: "size.html#autosize"
 
 # Data
 Data:
   link: data.html
 DataFormat:
-  link: data.html#format
+  link: "data.html#format"
 DataFormatType:
   name: String
 

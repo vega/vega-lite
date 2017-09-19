@@ -208,26 +208,9 @@
     {
       "calculate": "datum.open > datum.close",
       "as": "isIncrease"
-    },
-    {
-      "calculate": "(datum.open + datum.close)/2",
-      "as": "mid"
     }
   ],
   "layer": [
-    {
-      "mark": "rule",
-      "encoding": {
-        "y": {
-          "field": "mid",
-          "type": "quantitative",
-          "aggregate": "mean",
-          "scale": {"zero": false},
-          "axis": {"title": ""}
-        },
-        "color": {"value": "fff"}
-      }
-    },
     {
       "mark": "rule",
       "encoding": {
@@ -242,7 +225,7 @@
             "title": "Date in 2009"
           }
         },
-        "y": {"field": "low","type": "quantitative"},
+        "y": {"field": "low","type": "quantitative","scale": {"zero": false}},
         "y2": {"field": "high","type": "quantitative"},
         "color": {
           "field": "isIncrease",

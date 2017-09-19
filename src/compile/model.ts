@@ -1,4 +1,5 @@
 import {isString} from 'vega-util';
+
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -19,7 +20,6 @@ import {
   VgLayout,
   VgLegend,
   VgMarkGroup,
-  VgScale,
   VgSignal,
   VgSignalRef,
   VgTitle,
@@ -365,6 +365,7 @@ export abstract class Model {
     const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
+
     if (signals.length > 0) {
       group.signals = signals;
     }

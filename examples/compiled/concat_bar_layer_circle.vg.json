@@ -274,7 +274,7 @@
                                 "value": "circle"
                             },
                             "opacity": {
-                                "value": "0.4"
+                                "value": 0.4
                             }
                         }
                     }
@@ -345,6 +345,43 @@
                     },
                     "title": "BIN(Rotten_Tomatoes_Rating)",
                     "zindex": 1
+                }
+            ],
+            "legends": [
+                {
+                    "title": "All Movies",
+                    "size": "size",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "circle"
+                                },
+                                "fill": {
+                                    "value": "#4c78a8"
+                                },
+                                "opacity": {
+                                    "value": 0.4
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "title": "In Selected Category",
+                    "size": "size",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "circle"
+                                },
+                                "fill": {
+                                    "value": "#4c78a8"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },

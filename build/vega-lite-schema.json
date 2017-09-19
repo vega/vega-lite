@@ -53,6 +53,36 @@
         }
       ]
     },
+    "AutoSizeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "contains": {
+          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
+          "enum": [
+            "content",
+            "padding"
+          ],
+          "type": "string"
+        },
+        "resize": {
+          "description": "A boolean flag indicating if autosize layout should be re-calculated on every view update.\n\n__Default value__: `false`",
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/AutosizeType",
+          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"` or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
+        }
+      },
+      "type": "object"
+    },
+    "AutosizeType": {
+      "enum": [
+        "pad",
+        "fit",
+        "none"
+      ],
+      "type": "string"
+    },
     "Axis": {
       "additionalProperties": false,
       "properties": {
@@ -448,11 +478,11 @@
           "type": "number"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "continuousBandSize": {
-          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `2`",
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
           "minimum": 0,
           "type": "number"
         },
@@ -480,7 +510,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -791,7 +821,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -813,7 +843,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -1312,9 +1342,16 @@
           "$ref": "#/definitions/MarkConfig",
           "description": "Area-Specific Config "
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
@@ -2595,6 +2632,25 @@
           "anyOf": [
             {
               "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "object"
               },
               "type": "array"
             },
@@ -2602,7 +2658,7 @@
               "type": "string"
             }
           ],
-          "description": "The full data set, included inline. This can be a string or an array of objects or primitive values.\nArrays of primitive values are ingested as objects with a `data` property."
+          "description": "The full data set, included inline. This can be an array of objects or primitive values or a string.\nArrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type."
         }
       },
       "required": [
@@ -3392,7 +3448,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -3414,7 +3470,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -3598,7 +3654,7 @@
               "type": "array"
             }
           ],
-          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [configuration](config.html). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
+          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",
@@ -4849,13 +4905,8 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "description": "The horizontal text alignment.",
-          "enum": [
-            "left",
-            "center",
-            "right"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/HorizontalAlign",
+          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -4868,15 +4919,15 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
-          "description": "The horizontal offset in pixels (before rotation), between the text and anchor point.",
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
         },
         "dy": {
-          "description": "The vertical offset in pixels (before rotation), between the text and anchor point.",
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
         },
         "fill": {
@@ -4890,7 +4941,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -5060,7 +5111,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
         "dx": {
@@ -5082,7 +5133,7 @@
           "type": "number"
         },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
         },
         "font": {
@@ -5311,9 +5362,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5395,9 +5453,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5472,9 +5537,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5541,9 +5613,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5626,9 +5705,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5696,9 +5782,16 @@
           "format": "uri",
           "type": "string"
         },
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -5782,9 +5875,16 @@
     "TopLevelProperties": {
       "additionalProperties": false,
       "properties": {
-        "autoResize": {
-          "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.\n\n__Default value__: `false`",
-          "type": "boolean"
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",

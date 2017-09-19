@@ -27,16 +27,8 @@ describe('Compile', function() {
 
       assert.equal(spec.padding, 5);
       assert.equal(spec.autosize, 'pad');
-      assert.deepEqual(spec.signals, [
-        {
-          name: 'width',
-          update: "21"
-        },
-        {
-          name: 'height',
-          update: "21"
-        }
-      ]);
+      assert.equal(spec.width, 21);
+      assert.equal(spec.height, 21);
       assert.deepEqual(spec.title, {text: 'test'});
 
       assert.equal(spec.data.length, 1); // just source
@@ -55,30 +47,95 @@ describe('Compile', function() {
 
       assert.equal(spec.padding, 123);
       assert.equal(spec.autosize, 'pad');
-      assert.deepEqual(spec.signals, [
-        {
-          name: 'width',
-          update: "21"
-        },
-        {
-          name: 'height',
-          update: "21"
-        }
-      ]);
+      assert.equal(spec.width, 21);
+      assert.equal(spec.height, 21);
 
       assert.equal(spec.data.length, 1); // just source.
       assert.equal(spec.marks.length, 1); // just the root group
     });
 
+    it('should use size signal for bar chart width', () => {
+      const spec = compile({
+        "data": {"values": [{"a": "A","b": 28}]},
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      }).spec;
+
+      assert.deepEqual(spec.signals, [{
+        name: 'x_step',
+        value: 21
+      }, {
+        name: 'width',
+        update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
+      }]);
+      assert.equal(spec.height, 200);
+    });
+
     it('should set resize to true if requested', () => {
       const spec = compile({
-        "autoResize": true,
+        "autosize": {
+          "resize": true
+        },
         "mark": "point",
         "encoding": {}
       }).spec;
 
       assert(spec.autosize.resize);
     });
+
+    it('should set autosize to fit and containment if requested', () => {
+      const spec = compile({
+        "autosize": {
+          "type": "fit",
+          "contains": "content"
+        },
+        "mark": "point",
+        "encoding": {}
+      }).spec;
+
+      assert.deepEqual(spec.autosize, {type: 'fit', contains: 'content'});
+    });
+
+    it('should set autosize to fit if requested', () => {
+      const spec = compile({
+        "autosize": "fit",
+        "mark": "point",
+        "encoding": {}
+      }).spec;
+
+      assert.equal(spec.autosize, "fit");
+    });
+
+    it('warn if size is data driven and autosize is fit', log.wrap((localLogger) => {
+      const spec = compile({
+        "data": {"values": [{"a": "A","b": 28}]},
+        "mark": "bar",
+        "autosize": "fit",
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      }).spec;
+      assert.equal(localLogger.warns[0], log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
+      assert.equal(spec.width, 200);
+      assert.equal(spec.height, 200);
+    }));
+
+    it('warn if trying to fit composed spec', log.wrap((localLogger) => {
+      const spec = compile({
+        "data": {"values": [{"a": "A","b": 28}]},
+        "autosize": "fit",
+        "vconcat": [{
+          "mark": "point",
+          "encoding": {}
+        }]
+      }).spec;
+      assert.equal(localLogger.warns[0], log.message.FIT_NON_SINGLE);
+      assert.equal(spec.autosize, 'pad');
+    }));
 
     it('should return title for a layered spec.', () => {
       const spec = compile({

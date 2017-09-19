@@ -180,6 +180,10 @@ export function hasIntersection(a: StringSet, b: StringSet) {
   return false;
 }
 
+export function isNumeric(num: string | number) {
+  return !isNaN(num as any);
+}
+
 export function differArray<T>(array: T[], other: T[]) {
   if (array.length !== other.length) {
     return true;

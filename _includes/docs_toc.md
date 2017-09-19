@@ -202,6 +202,7 @@
         - [Scale Binding]({{site.baseurl}}/docs/bind.html#scale-binding)
     - [Nearest]({{site.baseurl}}/docs/nearest.html)
         - [Examples]({{site.baseurl}}/docs/nearest.html#examples)
+        - [Current Limitations]({{site.baseurl}}/docs/nearest.html#current-limitations)
     - [Project]({{site.baseurl}}/docs/project.html)
         - [Examples]({{site.baseurl}}/docs/project.html#examples)
         - [Current Limitations]({{site.baseurl}}/docs/project.html#current-limitations)

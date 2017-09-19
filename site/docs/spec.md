@@ -7,7 +7,7 @@ permalink: /docs/spec.html
 
 {:#spec}
 
-Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single-view-spec), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
+Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
 These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
 
 ## Documentation Overview
@@ -29,7 +29,7 @@ All view specifications in Vega-Lite can contain the following properties:
 
 In addition to the [common properties](#common), any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
-{% include table.html props="$schema,background,padding,autoResize,config" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="$schema,background,padding,autosize,config" source="TopLevelFacetedUnitSpec" %}
 
 
 ## Single View Specifications
@@ -42,7 +42,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "background": ...,
   "padding": ...,
-  "autoResize": ...,
+  "autosize": ...,
   "config": ...,
 
   // Properties for any specifications

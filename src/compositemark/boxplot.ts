@@ -9,6 +9,7 @@ import * as log from './../log';
 import {MarkConfig} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
+import {getMarkSpecificConfigMixins} from './common';
 
 
 export const BOXPLOT: 'box-plot' = 'box-plot';
@@ -45,7 +46,9 @@ export interface BoxPlotConfigMixins {
 export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
   [k in keyof BoxPlotConfigMixins]?: (keyof BoxPlotConfigMixins[k])[]
 } = {
-  box: ['size']
+  box: ['size', 'color'],
+  boxWhisker: ['color'],
+  boxMid: ['color']
 };
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
@@ -80,8 +83,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const orient: Orient = boxOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, kIQRScalar);
 
-  const {size, color, ...nonPositionEncodingWithoutColorSize} = encodingWithoutContinuousAxis;
-  const sizeMixins = size ? {size} : {size: {value: config.box.size}};
+  const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
+
+  // Size encoding or the default config.box.size is applied to box and boxMid
+  const sizeMixins = size ? {size} : getMarkSpecificConfigMixins(config.box, 'size');
 
   const continuousAxisScaleAndAxis = {};
   if (continuousAxisChannelDef.scale) {
@@ -110,7 +115,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'lowerBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutColorSize
+          ...encodingWithoutSizeColorAndContinuousAxis,
+          ...getMarkSpecificConfigMixins(config.boxWhisker, 'color')
         }
       }, { // upper whisker
         mark: {
@@ -126,7 +132,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'upperWhisker',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutColorSize
+          ...encodingWithoutSizeColorAndContinuousAxis,
+          ...getMarkSpecificConfigMixins(config.boxWhisker, 'color')
         }
       }, { // box (q1 to q3)
         ...(selection ? {selection} : {}),
@@ -144,8 +151,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutContinuousAxis,
-          // Need to apply size here to make sure size config get used
-          ...sizeMixins
+          ...(encodingWithoutContinuousAxis.color ? {} : getMarkSpecificConfigMixins(config.box, 'color')),
+          ...sizeMixins,
         }
       }, { // mid tick
         mark: {
@@ -157,8 +164,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'midBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutColorSize,
-          ...sizeMixins
+          ...encodingWithoutSizeColorAndContinuousAxis,
+          ...getMarkSpecificConfigMixins(config.boxMid, 'color'),
+          ...sizeMixins,
         }
       }
     ]

@@ -3,6 +3,7 @@
     "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -134,10 +135,6 @@
         {
             "name": "width",
             "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        },
-        {
-            "name": "height",
-            "update": "200"
         }
     ],
     "marks": [
@@ -261,7 +258,7 @@
                         "value": 1
                     },
                     "fill": {
-                        "value": "#4c78a8"
+                        "value": "white"
                     },
                     "opacity": {
                         "value": 0.7

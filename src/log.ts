@@ -98,9 +98,18 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // FIT
+  export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+
+  export const CANNOT_FIX_RANGE_STEP_WITH_FIT = 'Cannot use a fixed value of "rangeStep" when "autosize" is "fit".';
+
   // SELECTION
   export function cannotProjectOnChannelWithoutField(channel: Channel) {
     return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
+  }
+
+  export function nearestNotSupportForContinuous(mark: string) {
+    return `The "nearest" transform is not supported for ${mark} marks.`;
   }
 
   export function selectionNotFound(name: string) {

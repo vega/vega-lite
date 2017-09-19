@@ -1,13 +1,22 @@
 import {isNumber} from 'vega-util';
+
 import {Channel, COLOR, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
+import {
+  channelScalePropertyIncompatability,
+  isExtendedScheme,
+  Range,
+  Scale,
+  ScaleConfig,
+  ScaleType,
+  scaleTypeSupportProperty,
+  Scheme,
+} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
-import {LayoutSize} from '../layoutsize/component';
 import {isUnitModel, Model} from '../model';
 import {Explicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -45,13 +54,22 @@ function parseUnitScaleRange(model: UnitModel) {
 
     // Read if there is a specified width/height
     const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-    const specifiedSize = sizeType ? model.component.layoutSize.get(sizeType) : undefined;
+    let sizeSpecified = sizeType ? !!model.component.layoutSize.get(sizeType) : undefined;
+
+    const scaleType = mergedScaleCmpt.get('type');
+
+    // if autosize is fit, size cannot be data driven
+    const rangeStep = util.contains(['point', 'band'], scaleType) || !!specifiedScale.rangeStep;
+    if (sizeType && model.fit && !sizeSpecified && rangeStep) {
+      log.warn(log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
+      sizeSpecified = true;
+    }
 
     const xyRangeSteps = getXYRangeStep(model);
 
     const rangeWithExplicit = parseRangeForChannel(
-      channel, mergedScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,
-      localScaleCmpt.get('zero'), model.mark(), specifiedSize, model.getName(sizeType), xyRangeSteps
+      channel, scaleType, fieldDef.type, specifiedScale, model.config,
+      localScaleCmpt.get('zero'), model.mark(), sizeSpecified, model.getName(sizeType), xyRangeSteps
     );
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
@@ -81,10 +99,10 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, specifiedSize: LayoutSize, sizeSignal: string, xyRangeSteps: number[]
+    zero: boolean, mark: Mark, sizeSpecified: boolean, sizeSignal: string, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
-  const noRangeStep = !!specifiedSize || specifiedScale.rangeStep === null;
+  const noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
@@ -105,7 +123,7 @@ export function parseRangeForChannel(
           case 'rangeStep':
             const rangeStep = specifiedScale[property];
             if (rangeStep !== null) {
-              if (specifiedSize === undefined) {
+              if (!sizeSpecified) {
                 return makeImplicit({step: rangeStep});
               } else {
                 // If top-level size is specified, we ignore specified rangeStep.

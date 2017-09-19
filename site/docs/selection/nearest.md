@@ -13,6 +13,10 @@ In the scatterplot below, points <select onchange="changeSpec('paintbrush_neares
 
 <div id="paintbrush_nearest" class="vl-example" data-name="paintbrush_color_nearest"></div>
 
-The `nearest` transform also respects any [spatial encoding projections](project.html) applied to the selection. For instance, in the example below, moving the mouse cursor back-and-forth snaps the vertical rule and label to the nearest `date` value.
+The `nearest` transform also respects any [position encoding projections](project.html) applied to the selection. For instance, in the example below, moving the mouse cursor back-and-forth snaps the vertical rule and label to the nearest `date` value.
 
 <div id="paintbrush_nearest" class="vl-example" data-name="stocks_nearest_index"></div>
+
+## Current Limitations
+
+* The `nearest` transform is not supported for continuous mark types (i.e., `line` and `area`). For these mark types, consider layering a discrete mark type (e.g., `point`) with a 0-value `opacity` as in the last example above.

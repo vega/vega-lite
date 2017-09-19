@@ -32,7 +32,7 @@ export class FacetModel extends ModelWithField {
     super(spec, parent, parentGivenName, config, spec.resolve);
 
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
+    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
     this.children = [this.child];
 
     const facet: Facet<string> = replaceRepeaterInFacet(spec.facet, repeater);

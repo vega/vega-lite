@@ -2,6 +2,7 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
     "style": "cell",
     "data": [
         {
@@ -68,10 +69,6 @@
         }
     ],
     "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
         {
             "name": "y_step",
             "value": 21

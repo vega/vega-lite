@@ -1,4 +1,4 @@
-import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
+import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
 import {ChannelDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
@@ -48,7 +48,7 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
 /**
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
-export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
+export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
   // TODO: refactor how we refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {defaultValue, vgChannel} = opt;

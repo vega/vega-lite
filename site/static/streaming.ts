@@ -2,15 +2,17 @@ import embed from 'vega-embed';
 
 export function runStreamingExample(eleId: string) {
   const vlSpec = {
-    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-    'data': {'name': 'table'},
-    'autoResize': true,
-    'width': 400,
-    'mark': 'line',
-    'encoding': {
-      'x': {'field': 'x', 'type': 'quantitative', 'scale': {'zero': false}},
-      'y': {'field': 'y', 'type': 'quantitative'},
-      'color': {'field': 'category', 'type': 'nominal'}
+    $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+    data: {name: 'table'},
+    autosize: {
+      update: true
+    },
+    width: 400,
+    mark: 'line',
+    encoding: {
+      x: {field: 'x', type: 'quantitative', scale: {zero: false}},
+      y: {field: 'y', type: 'quantitative'},
+      color: {field: 'category', type: 'nominal'}
     }
   };
 

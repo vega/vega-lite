@@ -17,6 +17,8 @@ This page describe how to adjust width and height of visualizations in Vega-lite
 ## Width and Height of Single and Layered Plots
 
 [Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size.
+By default, `width` and `height` set the size of the data rectangle (plotting) dimensions.
+To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
 
 ### Explicitly Specified Width and Height
 
@@ -53,6 +55,34 @@ This example shows a plot with a continuous y-scale and a discrete x-scale:
 For example, the following plot use `21` as a default height.
 
 <span class="vl-example" data-name="bar_1d_rangestep_config"></span>
+
+### Autosize
+
+The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level-specifications). Please note the [limitations below](#limitations).
+
+The autosize property can be a string or an object with the following properties:
+
+{% include table.html props="type,resize,contains" source="AutoSizeParams" %}
+
+The total size of a Vega-Lite visualization may be determined by multiple factors: specified _width_, _height_, and _padding_ values, as well as content such as axes, legends, and titles. To support different use cases, there are three different _autosize_ types for determining the final size of a visualization view:
+
+- `none`: No automatic sizing is performed. The total visualization size is determined solely by the provided width, height and padding values. For example, by default the total width is calculated as `width + padding.left + padding.right`. Any content lying outside this region will be clipped. If _autosize.contains_ is set to `"padding"`, the total width is instead simply _width_.
+- `pad`: Automatically increase the size of the view such that all visualization content is visible. This is the default _autosize_ setting, and ensures that axes, legends and other items outside the normal width and height are included. The total size will often exceed the specified width, height, and padding.
+- `fit`: Automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values. This setting causes the plotting region to be made smaller in order to accommodate axes, legends and titles. As a result, the value of the _width_ and _height_ signals may be changed to modify the layout. Though effective for many plots, the `fit` method can not always ensure that all content remains visible. For example, if the axes and legends alone require more space than the specified width and height, some of the content will be clipped. Similar to `none`, by default the total width will be `width + padding.left + padding.right`, relative to the original, unmodified _width_ value. If _autosize.contains_ is set to `"padding"`, the total width will instead be the original _width_.
+
+#### Limitations
+
+In order to `fit` a chart into specified dimensions, it has to satisfy two requirements:
+
+* The view must be either [single](spec.html#single) or [layered](layer.html). Fit does not work with otherwise composed views.
+* The width and height of the chart cannot depend on the scale domain as they do when you use `rangeStep`. This means that if you use a discrete scale for `x` or `y`, you have to set the corresponding size (`width` for `x`, `height` for `y`) property explicitly.
+
+#### Example
+
+Below is an example of a bar chart that fits exactly into 300px width.
+
+<span class="vl-example" data-name="bar_fit"></span>
+
 
 ## Width and Height of Multi-View Displays
 

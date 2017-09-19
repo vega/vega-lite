@@ -3,6 +3,8 @@
     "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
     "autosize": "pad",
     "padding": 5,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -43,16 +45,6 @@
             ]
         }
     ],
-    "signals": [
-        {
-            "name": "width",
-            "update": "200"
-        },
-        {
-            "name": "height",
-            "update": "200"
-        }
-    ],
     "marks": [
         {
             "name": "marks",
@@ -70,7 +62,7 @@
                         "field": "yearmonth_date"
                     },
                     "width": {
-                        "value": 2
+                        "value": 5
                     },
                     "y": {
                         "scale": "y",

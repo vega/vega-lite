@@ -101,6 +101,9 @@
           "field": "midBox",
           "type": "quantitative"
         },
+        "color": {
+          "value": "white"
+        },
         "size": {
           "value": 14
         }

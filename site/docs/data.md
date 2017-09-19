@@ -35,6 +35,10 @@ If the input data is simply an array of primitive values, each value is mapped t
 [ {"data": 5}, {"data": 3}, {"data": 8}, {"data": 1} ]
 ```
 
+You can also inline a string that will be parsed according to the specified format type.
+
+<span class="vl-example" data-name="embed_csv"></span>
+
 {:#url}
 ### Data from URL
 
