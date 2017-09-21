@@ -143,6 +143,14 @@ function setSlide(slides: NodeListOf<Element>, indicators: NodeListOf<Element>, 
     indicators[active].setAttribute('data-state', 'active');
     slides[active].setAttribute('data-state', 'active');
     carouselShow(slides, indicators, links, active);
+
+    // Switch button text
+    const numSlides = carousel.querySelectorAll('.indicator').length;
+    if (numSlides === active + 1) {
+      carousel.querySelector('.next-slide').textContent = 'Start over';
+    } else {
+      carousel.querySelector('.next-slide').textContent = 'Next step';
+    }
   };
 }
 
@@ -151,13 +159,21 @@ if (carousel) {
   const indicators = carousel.querySelectorAll('.indicator');
   const links = carousel.querySelectorAll('.slide-nav');
 
+  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < indicators.length; i++) {
-    indicators[i].addEventListener('click', setSlide(slides, indicators, links, i));
+    indicators[i].addEventListener('click', setSlide(slides, indicators, links, +indicators[i].getAttribute('data-slide')));
   }
 
+  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', setSlide(slides, indicators, links, i));
+    links[i].addEventListener('click', setSlide(slides, indicators, links, +links[i].getAttribute('data-slide')));
   }
+
+  carousel.querySelector('.next-slide').addEventListener('click', () => {
+    const slide = +carousel.querySelector('.indicator[data-state=active]').getAttribute('data-slide');
+    const numSlides = carousel.querySelectorAll('.indicator').length;
+    setSlide(slides, indicators, links, (slide + 1) % numSlides)();
+  });
 
   [].forEach.call(slides, (slide: Element) => {
     const video = slide.querySelector('video');

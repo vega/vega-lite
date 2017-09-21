@@ -601,6 +601,22 @@ footer .edit-page {
   font-weight: bold;
 }
 
+.next-slide {
+  padding: 3px 5px;
+  margin-left: 2em;
+  color: #333;
+  font-weight: 600;
+  background-color: #f8f8f8;
+  border: 1px solid #999;
+  border-radius: 2px;
+  font-size: .8em;
+}
+
+.next-slide:hover {
+  background-color: #ebebeb;
+  color: #000;
+}
+
 /* Media queries */
 @media (max-width:768px) {
   body {
