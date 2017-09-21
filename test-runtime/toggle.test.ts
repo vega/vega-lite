@@ -1,4 +1,3 @@
-/* tslint:disable no-bitwise */
 import {assert} from 'chai';
 import {stringValue} from 'vega-util';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';

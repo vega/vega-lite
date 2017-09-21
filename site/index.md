@@ -47,7 +47,9 @@ Read our [introduction article to Vega-Lite v1 on Medium](https://medium.com/p/4
 ## Example
 
 <div id="carousel" class="carousel">
-  <p>With Vega-Lite, we can start with a <a class="slide-nav" data-slide="1" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="2">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="3">an interactive moving average for a dragged region</a>.</p>
+  <p>
+    With Vega-Lite, we can start with a <a class="slide-nav" data-slide="0" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="1">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="2">an interactive moving average for a dragged region</a>. <button class="next-slide">Next step</button>
+  </p>
 
   <div class="slides">
     <div class="slide" data-state="active">
@@ -64,9 +66,9 @@ Read our [introduction article to Vega-Lite v1 on Medium](https://medium.com/p/4
     </div>
   </div>
   <div class="indicators">
-    <input class="indicator" name="indicator" data-slide="1" data-state="active" checked type="radio" />
+    <input class="indicator" name="indicator" data-slide="0" data-state="active" checked type="radio" />
+    <input class="indicator" name="indicator" data-slide="1" type="radio" />
     <input class="indicator" name="indicator" data-slide="2" type="radio" />
-    <input class="indicator" name="indicator" data-slide="3" type="radio" />
   </div>
 </div>
 
