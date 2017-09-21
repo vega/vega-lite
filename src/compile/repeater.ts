@@ -1,16 +1,7 @@
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
-import {
-  ConditionalFieldDef,
-  ConditionalValueDef,
-  Field,
-  FieldDef,
-  isConditionalDef,
-  isFieldDef,
-  isRepeatRef,
-  LegendFieldDef,
-} from '../fielddef';
-import {ChannelDef} from '../fielddef';
+import {Field, FieldDef, isConditionalDef, isFieldDef, isRepeatRef} from '../fielddef';
+import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {isArray} from '../util';
@@ -29,42 +20,41 @@ export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: R
 }
 
 /**
+ * Replaces repeated value and returns if the repeated value is valid.
+ */
+function replaceRepeat<T extends {field?: Field}>(o: T, repeater: RepeaterValue): T {
+  if (isRepeatRef(o.field)) {
+    if (o.field.repeat in repeater) {
+      // any needed to calm down ts compiler
+      return {...o as any, field: repeater[o.field.repeat]};
+    } else {
+      log.warn(log.message.noSuchRepeatedValue(o.field.repeat));
+      return undefined;
+    }
+  }
+  return o;
+}
+
+/**
  * Replace repeater values in a field def with the concrete field name.
  */
-function replaceRepeaterInFieldDef(fieldDef: LegendFieldDef<Field>, repeater: RepeaterValue): LegendFieldDef<string> | null {
-  const field = fieldDef.field;
-  if (isRepeatRef(field)) {
-    if (field.repeat in repeater) {
-      fieldDef = {
-        ...fieldDef,
-        field: repeater[field.repeat]
-      };
-    } else {
-      log.warn(log.message.noSuchRepeatedValue(field.repeat));
-      // return null, meaning that the field def should be ignored
-      return null;
-    }
+function replaceRepeaterInFieldDef(fieldDef: ScaleFieldDef<Field>, repeater: RepeaterValue): ScaleFieldDef<string> {
+  fieldDef = replaceRepeat(fieldDef, repeater);
+
+  if (fieldDef === undefined) {
+    // the field def should be ignored
+    return undefined;
   }
 
-  const sort = fieldDef.sort;
-  if (sort && isSortField(sort) && isRepeatRef(sort.field)) {
-    if (sort.field.repeat in repeater) {
-      fieldDef = {
-        ...fieldDef,
-        sort: {
-          ...sort,
-          field: repeater[sort.field.repeat]
-        }
-      };
-    } else {
-      log.warn(log.message.noSuchRepeatedValue(sort.field.repeat));
-      // remove sort as it uses unknown field
-      const {sort: _s, ...newFieldDef} = fieldDef;
-      fieldDef = newFieldDef;
-    }
+  if (fieldDef.sort && isSortField(fieldDef.sort)) {
+    const sort = replaceRepeat(fieldDef.sort, repeater);
+    fieldDef = {
+      ...fieldDef,
+      ...(sort ? {sort} : {})
+    };
   }
 
-  return fieldDef as LegendFieldDef<string>;
+  return fieldDef as ScaleFieldDef<string>;
 }
 
 type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
@@ -77,10 +67,10 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
 
       if (isArray<FieldDef<Field>>(channelDef)) {
         out[channel] = channelDef.map(fd => replaceRepeaterInFieldDef(fd, repeater))
-          .filter(fd => fd !== null);
+          .filter(fd => fd);
       } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
         const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
-        if (fd !== null) {
+        if (fd) {
           out[channel] = {
             ...channelDef,
             condition: fd
@@ -88,7 +78,7 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
         }
       } else if (isFieldDef(channelDef)) {
         const fd = replaceRepeaterInFieldDef(channelDef, repeater);
-        if (fd !== null) {
+        if (fd) {
           out[channel] = fd;
         }
       } else {

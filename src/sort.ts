@@ -3,13 +3,13 @@ import {AggregateOp} from './aggregate';
 
 export type SortOrder = 'ascending' | 'descending' | null;
 
-export interface SortField<Field> {
+export interface SortField<F> {
   /**
    * The data [field](field.html) to sort by.
    *
    * __Default value:__ If unspecified, defaults to the field specified in the outer data reference.
    */
-  field?: Field;
+  field?: F;
   /**
    * An [aggregate operation](aggregate.html#ops) to perform on the field prior to sorting (e.g., `"count"`, `"mean"` and `"median"`).
    * This property is required in cases where the sort field and the data reference field do not match.
