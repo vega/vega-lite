@@ -10,6 +10,11 @@ export const rule: MarkCompiler = {
     const {config: _config, markDef, width, height} = model;
     const orient = markDef.orient;
 
+    if (!model.encoding.x && !model.encoding.y) {
+      // if we have neither x or y, show nothing
+      return {};
+    }
+
     return {
       ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)),
       ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)),
