@@ -59,7 +59,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       const explicit = property === 'values' ?
         !!legend.values :  // specified legend.values is already respected, but may get transformed.
         value === legend[property];
-      legendCmpt.set(property, value, explicit);
+      if (explicit || model.config.legend[property] === undefined) {
+        legendCmpt.set(property, value, explicit);
+      }
     }
   });
 

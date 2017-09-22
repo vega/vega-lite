@@ -1,14 +1,14 @@
 import {Axis, AXIS_PROPERTY_TYPE, AxisEncoding, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
 import {keys, some} from '../../util';
-import {AxisOrient} from '../../vega.schema';
-import {VgAxis, VgAxisEncode} from '../../vega.schema';
+import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
+import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
@@ -227,7 +227,17 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: 
         property === 'encode' ? !!axis.encoding || !!axis.labelAngle :
         value === axis[property];
 
-      axisComponent.set(property, value, explicit);
+      const configValue = getAxisConfig(property, model.config, channel, axisComponent.get('orient'), model.getScaleComponent(channel).get('type'));
+
+      if (
+        explicit || configValue === undefined ||
+        // A lot of rules need to be applied for the grid axis
+        // FIXME: this is not perfectly correct, but we need to rewrite axis component to have one axis and separate them later during assembly anyway.
+        isGridAxis
+      ) {
+        // Do not apply implicit rule if there is a config value
+        axisComponent.set(property, value, explicit);
+      }
     }
   });
 
