@@ -57,25 +57,25 @@ export interface AutoSizeParams {
   contains?: 'content' | 'padding';
 }
 
-export function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean): AutoSizeParams {
-  if (!autosize) {
-    return {
-      type: 'pad'
-    };
-  }
-  const autoSizeParams: AutoSizeParams = {
+function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
+  return isString(autosize) ? {type: autosize} : autosize || {};
+}
+
+export function normalizeAutoSizes(topLevelAutosize: AutosizeType | AutoSizeParams, configAutosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean = true): AutoSizeParams {
+  const autosize: AutoSizeParams = {
     type: 'pad',
-    ...(isString(autosize) ? {type: autosize} : autosize)
+    ...normalizeAutoSize(configAutosize),
+    ...normalizeAutoSize(topLevelAutosize)
   };
 
-  if (autoSizeParams.type === 'fit') {
+  if (autosize.type === 'fit') {
     if (!isUnitOrLayer) {
       log.warn(log.message.FIT_NON_SINGLE);
-      autoSizeParams.type = 'pad';
+      autosize.type = 'pad';
     }
   }
 
-  return autoSizeParams;
+  return autosize;
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
