@@ -173,6 +173,7 @@
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
+                "point",
                 "pointOverlay"
             ],
             "from": {
@@ -227,6 +228,7 @@
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
             "style": [
+                "point",
                 "pointOverlay"
             ],
             "from": {

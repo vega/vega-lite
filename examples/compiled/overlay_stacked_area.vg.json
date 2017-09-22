@@ -249,6 +249,7 @@
                     "name": "layer_1_marks",
                     "type": "line",
                     "style": [
+                        "line",
                         "lineOverlay"
                     ],
                     "sort": {
