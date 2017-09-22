@@ -486,8 +486,8 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
@@ -511,8 +511,8 @@
                 },
                 {
                     "scale": "child_distance_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -521,12 +521,12 @@
                 },
                 {
                     "scale": "child_distance_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -667,8 +667,8 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
@@ -692,8 +692,8 @@
                 },
                 {
                     "scale": "child_delay_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -702,12 +702,12 @@
                 },
                 {
                     "scale": "child_delay_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -848,8 +848,8 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
@@ -873,8 +873,8 @@
                 },
                 {
                     "scale": "child_time_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -883,12 +883,12 @@
                 },
                 {
                     "scale": "child_time_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },

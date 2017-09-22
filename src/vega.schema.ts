@@ -218,8 +218,6 @@ export interface VgAxis {
   tickSize?: number;
 
   title?: string;
-  titleAlign?: string;
-  titleAngle?: number;
   titlePadding?: number;
 
   values?: any[] | VgSignalRef;
@@ -236,7 +234,6 @@ export interface VgLegend {
   opacity?: string;
 
   entryPadding?: number;
-  fillColor?: string;
   format?: string;
 
   offset?: number;
@@ -245,7 +242,6 @@ export interface VgLegend {
 
   tickCount?: number;
   title?: string;
-  titleAlign?: string;
   type?: 'symbol' | 'gradient';
   values?: any[] | VgSignalRef;
   zindex?: number;
@@ -450,16 +446,6 @@ export interface VgAxisBase {
   tickSize?: number;
 
   /**
-   * Horizontal text alignment of axis titles.
-   */
-  titleAlign?: string;
-
-  /**
-   * Angle in degrees of axis titles.
-   */
-  titleAngle?: number;
-
-  /**
    * Max length for axis title if the title is automatically generated from the field's description.
    *
    * @minimum 0
@@ -576,6 +562,15 @@ export interface VgAxisConfig extends VgAxisBase {
   // ---------- Title ----------
 
   /**
+   * Horizontal text alignment of axis titles.
+   */
+  titleAlign?: string;
+
+  /**
+   * Angle in degrees of axis titles.
+   */
+  titleAngle?: number;
+  /**
    * Vertical text baseline for axis titles.
    */
   titleBaseline?: string;
@@ -625,10 +620,6 @@ export interface VgLegendBase {
    */
   entryPadding?: number;
 
-  /**
-   * Background fill color for the full legend.
-   */
-  fillColor?: string;
 
   /**
    * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
@@ -648,11 +639,6 @@ export interface VgLegendBase {
    * The padding, in pixels, between the legend and axis.
    */
   padding?: number;
-
-  /**
-   * Horizontal text alignment for legend titles.
-   */
-  titleAlign?: string;
 }
 
 export interface VgLegendConfig extends VgLegendBase {
@@ -661,6 +647,11 @@ export interface VgLegendConfig extends VgLegendBase {
    * Corner radius for the full legend.
    */
   cornerRadius?: number;
+
+  /**
+   * Background fill color for the full legend.
+   */
+  fillColor?: string;
 
   /**
    * Border stroke color for the full legend.
@@ -781,8 +772,10 @@ export interface VgLegendConfig extends VgLegendBase {
 
   // ---------- Title ----------
   /**
-   * Optional mark property definitions for custom legend styling.
+   * Horizontal text alignment for legend titles.
    */
+  titleAlign?: string;
+
    /**
     * Vertical text baseline for legend titles.
     */

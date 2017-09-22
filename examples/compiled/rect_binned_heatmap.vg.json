@@ -168,8 +168,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "min(ceil(width/40), 60)"
             },
@@ -193,8 +193,8 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "min(ceil(height/40), 40)"
             },

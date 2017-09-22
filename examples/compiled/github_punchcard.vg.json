@@ -145,8 +145,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "HOURS(time)",
             "zindex": 1,
             "encode": {
@@ -170,8 +170,8 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "title": "DAY(time)",
             "zindex": 1,
             "encode": {

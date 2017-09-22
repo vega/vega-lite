@@ -1,5 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
+import {Flag, flagKeys} from './util';
 import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig} from './vega.schema';
 
 
@@ -67,7 +68,7 @@ export interface Axis extends VgAxisBase, Guide {
  */
 export const AXIS_PROPERTY_TYPE: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in keyof Axis]: 'main' | 'grid'
+  [k in keyof VgAxis]?: 'main' | 'grid'
 } = {
   grid: 'grid',
   labelOverlap: 'main',
@@ -107,11 +108,47 @@ export interface AxisEncoding {
   title?: GuideEncodingEntry;
 }
 
-export const AXIS_PROPERTIES:(keyof (VgAxis|Axis))[] = [
-  'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
-];
+const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
+  orient: 1, // other things can depend on orient
 
-export const VG_AXIS_PROPERTIES: (keyof VgAxis)[] = [].concat(AXIS_PROPERTIES, ['gridScale']);
+  domain: 1,
+  format: 1,
+  grid: 1,
+  labelPadding: 1,
+  labels: 1,
+  labelOverlap: 1,
+  maxExtent: 1,
+  minExtent: 1,
+  offset: 1,
+  position: 1,
+  tickCount: 1,
+  ticks: 1,
+  tickSize: 1,
+  title: 1,
+  titlePadding: 1,
+  values: 1,
+  zindex: 1,
+};
+
+const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
+  ...COMMON_AXIS_PROPERTIES_INDEX,
+  encoding: 1,
+  labelAngle: 1,
+  titleMaxLength: 1
+};
+
+const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
+  scale: 1,
+  ...COMMON_AXIS_PROPERTIES_INDEX,
+  gridScale: 1,
+  encode: 1
+};
+
+export function isAxisProperty(prop: string): prop is keyof Axis {
+  return !!AXIS_PROPERTIES_INDEX[prop];
+}
+
+export const VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
 
 export interface AxisConfigMixins {
   /**

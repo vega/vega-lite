@@ -138,8 +138,8 @@
                 {
                     "title": "population",
                     "scale": "y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },

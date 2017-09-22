@@ -1,5 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
+import {Flag, flagKeys} from './util';
 import {VgLegend, VgLegendBase, VgLegendConfig} from './vega.schema';
 
 
@@ -73,9 +74,31 @@ export type LegendEncoding = {
 
 export const defaultLegendConfig: LegendConfig = {};
 
-export const LEGEND_PROPERTIES:(keyof (VgLegend | Legend))[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
+const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
+  entryPadding: 1,
+  format: 1,
+  offset: 1,
+  orient: 1,
+  padding: 1,
+  tickCount: 1,
+  title: 1,
+  type: 1,
+  values: 1,
+  zindex: 1
+};
 
-export const VG_LEGEND_PROPERTIES:(keyof VgLegend)[] = [].concat(
-  ['fill', 'stroke', 'shape', 'size', 'opacity', 'encode'],
-  LEGEND_PROPERTIES
-);
+const VG_LEGEND_PROPERTY_INDEX: Flag<keyof VgLegend> = {
+  ...COMMON_LEGEND_PROPERTY_INDEX,
+  // channel scales
+  opacity: 1,
+  shape: 1,
+  stroke: 1,
+  fill: 1,
+  size: 1,
+  // encode
+  encode: 1
+};
+
+export const LEGEND_PROPERTIES = flagKeys(COMMON_LEGEND_PROPERTY_INDEX);
+
+export const VG_LEGEND_PROPERTIES = flagKeys(VG_LEGEND_PROPERTY_INDEX);

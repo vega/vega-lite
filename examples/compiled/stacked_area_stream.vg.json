@@ -197,8 +197,8 @@
             "domain": false,
             "tickSize": 0,
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -218,11 +218,11 @@
             "domain": false,
             "tickSize": 0,
             "scale": "x",
+            "orient": "bottom",
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
