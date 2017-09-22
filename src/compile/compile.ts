@@ -28,7 +28,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
 
     // 3. Instantiate the models with default config by doing a top-down traversal.
     // This allows us to pass properties that child models derive from their parents via their constructors.
-    const autosize = normalizeAutoSize(inputSpec.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+    const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
     const model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 
     // 4. Parse parts of each model to produce components that can be merged
