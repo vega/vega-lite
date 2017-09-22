@@ -5,6 +5,8 @@ title: Filter Transform
 permalink: /docs/filter.html
 ---
 
+The filter transform removes objects from a data stream based on a provided filter expression or filter object.
+
 {: .suppress-error}
 ```json
 {

@@ -5,6 +5,8 @@ title: Calculate Transform
 permalink: /docs/calculate.html
 ---
 
+The calculate transform extends data objects with new values according to a formula.
+
 {: .suppress-error}
 ```json
 {
