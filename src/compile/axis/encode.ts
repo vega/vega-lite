@@ -4,7 +4,7 @@ import {FieldDef, isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
 import {contains, keys} from '../../util';
-import {AxisOrient} from '../../vega.schema';
+import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
@@ -71,13 +71,15 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
   return undefined;
 }
 
-export function labelAlign(angle: number, orient: AxisOrient) {
-  if (angle && angle > 0) {
-    if (angle > 180) {
+export function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign {
+  if (angle > 0) {
+    if (angle % 360 > 180) {
       return orient === 'top' ? 'left' : 'right';
-    }  else if (angle < 180) {
+    }  else if (angle % 360 < 180) {
       return orient === 'top' ? 'right': 'left';
     }
+  } else if (angle < 0) {
+    return labelAlign((angle % 360) + 360 /* convert to positive value*/, orient);
   }
   return undefined;
 }
