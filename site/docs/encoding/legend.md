@@ -61,7 +61,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 
 ### General
 
-{% include table.html props="type,entryPadding,fillColor,format,offset,orient,padding,tickCount,title,titleAlign,values,zindex" source="Legend" %}
+{% include table.html props="type,entryPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
 
 <!--
 ### Custom Legend Encodings

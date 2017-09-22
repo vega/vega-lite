@@ -135,8 +135,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "Cylinders",
             "zindex": 1,
             "encode": {

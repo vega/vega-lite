@@ -62,7 +62,7 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 
 ### Title
 
-{% include table.html props="title,titleAlign,titleAngle,titleMaxLength,titlePadding" source="Axis" %}
+{% include table.html props="title,titleMaxLength,titlePadding" source="Axis" %}
 
 For example, the following plot has a customized x-axis title.
 

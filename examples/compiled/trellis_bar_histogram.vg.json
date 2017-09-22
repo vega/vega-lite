@@ -161,8 +161,8 @@
             "axes": [
                 {
                     "scale": "y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
@@ -185,8 +185,8 @@
             "axes": [
                 {
                     "scale": "x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(child_width/40), 15)"
                     },
@@ -280,12 +280,12 @@
             "axes": [
                 {
                     "scale": "y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },

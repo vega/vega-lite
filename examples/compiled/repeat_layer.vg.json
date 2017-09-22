@@ -431,8 +431,8 @@
             "axes": [
                 {
                     "scale": "child_temp_max_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "title": "MONTH(date)",
                     "zindex": 1,
                     "encode": {
@@ -456,8 +456,8 @@
                 },
                 {
                     "scale": "child_temp_max_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -466,12 +466,12 @@
                 },
                 {
                     "scale": "child_temp_max_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -622,8 +622,8 @@
             "axes": [
                 {
                     "scale": "child_precipitation_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "title": "MONTH(date)",
                     "zindex": 1,
                     "encode": {
@@ -647,8 +647,8 @@
                 },
                 {
                     "scale": "child_precipitation_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -657,12 +657,12 @@
                 },
                 {
                     "scale": "child_precipitation_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -813,8 +813,8 @@
             "axes": [
                 {
                     "scale": "child_wind_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "title": "MONTH(date)",
                     "zindex": 1,
                     "encode": {
@@ -838,8 +838,8 @@
                 },
                 {
                     "scale": "child_wind_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -848,12 +848,12 @@
                 },
                 {
                     "scale": "child_wind_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },

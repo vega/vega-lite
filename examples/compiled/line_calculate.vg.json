@@ -115,8 +115,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "MONTH(date)",
             "zindex": 1,
             "encode": {
@@ -140,20 +140,20 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -162,12 +162,12 @@
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

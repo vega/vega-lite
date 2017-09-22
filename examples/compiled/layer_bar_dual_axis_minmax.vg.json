@@ -301,8 +301,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "MONTH(date)",
             "zindex": 1,
             "encode": {
@@ -327,8 +327,8 @@
         {
             "title": "Mean Precipitation",
             "scale": "layer_0_y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -337,8 +337,8 @@
         {
             "title": "Temperature (min and max)",
             "scale": "layer_1_y",
-            "labelOverlap": true,
             "orient": "right",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

@@ -169,14 +169,6 @@
           "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
           "type": "string"
         },
-        "titleAlign": {
-          "description": "Horizontal text alignment of axis titles.",
-          "type": "string"
-        },
-        "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
-        },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
@@ -2872,10 +2864,6 @@
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
         },
-        "fillColor": {
-          "description": "Background fill color for the full legend.",
-          "type": "string"
-        },
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
           "type": "string"
@@ -2898,10 +2886,6 @@
         },
         "title": {
           "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment for legend titles.",
           "type": "string"
         },
         "type": {
@@ -3073,7 +3057,7 @@
           "type": "string"
         },
         "titleBaseline": {
-          "description": "Optional mark property definitions for custom legend styling. \n Vertical text baseline for legend titles.",
+          "description": "Vertical text baseline for legend titles.",
           "type": "string"
         },
         "titleColor": {
@@ -6143,14 +6127,6 @@
           "description": "Boolean value that determines whether the axis should include ticks.",
           "type": "boolean"
         },
-        "titleAlign": {
-          "description": "Horizontal text alignment of axis titles.",
-          "type": "string"
-        },
-        "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
-        },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
           "type": "number"
@@ -6405,10 +6381,6 @@
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
         },
-        "fillColor": {
-          "description": "Background fill color for the full legend.",
-          "type": "string"
-        },
         "offset": {
           "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
           "type": "number"
@@ -6420,10 +6392,6 @@
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
           "type": "number"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment for legend titles.",
-          "type": "string"
         }
       },
       "type": "object"
@@ -6554,7 +6522,7 @@
           "type": "string"
         },
         "titleBaseline": {
-          "description": "Optional mark property definitions for custom legend styling. \n Vertical text baseline for legend titles.",
+          "description": "Vertical text baseline for legend titles.",
           "type": "string"
         },
         "titleColor": {
