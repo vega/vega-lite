@@ -3,14 +3,13 @@ import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
+import {LegendType} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
-import {LegendComponent} from './component';
 
-
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
-  if (legendCmpt.get('type') === 'gradient') {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
+  if (type === 'gradient') {
     return undefined;
   }
 
@@ -78,10 +77,10 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
+export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
   let gradient:any = {};
 
-  if (legendCmpt.get('type') === 'gradient') {
+  if (type === 'gradient') {
     const opacityDef = model.encoding.opacity;
     if (isValueDef(opacityDef)) {
       gradient.opacity = {value: opacityDef.value};
@@ -92,11 +91,11 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   return keys(gradient).length > 0 ? gradient : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, legendCmpt: LegendComponent) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, type: LegendType) {
   const legend = model.legend(channel);
   const config = model.config;
 
-  let labels:any = {};
+  let labels: any = {};
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
