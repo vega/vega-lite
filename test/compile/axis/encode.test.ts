@@ -22,6 +22,18 @@ describe('compile/axis', () => {
       assert.equal(labels.angle.value, 270);
     });
 
+    it('should do not rotate label for temporal field if labelAngle is specified in axis config', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "month"}
+        },
+        config: {axisX: {labelAngle: 90}}
+      });
+      const labels = encode.labels(model, 'x', {}, 'bottom');
+      assert.equal(labels.angle, undefined);
+    });
+
     it('should have correct text.signal for quarter timeUnits', function () {
       const model = parseUnitModelWithScale({
         mark: "point",

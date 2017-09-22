@@ -8,6 +8,7 @@ import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {Split} from '../split';
 import {UnitModel} from '../unit';
+import {getAxisConfig} from './config';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
   const fieldDef = model.fieldDef(channel) ||
@@ -31,12 +32,15 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   }
 
   // Label Angle
-  const angle = labelAngle(axis, channel, fieldDef);
-  if (angle) {
-    labelsSpec.angle = {value: angle};
+  let angle = getAxisConfig('labelAngle', model.config, channel, orient, model.getScaleComponent(channel).get('type'));
+  if (angle === undefined) {
+    angle = labelAngle(axis, channel, fieldDef);
+    if (angle) {
+      labelsSpec.angle = {value: angle};
+    }
   }
 
-  if (labelsSpec.angle && channel === 'x') {
+  if (angle !== undefined && channel === 'x') {
     const align = labelAlign(angle, def.get('orient'));
     if (align) {
       labelsSpec.align = {value: align};

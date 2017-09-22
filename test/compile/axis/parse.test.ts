@@ -60,6 +60,39 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'].length, 1);
       assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
     });
+
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axisX)', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          }
+        },
+        config: {axisX: {grid: false}}
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+    });
+
+
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axis)', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          }
+        },
+        config: {axis: {grid: false}}
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+    });
   });
 
   describe('parseLayerAxis', () => {
