@@ -11,7 +11,7 @@ export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
  */
 export interface Legend extends VgLegendBase, Guide {
   /**
-   * Optional mark definitions for custom legend encoding.
+   * Mark definitions for custom legend encoding.
    *
    * @hide
    */
