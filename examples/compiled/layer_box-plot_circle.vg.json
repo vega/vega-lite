@@ -152,6 +152,7 @@
             "name": "layer_0_layer_0_marks",
             "type": "rule",
             "style": [
+                "rule",
                 "boxWhisker"
             ],
             "from": {
@@ -182,6 +183,7 @@
             "name": "layer_0_layer_1_marks",
             "type": "rule",
             "style": [
+                "rule",
                 "boxWhisker"
             ],
             "from": {
@@ -212,6 +214,7 @@
             "name": "layer_0_layer_2_marks",
             "type": "rect",
             "style": [
+                "bar",
                 "box"
             ],
             "from": {
@@ -245,6 +248,7 @@
             "name": "layer_0_layer_3_marks",
             "type": "rect",
             "style": [
+                "tick",
                 "boxMid"
             ],
             "from": {
