@@ -4,7 +4,6 @@ import {assert} from 'chai';
 
 import * as encode from '../../../src/compile/axis/encode';
 import {labelAlign} from '../../../src/compile/axis/encode';
-import {AxisOrient} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 
@@ -59,30 +58,24 @@ describe('compile/axis', () => {
   });
 
   describe('labelAlign', () => {
-    function testLabelAlign(angle: number, orient: AxisOrient) {
-      // Make angle within [0,360)
-      angle = ((angle % 360) + 360) % 360;
-      return labelAlign(angle, orient);
-    }
-
     it('is left for bottom axis with positive angle', () => {
-      assert.equal(testLabelAlign(90, 'bottom'), 'left');
-      assert.equal(testLabelAlign(45, 'bottom'), 'left');
+      assert.equal(labelAlign(90, 'bottom'), 'left');
+      assert.equal(labelAlign(45, 'bottom'), 'left');
     });
 
     it('is right for bottom axis with negative angle', () => {
-      assert.equal(testLabelAlign(-90, 'bottom'), 'right');
-      assert.equal(testLabelAlign(-45, 'bottom'), 'right');
+      assert.equal(labelAlign(-90, 'bottom'), 'right');
+      assert.equal(labelAlign(-45, 'bottom'), 'right');
     });
 
     it('is left for top axis with positive angle', () => {
-      assert.equal(testLabelAlign(90, 'top'), 'right');
-      assert.equal(testLabelAlign(45, 'top'), 'right');
+      assert.equal(labelAlign(90, 'top'), 'right');
+      assert.equal(labelAlign(45, 'top'), 'right');
     });
 
     it('is left for top axis with negative angle', () => {
-      assert.equal(testLabelAlign(-90, 'top'), 'left');
-      assert.equal(testLabelAlign(-45, 'top'), 'left');
+      assert.equal(labelAlign(-90, 'top'), 'left');
+      assert.equal(labelAlign(-45, 'top'), 'left');
     });
   });
 });
