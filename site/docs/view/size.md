@@ -26,7 +26,7 @@ When the top-level `width` property is specified, the width of the single plot i
 
 <span class="vl-example" data-name="bar_size_explicit"></span>
 
-**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be ignored (overridden with `null`).
+**Note**: If numeric `rangeStep` for a discrete x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be ignored (overridden with `null`).
 
 **Warning**: If the cardinality of the x/y-field's domain is too high, the `rangeStep` might become less than one pixel and the mark might not appear correctly.
 
@@ -36,11 +36,9 @@ When the top-level `width` property is specified, the width of the single plot i
 
 If the top-level `width` / `height` property is not specified, the width / height of a single view is determined by the properties of the `x` / `y` channel:
 
-- If `x` / `y` axis has a continuous scale (either quantitative or time), the width/height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property.
+- If (1) the view's [`autosize`](#autosize) type is `"fit"` or (2) the `x` / `y` axis has a continuous scale (either quantitative or time) or a discrete scale with `rangeStep` = `null`, the width/height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property.
 
-- If the `x` / `y` channel has a [discrete scale](scale.html#discrete) (`point` or `band`) with a numeric `rangeStep` value (default), the width / height is is determined based on the scale's `rangeStep`, `paddingInner`, `paddingOuter` and the cardinality of the encoded field (the number of possible distinct values of the field).
-
-<!-- TODO Explain more about the formula-->
+- If the [`autosize`](#autosize) type is not `"fit"` and the `x` / `y` channel has a [band or point scale](scale.html#band) in which `rangeStep` is a number or unspecified, the width / height is [determined based on the scale's range step, paddings, and the cardinality of the encoded field (the number of possible distinct values of the field)](scale.html#band).
 
 This example shows a plot with a continuous y-scale and a discrete x-scale:
 
@@ -74,8 +72,8 @@ The total size of a Vega-Lite visualization may be determined by multiple factor
 
 In order to `fit` a chart into specified dimensions, it has to satisfy two requirements:
 
-* The view must be either [single](spec.html#single) or [layered](layer.html). Fit does not work with otherwise composed views.
-* The width and height of the chart cannot depend on the scale domain as they do when you use `rangeStep`. This means that if you use a discrete scale for `x` or `y`, you have to set the corresponding size (`width` for `x`, `height` for `y`) property explicitly.
+* The view must be either a [single](spec.html#single) view or a [layered](layer.html) view. Fit does not work with other kinds of composed views (`facet`/`hconcat`/`vconcat`/`repeat`).
+* The width and height of the chart cannot depend on an explicitly specified `rangeStep` of a discrete scale. Any specified `rangeStep` will be ignored.
 
 #### Example
 
