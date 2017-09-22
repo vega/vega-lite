@@ -32,6 +32,8 @@
     - [Filter]({{site.baseurl}}/docs/filter.html)
         - [Filter Expression]({{site.baseurl}}/docs/filter.html#expression)
         - [Filter Object]({{site.baseurl}}/docs/filter.html#filter-object)
+    - [Lookup]({{site.baseurl}}/docs/lookup.html)
+        - [Example]({{site.baseurl}}/docs/lookup.html#example)
     - [Summarize]({{site.baseurl}}/docs/aggregate.html)
         - [Documentation Overview]({{site.baseurl}}/docs/aggregate.html#documentation-overview)
         - [Aggregate (Encoding)]({{site.baseurl}}/docs/aggregate.html#aggregate)
