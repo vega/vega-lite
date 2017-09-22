@@ -31,7 +31,7 @@ describe('Mark', function() {
         const submarkGroup = markGroup.marks[0];
         assert.equal(submarkGroup.name, 'marks');
         assert.equal(submarkGroup.type, 'line');
-        assert.equal(submarkGroup.style, 'trend');
+        assert.deepEqual(submarkGroup.style, ['line', 'trend']);
         assert.equal(submarkGroup.from.data, 'faceted_path_main');
       });
     });

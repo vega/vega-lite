@@ -35,10 +35,7 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
 }
 
 export function getStyles(mark: MarkDef): string[] {
-  if (mark.style) {
-    return isArray(mark.style) ? mark.style : [mark.style];
-  }
-  return [mark.type];
+  return [].concat(mark.type, mark.style || []);
 }
 
 /**
