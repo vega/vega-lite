@@ -23,6 +23,6 @@ The calculate transform extends data objects with new values according to a form
 
 ## Example
 
-This example use `calculate` to derive a new field, then `filter` data based on the new field.
+This example uses `calculate` to derive a new field, then `filter` data based on the new field.
 
 <span class="vl-example" data-name="bar_filter_calc"></span>

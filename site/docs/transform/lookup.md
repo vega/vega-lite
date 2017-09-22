@@ -19,16 +19,17 @@ The lookup transform extends a primary data source by looking up values from ano
 }
 ```
 
-For each data object in the main data source, the transform tries to find a matching objects in the secondary data source. An object matches id the value in the field specified by `lookup` is the same as the field specified in the `from.key`.
+For each data object in the main data source, the transform tries to find a matching objects in the secondary data source. An object matches if the value in the field specified by `lookup` is the same as the field specified in the `from.key`.
 
 {% include table.html props="lookup,from,as,default" source="LookupTransform" %}
 
-The secondary data reference (set with `from`) is an object that specifies what how the lookup key should be matched to a second data source and what fields should be added.
+The secondary data reference (set with `from`) is an object that specifies how the lookup key should be matched to a second data source and what fields should be added.
 
 {% include table.html props="data,key,fields" source="LookupData" %}
 
+
 ## Example
 
-This example use `lookup` to add the properties `age` and `height` to the main data source. The `person` field in the main data source is matched to the `name` field in the secondary data source.
+This example uses `lookup` to add the properties `age` and `height` to the main data source. The `person` field in the main data source is matched to the `name` field in the secondary data source.
 
 <span class="vl-example" data-name="lookup"></span>
