@@ -250,7 +250,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: 
     }
 
     const value = part === 'labels' ?
-      encode.labels(model, channel, axisEncoding.labels || {}, axisComponent) :
+      encode.labels(model, channel, axisEncoding.labels || {}, axisComponent.get('orient')) :
       axisEncoding[part] || {};
 
     if (value !== undefined && keys(value).length > 0) {

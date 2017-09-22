@@ -4,13 +4,12 @@ import {FieldDef, isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
 import {contains, keys} from '../../util';
-import {AxisOrient, VgAxis} from '../../vega.schema';
+import {AxisOrient} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
-import {Split} from '../split';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 
-export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
+export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :
@@ -41,7 +40,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   }
 
   if (angle !== undefined && channel === 'x') {
-    const align = labelAlign(angle, def.get('orient'));
+    const align = labelAlign(angle, orient);
     if (align) {
       labelsSpec.align = {value: align};
     }
@@ -71,6 +70,7 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
   }
   return undefined;
 }
+
 export function labelAlign(angle: number, orient: AxisOrient) {
   if (angle && angle > 0) {
     if (angle > 180) {

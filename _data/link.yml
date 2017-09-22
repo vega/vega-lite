@@ -149,6 +149,8 @@ Field:
   link: field.html
 Legend:
   link: legend.html
+LegendType:
+  name: String
 Scale:
   link: scale.html
 SortOrder:

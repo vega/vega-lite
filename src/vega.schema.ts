@@ -239,6 +239,8 @@ export interface VgAxis {
   encode?: VgAxisEncode;
 }
 
+export type LegendType = 'symbol' | 'gradient';
+
 export interface VgLegend {
   fill?: string;
   stroke?: string;
@@ -255,7 +257,7 @@ export interface VgLegend {
 
   tickCount?: number;
   title?: string;
-  type?: 'symbol' | 'gradient';
+  type?: LegendType;
   values?: any[] | VgSignalRef;
   zindex?: number;
 
