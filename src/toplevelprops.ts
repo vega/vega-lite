@@ -57,15 +57,15 @@ export interface AutoSizeParams {
   contains?: 'content' | 'padding';
 }
 
-function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
+function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
   return isString(autosize) ? {type: autosize} : autosize || {};
 }
 
-export function normalizeAutoSizes(topLevelAutosize: AutosizeType | AutoSizeParams, configAutosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean = true): AutoSizeParams {
+export function normalizeAutoSize(topLevelAutosize: AutosizeType | AutoSizeParams, configAutosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean = true): AutoSizeParams {
   const autosize: AutoSizeParams = {
     type: 'pad',
-    ...normalizeAutoSize(configAutosize),
-    ...normalizeAutoSize(topLevelAutosize)
+    ..._normalizeAutoSize(configAutosize),
+    ..._normalizeAutoSize(topLevelAutosize)
   };
 
   if (autosize.type === 'fit') {
