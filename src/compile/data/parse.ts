@@ -140,9 +140,6 @@ Description of the dataflow (http://asciiflow.com/):
      FormatParse
          |
          v
-     Null Filter
-         |
-         v
       Binning
          |
          v
@@ -160,10 +157,10 @@ Description of the dataflow (http://asciiflow.com/):
        Stack
          |
          v
-      >0 Filter
+     Path Order
          |
          v
-     Path Order
+  Invalid Filter
          |
          v
    +----------+
