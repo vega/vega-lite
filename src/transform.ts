@@ -70,7 +70,7 @@ export interface SummarizeTransform {
   /**
    * Array of objects that define aggregate fields.
    */
-  summarize: Summarize[];
+  summarize: SummarizeFieldDef[];
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
@@ -78,7 +78,7 @@ export interface SummarizeTransform {
   groupby?: string[];
 }
 
-export interface Summarize {
+export interface SummarizeFieldDef {
   /**
    * The aggregation operations to apply to the fields, such as sum, average or count.
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)

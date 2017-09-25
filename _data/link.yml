@@ -39,8 +39,7 @@ BinParams:
 FilterOperand:
   name: Filter
   link: "transform.html#filter"
-Summarize:
-  name: SummarizeFieldDef
+SummarizeFieldDef:
   link: "transform.html#summarize-field"
 TimeUnit:
   link: timeunit.html

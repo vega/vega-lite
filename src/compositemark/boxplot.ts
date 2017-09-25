@@ -2,7 +2,7 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {BinTransform, CalculateTransform, Summarize, TimeUnitTransform} from '../transform';
+import {BinTransform, CalculateTransform, SummarizeFieldDef, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
 import {field, Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
@@ -242,7 +242,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
   const encoding = spec.encoding;
 
   const isMinMax = kIQRScalar === undefined;
-  const summarize: Summarize[] = [
+  const summarize: SummarizeFieldDef[] = [
     {
       aggregate: 'q1',
       field: continuousAxisChannelDef.field,

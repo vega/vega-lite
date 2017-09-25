@@ -4855,7 +4855,7 @@
       },
       "type": "object"
     },
-    "Summarize": {
+    "SummarizeFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -4891,7 +4891,7 @@
         "summarize": {
           "description": "Array of objects that define aggregate fields.",
           "items": {
-            "$ref": "#/definitions/Summarize"
+            "$ref": "#/definitions/SummarizeFieldDef"
           },
           "type": "array"
         }
