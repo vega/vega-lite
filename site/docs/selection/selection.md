@@ -48,7 +48,7 @@ For example, try the different types against the example selection (named `pts`)
 {:#selection-on}
 While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The following properties are available to do so:
 
-{% include table.html props="on,resolve,mark" source="IntervalSelection" %}
+{% include table.html props="on,empty,resolve,mark" source="IntervalSelection" %}
 
 For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on double-click instead.
 
@@ -91,9 +91,12 @@ Vega-Lite provides a number of selection _transformations_ to further customize 
 
 Selections can be used to conditionally specify visual encodings -- encode data values one way if they fall within the selection, and another if they do not. For instance, in the first two examples on this page, rectangles are colored based on whether or not their data values fall within the `pts` selection. If they do, they are colored by the number of records; and, if they do not, they are left grey.
 
-In this example, a selection (named `paintbrush`) is used to resize the points in the scatterplot on hover.
+In this example, a selection (named `paintbrush`) is used to resize the points in the scatterplot on hover. This example is also useful for understanding the difference when empty selections are set to contain <select onchange="changeSpec('paintbrush_simple', 'paintbrush_simple_' + this.value)">
+  <option>all</option>
+  <option>none</option>
+</select> of the data values.
 
-<div class="vl-example" data-name="paintbrush_simple"></div>
+<div class="vl-example" id="paintbrush_simple" data-name="paintbrush_simple_all"></div>
 
 See the [`condition`](condition.html) documentation for more information.
 
