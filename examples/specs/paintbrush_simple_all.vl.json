@@ -2,7 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/cars.json"},
   "selection": {
-    "paintbrush": {"type": "multi", "on": "mouseover"}
+    "paintbrush": {
+      "type": "multi",
+      "on": "mouseover", "empty": "all"
+    }
   },
   "mark": "point",
   "encoding": {

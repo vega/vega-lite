@@ -37,12 +37,15 @@ describe('Selection Predicate', function() {
   model.component.selection = selection.parseUnitSelection(model, {
     "one": {"type": "single"},
     "two": {"type": "multi", "resolve": "union"},
-    "thr-ee": {"type": "interval", "resolve": "intersect"}
+    "thr-ee": {"type": "interval", "resolve": "intersect"},
+    "four": {"type": "single", "empty": "none"}
   });
 
   it('generates the predicate expression', function() {
     assert.equal(predicate(model, "one"),
       '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
+
+    assert.equal(predicate(model, "four"), '(vlSingle("four_store", datum))');
 
     assert.equal(predicate(model, {"not": "one"}),
       '!(length(data("one_store"))) || (!(vlSingle("one_store", datum)))');
@@ -51,6 +54,11 @@ describe('Selection Predicate', function() {
       '!(length(data("one_store")) || length(data("two_store"))) || ' +
       '(!((vlSingle("one_store", datum)) && ' +
       '(vlMulti("two_store", datum, "union"))))');
+
+      assert.equal(predicate(model, {"not": {"and": ["one", "four"]}}),
+      '!(length(data("one_store"))) || ' +
+      '(!((vlSingle("one_store", datum)) && ' +
+      '(vlSingle("four_store", datum))))');
 
     assert.equal(predicate(model, {"and": ["one", "two", {"not": "thr-ee"}]}),
       '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
