@@ -22,9 +22,9 @@ export interface VgData {
 }
 
 
-export type VgParentRef = {
-  parent: string
-};
+export interface VgParentRef {
+  parent: string;
+}
 
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
@@ -42,15 +42,15 @@ export type VgUnionSortField = boolean | {
   order?: SortOrder
 };
 
-export type VgDataRef = {
-  data: string,
-  field: VgFieldRef,
-  sort?: VgSortField
-};
+export interface VgDataRef {
+  data: string;
+  field: VgFieldRef;
+  sort?: VgSortField;
+}
 
-export type VgSignalRef = {
-  signal: string
-};
+export interface VgSignalRef {
+  signal: string;
+}
 
 export function isVgSignalRef(o: any): o is VgSignalRef  {
   return !!o['signal'];
@@ -59,32 +59,32 @@ export function isVgSignalRef(o: any): o is VgSignalRef  {
 export type VgEventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
-export type VgValueRef = {
-  value?: number | string | boolean,
+export interface VgValueRef {
+  value?: number | string | boolean;
   field?: string | {
     datum?: string,
     group?: string,
     parent?: string
-  },
+  };
   signal?: string;
-  scale?: string, // TODO: object
-  mult?: number,
-  offset?: number | VgValueRef,
+  scale?: string; // TODO: object
+  mult?: number;
+  offset?: number | VgValueRef;
   band?: boolean | number | VgValueRef;
-};
+}
 
 // TODO: add vg prefix
-export type DataRefUnionDomain = {
-  fields: (any[] | VgDataRef | VgSignalRef)[],
-  sort?: VgUnionSortField
-};
+export interface DataRefUnionDomain {
+  fields: (any[] | VgDataRef | VgSignalRef)[];
+  sort?: VgUnionSortField;
+}
 
 // TODO: add vg prefix
-export type FieldRefUnionDomain = {
-  data: string,
-  fields: VgFieldRef[],
-  sort?: VgUnionSortField
-};
+export interface FieldRefUnionDomain {
+  data: string;
+  fields: VgFieldRef[];
+  sort?: VgUnionSortField;
+}
 
 export type VgScheme = {scheme: string, extent?: number[], count?: number};
 export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgScheme | VgRangeStep;
@@ -100,25 +100,25 @@ export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDom
 
 export type VgMarkGroup = any;
 
-export type VgScale = {
-  name: string,
-  type: ScaleType,
-  domain: VgDomain,
-  domainRaw?: VgSignalRef,
-  range: VgRange,
+export interface VgScale {
+  name: string;
+  type: ScaleType;
+  domain: VgDomain;
+  domainRaw?: VgSignalRef;
+  range: VgRange;
 
-  clamp?: boolean,
-  base?: number,
-  exponent?: number,
+  clamp?: boolean;
+  base?: number;
+  exponent?: number;
   interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-  nice?: boolean | NiceTime,
-  padding?: number,
-  paddingInner?: number,
-  paddingOuter?: number,
-  reverse?: boolean,
-  round?: boolean,
-  zero?: boolean
-};
+  nice?: boolean | NiceTime;
+  padding?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  reverse?: boolean;
+  round?: boolean;
+  zero?: boolean;
+}
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
@@ -127,10 +127,10 @@ export type RowCol<T> = {
   column?: T
 };
 
-export type VgLayout = {
-  padding: number | RowCol<number>,
-  headerBand?: number | RowCol<number>,
-  footerBand?: number | RowCol<number>,
+export interface VgLayout {
+  padding: number | RowCol<number>;
+  headerBand?: number | RowCol<number>;
+  footerBand?: number | RowCol<number>;
   offset: number | {
     rowHeader: number,
     rowFooter: number,
@@ -138,14 +138,14 @@ export type VgLayout = {
     columnHeader: number,
     columnFooter: number,
     columnTitle: number
-  },
-  bounds: 'full' | 'flush',
-  columns?: number | {signal: string},
+  };
+  bounds: 'full' | 'flush';
+  columns?: number | {signal: string};
   align?: VgLayoutAlign | {
     row: VgLayoutAlign,
     column: VgLayoutAlign
   };
-};
+}
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
   if (!isArray(domain)) {
@@ -175,11 +175,25 @@ export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
   return false;
 }
 
-export type VgSignal = {
-  name: string,
-  value?: any,
-  update?: string
-};
+export interface VgEventHandler {
+  events: string[] | VgSignalRef;
+  update?: string;
+  encode?: string;
+  force?: boolean;
+  between?: any[];
+}
+
+export interface VgSignal {
+  name: string;
+  bind?: string;
+  description?: string;
+  on?: VgEventHandler[];
+  update?: string;
+  react?: boolean;
+  value?: string | number | boolean | {} | VgSignalRef;
+  // only for nested signals
+  push?: string;
+}
 
 export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';
 export type VgEncodeEntry = {
