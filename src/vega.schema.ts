@@ -79,8 +79,7 @@ export interface DataRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-// TODO: add vg prefix
-export interface FieldRefUnionDomain {
+export interface VgFieldRefUnionDomain {
   data: string;
   fields: VgFieldRef[];
   sort?: VgUnionSortField;
@@ -96,7 +95,7 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
 
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
-export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
+export type VgDomain =  VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 
 export type VgMarkGroup = any;
 
@@ -154,7 +153,7 @@ export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnion
   return false;
 }
 
-export function isFieldRefUnionDomain(domain: VgDomain): domain is FieldRefUnionDomain {
+export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain {
   if (!isArray(domain)) {
     return 'fields' in domain && 'data' in domain;
   }

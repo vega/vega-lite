@@ -10,10 +10,10 @@ import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, S
 import {isSortField, SortField} from '../../sort';
 import * as util from '../../util';
 import {
-  FieldRefUnionDomain,
   isDataRefDomain,
   VgDataRef,
   VgDomain,
+  VgFieldRefUnionDomain,
   VgNonUnionDomain,
   VgSortField,
   VgUnionSortField,
@@ -397,7 +397,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 
   if (allData.length === 1 && allData[0] !== null) {
     // create a union domain of different fields with a single data source
-    const domain: FieldRefUnionDomain = {
+    const domain: VgFieldRefUnionDomain = {
       data: allData[0],
       fields: uniqueDomains.map(d => (d as VgDataRef).field),
       sort
