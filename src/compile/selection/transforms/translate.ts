@@ -1,5 +1,6 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {ScaleChannel, X, Y} from '../../../channel';
+import {VgEventHandler, VgSignal} from '../../../vega.schema';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
 import {channelSignalName, positionalProjections, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
@@ -61,10 +62,10 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: any[]) {
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);
-  const signal:any = signals.filter((s:any) => {
+  const signal = signals.filter(s => {
     return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
   })[0];
   const anchor = name + ANCHOR;

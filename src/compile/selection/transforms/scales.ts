@@ -1,5 +1,5 @@
 import {Channel} from '../../../channel';
-import {warn} from '../../../log';
+import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {stringValue} from '../../../util';
 import {UnitModel} from '../../unit';
@@ -22,7 +22,7 @@ const scaleBindings:TransformCompiler = {
       const scaleType = scale ? scale.get('type') : undefined;
 
       if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
-        warn('Scale bindings are currently only supported for scales with unbinned, continuous domains.');
+        log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
         return;
       }
 
@@ -38,7 +38,7 @@ const scaleBindings:TransformCompiler = {
     }
 
     const channels = selCmpt.scales.filter((channel) => {
-      return !(signals.filter((s) => s.name === channelSignalName(selCmpt, channel, 'data')).length);
+      return !(signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length);
     });
 
     return signals.concat(channels.map((channel) => {
@@ -49,8 +49,9 @@ const scaleBindings:TransformCompiler = {
   signals: function(model, selCmpt, signals) {
     // Nested signals need only push to top-level signals when within composed views.
     if (model.parent) {
-      selCmpt.scales.forEach(function(channel) {
-        const signal = signals.filter((s) => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
+      selCmpt.scales.forEach(channel => {
+        const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
+
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;

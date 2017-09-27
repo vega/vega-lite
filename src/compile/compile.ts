@@ -82,7 +82,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   // move width and height signals with values to top level
   layoutSignals = layoutSignals.filter(signal => {
     if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
-      topLevelProperties[signal.name] = signal.value;
+      topLevelProperties[signal.name] = +signal.value;
       return false;
     }
     return true;

@@ -116,6 +116,8 @@ export namespace message {
     return `Cannot find a selection named "${name}"`;
   }
 
+  export const SCALE_BINDINGS_CONTINUOUS = 'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
+
   // REPEAT
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
