@@ -132,7 +132,9 @@ export interface LookupTransform {
   as?: string | string[];
 
   /**
-   * The default value to use if lookup fails (default `null`).
+   * The default value to use if lookup fails.
+   *
+   * __Default value:__ `null`
    */
   default?: string;
 }

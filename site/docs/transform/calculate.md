@@ -5,7 +5,7 @@ title: Calculate Transform
 permalink: /docs/calculate.html
 ---
 
-The calculate transform extends data objects with new values according to a formula.
+The formula transform extends data objects with new fields (columns) according to a calculation formula.
 
 {: .suppress-error}
 ```json
@@ -23,6 +23,6 @@ The calculate transform extends data objects with new values according to a form
 
 ## Example
 
-This example uses `calculate` to derive a new field, then `filter` data based on the new field.
+This example use `calculate` to derive a new field, then `filter` data based on the new field.
 
 <span class="vl-example" data-name="bar_filter_calc"></span>
