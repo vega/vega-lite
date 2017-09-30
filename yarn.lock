@@ -148,8 +148,8 @@
     "@types/d3-selection" "*"
 
 "@types/d3@^4.10.0":
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-4.10.0.tgz#721d8f984ba4bc192b1c1aca3834b31cc31fa9d3"
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-4.10.1.tgz#a888ac8780ac241d770b2025b3d7e379c4d417f0"
   dependencies:
     "@types/d3-array" "*"
     "@types/d3-axis" "*"
@@ -201,10 +201,10 @@
     "@types/node" "*"
 
 "@types/mocha@^2.2.41":
-  version "2.2.42"
-  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.42.tgz#ab769f51d37646b6fe8d4a086a98c285b1fab3f5"
+  version "2.2.43"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.43.tgz#03c54589c43ad048cbcbfd63999b55d0424eec27"
 
-"@types/node@*", "@types/node@^8.0.19":
+"@types/node@*":
   version "8.0.26"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.26.tgz#4d58be925306fd22b1141085535a0268b8beb189"
 
@@ -212,9 +212,13 @@
   version "6.0.88"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.88.tgz#f618f11a944f6a18d92b5c472028728a3e3d4b66"
 
+"@types/node@^8.0.19":
+  version "8.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
+
 "@types/webdriverio@^4.8.4":
-  version "4.8.4"
-  resolved "https://registry.yarnpkg.com/@types/webdriverio/-/webdriverio-4.8.4.tgz#095548a3869f2910efd04f98deeadc59eabab96d"
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/@types/webdriverio/-/webdriverio-4.8.5.tgz#75088f262f14feb5710d709edc44da928f93df07"
   dependencies:
     "@types/node" "*"
 
@@ -1025,9 +1029,9 @@ chokidar@1.7.0, chokidar@^1.0.0, chokidar@^1.7.0:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chromedriver@^2.29.0, chromedriver@^2.30.1:
-  version "2.32.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-2.32.0.tgz#ecad18d7e27adff552c60183a068e3fe9626ae97"
+chromedriver@^2.30.1, chromedriver@^2.31.0:
+  version "2.32.3"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-2.32.3.tgz#ce84f055bee7cbfe56f31182b276f33256b12bf1"
   dependencies:
     extract-zip "^1.6.5"
     kew "^0.7.0"
@@ -2602,6 +2606,10 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
+he@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
+
 highlight.js@^9.12.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
@@ -3426,7 +3434,7 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^3.2.0, mocha@^3.5.0:
+mocha@^3.2.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.5.0.tgz#1328567d2717f997030f8006234bce9b8cd72465"
   dependencies:
@@ -3437,6 +3445,23 @@ mocha@^3.2.0, mocha@^3.5.0:
     escape-string-regexp "1.0.5"
     glob "7.1.1"
     growl "1.9.2"
+    json3 "3.3.2"
+    lodash.create "3.1.1"
+    mkdirp "0.5.1"
+    supports-color "3.1.2"
+
+mocha@^3.5.0:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.5.3.tgz#1e0480fe36d2da5858d1eb6acc38418b26eaa20d"
+  dependencies:
+    browser-stdout "1.3.0"
+    commander "2.9.0"
+    debug "2.6.8"
+    diff "3.2.0"
+    escape-string-regexp "1.0.5"
+    glob "7.1.1"
+    growl "1.9.2"
+    he "1.1.1"
     json3 "3.3.2"
     lodash.create "3.1.1"
     mkdirp "0.5.1"
@@ -3536,8 +3561,8 @@ node-pre-gyp@^0.6.36:
     tar-pack "^3.4.0"
 
 nodemon@^1.11.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.12.0.tgz#e538548a777340a19f855c4f087b7e528aa3feda"
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.12.1.tgz#996a56dc49d9f16bbf1b78a4de08f13634b3878d"
   dependencies:
     chokidar "^1.7.0"
     debug "^2.6.8"
@@ -3614,8 +3639,8 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
 nyc@^11.1.0:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/nyc/-/nyc-11.2.0.tgz#8bfe9a3ddb7be5c5f9fa5ab6e6949c18b7d34ca1"
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/nyc/-/nyc-11.2.1.tgz#ad850afe9dbad7f4970728b4b2e47fed1c38721c"
   dependencies:
     archy "^1.0.0"
     arrify "^1.0.1"
@@ -4581,9 +4606,15 @@ source-map-resolve@^0.3.0:
     source-map-url "~0.3.0"
     urix "~0.1.0"
 
-source-map-support@^0.4.0, source-map-support@^0.4.15:
+source-map-support@^0.4.0:
   version "0.4.17"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.17.tgz#6f2150553e6375375d0ccb3180502b78c18ba430"
+  dependencies:
+    source-map "^0.5.6"
+
+source-map-support@^0.4.15:
+  version "0.4.18"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.18.tgz#0286a6de8be42641338594e97ccea75f0a2c585f"
   dependencies:
     source-map "^0.5.6"
 
@@ -5005,8 +5036,8 @@ tsconfig@^6.0.0:
     strip-json-comments "^2.0.0"
 
 tsify@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/tsify/-/tsify-3.0.1.tgz#23509ff3b4e7110ca9656f6c27ca13ec856056f6"
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/tsify/-/tsify-3.0.3.tgz#a032e1a6a71c2621c3f25c0415459d53b70b9ec0"
   dependencies:
     convert-source-map "^1.1.0"
     fs.realpath "^1.0.0"
@@ -5081,7 +5112,11 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.4.2, typescript@~2.5.2:
+typescript@^2.4.2:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
+
+typescript@~2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
 
@@ -5099,8 +5134,8 @@ uglify-js@^2.6:
     uglify-to-browserify "~1.0.0"
 
 uglify-js@^3.0.27:
-  version "3.0.28"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.28.tgz#96b8495f0272944787b5843a1679aa326640d5f7"
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.1.2.tgz#b50bcf15a5fd9e9ed40afbcdef3b59d6891b291f"
   dependencies:
     commander "~2.11.0"
     source-map "~0.5.1"
@@ -5250,8 +5285,9 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-vega-datasets@vega/vega-datasets#gh-pages:
+"vega-datasets@github:vega/vega-datasets#gh-pages", vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
+  uid "7080ba8297825d27495bdfb8386d10cff83cbacf"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
 vega-embed@^3.0.0-beta.20:
@@ -5293,7 +5329,7 @@ vega-force@2:
     vega-dataflow "3"
     vega-util "1"
 
-vega-geo@2:
+vega-geo@2, vega-geo@^2.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vega-geo/-/vega-geo-2.1.1.tgz#eaf128927cd146e1c0843d15f25a0a08d5dbf524"
   dependencies:
@@ -5304,7 +5340,7 @@ vega-geo@2:
     vega-projection "1"
     vega-util "1"
 
-vega-hierarchy@2:
+vega-hierarchy@2, vega-hierarchy@^2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-hierarchy/-/vega-hierarchy-2.1.0.tgz#92119c43a9dc8f534c1836446661161dc9e42196"
   dependencies:
@@ -5348,6 +5384,22 @@ vega-parser@2:
     vega-scenegraph "2"
     vega-util "1"
 
+vega-parser@^2.2:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-2.2.0.tgz#363b486dd58060b8df3316db26f97f6cecbdba5d"
+  dependencies:
+    d3-array "1"
+    d3-color "1"
+    d3-format "1"
+    d3-time-format "2"
+    vega-dataflow "3"
+    vega-event-selector "2"
+    vega-expression "2"
+    vega-scale "2"
+    vega-scenegraph "2"
+    vega-statistics "^1.2"
+    vega-util "^1.6"
+
 vega-projection@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vega-projection/-/vega-projection-1.0.0.tgz#8875aefe9bc0b7b215ff2fa3358626efffa5c664"
@@ -5361,7 +5413,7 @@ vega-runtime@2:
     vega-dataflow "3"
     vega-util "1"
 
-vega-scale@2:
+vega-scale@2, vega-scale@^2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.1.0.tgz#2b992cbb652a64d64b66015bf3a329ecaa7a3d32"
   dependencies:
@@ -5393,6 +5445,12 @@ vega-statistics@1:
   dependencies:
     d3-array "1"
 
+vega-statistics@^1.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.2.1.tgz#a35b3fc3d0039f8bb0a8ba1381d42a1df79ecb34"
+  dependencies:
+    d3-array "1"
+
 vega-tooltip@^0.4.2:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.4.4.tgz#c2dd6f24ffe5eda64a920e505f86c3551e819155"
@@ -5412,13 +5470,34 @@ vega-transforms@1:
     vega-statistics "1"
     vega-util "1"
 
-vega-util@1, vega-util@^1.1, vega-util@^1.5.0:
+vega-transforms@^1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-1.1.1.tgz#65ea98708f1218a21c7f56fd2857a7ab62362972"
+  dependencies:
+    d3-array "1"
+    vega-dataflow "3"
+    vega-statistics "^1.2"
+    vega-util "1"
+
+vega-util@1, vega-util@^1.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.5.0.tgz#05fcec83557be38de5328b54ad2a7a0597740cc0"
+
+vega-util@^1.5.0, vega-util@^1.6:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.6.0.tgz#9be8b1f297cbc6e078a50f8ecd231450f2b4f7ef"
 
 vega-view-transforms@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vega-view-transforms/-/vega-view-transforms-1.0.0.tgz#c8a65b5cbc05c618f75072054c04ac8c8b31f7f5"
+  dependencies:
+    vega-dataflow "3"
+    vega-scenegraph "2"
+    vega-util "1"
+
+vega-view-transforms@^1.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vega-view-transforms/-/vega-view-transforms-1.1.0.tgz#bc7f61d653622cb676100b11ae1284ead73f9bd6"
   dependencies:
     vega-dataflow "3"
     vega-scenegraph "2"
@@ -5453,7 +5532,34 @@ vega-wordcloud@2:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@^3.0.0, vega@^3.0.0-rc5:
+vega@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.4.tgz#d69fba0ddcc4f7211f559032ba4a6b9d7efed683"
+  dependencies:
+    vega-crossfilter "2"
+    vega-dataflow "3"
+    vega-datasets vega/vega-datasets#gh-pages
+    vega-encode "2"
+    vega-expression "2"
+    vega-force "2"
+    vega-geo "^2.1"
+    vega-hierarchy "^2.1"
+    vega-loader "2"
+    vega-parser "^2.2"
+    vega-projection "1"
+    vega-runtime "2"
+    vega-scale "^2.1"
+    vega-scenegraph "2"
+    vega-statistics "^1.2"
+    vega-transforms "^1.1"
+    vega-util "^1.6"
+    vega-view "2"
+    vega-view-transforms "^1.1"
+    vega-voronoi "2"
+    vega-wordcloud "2"
+    yargs "4"
+
+vega@^3.0.0-rc5:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.2.tgz#51233d2aabf1b13b2aaffe66845838639474364f"
   dependencies:
@@ -5515,10 +5621,10 @@ watchify@^3.9.0:
     xtend "^4.0.0"
 
 wdio-chromedriver-service@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-0.1.0.tgz#8f1c975e9fc7bf605f4ab65e82684205447e3019"
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-0.1.1.tgz#18bb612f68b932a41fac30ed04ed08c1e0edd882"
   dependencies:
-    chromedriver "^2.29.0"
+    chromedriver "^2.31.0"
     fs-extra "^0.30.0"
 
 wdio-dot-reporter@0.0.9, wdio-dot-reporter@~0.0.8:
