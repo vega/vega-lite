@@ -1,5 +1,6 @@
 // utility for a field definition object
 
+import {isNumber} from 'vega-util';
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -374,6 +375,13 @@ export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
 export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
+  if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+    const primitiveType = isString(channelDef) ? 'string' :
+      isNumber(channelDef) ? 'number' : 'boolean';
+    log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
+    return {value: channelDef};
+  }
+
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
     return normalizeFieldDef(channelDef, channel);
