@@ -66,9 +66,8 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
         condition: fd
       } as ChannelDef<string>;
     } else {
-      return {
-        value: (channelDef as ValueDef).value
-      };
+      const {condition, ...channelDefWithoutCondition} = channelDef;
+      return channelDefWithoutCondition as ChannelDef<string>;
     }
   } else if (isFieldDef(channelDef)) {
     const fd = replaceRepeaterInFieldDef(channelDef, repeater);
@@ -80,6 +79,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
       return undefined;
     }
   } else {
+    // Definitely ValueDef
     return channelDef as ValueDef;
   }
 }
