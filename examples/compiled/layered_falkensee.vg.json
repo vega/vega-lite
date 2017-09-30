@@ -21,9 +21,7 @@
                     "event": "GDR (East Germany)"
                 }
             ],
-            "format": {
-                "type": "json"
-            }
+            "format": {}
         },
         {
             "name": "source_1",
@@ -181,9 +179,7 @@
                     "population": 41777
                 }
             ],
-            "format": {
-                "type": "json"
-            }
+            "format": {}
         },
         {
             "name": "data_0",

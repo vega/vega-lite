@@ -45,10 +45,7 @@
                     "a": "F",
                     "b": 53
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_0",

@@ -53,10 +53,7 @@
                     "b": "J",
                     "c": 52
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_1",
