@@ -309,10 +309,7 @@
                     "Population_ages_15_64_of_total": 70.7240914276147,
                     "Population_ages_65_and_above_of_total": 12.3228189427425
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_1",

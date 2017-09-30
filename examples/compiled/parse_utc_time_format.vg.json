@@ -16,9 +16,7 @@
                     "date": "11 Oct 2022 23:00:00"
                 }
             ],
-            "format": {
-                "type": "json"
-            }
+            "format": {}
         },
         {
             "name": "data_0",
