@@ -139,6 +139,9 @@
                 "signal": "min(ceil(width/40), 10)"
             },
             "title": "BIN(precipitation)",
+            "values": {
+                "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
+            },
             "zindex": 1
         },
         {
