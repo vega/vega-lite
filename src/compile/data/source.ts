@@ -44,13 +44,8 @@ export class SourceNode extends DataFlowNode {
       this._data = {};
     }
 
-    if (!isNamedData(data)) {
-      const {parse = null, ...format} = {
-        // https://github.com/vega/vega-parser/pull/60
-        type: 'json',
-        ...data.format || {}
-      };
-
+    if (!isNamedData(data) && data.format) {
+      const {parse = null, ...format} = data.format;
       this._data.format = format;
     }
   }
