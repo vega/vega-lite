@@ -117,6 +117,10 @@
     {
       "name": "bar_layered_transparent",
       "title": "Layered Bar Chart"
+    },
+    {
+      "name": "bar_diverging_stacked",
+      "title": "Diverging Stacked Bar Chart"
     }
   ],
   "Trellis": [
