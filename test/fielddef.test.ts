@@ -31,6 +31,11 @@ describe('fieldDef', () => {
   });
 
   describe('normalize()', () => {
+    it('should convert primitive type to value def', log.wrap((localLogger) => {
+      assert.deepEqual<ChannelDef<string>>(normalize(5 as any, 'x'), {value: 5});
+      assert.equal(localLogger.warns.length, 1);
+    }));
+
     it('should return fieldDef with full type name.', () => {
       const fieldDef: FieldDef<string> = {field: 'a', type: 'q' as any};
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});

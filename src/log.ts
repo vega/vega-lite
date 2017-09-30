@@ -145,6 +145,11 @@ export namespace message {
   export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the the data from the secondary source.';
 
   // ENCODING & FACET
+
+  export function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean) {
+    return `Channel ${channel} is a ${type}. Converted to {value: ${value}}.`;
+  }
+
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
   }
