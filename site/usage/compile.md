@@ -17,13 +17,26 @@ First install Vega-Lite using npm (`npm install vega-lite`) or by [downloading t
 If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using the `vl.compile` function.
 
 ```js
-var vgSpec = vl.compile(vlSpec).spec;
+var vgSpec = vl.compile(vlSpec, options).spec;
 ```
+
+If provided, the `options` argument should be an object with one or more of the following properties:
+
+* [`config`](#config) sets a default config
+* [`logger`](#logging) sets a logger
+
+{:#config}
+### Customized Configuration
+
+You can specify a [config]({{site.baseurl}}/docs/config.html) object, which is used as the default config. Configurations in the Vega-Lite specification itself override what is passed in through the `compile` function.
+
+{:#logging}
+### Customized Logging
 
 By default, warnings and other messages are printed to the JavaScript console (via `console.log/warn` methods). To redirect the log messages, you can pass a customize logger to the compile function.
 
 ```js
-var vgSpec = vl.compile(vlSpec, logger).spec;
+var vgSpec = vl.compile(vlSpec, {logger: logger}).spec;
 ```
 
 A custom logger should implement the following interface:
