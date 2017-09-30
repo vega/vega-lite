@@ -1,11 +1,12 @@
 import {Axis} from '../../axis';
-import {BinParams} from '../../bin';
+import {BinParams, binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {QUANTITATIVE} from '../../type';
 import {contains, truncate} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -105,6 +106,12 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
       return {signal: dateTimeExpr(dt, true)};
     });
   }
+
+  if (!vals && fieldDef.bin && fieldDef.type === QUANTITATIVE) {
+    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+  }
+
   return vals;
 }
 
