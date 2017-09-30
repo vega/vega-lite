@@ -235,9 +235,9 @@ describe('Compile', function() {
       const spec = compile({
         mark: "point",
         encoding: {}
-      }, {
+      }, {config: {
         background: "blue"
-      }).spec;
+      }}).spec;
       assert.equal(spec.config.background, "blue");
     });
 
@@ -248,9 +248,9 @@ describe('Compile', function() {
         config: {
           background: "red"
         }
-      }, {
+      }, {config: {
         background: "blue"
-      }).spec;
+      }}).spec;
       assert.equal(spec.config.background, "red");
     });
   });

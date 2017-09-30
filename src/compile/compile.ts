@@ -11,25 +11,25 @@ import {Model} from './model';
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-export function compile(inputSpec: TopLevelExtendedSpec, config?: Config, logger?: log.LoggerInterface) {
-  if (logger) {
+export function compile(inputSpec: TopLevelExtendedSpec, opt: {config?: Config, logger?: log.LoggerInterface} = {}) {
+  if (opt.logger) {
     // set the singleton logger to the provided logger
-    log.set(logger);
+    log.set(opt.logger);
   }
 
   try {
     // 1. initialize config
-    const mergedConfig = initConfig(mergeDeep({}, config, inputSpec.config));
+    const config = initConfig(mergeDeep({}, opt.config, inputSpec.config));
 
     // 2. Convert input spec into a normalized form
     // (Normalize autosize to be a autosize properties object.)
     // (Decompose all extended unit specs into composition of unit spec.)
-    const spec = normalize(inputSpec, mergedConfig);
+    const spec = normalize(inputSpec, config);
 
     // 3. Instantiate the models with default config by doing a top-down traversal.
     // This allows us to pass properties that child models derive from their parents via their constructors.
-    const autosize = normalizeAutoSize(inputSpec.autosize, mergedConfig.autosize, isLayerSpec(spec) || isUnitSpec(spec));
-    const model = buildModel(spec, null, '', undefined, undefined, mergedConfig, autosize.type === 'fit');
+    const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+    const model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 
     // 4. Parse parts of each model to produce components that can be merged
     // and assembled easily as a part of a model.
@@ -45,10 +45,10 @@ export function compile(inputSpec: TopLevelExtendedSpec, config?: Config, logger
     optimizeDataflow(model.component.data);
 
     // 6. Assemble a Vega Spec from the parsed components.
-    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, mergedConfig, autosize));
+    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
   } finally {
     // Reset the singleton logger if a logger is provided
-    if (logger) {
+    if (opt.logger) {
       log.reset();
     }
   }
