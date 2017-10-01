@@ -95,6 +95,10 @@
       "title": "Stacked Bar Chart"
     },
     {
+      "name": "stacked_bar_diverging_weather",
+      "title": "Diverging Stacked Bar Chart"
+    },
+    {
       "name": "stacked_bar_h",
       "title": "Horizontal Stacked Bar Chart"
     },

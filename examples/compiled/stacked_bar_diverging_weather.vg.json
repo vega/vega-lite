@@ -1,0 +1,248 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A diverging stacked bar chart showing the mean number of sunny and not sunny days per month in Seattle, from 2012-01-01 to 2015-12-31.",
+    "autosize": "pad",
+    "padding": 5,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/seattle-weather.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date"
+                }
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "indexof(['sun', 'fog', 'drizzle', 'rain', 'snow'], datum.weather)",
+                    "as": "weather_index"
+                },
+                {
+                    "type": "formula",
+                    "expr": "if(datum.weather === 'sun', 1/4, -1/4)",
+                    "as": "sunny"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "weather",
+                        "weather_index"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "sunny"
+                    ],
+                    "as": [
+                        "sum_sunny"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "field": "sum_sunny",
+                    "sort": {
+                        "field": [
+                            "weather_index"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "as": [
+                        "sum_sunny_start",
+                        "sum_sunny_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_sunny_end"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "sum_sunny_start"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "weather"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "month_date",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_sunny_start",
+                    "sum_sunny_end"
+                ],
+                "sort": true
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": [
+                "sun",
+                "fog",
+                "drizzle",
+                "rain",
+                "snow"
+            ],
+            "range": [
+                "#e7ba52",
+                "#c7c7c7",
+                "#aec7e8",
+                "#1f77b4",
+                "#9467bd"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "title": "Month of the year",
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Mean number of days",
+            "scale": "y",
+            "labelOverlap": true,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "left",
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "title": "Weather type",
+            "fill": "color",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A diverging stacked bar chart showing the mean number of sunny and not sunny days per month in Seattle, from 2012-01-01 to 2015-12-31.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "transform": [
+    {"calculate": "indexof(['sun', 'fog', 'drizzle', 'rain', 'snow'], datum.weather)", "as": "weather_index"},
+    {"calculate": "if(datum.weather === 'sun', 1/4, -1/4)", "as": "sunny"}
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "ordinal",
+      "axis": {"title": "Month of the year"}
+    },
+    "y": {
+      "aggregate": "sum",
+      "field": "sunny",
+      "type": "quantitative",
+      "axis": {"title": "Mean number of days"}
+    },
+    "color": {
+      "field": "weather",
+      "type": "nominal",
+      "scale": {
+        "domain": ["sun","fog","drizzle","rain","snow"],
+        "range": ["#e7ba52","#c7c7c7","#aec7e8","#1f77b4","#9467bd"]
+      },
+      "legend": {"title": "Weather type"}
+    },
+    "order": {
+      "field": "weather_index", "type": "ordinal"
+    }
+  }
+}
