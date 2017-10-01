@@ -329,10 +329,7 @@
                     "percentage_start": 0,
                     "percentage_end": 100
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_0",
