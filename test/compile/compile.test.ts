@@ -230,5 +230,28 @@ describe('Compile', function() {
       }).spec;
       assert.isUndefined(spec.title);
     });
+
+    it('should use provided config.', () => {
+      const spec = compile({
+        mark: "point",
+        encoding: {}
+      }, {config: {
+        background: "blue"
+      }}).spec;
+      assert.equal(spec.config.background, "blue");
+    });
+
+    it('should merge spec and provided config.', () => {
+      const spec = compile({
+        mark: "point",
+        encoding: {},
+        config: {
+          background: "red"
+        }
+      }, {config: {
+        background: "blue"
+      }}).spec;
+      assert.equal(spec.config.background, "red");
+    });
   });
 });

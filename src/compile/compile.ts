@@ -2,7 +2,7 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
-import {keys} from '../util';
+import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
@@ -11,15 +11,15 @@ import {Model} from './model';
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
-  if (logger) {
+export function compile(inputSpec: TopLevelExtendedSpec, opt: {config?: Config, logger?: log.LoggerInterface} = {}) {
+  if (opt.logger) {
     // set the singleton logger to the provided logger
-    log.set(logger);
+    log.set(opt.logger);
   }
 
   try {
     // 1. initialize config
-    const config = initConfig(inputSpec.config);
+    const config = initConfig(mergeDeep({}, opt.config, inputSpec.config));
 
     // 2. Convert input spec into a normalized form
     // (Normalize autosize to be a autosize properties object.)
@@ -48,7 +48,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
   } finally {
     // Reset the singleton logger if a logger is provided
-    if (logger) {
+    if (opt.logger) {
       log.reset();
     }
   }
