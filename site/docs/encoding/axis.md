@@ -10,7 +10,7 @@ Axes provide axis lines, ticks and labels to convey how a positional range repre
 By default, Vega-Lite automatically creates axes with default properties for `x` and `y` channels when they encode data fields.
 User can set the `axis` property of x- or y-[field definition](encoding.html#field) to an object to customize [axis properties](#axis-properties) or set `axis` to `null` to remove the axis.
 
-Besides `axis` property of a field definition, the configuration object ([`config`](config.html)) also provides [axis config](#axis-config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
+Besides `axis` property of a field definition, the configuration object ([`config`](config.html)) also provides [axis config](#config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
 
 ## Documentation Overview
@@ -74,7 +74,7 @@ For example, the following plot has a customized x-axis title.
 **TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/axes/#custom-axis-encodings), but within each element's block, we do not have `enter/update/exit`.)
 -->
 
-{:#axis-config}
+{:#config}
 ## Axis Config
 
 {: .suppress-error}
