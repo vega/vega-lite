@@ -401,7 +401,7 @@
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
@@ -1355,7 +1355,7 @@
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
