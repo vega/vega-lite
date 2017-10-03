@@ -1636,10 +1636,10 @@
                 }
             },
             "range": [
+                0,
                 {
                     "signal": "concat_0_height"
-                },
-                0
+                }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
@@ -1673,10 +1673,10 @@
                 }
             },
             "range": [
+                0,
                 {
                     "signal": "concat_1_height"
-                },
-                0
+                }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
