@@ -18,7 +18,7 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {Explicit, makeImplicit} from '../split';
+import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {parseNonUnitScaleProperty} from './properties';
@@ -117,14 +117,14 @@ export function parseRangeForChannel(
       } else {
         switch (property) {
           case 'range':
-            return makeImplicit(specifiedScale[property]);
+            return makeExplicit(specifiedScale[property]);
           case 'scheme':
-            return makeImplicit(parseScheme(specifiedScale[property]));
+            return makeExplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
             const rangeStep = specifiedScale[property];
             if (rangeStep !== null) {
               if (!sizeSpecified) {
-                return makeImplicit({step: rangeStep});
+                return makeExplicit({step: rangeStep});
               } else {
                 // If top-level size is specified, we ignore specified rangeStep.
                 log.warn(log.message.rangeStepDropped(channel));
@@ -134,13 +134,12 @@ export function parseRangeForChannel(
       }
     }
   }
-  return {
-    explicit: false,
-    value: defaultRange(
+  return makeImplicit(
+    defaultRange(
       channel, scaleType, type, config,
       zero, mark, sizeSignal, xyRangeSteps, noRangeStep
     )
-  };
+  );
 }
 
 function parseScheme(scheme: Scheme) {
