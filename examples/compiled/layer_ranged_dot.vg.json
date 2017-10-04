@@ -240,8 +240,13 @@
         {
             "title": "Life Expectancy (years)",
             "scale": "x",
+<<<<<<< HEAD
             "orient": "bottom",
             "labelOverlap": true,
+=======
+            "labelOverlap": true,
+            "orient": "bottom",
+>>>>>>> Add Ranged Dot Plot example to example specs and gallery
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -249,12 +254,19 @@
         },
         {
             "scale": "x",
+<<<<<<< HEAD
             "orient": "bottom",
+=======
+>>>>>>> Add Ranged Dot Plot example to example specs and gallery
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
+<<<<<<< HEAD
+=======
+            "orient": "bottom",
+>>>>>>> Add Ranged Dot Plot example to example specs and gallery
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
