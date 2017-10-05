@@ -150,6 +150,10 @@
   ],
   "Layering": [
     {
+      "name": "area_horizon",
+      "title": "Horizon Graph"
+    },
+    {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
     },{
