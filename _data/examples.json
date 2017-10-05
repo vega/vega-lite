@@ -193,6 +193,10 @@
       "name": "layered_falkensee",
       "title": "Falkensee",
       "style": "background-size: auto 90%; background-position-y: center !important;"
+    },
+    {
+      "name": "layer_ranged_dot",
+      "title": "Ranged Dot Plot"
     }
   ],
   "Composition": [
