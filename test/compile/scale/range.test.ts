@@ -31,12 +31,12 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should not support custom range.', log.wrap((localLogger) => {
+      it('should support custom range.', log.wrap((localLogger) => {
         assert.deepEqual(
           parseRangeForChannel('x', 'linear', QUANTITATIVE, {range: [0, 100]}, defaultConfig, true, 'point', false, 'plot_width', []),
-          makeImplicit([0, {signal: 'plot_width'}])
+          makeExplicit([0, 100])
         );
-        assert.deepEqual(localLogger.warns[0], log.message.CANNOT_USE_RANGE_WITH_POSITION);
+        assert.deepEqual(localLogger.warns.length, 0);
       }));
 
       it('should return config.scale.rangeStep for band/point scales by default.', () => {

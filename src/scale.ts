@@ -626,12 +626,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
  */
 export function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string {
   switch (propName) {
-    case 'range':
-      // User should not customize range for position and facet channel directly.
-      if (channel === 'x' || channel === 'y') {
-        return log.message.CANNOT_USE_RANGE_WITH_POSITION;
-      }
-      return undefined; // GOOD!
     case 'interpolate':
     case 'scheme':
       if (channel !== 'color') {
@@ -640,6 +634,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       return undefined;
     case 'type':
     case 'domain':
+    case 'range':
     case 'base':
     case 'exponent':
     case 'nice':
