@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A ranged dot plot showing the change in yields per variety of barley, between 1931 and 1932.",
+  "data": {"url": "data/barley.json"},
+  "transform": [{
+    "summarize": [{"aggregate": "mean", "field": "yield", "as": "mean_yield"}],
+    "groupby": ["year", "variety"]
+  }],
+  "layer": [
+    {
+      "mark": "rule",
+      "encoding": {
+        "x": {"aggregate": "min", "field": "mean_yield", "type": "quantitative", "axis": null},
+        "x2": {"aggregate": "max", "field": "mean_yield", "type": "quantitative"},
+        "y": {"field": "variety", "type":"nominal"}
+      }
+    },
+    {
+      "mark": "circle",
+      "encoding": {
+        "x": {"field": "mean_yield", "type": "quantitative", "axis": {"title":  "MEAN(yield)"}},
+        "y": {"field":  "variety", "type":  "nominal"},
+        "color": {"field": "year", "type": "ordinal", "scale": {"scheme": {"name": "set2"}}}
+      }
+    }
+  ]
+}

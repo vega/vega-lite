@@ -1,0 +1,274 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A ranged dot plot showing the change in yields per variety of barley, between 1931 and 1932.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/barley.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year",
+                        "variety"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "mean_yield"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"mean_yield\"])",
+                    "as": "mean_yield"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "ops": [
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "mean_yield",
+                        "mean_yield"
+                    ],
+                    "as": [
+                        "min_mean_yield",
+                        "max_mean_yield"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"mean_yield\"])",
+                    "as": "mean_yield"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"mean_yield\"] !== null && !isNaN(datum[\"mean_yield\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "min_mean_yield"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "variety"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "max_mean_yield"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "mean_yield"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "variety"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "year"
+                    },
+                    "shape": {
+                        "value": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "min_mean_yield"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "max_mean_yield"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "mean_yield"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "variety"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "variety"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "padding": 0.5
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "data_1",
+                "field": "year",
+                "sort": true
+            },
+            "range": {
+                "scheme": "set2"
+            }
+        }
+    ],
+    "axes": [
+        {
+            "title": "MEAN(yield)",
+            "scale": "x",
+            "labelOverlap": true,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "orient": "bottom",
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "variety",
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "year",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
