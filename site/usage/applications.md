@@ -15,8 +15,9 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Vega-Lite for Julia](https://github.com/fredo-dedup/VegaLite.jl)
 * [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 * [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
-* [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite. 
+* [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 * [Vizard](https://github.com/yieldbot/vizard) provides a tiny REPL client to visualize Clojure data in the browser.
+* [vega-element](https://www.webcomponents.org/element/PolymerVis/vega-element) is a Polymer webcomponent to embed vega or vega-lite visualization using custom HTML tags.
 
 ## Tools
 
