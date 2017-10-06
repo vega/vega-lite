@@ -43,7 +43,7 @@ export interface BaseSpec {
   name?: string;
 
   /**
-   * An optional description of this mark for commenting purpose.
+   * Description of this mark for commenting purpose.
    */
   description?: string;
 
