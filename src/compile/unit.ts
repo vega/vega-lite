@@ -89,7 +89,7 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public sort(channel: Channel): SortField | SortOrder {
+  public sort(channel: Channel): SortField<string> | SortOrder {
     return (this.getMapping()[channel] || {}).sort;
   }
 

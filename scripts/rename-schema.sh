@@ -1,5 +1,5 @@
-perl -pi -e s,'<Field>','',g build/vega-lite-schema.json
-perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json
+perl -pi -e s,'<\(string\|RepeatRef\)>','',g build/vega-lite-schema.json
+perl -pi -e s,'<\(string\|RepeatRef\)\,','<',g build/vega-lite-schema.json
 
 perl -pi -e s,'GenericSpec<CompositeUnitSpec>','Spec',g build/vega-lite-schema.json
 perl -pi -e s,'FacetedCompositeUnitSpec','FacetedUnitSpec',g build/vega-lite-schema.json

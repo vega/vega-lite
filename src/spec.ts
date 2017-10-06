@@ -5,7 +5,7 @@ import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
 import {Facet} from './facet';
-import {Field, FieldDef} from './fielddef';
+import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {Repeat} from './repeat';
@@ -109,17 +109,17 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   selection?: {[name: string]: SelectionDef};
 }
 
-export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
+export type UnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
 
 /**
  * Unit spec that can have a composite mark.
  */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, AnyMark>;
 
 /**
  * Unit spec that can have a composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<string | RepeatRef>, AnyMark>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
   /**
@@ -135,7 +135,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 export type LayerSpec = GenericLayerSpec<UnitSpec>;
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-  facet: Facet<Field>;
+  facet: Facet<string | RepeatRef>;
 
   spec: GenericLayerSpec<U> | U;
   // TODO: replace this with GenericSpec<U> once we support all cases;
