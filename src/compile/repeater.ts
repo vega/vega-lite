@@ -58,30 +58,29 @@ function replaceRepeaterInFieldDef(fieldDef: ScaleFieldDef<Field>, repeater: Rep
 }
 
 function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: RepeaterValue): ChannelDef<string> {
-  if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
-    const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
-    if (fd) {
-      return {
-        ...channelDef,
-        condition: fd
-      } as ChannelDef<string>;
-    } else {
-      const {condition, ...channelDefWithoutCondition} = channelDef;
-      return channelDefWithoutCondition as ChannelDef<string>;
-    }
-  } else if (isFieldDef(channelDef)) {
+  if (isFieldDef(channelDef)) {
     const fd = replaceRepeaterInFieldDef(channelDef, repeater);
     if (fd) {
       return fd;
     } else if (isConditionalDef(channelDef)) {
       return {value: channelDef.condition.value};
-    } else {
-      return undefined;
     }
   } else {
-    // Definitely ValueDef
+    if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+      const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
+      if (fd) {
+        return {
+          ...channelDef,
+          condition: fd
+        } as ChannelDef<string>;
+      } else {
+        const {condition, ...channelDefWithoutCondition} = channelDef;
+        return channelDefWithoutCondition as ChannelDef<string>;
+      }
+    }
     return channelDef as ValueDef;
   }
+  return undefined;
 }
 
 type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
