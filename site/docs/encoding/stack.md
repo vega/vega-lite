@@ -65,7 +65,7 @@ Setting `stack` to `"center"` for a stacked area chart creates a streamgraph:
 
 ## Layered Bar Chart
 
-If `stack` is `"none"`, the marks will be layered on top of each other.
+If `stack` is `null`, the marks will be layered on top of each other.
 In this example, setting the mark's `opacity` to be semi-transparent (`0.6`) creates a layered bar chart.
 
 <div class="vl-example" data-name="bar_layered_transparent"></div>

@@ -95,7 +95,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
       stackOffset = stackConfig;
     }
 
-    if (!stackOffset || stackOffset === 'none') {
+    if (!stackOffset) {
       return null;
     }
 

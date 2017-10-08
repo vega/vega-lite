@@ -4023,8 +4023,15 @@
           "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
-          "$ref": "#/definitions/StackOffset",
-          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `\"none\"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `\"none\"` by default."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StackOffset"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise, `null` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4906,8 +4913,7 @@
       "enum": [
         "zero",
         "center",
-        "normalize",
-        "none"
+        "normalize"
       ],
       "type": "string"
     },
