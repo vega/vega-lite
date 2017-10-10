@@ -190,7 +190,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
    * - `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
    *
-   * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise, `null` by default.
+   * __Default value:__ `zero` for plots with all of the following conditions are true:
+   * (1) the mark is `bar` or `area`;
+   * (2) the stacked measure channel (x or y) has a linear scale;
+   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
    */
   stack?: StackOffset | null;
 }
@@ -244,6 +247,10 @@ export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef i
 
 export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+}
+
+export function isStringFieldDef(fieldDef: ChannelDef<string|RepeatRef>): fieldDef is FieldDef<string> {
+  return isFieldDef(fieldDef) && isString(fieldDef.field);
 }
 
 export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef {

@@ -35,24 +35,38 @@ describe('stack', () => {
     });
   });
 
-  it('should always be disabled for raw plot', () => {
-    [undefined, 'center', 'none', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
-      PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
-          "data": {"url": "data/barley.json"},
-          "mark": mark,
-          "encoding": {
-            "x": {"field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "color": {"field": "site", "type": "nominal"}
-          },
-          "config": {
-            "stack": stacked
-          }
-        };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
-      });
+  it('should be allowed for raw plot', () => {
+    STACKABLE_MARKS.forEach((mark) => {
+      const spec: TopLevel<UnitSpec> = {
+        "data": {"url": "data/barley.json"},
+        "mark": mark,
+        "encoding": {
+          "x": {"field": "yield", "type": "quantitative", "stack": "zero"},
+          "y": {"field": "variety", "type": "nominal"},
+          "color": {"field": "site", "type": "nominal"}
+        }
+      };
+      const stackProps = stack(spec.mark, spec.encoding, undefined);
+      assert.equal(stackProps.fieldChannel, 'x');
+      assert.isTrue(isStacked(spec));
+    });
+  });
+
+
+  it('should prioritize axis with stack', () => {
+    STACKABLE_MARKS.forEach((mark) => {
+      const spec: TopLevel<UnitSpec> = {
+        "data": {"url": "data/barley.json"},
+        "mark": mark,
+        "encoding": {
+          "x": {"field": "yield", "type": "quantitative", "stack": "zero"},
+          "y": {"field": "variety", "type": "quantitative"},
+          "color": {"field": "site", "type": "nominal"}
+        }
+      };
+      const stackProps = stack(spec.mark, spec.encoding, undefined);
+      assert.equal(stackProps.fieldChannel, 'x');
+      assert.isTrue(isStacked(spec));
     });
   });
 
@@ -86,6 +100,27 @@ describe('stack', () => {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "nominal"},
             "color": {"aggregate": "count", "type": "quantitative"}
+          },
+          "config": {
+            "stack": stacked
+          }
+        };
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+        assert.isFalse(isStacked(spec));
+      });
+    });
+  });
+
+  it('should always be disabled if the stackby channel is identical to y', () => {
+    [undefined, 'center', 'none', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
+      PRIMITIVE_MARKS.forEach((mark) => {
+        const spec: TopLevel<UnitSpec> = {
+          "data": {"url": "data/barley.json"},
+          "mark": mark,
+          "encoding": {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "variety", "type": "nominal"},
           },
           "config": {
             "stack": stacked
@@ -166,7 +201,7 @@ describe('stack', () => {
     });
   });
 
-  it('should always be disabled if neither x nor y is aggregate', () => {
+  it('should always be disabled if neither x nor y is aggregate or stack', () => {
     [undefined, 'center', 'none', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
@@ -268,27 +303,28 @@ describe('stack', () => {
     });
   });
 
-  it('should always be disabled if the aggregated axis has non-summative aggregate', () => {
-    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
+  it('should throws warning if the aggregated axis has a non-summative aggregate', () => {
+    [undefined, 'center', 'zero', 'normalize'].forEach((stack: StackOffset) => {
       ['average', 'variance', 'q3'].forEach((aggregate: AggregateOp) => {
-        const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+        const marks = stack === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           log.runLocalLogger((localLogger) => {
             const spec: TopLevel<UnitSpec> = {
               "data": {"url": "data/barley.json"},
               "mark": mark,
               "encoding": {
-                "x": {"field": "a", "type": "quantitative", "aggregate": aggregate},
+                "x": {
+                  aggregate, stack,
+                  "field": "a", "type": "quantitative"
+                },
                 "y": {"field": "variety", "type": "nominal"},
                 "color": {"field": "site", "type": "nominal"}
-              },
-              "config": {
-                "stack": stacked
               }
             };
-            assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-            assert.isFalse(isStacked(spec));
-            assert.equal(localLogger.warns[0], log.message.cannotStackNonSummativeAggregate(aggregate));
+            assert.isTrue(isStacked(spec));
+            assert.equal(
+              localLogger.warns[0],    log.message.stackNonSummativeAggregate(aggregate)
+            );
           });
         });
       });

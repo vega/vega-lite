@@ -37,27 +37,6 @@
                     "as": [
                         "sum_people"
                     ]
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "gender",
-                        "age"
-                    ],
-                    "field": "sum_people",
-                    "sort": {
-                        "field": [
-                            "gender"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "sum_people_start",
-                        "sum_people_end"
-                    ],
-                    "offset": "zero"
                 }
             ]
         },
@@ -239,11 +218,11 @@
                         "update": {
                             "x": {
                                 "scale": "x",
-                                "field": "sum_people_end"
+                                "field": "sum_people"
                             },
                             "x2": {
                                 "scale": "x",
-                                "field": "sum_people_start"
+                                "value": 0
                             },
                             "y": {
                                 "scale": "y",
@@ -269,11 +248,7 @@
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "fields": [
-                    "sum_people_start",
-                    "sum_people_end"
-                ],
-                "sort": true
+                "field": "sum_people"
             },
             "range": [
                 0,
