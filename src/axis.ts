@@ -114,6 +114,8 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   domain: 1,
   format: 1,
   grid: 1,
+  labelBound: 1,
+  labelFlush: 1,
   labelPadding: 1,
   labels: 1,
   labelOverlap: 1,
