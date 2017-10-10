@@ -170,6 +170,7 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"

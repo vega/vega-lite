@@ -293,6 +293,8 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
     }
     case 'labels':
       return isGridAxis ? false : specifiedAxis.labels;
+    case 'labelFlush':
+      return properties.labelFlush(fieldDef, channel, specifiedAxis, isGridAxis);
     case 'labelOverlap': {
       const scaleType = model.getScaleComponent(channel).get('type');
       return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);

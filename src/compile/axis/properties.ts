@@ -41,6 +41,19 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel, isGri
   return undefined;
 }
 
+export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis, isGridAxis: boolean) {
+  if (isGridAxis) {
+    return undefined;
+  }
+
+  if (specifiedAxis.labelFlush !== undefined) {
+    return specifiedAxis.labelFlush;
+  }
+  if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
+    return true;
+  }
+  return undefined;
+}
 
 export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType) {
   if (specifiedAxis.labelOverlap !== undefined) {

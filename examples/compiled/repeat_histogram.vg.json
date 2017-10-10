@@ -292,6 +292,7 @@
                 {
                     "scale": "child_Horsepower_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
@@ -384,6 +385,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
@@ -476,6 +478,7 @@
                 {
                     "scale": "child_Acceleration_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"

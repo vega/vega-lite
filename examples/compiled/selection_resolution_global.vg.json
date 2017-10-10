@@ -544,6 +544,7 @@
                 {
                     "scale": "child_Horsepower_Horsepower_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -998,6 +999,7 @@
                 {
                     "scale": "child_Horsepower_Acceleration_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1452,6 +1454,7 @@
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1906,6 +1909,7 @@
                 {
                     "scale": "child_Acceleration_Horsepower_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -2295,6 +2299,7 @@
                 {
                     "scale": "child_Acceleration_Acceleration_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -2749,6 +2754,7 @@
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -3203,6 +3209,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -3657,6 +3664,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_Acceleration_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -4046,6 +4054,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"

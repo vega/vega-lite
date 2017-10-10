@@ -269,6 +269,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": "greedy",
             "title": "income",
             "zindex": 1
