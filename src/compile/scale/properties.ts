@@ -3,7 +3,6 @@ import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {SortField, SortOrder} from '../../sort';
-import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
@@ -132,13 +131,8 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
-
-
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
-  if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
-    return smallestUnit(fieldDef.timeUnit) as any;
-  }
-  if (fieldDef.bin) {
+  if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
   return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned

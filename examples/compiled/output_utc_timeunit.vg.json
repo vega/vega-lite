@@ -102,8 +102,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "minute"
+            ]
         },
         {
             "name": "y",

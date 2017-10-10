@@ -7,7 +7,6 @@
   "encoding": {
     "x": {
       "timeUnit": "yearmonth", "field": "date", "type": "temporal",
-      "scale": {"nice": "month"},
       "axis": {"format": "%Y", "labelAngle": 0}
     },
     "y": {

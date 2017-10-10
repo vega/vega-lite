@@ -21,7 +21,11 @@ describe('compile/scale', () => {
       }
     });
 
-    // TODO
+    it('should not return nice for temporal x and y.', () => {
+      for (const c of ['x', 'y'] as Channel[]) {
+        assert.equal(rules.nice('time', c, {type: 'temporal'}), undefined);
+      }
+    });
   });
 
   describe('padding', () => {

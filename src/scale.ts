@@ -514,7 +514,7 @@ export interface Scale {
    *
    * For temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and `"year"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{"interval": "month", "step": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.
    *
-   * __Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields.
+   * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
    *
    */
   nice?: boolean | number | NiceTime | {interval: string, step: number};

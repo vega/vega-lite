@@ -125,8 +125,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "year"
+            ]
         },
         {
             "name": "y",
