@@ -216,9 +216,6 @@ export namespace message {
     return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 
-  export const CANNOT_USE_RANGE_WITH_POSITION =
-    'Cannot use a custom "range" with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
-
   export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
     return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;
   }
