@@ -92,8 +92,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "month"
+            ]
         },
         {
             "name": "y",

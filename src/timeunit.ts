@@ -301,39 +301,6 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   return dateTimeExpr(d);
 }
 
-/** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit: TimeUnit): NiceTime {
-  if (!timeUnit) {
-    return undefined;
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
-    return 'second';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
-    return 'minute';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
-    return 'hour';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.DAY) ||
-      containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    return 'day';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    return 'month';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    return 'year';
-  }
-  return undefined;
-}
-
 /**
  * returns the signal expression used for axis labels for a time unit
  */

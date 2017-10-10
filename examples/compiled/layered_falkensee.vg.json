@@ -399,8 +399,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "year"
+            ]
         },
         {
             "name": "color",

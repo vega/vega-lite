@@ -660,8 +660,7 @@
                 {
                     "signal": "concat_0_width"
                 }
-            ],
-            "nice": "second"
+            ]
         },
         {
             "name": "concat_0_y",
@@ -691,8 +690,7 @@
                 {
                     "signal": "concat_1_width"
                 }
-            ],
-            "nice": "minute"
+            ]
         },
         {
             "name": "concat_1_y",
