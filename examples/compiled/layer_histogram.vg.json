@@ -298,6 +298,9 @@
         }
     ],
     "config": {
+        "axis": {
+            "labelBound": 21
+        },
         "axisY": {
             "minExtent": 30
         }

@@ -366,6 +366,7 @@
     ],
     "config": {
         "axis": {
+            "labelBound": 21,
             "domainWidth": 1
         },
         "axisY": {
