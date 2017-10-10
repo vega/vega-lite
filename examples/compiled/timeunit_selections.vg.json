@@ -461,6 +461,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
@@ -570,6 +571,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"

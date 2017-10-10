@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
   "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
   "autosize": "pad",
@@ -281,3 +282,306 @@
       }
   }
 }
+=======
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/countries.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "country": "string",
+                    "year": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "indexof([\"China\",\"India\",\"United States\",\"Indonesia\",\"Brazil\"], datum[\"country\"]) !== -1"
+                },
+                {
+                    "type": "filter",
+                    "expr": "indexof([1955,2000], datum[\"year\"]) !== -1"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"life_expect\"])",
+                    "as": "life_expect"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"life_expect\"])",
+                    "as": "life_expect"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "life_expect"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "country"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "year"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_1_main",
+                    "data": "data_1",
+                    "groupby": [
+                        "country"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_1_marks",
+                    "type": "line",
+                    "style": [
+                        "line"
+                    ],
+                    "sort": {
+                        "field": "datum[\"country\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_1_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "life_expect"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "country"
+                            },
+                            "stroke": {
+                                "value": "#db646f"
+                            },
+                            "opacity": {
+                                "scale": "opacity",
+                                "field": "country"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "life_expect"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "life_expect"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "country"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "country"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "padding": 0.5
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": [
+                1955,
+                2000
+            ],
+            "range": [
+                "#e6959c",
+                "#911a24"
+            ]
+        },
+        {
+            "name": "opacity",
+            "type": "point",
+            "domain": {
+                "data": "data_1",
+                "field": "country",
+                "sort": true
+            },
+            "range": [
+                0.2,
+                0.2
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "title": "Life Expectancy (years)",
+            "scale": "x",
+            "orient": "bottom",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "domain": false,
+            "minExtent": 70,
+            "offset": 5,
+            "ticks": false,
+            "title": "Country",
+            "scale": "y",
+            "orient": "left",
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "title": "Year",
+            "fill": "color",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "point": {
+                "size": 100
+            }
+        }
+    }
+}
+>>>>>>> Pad continuous scale if it is a non-binned dimension of bar

@@ -116,6 +116,7 @@
                 {
                     "scale": "child_Origin_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -232,6 +233,7 @@
                 {
                     "scale": "child_Cylinders_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
