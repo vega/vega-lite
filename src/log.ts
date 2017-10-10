@@ -277,8 +277,8 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function cannotStackNonSummativeAggregate(aggregate: string) {
-    return `Cannot stack when the aggregate function is non-summative ("${aggregate}")`;
+  export function stackNonSummativeAggregate(aggregate: string) {
+    return `Stacking is applied even though the aggregate function is non-summative ("${aggregate}")`;
   }
 
   // TIMEUNIT
