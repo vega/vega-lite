@@ -146,6 +146,7 @@
     ],
     "config": {
         "axis": {
+            "labelBound": 21,
             "domain": false,
             "grid": false
         },

@@ -441,6 +441,8 @@ export interface VgAxisBase {
 
   /**
    * Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
+   *
+   * __Default value:__ `21`.
    */
   labelBound?: boolean | number;
 
