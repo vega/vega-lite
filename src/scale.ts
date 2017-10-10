@@ -187,6 +187,12 @@ export interface ScaleConfig {
   bandPaddingOuter?: number;
 
   /**
+   * Default padding for continuous scales.
+   * @minimum 0
+   */
+  continuousPadding?: number;
+
+  /**
    * Default outer padding for `x` and `y` point-ordinal scales.
    *
    * __Default value:__ `0.5`
@@ -467,12 +473,16 @@ export interface Scale {
   round?: boolean;
 
   /**
-   * Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.
+   * For _[continuous](scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.
    *
-   * __Default value:__ see `paddingInner` and `paddingOuter`.
+   * For _[band](scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.
+   *
+   * For _[point](scale.html#point)_ scales, alias for `paddingOuter`.
+   *
+   * __Default value:__ For _continuous_ scales, derived from the [scale config](scale.html#config)'s `continuousPadding`.
+   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.
    *
    * @minimum 0
-   * @maximum 1
    */
   padding?: number;
 
@@ -594,9 +604,10 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
-    case 'rangeStep':
     case 'padding':
+      return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
     case 'paddingOuter':
+    case 'rangeStep':
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';

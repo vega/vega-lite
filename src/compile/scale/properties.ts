@@ -1,7 +1,7 @@
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {SortField, SortOrder} from '../../sort';
 import * as util from '../../util';
 import {keys} from '../../util';
@@ -140,6 +140,13 @@ export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<
 
 export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig) {
   if (util.contains([X, Y], channel)) {
+    if (isContinuousToContinuous(scaleType)) {
+      if (scaleConfig.continuousPadding !== undefined) {
+        return scaleConfig.continuousPadding;
+      }
+      // TODO: better default rule for bar
+    }
+
     if (scaleType === ScaleType.POINT) {
       return scaleConfig.pointPadding;
     }
