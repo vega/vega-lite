@@ -42,6 +42,10 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel, isGri
 
 
 export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType) {
+  if (specifiedAxis.labelOverlap !== undefined) {
+    return specifiedAxis.labelOverlap;
+  }
+
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
   if (fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
