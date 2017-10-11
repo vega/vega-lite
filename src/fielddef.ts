@@ -331,7 +331,9 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
-export function title(fieldDef: FieldDef<string>, config: Config) {
+export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
+
+export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
   if (isCount(fieldDef)) {
     return config.countTitle;
   }
@@ -341,6 +343,20 @@ export function title(fieldDef: FieldDef<string>, config: Config) {
   } else {
     return fieldDef.field;
   }
+};
+
+let titleFormatter = defaultTitleFormatter;
+
+export function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string) {
+  titleFormatter = formatter;
+}
+
+export function resetTitleFormatter() {
+  setTitleFormatter(defaultTitleFormatter);
+}
+
+export function title(fieldDef: FieldDef<string>, config: Config) {
+  return titleFormatter(fieldDef, config);
 }
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
