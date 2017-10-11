@@ -68,7 +68,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   if (channel !== OPACITY) {
     const opacityDef = model.encoding.opacity;
     if (isValueDef(opacityDef)) {
-      if (hasConditionValueDef(opacityDef)){
+      if (hasConditionValueDef(opacityDef)) {
         symbols.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
       } else {
         symbols.opacity = {value: opacityDef.value};
@@ -87,7 +87,7 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   if (type === 'gradient') {
     const opacityDef = model.encoding.opacity;
     if (isValueDef(opacityDef)) {
-      if (hasConditionValueDef(opacityDef)){
+      if (hasConditionValueDef(opacityDef)) {
         gradient.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
       } else {
         gradient.opacity = {value: opacityDef.value};
