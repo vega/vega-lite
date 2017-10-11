@@ -433,16 +433,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "symbol",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "opacity": {
-                            "value": 0
-                        }
-                    }
-                }
-            }
+            "title": "symbol"
         }
     ],
     "config": {
