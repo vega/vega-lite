@@ -1,5 +1,5 @@
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef} from '../../fielddef';
+import {ConditionalFieldDef, ConditionalValueDef, FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef, LegendFieldDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
@@ -66,13 +66,9 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   }
 
   if (channel !== OPACITY) {
-    const opacityDef = model.encoding.opacity;
-    if (isValueDef(opacityDef)) {
-      if (hasConditionValueDef(opacityDef)) {
-        symbols.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
-      } else {
-        symbols.opacity = {value: opacityDef.value};
-      }
+    const opacity = getOpacityValue(model.encoding.opacity);
+    if (opacity) { // only apply opacity if it is zero or undefined
+      symbols.opacity = {value: opacity};
     }
   }
 
@@ -85,13 +81,9 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   let gradient:any = {};
 
   if (type === 'gradient') {
-    const opacityDef = model.encoding.opacity;
-    if (isValueDef(opacityDef)) {
-      if (hasConditionValueDef(opacityDef)) {
-        gradient.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
-      } else {
-        gradient.opacity = {value: opacityDef.value};
-      }
+    const opacity = getOpacityValue(model.encoding.opacity);
+    if (opacity) { // only apply opacity if it is zero or undefined
+      gradient.opacity = {value: opacity};
     }
   }
 
@@ -120,3 +112,13 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(labels).length > 0 ? labels : undefined;
 }
 
+function getOpacityValue(opacityDef: ConditionalFieldDef<LegendFieldDef<string>> | ConditionalValueDef<LegendFieldDef<string>>): number {
+  if (isValueDef(opacityDef)) {
+    if (hasConditionValueDef(opacityDef)) {
+      return Math.max(opacityDef.condition.value as number, opacityDef.value as number);
+    } else {
+      return opacityDef.value as number;
+    }
+  }
+  return undefined;
+}

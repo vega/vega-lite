@@ -51,8 +51,8 @@ describe('compile/legend', function() {
           encoding: {
             x: {field: "a", type: "nominal"},
             opacity: {
-              value: 0,
-              condition: {selection: "brush", value: 1}
+              condition: {selection: "brush", value: 1},
+              value: 0
             }}
         }), COLOR, 'symbol');
         assert.deepEqual(symbol.opacity.value, 1);
