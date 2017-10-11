@@ -201,6 +201,10 @@
     {
       "name": "layer_ranged_dot",
       "title": "Ranged Dot Plot"
+    },
+    {
+      "name": "layer_bar_dual_axis",
+      "title": "Layered Plot with Dual-Axis"
     }
   ],
   "Composition": [
