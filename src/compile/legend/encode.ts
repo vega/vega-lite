@@ -1,5 +1,5 @@
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
+import {FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
@@ -68,7 +68,11 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   if (channel !== OPACITY) {
     const opacityDef = model.encoding.opacity;
     if (isValueDef(opacityDef)) {
-      symbols.opacity = {value: opacityDef.value};
+      if (hasConditionValueDef(opacityDef)){
+        symbols.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
+      } else {
+        symbols.opacity = {value: opacityDef.value};
+      }
     }
   }
 
@@ -83,7 +87,11 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   if (type === 'gradient') {
     const opacityDef = model.encoding.opacity;
     if (isValueDef(opacityDef)) {
-      gradient.opacity = {value: opacityDef.value};
+      if (hasConditionValueDef(opacityDef)){
+        gradient.opacity = {value: Math.max(opacityDef.condition.value as number, opacityDef.value as number)};
+      } else {
+        gradient.opacity = {value: opacityDef.value};
+      }
     }
   }
 

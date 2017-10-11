@@ -238,6 +238,10 @@ export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef i
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
+export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<ValueDef>}) {
+  return !!channelDef && !!channelDef.condition && isValueDef(channelDef.condition);
+}
+
 export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
