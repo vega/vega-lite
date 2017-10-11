@@ -47,4 +47,4 @@ a vertical concatenation specification has the following properties:
 
 ## Resolve
 
-The default [resolutions](resolve.html) for concatenation are independent scales, axes, and legends.
+The default [resolutions](resolve.html) for concatenation are independent scales and axes for positional channels and shared scales and legends for all other channels. Currently, Vega-Lite does not support shared axes for concatenated views.
