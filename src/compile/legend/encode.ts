@@ -67,7 +67,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
 
   if (channel !== OPACITY) {
     const opacity = getOpacityValue(model.encoding.opacity);
-    if (opacity) { // only apply opacity if it is zero or undefined
+    if (opacity) { // only apply opacity if it is neither zero or undefined
       symbols.opacity = {value: opacity};
     }
   }
@@ -82,7 +82,7 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
 
   if (type === 'gradient') {
     const opacity = getOpacityValue(model.encoding.opacity);
-    if (opacity) { // only apply opacity if it is zero or undefined
+    if (opacity) { // only apply opacity if it is neither zero or undefined
       gradient.opacity = {value: opacity};
     }
   }
