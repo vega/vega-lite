@@ -43,6 +43,20 @@ describe('compile/legend', function() {
         }), COLOR, 'symbol');
         assert.deepEqual(symbol.opacity.value, 0.7); // default opacity is 0.7.
     });
+
+    it('should return the maximum value when there is a condition', function() {
+
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            opacity: {
+              condition: {selection: "brush", value: 1},
+              value: 0
+            }}
+        }), COLOR, 'symbol');
+        assert.deepEqual(symbol.opacity.value, 1);
+    });
   });
 
   describe('encode.gradient', function() {
