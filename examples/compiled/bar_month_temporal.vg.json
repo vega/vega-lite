@@ -91,7 +91,8 @@
                 {
                     "signal": "width"
                 }
-            ]
+            ],
+            "padding": 5
         },
         {
             "name": "y",

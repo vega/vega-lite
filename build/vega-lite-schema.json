@@ -4682,7 +4682,7 @@
           "type": "boolean"
         },
         "continuousPadding": {
-          "description": "Default padding for continuous scales.",
+          "description": "Default padding for continuous scales.\n\n__Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0,
           "type": "number"
         },
