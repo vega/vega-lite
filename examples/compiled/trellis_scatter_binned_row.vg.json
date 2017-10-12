@@ -90,7 +90,7 @@
                                 "value": "center"
                             },
                             "text": {
-                                "value": "BIN(Acceleration)"
+                                "value": "Acceleration (binned)"
                             },
                             "angle": {
                                 "value": 270

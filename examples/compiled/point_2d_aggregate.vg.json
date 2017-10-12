@@ -175,7 +175,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "AVERAGE(b)",
+            "title": "Average of b",
             "zindex": 1
         },
         {

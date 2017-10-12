@@ -14,9 +14,9 @@ import {LogicalOperand} from './logical';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {normalizeTimeUnit, TimeUnit} from './timeunit';
+import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean, isString, stringValue} from './util';
+import {isBoolean, isString, stringValue, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -341,15 +341,18 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
 
 export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
-  if (isCount(fieldDef)) {
+  const {field, bin, timeUnit, aggregate} = fieldDef;
+  if (aggregate === 'count') {
     return config.countTitle;
+  } else if (bin) {
+    return `${field} (binned)`;
   }
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+
+  const fn = timeUnit ? getTimeUnitParts(timeUnit).join('-') : aggregate;
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
-  } else {
-    return fieldDef.field;
+    return `${titlecase(fn)} of ${field}`;
   }
+  return field;
 };
 
 let titleFormatter = defaultTitleFormatter;

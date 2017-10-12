@@ -190,7 +190,7 @@
                     "tickCount": {
                         "signal": "min(ceil(child_width/40), 15)"
                     },
-                    "title": "BIN(Horsepower)",
+                    "title": "Horsepower (binned)",
                     "zindex": 1
                 }
             ]

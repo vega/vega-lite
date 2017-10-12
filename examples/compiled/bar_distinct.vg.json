@@ -138,7 +138,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "DISTINCT(Name)",
+            "title": "Distinct of Name",
             "zindex": 1
         },
         {

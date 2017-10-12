@@ -174,7 +174,7 @@
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },
-                    "title": "MEDIAN(yield)",
+                    "title": "Median of yield",
                     "zindex": 1
                 }
             ]

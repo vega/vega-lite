@@ -163,7 +163,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEAR(date)",
+            "title": "Year of date",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -197,7 +197,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(price)",
+            "title": "Mean of price",
             "zindex": 1
         },
         {
@@ -219,7 +219,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "QUARTER(date)",
+            "title": "Quarter of date",
             "encode": {
                 "labels": {
                     "update": {

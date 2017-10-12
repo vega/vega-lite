@@ -129,7 +129,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEARMONTHDATEHOURSMINUTES(date)",
+            "title": "Year-month-date-hours-minutes of date",
             "zindex": 1,
             "encode": {
                 "labels": {

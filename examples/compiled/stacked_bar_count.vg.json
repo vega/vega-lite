@@ -158,7 +158,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "MONTH(date)",
+            "title": "Month of date",
             "zindex": 1,
             "encode": {
                 "labels": {

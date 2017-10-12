@@ -111,7 +111,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(Horsepower)",
+            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {
@@ -136,7 +136,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(Displacement)",
+            "title": "Mean of Displacement",
             "zindex": 1
         },
         {

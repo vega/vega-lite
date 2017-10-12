@@ -112,7 +112,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(temp)",
+            "title": "Mean of temp",
             "zindex": 1
         },
         {
@@ -133,7 +133,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "YEARMONTH(date)",
+            "title": "Year-month of date",
             "encode": {
                 "labels": {
                     "update": {

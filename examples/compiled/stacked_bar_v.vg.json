@@ -177,7 +177,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "SUM(yield)",
+            "title": "Sum of yield",
             "zindex": 1
         },
         {

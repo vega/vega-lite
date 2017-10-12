@@ -296,7 +296,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Horsepower)",
+                    "title": "Horsepower (binned)",
                     "zindex": 1
                 },
                 {
@@ -385,7 +385,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Miles_per_Gallon)",
+                    "title": "Miles_per_Gallon (binned)",
                     "zindex": 1
                 },
                 {
@@ -474,7 +474,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Acceleration)",
+                    "title": "Acceleration (binned)",
                     "zindex": 1
                 },
                 {

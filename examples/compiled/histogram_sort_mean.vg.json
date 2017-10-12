@@ -127,7 +127,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(Horsepower)",
+            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {

@@ -318,7 +318,7 @@
                     "tickCount": {
                         "signal": "min(ceil(concat_0_width/40), 10)"
                     },
-                    "title": "BIN(IMDB_Rating)",
+                    "title": "IMDB_Rating (binned)",
                     "zindex": 1
                 },
                 {
@@ -328,7 +328,7 @@
                     "tickCount": {
                         "signal": "min(ceil(concat_0_height/40), 10)"
                     },
-                    "title": "BIN(Rotten_Tomatoes_Rating)",
+                    "title": "Rotten_Tomatoes_Rating (binned)",
                     "zindex": 1
                 }
             ],

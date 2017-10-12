@@ -181,7 +181,7 @@
     "legends": [
         {
             "size": "size",
-            "title": "BIN(Acceleration)",
+            "title": "Acceleration (binned)",
             "encode": {
                 "symbols": {
                     "update": {

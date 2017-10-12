@@ -347,7 +347,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MAX(Horsepower), MIN(Horsepower)",
+            "title": "Max of Horsepower, Min of Horsepower",
             "zindex": 1
         },
         {

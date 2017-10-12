@@ -156,7 +156,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MAX(temp_max)",
+            "title": "Max of temp_max",
             "zindex": 1
         },
         {

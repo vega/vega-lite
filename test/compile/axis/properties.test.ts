@@ -82,12 +82,12 @@ describe('compile/axis', ()=> {
 
     it('should add return fieldTitle by default', function () {
       const title = properties.title(10, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
-      assert.deepEqual(title, 'SUM(a)');
+      assert.deepEqual(title, 'Sum of a');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
       const title = properties.title(3, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
-      assert.deepEqual(title, 'SU…');
+      assert.deepEqual(title, 'Su…');
     });
   });
 

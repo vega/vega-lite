@@ -548,7 +548,7 @@
             "tickCount": {
                 "signal": "min(ceil(width/40), 10)"
             },
-            "title": "BIN(Acceleration)",
+            "title": "Acceleration (binned)",
             "zindex": 1
         },
         {

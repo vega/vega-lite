@@ -204,7 +204,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(Horsepower)",
+            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {
@@ -226,7 +226,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "BIN(Acceleration)"
+            "title": "Acceleration (binned)"
         }
     ],
     "config": {

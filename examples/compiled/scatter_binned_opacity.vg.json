@@ -178,7 +178,7 @@
     "legends": [
         {
             "opacity": "opacity",
-            "title": "BIN(Acceleration)",
+            "title": "Acceleration (binned)",
             "encode": {
                 "symbols": {
                     "update": {

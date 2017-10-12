@@ -99,7 +99,7 @@
                                 "value": "center"
                             },
                             "text": {
-                                "value": "YEAR(date)"
+                                "value": "Year of date"
                             }
                         }
                     }
@@ -125,7 +125,7 @@
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "MEAN(price)",
+                    "title": "Mean of price",
                     "zindex": 1
                 }
             ]
@@ -193,7 +193,7 @@
                     "scale": "x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "QUARTER(date)",
+                    "title": "Quarter of date",
                     "zindex": 1,
                     "encode": {
                         "labels": {

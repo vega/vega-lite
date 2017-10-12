@@ -509,7 +509,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "MONTH(date)",
+            "title": "Month of date",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -537,7 +537,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(precipitation)",
+            "title": "Mean of precipitation",
             "zindex": 1
         },
         {

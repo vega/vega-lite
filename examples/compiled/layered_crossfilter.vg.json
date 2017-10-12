@@ -729,7 +729,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(distance)",
+                    "title": "distance (binned)",
                     "zindex": 1
                 },
                 {
@@ -1133,7 +1133,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(delay)",
+                    "title": "delay (binned)",
                     "zindex": 1
                 },
                 {
@@ -1537,7 +1537,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(time)",
+                    "title": "time (binned)",
                     "zindex": 1
                 },
                 {

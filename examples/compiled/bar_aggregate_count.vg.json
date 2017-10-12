@@ -138,7 +138,7 @@
             "tickCount": {
                 "signal": "min(ceil(width/40), 10)"
             },
-            "title": "BIN(precipitation)",
+            "title": "precipitation (binned)",
             "zindex": 1
         },
         {

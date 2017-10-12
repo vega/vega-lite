@@ -465,7 +465,7 @@
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
-                    "title": "SECONDS(date)",
+                    "title": "Seconds of date",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -574,7 +574,7 @@
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
-                    "title": "MINUTES(date)",
+                    "title": "Minutes of date",
                     "zindex": 1,
                     "encode": {
                         "labels": {
