@@ -41,4 +41,4 @@ Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows
 
 ## Resolve
 
-The default [resolutions](resolve.html) for repeat are independent scales and axes for position channels and shared scales and legends for legends.
+The default [resolutions](resolve.html) for repeat are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels.
