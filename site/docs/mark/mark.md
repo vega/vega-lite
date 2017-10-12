@@ -185,3 +185,9 @@ For example, to set a default shape and stroke width for `point` marks with a st
 ```
 
 Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
+
+### Example: Styling Labels
+
+You can use [`text` marks](text.html) as labels for other marks by setting `style` for the marks and using [style config](mark.html#style-config) to configure offset (`dx` or `dy`), `align`, and `baseline`.
+
+<span class="vl-example" data-name="layer_bar_labels"></span>
