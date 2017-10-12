@@ -25,15 +25,22 @@ permalink: /docs/text.html
 * TOC
 {:toc}
 
+## Text Table Heatmap
+
+<span class="vl-example" data-name="layer_text_heatmap"></span>
+
+
+## Labels
+
+You can also use `text` marks as labels for other marks by setting `style` for the marks and using [style config](mark.html#style-config) to configure offset (`dx` or `dy`), `align`, and `baseline`.
+
+<span class="vl-example" data-name="layer_bar_labels"></span>
+
 ## Scatterplot with Text
 
 Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can make a colored scatterplot with text marks showing the initial character of its origin, instead of [`point`](point.html#color) marks.
 
 <span class="vl-example" data-name="text_scatter_colored"></span>
-
-## Text Table Heatmap
-
-<span class="vl-example" data-name="layer_text_heatmap"></span>
 
 
 {:#config}

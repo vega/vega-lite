@@ -205,6 +205,10 @@
     {
       "name": "layer_bar_dual_axis",
       "title": "Layered Plot with Dual-Axis"
+    },
+    {
+      "name": "layer_bar_labels",
+      "title": "Simple Bar Chart with Labels"
     }
   ],
   "Composition": [
