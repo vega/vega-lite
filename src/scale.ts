@@ -188,6 +188,9 @@ export interface ScaleConfig {
 
   /**
    * Default padding for continuous scales.
+   *
+   * __Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
+   *
    * @minimum 0
    */
   continuousPadding?: number;
