@@ -1,6 +1,6 @@
 
 import {Channel, CHANNELS, supportMark} from './channel';
-import {Facet} from './facet';
+import {FacetMapping} from './facet';
 import {
   ChannelDef,
   ConditionalFieldDef,
@@ -106,7 +106,7 @@ export interface Encoding<F> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[];
 }
 
-export interface EncodingWithFacet<F> extends Encoding<F>, Facet<F> {}
+export interface EncodingWithFacet<F> extends Encoding<F>, FacetMapping<F> {}
 
 export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];

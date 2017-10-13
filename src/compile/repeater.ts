@@ -1,5 +1,5 @@
 import {Encoding} from '../encoding';
-import {Facet} from '../facet';
+import {FacetMapping} from '../facet';
 import {Field, FieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
 import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
@@ -11,8 +11,8 @@ export type RepeaterValue = {
   column?: string
 };
 
-export function replaceRepeaterInFacet(facet: Facet<Field>, repeater: RepeaterValue): Facet<string> {
-  return replaceRepeater(facet, repeater) as Facet<string>;
+export function replaceRepeaterInFacet(facet: FacetMapping<Field>, repeater: RepeaterValue): FacetMapping<string> {
+  return replaceRepeater(facet, repeater) as FacetMapping<string>;
 }
 
 export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {
@@ -83,7 +83,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
   return undefined;
 }
 
-type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
+type EncodingOrFacet<F> = Encoding<F> | FacetMapping<F>;
 
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
