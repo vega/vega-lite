@@ -29,7 +29,7 @@ If provided, the `options` argument should be an object with one or more of the 
 {:#config}
 ### Customized Configuration
 
-You can specify a [config]({{site.baseurl}}/docs/config.html) object as a property of the `compile` function's `options` argument. Note that configuration properties provided via the `config` property in the Vega-Lite specification, if provided, will override the configurations passed in through the `compile` function.
+You can specify a [config]({{site.baseurl}}/docs/config.html) object as a property of the `compile` function's `options` argument. Note that configuration properties provided via the `config` property in the Vega-Lite specification, will override the configurations passed in through the `compile` function.
 
 {:#logging}
 ### Customized Logging
