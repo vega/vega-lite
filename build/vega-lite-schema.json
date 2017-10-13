@@ -2003,20 +2003,6 @@
       ],
       "type": "object"
     },
-    "Facet": {
-      "additionalProperties": false,
-      "properties": {
-        "column": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
-        },
-        "row": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
-        }
-      },
-      "type": "object"
-    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -2047,7 +2033,8 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
-          "$ref": "#/definitions/Header"
+          "$ref": "#/definitions/Header",
+          "description": "An object defining properties of a facet's header."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder",
@@ -2065,6 +2052,20 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "FacetMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Horizontal facets for trellis plots."
+        },
+        "row": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Vertical facets for trellis plots."
+        }
+      },
       "type": "object"
     },
     "FacetedUnitSpec": {
@@ -2202,7 +2203,7 @@
       "minimum": 100,
       "type": "number"
     },
-    "FacetedSpec": {
+    "FacetSpec": {
       "additionalProperties": false,
       "properties": {
         "data": {
@@ -2214,7 +2215,8 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2231,7 +2233,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -2428,7 +2431,7 @@
           "$ref": "#/definitions/LayerSpec"
         },
         {
-          "$ref": "#/definitions/FacetedSpec"
+          "$ref": "#/definitions/FacetSpec"
         },
         {
           "$ref": "#/definitions/RepeatSpec"
@@ -5520,7 +5523,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedSpec": {
+    "TopLevelFacetSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5556,7 +5559,8 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5577,7 +5581,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -5934,7 +5939,7 @@
           "$ref": "#/definitions/TopLevelLayerSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelFacetedSpec"
+          "$ref": "#/definitions/TopLevelFacetSpec"
         },
         {
           "$ref": "#/definitions/TopLevelRepeatSpec"

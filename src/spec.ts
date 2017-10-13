@@ -4,7 +4,7 @@ import {Config, OverlayConfig} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
-import {Facet} from './facet';
+import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
@@ -135,8 +135,14 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 export type LayerSpec = GenericLayerSpec<UnitSpec>;
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-  facet: Facet<string | RepeatRef>;
+  /**
+   * An object that describes mappings between `row` and `column` channels and their field definitions.
+   */
+  facet: FacetMapping<string | RepeatRef>;
 
+  /**
+   * A specification of the view that gets faceted.
+   */
   spec: GenericLayerSpec<U> | U;
   // TODO: replace this with GenericSpec<U> once we support all cases;
 
