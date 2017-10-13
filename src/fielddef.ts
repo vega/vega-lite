@@ -340,7 +340,7 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 
 export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
 
-export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
+export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
   const {field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
@@ -353,6 +353,26 @@ export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<st
     return `${titlecase(fn)} of ${field}`;
   }
   return field;
+}
+
+export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  if (fn) {
+    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+  } else {
+    return fieldDef.field;
+  }
+}
+
+export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
+  switch (config.fieldTitle) {
+    case 'plain':
+      return fieldDef.field;
+    case 'functional':
+      return functionalTitleFormatter(fieldDef, config);
+    default:
+      return verbalTitleFormatter(fieldDef, config);
+  }
 };
 
 let titleFormatter = defaultTitleFormatter;

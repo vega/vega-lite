@@ -158,6 +158,11 @@ describe('fieldDef', () => {
       assert.equal(title(fieldDef,{}), 'f (binned)');
     });
 
+    it('should return correct title for bin', () => {
+      const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
+      assert.equal(title(fieldDef,{fieldTitle: 'functional'}), 'BIN(f)');
+    });
+
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       assert.equal(title(fieldDef,{}), 'Month of f');
