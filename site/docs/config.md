@@ -24,7 +24,9 @@ permalink: /docs/config.html
 }
 ```
 
-Vega-Lite's `config` object lists configuration properties of a visualization for creating a consistent theme. This page outlines different types of config properties:
+Vega-Lite's `config` object lists configuration properties of a visualization for creating a consistent theme. (This `config` object in Vega-Lite is a superset of [Vega config](https://vega.github.io/vega/docs/config/).)
+
+The rest of this page outlines different types of config properties:
 
 * TOC
 {:toc}
@@ -36,7 +38,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 {:#format}
 
-{% include table.html props="autosize,background,countTitle,invalidValues,numberFormat,padding,timeFormat" source="Config" %}
+{% include table.html props="autosize,background,countTitle,fieldTitle,invalidValues,numberFormat,padding,stack,timeFormat" source="Config" %}
 
 {:#axis-config}
 ## Axis Configurations
