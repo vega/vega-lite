@@ -122,8 +122,11 @@ export namespace message {
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
   }
-  // TITLE
 
+  // CONCAT
+  export const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views.';
+
+  // TITLE
   export function cannotSetTitleAnchor(type: string) {
     return `Cannot set title "anchor" for a ${type} spec`;
   }
