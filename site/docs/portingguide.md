@@ -9,39 +9,30 @@ This document describes the various changes needed to port Vega-Lite 1.x visuali
 
 ## Interaction and Composition
 
-The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots.
+The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now egenrates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations. 
 
 ## General
 
-- Now [`vl.compile`](../usage/compile.html) takes an `options` object as a second argument that can contain logger, field title formatter, and config object.
+- [`vl.compile`](../usage/compile.html) takes an `options` object as a second argument.
 
-- There are now `width` and `height` properties at the top-level (of a single view and layered view specification).
+- `width` and `height` properties at new top-level properties (of a single view and layered view specification).
 
-- The top-level property `viewport` is removed.
-
-### Vega Output
-
-- We include vega's `$schema` in the output Vega specifications.
-- Constant values in `scales` are now replaced with `signals`.
-
+- The top-level property `viewport` has been removed.
 
 ## [Transforms](transform.html)
 
-- `transform` is re-designed to be an array of different transform objects (so the order of the transforms becomes clear).
+- `transform` is now an array of transform objects (the order of the transforms is clearer).
 
-  - Formula definitions for `calculate` transforms now use `as` property to specify output fields name instead of `field`.
-  - `aggregate`, `bin`, and `timeUnit` now can also be expressed as a transform in the `transform` array (in addition to as a field transform in a encoding field definition).
-
+  - Formula definitions for `calculate` transforms can use the`as` property to specify output fields name instead of `field`.
+  - `aggregate`, `bin`, and `timeUnit` now can also be expressed as a transform in the `transform` array (in addition to binning in a encoding field definition).
 
 - For `bin`, the `"max"` and `"min"` parameters have been removed.  Instead, users can provide `"extent"`, a two-element (`[min, max]`) array indicating the range of desired bin values.  Also, the `"div"` property has been renamed to `"divide"`.
-
-
 
 ## [Marks](mark.html)
 
 - The `mark` property now can be either a mark type or (new) a [mark definition object](mark.html#mark-def).
 
-- A new [`rect` mark](rect.html) can create arbitrary rectangles and table heat map.
+- A new [`rect` mark](rect.html) can be used to create arbitrary rectangles and table heat maps.
 
 - The `rule` mark type now supports arbitrary line segments, and reliably draws a line from point `"x"`, `"y"` to point `"x2"`, `"y2"`.
 
@@ -49,9 +40,9 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 - [`row` and `column` encodings](encoding.html#facet) are now shortcuts for creating a faceted plot using the [`facet`](facet.html) operator.
 
-- `path` channel is removed. You can now use `order` channel for sorting line orders instead. Meanwhile, the `order` channel no longer affects layer order for marks.
+- `path` channel has been removed. You can now use the `order` channel for sorting points on a line. Meanwhile, the `order` channel no longer affects the layering order of marks.
 
-- A new `tooltip` channel is added.
+- A new `tooltip` channel has been added.
 
 - We now support `"aggregate": "count"` without `"field": "*"`.
 
@@ -78,10 +69,10 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 ### [Stack](stack.html)
 
-- A new [`stack`](stack.html) property is added to x and y encoding channel.
-- `config.mark.stacked` is renamed to `config.stack`.
-- Most mark types (except `rect`) are [stackable](stack.html). (For example, points can be stacked to serve as markers for line and area.)
-- You can now stack unaggregate plots.
+- A new [`stack`](stack.html) property has been added to the x and y encoding channels.
+- `config.mark.stacked` is now `config.stack`.
+- Most mark types (except `rect`) are [stackable](stack.html). For example, points can be stacked to serve as markers for line and area.
+- You can now stack unaggregated plots.
 
 
 ### [Axis](axis.html) and [Legend](legend.html)
@@ -92,13 +83,13 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 - The axis line previously stylable as `"axis"` is now referred to as the axis `"domain"`. For example, use `"domain": false` to hide the axis line.  All relevant properties have also been renamed accordingly (e.g., `axisWidth` to `domainWidth`).
 
-- Axis properties with the `tickLabel` prefix is shortened to just have `label` as prefix. For example, `tickLabelColor` is renamed to `labelColor`.
+- Axis properties with the `tickLabel` prefix has been shortened to just have `label` as prefix. For example, `tickLabelColor` is now `labelColor`.
 
-- To hide ticks and labels, you can now use `ticks` and `labels` properties instead of the old `tick` and `label`.  (We change them to be plural for consistency.)
+- To hide ticks and labels, you can now use the `ticks` and `labels` properties instead of the old `tick` and `label`.  (We changed them to be plural for consistency.)
 
-- The following axis properties are removed: `characterWidth`, `labelAlign`, `labelBaseline`, `subdivide`, `tickSizeMajor`, `tickSizeMinor`, `tickSizeEnd`.
+- The following axis properties have been removed: `characterWidth`, `labelAlign`, `labelBaseline`, `subdivide`, `tickSizeMajor`, `tickSizeMinor`, `tickSizeEnd`.
 
-- Axis now no longer has `layer` property. Instead, there is a `zindex` property (default `0`). By default, axes should be drawn behind all chart elements. To put them in front, use `"zindex": 1`.
+- Axis no longer has the `layer` property. Instead, there is a `zindex` property (default `0`). By default, axes should be drawn behind all chart elements. To put them in front, use `"zindex": 1`.
 
 - Legends now include an optional `"type"` property.
 
@@ -120,16 +111,16 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 The `config` property in Vega-Lite 2 has been updated to be a superset of [Vega Config](https://vega.github.io/vega/docs/config/).
 
 - Change config's `filterInvalid: boolean` to `invalidValues: "filter"`
-- `config.cell` is renamed to `config.view`.
+- `config.cell` is now `config.view`.
 
 
 ### Mark Config
 
-- Add mark specific config for all marks. Basically, each mark config (e.g., `config.bar.*`) has all properties similar to mark config. This way you can make line's default color be green while bar's default is blue if desired.
+- We added mark specific config for all marks. Basically, each mark config (e.g., `config.bar.*`) has all properties similar to mark config. This way you can make line's default color be green while bar's default is blue.
 
-- In addition, [mark style config](mark.html#style-config) can also be applied to marks with `style` property defined.
+- In addition, [mark style config](mark.html#style-config) can also be applied to marks with the `style` property.
 
-- Remove old mark specific config from `config.mark`
+- We removed old mark specific options from `config.mark`
   - `config.mark.barBinSpacing/barThinSize/barSize` => `config.bar.binSpacing/continuousBandSize/discreteBandSize`
   - `config.mark.lineSize` => `config.line.strokeWidth`
   - `config.mark.shape` => `config.point.shape`
@@ -138,11 +129,11 @@ The `config` property in Vega-Lite 2 has been updated to be a superset of [Vega 
   - `config.mark.tickSize,tickThickness` => `config.tick.bandSize/thickness`
   - `config.mark.*` (text properties) => `config.text.*`
 
-- Change the default `config.bar.continuousBandSize` to 5
+- `config.bar.continuousBandSize` now defaults to 5
 
-- `config.text.applyColorToBackground`, which adds background to text mark, is removed.
+- `config.text.applyColorToBackground`, which adds background to text mark, has been removed.
 
-- `config.text.format` is removed. You can now format via the [`format`](format.html) property of the text channel or via the `numberFormat` and `timeFormat` config.
+- `config.text.format` has been removed. You can now format via the [`format`](format.html) property of the text channel or via the `numberFormat` and `timeFormat` config.
 
 ### Scale Config
 
@@ -152,5 +143,5 @@ The `config` property in Vega-Lite 2 has been updated to be a superset of [Vega 
   - `config.scale.opacityRange` => `config.scale.min/maxOpacity`
   - `config.scale.barSizeRange` => `config.scale.min/maxBandSize`
 
--  `config.scale.shapeRange` is replace by range config for symbols `config.range.symbol`
+-  `config.scale.shapeRange` has been replaced with the range config for symbols `config.range.symbol`
 
