@@ -1,11 +1,11 @@
 ---
-layout: usage
-menu: usage
+layout: page
+menu: applications
 title: Vega-Lite Applications
-permalink: /usage/applications.html
+permalink: /applications.html
 ---
 
-This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/master/site/usage/applications.md).
+This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/master/site/applications.md).
 
 {:#pl}
 ## Bindings for programming languages
