@@ -429,7 +429,7 @@ export interface VgAxisBase {
   /**
    * The rotation angle of the axis labels.
    *
-   * __Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.
+   * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
    *
    * @minimum -360
    * @maximum 360

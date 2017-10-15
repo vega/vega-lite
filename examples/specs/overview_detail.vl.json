@@ -9,7 +9,7 @@
         "field": "date",
         "type": "temporal",
         "scale": {"domain": {"selection": "brush"}},
-        "axis": {"title": "", "labelAngle": 0}
+        "axis": {"title": ""}
       },
       "y": {"field": "price","type": "quantitative"}
     }
@@ -24,7 +24,7 @@
       "x": {
         "field": "date",
         "type": "temporal",
-        "axis": {"format": "%Y", "labelAngle": 0}
+        "axis": {"format": "%Y"}
       },
       "y": {
         "field": "price",

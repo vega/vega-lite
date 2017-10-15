@@ -63,8 +63,7 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
     // Make angle within [0,360)
     return ((axis.labelAngle % 360) + 360) % 360;
   } else {
-    // auto rotate for X
-    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||  isTimeFieldDef(fieldDef))) {
+    if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
       return 270;
     }
   }
