@@ -222,16 +222,68 @@ describe('stack', () => {
     });
   });
 
-  it('should always be disabled if there is both x and x2', () => {
+  it('should always be disabled if there is both x and x2', log.wrap((localLogger) => {
     [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        log.runLocalLogger((localLogger) => {
+        const spec: TopLevel<UnitSpec> = {
+          "mark": mark,
+          "encoding": {
+            "x": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "x2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          },
+          "config": {
+            "stack": stacked
+          }
+        };
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+        assert.isFalse(isStacked(spec));
+        const warns = localLogger.warns;
+        assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(X),
+          JSON.stringify({stacked: stacked, mark: mark})
+        );
+      });
+    });
+  }));
+
+  it('should always be disabled if there is both y and y2', log.wrap((localLogger) => {
+    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
+      const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      marks.forEach((mark) => {
+        const spec: TopLevel<UnitSpec> = {
+          "mark": mark,
+          "encoding": {
+            "y": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "y2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "x": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          },
+          "config": {
+            "stack": stacked
+          }
+        };
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+        assert.isFalse(isStacked(spec));
+        const warns = localLogger.warns;
+        assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(Y),
+          JSON.stringify({stacked: stacked, mark: mark})
+        );
+      });
+    });
+  }));
+
+  it('should always be disabled if the aggregated axis has non-linear scale', log.wrap((localLogger) => {
+    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
+      [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
+        const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+        marks.forEach((mark) => {
           const spec: TopLevel<UnitSpec> = {
+            "data": {"url": "data/barley.json"},
             "mark": mark,
             "encoding": {
-              "x": {"field": "a", "type": "quantitative", "aggregate": "sum"},
-              "x2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+              "x": {"field": "a", "type": "quantitative", "aggregate": "sum", "scale": {"type": scaleType}},
               "y": {"field": "variety", "type": "nominal"},
               "color": {"field": "site", "type": "nominal"}
             },
@@ -241,95 +293,37 @@ describe('stack', () => {
           };
           assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
           assert.isFalse(isStacked(spec));
-          assert.equal(localLogger.warns[0], log.message.cannotStackRangedMark(X),
-            JSON.stringify({stacked: stacked, mark: mark})
-          );
+          const warns = localLogger.warns;
+          assert.equal(warns[warns.length-1], log.message.cannotStackNonLinearScale(scaleType));
         });
       });
     });
-  });
+  }));
 
-  it('should always be disabled if there is both y and y2', () => {
-    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
-      const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
-      marks.forEach((mark) => {
-        log.runLocalLogger((localLogger) => {
-          const spec: TopLevel<UnitSpec> = {
-            "mark": mark,
-            "encoding": {
-              "y": {"field": "a", "type": "quantitative", "aggregate": "sum"},
-              "y2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
-              "x": {"field": "variety", "type": "nominal"},
-              "color": {"field": "site", "type": "nominal"}
-            },
-            "config": {
-              "stack": stacked
-            }
-          };
-          assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-          assert.isFalse(isStacked(spec));
-          assert.equal(localLogger.warns[0], log.message.cannotStackRangedMark(Y),
-            JSON.stringify({stacked: stacked, mark: mark})
-          );
-        });
-      });
-    });
-  });
-
-  it('should always be disabled if the aggregated axis has non-linear scale', () => {
-    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
-      [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
-        const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
-        marks.forEach((mark) => {
-          log.runLocalLogger((localLogger) => {
-            const spec: TopLevel<UnitSpec> = {
-              "data": {"url": "data/barley.json"},
-              "mark": mark,
-              "encoding": {
-                "x": {"field": "a", "type": "quantitative", "aggregate": "sum", "scale": {"type": scaleType}},
-                "y": {"field": "variety", "type": "nominal"},
-                "color": {"field": "site", "type": "nominal"}
-              },
-              "config": {
-                "stack": stacked
-              }
-            };
-            assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-            assert.isFalse(isStacked(spec));
-            assert.equal(localLogger.warns[0], log.message.cannotStackNonLinearScale(scaleType));
-          });
-        });
-      });
-    });
-  });
-
-  it('should throws warning if the aggregated axis has a non-summative aggregate', () => {
+  it('should throws warning if the aggregated axis has a non-summative aggregate', log.wrap((localLogger) => {
     [undefined, 'center', 'zero', 'normalize'].forEach((stack: StackOffset) => {
       ['average', 'variance', 'q3'].forEach((aggregate: AggregateOp) => {
         const marks = stack === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
-          log.runLocalLogger((localLogger) => {
-            const spec: TopLevel<UnitSpec> = {
-              "data": {"url": "data/barley.json"},
-              "mark": mark,
-              "encoding": {
-                "x": {
-                  aggregate, stack,
-                  "field": "a", "type": "quantitative"
-                },
-                "y": {"field": "variety", "type": "nominal"},
-                "color": {"field": "site", "type": "nominal"}
-              }
-            };
-            assert.isTrue(isStacked(spec));
-            assert.equal(
-              localLogger.warns[0],    log.message.stackNonSummativeAggregate(aggregate)
-            );
-          });
+          const spec: TopLevel<UnitSpec> = {
+            "data": {"url": "data/barley.json"},
+            "mark": mark,
+            "encoding": {
+              "x": {
+                aggregate, stack,
+                "field": "a", "type": "quantitative"
+              },
+              "y": {"field": "variety", "type": "nominal"},
+              "color": {"field": "site", "type": "nominal"}
+            }
+          };
+          assert.isTrue(isStacked(spec));
+          const warns = localLogger.warns;
+          assert.equal(warns[warns.length-1], log.message.stackNonSummativeAggregate(aggregate));
         });
       });
     });
-  });
+  }));
 
   describe('stack().groupbyChannel, .fieldChannel', () => {
     it('should be correct for horizontal', () => {

@@ -127,21 +127,19 @@ describe('compile/layout', () => {
       assert.deepEqual(size, [{name: 'width', value: 205}]);
     });
 
-    it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          width: 205,
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'ordinal', scale: {rangeStep: 21}}
-          }
-        });
-
-        const size = sizeSignals(model, 'width');
-        assert.deepEqual(size, [{name: 'width', value: 205}]);
-        assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
+    it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', log.wrap((localLogger) => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        width: 205,
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', scale: {rangeStep: 21}}
+        }
       });
-    });
+
+      const size = sizeSignals(model, 'width');
+      assert.deepEqual(size, [{name: 'width', value: 205}]);
+      assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
+    }));
 
     it('should return static view width for non-ordinal x-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
