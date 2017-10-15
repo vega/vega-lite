@@ -165,7 +165,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    *
    * @nullable
    */
-  sort?: SortOrder | SortField<F>;
+  sort?: SortOrder | SortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
@@ -177,7 +177,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    *
    * @nullable
    */
-  axis?: Axis;
+  axis?: Axis | null;
 
   /**
    * Type of stacking offset if the field should be stacked.
@@ -207,7 +207,7 @@ export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
     *
     * @nullable
     */
-  legend?: Legend;
+  legend?: Legend | null;
 }
 
 // Detail

@@ -221,7 +221,6 @@
           "scale": {"domain": [{"month": 5, "date": 31, "year": 2009},{"month": 7, "date": 1, "year": 2009}]},
           "axis": {
             "format": "%m/%d",
-            "labelAngle": 0,
             "title": "Date in 2009"
           }
         },

@@ -1,4 +1,5 @@
 import {Config} from '../config';
+import * as log from '../log';
 import {ConcatSpec, isVConcatSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
@@ -16,6 +17,10 @@ export class ConcatModel extends BaseConcatModel {
 
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
+
+    if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
+      log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
+    }
 
     this.isVConcat = isVConcatSpec(spec);
 

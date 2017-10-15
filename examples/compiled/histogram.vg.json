@@ -139,22 +139,7 @@
                 "signal": "min(ceil(width/40), 10)"
             },
             "title": "BIN(IMDB_Rating)",
-            "zindex": 1,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            }
+            "zindex": 1
         },
         {
             "scale": "y",

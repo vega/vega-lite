@@ -5,7 +5,7 @@
 
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
-import {Facet} from './facet';
+import {FacetMapping} from './facet';
 import {Mark} from './mark';
 import {SCALE_TYPES, ScaleType} from './scale';
 import {contains, Flag, flagKeys} from './util';
@@ -34,7 +34,7 @@ export namespace Channel {
   export const TOOLTIP: 'tooltip' = 'tooltip';
 }
 
-export type Channel = keyof Encoding<any> | keyof Facet<any>;
+export type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
@@ -66,7 +66,7 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   tooltip: 1
 };
 
-const FACET_CHANNEL_INDEX: Flag<keyof Facet<any>> = {
+const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
   row: 1,
   column: 1
 };

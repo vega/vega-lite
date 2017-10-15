@@ -57,9 +57,9 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 }
 ```
 
-To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
+To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following properties:
 
-### General
+{:#properties}
 
 {% include table.html props="type,entryPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
 

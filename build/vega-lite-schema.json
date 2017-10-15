@@ -99,10 +99,24 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelOverlap": {
           "anyOf": [
@@ -166,8 +180,11 @@
           "type": "boolean"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
@@ -249,14 +266,28 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
         },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
         "labelColor": {
           "description": "The color of the tick label, can be in hex color code or regular color name.",
           "type": "string"
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelFont": {
           "description": "The font of the tick label.",
@@ -1047,7 +1078,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1072,6 +1110,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -1207,7 +1248,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1228,6 +1276,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -2003,20 +2054,6 @@
       ],
       "type": "object"
     },
-    "Facet": {
-      "additionalProperties": false,
-      "properties": {
-        "column": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
-        },
-        "row": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
-        }
-      },
-      "type": "object"
-    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -2047,7 +2084,8 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
-          "$ref": "#/definitions/Header"
+          "$ref": "#/definitions/Header",
+          "description": "An object defining properties of a facet's header."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder",
@@ -2065,6 +2103,20 @@
       "required": [
         "type"
       ],
+      "type": "object"
+    },
+    "FacetMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Horizontal facets for trellis plots."
+        },
+        "row": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Vertical facets for trellis plots."
+        }
+      },
       "type": "object"
     },
     "FacetedUnitSpec": {
@@ -2202,7 +2254,7 @@
       "minimum": 100,
       "type": "number"
     },
-    "FacetedSpec": {
+    "FacetSpec": {
       "additionalProperties": false,
       "properties": {
         "data": {
@@ -2214,7 +2266,8 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2231,7 +2284,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -2428,7 +2482,7 @@
           "$ref": "#/definitions/LayerSpec"
         },
         {
-          "$ref": "#/definitions/FacetedSpec"
+          "$ref": "#/definitions/FacetSpec"
         },
         {
           "$ref": "#/definitions/RepeatSpec"
@@ -2623,8 +2677,11 @@
           "type": "string"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": "object"
@@ -2924,8 +2981,11 @@
           "type": "number"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "type": {
           "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
@@ -3161,7 +3221,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3182,6 +3249,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -3970,7 +4040,14 @@
         "axis": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Axis"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Axis"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -4013,6 +4090,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -4560,6 +4640,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -5520,7 +5603,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedSpec": {
+    "TopLevelFacetSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5556,7 +5639,8 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5577,7 +5661,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -5934,7 +6019,7 @@
           "$ref": "#/definitions/TopLevelLayerSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelFacetedSpec"
+          "$ref": "#/definitions/TopLevelFacetSpec"
         },
         {
           "$ref": "#/definitions/TopLevelRepeatSpec"
@@ -6168,10 +6253,24 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelOverlap": {
           "anyOf": [
@@ -6276,14 +6375,28 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
         },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
         "labelColor": {
           "description": "The color of the tick label, can be in hex color code or regular color name.",
           "type": "string"
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelFont": {
           "description": "The font of the tick label.",

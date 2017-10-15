@@ -9,8 +9,7 @@
       "field": "people",
       "type": "quantitative",
       "axis": {"title": "population"}
-    },
-    "size": {"value": 5}
+    }
   }
 }
 

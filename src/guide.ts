@@ -13,11 +13,13 @@ export interface Guide {
   format?: string;
 
   /**
-   * A title for the field.
+   * A title for the field. If `null`, the title will be removed.
    *
    * __Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `"SUM(field_name)"`, `"BIN(field_name)"`, `"YEAR(field_name)"`).  Otherwise, the title is simply the field name.
+   *
+   * @nullable
    */
-  title?: string;
+  title?: string | null;
 }
 export interface VlOnlyGuideConfig {
 

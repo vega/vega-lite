@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
-import {Facet} from '../../src/facet';
+import {FacetMapping} from '../../src/facet';
 import {PositionFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {ORDINAL} from '../../src/type';
@@ -16,7 +16,7 @@ describe('FacetModel', function() {
       const model = parseFacetModel({
         facet: ({
           shape: {field: 'a', type: 'quantitative'}
-        }) as Facet<string>, // Cast to allow invalid facet type for test
+        }) as FacetMapping<string>, // Cast to allow invalid facet type for test
         spec: {
           mark: 'point',
           encoding: {}

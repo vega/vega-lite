@@ -18,8 +18,23 @@ export type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 
 
 export interface BoxPlotDef {
+  /**
+   * Type of the mark.  For box plots, this should always be `"box-plot"`.
+   * [boxplot](compositemark.html#boxplot)
+   */
   type: BOXPLOT;
+
+  /**
+   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+   */
   orient?: Orient;
+
+  /**
+   * Extent is used to determine where the whiskers extend to. The options are
+   * - `"min-max": min and max are the lower and upper whiskers respectively.
+   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   * __Default value:__ `"min-max"`.
+   */
   extent?: 'min-max' | number;
 }
 
