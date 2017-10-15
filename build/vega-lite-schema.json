@@ -166,8 +166,11 @@
           "type": "boolean"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
@@ -1047,7 +1050,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1072,6 +1082,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -1207,7 +1220,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1228,6 +1248,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -2626,8 +2649,11 @@
           "type": "string"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": "object"
@@ -2927,8 +2953,11 @@
           "type": "number"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "type": {
           "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
@@ -3164,7 +3193,14 @@
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3185,6 +3221,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -3973,7 +4012,14 @@
         "axis": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Axis"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Axis"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -4016,6 +4062,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -4563,6 +4612,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
