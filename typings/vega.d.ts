@@ -16,6 +16,7 @@ declare module 'vega' {
   }
   export const Warn: number;
   export const changeset: any;
+  export const loader: any;
 }
 
 declare module 'vega-event-selector' {
