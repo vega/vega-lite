@@ -99,7 +99,7 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -249,7 +249,7 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -6162,7 +6162,7 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
@@ -6270,7 +6270,7 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
