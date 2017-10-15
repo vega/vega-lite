@@ -65,24 +65,22 @@ describe('Mark: Line', function() {
       assert.deepEqual(props.strokeWidth, {scale: 'size', field: 'variety'});
     });
 
-    it('should drop aggregate size field', function () {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
-          "data": {"url": "data/barley.json"},
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "year", "type": "ordinal"},
-            "y": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
-            "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
-          }
-        });
-        const props = line.encodeEntry(model);
-
-        // If size field is dropped, then strokeWidth only have value
-        assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
-        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE, 'when the field is aggregated.'));
+    it('should drop aggregate size field', log.wrap((localLogger) => {
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        "data": {"url": "data/barley.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "year", "type": "ordinal"},
+          "y": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
+          "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+        }
       });
-    });
+      const props = line.encodeEntry(model);
+
+      // If size field is dropped, then strokeWidth only have value
+      assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
+      assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE, 'when the field is aggregated.'));
+    }));
   });
 
   describe('with stacked y', function() {
