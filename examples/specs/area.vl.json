@@ -10,7 +10,8 @@
       "axis": {"format": "%Y"}
     },
     "y": {
-      "aggregate": "sum", "field": "count", "type": "quantitative"
+      "aggregate": "sum", "field": "count", "type": "quantitative",
+      "axis": {"title": "count"}
     }
   }
 }

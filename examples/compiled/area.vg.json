@@ -150,13 +150,13 @@
             "gridScale": "y"
         },
         {
+            "title": "count",
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Sum of count",
             "zindex": 1
         },
         {
