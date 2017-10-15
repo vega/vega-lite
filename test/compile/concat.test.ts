@@ -90,18 +90,16 @@ describe('Concat', () => {
   });
 
   describe('resolve', () => {
-    it('cannot share axes', () => {
-      log.runLocalLogger((localLogger) => {
-        parseConcatModel({
-          hconcat: [],
-          resolve: {
-            axis: {
-              x: 'shared'
-            }
+    it('cannot share axes', log.wrap((localLogger) => {
+      parseConcatModel({
+        hconcat: [],
+        resolve: {
+          axis: {
+            x: 'shared'
           }
-        });
-        assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+        }
       });
-    });
+      assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+    }));
   });
 });

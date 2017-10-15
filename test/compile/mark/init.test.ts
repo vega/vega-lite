@@ -9,44 +9,38 @@ import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 describe('compile/mark/normalize', function() {
 
   describe('orient', function() {
-    it('should return correct default for QxQ', function() {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "y": {"type": "quantitative", "field": "foo"},
-            "x": {"type": "quantitative", "field": "bar"}
-          },
-        });
-        assert.equal(model.markDef.orient, 'vertical');
-        assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
+    it('should return correct default for QxQ', log.wrap((localLogger) => {
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "quantitative", "field": "bar"}
+        },
       });
-    });
+      assert.equal(model.markDef.orient, 'vertical');
+      assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
+    }));
 
-    it('should return correct default for empty plot', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
-          "mark": "bar",
-          encoding: {}
-        });
-        assert.equal(model.markDef.orient, undefined);
-        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+    it('should return correct default for empty plot', log.wrap((localLogger) => {
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        "mark": "bar",
+        encoding: {}
       });
-    });
+      assert.equal(model.markDef.orient, undefined);
+      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+    }));
 
-    it('should return correct orient for bar with both axes discrete', function() {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "x": {"type": "ordinal", "field": "foo"},
-            "y": {"type": "ordinal", "field": "bar"}
-          },
-        });
-        assert.equal(model.markDef.orient, undefined);
-        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+    it('should return correct orient for bar with both axes discrete', log.wrap((localLogger) => {
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "x": {"type": "ordinal", "field": "foo"},
+          "y": {"type": "ordinal", "field": "bar"}
+        },
       });
-    });
+      assert.equal(model.markDef.orient, undefined);
+      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+    }));
 
 
     it('should return correct orient for vertical bar', function() {

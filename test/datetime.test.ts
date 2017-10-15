@@ -4,17 +4,15 @@ import * as log from '../src/log';
 
 describe('datetime', () => {
   describe('dateTimeExpr', () => {
-    it('should drop day if day is combined with year/month/date', () => {
-      log.runLocalLogger((localLogger) => {
-        const d = {
-          year: 2007,
-          day: 'monday'
-        };
-        const expr = dateTimeExpr(d, true);
-        assert.equal(expr, 'datetime(2007, 0, 1, 0, 0, 0, 0)');
-        assert.equal(localLogger.warns[0], log.message.droppedDay(d));
-      });
-    });
+    it('should drop day if day is combined with year/month/date', log.wrap((localLogger) => {
+      const d = {
+        year: 2007,
+        day: 'monday'
+      };
+      const expr = dateTimeExpr(d, true);
+      assert.equal(expr, 'datetime(2007, 0, 1, 0, 0, 0, 0)');
+      assert.equal(localLogger.warns[0], log.message.droppedDay(d));
+    }));
 
     it('should normalize numeric quarter correctly', () => {
       const expr = dateTimeExpr({
@@ -23,14 +21,12 @@ describe('datetime', () => {
       assert.equal(expr, 'datetime(0, 1*3, 1, 0, 0, 0, 0)');
     });
 
-    it('should log warning for quarter > 4', () => {
-      log.runLocalLogger((localLogger) => {
-        assert.equal(dateTimeExpr({
-          quarter: 5
-        }, true), 'datetime(0, 4*3, 1, 0, 0, 0, 0)');
-        assert.equal(localLogger.warns[0], log.message.invalidTimeUnit('quarter', 5));
-      });
-    });
+    it('should log warning for quarter > 4', log.wrap((localLogger) => {
+      assert.equal(dateTimeExpr({
+        quarter: 5
+      }, true), 'datetime(0, 4*3, 1, 0, 0, 0, 0)');
+      assert.equal(localLogger.warns[0], log.message.invalidTimeUnit('quarter', 5));
+    }));
 
     it('should throw error for invalid quarter', () => {
       assert.throws(() => {
