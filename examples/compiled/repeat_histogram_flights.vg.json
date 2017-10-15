@@ -240,22 +240,7 @@
                         "signal": "min(ceil(width/40), 20)"
                     },
                     "title": "BIN(distance)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_distance_y",
@@ -343,22 +328,7 @@
                         "signal": "min(ceil(width/40), 20)"
                     },
                     "title": "BIN(delay)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_delay_y",
@@ -446,22 +416,7 @@
                         "signal": "min(ceil(width/40), 20)"
                     },
                     "title": "BIN(time)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_time_y",

@@ -297,22 +297,7 @@
                         "signal": "min(ceil(width/40), 10)"
                     },
                     "title": "BIN(Horsepower)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_Horsepower_y",
@@ -401,22 +386,7 @@
                         "signal": "min(ceil(width/40), 10)"
                     },
                     "title": "BIN(Miles_per_Gallon)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_Miles_per_Gallon_y",
@@ -505,22 +475,7 @@
                         "signal": "min(ceil(width/40), 10)"
                     },
                     "title": "BIN(Acceleration)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 },
                 {
                     "scale": "child_Acceleration_y",
