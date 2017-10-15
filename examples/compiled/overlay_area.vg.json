@@ -251,15 +251,6 @@
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }

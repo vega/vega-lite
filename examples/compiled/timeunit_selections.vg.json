@@ -472,15 +472,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%S')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }
@@ -590,15 +581,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%M')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }

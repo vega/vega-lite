@@ -136,15 +136,6 @@
                     "update": {
                         "text": {
                             "signal": "utcFormat(datum.value, '%b %d, %Y %H:%M')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }
