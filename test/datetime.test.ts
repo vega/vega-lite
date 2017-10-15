@@ -97,15 +97,13 @@ describe('datetime', () => {
     });
 
     it('should use utc expression if utc is specified', () => {
-      log.runLocalLogger((localLogger) => {
-        const d = {
-          year: 2007,
-          day: 'monday',
-          utc: true
-        };
-        const expr = dateTimeExpr(d, true);
-        assert.equal(expr, 'utc(2007, 0, 1, 0, 0, 0, 0)');
-      });
+      const d = {
+        year: 2007,
+        day: 'monday',
+        utc: true
+      };
+      const expr = dateTimeExpr(d, true);
+      assert.equal(expr, 'utc(2007, 0, 1, 0, 0, 0, 0)');
     });
 
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test
