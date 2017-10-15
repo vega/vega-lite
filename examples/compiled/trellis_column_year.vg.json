@@ -99,7 +99,7 @@
                                 "value": "center"
                             },
                             "text": {
-                                "value": "Year of date"
+                                "value": "date (year)"
                             }
                         }
                     }
@@ -193,7 +193,7 @@
                     "scale": "x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "Quarter of date",
+                    "title": "date (quarter)",
                     "zindex": 1,
                     "encode": {
                         "labels": {

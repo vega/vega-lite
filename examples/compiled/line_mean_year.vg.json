@@ -115,7 +115,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year of date",
+            "title": "date (year)",
             "zindex": 1,
             "encode": {
                 "labels": {

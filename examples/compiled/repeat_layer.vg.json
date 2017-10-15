@@ -433,7 +433,7 @@
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "Month of date",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -624,7 +624,7 @@
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "Month of date",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -815,7 +815,7 @@
                     "scale": "child_wind_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "Month of date",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {

@@ -133,7 +133,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "Year-month of date",
+            "title": "date (year-month)",
             "encode": {
                 "labels": {
                     "update": {

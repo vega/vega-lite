@@ -346,11 +346,11 @@ export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config)
     return config.countTitle;
   } else if (bin) {
     return `${field} (binned)`;
-  }
-
-  const fn = timeUnit ? getTimeUnitParts(timeUnit).join('-') : aggregate;
-  if (fn) {
-    return `${titlecase(fn)} of ${field}`;
+  } else if (timeUnit) {
+    const units = getTimeUnitParts(timeUnit).join('-');
+    return `${field} (${units})`;
+  } else if (aggregate) {
+    return `${titlecase(aggregate)} of ${field}`;
   }
   return field;
 }

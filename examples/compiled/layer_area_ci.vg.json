@@ -229,7 +229,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year of Year",
+            "title": "Year (year)",
             "zindex": 1,
             "encode": {
                 "labels": {

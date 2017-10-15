@@ -303,7 +303,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "Month of date",
+            "title": "date (month)",
             "zindex": 1,
             "encode": {
                 "labels": {

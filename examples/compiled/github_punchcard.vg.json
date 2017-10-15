@@ -147,7 +147,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "Hours of time",
+            "title": "time (hours)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -172,7 +172,7 @@
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
-            "title": "Day of time",
+            "title": "time (day)",
             "zindex": 1,
             "encode": {
                 "labels": {

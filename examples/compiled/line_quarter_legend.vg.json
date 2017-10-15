@@ -163,7 +163,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year of date",
+            "title": "date (year)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -219,7 +219,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "Quarter of date",
+            "title": "date (quarter)",
             "encode": {
                 "labels": {
                     "update": {

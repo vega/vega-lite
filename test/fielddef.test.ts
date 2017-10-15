@@ -165,22 +165,22 @@ describe('fieldDef', () => {
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      assert.equal(title(fieldDef,{}), 'Month of f');
+      assert.equal(title(fieldDef,{}), 'f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
-      assert.equal(title(fieldDef,{}), 'Year-month-date of f');
+      assert.equal(title(fieldDef,{}), 'f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
-      assert.equal(title(fieldDef,{}), 'Day of f');
+      assert.equal(title(fieldDef,{}), 'f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
-      assert.equal(title(fieldDef,{}), 'Year-quarter of f');
+      assert.equal(title(fieldDef,{}), 'f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {

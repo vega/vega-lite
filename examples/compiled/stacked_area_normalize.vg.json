@@ -196,7 +196,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year-month of date",
+            "title": "date (year-month)",
             "zindex": 1,
             "encode": {
                 "labels": {
