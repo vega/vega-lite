@@ -9,7 +9,7 @@ This document describes the various changes needed to port Vega-Lite 1.x visuali
 
 ## Interaction and Composition
 
-The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now egenrates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations. 
+The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now egenrates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations.
 
 ## General
 
@@ -23,14 +23,35 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 - `transform` is now an array of transform objects (the order of the transforms is clearer).
 
-  - Formula definitions for `calculate` transforms can use the`as` property to specify output fields name instead of `field`.
-  - `aggregate`, `bin`, and `timeUnit` now can also be expressed as a transform in the `transform` array (in addition to binning in a encoding field definition).
+- Formula definitions for `calculate` transforms can use the`as` property to specify output fields name instead of `field`.
+
+For example,  the following transform in Vega-Lite v1
+
+```
+  "transform": {
+    "calculate": [{
+      "field": "license_index",
+      "expr": "datum.license === 'CC BY' ? 0 : datum.license === 'CC BY-ND' ? 1 : datum.license === 'CC BY-NC' ? 2 : datum.license === 'CC BY-NC-ND' ? 3 : 4"
+    }]
+  },
+```
+
+would become
+
+```
+"transform": [{
+  "calculate": "datum.license === 'CC BY' ? 0 : datum.license === 'CC BY-ND' ? 1 : datum.license === 'CC BY-NC' ? 2 : datum.license === 'CC BY-NC-ND' ? 3 : 4",
+  "as": "license_index"
+}]
+```
+
+- [`aggregate`](aggregate.html), [`bin`](bin.html), and [`timeUnit`](timeunit.html) now can also be expressed as a transform in the `transform` array (in addition to transforms in [a field definition of an encoding channel](encoding.html#field-def)).
 
 - For `bin`, the `"max"` and `"min"` parameters have been removed.  Instead, users can provide `"extent"`, a two-element (`[min, max]`) array indicating the range of desired bin values.  Also, the `"div"` property has been renamed to `"divide"`.
 
 ## [Marks](mark.html)
 
-- The `mark` property now can be either a mark type or (new) a [mark definition object](mark.html#mark-def).
+- The `mark` property now can be either a mark type or (new) a [mark definition object](mark.html#mark-def), which can define `clip`, `filled`, `orient`, `style`, `interpolate`, and `tension` -- in addition to the mark `type`.
 
 - A new [`rect` mark](rect.html) can be used to create arbitrary rectangles and table heat maps.
 
@@ -41,6 +62,8 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 - [`row` and `column` encodings](encoding.html#facet) are now shortcuts for creating a faceted plot using the [`facet`](facet.html) operator.
 
 - `path` channel has been removed. You can now use the `order` channel for sorting points on a line. Meanwhile, the `order` channel no longer affects the layering order of marks.
+
+- `title` property is removed from a field definition. You can use the `title` property inside `axis` and `legend` instead.
 
 - A new `tooltip` channel has been added.
 
@@ -56,7 +79,7 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 - Following Vega 3, a new `"index"` scale type maps an ordinal domain to a quantitative range (e.g., as supported by `"linear"` or `"sequential"` scales). This is particularly useful for creating ordered color ramps for ordinal data.
 
-- Similar to Vega 3, `bandSize` is now renamed to `rangeStep`.  Also, `"rangeStep": null` now makes range step fits the width or height. The original value `"fit"` for `rangeStep` (formerly `bandSize`) is removed.
+- Similar to Vega 3, `bandSize` is now renamed to `rangeStep`.  Also, `"rangeStep": null` now makes range step fits the width or height. (This `"rangeStep": null` replaces the original `bandSize: "fit"`, which is now removed.)
 
 - Better default scale types of binned fields.
 
@@ -96,6 +119,10 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 <!-- The following one is not included in the official release yet -->
 <!-- - The `properties` directive for custom `axis` and `legend` style are removed. Instead please use the `encoding` directive. -->
 
+- The field title format has been changed to be a more verbal style. For example, given a field "`field`" we change:
+  - `SUM(field)` => `Sum of field`
+  - `BIN(field)` => `field (binned)`
+  - `YEARMONTH(field)` => `field (year-month)`
 
 ## Layering
 
