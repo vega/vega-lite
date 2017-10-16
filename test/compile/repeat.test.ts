@@ -20,19 +20,17 @@ describe('Repeat', function() {
       });
     });
 
-    it('should show warning if repeat in field def cannot be resolved', () => {
-      log.runLocalLogger((localLogger) => {
-        const resolved = replaceRepeaterInEncoding({
-          x: {field: {repeat: 'row'}, type: 'quantitative'},
-          y: {field: 'bar', type: 'quantitative'}
-        }, {column: 'foo'});
+    it('should show warning if repeat in field def cannot be resolved', log.wrap((localLogger) => {
+      const resolved = replaceRepeaterInEncoding({
+        x: {field: {repeat: 'row'}, type: 'quantitative'},
+        y: {field: 'bar', type: 'quantitative'}
+      }, {column: 'foo'});
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
-          y: {field: 'bar', type: 'quantitative'}
-        });
+      assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
+      assert.deepEqual(resolved, {
+        y: {field: 'bar', type: 'quantitative'}
       });
-    });
+    }));
 
     it('should support arrays fo field defs', () => {
       const resolved = replaceRepeaterInEncoding({
@@ -89,37 +87,33 @@ describe('Repeat', function() {
       });
     });
 
-    it('should show warning if repeat in conditional cannot be resolved', () => {
-      log.runLocalLogger((localLogger) => {
-        const resolved = replaceRepeaterInEncoding({
-          color: {
-            condition: {selection: 'test', field: {repeat: 'row'}, type: 'quantitative'},
-            value: 'red'
-          }
-        }, {column: 'foo'});
+    it('should show warning if repeat in conditional cannot be resolved', log.wrap((localLogger) => {
+      const resolved = replaceRepeaterInEncoding({
+        color: {
+          condition: {selection: 'test', field: {repeat: 'row'}, type: 'quantitative'},
+          value: 'red'
+        }
+      }, {column: 'foo'});
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
-          color: {value: 'red'}
-        });
+      assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
+      assert.deepEqual(resolved, {
+        color: {value: 'red'}
       });
-    });
+    }));
 
-    it('should show warning if repeat in reversed conditional cannot be resolved', () => {
-      log.runLocalLogger((localLogger) => {
-        const resolved = replaceRepeaterInEncoding({
-          color: {
-            condition: {selection: 'test', value: 'red'},
-            field: {repeat: 'row'}, type: 'quantitative'
-          }
-        }, {column: 'foo'});
+    it('should show warning if repeat in reversed conditional cannot be resolved', log.wrap((localLogger) => {
+      const resolved = replaceRepeaterInEncoding({
+        color: {
+          condition: {selection: 'test', value: 'red'},
+          field: {repeat: 'row'}, type: 'quantitative'
+        }
+      }, {column: 'foo'});
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
-          color: {value: 'red'}
-        });
+      assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
+      assert.deepEqual(resolved, {
+        color: {value: 'red'}
       });
-    });
+    }));
   });
 
   describe('initialize children', () => {

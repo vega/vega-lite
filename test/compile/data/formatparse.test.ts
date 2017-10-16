@@ -170,15 +170,13 @@ describe('compile/data/formatparse', () => {
       ]);
     });
 
-    it('should show warning for unrecognized types', function() {
-      log.runLocalLogger((localLogger) => {
-        const p = new ParseNode({
-          x: 'foo',
-        });
-
-        assert.deepEqual(p.assembleTransforms(), []);
-        assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+    it('should show warning for unrecognized types', log.wrap((localLogger) => {
+      const p = new ParseNode({
+        x: 'foo',
       });
-    });
+
+      assert.deepEqual(p.assembleTransforms(), []);
+      assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+    }));
   });
 });
