@@ -88,6 +88,12 @@ Mapping the sum of yield to `order` channel will sort the layer of stacked bar b
 
 Here we can see that site with higher yields for each type of barley are put on the top of the stack (rightmost).
 
+If you want to define custom sort order, you can derive a new field using the [`calculate` transform](calculate.html) and sort by that field instead.  For example, the following plot makes "University Farm" and "Grand Rapids" be the first (`0`) and second values in the stack order:
+
+<div class="vl-example" data-name="stacked_bar_h_order_custom"></div>
+
+Note: we plan to have [a better syntax for customized sort order](https://github.com/vega/vega-lite/issues/2915) in the future.
+
 ## Layering Lines on top of Stacked Area Chart
 
 Since `line` marks are not stacked by default, to layer lines on top of stacked area charts, you have to manually set the `stack` offset for the lines.
