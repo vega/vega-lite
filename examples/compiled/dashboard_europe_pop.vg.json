@@ -751,7 +751,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_0_width/40)"
+                        "signal": "ceil(concat_0_width/30)"
                     },
                     "title": "Population_ages_15_64_of_total",
                     "zindex": 1
@@ -765,7 +765,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_0_width/40)"
+                        "signal": "ceil(concat_0_width/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -1123,7 +1123,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_1_width/40)"
+                        "signal": "ceil(concat_1_width/30)"
                     },
                     "title": "Population_ages_65_and_above_of_total",
                     "zindex": 1
@@ -1137,7 +1137,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_1_width/40)"
+                        "signal": "ceil(concat_1_width/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -1558,7 +1558,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_2_width/40)"
+                        "signal": "ceil(concat_2_width/30)"
                     },
                     "title": "Population_ages_65_and_above_of_total",
                     "zindex": 1
@@ -1572,7 +1572,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_2_width/40)"
+                        "signal": "ceil(concat_2_width/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -1583,7 +1583,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_2_height/40)"
+                        "signal": "ceil(concat_2_height/30)"
                     },
                     "title": "Population_ages_15_64_of_total",
                     "zindex": 1
@@ -1597,7 +1597,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_2_height/40)"
+                        "signal": "ceil(concat_2_height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,

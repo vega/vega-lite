@@ -170,7 +170,7 @@
             "orient": "bottom",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "min(ceil(width/40), 10)"
+                "signal": "min(ceil(width/30), 10)"
             },
             "title": "IMDB_Rating (binned)",
             "values": {
@@ -183,7 +183,7 @@
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "min(ceil(height/40), 10)"
+                "signal": "min(ceil(height/30), 10)"
             },
             "title": "Rotten_Tomatoes_Rating (binned)",
             "values": {
