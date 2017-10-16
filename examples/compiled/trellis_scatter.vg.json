@@ -95,7 +95,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(child_height/40)"
+                        "signal": "ceil(child_height/30)"
                     },
                     "title": "US_DVD_Sales",
                     "zindex": 1
@@ -166,7 +166,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(child_width/40)"
+                        "signal": "ceil(child_width/30)"
                     },
                     "title": "Worldwide_Gross",
                     "zindex": 1
@@ -247,7 +247,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(child_width/40)"
+                        "signal": "ceil(child_width/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -262,7 +262,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(child_height/40)"
+                        "signal": "ceil(child_height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,

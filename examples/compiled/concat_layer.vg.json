@@ -317,7 +317,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(concat_0_width/40), 10)"
+                        "signal": "min(ceil(concat_0_width/30), 10)"
                     },
                     "title": "IMDB_Rating (binned)",
                     "values": {
@@ -330,7 +330,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(concat_0_height/40), 10)"
+                        "signal": "min(ceil(concat_0_height/30), 10)"
                     },
                     "title": "Rotten_Tomatoes_Rating (binned)",
                     "values": {
@@ -468,7 +468,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_1_height/40)"
+                        "signal": "ceil(concat_1_height/30)"
                     },
                     "title": "Number of Records",
                     "zindex": 1
@@ -482,7 +482,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_1_height/40)"
+                        "signal": "ceil(concat_1_height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,

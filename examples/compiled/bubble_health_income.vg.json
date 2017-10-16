@@ -294,7 +294,7 @@
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/30)"
             },
             "title": "health",
             "zindex": 1
@@ -308,7 +308,7 @@
             "maxExtent": 0,
             "minExtent": 0,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/30)"
             },
             "ticks": false,
             "zindex": 0,

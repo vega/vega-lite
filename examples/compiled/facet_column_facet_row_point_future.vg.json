@@ -239,7 +239,7 @@
                             "orient": "left",
                             "labelOverlap": true,
                             "tickCount": {
-                                "signal": "ceil(child_child_height/40)"
+                                "signal": "ceil(child_child_height/30)"
                             },
                             "title": "Acceleration",
                             "zindex": 1
@@ -263,7 +263,7 @@
                             "orient": "bottom",
                             "labelOverlap": true,
                             "tickCount": {
-                                "signal": "ceil(child_child_width/40)"
+                                "signal": "ceil(child_child_width/30)"
                             },
                             "title": "Horsepower",
                             "zindex": 1
@@ -356,7 +356,7 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "tickCount": {
-                                "signal": "ceil(child_child_width/40)"
+                                "signal": "ceil(child_child_width/30)"
                             },
                             "ticks": false,
                             "zindex": 0,
@@ -371,7 +371,7 @@
                             "maxExtent": 0,
                             "minExtent": 0,
                             "tickCount": {
-                                "signal": "ceil(child_child_height/40)"
+                                "signal": "ceil(child_child_height/30)"
                             },
                             "ticks": false,
                             "zindex": 0,

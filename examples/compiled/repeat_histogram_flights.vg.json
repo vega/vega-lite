@@ -237,7 +237,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "min(ceil(width/30), 20)"
                     },
                     "title": "distance (binned)",
                     "values": {
@@ -250,7 +250,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "title": "Number of Records",
                     "zindex": 1
@@ -264,7 +264,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -328,7 +328,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "min(ceil(width/30), 20)"
                     },
                     "title": "delay (binned)",
                     "values": {
@@ -341,7 +341,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "title": "Number of Records",
                     "zindex": 1
@@ -355,7 +355,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -419,7 +419,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "min(ceil(width/30), 20)"
                     },
                     "title": "time (binned)",
                     "values": {
@@ -432,7 +432,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "title": "Number of Records",
                     "zindex": 1
@@ -446,7 +446,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/30)"
                     },
                     "ticks": false,
                     "zindex": 0,

@@ -48,7 +48,7 @@ describe('compile/axis', ()=> {
   describe('tickCount', function() {
     it('should return undefined by default for a binned field', () => {
       const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
-      assert.deepEqual(tickCount, {signal: 'min(ceil(a/40), 10)'});
+      assert.deepEqual(tickCount, {signal: 'min(ceil(a/30), 10)'});
     });
 
     ['month', 'hours', 'day', 'quarter'].forEach((timeUnit: TimeUnit) => {
@@ -58,9 +58,9 @@ describe('compile/axis', ()=> {
         });
     });
 
-    it('should return size/40 by default for linear scale', () => {
+    it('should return size/30 by default for linear scale', () => {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
-      assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
+      assert.deepEqual(tickCount, {signal: 'ceil(a/30)'});
     });
 
     it('should return undefined by default for log scale', function () {
