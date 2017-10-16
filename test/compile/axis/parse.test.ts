@@ -138,7 +138,7 @@ describe('Axis', function() {
 
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.equal(axisComponents.y[0].main.get('title'), 'MEAN(a)');
+      assert.equal(axisComponents.y[0].main.get('title'), 'Mean of a');
     });
 
     it('correctly combines different title', () => {
@@ -176,7 +176,7 @@ describe('Axis', function() {
       parseLayerAxis(model);
       const axisComponents = model.component.axes;
 
-      assert.equal(axisComponents.y[0].main.get('title'), 'MAX(Horsepower), MIN(Horsepower)');
+      assert.equal(axisComponents.y[0].main.get('title'), 'Max of Horsepower, Min of Horsepower');
     });
   });
 

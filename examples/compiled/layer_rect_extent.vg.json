@@ -325,7 +325,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Miles_per_Gallon, MIN(Miles_per_Gallon), MAX(Miles_per_Gallon), MAX(Miles_per_Gallon)",
+            "title": "Miles_per_Gallon, Min of Miles_per_Gallon, Max of Miles_per_Gallon, Max of Miles_per_Gallon",
             "zindex": 1
         },
         {

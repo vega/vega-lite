@@ -145,7 +145,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "BIN(IMDB_Rating)",
+            "title": "IMDB_Rating (binned)",
             "zindex": 1,
             "encode": {
                 "labels": {

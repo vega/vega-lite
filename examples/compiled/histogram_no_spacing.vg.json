@@ -137,7 +137,7 @@
             "tickCount": {
                 "signal": "min(ceil(width/40), 10)"
             },
-            "title": "BIN(IMDB_Rating)",
+            "title": "IMDB_Rating (binned)",
             "values": {
                 "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
             },

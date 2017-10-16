@@ -179,7 +179,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEDIAN(yield)",
+            "title": "Median of yield",
             "zindex": 1
         },
         {

@@ -433,7 +433,7 @@
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "MONTH(date)",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -461,7 +461,7 @@
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(temp_max)",
+                    "title": "Mean of temp_max",
                     "zindex": 1
                 },
                 {
@@ -624,7 +624,7 @@
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "MONTH(date)",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -652,7 +652,7 @@
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(precipitation)",
+                    "title": "Mean of precipitation",
                     "zindex": 1
                 },
                 {
@@ -815,7 +815,7 @@
                     "scale": "child_wind_x",
                     "orient": "bottom",
                     "labelOverlap": true,
-                    "title": "MONTH(date)",
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -843,7 +843,7 @@
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(wind)",
+                    "title": "Mean of wind",
                     "zindex": 1
                 },
                 {

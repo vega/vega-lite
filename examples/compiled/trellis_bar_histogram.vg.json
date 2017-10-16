@@ -190,7 +190,7 @@
                     "tickCount": {
                         "signal": "min(ceil(child_width/40), 15)"
                     },
-                    "title": "BIN(Horsepower)",
+                    "title": "Horsepower (binned)",
                     "values": {
                         "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
                     },

@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Horizon Graph with 2 layers",
+    "description": "Horizon Graph with 2 layers. (See https://idl.cs.washington.edu/papers/horizon/ for more details on Horizon Graphs.)",
     "autosize": "pad",
     "padding": 5,
     "width": 300,
@@ -292,13 +292,13 @@
             "gridScale": "y"
         },
         {
+            "title": "y",
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "y, ny",
             "zindex": 1
         },
         {

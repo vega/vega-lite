@@ -256,7 +256,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "price, MEAN(price)",
+            "title": "price, Mean of price",
             "zindex": 1
         },
         {

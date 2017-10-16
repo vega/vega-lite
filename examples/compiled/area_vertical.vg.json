@@ -126,7 +126,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "SUM(Weight_in_lbs)",
+            "title": "Sum of Weight_in_lbs",
             "zindex": 1
         },
         {
@@ -151,7 +151,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "YEAR(Year)",
+            "title": "Year (year)",
             "zindex": 1,
             "encode": {
                 "labels": {

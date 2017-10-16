@@ -142,7 +142,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(Acceleration)",
+            "title": "Mean of Acceleration",
             "zindex": 1
         },
         {

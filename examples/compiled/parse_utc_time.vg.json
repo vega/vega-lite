@@ -118,7 +118,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEAR(Year)",
+            "title": "Year (year)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -152,7 +152,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(Horsepower)",
+            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {

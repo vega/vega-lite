@@ -127,7 +127,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "SUM(Acceleration)",
+            "title": "Sum of Acceleration",
             "zindex": 1
         },
         {

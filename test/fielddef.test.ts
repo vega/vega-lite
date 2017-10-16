@@ -146,7 +146,7 @@ describe('fieldDef', () => {
 
   describe('title()', () => {
     it('should return correct title for aggregate', () => {
-      assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'MEAN(f)');
+      assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'Mean of f');
     });
 
     it('should return correct title for count', () => {
@@ -155,12 +155,32 @@ describe('fieldDef', () => {
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(title(fieldDef,{}), 'BIN(f)');
+      assert.equal(title(fieldDef,{}), 'f (binned)');
+    });
+
+    it('should return correct title for bin', () => {
+      const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
+      assert.equal(title(fieldDef,{fieldTitle: 'functional'}), 'BIN(f)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      assert.equal(title(fieldDef,{}), 'MONTH(f)');
+      assert.equal(title(fieldDef,{}), 'f (month)');
+    });
+
+    it('should return correct title for timeUnit', () => {
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
+      assert.equal(title(fieldDef,{}), 'f (year-month-date)');
+    });
+
+    it('should return correct title for timeUnit', () => {
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
+      assert.equal(title(fieldDef,{}), 'f (day)');
+    });
+
+    it('should return correct title for timeUnit', () => {
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
+      assert.equal(title(fieldDef,{}), 'f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {

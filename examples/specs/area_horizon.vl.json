@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "description": "Horizon Graph with 2 layers",
+  "description": "Horizon Graph with 2 layers. (See https://idl.cs.washington.edu/papers/horizon/ for more details on Horizon Graphs.)",
   "width": 300,
   "height": 50,
   "data": {
@@ -50,7 +50,8 @@
       },
       "y": {
         "field": "ny", "type": "quantitative",
-        "scale": {"domain": [0,50]}
+        "scale": {"domain": [0,50]},
+        "axis": {"title": "y"}
       },
       "opacity": {"value": 0.3}
     }

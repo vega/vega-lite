@@ -122,7 +122,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEARMONTH(date)",
+            "title": "date (year-month)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -150,13 +150,13 @@
             "gridScale": "y"
         },
         {
+            "title": "count",
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "SUM(count)",
             "zindex": 1
         },
         {

@@ -163,7 +163,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(age)",
+            "title": "Mean of age",
             "zindex": 1
         },
         {

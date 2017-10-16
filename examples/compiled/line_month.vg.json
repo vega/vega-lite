@@ -115,7 +115,7 @@
             "scale": "x",
             "orient": "bottom",
             "labelOverlap": true,
-            "title": "MONTH(date)",
+            "title": "date (month)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -146,7 +146,7 @@
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(temp)",
+            "title": "Mean of temp",
             "zindex": 1
         },
         {

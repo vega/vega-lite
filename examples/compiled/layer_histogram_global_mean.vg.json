@@ -210,7 +210,7 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(IMDB_Rating)",
+            "title": "Mean of IMDB_Rating",
             "zindex": 1
         },
         {

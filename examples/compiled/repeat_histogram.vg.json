@@ -296,7 +296,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Horsepower)",
+                    "title": "Horsepower (binned)",
                     "values": {
                         "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
                     },
@@ -388,7 +388,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Miles_per_Gallon)",
+                    "title": "Miles_per_Gallon (binned)",
                     "values": {
                         "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
                     },
@@ -480,7 +480,7 @@
                     "tickCount": {
                         "signal": "min(ceil(width/40), 10)"
                     },
-                    "title": "BIN(Acceleration)",
+                    "title": "Acceleration (binned)",
                     "values": {
                         "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
                     },

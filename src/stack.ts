@@ -154,7 +154,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Warn if stacking summative aggregate
-  if (!contains(SUM_OPS, stackedFieldDef.aggregate)) {
+  if (stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }
 

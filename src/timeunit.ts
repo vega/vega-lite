@@ -264,6 +264,15 @@ function dateMethods(singleUnit: SingleTimeUnit, isUtc: boolean) {
   return {setDateMethod, getDateMethod};
 }
 
+export function getTimeUnitParts(timeUnit: TimeUnit) {
+  return TIMEUNIT_PARTS.reduce((parts, part) => {
+    if (containsTimeUnit(timeUnit, part)) {
+      return parts.concat(part);
+    }
+    return parts;
+  }, []);
+}
+
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   const index = fullTimeUnit.indexOf(timeUnit);
