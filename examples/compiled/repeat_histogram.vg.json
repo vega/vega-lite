@@ -22,10 +22,6 @@
                     "as": "Horsepower"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "extent",
                     "field": "Horsepower",
                     "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
@@ -80,6 +76,10 @@
                         "count_*_end"
                     ],
                     "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
                 }
             ]
         },
@@ -91,10 +91,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
                     "as": "Miles_per_Gallon"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 },
                 {
                     "type": "extent",
@@ -151,6 +147,10 @@
                         "count_*_end"
                     ],
                     "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] !== null && !isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"])"
                 }
             ]
         },
@@ -162,10 +162,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"Acceleration\"])",
                     "as": "Acceleration"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
                 },
                 {
                     "type": "extent",
@@ -222,6 +218,10 @@
                         "count_*_end"
                     ],
                     "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
                 }
             ]
         }
