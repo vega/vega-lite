@@ -549,9 +549,6 @@
                 "signal": "min(ceil(width/40), 10)"
             },
             "title": "BIN(Acceleration)",
-            "values": {
-                "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
-            },
             "zindex": 1
         },
         {
