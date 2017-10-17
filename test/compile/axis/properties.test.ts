@@ -48,7 +48,7 @@ describe('compile/axis', ()=> {
   describe('tickCount', function() {
     it('should return undefined by default for a binned field', () => {
       const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
-      assert.deepEqual(tickCount, {signal: 'min(ceil(a/40), 10)'});
+      assert.deepEqual(tickCount, {signal: 'ceil(a/20)'});
     });
 
     ['month', 'hours', 'day', 'quarter'].forEach((timeUnit: TimeUnit) => {
