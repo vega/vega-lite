@@ -1,6 +1,6 @@
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {flagKeys, toSet} from './util';
-import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
+import {VgMarkConfig} from './vega.schema';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
@@ -53,7 +53,32 @@ export function isMark(m: string): m is Mark {
 
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
-export interface MarkDef {
+
+export interface MarkConfig extends VgMarkConfig {
+  // ---------- Color ----------
+  /**
+   * Whether the mark's color should be used as fill color instead of stroke color.
+   *
+   * __Default value:__ `true` for all marks except `point` and `false` for `point`.
+   *
+   * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
+   *
+   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
+   *
+   */
+  filled?: boolean;
+
+  /**
+   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   *
+   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
+   *
+   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
+   */
+  color?: string;
+}
+
+export interface MarkDef extends MarkConfig {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -70,47 +95,6 @@ export interface MarkDef {
    */
   style?: string | string[];
 
-  /**
-   * Whether the mark's color should be used as fill color instead of stroke color.
-   *
-   * __Default value:__ All marks except `"point"`, `"line"`, and `"rule"` are filled by default.
-   */
-  filled?: boolean;
-
-  /**
-   * Orientation of the marks.
-   */
-  orient?: Orient;
-
-  /**
-   * The line interpolation method to use for line and area marks. One of the following:
-   * - `"linear"`: piecewise linear segments, as in a polyline.
-   * - `"linear-closed"`: close the linear segments to form a polygon.
-   * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
-   * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
-   * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
-   * - `"basis"`: a B-spline, with control point duplication on the ends.
-   * - `"basis-open"`: an open B-spline; may not intersect the start or end.
-   * - `"basis-closed"`: a closed B-spline, as in a loop.
-   * - `"cardinal"`: a Cardinal spline, with control point duplication on the ends.
-   * - `"cardinal-open"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.
-   * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
-   * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
-   * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
-   *
-   * For more information about each interpolation method, please see [Vega's line interpolation docs](https://vega.github.io/vega/docs/marks/line/).
-   */
-  interpolate?: Interpolate;
-
-  /**
-   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
-   *
-   * TODO: provide the link to D3 docs.
-   *
-   * @minimum 0
-   * @maximum 1
-   */
-  tension?: number;
   /**
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
@@ -154,30 +138,6 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 
-export interface MarkConfig extends VgMarkConfig {
-
-  // ---------- Color ----------
-  /**
-   * Whether the mark's color should be used as fill color instead of stroke color.
-   *
-   * __Default value:__ `true` for all marks except `point` and `false` for `point`.
-   *
-   * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
-   *
-   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
-   *
-   */
-  filled?: boolean;
-
-  /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
-   *
-   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
-   *
-   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
-   */
-  color?: string;
-}
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',

@@ -113,6 +113,9 @@
             },
             "encode": {
                 "update": {
+                    "orient": {
+                        "value": "vertical"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_Year"
@@ -130,9 +133,6 @@
                     },
                     "opacity": {
                         "value": 0.3
-                    },
-                    "orient": {
-                        "value": "vertical"
                     }
                 }
             }

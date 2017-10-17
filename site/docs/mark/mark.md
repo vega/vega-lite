@@ -62,9 +62,9 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 }
 ```
 
-A mark definition object can contains the following values.
+A mark definition object can contains the following properties and [all properties of the mark config](#config):
 
-{% include table.html props="type,style,clip,filled,orient,interpolate,tension" source="MarkDef" %}
+{% include table.html props="type,style,clip" source="MarkDef" %}
 
 ### Example: Filled Points
 
@@ -72,13 +72,20 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 <span class="vl-example" data-name="point_filled"></span>
 
-### Example: interpolate with `monotone`
+### Example: Interpolate with `monotone`
 
 <span class="vl-example" data-name="line_monotone"></span>
 
-### Example: interpolate with `line-step` (Step-Chart)
+### Example: Interpolate with `line-step` (Step-Chart)
 
 <span class="vl-example" data-name="line_step"></span>
+
+### Example: Offsetting Labels
+
+You can use [`text`](text.html) marks as labels and set its offset (`dx` or `dy`), `align`, and `baseline` properties of the mark definition.
+
+<span class="vl-example" data-name="layer_bar_labels"></span>
+
 
 {:#config}
 ## Mark Config
@@ -195,4 +202,6 @@ In addition to custom `style` names, Vega-Lite includes the following built-in s
 
 You can use [`text` marks](text.html) as labels for other marks by setting `style` for the marks and using [style config](mark.html#style-config) to configure offset (`dx` or `dy`), `align`, and `baseline`.
 
-<span class="vl-example" data-name="layer_bar_labels"></span>
+<span class="vl-example" data-name="layer_bar_labels_style"></span>
+
+See also: [a similar example that uses mark definition to configure offset, align, and baseline](text.html#labels).

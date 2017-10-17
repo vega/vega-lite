@@ -15,16 +15,20 @@
       "x": {"field": "b", "type": "quantitative"}
     }
   }, {
-    "mark": {
-      "type": "text",
-      "align": "left",
-      "baseline": "middle",
-      "dx": 3
-    },
+    "mark": {"type": "text", "style": "label"},
     "encoding": {
       "y": {"field": "a", "type": "ordinal"},
       "x": {"field": "b", "type": "quantitative"},
       "text": {"field": "b", "type": "quantitative"}
     }
-  }]
+  }],
+  "config": {
+    "style": {
+      "label": {
+        "align": "left",
+        "baseline": "middle",
+        "dx": 3
+      }
+    }
+  }
 }

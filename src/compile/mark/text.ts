@@ -20,6 +20,7 @@ export const text: MarkCompiler = {
     const textDef = encoding.text;
 
     return {
+      ...mixins.markDefProperties(model.markDef, true),
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
@@ -43,8 +44,8 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
 }
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const alignConfig = getMarkConfig('align', markDef, config);
-  if (alignConfig === undefined) {
+  const align = markDef.align || getMarkConfig('align', markDef, config);
+  if (align === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';
   }
   // If there is a config, Vega-parser will process this already.
