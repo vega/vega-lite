@@ -338,7 +338,7 @@
             "orient": "bottom",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(width/40)"
+                "signal": "ceil(width/25)"
             },
             "zindex": 1
         },
@@ -351,7 +351,7 @@
             "maxExtent": 0,
             "minExtent": 0,
             "tickCount": {
-                "signal": "ceil(width/40)"
+                "signal": "ceil(width/25)"
             },
             "ticks": false,
             "zindex": 0,

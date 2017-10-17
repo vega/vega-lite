@@ -145,7 +145,7 @@
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/25)"
             },
             "title": "Mean of temp_range",
             "zindex": 1
@@ -159,7 +159,7 @@
             "maxExtent": 0,
             "minExtent": 0,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/25)"
             },
             "ticks": false,
             "zindex": 0,
