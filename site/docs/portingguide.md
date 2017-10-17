@@ -63,7 +63,7 @@ would become
 
 - `path` channel has been removed. You can now use the `order` channel for sorting points on a line. Meanwhile, the `order` channel no longer affects the layering order of marks.
 
-- `title` property is removed from a field definition. You can use the `title` property inside `axis` and `legend` instead.
+- `title` property has been removed from field definitions. You can use the `title` property inside `axis` and `legend` instead.
 
 - A new `tooltip` channel has been added.
 
