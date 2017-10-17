@@ -18,10 +18,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -40,6 +36,10 @@
                     "as": [
                         "mean_temp"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }
@@ -107,22 +107,22 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(temp)",
+            "title": "Mean of temp",
             "zindex": 1
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -133,7 +133,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "YEARMONTH(date)",
+            "title": "date (year-month)",
             "encode": {
                 "labels": {
                     "update": {

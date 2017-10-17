@@ -221,9 +221,9 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
-            "title": "MONTH(date)",
+            "labelOverlap": true,
+            "title": "date (month)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -246,22 +246,22 @@
         },
         {
             "scale": "layer_0_y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(precipitation)",
+            "title": "Mean of precipitation",
             "zindex": 1
         },
         {
             "scale": "layer_1_y",
-            "labelOverlap": true,
             "orient": "right",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(temp_max)",
+            "title": "Mean of temp_max",
             "zindex": 1
         }
     ],

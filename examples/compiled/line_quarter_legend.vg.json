@@ -19,10 +19,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "year_date",
                     "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
@@ -47,6 +43,10 @@
                     "as": [
                         "mean_price"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"quarter_date\"] !== null && !isNaN(datum[\"quarter_date\"])"
                 }
             ]
         }
@@ -125,8 +125,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "year"
+            ]
         },
         {
             "name": "y",
@@ -159,27 +158,18 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEAR(date)",
+            "title": "date (year)",
             "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }
@@ -187,12 +177,12 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -202,22 +192,22 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(price)",
+            "title": "Mean of price",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -229,7 +219,7 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "QUARTER(date)",
+            "title": "date (quarter)",
             "encode": {
                 "labels": {
                     "update": {

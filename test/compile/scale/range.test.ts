@@ -7,13 +7,13 @@ import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
-import {CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType} from '../../../src/scale';
+import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from '../../../src/scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/scale', () => {
   describe('parseRange()', function() {
-    describe('x/y', function() {
-      it('should return config.cell.width for x-continous scales by default.', () => {
+    describe('position', () => {
+      it('should return [0, plot_width] for x-continous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           assert.deepEqual(
             parseRangeForChannel('x', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', false, 'plot_width', []),
@@ -22,7 +22,7 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should return config.cell.height for y-continous scales by default.', () => {
+      it('should return [plot_height,0] for y-continuous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           assert.deepEqual(
             parseRangeForChannel('y', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', false, 'plot_height', []),
@@ -31,12 +31,21 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should not support custom range.', log.wrap((localLogger) => {
+      it('should return [0, plot_height] for y-discrete scales with height by default.', () => {
+        for (const scaleType of DISCRETE_DOMAIN_SCALES) {
+          assert.deepEqual(
+            parseRangeForChannel('y', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', true, 'plot_height', []),
+            makeImplicit([0, {signal: 'plot_height'}])
+          );
+        }
+      });
+
+      it('should support custom range.', log.wrap((localLogger) => {
         assert.deepEqual(
           parseRangeForChannel('x', 'linear', QUANTITATIVE, {range: [0, 100]}, defaultConfig, true, 'point', false, 'plot_width', []),
-          makeImplicit([0, {signal: 'plot_width'}])
+          makeExplicit([0, 100])
         );
-        assert.deepEqual(localLogger.warns[0], log.message.CANNOT_USE_RANGE_WITH_POSITION);
+        assert.deepEqual(localLogger.warns.length, 0);
       }));
 
       it('should return config.scale.rangeStep for band/point scales by default.', () => {

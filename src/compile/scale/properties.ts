@@ -1,9 +1,8 @@
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {SortField, SortOrder} from '../../sort';
-import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
@@ -68,7 +67,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 
 // Note: This method is used in Voyager.
 export function getDefaultValue(
-  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField,
+  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField<string>,
   scaleType: ScaleType, scalePadding: number, scalePaddingInner: number,
   specifiedDomain: Scale['domain'], scaleConfig: ScaleConfig) {
 
@@ -132,13 +131,8 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
-
-
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
-  if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
-    return smallestUnit(fieldDef.timeUnit) as any;
-  }
-  if (fieldDef.bin) {
+  if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
   return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
@@ -146,6 +140,13 @@ export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<
 
 export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig) {
   if (util.contains([X, Y], channel)) {
+    if (isContinuousToContinuous(scaleType)) {
+      if (scaleConfig.continuousPadding !== undefined) {
+        return scaleConfig.continuousPadding;
+      }
+      // TODO: better default rule for bar
+    }
+
     if (scaleType === ScaleType.POINT) {
       return scaleConfig.pointPadding;
     }
@@ -192,7 +193,7 @@ export function paddingOuter(padding: number, channel: Channel, scaleType: Scale
   return undefined;
 }
 
-export function reverse(scaleType: ScaleType, sort: SortOrder | SortField) {
+export function reverse(scaleType: ScaleType, sort: SortOrder | SortField<string>) {
   if (hasContinuousDomain(scaleType) && sort === 'descending') {
     // For continuous domain scales, Vega does not support domain sort.
     // Thus, we reverse range instead if sort is descending

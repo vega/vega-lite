@@ -150,6 +150,11 @@
   ],
   "Layering": [
     {
+      "name": "layer_bar_labels",
+      "title": "Simple Bar Chart with Labels",
+      "style": "background-size: auto 70%; background-position-y: center;"
+    },
+    {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
     },{
@@ -196,7 +201,18 @@
     },
     {
       "name": "layer_ranged_dot",
-      "title": "Ranged Dot Plot"
+      "title": "Ranged Dot Plot",
+      "style": "background-size: auto 70%; background-position-y: center;"
+    },
+    {
+      "name": "layer_bar_dual_axis",
+      "title": "Layered Plot with Dual-Axis",
+      "style": "background-size: 100% auto; background-position-y: center;"
+    },
+    {
+      "name": "area_horizon",
+      "title": "Horizon Graph",
+      "style": "background-size: auto 70%; background-position-y: center;"
     }
   ],
   "Composition": [

@@ -50,12 +50,6 @@ export class LocalLogger implements LoggerInterface {
   }
 }
 
-export function runLocalLogger(f: (localLogger: LocalLogger) => void) {
-  const localLogger = current = new LocalLogger();
-  f(localLogger);
-  reset();
-}
-
 export function wrap(f: (logger: LocalLogger) => void) {
   return () => {
     const logger = current = new LocalLogger();
@@ -122,8 +116,11 @@ export namespace message {
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
   }
-  // TITLE
 
+  // CONCAT
+  export const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views.';
+
+  // TITLE
   export function cannotSetTitleAnchor(type: string) {
     return `Cannot set title "anchor" for a ${type} spec`;
   }
@@ -216,9 +213,6 @@ export namespace message {
     return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 
-  export const CANNOT_USE_RANGE_WITH_POSITION =
-    'Cannot use a custom "range" with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
-
   export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
     return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;
   }
@@ -280,8 +274,8 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function cannotStackNonSummativeAggregate(aggregate: string) {
-    return `Cannot stack when the aggregate function is non-summative ("${aggregate}")`;
+  export function stackNonSummativeAggregate(aggregate: string) {
+    return `Stacking is applied even though the aggregate function is non-summative ("${aggregate}")`;
   }
 
   // TIMEUNIT

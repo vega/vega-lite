@@ -1,14 +1,14 @@
-import {Axis, AXIS_PROPERTIES, AXIS_PROPERTY_TYPE, AxisEncoding, VG_AXIS_PROPERTIES} from '../../axis';
+import {Axis, AXIS_PROPERTY_TYPE, AxisEncoding, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
 import {keys, some} from '../../util';
-import {AxisOrient} from '../../vega.schema';
-import {VgAxis, VgAxisEncode} from '../../vega.schema';
+import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentPart} from './component';
+import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
@@ -214,31 +214,34 @@ export function parseMainAxis(channel: PositionScaleChannel, model: UnitModel): 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: boolean): AxisComponentPart {
   const axis = model.axis(channel);
 
-  const axisComponent = new AxisComponentPart(
-    {},
-    {scale: model.scaleName(channel)} // implicit
-  );
+  const axisComponent = new AxisComponentPart();
 
   // 1.2. Add properties
-  AXIS_PROPERTIES.forEach(function(property) {
+  VG_AXIS_PROPERTIES.forEach(function(property) {
     const value = getProperty(property, axis, channel, model, isGridAxis);
     if (value !== undefined) {
-      const explicit = property === 'values' ?
-        !!axis.values :  // specified axis.values is already respected, but may get transformed.
+      const explicit =
+        // specified axis.values is already respected, but may get transformed.
+        property === 'values' ? !!axis.values :
+        // both VL axis.encoding and axis.labelAngle affect VG axis.encode
+        property === 'encode' ? !!axis.encoding || !!axis.labelAngle :
         value === axis[property];
 
-      axisComponent.set(property, value, explicit);
+      const configValue = getAxisConfig(property, model.config, channel, axisComponent.get('orient'), model.getScaleComponent(channel).get('type'));
+
+      if (
+        explicit || configValue === undefined ||
+        // A lot of rules need to be applied for the grid axis
+        // FIXME: this is not perfectly correct, but we need to rewrite axis component to have one axis and separate them later during assembly anyway.
+        isGridAxis
+      ) {
+        // Do not apply implicit rule if there is a config value
+        axisComponent.set(property, value, explicit);
+      }
     }
   });
 
-  // Special case for gridScale since gridScale is not a Vega-Lite Axis property.
-  const gridScale = properties.gridScale(model, channel, isGridAxis);
-  if (gridScale !== undefined) {
-    axisComponent.set('gridScale', gridScale, false);
-  }
-
   // 2) Add guide encode definition groups
-
   const axisEncoding = axis.encoding || {};
   const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
     if (!hasAxisPart(axisComponent, part)) {
@@ -247,7 +250,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: 
     }
 
     const value = part === 'labels' ?
-      encode.labels(model, channel, axisEncoding.labels || {}, axisComponent) :
+      encode.labels(model, channel, axisEncoding.labels || {}, axisComponent.get('orient')) :
       axisEncoding[part] || {};
 
     if (value !== undefined && keys(value).length > 0) {
@@ -264,7 +267,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel, isGridAxis: 
   return axisComponent;
 }
 
-function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
+function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
   const fieldDef = model.fieldDef(channel);
 
   if ((isGridAxis && AXIS_PROPERTY_TYPE[property] === 'main') ||
@@ -274,6 +277,11 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
   }
 
   switch (property) {
+    case 'scale':
+      return model.scaleName(channel);
+    case 'gridScale':
+      return properties.gridScale(model, channel, isGridAxis);
+
     case 'domain':
       return properties.domain(property, specifiedAxis, isGridAxis, channel);
     case 'format':
@@ -314,5 +322,5 @@ function getProperty<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: 
       return getSpecifiedOrDefaultValue(specifiedAxis.zindex, properties.zindex(isGridAxis));
   }
   // Otherwise, return specified property.
-  return specifiedAxis[property];
+  return isAxisProperty(property) ? specifiedAxis[property] : undefined;
 }

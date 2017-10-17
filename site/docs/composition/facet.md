@@ -36,21 +36,24 @@ To create a faceted view, define how the data should be faceted in `facet` and h
 In addition to [common properties of a view specification](spec.html#common),
 a facet specification has the following properties:
 
-{% include table.html props="facet,spec,resolve" source="FacetedSpec" %}
+{% include table.html props="facet,spec,resolve" source="FacetSpec" %}
 
-### Facet Definition
+{:#mapping}
+### Facet Mapping
 
-The `facet` property is an object with the following properties:
+The `facet` property of a faceted view specification describes mappings between `row` and `column` and their field definitions:
 
-{% include table.html props="column,row" source="Facet" %}
+{% include table.html props="column,row" source="FacetMapping" %}
 
+{:#field-def}
 ### Facet Field Definition
 
-A `FacetFieldDef` is similar to a [channel definition](encoding.html#def).
+A `FacetFieldDef` is a [field definition](encoding.html#field-def) that has `header` (instead of `scale` and `axis`).
+
+{% include table.html props="aggregate,bin,field,timeUnit,type,header" source="FacetFieldDef" %}
 
 **Note** Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode a constant `value`. In addition, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).
 
-{% include table.html props="aggregate,bin,field,header,timeUnit,type" source="FacetFieldDef" %}
 
 ### Example
 
@@ -63,7 +66,22 @@ resolution.
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
 
-## `row` / `column` Encoding Channels
+
+{:#header}
+### Facet Headers
+
+Similar to axes of position channels, a header of a facet channel provides guides to convey the data value that each row and column represent.
+
+By default, Vega-Lite automatically creates axes with default properties for `row` and `column` channels of a faceted view.
+User can set the `header` property of row- or column-[field definition](#field-def) to an object to customize header properties.
+
+{% include table.html props="format,title" source="Header" %}
+
+__See also:__ You may also use `guide-title` and `guide-label` [style configs](mark.html#style-config) to customize common styles for [axis](axis.html), [legend](legend.html), and header labels and titles.
+
+## Row & Column Encoding Channels
+
+The `row` and `column` encoding channels.
 
 The [facet channels](encoding.html#facet) are encoding channels, which produce a trellis plot that facets a plot into columns or rows respectively. Vega-Lite automatically translates this shortcut to use the facet operator.
 

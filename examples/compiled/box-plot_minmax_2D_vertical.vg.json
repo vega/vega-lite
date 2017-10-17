@@ -209,7 +209,7 @@
                         "band": 0.5
                     },
                     "width": {
-                        "value": 5
+                        "value": 14
                     },
                     "y": {
                         "scale": "y",
@@ -247,7 +247,7 @@
                         "field": "midBox"
                     },
                     "width": {
-                        "value": 5
+                        "value": 14
                     },
                     "height": {
                         "value": 1
@@ -344,8 +344,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "age",
             "zindex": 1,
             "encode": {
@@ -367,8 +367,8 @@
         {
             "title": "population",
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -376,12 +376,12 @@
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

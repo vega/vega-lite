@@ -53,10 +53,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_distance",
@@ -71,6 +67,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
                 }
             ]
         },
@@ -106,10 +106,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_distance",
@@ -124,6 +120,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
                 }
             ]
         },
@@ -155,10 +155,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_delay",
@@ -173,6 +169,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
                 }
             ]
         },
@@ -208,10 +208,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_delay",
@@ -226,6 +222,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
                 }
             ]
         },
@@ -257,10 +257,6 @@
                     }
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_time",
@@ -275,6 +271,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
                 }
             ]
         },
@@ -310,10 +310,6 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "bin_maxbins_20_time",
@@ -328,6 +324,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
                 }
             ]
         }
@@ -486,33 +486,21 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(distance)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "title": "distance (binned)",
+                    "values": {
+                        "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_distance_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -521,12 +509,12 @@
                 },
                 {
                     "scale": "child_distance_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -667,33 +655,21 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(delay)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "title": "delay (binned)",
+                    "values": {
+                        "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_delay_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -702,12 +678,12 @@
                 },
                 {
                     "scale": "child_delay_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -848,33 +824,21 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "min(ceil(width/40), 20)"
                     },
-                    "title": "BIN(time)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
+                    "title": "time (binned)",
+                    "values": {
+                        "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_time_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -883,12 +847,12 @@
                 },
                 {
                     "scale": "child_time_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },

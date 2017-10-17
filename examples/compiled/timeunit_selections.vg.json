@@ -47,13 +47,13 @@
                     "as": "price"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
                     "type": "formula",
                     "as": "seconds_date",
                     "expr": "datetime(0, 0, 1, 0, 0, seconds(datum[\"date\"]), 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"seconds_date\"] !== null && !isNaN(datum[\"seconds_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -81,13 +81,13 @@
                     "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
                     "type": "formula",
                     "as": "minutes_date",
                     "expr": "datetime(0, 0, 1, 0, minutes(datum[\"date\"]), 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"minutes_date\"] !== null && !isNaN(datum[\"minutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         }
@@ -460,27 +460,18 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
-                    "title": "SECONDS(date)",
+                    "title": "date (seconds)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%S')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }
@@ -488,12 +479,12 @@
                 },
                 {
                     "scale": "concat_0_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
@@ -503,8 +494,8 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -513,12 +504,12 @@
                 },
                 {
                     "scale": "concat_0_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -578,27 +569,18 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
-                    "title": "MINUTES(date)",
+                    "title": "date (minutes)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%M')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }
@@ -606,12 +588,12 @@
                 },
                 {
                     "scale": "concat_1_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
@@ -621,8 +603,8 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -631,12 +613,12 @@
                 },
                 {
                     "scale": "concat_1_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -660,8 +642,7 @@
                 {
                     "signal": "concat_0_width"
                 }
-            ],
-            "nice": "second"
+            ]
         },
         {
             "name": "concat_0_y",
@@ -691,8 +672,7 @@
                 {
                     "signal": "concat_1_width"
                 }
-            ],
-            "nice": "minute"
+            ]
         },
         {
             "name": "concat_1_y",

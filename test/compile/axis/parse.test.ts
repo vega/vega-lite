@@ -60,6 +60,39 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'].length, 1);
       assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
     });
+
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axisX)', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          }
+        },
+        config: {axisX: {grid: false}}
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+    });
+
+
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axis)', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          }
+        },
+        config: {axis: {grid: false}}
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+    });
   });
 
   describe('parseLayerAxis', () => {
@@ -105,7 +138,7 @@ describe('Axis', function() {
 
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.equal(axisComponents.y[0].main.get('title'), 'MEAN(a)');
+      assert.equal(axisComponents.y[0].main.get('title'), 'Mean of a');
     });
 
     it('correctly combines different title', () => {
@@ -143,7 +176,7 @@ describe('Axis', function() {
       parseLayerAxis(model);
       const axisComponents = model.component.axes;
 
-      assert.equal(axisComponents.y[0].main.get('title'), 'MAX(Horsepower), MIN(Horsepower)');
+      assert.equal(axisComponents.y[0].main.get('title'), 'Max of Horsepower, Min of Horsepower');
     });
   });
 

@@ -99,8 +99,8 @@
         {
             "title": "time",
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "zindex": 1,
             "encode": {
                 "labels": {

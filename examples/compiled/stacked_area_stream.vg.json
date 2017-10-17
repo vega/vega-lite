@@ -18,10 +18,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -71,6 +67,10 @@
                         "sum_count_end"
                     ],
                     "offset": "center"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }
@@ -156,8 +156,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "month"
+            ]
         },
         {
             "name": "y",
@@ -197,12 +196,12 @@
             "domain": false,
             "tickSize": 0,
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEARMONTH(date)",
+            "title": "date (year-month)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -218,11 +217,11 @@
             "domain": false,
             "tickSize": 0,
             "scale": "x",
+            "orient": "bottom",
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },

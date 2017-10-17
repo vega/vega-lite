@@ -1,4 +1,5 @@
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
+import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
@@ -8,13 +9,25 @@ import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
 
+export interface CompileOptions {
+  config?: Config;
+  logger?: log.LoggerInterface;
+
+  fieldTitle?: vlFieldDef.FieldTitleFormatter;
+}
+
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-export function compile(inputSpec: TopLevelExtendedSpec, opt: {config?: Config, logger?: log.LoggerInterface} = {}) {
+export function compile(inputSpec: TopLevelExtendedSpec, opt: CompileOptions = {}) {
   if (opt.logger) {
     // set the singleton logger to the provided logger
     log.set(opt.logger);
+  }
+
+  if (opt.fieldTitle) {
+    // set the singleton field title formatter
+    vlFieldDef.setTitleFormatter(opt.fieldTitle);
   }
 
   try {
@@ -50,6 +63,10 @@ export function compile(inputSpec: TopLevelExtendedSpec, opt: {config?: Config, 
     // Reset the singleton logger if a logger is provided
     if (opt.logger) {
       log.reset();
+    }
+    // Reset the singleton field title formatter if provided
+    if (opt.fieldTitle) {
+      vlFieldDef.resetTitleFormatter();
     }
   }
 }

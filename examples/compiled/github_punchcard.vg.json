@@ -145,9 +145,9 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
-            "title": "HOURS(time)",
+            "labelOverlap": true,
+            "title": "time (hours)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -170,9 +170,9 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
-            "title": "DAY(time)",
+            "labelOverlap": true,
+            "title": "time (day)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -188,7 +188,7 @@
     "legends": [
         {
             "size": "size",
-            "title": "SUM(count)",
+            "title": "Sum of count",
             "encode": {
                 "symbols": {
                     "update": {

@@ -98,8 +98,8 @@
     "axes": [
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "title": "Origin",
             "zindex": 1
         }

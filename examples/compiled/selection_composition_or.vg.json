@@ -858,8 +858,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "Cylinders",
             "zindex": 1,
             "encode": {
@@ -880,8 +880,8 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "title": "Origin",
             "zindex": 1
         }
