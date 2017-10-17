@@ -12,6 +12,7 @@ export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
+      ...mixins.markDefProperties(model.markDef, true),
       ...x(model),
       ...y(model),
       ...mixins.color(model),

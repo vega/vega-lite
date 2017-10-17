@@ -3,7 +3,7 @@ import {ChannelDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import * as util from '../../util';
-import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {predicate} from '../selection/selection';
 import {UnitModel} from '../unit';
@@ -16,8 +16,11 @@ export function color(model: UnitModel) {
   const vgChannel = filled ? 'fill' : 'stroke';
   const e = nonPosition('color', model, {
     vgChannel,
-    // fill/stroke has higher precedence than color
-    defaultValue: getMarkConfig(vgChannel, model.markDef, config) ||
+    // Mark definition has higher predecence than config;
+    // fill/stroke has higher precedence than color.
+    defaultValue: model.markDef[vgChannel] ||
+      model.markDef.color ||
+      getMarkConfig(vgChannel, model.markDef, config) ||
       getMarkConfig('color', model.markDef, config)
   });
 
@@ -29,9 +32,9 @@ export function color(model: UnitModel) {
   return e;
 }
 
-export function markDefProperties(mark: MarkDef, props: (keyof MarkDef)[]) {
-  return props.reduce((m, prop) => {
-    if (mark[prop]) {
+export function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
+  return VG_MARK_CONFIGS.reduce((m, prop) => {
+    if (mark[prop] && (!ignoreOrient || prop !== 'orient')) {
       m[prop] = {value: mark[prop]};
     }
     return m;

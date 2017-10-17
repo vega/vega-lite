@@ -102,22 +102,14 @@
             "name": "layer_1_marks",
             "type": "text",
             "style": [
-                "text"
+                "text",
+                "label"
             ],
             "from": {
                 "data": "data_2"
             },
             "encode": {
                 "update": {
-                    "align": {
-                        "value": "left"
-                    },
-                    "baseline": {
-                        "value": "middle"
-                    },
-                    "dx": {
-                        "value": 3
-                    },
                     "x": {
                         "scale": "x",
                         "field": "b"
@@ -225,6 +217,13 @@
     "config": {
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "label": {
+                "align": "left",
+                "baseline": "middle",
+                "dx": 3
+            }
         }
     }
 }

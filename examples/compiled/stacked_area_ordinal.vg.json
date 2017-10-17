@@ -118,6 +118,12 @@
                     },
                     "encode": {
                         "update": {
+                            "interpolate": {
+                                "value": "monotone"
+                            },
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "year_Year"
@@ -133,12 +139,6 @@
                             "fill": {
                                 "scale": "color",
                                 "field": "Cylinders"
-                            },
-                            "orient": {
-                                "value": "vertical"
-                            },
-                            "interpolate": {
-                                "value": "monotone"
                             }
                         }
                     }

@@ -97,6 +97,9 @@
             },
             "encode": {
                 "update": {
+                    "orient": {
+                        "value": "vertical"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -111,9 +114,6 @@
                     },
                     "fill": {
                         "value": "#4c78a8"
-                    },
-                    "orient": {
-                        "value": "vertical"
                     }
                 }
             }

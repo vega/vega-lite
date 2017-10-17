@@ -11,6 +11,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;
 
   return {
+    ...mixins.markDefProperties(model.markDef, true),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
 

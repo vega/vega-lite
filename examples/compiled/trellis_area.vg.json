@@ -280,6 +280,9 @@
                             },
                             "encode": {
                                 "update": {
+                                    "orient": {
+                                        "value": "vertical"
+                                    },
                                     "x": {
                                         "scale": "x",
                                         "field": "date"
@@ -295,9 +298,6 @@
                                     "fill": {
                                         "scale": "color",
                                         "field": "symbol"
-                                    },
-                                    "orient": {
-                                        "value": "vertical"
                                     }
                                 }
                             }
