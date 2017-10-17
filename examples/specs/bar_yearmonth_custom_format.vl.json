@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+  "data": {"url": "data/seattle-temps.csv", "format": {"type": "csv"}},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "axis": {"format": "%B of %Y"}
+    },
+    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
+  }
+}

@@ -5,8 +5,7 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
-      "axis": {"format": "%B of %Y"}
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal"
     },
     "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
   }

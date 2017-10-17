@@ -4,7 +4,7 @@ title: Condition
 permalink: /docs/condition.html
 ---
 
-The `condition` property can be used to determine encodings based on if data values fall within a [selection](selection.html) or not. It can take one of two forms.
+The `condition` property can be used to determine encodings based on whether data values fall within a [selection](selection.html). It can either a [conditional field definition](#field) or a [conditional value definition](#value).
 
 {:#field}
 ## Conditional Field Definition
