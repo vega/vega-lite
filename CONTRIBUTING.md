@@ -39,7 +39,7 @@ it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
 you can run `yarn run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
-Note that when you checkout different branches, the compiled script for the website might be reset. In such case, the examples may not show up on the webpage. You will have to run `yarn run build:site`.
+Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You will have to run `yarn run build:site` to recompile the JavaScript so that interactive examples work.
 
 ### Documentation Guide
 
