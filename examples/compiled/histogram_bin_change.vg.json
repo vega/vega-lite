@@ -136,7 +136,7 @@
             "orient": "bottom",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "min(ceil(width/40), 30)"
+                "signal": "min(ceil(width/25), 30)"
             },
             "title": "IMDB_Rating (binned)",
             "values": {
@@ -149,7 +149,7 @@
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/25)"
             },
             "title": "Number of Records",
             "zindex": 1
@@ -163,7 +163,7 @@
             "maxExtent": 0,
             "minExtent": 0,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(height/25)"
             },
             "ticks": false,
             "zindex": 0,

@@ -164,7 +164,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(child_height/40)"
+                        "signal": "ceil(child_height/25)"
                     },
                     "title": "Number of Records",
                     "zindex": 1
@@ -188,7 +188,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(child_width/40), 15)"
+                        "signal": "min(ceil(child_width/25), 15)"
                     },
                     "title": "Horsepower (binned)",
                     "values": {
@@ -275,7 +275,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(child_height/40)"
+                        "signal": "ceil(child_height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,

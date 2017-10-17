@@ -120,7 +120,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(child_height/40)"
+                        "signal": "ceil(child_height/25)"
                     },
                     "zindex": 1
                 }

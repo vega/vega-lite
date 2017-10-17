@@ -459,7 +459,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "title": "Mean of temp_max",
                     "zindex": 1
@@ -473,7 +473,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -650,7 +650,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "title": "Mean of precipitation",
                     "zindex": 1
@@ -664,7 +664,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -841,7 +841,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "title": "Mean of wind",
                     "zindex": 1
@@ -855,7 +855,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,

@@ -463,7 +463,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_0_width/40)"
+                        "signal": "ceil(concat_0_width/25)"
                     },
                     "title": "date (seconds)",
                     "zindex": 1,
@@ -486,7 +486,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_0_width/40)"
+                        "signal": "ceil(concat_0_width/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -497,7 +497,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "title": "price",
                     "zindex": 1
@@ -511,7 +511,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -572,7 +572,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(concat_1_width/40)"
+                        "signal": "ceil(concat_1_width/25)"
                     },
                     "title": "date (minutes)",
                     "zindex": 1,
@@ -595,7 +595,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(concat_1_width/40)"
+                        "signal": "ceil(concat_1_width/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
@@ -606,7 +606,7 @@
                     "orient": "left",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "title": "price",
                     "zindex": 1
@@ -620,7 +620,7 @@
                     "maxExtent": 0,
                     "minExtent": 0,
                     "tickCount": {
-                        "signal": "ceil(height/40)"
+                        "signal": "ceil(height/25)"
                     },
                     "ticks": false,
                     "zindex": 0,
