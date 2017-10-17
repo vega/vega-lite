@@ -51,5 +51,5 @@ export interface AutoSizeParams {
      */
     contains?: 'content' | 'padding';
 }
-export declare function normalizeAutoSize(autosize: AutosizeType | AutoSizeParams, isUnitOrLayer: boolean): AutoSizeParams;
+export declare function normalizeAutoSize(topLevelAutosize: AutosizeType | AutoSizeParams, configAutosize: AutosizeType | AutoSizeParams, isUnitOrLayer?: boolean): AutoSizeParams;
 export declare function extractTopLevelProperties<T extends TopLevelProperties>(t: T): {};

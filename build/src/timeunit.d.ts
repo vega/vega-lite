@@ -1,4 +1,3 @@
-import { NiceTime } from './scale';
 export declare namespace TimeUnit {
     const YEAR: 'year';
     const MONTH: 'month';
@@ -67,14 +66,13 @@ export declare function isTimeUnit(t: string): t is TimeUnit;
  * Note: the base date is Jan 01 1900 00:00:00
  */
 export declare function convert(unit: TimeUnit, date: Date): Date;
+export declare function getTimeUnitParts(timeUnit: TimeUnit): any[];
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export declare function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit): boolean;
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export declare function fieldExpr(fullTimeUnit: TimeUnit, field: string): string;
-/** returns the smallest nice unit for scale.nice */
-export declare function smallestUnit(timeUnit: TimeUnit): NiceTime;
 /**
  * returns the signal expression used for axis labels for a time unit
  */

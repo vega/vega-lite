@@ -1,9 +1,8 @@
 import { Axis } from '../../axis';
 import { Channel, PositionScaleChannel } from '../../channel';
 import { FieldDef } from '../../fielddef';
-import { AxisOrient, VgAxis } from '../../vega.schema';
-import { Split } from '../split';
+import { AxisOrient, HorizontalAlign } from '../../vega.schema';
 import { UnitModel } from '../unit';
-export declare function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>): any;
+export declare function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient): any;
 export declare function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<string>): number;
-export declare function labelAlign(angle: number, orient: AxisOrient): "left" | "right";
+export declare function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign;

@@ -38,7 +38,7 @@ export declare class UnitModel extends ModelWithField {
      * @param channel
      */
     scaleDomain(channel: ScaleChannel): Domain;
-    sort(channel: Channel): SortField | SortOrder;
+    sort(channel: Channel): SortField<string> | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
     private initScales(mark, encoding);

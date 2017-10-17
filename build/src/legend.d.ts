@@ -1,6 +1,6 @@
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
-import { VgLegend, VgLegendBase, VgLegendConfig } from './vega.schema';
+import { VgLegendBase, VgLegendConfig } from './vega.schema';
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {
 }
 /**
@@ -8,7 +8,7 @@ export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {
  */
 export interface Legend extends VgLegendBase, Guide {
     /**
-     * Optional mark definitions for custom legend encoding.
+     * Mark definitions for custom legend encoding.
      *
      * @hide
      */
@@ -60,5 +60,5 @@ export declare type LegendEncoding = {
     gradient?: GuideEncodingEntry;
 };
 export declare const defaultLegendConfig: LegendConfig;
-export declare const LEGEND_PROPERTIES: (keyof (VgLegend | Legend))[];
-export declare const VG_LEGEND_PROPERTIES: (keyof VgLegend)[];
+export declare const LEGEND_PROPERTIES: ("title" | "values" | "type" | "padding" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex")[];
+export declare const VG_LEGEND_PROPERTIES: ("title" | "values" | "opacity" | "size" | "shape" | "type" | "padding" | "stroke" | "fill" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex" | "encode")[];

@@ -40,6 +40,7 @@ export interface MarkDef {
      * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
      *
      * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
+     * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
      */
     style?: string | string[];
     /**

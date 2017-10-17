@@ -123,6 +123,13 @@ export interface VLOnlyConfig {
      */
     invalidValues?: 'filter';
     /**
+     * Defines how Vega-Lite generates title for fields.  There are three possible styles:
+     * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
+     * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
+     * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
+     */
+    fieldTitle?: 'verbal' | 'functional' | 'plain';
+    /**
      * D3 Number format for axis labels and text tables. For example "s" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
      */
     numberFormat?: string;

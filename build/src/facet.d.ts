@@ -18,6 +18,9 @@ export interface Header {
     title?: string;
 }
 export interface FacetFieldDef<F> extends FieldDef<F> {
+    /**
+     * An object defining properties of a facet's header.
+     */
     header?: Header;
     /**
      * Sort order for a facet field.
@@ -25,7 +28,7 @@ export interface FacetFieldDef<F> extends FieldDef<F> {
      */
     sort?: SortOrder;
 }
-export interface Facet<F> {
+export interface FacetMapping<F> {
     /**
      * Vertical facets for trellis plots.
      */

@@ -1,5 +1,5 @@
 import { Channel } from './channel';
-import { Facet } from './facet';
+import { FacetMapping } from './facet';
 import { ConditionalFieldDef, ConditionalValueDef, Field, FieldDef, LegendFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef } from './fielddef';
 import { Mark } from './mark';
 export interface Encoding<F> {
@@ -70,7 +70,7 @@ export interface Encoding<F> {
      */
     order?: OrderFieldDef<F> | OrderFieldDef<F>[];
 }
-export interface EncodingWithFacet<F> extends Encoding<F>, Facet<F> {
+export interface EncodingWithFacet<F> extends Encoding<F>, FacetMapping<F> {
 }
 export declare function channelHasField(encoding: EncodingWithFacet<Field>, channel: Channel): boolean;
 export declare function isAggregate(encoding: EncodingWithFacet<Field>): boolean;

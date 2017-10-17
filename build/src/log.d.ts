@@ -24,7 +24,6 @@ export declare class LocalLogger implements LoggerInterface {
     info(...args: any[]): this;
     debug(...args: any[]): this;
 }
-export declare function runLocalLogger(f: (localLogger: LocalLogger) => void): void;
 export declare function wrap(f: (logger: LocalLogger) => void): () => void;
 /**
  * Set the singleton logger to be a custom logger
@@ -47,12 +46,15 @@ export declare namespace message {
     function cannotProjectOnChannelWithoutField(channel: Channel): string;
     function nearestNotSupportForContinuous(mark: string): string;
     function selectionNotFound(name: string): string;
+    const SCALE_BINDINGS_CONTINUOUS = "Scale bindings are currently only supported for scales with unbinned, continuous domains.";
     function noSuchRepeatedValue(field: string): string;
+    const CONCAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in concatenated views.";
     function cannotSetTitleAnchor(type: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
     function invalidTransformIgnored(transform: any): string;
     const NO_FIELDS_NEEDS_AS = "If \"from.fields\" is not specified, \"as\" has to be a string that specifies the key to be used for the the data from the secondary source.";
+    function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean): string;
     function invalidFieldType(type: Type): string;
     function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
@@ -70,7 +72,6 @@ export declare namespace message {
     function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>): string;
     function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
     function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
-    const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use a custom \"range\" with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
     function cannotUseSizeFieldWithBandSize(positionChannel: 'x' | 'y'): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     function rangeStepDropped(channel: Channel): string;
@@ -87,7 +88,7 @@ export declare namespace message {
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";
     function cannotStackRangedMark(channel: Channel): string;
     function cannotStackNonLinearScale(scaleType: ScaleType): string;
-    function cannotStackNonSummativeAggregate(aggregate: string): string;
+    function stackNonSummativeAggregate(aggregate: string): string;
     function invalidTimeUnit(unitName: string, value: string | number): string;
     function dayReplacedWithDate(fullTimeUnit: string): string;
     function droppedDay(d: DateTime | DateTimeExpr): string;

@@ -134,7 +134,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
      *
      * @nullable
      */
-    sort?: SortOrder | SortField;
+    sort?: SortOrder | SortField<F> | null;
 }
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
@@ -145,7 +145,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
      *
      * @nullable
      */
-    axis?: Axis;
+    axis?: Axis | null;
     /**
      * Type of stacking offset if the field should be stacked.
      * `stack` is only applicable for `x` and `y` channels with continuous domains.
@@ -155,11 +155,14 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
      * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).
      * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>
      * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
-     * - `"none"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
+     * - `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
      *
-     * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `"none"` by default.
+     * __Default value:__ `zero` for plots with all of the following conditions are true:
+     * (1) the mark is `bar` or `area`;
+     * (2) the stacked measure channel (x or y) has a linear scale;
+     * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
      */
-    stack?: StackOffset;
+    stack?: StackOffset | null;
 }
 export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
     /**
@@ -170,7 +173,7 @@ export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
      *
      * @nullable
      */
-    legend?: Legend;
+    legend?: Legend | null;
 }
 export interface OrderFieldDef<F> extends FieldDef<F> {
     /**
@@ -192,7 +195,11 @@ export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelD
 export declare function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
     condition: Condition<FieldDef<F>>;
 });
+export declare function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
+    condition: Condition<ValueDef>;
+});
 export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
+export declare function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string>;
 export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef;
 export declare function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any>;
 export interface FieldRefOption {
@@ -213,6 +220,12 @@ export declare function field(fieldDef: FieldDefBase<string>, opt?: FieldRefOpti
 export declare function isDiscrete(fieldDef: FieldDef<Field>): boolean;
 export declare function isContinuous(fieldDef: FieldDef<Field>): boolean;
 export declare function isCount(fieldDef: FieldDefBase<Field>): boolean;
+export declare type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
+export declare function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config): string;
+export declare function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config): string;
+export declare const defaultTitleFormatter: FieldTitleFormatter;
+export declare function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string): void;
+export declare function resetTitleFormatter(): void;
 export declare function title(fieldDef: FieldDef<string>, config: Config): string;
 export declare function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type;
 /**

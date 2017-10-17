@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
 var fielddef_1 = require("../fielddef");
 var log = require("../log");
+var sort_1 = require("../sort");
+var util_1 = require("../util");
 function replaceRepeaterInFacet(facet, repeater) {
     return replaceRepeater(facet, repeater);
 }
@@ -13,41 +14,79 @@ function replaceRepeaterInEncoding(encoding, repeater) {
 }
 exports.replaceRepeaterInEncoding = replaceRepeaterInEncoding;
 /**
+ * Replaces repeated value and returns if the repeated value is valid.
+ */
+function replaceRepeat(o, repeater) {
+    if (fielddef_1.isRepeatRef(o.field)) {
+        if (o.field.repeat in repeater) {
+            // any needed to calm down ts compiler
+            return tslib_1.__assign({}, o, { field: repeater[o.field.repeat] });
+        }
+        else {
+            log.warn(log.message.noSuchRepeatedValue(o.field.repeat));
+            return undefined;
+        }
+    }
+    return o;
+}
+/**
  * Replace repeater values in a field def with the concrete field name.
  */
 function replaceRepeaterInFieldDef(fieldDef, repeater) {
-    var field = fieldDef.field;
-    if (fielddef_1.isRepeatRef(field)) {
-        if (field.repeat in repeater) {
-            return tslib_1.__assign({}, fieldDef, { field: repeater[field.repeat] });
+    fieldDef = replaceRepeat(fieldDef, repeater);
+    if (fieldDef === undefined) {
+        // the field def should be ignored
+        return undefined;
+    }
+    if (fieldDef.sort && sort_1.isSortField(fieldDef.sort)) {
+        var sort = replaceRepeat(fieldDef.sort, repeater);
+        fieldDef = tslib_1.__assign({}, fieldDef, (sort ? { sort: sort } : {}));
+    }
+    return fieldDef;
+}
+function replaceRepeaterInChannelDef(channelDef, repeater) {
+    if (fielddef_1.isFieldDef(channelDef)) {
+        var fd = replaceRepeaterInFieldDef(channelDef, repeater);
+        if (fd) {
+            return fd;
         }
-        else {
-            log.warn(log.message.noSuchRepeatedValue(field.repeat));
-            return null;
+        else if (fielddef_1.isConditionalDef(channelDef)) {
+            return { value: channelDef.condition.value };
         }
     }
     else {
-        // field is not a repeat ref so we can just return the field def
-        return fieldDef;
+        if (fielddef_1.isConditionalDef(channelDef) && fielddef_1.isFieldDef(channelDef.condition)) {
+            var fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
+            if (fd) {
+                return tslib_1.__assign({}, channelDef, { condition: fd });
+            }
+            else {
+                var condition = channelDef.condition, channelDefWithoutCondition = tslib_1.__rest(channelDef, ["condition"]);
+                return channelDefWithoutCondition;
+            }
+        }
+        return channelDef;
     }
+    return undefined;
 }
 function replaceRepeater(mapping, repeater) {
     var out = {};
     for (var channel in mapping) {
         if (mapping.hasOwnProperty(channel)) {
-            var fieldDef = mapping[channel];
-            if (vega_util_1.isArray(fieldDef)) {
-                out[channel] = fieldDef.map(function (fd) { return replaceRepeaterInFieldDef(fd, repeater); })
-                    .filter(function (fd) { return fd !== null; });
+            var channelDef = mapping[channel];
+            if (util_1.isArray(channelDef)) {
+                // array cannot have condition
+                out[channel] = channelDef.map(function (cd) { return replaceRepeaterInChannelDef(cd, repeater); })
+                    .filter(function (cd) { return cd; });
             }
             else {
-                var fd = replaceRepeaterInFieldDef(fieldDef, repeater);
-                if (fd !== null) {
-                    out[channel] = fd;
+                var cd = replaceRepeaterInChannelDef(channelDef, repeater);
+                if (cd) {
+                    out[channel] = cd;
                 }
             }
         }
     }
     return out;
 }
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVwZWF0ZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvY29tcGlsZS9yZXBlYXRlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSx1Q0FBa0M7QUFHbEMsd0NBQXlEO0FBQ3pELDRCQUE4QjtBQU85QixnQ0FBdUMsS0FBbUIsRUFBRSxRQUF1QjtJQUNqRixNQUFNLENBQUMsZUFBZSxDQUFDLEtBQUssRUFBRSxRQUFRLENBQWtCLENBQUM7QUFDM0QsQ0FBQztBQUZELHdEQUVDO0FBRUQsbUNBQTBDLFFBQXlCLEVBQUUsUUFBdUI7SUFDMUYsTUFBTSxDQUFDLGVBQWUsQ0FBQyxRQUFRLEVBQUUsUUFBUSxDQUFxQixDQUFDO0FBQ2pFLENBQUM7QUFGRCw4REFFQztBQUVEOztHQUVHO0FBQ0gsbUNBQW1DLFFBQXlCLEVBQUUsUUFBdUI7SUFDbkYsSUFBTSxLQUFLLEdBQUcsUUFBUSxDQUFDLEtBQUssQ0FBQztJQUM3QixFQUFFLENBQUMsQ0FBQyxzQkFBVyxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQztRQUN2QixFQUFFLENBQUMsQ0FBQyxLQUFLLENBQUMsTUFBTSxJQUFJLFFBQVEsQ0FBQyxDQUFDLENBQUM7WUFDN0IsTUFBTSxzQkFDRCxRQUFRLElBQ1gsS0FBSyxFQUFFLFFBQVEsQ0FBQyxLQUFLLENBQUMsTUFBTSxDQUFDLElBQzdCO1FBQ0osQ0FBQztRQUFDLElBQUksQ0FBQyxDQUFDO1lBQ04sR0FBRyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsT0FBTyxDQUFDLG1CQUFtQixDQUFDLEtBQUssQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO1lBQ3hELE1BQU0sQ0FBQyxJQUFJLENBQUM7UUFDZCxDQUFDO0lBQ0gsQ0FBQztJQUFDLElBQUksQ0FBQyxDQUFDO1FBQ04sZ0VBQWdFO1FBQ2hFLE1BQU0sQ0FBQyxRQUE0QixDQUFDO0lBQ3RDLENBQUM7QUFDSCxDQUFDO0FBSUQseUJBQXlCLE9BQStCLEVBQUUsUUFBdUI7SUFDL0UsSUFBTSxHQUFHLEdBQTRCLEVBQUUsQ0FBQztJQUN4QyxHQUFHLENBQUMsQ0FBQyxJQUFNLE9BQU8sSUFBSSxPQUFPLENBQUMsQ0FBQyxDQUFDO1FBQzlCLEVBQUUsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxjQUFjLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQyxDQUFDO1lBQ3BDLElBQU0sUUFBUSxHQUF3QyxPQUFPLENBQUMsT0FBTyxDQUFDLENBQUM7WUFFdkUsRUFBRSxDQUFDLENBQUMsbUJBQU8sQ0FBQyxRQUFRLENBQUMsQ0FBQyxDQUFDLENBQUM7Z0JBQ3RCLEdBQUcsQ0FBQyxPQUFPLENBQUMsR0FBRyxRQUFRLENBQUMsR0FBRyxDQUFDLFVBQUEsRUFBRSxJQUFJLE9BQUEseUJBQXlCLENBQUMsRUFBRSxFQUFFLFFBQVEsQ0FBQyxFQUF2QyxDQUF1QyxDQUFDO3FCQUN2RSxNQUFNLENBQUMsVUFBQyxFQUEyQixJQUFLLE9BQUEsRUFBRSxLQUFLLElBQUksRUFBWCxDQUFXLENBQUMsQ0FBQztZQUMxRCxDQUFDO1lBQUMsSUFBSSxDQUFDLENBQUM7Z0JBQ04sSUFBTSxFQUFFLEdBQUcseUJBQXlCLENBQUMsUUFBUSxFQUFFLFFBQVEsQ0FBQyxDQUFDO2dCQUN6RCxFQUFFLENBQUMsQ0FBQyxFQUFFLEtBQUssSUFBSSxDQUFDLENBQUMsQ0FBQztvQkFDaEIsR0FBRyxDQUFDLE9BQU8sQ0FBQyxHQUFHLEVBQUUsQ0FBQztnQkFDcEIsQ0FBQztZQUNILENBQUM7UUFDSCxDQUFDO0lBQ0gsQ0FBQztJQUNELE1BQU0sQ0FBQyxHQUFHLENBQUM7QUFDYixDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVwZWF0ZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvY29tcGlsZS9yZXBlYXRlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFFQSx3Q0FBaUc7QUFFakcsNEJBQThCO0FBQzlCLGdDQUFvQztBQUNwQyxnQ0FBZ0M7QUFPaEMsZ0NBQXVDLEtBQTBCLEVBQUUsUUFBdUI7SUFDeEYsTUFBTSxDQUFDLGVBQWUsQ0FBQyxLQUFLLEVBQUUsUUFBUSxDQUF5QixDQUFDO0FBQ2xFLENBQUM7QUFGRCx3REFFQztBQUVELG1DQUEwQyxRQUF5QixFQUFFLFFBQXVCO0lBQzFGLE1BQU0sQ0FBQyxlQUFlLENBQUMsUUFBUSxFQUFFLFFBQVEsQ0FBcUIsQ0FBQztBQUNqRSxDQUFDO0FBRkQsOERBRUM7QUFFRDs7R0FFRztBQUNILHVCQUFrRCxDQUFJLEVBQUUsUUFBdUI7SUFDN0UsRUFBRSxDQUFDLENBQUMsc0JBQVcsQ0FBQyxDQUFDLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDO1FBQ3pCLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxLQUFLLENBQUMsTUFBTSxJQUFJLFFBQVEsQ0FBQyxDQUFDLENBQUM7WUFDL0Isc0NBQXNDO1lBQ3RDLE1BQU0sc0JBQUssQ0FBUSxJQUFFLEtBQUssRUFBRSxRQUFRLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxNQUFNLENBQUMsSUFBRTtRQUN4RCxDQUFDO1FBQUMsSUFBSSxDQUFDLENBQUM7WUFDTixHQUFHLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsbUJBQW1CLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO1lBQzFELE1BQU0sQ0FBQyxTQUFTLENBQUM7UUFDbkIsQ0FBQztJQUNILENBQUM7SUFDRCxNQUFNLENBQUMsQ0FBQyxDQUFDO0FBQ1gsQ0FBQztBQUVEOztHQUVHO0FBQ0gsbUNBQW1DLFFBQThCLEVBQUUsUUFB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

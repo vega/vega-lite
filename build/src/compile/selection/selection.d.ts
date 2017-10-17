@@ -21,6 +21,7 @@ export interface SelectionComponent {
         [key: string]: VgBinding;
     };
     resolve: SelectionResolution;
+    empty: 'all' | 'none';
     mark?: BrushConfig;
     project?: ProjectComponent[];
     fields?: any;

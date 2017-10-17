@@ -26,6 +26,11 @@ export interface BaseSelectionDef {
      * fall within the selection.
      */
     fields?: string[];
+    /**
+     * By default, all data values are considered to lie within an empty selection.
+     * When set to `none`, empty selections contain no data values.
+     */
+    empty?: 'all' | 'none';
 }
 export interface SingleSelectionConfig extends BaseSelectionDef {
     /**

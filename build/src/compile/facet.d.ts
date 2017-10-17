@@ -1,6 +1,6 @@
 import { Channel } from '../channel';
 import { Config } from '../config';
-import { Facet } from '../facet';
+import { FacetMapping } from '../facet';
 import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
 import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
@@ -8,7 +8,7 @@ import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
 export declare class FacetModel extends ModelWithField {
     readonly type: 'facet';
-    readonly facet: Facet<string>;
+    readonly facet: FacetMapping<string>;
     readonly child: Model;
     readonly children: Model[];
     constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
@@ -36,5 +36,5 @@ export declare class FacetModel extends ModelWithField {
      */
     private getCardinalityAggregateForChild();
     assembleMarks(): VgMarkGroup[];
-    protected getMapping(): Facet<string>;
+    protected getMapping(): FacetMapping<string>;
 }

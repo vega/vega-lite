@@ -82,6 +82,11 @@ export interface ScaleConfig {
      */
     bandPaddingOuter?: number;
     /**
+     * Default padding for continuous scales.
+     * @minimum 0
+     */
+    continuousPadding?: number;
+    /**
      * Default outer padding for `x` and `y` point-ordinal scales.
      *
      * __Default value:__ `0.5`
@@ -315,12 +320,16 @@ export interface Scale {
      */
     round?: boolean;
     /**
-     * Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.
+     * For _[continuous](scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.
      *
-     * __Default value:__ see `paddingInner` and `paddingOuter`.
+     * For _[band](scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.
+     *
+     * For _[point](scale.html#point)_ scales, alias for `paddingOuter`.
+     *
+     * __Default value:__ For _continuous_ scales, derived from the [scale config](scale.html#config)'s `continuousPadding`.
+     * For _band and point_ scales, see `paddingInner` and `paddingOuter`.
      *
      * @minimum 0
-     * @maximum 1
      */
     padding?: number;
     /**
@@ -357,7 +366,7 @@ export interface Scale {
      *
      * For temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and `"year"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{"interval": "month", "step": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.
      *
-     * __Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields.
+     * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
      *
      */
     nice?: boolean | number | NiceTime | {

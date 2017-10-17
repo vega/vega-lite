@@ -15,7 +15,7 @@ export declare const ticks: typeof domainAndTicks;
  */
 export declare function grid(scaleType: ScaleType, fieldDef: FieldDef<string>): boolean;
 export declare function gridScale(model: UnitModel, channel: PositionScaleChannel, isGridAxis: boolean): string;
-export declare function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType): true | "greedy";
+export declare function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType): boolean | "parity" | "greedy";
 export declare function minMaxExtent(specifiedExtent: number, isGridAxis: boolean): number;
 export declare function orient(channel: PositionScaleChannel): "left" | "bottom";
 export declare function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef): {
@@ -24,5 +24,7 @@ export declare function tickCount(channel: PositionScaleChannel, fieldDef: Field
 export declare function title(maxLength: number, fieldDef: FieldDef<string>, config: Config): string;
 export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>): number[] | DateTime[] | {
     signal: string;
-}[];
+}[] | {
+    signal: string;
+};
 export declare function zindex(isGridAxis: boolean): 0 | 1;

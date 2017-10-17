@@ -17,9 +17,9 @@ export interface VgData {
     url?: string;
     transform?: VgTransform[];
 }
-export declare type VgParentRef = {
+export interface VgParentRef {
     parent: string;
-};
+}
 export declare type VgFieldRef = string | VgParentRef | VgParentRef[];
 export declare type VgSortField = boolean | {
     field?: VgFieldRef;
@@ -33,17 +33,17 @@ export declare type VgUnionSortField = boolean | {
     op: 'count';
     order?: SortOrder;
 };
-export declare type VgDataRef = {
+export interface VgDataRef {
     data: string;
     field: VgFieldRef;
     sort?: VgSortField;
-};
-export declare type VgSignalRef = {
+}
+export interface VgSignalRef {
     signal: string;
-};
+}
 export declare function isVgSignalRef(o: any): o is VgSignalRef;
 export declare type VgEventStream = any;
-export declare type VgValueRef = {
+export interface VgValueRef {
     value?: number | string | boolean;
     field?: string | {
         datum?: string;
@@ -55,16 +55,16 @@ export declare type VgValueRef = {
     mult?: number;
     offset?: number | VgValueRef;
     band?: boolean | number | VgValueRef;
-};
-export declare type DataRefUnionDomain = {
+}
+export interface DataRefUnionDomain {
     fields: (any[] | VgDataRef | VgSignalRef)[];
     sort?: VgUnionSortField;
-};
-export declare type FieldRefUnionDomain = {
+}
+export interface VgFieldRefUnionDomain {
     data: string;
     fields: VgFieldRef[];
     sort?: VgUnionSortField;
-};
+}
 export declare type VgScheme = {
     scheme: string;
     extent?: number[];
@@ -76,9 +76,9 @@ export declare type VgRangeStep = {
 };
 export declare function isVgRangeStep(range: VgRange): range is VgRangeStep;
 export declare type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
-export declare type VgDomain = VgNonUnionDomain | DataRefUnionDomain | FieldRefUnionDomain;
+export declare type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 export declare type VgMarkGroup = any;
-export declare type VgScale = {
+export interface VgScale {
     name: string;
     type: ScaleType;
     domain: VgDomain;
@@ -95,13 +95,13 @@ export declare type VgScale = {
     reverse?: boolean;
     round?: boolean;
     zero?: boolean;
-};
+}
 export declare type VgLayoutAlign = 'none' | 'each' | 'all';
 export declare type RowCol<T> = {
     row?: T;
     column?: T;
 };
-export declare type VgLayout = {
+export interface VgLayout {
     padding: number | RowCol<number>;
     headerBand?: number | RowCol<number>;
     footerBand?: number | RowCol<number>;
@@ -121,16 +121,28 @@ export declare type VgLayout = {
         row: VgLayoutAlign;
         column: VgLayoutAlign;
     };
-};
+}
 export declare function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain;
-export declare function isFieldRefUnionDomain(domain: VgDomain): domain is FieldRefUnionDomain;
+export declare function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain;
 export declare function isDataRefDomain(domain: VgDomain): domain is VgDataRef;
 export declare function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef;
-export declare type VgSignal = {
-    name: string;
-    value?: any;
+export interface VgEventHandler {
+    events: string[] | VgSignalRef;
     update?: string;
-};
+    encode?: string;
+    force?: boolean;
+    between?: any[];
+}
+export interface VgSignal {
+    name: string;
+    bind?: string;
+    description?: string;
+    on?: VgEventHandler[];
+    update?: string;
+    react?: boolean;
+    value?: string | number | boolean | {} | VgSignalRef;
+    push?: string;
+}
 export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle';
 export declare type VgEncodeEntry = {
     [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {
@@ -145,6 +157,8 @@ export interface VgAxis {
     grid?: boolean;
     gridScale?: string;
     labels?: boolean;
+    labelBound?: boolean | number;
+    labelFlush?: boolean | number;
     labelPadding?: number;
     labelOverlap?: boolean | 'parity' | 'greedy';
     maxExtent?: number;
@@ -156,13 +170,12 @@ export interface VgAxis {
     tickCount?: number;
     tickSize?: number;
     title?: string;
-    titleAlign?: string;
-    titleAngle?: number;
     titlePadding?: number;
     values?: any[] | VgSignalRef;
     zindex?: number;
     encode?: VgAxisEncode;
 }
+export declare type LegendType = 'symbol' | 'gradient';
 export interface VgLegend {
     fill?: string;
     stroke?: string;
@@ -170,15 +183,13 @@ export interface VgLegend {
     shape?: string;
     opacity?: string;
     entryPadding?: number;
-    fillColor?: string;
     format?: string;
     offset?: number;
     orient?: LegendOrient;
     padding?: number;
     tickCount?: number;
     title?: string;
-    titleAlign?: string;
-    type?: 'symbol' | 'gradient';
+    type?: LegendType;
     values?: any[] | VgSignalRef;
     zindex?: number;
     encode?: VgLegendEncode;
@@ -324,12 +335,22 @@ export interface VgAxisBase {
     /**
      * The rotation angle of the axis labels.
      *
-     * __Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.
+     * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
      *
      * @minimum -360
      * @maximum 360
      */
     labelAngle?: number;
+    /**
+     * Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
+     *
+     * __Default value:__ `false`.
+     */
+    labelBound?: boolean | number;
+    /**
+     * Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.
+     */
+    labelFlush?: boolean | number;
     /**
      * The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
      *
@@ -350,14 +371,6 @@ export interface VgAxisBase {
      * @minimum 0
      */
     tickSize?: number;
-    /**
-     * Horizontal text alignment of axis titles.
-     */
-    titleAlign?: string;
-    /**
-     * Angle in degrees of axis titles.
-     */
-    titleAngle?: number;
     /**
      * Max length for axis title if the title is automatically generated from the field's description.
      *
@@ -454,6 +467,14 @@ export interface VgAxisConfig extends VgAxisBase {
      */
     tickWidth?: number;
     /**
+     * Horizontal text alignment of axis titles.
+     */
+    titleAlign?: string;
+    /**
+     * Angle in degrees of axis titles.
+     */
+    titleAngle?: number;
+    /**
      * Vertical text baseline for axis titles.
      */
     titleBaseline?: string;
@@ -495,10 +516,6 @@ export interface VgLegendBase {
      */
     entryPadding?: number;
     /**
-     * Background fill color for the full legend.
-     */
-    fillColor?: string;
-    /**
      * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
      *
      * __Default value:__ `"right"`
@@ -514,16 +531,16 @@ export interface VgLegendBase {
      * The padding, in pixels, between the legend and axis.
      */
     padding?: number;
-    /**
-     * Horizontal text alignment for legend titles.
-     */
-    titleAlign?: string;
 }
 export interface VgLegendConfig extends VgLegendBase {
     /**
      * Corner radius for the full legend.
      */
     cornerRadius?: number;
+    /**
+     * Background fill color for the full legend.
+     */
+    fillColor?: string;
     /**
      * Border stroke color for the full legend.
      */
@@ -619,8 +636,9 @@ export interface VgLegendConfig extends VgLegendBase {
      */
     symbolStrokeWidth?: number;
     /**
-     * Optional mark property definitions for custom legend styling.
+     * Horizontal text alignment for legend titles.
      */
+    titleAlign?: string;
     /**
      * Vertical text baseline for legend titles.
      */

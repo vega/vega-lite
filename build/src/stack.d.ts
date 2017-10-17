@@ -2,7 +2,8 @@ import { NonPositionChannel } from './channel';
 import { Encoding } from './encoding';
 import { Field, FieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
-export declare type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
+export declare type StackOffset = 'zero' | 'center' | 'normalize';
+export declare function isStackOffset(stack: string): stack is StackOffset;
 export interface StackProperties {
     /** Dimension axis of the stack. */
     groupbyChannel: 'x' | 'y';

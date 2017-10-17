@@ -75,3 +75,4 @@ export declare type Omit<T, K extends keyof T> = {
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
  */
 export declare function deleteNestedProperty(obj: any, orderedProps: string[]): void;
+export declare function titlecase(s: string): string;

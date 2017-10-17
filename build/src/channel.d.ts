@@ -1,6 +1,6 @@
 import { RangeType } from './compile/scale/type';
 import { Encoding } from './encoding';
-import { Facet } from './facet';
+import { FacetMapping } from './facet';
 import { Mark } from './mark';
 export declare namespace Channel {
     const ROW: 'row';
@@ -18,7 +18,7 @@ export declare namespace Channel {
     const DETAIL: 'detail';
     const TOOLTIP: 'tooltip';
 }
-export declare type Channel = keyof Encoding<any> | keyof Facet<any>;
+export declare type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
 export declare const X: "x";
 export declare const Y: "y";
 export declare const X2: "x2";

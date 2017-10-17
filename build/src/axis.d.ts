@@ -45,7 +45,7 @@ export interface Axis extends VgAxisBase, Guide {
      */
     zindex?: number;
     /**
-     * Optional mark definitions for custom axis encoding.
+     * Mark definitions for custom axis encoding.
      *
      * @hide
      */
@@ -56,7 +56,7 @@ export interface Axis extends VgAxisBase, Guide {
  * (Properties not listed are applicable for both)
  */
 export declare const AXIS_PROPERTY_TYPE: {
-    [k in keyof Axis]: 'main' | 'grid';
+    [k in keyof VgAxis]?: 'main' | 'grid';
 };
 export interface AxisEncoding {
     /**
@@ -84,11 +84,11 @@ export interface AxisEncoding {
      */
     title?: GuideEncodingEntry;
 }
-export declare const AXIS_PROPERTIES: (keyof (VgAxis | Axis))[];
-export declare const VG_AXIS_PROPERTIES: (keyof VgAxis)[];
+export declare function isAxisProperty(prop: string): prop is keyof Axis;
+export declare const VG_AXIS_PROPERTIES: ("title" | "values" | "scale" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "encode" | "grid" | "gridScale" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding")[];
 export interface AxisConfigMixins {
     /**
-     * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config).
+     * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config).
      */
     axis?: AxisConfig;
     /**
