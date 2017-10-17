@@ -33,3 +33,7 @@ Below, we override the default number formatting to use exponent notation set to
 In the example below we format the axis label to only show the year.
 
 <span class="vl-example" data-name="line"></span>
+
+The format can also contain text.
+
+<span class="vl-example" data-name="bar_yearmonth_custom_format"></span>
