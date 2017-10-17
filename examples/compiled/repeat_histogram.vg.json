@@ -294,7 +294,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Horsepower (binned)",
                     "values": {
@@ -386,7 +386,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Miles_per_Gallon (binned)",
                     "values": {
@@ -478,7 +478,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Acceleration (binned)",
                     "values": {
