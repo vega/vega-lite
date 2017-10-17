@@ -1,5 +1,5 @@
 import {Axis} from '../../axis';
-import {BinParams, binToString} from '../../bin';
+import {binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
