@@ -61,6 +61,12 @@
             },
             "encode": {
                 "update": {
+                    "interpolate": {
+                        "value": "monotone"
+                    },
+                    "orient": {
+                        "value": "horizontal"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "sum_Weight_in_lbs"
@@ -75,12 +81,6 @@
                     },
                     "fill": {
                         "value": "#4c78a8"
-                    },
-                    "orient": {
-                        "value": "horizontal"
-                    },
-                    "interpolate": {
-                        "value": "monotone"
                     }
                 }
             }

@@ -32,7 +32,7 @@ permalink: /docs/text.html
 
 ## Labels
 
-You can also use `text` marks as labels for other marks by setting `style` for the marks and using [style config](mark.html#style-config) to configure offset (`dx` or `dy`), `align`, and `baseline`.
+You can also use `text` marks as labels for other marks and set offset (`dx` or `dy`), `align`, and `baseline` properties of the mark definition.
 
 <span class="vl-example" data-name="layer_bar_labels"></span>
 

@@ -119,6 +119,9 @@
                     },
                     "encode": {
                         "update": {
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "yearmonth_date"
@@ -134,9 +137,6 @@
                             "fill": {
                                 "scale": "color",
                                 "field": "series"
-                            },
-                            "orient": {
-                                "value": "vertical"
                             }
                         }
                     }

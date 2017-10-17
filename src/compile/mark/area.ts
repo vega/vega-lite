@@ -7,6 +7,7 @@ export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
     return {
+      ...mixins.markDefProperties(model.markDef),
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
       ...mixins.pointPosition('y', model, 'zeroOrMin'),
       ...mixins.pointPosition2(model, 'zeroOrMin'),
@@ -14,7 +15,6 @@ export const area: MarkCompiler = {
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
       ...mixins.nonPosition('opacity', model),
-      ...mixins.markDefProperties(model.markDef, ['orient', 'interpolate', 'tension']),
     };
   }
 };
