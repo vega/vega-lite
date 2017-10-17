@@ -69,18 +69,16 @@ describe('compile/data/lookup', function() {
     });
   });
 
-  it('should warn if fields are not specified and as is missing', function () {
-    log.runLocalLogger((localLogger) => {
-      const lookup = new LookupNode({
-          'lookup': 'person',
-          'from': {
-            'data': {'url': 'data/lookup_people.csv'},
-            'key': 'name'
-          }
-        }, 'lookup_0');
-      lookup.assemble();
+  it('should warn if fields are not specified and as is missing', log.wrap((localLogger) => {
+    const lookup = new LookupNode({
+        'lookup': 'person',
+        'from': {
+          'data': {'url': 'data/lookup_people.csv'},
+          'key': 'name'
+        }
+      }, 'lookup_0');
+    lookup.assemble();
 
-      assert.equal(localLogger.warns[0], log.message.NO_FIELDS_NEEDS_AS);
-    });
-  });
+    assert.equal(localLogger.warns[0], log.message.NO_FIELDS_NEEDS_AS);
+  }));
 });

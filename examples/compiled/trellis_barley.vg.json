@@ -148,8 +148,8 @@
             "axes": [
                 {
                     "scale": "trellis_barley_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "title": "variety",
                     "zindex": 1
                 }
@@ -169,12 +169,12 @@
             "axes": [
                 {
                     "scale": "trellis_barley_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },
-                    "title": "MEDIAN(yield)",
+                    "title": "Median of yield",
                     "zindex": 1
                 }
             ]
@@ -268,12 +268,12 @@
             "axes": [
                 {
                     "scale": "trellis_barley_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },

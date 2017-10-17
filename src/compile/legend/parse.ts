@@ -59,7 +59,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       const explicit = property === 'values' ?
         !!legend.values :  // specified legend.values is already respected, but may get transformed.
         value === legend[property];
-      legendCmpt.set(property, value, explicit);
+      if (explicit || model.config.legend[property] === undefined) {
+        legendCmpt.set(property, value, explicit);
+      }
     }
   });
 
@@ -67,7 +69,8 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendEncoding = legend.encoding || {};
   const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: VgLegendEncode, part) => {
     const value = encode[part] ?
-      encode[part](fieldDef, legendEncoding[part], model, channel, legendCmpt) : // apply rule
+      // TODO: replace legendCmpt with type is sufficient
+      encode[part](fieldDef, legendEncoding[part], model, channel, legendCmpt.get('type')) : // apply rule
       legendEncoding[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       e[part] = {update: value};

@@ -1,5 +1,6 @@
 // utility for a field definition object
 
+import {isNumber} from 'vega-util';
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -13,9 +14,9 @@ import {LogicalOperand} from './logical';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {normalizeTimeUnit, TimeUnit} from './timeunit';
+import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean, isString, stringValue} from './util';
+import {isBoolean, isString, stringValue, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -164,7 +165,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    *
    * @nullable
    */
-  sort?: SortOrder | SortField;
+  sort?: SortOrder | SortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
@@ -176,7 +177,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    *
    * @nullable
    */
-  axis?: Axis;
+  axis?: Axis | null;
 
   /**
    * Type of stacking offset if the field should be stacked.
@@ -187,11 +188,14 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).
    * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>
    * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
-   * - `"none"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
+   * - `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
    *
-   * __Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `"none"` by default.
+   * __Default value:__ `zero` for plots with all of the following conditions are true:
+   * (1) the mark is `bar` or `area`;
+   * (2) the stacked measure channel (x or y) has a linear scale;
+   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
    */
-  stack?: StackOffset;
+  stack?: StackOffset | null;
 }
 
 export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
@@ -203,7 +207,7 @@ export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
     *
     * @nullable
     */
-  legend?: Legend;
+  legend?: Legend | null;
 }
 
 // Detail
@@ -237,8 +241,16 @@ export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef i
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
+export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<ValueDef>}) {
+  return !!channelDef && !!channelDef.condition && isValueDef(channelDef.condition);
+}
+
 export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+}
+
+export function isStringFieldDef(fieldDef: ChannelDef<string|RepeatRef>): fieldDef is FieldDef<string> {
+  return isFieldDef(fieldDef) && isString(fieldDef.field);
 }
 
 export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef {
@@ -326,16 +338,55 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
-export function title(fieldDef: FieldDef<string>, config: Config) {
-  if (isCount(fieldDef)) {
+export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
+
+export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+  const {field, bin, timeUnit, aggregate} = fieldDef;
+  if (aggregate === 'count') {
     return config.countTitle;
+  } else if (bin) {
+    return `${field} (binned)`;
+  } else if (timeUnit) {
+    const units = getTimeUnitParts(timeUnit).join('-');
+    return `${field} (${units})`;
+  } else if (aggregate) {
+    return `${titlecase(aggregate)} of ${field}`;
   }
+  return field;
+}
+
+export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
   } else {
     return fieldDef.field;
   }
+}
+
+export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
+  switch (config.fieldTitle) {
+    case 'plain':
+      return fieldDef.field;
+    case 'functional':
+      return functionalTitleFormatter(fieldDef, config);
+    default:
+      return verbalTitleFormatter(fieldDef, config);
+  }
+};
+
+let titleFormatter = defaultTitleFormatter;
+
+export function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string) {
+  titleFormatter = formatter;
+}
+
+export function resetTitleFormatter() {
+  setTitleFormatter(defaultTitleFormatter);
+}
+
+export function title(fieldDef: FieldDef<string>, config: Config) {
+  return titleFormatter(fieldDef, config);
 }
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
@@ -374,6 +425,13 @@ export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
 export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
+  if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+    const primitiveType = isString(channelDef) ? 'string' :
+      isNumber(channelDef) ? 'number' : 'boolean';
+    log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
+    return {value: channelDef};
+  }
+
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
     return normalizeFieldDef(channelDef, channel);

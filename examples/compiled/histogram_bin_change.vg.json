@@ -17,10 +17,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
-                },
-                {
                     "type": "extent",
                     "field": "IMDB_Rating",
                     "signal": "bin_maxbins_30_IMDB_Rating_extent"
@@ -53,6 +49,10 @@
                     "as": [
                         "count_*"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"bin_maxbins_30_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"])"
                 }
             ]
         }
@@ -133,33 +133,21 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "min(ceil(width/40), 30)"
             },
-            "title": "BIN(IMDB_Rating)",
-            "zindex": 1,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            }
+            "title": "IMDB_Rating (binned)",
+            "values": {
+                "signal": "sequence(bin_maxbins_30_IMDB_Rating_bins.start, bin_maxbins_30_IMDB_Rating_bins.stop + bin_maxbins_30_IMDB_Rating_bins.step, bin_maxbins_30_IMDB_Rating_bins.step)"
+            },
+            "zindex": 1
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -168,12 +156,12 @@
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

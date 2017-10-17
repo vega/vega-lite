@@ -60,7 +60,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
   }
 }
 
-function stepSignal(scaleName: string, range: VgRangeStep) {
+function stepSignal(scaleName: string, range: VgRangeStep): VgSignal {
   return {
     name: scaleName + '_step',
     value: range.step,

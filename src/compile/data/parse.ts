@@ -13,12 +13,11 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
+import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
 import {IdentifierNode} from './indentifier';
 import {DataComponent} from './index';
 import {LookupNode} from './lookup';
-import {NonPositiveFilterNode} from './nonpositivefilter';
-import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -129,7 +128,6 @@ export function parseTransformArray(model: Model) {
 
 /*
 Description of the dataflow (http://asciiflow.com/):
-
      +--------+
      | Source |
      +---+----+
@@ -140,9 +138,6 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
      FormatParse
-         |
-         v
-     Null Filter
          |
          v
       Binning
@@ -162,10 +157,10 @@ Description of the dataflow (http://asciiflow.com/):
        Stack
          |
          v
-      >0 Filter
+     Path Order
          |
          v
-     Path Order
+  Invalid Filter
          |
          v
    +----------+
@@ -179,7 +174,6 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
   ...Child data...
-
 */
 
 export function parseData(model: Model): DataComponent {
@@ -229,11 +223,6 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {
-    const nullFilter = NullFilterNode.make(model);
-    if (nullFilter) {
-      nullFilter.parent = head;
-      head = nullFilter;
-    }
 
     if (!parentIsLayer) {
       const bin = BinNode.makeBinFromEncoding(model);
@@ -275,11 +264,13 @@ export function parseData(model: Model): DataComponent {
       stack.parent = head;
       head = stack;
     }
+  }
 
-    const nonPosFilter = NonPositiveFilterNode.make(model);
-    if (nonPosFilter) {
-      nonPosFilter.parent = head;
-      head = nonPosFilter;
+  if (isUnitModel(model)) {
+    const filter = FilterInvalidNode.make(model);
+    if (filter) {
+      filter.parent = head;
+      head = filter;
     }
   }
 

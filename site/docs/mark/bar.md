@@ -59,7 +59,7 @@ Adding color to the bar chart (by using the `color` attribute) creates a stacked
 
 ## Layered Bar Chart
 
-To disable stacking, you can alternatively set [`stack`](stack.html) to `"none"`.
+To disable stacking, you can alternatively set [`stack`](stack.html) to `null`.
 This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to a value between 0 and 1 (e.g., `0.7`).
 

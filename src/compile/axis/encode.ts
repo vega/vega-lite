@@ -4,12 +4,12 @@ import {FieldDef, isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
 import {contains, keys} from '../../util';
-import {AxisOrient, VgAxis} from '../../vega.schema';
+import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
-import {Split} from '../split';
 import {UnitModel} from '../unit';
+import {getAxisConfig} from './config';
 
-export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, def: Split<Partial<VgAxis>>) {
+export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :
@@ -31,13 +31,16 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   }
 
   // Label Angle
-  const angle = labelAngle(axis, channel, fieldDef);
-  if (angle) {
-    labelsSpec.angle = {value: angle};
+  let angle = getAxisConfig('labelAngle', model.config, channel, orient, model.getScaleComponent(channel).get('type'));
+  if (angle === undefined) {
+    angle = labelAngle(axis, channel, fieldDef);
+    if (angle) {
+      labelsSpec.angle = {value: angle};
+    }
   }
 
-  if (labelsSpec.angle && channel === 'x') {
-    const align = labelAlign(angle, def.get('orient'));
+  if (angle !== undefined && channel === 'x') {
+    const align = labelAlign(angle, orient);
     if (align) {
       labelsSpec.align = {value: align};
     }
@@ -60,20 +63,22 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
     // Make angle within [0,360)
     return ((axis.labelAngle % 360) + 360) % 360;
   } else {
-    // auto rotate for X
-    if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||  isTimeFieldDef(fieldDef))) {
+    if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
       return 270;
     }
   }
   return undefined;
 }
-export function labelAlign(angle: number, orient: AxisOrient) {
-  if (angle && angle > 0) {
-    if (angle > 180) {
+
+export function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign {
+  if (angle > 0) {
+    if (angle % 360 > 180) {
       return orient === 'top' ? 'left' : 'right';
-    }  else if (angle < 180) {
+    }  else if (angle % 360 < 180) {
       return orient === 'top' ? 'right': 'left';
     }
+  } else if (angle < 0) {
+    return labelAlign((angle % 360) + 360 /* convert to positive value*/, orient);
   }
   return undefined;
 }

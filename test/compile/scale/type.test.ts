@@ -20,15 +20,13 @@ describe('compile/scale', () => {
       );
     });
 
-    it('should show warning if users try to override the scale and use bin', function() {
-      log.runLocalLogger((localLogger) => {
-        assert.deepEqual(
-          scaleType('point', 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
-          ScaleType.BIN_ORDINAL
-        );
-        assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithFieldDef(ScaleType.POINT, ScaleType.BIN_ORDINAL));
-      });
-    });
+    it('should show warning if users try to override the scale and use bin', log.wrap((localLogger) => {
+      assert.deepEqual(
+        scaleType('point', 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
+        ScaleType.BIN_ORDINAL
+      );
+      assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithFieldDef(ScaleType.POINT, ScaleType.BIN_ORDINAL));
+    }));
 
     describe('nominal/ordinal', () => {
       describe('color', () => {
@@ -55,17 +53,16 @@ describe('compile/scale', () => {
           );
         });
 
-        it('should return ordinal even if other type is specified', function() {
+        it('should return ordinal even if other type is specified', log.wrap((localLogger) => {
           [ScaleType.LINEAR, ScaleType.BAND, ScaleType.POINT].forEach((badScaleType) => {
-            log.runLocalLogger((localLogger) => {
-              assert.deepEqual(
-                scaleType(badScaleType, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig),
-                ScaleType.ORDINAL
-              );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, 'ordinal'));
-            });
+            assert.deepEqual(
+              scaleType(badScaleType, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig),
+              ScaleType.ORDINAL
+            );
+            const warns = localLogger.warns;
+            assert.equal(warns[warns.length-1], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, 'ordinal'));
           });
-        });
+        }));
 
         it('should return ordinal for an ordinal field and throw a warning.', log.wrap((localLogger) => {
           assert.deepEqual(
@@ -113,16 +110,15 @@ describe('compile/scale', () => {
           });
         });
 
-        it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', () => {
+        it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', log.wrap((localLogger) => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              log.runLocalLogger((localLogger) => {
-                assert.equal(scaleType('ordinal', channel, {type: t}, 'point', defaultScaleConfig), ScaleType.POINT);
-                assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
-              });
+              assert.equal(scaleType('ordinal', channel, {type: t}, 'point', defaultScaleConfig), ScaleType.POINT);
+              const warns = localLogger.warns;
+              assert.equal(warns[warns.length-1], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
             });
           });
-        });
+        }));
 
         it('should return point scale for ordinal/nominal fields for continous channels other than x and y.', () => {
           const OTHER_CONTINUOUS_CHANNELS = SCALE_CHANNELS.filter((c) => rangeType(c) === 'continuous' && !util.contains([X, Y], c));

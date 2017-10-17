@@ -44,10 +44,7 @@
                     "a": "E",
                     "b": 7
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_0",
@@ -158,22 +155,22 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "AVERAGE(b)",
+            "title": "Average of b",
             "zindex": 1
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },

@@ -99,10 +99,24 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelOverlap": {
           "anyOf": [
@@ -166,16 +180,11 @@
           "type": "boolean"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment of axis titles.",
-          "type": "string"
-        },
-        "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as a part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function will be denoted in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Note__: You can customize the default field title format by providing the [`fieldTitle` property in the [config](config.html) or [`fieldTitle` function via the `compile` function's options](compile.html#field-title).",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
@@ -257,14 +266,28 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
         },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
         "labelColor": {
           "description": "The color of the tick label, can be in hex color code or regular color name.",
           "type": "string"
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelFont": {
           "description": "The font of the tick label.",
@@ -401,7 +424,7 @@
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
@@ -659,6 +682,14 @@
     "BaseSelectionDef": {
       "additionalProperties": false,
       "properties": {
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -692,7 +723,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "name": {
@@ -1042,13 +1073,27 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1073,6 +1118,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -1116,7 +1164,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -1188,13 +1243,27 @@
           "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1215,6 +1284,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -1262,7 +1334,14 @@
           "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -1355,7 +1434,7 @@
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#axis-config)."
+          "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config)."
         },
         "axisBand": {
           "$ref": "#/definitions/VgAxisConfig",
@@ -1399,6 +1478,15 @@
         },
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
+          "type": "string"
+        },
+        "fieldTitle": {
+          "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
+          "enum": [
+            "verbal",
+            "functional",
+            "plain"
+          ],
           "type": "string"
         },
         "invalidValues": {
@@ -1983,20 +2071,6 @@
       ],
       "type": "object"
     },
-    "Facet": {
-      "additionalProperties": false,
-      "properties": {
-        "column": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
-        },
-        "row": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
-        }
-      },
-      "type": "object"
-    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -2016,11 +2090,19 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
-          "$ref": "#/definitions/Header"
+          "$ref": "#/definitions/Header",
+          "description": "An object defining properties of a facet's header."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder",
@@ -2040,19 +2122,23 @@
       ],
       "type": "object"
     },
+    "FacetMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Horizontal facets for trellis plots."
+        },
+        "row": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Vertical facets for trellis plots."
+        }
+      },
+      "type": "object"
+    },
     "FacetedUnitSpec": {
       "$ref": "#/definitions/FacetedCompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark and row or column channels."
-    },
-    "Field": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "$ref": "#/definitions/RepeatRef"
-        }
-      ]
     },
     "FieldDef": {
       "additionalProperties": false,
@@ -2074,7 +2160,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -2110,7 +2203,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -2171,7 +2271,7 @@
       "minimum": 100,
       "type": "number"
     },
-    "FacetedSpec": {
+    "FacetSpec": {
       "additionalProperties": false,
       "properties": {
         "data": {
@@ -2179,11 +2279,12 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2200,7 +2301,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -2235,7 +2337,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "hconcat": {
@@ -2283,11 +2385,11 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -2330,7 +2432,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2347,7 +2449,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "name": {
@@ -2397,7 +2499,7 @@
           "$ref": "#/definitions/LayerSpec"
         },
         {
-          "$ref": "#/definitions/FacetedSpec"
+          "$ref": "#/definitions/FacetSpec"
         },
         {
           "$ref": "#/definitions/RepeatSpec"
@@ -2418,7 +2520,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "encoding": {
@@ -2426,7 +2528,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2463,7 +2565,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2481,7 +2583,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "encoding": {
@@ -2489,7 +2591,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -2526,7 +2628,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2544,7 +2646,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "name": {
@@ -2592,8 +2694,11 @@
           "type": "string"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as a part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function will be denoted in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Note__: You can customize the default field title format by providing the [`fieldTitle` property in the [config](config.html) or [`fieldTitle` function via the `compile` function's options](compile.html#field-title).",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": "object"
@@ -2714,6 +2819,14 @@
           ],
           "type": "string"
         },
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -2773,6 +2886,14 @@
           "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.",
           "enum": [
             "scales"
+          ],
+          "type": "string"
+        },
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
           ],
           "type": "string"
         },
@@ -2854,11 +2975,11 @@
       "additionalProperties": false,
       "properties": {
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2871,10 +2992,6 @@
         "entryPadding": {
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
-        },
-        "fillColor": {
-          "description": "Background fill color for the full legend.",
-          "type": "string"
         },
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
@@ -2897,12 +3014,11 @@
           "type": "number"
         },
         "title": {
-          "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `\"SUM(field_name)\"`, `\"BIN(field_name)\"`, `\"YEAR(field_name)\"`).  Otherwise, the title is simply the field name.",
-          "type": "string"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment for legend titles.",
-          "type": "string"
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as a part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function will be denoted in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Note__: You can customize the default field title format by providing the [`fieldTitle` property in the [config](config.html) or [`fieldTitle` function via the `compile` function's options](compile.html#field-title).",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "type": {
           "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
@@ -3073,7 +3189,7 @@
           "type": "string"
         },
         "titleBaseline": {
-          "description": "Optional mark property definitions for custom legend styling. \n Vertical text baseline for legend titles.",
+          "description": "Vertical text baseline for legend titles.",
           "type": "string"
         },
         "titleColor": {
@@ -3125,13 +3241,27 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Legend"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3152,6 +3282,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -3358,17 +3491,17 @@
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
-          "description": "secondary data source to lookup in"
+          "description": "Secondary data source to lookup in."
         },
         "fields": {
-          "description": "(Optional) fields in foreign data to lookup\nif not specificied, the entire object is queried",
+          "description": "Fields in foreign data to lookup.\nIf not specificied, the entire object is queried.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "key": {
-          "description": "key in data to lookup",
+          "description": "Key in data to lookup.",
           "type": "string"
         }
       },
@@ -3393,18 +3526,18 @@
               "type": "array"
             }
           ],
-          "description": "(Optional) The field or fields for storing the computed formula value.\nIf `from.fields` is not specified, `as` has to be a string and we put the whole object into the data"
+          "description": "The field or fields for storing the computed formula value.\nIf `from.fields` is specified, the transform will use the same names for `as`.\nIf `from.fields` is not specified, `as` has to be a string and we put the whole object into the data under the specified name."
         },
         "default": {
-          "description": "(Optional) The default value to use if lookup fails",
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
           "type": "string"
         },
         "from": {
           "$ref": "#/definitions/LookupData",
-          "description": "secondary data reference"
+          "description": "Secondary data reference."
         },
         "lookup": {
-          "description": "key in primary data source",
+          "description": "Key in primary data source.",
           "type": "string"
         }
       },
@@ -3654,7 +3787,7 @@
               "type": "array"
             }
           ],
-          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default."
+          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default.\n__Note:__ Any specified style will augment the default style. For example, a bar mark with `\"style\": \"foo\"` will receive from `config.style.bar` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",
@@ -3680,6 +3813,14 @@
     "MultiSelection": {
       "additionalProperties": false,
       "properties": {
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -3728,6 +3869,14 @@
     "MultiSelectionConfig": {
       "additionalProperties": false,
       "properties": {
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -3869,7 +4018,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
@@ -3933,7 +4089,14 @@
         "axis": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Axis"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Axis"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3953,7 +4116,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
@@ -3969,6 +4139,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -3979,8 +4152,15 @@
           "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
-          "$ref": "#/definitions/StackOffset",
-          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `\"none\"` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true: (1) `bar` or `area` marks (2) At least one of `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) one position channel has a linear scale and summative aggregation function (e.g., `sum`, `count`) and (4) the other position channel either has discrete domain or unmapped.  Otherwise `\"none\"` by default."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StackOffset"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4288,11 +4468,10 @@
               "type": "object"
             }
           ],
-          "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; automatically determined based on the time unit for _temporal_ fields."
+          "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise."
         },
         "padding": {
-          "description": "Shortcut for setting `paddingInner` and `paddingOuter` to the same value.  For point scales, this property only affects `paddingOuter`.\n\n__Default value:__ see `paddingInner` and `paddingOuter`.",
-          "maximum": 1,
+          "description": "For _[continuous](scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.\n\nFor _[band](scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.\n\nFor _[point](scale.html#point)_ scales, alias for `paddingOuter`.\n\n__Default value:__ For _continuous_ scales, derived from the [scale config](scale.html#config)'s `continuousPadding`.\nFor _band and point_ scales, see `paddingInner` and `paddingOuter`.",
           "minimum": 0,
           "type": "number"
         },
@@ -4380,6 +4559,11 @@
         "clamp": {
           "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
           "type": "boolean"
+        },
+        "continuousPadding": {
+          "description": "Default padding for continuous scales.",
+          "minimum": 0,
+          "type": "number"
         },
         "maxBandSize": {
           "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the scale's `rangeStep` - 1.",
@@ -4482,7 +4666,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
@@ -4498,6 +4689,9 @@
                 },
                 {
                   "$ref": "#/definitions/SortField"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -4706,6 +4900,14 @@
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](bind.html) documentation for more information."
         },
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -4761,6 +4963,14 @@
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](bind.html) documentation for more information."
         },
+        "empty": {
+          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
@@ -4804,8 +5014,15 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "The data field to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "The data [field](field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
@@ -4844,8 +5061,7 @@
       "enum": [
         "zero",
         "center",
-        "normalize",
-        "none"
+        "normalize"
       ],
       "type": "string"
     },
@@ -4855,7 +5071,7 @@
       },
       "type": "object"
     },
-    "Summarize": {
+    "SummarizeFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -4891,7 +5107,7 @@
         "summarize": {
           "description": "Array of objects that define aggregate fields.",
           "items": {
-            "$ref": "#/definitions/Summarize"
+            "$ref": "#/definitions/SummarizeFieldDef"
           },
           "type": "array"
         }
@@ -5067,7 +5283,14 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -5386,7 +5609,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "encoding": {
@@ -5394,7 +5617,7 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
@@ -5435,7 +5658,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5445,7 +5668,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedSpec": {
+    "TopLevelFacetSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5477,11 +5700,12 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/Facet"
+          "$ref": "#/definitions/FacetMapping",
+          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5502,7 +5726,8 @@
             {
               "$ref": "#/definitions/CompositeUnitSpec"
             }
-          ]
+          ],
+          "description": "A specification of the view that gets faceted."
         },
         "title": {
           "anyOf": [
@@ -5561,7 +5786,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "hconcat": {
@@ -5637,11 +5862,11 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -5688,7 +5913,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plot with `row` and `column` channels, this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -5729,7 +5954,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "name": {
@@ -5806,7 +6031,7 @@
           "description": "An object describing the data source"
         },
         "description": {
-          "description": "An optional description of this mark for commenting purpose.",
+          "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
         "name": {
@@ -5859,7 +6084,7 @@
           "$ref": "#/definitions/TopLevelLayerSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelFacetedSpec"
+          "$ref": "#/definitions/TopLevelFacetSpec"
         },
         {
           "$ref": "#/definitions/TopLevelRepeatSpec"
@@ -6020,6 +6245,15 @@
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
         },
+        "fieldTitle": {
+          "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
+          "enum": [
+            "verbal",
+            "functional",
+            "plain"
+          ],
+          "type": "string"
+        },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
@@ -6093,10 +6327,24 @@
           "type": "boolean"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelOverlap": {
           "anyOf": [
@@ -6142,14 +6390,6 @@
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.",
           "type": "boolean"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment of axis titles.",
-          "type": "string"
-        },
-        "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
         },
         "titleMaxLength": {
           "description": "Max length for axis title if the title is automatically generated from the field's description.",
@@ -6209,14 +6449,28 @@
           "type": "number"
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal, ordinal, temporal, and binned fields; `0` otherwise.",
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
         },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
         "labelColor": {
           "description": "The color of the tick label, can be in hex color code or regular color name.",
           "type": "string"
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "type": [
+            "boolean",
+            "number"
+          ]
         },
         "labelFont": {
           "description": "The font of the tick label.",
@@ -6405,10 +6659,6 @@
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
         },
-        "fillColor": {
-          "description": "Background fill color for the full legend.",
-          "type": "string"
-        },
         "offset": {
           "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
           "type": "number"
@@ -6420,10 +6670,6 @@
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
           "type": "number"
-        },
-        "titleAlign": {
-          "description": "Horizontal text alignment for legend titles.",
-          "type": "string"
         }
       },
       "type": "object"
@@ -6554,7 +6800,7 @@
           "type": "string"
         },
         "titleBaseline": {
-          "description": "Optional mark property definitions for custom legend styling. \n Vertical text baseline for legend titles.",
+          "description": "Vertical text baseline for legend titles.",
           "type": "string"
         },
         "titleColor": {

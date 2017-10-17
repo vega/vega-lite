@@ -19,10 +19,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -72,6 +68,10 @@
                         "sum_count_end"
                     ],
                     "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }
@@ -157,8 +157,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "month"
+            ]
         },
         {
             "name": "y",
@@ -196,12 +195,12 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "YEARMONTH(date)",
+            "title": "date (year-month)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -215,12 +214,12 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -230,22 +229,22 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "SUM(count)",
+            "title": "Sum of count",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

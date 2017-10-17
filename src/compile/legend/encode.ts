@@ -1,16 +1,15 @@
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, isTimeFieldDef, isValueDef} from '../../fielddef';
+import {ConditionalFieldDef, ConditionalValueDef, FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef, LegendFieldDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
+import {LegendType} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
-import {LegendComponent} from './component';
 
-
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
-  if (legendCmpt.get('type') === 'gradient') {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
+  if (type === 'gradient') {
     return undefined;
   }
 
@@ -67,9 +66,9 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   }
 
   if (channel !== OPACITY) {
-    const opacityDef = model.encoding.opacity;
-    if (isValueDef(opacityDef)) {
-      symbols.opacity = {value: opacityDef.value};
+    const opacity = getOpacityValue(model.encoding.opacity);
+    if (opacity) { // only apply opacity if it is neither zero or undefined
+      symbols.opacity = {value: opacity};
     }
   }
 
@@ -78,13 +77,13 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, legendCmpt: LegendComponent) {
+export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
   let gradient:any = {};
 
-  if (legendCmpt.get('type') === 'gradient') {
-    const opacityDef = model.encoding.opacity;
-    if (isValueDef(opacityDef)) {
-      gradient.opacity = {value: opacityDef.value};
+  if (type === 'gradient') {
+    const opacity = getOpacityValue(model.encoding.opacity);
+    if (opacity) { // only apply opacity if it is neither zero or undefined
+      gradient.opacity = {value: opacity};
     }
   }
 
@@ -92,11 +91,11 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   return keys(gradient).length > 0 ? gradient : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, legendCmpt: LegendComponent) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, type: LegendType) {
   const legend = model.legend(channel);
   const config = model.config;
 
-  let labels:any = {};
+  let labels: any = {};
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
@@ -113,3 +112,13 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(labels).length > 0 ? labels : undefined;
 }
 
+function getOpacityValue(opacityDef: ConditionalFieldDef<LegendFieldDef<string>> | ConditionalValueDef<LegendFieldDef<string>>): number {
+  if (isValueDef(opacityDef)) {
+    if (hasConditionValueDef(opacityDef)) {
+      return Math.max(opacityDef.condition.value as number, opacityDef.value as number);
+    } else {
+      return opacityDef.value as number;
+    }
+  }
+  return undefined;
+}

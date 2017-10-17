@@ -274,3 +274,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
     }
   }
 }
+
+export function titlecase(s: string) {
+  return s.charAt(0).toUpperCase() + s.substr(1);
+}

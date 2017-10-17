@@ -2,7 +2,7 @@ import {AggregateOp} from '../aggregate';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {Facet} from '../facet';
+import {FacetMapping} from '../facet';
 import {field, FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
@@ -22,7 +22,7 @@ import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
-  public readonly facet: Facet<string>;
+  public readonly facet: FacetMapping<string>;
 
   public readonly child: Model;
 
@@ -35,12 +35,12 @@ export class FacetModel extends ModelWithField {
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
     this.children = [this.child];
 
-    const facet: Facet<string> = replaceRepeaterInFacet(spec.facet, repeater);
+    const facet: FacetMapping<string> = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
   }
 
-  private initFacet(facet: Facet<string>): Facet<string> {
+  private initFacet(facet: FacetMapping<string>): FacetMapping<string> {
     // clone to prevent side effect to the original spec
     return reduce(facet, function(normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) {
       if (!contains([ROW, COLUMN], channel)) {

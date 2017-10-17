@@ -10,10 +10,7 @@
             "name": "source_0",
             "values": [
                 {}
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         }
     ],
     "marks": [

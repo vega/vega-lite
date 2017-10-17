@@ -1,8 +1,9 @@
 import {assert} from 'chai';
+import * as log from '../../src/log';
 import {VgLayout} from '../../src/vega.schema';
 import {parseConcatModel} from '../util';
 
-describe('Concat', function() {
+describe('Concat', () => {
   describe('merge scale domains', () => {
     it('should instantiate all children in vconcat', () => {
       const model = parseConcatModel({
@@ -86,5 +87,19 @@ describe('Concat', function() {
         align: 'each'
       });
     });
+  });
+
+  describe('resolve', () => {
+    it('cannot share axes', log.wrap((localLogger) => {
+      parseConcatModel({
+        hconcat: [],
+        resolve: {
+          axis: {
+            x: 'shared'
+          }
+        }
+      });
+      assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+    }));
   });
 });

@@ -106,22 +106,22 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "MEAN(Horsepower)",
+            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -131,22 +131,22 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(Displacement)",
+            "title": "Mean of Displacement",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

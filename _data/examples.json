@@ -117,6 +117,10 @@
     {
       "name": "bar_layered_transparent",
       "title": "Layered Bar Chart"
+    },
+    {
+      "name": "bar_diverging_stacked",
+      "title": "Diverging Stacked Bar Chart"
     }
   ],
   "Trellis": [
@@ -145,6 +149,11 @@
     }
   ],
   "Layering": [
+    {
+      "name": "layer_bar_labels",
+      "title": "Simple Bar Chart with Labels",
+      "style": "background-size: auto 70%; background-position-y: center;"
+    },
     {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
@@ -189,6 +198,21 @@
       "name": "layered_falkensee",
       "title": "Falkensee",
       "style": "background-size: auto 90%; background-position-y: center !important;"
+    },
+    {
+      "name": "layer_ranged_dot",
+      "title": "Ranged Dot Plot",
+      "style": "background-size: auto 70%; background-position-y: center;"
+    },
+    {
+      "name": "layer_bar_dual_axis",
+      "title": "Layered Plot with Dual-Axis",
+      "style": "background-size: 100% auto; background-position-y: center;"
+    },
+    {
+      "name": "area_horizon",
+      "title": "Horizon Graph",
+      "style": "background-size: auto 70%; background-position-y: center;"
     }
   ],
   "Composition": [
@@ -227,12 +251,8 @@
       "title": "Scatterplot Matrix"
     },
     {
-      "name": "concat_layer.vl.json",
+      "name": "concat_layer",
       "title": "Interactive Dashboard with Cross Highlight"
-    },
-    {
-      "name": "concat_bar_layer_circle.vl.json",
-      "title": "Interactive Dashboard with Cross Highlight 2"
     }
   ]
 }

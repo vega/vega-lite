@@ -20,10 +20,9 @@ describe('compile/data/source', function() {
         assert.deepEqual(source.data.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
-      // https://github.com/vega/vega-parser/pull/60
-      // it('should have no source.format.type', function() {
-      //   assert.deepEqual(source.data.format, undefined);
-      // });
+      it('should have no source.format.type', function() {
+        assert.deepEqual(source.data.format, undefined);
+      });
     });
 
     describe('with explicit values as CSV', function() {

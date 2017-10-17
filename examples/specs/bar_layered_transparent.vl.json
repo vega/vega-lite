@@ -15,7 +15,7 @@
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"},
-      "stack": "none"
+      "stack": null
     },
     "color": {
       "field": "gender", "type": "nominal",

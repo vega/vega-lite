@@ -249,6 +249,7 @@
                     "name": "layer_1_marks",
                     "type": "line",
                     "style": [
+                        "line",
                         "lineOverlay"
                     ],
                     "sort": {
@@ -363,8 +364,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "age",
             "zindex": 1,
             "encode": {
@@ -385,22 +386,22 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "SUM(people)",
+            "title": "Sum of people",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

@@ -208,10 +208,7 @@
                     "signal": "long",
                     "ret": 6.73758865248228
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_0",
@@ -244,13 +241,13 @@
                     "as": "high"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonthdate_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
                 }
             ]
         },
@@ -274,13 +271,13 @@
                     "as": "close"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
-                },
-                {
                     "type": "formula",
                     "as": "yearmonthdate_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
                 }
             ]
         }
@@ -374,8 +371,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "day"
+            ]
         },
         {
             "name": "y",
@@ -436,8 +432,8 @@
         {
             "title": "Date in 2009",
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -454,12 +450,12 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -469,8 +465,8 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
@@ -479,12 +475,12 @@
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

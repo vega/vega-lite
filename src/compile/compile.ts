@@ -1,25 +1,38 @@
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
+import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
-import {keys} from '../util';
+import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
 
+export interface CompileOptions {
+  config?: Config;
+  logger?: log.LoggerInterface;
+
+  fieldTitle?: vlFieldDef.FieldTitleFormatter;
+}
+
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
-  if (logger) {
+export function compile(inputSpec: TopLevelExtendedSpec, opt: CompileOptions = {}) {
+  if (opt.logger) {
     // set the singleton logger to the provided logger
-    log.set(logger);
+    log.set(opt.logger);
+  }
+
+  if (opt.fieldTitle) {
+    // set the singleton field title formatter
+    vlFieldDef.setTitleFormatter(opt.fieldTitle);
   }
 
   try {
     // 1. initialize config
-    const config = initConfig(inputSpec.config);
+    const config = initConfig(mergeDeep({}, opt.config, inputSpec.config));
 
     // 2. Convert input spec into a normalized form
     // (Normalize autosize to be a autosize properties object.)
@@ -28,7 +41,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
 
     // 3. Instantiate the models with default config by doing a top-down traversal.
     // This allows us to pass properties that child models derive from their parents via their constructors.
-    const autosize = normalizeAutoSize(inputSpec.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+    const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
     const model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 
     // 4. Parse parts of each model to produce components that can be merged
@@ -48,8 +61,12 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
   } finally {
     // Reset the singleton logger if a logger is provided
-    if (logger) {
+    if (opt.logger) {
       log.reset();
+    }
+    // Reset the singleton field title formatter if provided
+    if (opt.fieldTitle) {
+      vlFieldDef.resetTitleFormatter();
     }
   }
 }
@@ -82,7 +99,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   // move width and height signals with values to top level
   layoutSignals = layoutSignals.filter(signal => {
     if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
-      topLevelProperties[signal.name] = signal.value;
+      topLevelProperties[signal.name] = +signal.value;
       return false;
     }
     return true;

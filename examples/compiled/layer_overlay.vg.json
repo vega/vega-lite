@@ -173,6 +173,7 @@
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
+                "point",
                 "pointOverlay"
             ],
             "from": {
@@ -227,6 +228,7 @@
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
             "style": [
+                "point",
                 "pointOverlay"
             ],
             "from": {
@@ -318,8 +320,8 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "title": "Cylinders",
             "zindex": 1,
             "encode": {
@@ -340,22 +342,22 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MAX(Horsepower), MIN(Horsepower)",
+            "title": "Max of Horsepower, Min of Horsepower",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

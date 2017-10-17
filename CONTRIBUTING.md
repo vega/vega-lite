@@ -74,7 +74,7 @@ To name the example file:
 - For composite views, please begin the file with the operator name (e.g., `layer`).
 - Finally, please make sure any interactive example begins with `interactive`.
 
-After adding a new example, make sure to run `yarn run build:examples` so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
+After adding a new example, make sure to run `yarn run build:example <examplename>` (e.g., `yarn run build:example bar_1d`) or `yarn run build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 
 # Development Guide
 

@@ -99,7 +99,7 @@
                                 "value": "center"
                             },
                             "text": {
-                                "value": "YEAR(date)"
+                                "value": "date (year)"
                             }
                         }
                     }
@@ -120,12 +120,12 @@
             "axes": [
                 {
                     "scale": "y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "MEAN(price)",
+                    "title": "Mean of price",
                     "zindex": 1
                 }
             ]
@@ -191,9 +191,9 @@
             "axes": [
                 {
                     "scale": "x",
-                    "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "QUARTER(date)",
+                    "labelOverlap": true,
+                    "title": "date (quarter)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -281,12 +281,12 @@
             "axes": [
                 {
                     "scale": "y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },

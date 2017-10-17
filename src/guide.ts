@@ -13,11 +13,13 @@ export interface Guide {
   format?: string;
 
   /**
-   * A title for the field.
+   * A title for the field. If `null`, the title will be removed.
    *
-   * __Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has a function, the function is displayed as an all capped text with parentheses wrapping the field name (e.g., `"SUM(field_name)"`, `"BIN(field_name)"`, `"YEAR(field_name)"`).  Otherwise, the title is simply the field name.
+   * __Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as a part of the title (e.g., `"Sum of Profit"`). If the field is binned or has a time unit applied, the applied function will be denoted in parentheses (e.g., `"Profit (binned)"`, `"Transaction Date (year-month)"`).  Otherwise, the title is simply the field name.
+   *
+   * __Note__: You can customize the default field title format by providing the [`fieldTitle` property in the [config](config.html) or [`fieldTitle` function via the `compile` function's options](compile.html#field-title).
    */
-  title?: string;
+  title?: string | null;
 }
 export interface VlOnlyGuideConfig {
 

@@ -10,7 +10,7 @@ Similar to [axes](axis.html), legends visualize scales. However, whereas axes ai
 By default, Vega-Lite automatically creates legends with default properties for `color`, `opacity`, `size`, and `shape` channels when they encode data fields.
 User can set the `legend` property of a [mark property channel's field definition](encoding.html#mark-prop) to an object to customize [legend properties](#legend-properties) or set `legend` to `null` to remove the legend.
 
-Besides `legend` property of a field definition, the configuration object ([`config`](config.html)) also provides [legend config](#legend-config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
+Besides `legend` property of a field definition, the configuration object ([`config`](config.html)) also provides [legend config](#config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
 
 * TOC
 {:toc}
@@ -57,11 +57,11 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 }
 ```
 
-To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
+To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following properties:
 
-### General
+{:#properties}
 
-{% include table.html props="type,entryPadding,fillColor,format,offset,orient,padding,tickCount,title,titleAlign,values,zindex" source="Legend" %}
+{% include table.html props="type,entryPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
 
 <!--
 ### Custom Legend Encodings
@@ -69,7 +69,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 **TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/legends/#custom-legend-encodings), but within each element's block, we do not have `enter/update/exit`.)
 -->
 
-{:#legend-config}
+{:#config}
 ## Legend Config
 
 {: .suppress-error}

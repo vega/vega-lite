@@ -22,10 +22,6 @@
                     "as": "temp_range"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                },
-                {
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
@@ -44,6 +40,10 @@
                     "as": [
                         "mean_temp_range"
                     ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         }
@@ -92,8 +92,7 @@
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": "month"
+            ]
         },
         {
             "name": "y",
@@ -115,24 +114,15 @@
     "axes": [
         {
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
-            "title": "MONTH(date)",
+            "labelOverlap": true,
+            "title": "date (month)",
             "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%b')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }
@@ -140,34 +130,34 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "ticks": false,
             "zindex": 0,
             "gridScale": "y"
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "MEAN(temp_range)",
+            "title": "Mean of temp_range",
             "zindex": 1
         },
         {
             "scale": "y",
+            "orient": "left",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "left",
             "tickCount": {
                 "signal": "ceil(height/40)"
             },

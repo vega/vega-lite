@@ -152,6 +152,7 @@
             "name": "layer_0_layer_0_marks",
             "type": "rule",
             "style": [
+                "rule",
                 "boxWhisker"
             ],
             "from": {
@@ -182,6 +183,7 @@
             "name": "layer_0_layer_1_marks",
             "type": "rule",
             "style": [
+                "rule",
                 "boxWhisker"
             ],
             "from": {
@@ -212,6 +214,7 @@
             "name": "layer_0_layer_2_marks",
             "type": "rect",
             "style": [
+                "bar",
                 "box"
             ],
             "from": {
@@ -245,6 +248,7 @@
             "name": "layer_0_layer_3_marks",
             "type": "rect",
             "style": [
+                "tick",
                 "boxMid"
             ],
             "from": {
@@ -400,8 +404,8 @@
         {
             "title": "population",
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -409,12 +413,12 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -424,8 +428,8 @@
         },
         {
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "title": "age",
             "zindex": 1
         }

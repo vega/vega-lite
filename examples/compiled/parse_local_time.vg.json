@@ -15,10 +15,7 @@
                 {
                     "date": "11 Oct 2022 23:00:00"
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_0",
@@ -101,8 +98,8 @@
         {
             "title": "time",
             "scale": "y",
-            "labelOverlap": true,
             "orient": "left",
+            "labelOverlap": true,
             "zindex": 1,
             "encode": {
                 "labels": {

@@ -36,6 +36,12 @@ export interface BaseSelectionDef {
    * fall within the selection.
    */
   fields?: string[];
+
+  /**
+   * By default, all data values are considered to lie within an empty selection.
+   * When set to `none`, empty selections contain no data values.
+   */
+  empty?: 'all' | 'none';
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
@@ -199,8 +205,19 @@ export interface SelectionConfig {
 }
 
 export const defaultConfig:SelectionConfig = {
-  single: {on: 'click', fields: [SELECTION_ID], resolve: 'global'},
-  multi: {on: 'click', fields: [SELECTION_ID], toggle: 'event.shiftKey', resolve: 'global'},
+  single: {
+    on: 'click',
+    fields: [SELECTION_ID],
+    resolve: 'global',
+    empty: 'all'
+  },
+  multi: {
+    on: 'click',
+    fields: [SELECTION_ID],
+    toggle: 'event.shiftKey',
+    resolve: 'global',
+    empty: 'all'
+  },
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
     encodings: ['x', 'y'],

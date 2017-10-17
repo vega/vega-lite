@@ -30,6 +30,7 @@ export interface SelectionComponent {
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolution;
+  empty: 'all' | 'none';
   mark?: BrushConfig;
 
   // Transforms
@@ -228,14 +229,19 @@ export function predicate(model: Model, selections: LogicalOperand<string>, dfno
       }
     }
 
-    stores.push(store);
+    if (selCmpt.empty !== 'none') {
+      stores.push(store);
+    }
+
     return compiler(selCmpt.type).predicate + `(${store}, datum` +
       (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
   }
 
   const predicateStr = logicalExpr(selections, expr);
-  return '!(' + stores.map((s) => `length(data(${s}))`).join(' || ') +
-    `) || (${predicateStr})`;
+  return (stores.length
+    ? '!(' + stores.map((s) => `length(data(${s}))`).join(' || ') + ') || '
+    : ''
+  ) + `(${predicateStr})`;
 }
 
 // Selections are parsed _after_ scales. If a scale domain is set to

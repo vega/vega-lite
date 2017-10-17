@@ -14,11 +14,12 @@ import {
   scaleTypeSupportProperty,
   Scheme,
 } from '../../scale';
+import {hasContinuousDomain} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {Explicit, makeImplicit} from '../split';
+import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {parseNonUnitScaleProperty} from './properties';
@@ -117,14 +118,14 @@ export function parseRangeForChannel(
       } else {
         switch (property) {
           case 'range':
-            return makeImplicit(specifiedScale[property]);
+            return makeExplicit(specifiedScale[property]);
           case 'scheme':
-            return makeImplicit(parseScheme(specifiedScale[property]));
+            return makeExplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
             const rangeStep = specifiedScale[property];
             if (rangeStep !== null) {
               if (!sizeSpecified) {
-                return makeImplicit({step: rangeStep});
+                return makeExplicit({step: rangeStep});
               } else {
                 // If top-level size is specified, we ignore specified rangeStep.
                 log.warn(log.message.rangeStepDropped(channel));
@@ -134,13 +135,12 @@ export function parseRangeForChannel(
       }
     }
   }
-  return {
-    explicit: false,
-    value: defaultRange(
+  return makeImplicit(
+    defaultRange(
       channel, scaleType, type, config,
       zero, mark, sizeSignal, xyRangeSteps, noRangeStep
     )
-  };
+  );
 }
 
 function parseScheme(scheme: Scheme) {
@@ -175,10 +175,20 @@ export function defaultRange(
           }
         }
       }
-      // If range step is null, assign temporary range signals,
-      // which will be later replaced with proper signals in assemble.
-      // We cannot set the right size signal here since parseLayoutSize() happens after parseScale().
-      return channel === X ? [0, {signal: sizeSignal}] : [{signal: sizeSignal}, 0];
+
+      // If range step is null, use zero to width or height.
+      // Note that these range signals are temporary
+      // as they can be merged and renamed.
+      // (We do not have the right size signal here since parseLayoutSize() happens after parseScale().)
+      // We will later replace these temporary names with
+      // the final name in assembleScaleRange()
+
+      if (channel === Y && hasContinuousDomain(scaleType)) {
+        // For y continuous scale, we have to start from the height as the bottom part has the max value.
+        return [{signal: sizeSignal}, 0];
+      } else {
+        return [0, {signal: sizeSignal}];
+      }
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);

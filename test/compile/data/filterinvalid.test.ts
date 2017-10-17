@@ -4,14 +4,14 @@ import {assert} from 'chai';
 
 import {TopLevel, UnitSpec} from '../../../src/spec';
 
-import {NullFilterNode} from '../../../src/compile/data/nullfilter';
+import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
 import {ModelWithField} from '../../../src/compile/model';
 import {FieldDef} from '../../../src/fielddef';
 import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: ModelWithField) {
-  return NullFilterNode.make(model);
+  return FilterInvalidNode.make(model);
 }
 
 describe('compile/data/nullfilter', function() {
@@ -28,7 +28,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModelWithScale(spec);
-      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filter, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"}
       });
@@ -40,7 +40,7 @@ describe('compile/data/nullfilter', function() {
           invalidValues: 'filter'
         }
       }));
-      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filter, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"}
       });

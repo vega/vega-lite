@@ -309,10 +309,7 @@
                     "Population_ages_15_64_of_total": 70.7240914276147,
                     "Population_ages_65_and_above_of_total": 12.3228189427425
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
             "name": "data_1",
@@ -322,7 +319,13 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"Population_ages_15_64_of_total\"])",
                     "as": "Population_ages_15_64_of_total"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_1",
+            "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && !isNaN(datum[\"Population_ages_15_64_of_total\"])"
@@ -330,14 +333,20 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_3",
             "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"Population_ages_65_and_above_of_total\"])",
                     "as": "Population_ages_65_and_above_of_total"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_3",
+            "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"Population_ages_65_and_above_of_total\"] !== null && !isNaN(datum[\"Population_ages_65_and_above_of_total\"])"
@@ -345,7 +354,7 @@
             ]
         },
         {
-            "name": "data_3",
+            "name": "data_5",
             "source": "source_0",
             "transform": [
                 {
@@ -660,7 +669,7 @@
                         "bar"
                     ],
                     "from": {
-                        "data": "data_1"
+                        "data": "data_2"
                     },
                     "encode": {
                         "update": {
@@ -751,8 +760,8 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
@@ -761,12 +770,12 @@
                 },
                 {
                     "scale": "concat_0_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
@@ -776,8 +785,8 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "title": "Country",
                     "zindex": 1
                 }
@@ -1032,7 +1041,7 @@
                         "bar"
                     ],
                     "from": {
-                        "data": "data_2"
+                        "data": "data_4"
                     },
                     "encode": {
                         "update": {
@@ -1123,8 +1132,8 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
@@ -1133,12 +1142,12 @@
                 },
                 {
                     "scale": "concat_1_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
@@ -1148,8 +1157,8 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "title": "Country",
                     "zindex": 1
                 }
@@ -1471,7 +1480,7 @@
                         "point"
                     ],
                     "from": {
-                        "data": "data_3"
+                        "data": "data_5"
                     },
                     "encode": {
                         "update": {
@@ -1558,8 +1567,8 @@
             "axes": [
                 {
                     "scale": "concat_2_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_2_width/40)"
                     },
@@ -1568,12 +1577,12 @@
                 },
                 {
                     "scale": "concat_2_x",
+                    "orient": "bottom",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "bottom",
                     "tickCount": {
                         "signal": "ceil(concat_2_width/40)"
                     },
@@ -1583,8 +1592,8 @@
                 },
                 {
                     "scale": "concat_2_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_2_height/40)"
                     },
@@ -1593,12 +1602,12 @@
                 },
                 {
                     "scale": "concat_2_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(concat_2_height/40)"
                     },
@@ -1614,7 +1623,7 @@
             "name": "concat_0_x",
             "type": "linear",
             "domain": {
-                "data": "data_1",
+                "data": "data_2",
                 "field": "Population_ages_15_64_of_total"
             },
             "range": [
@@ -1639,10 +1648,10 @@
                 }
             },
             "range": [
+                0,
                 {
                     "signal": "concat_0_height"
-                },
-                0
+                }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
@@ -1651,7 +1660,7 @@
             "name": "concat_1_x",
             "type": "linear",
             "domain": {
-                "data": "data_2",
+                "data": "data_4",
                 "field": "Population_ages_65_and_above_of_total"
             },
             "range": [
@@ -1667,7 +1676,7 @@
             "name": "concat_1_y",
             "type": "band",
             "domain": {
-                "data": "data_2",
+                "data": "data_3",
                 "field": "Country",
                 "sort": {
                     "op": "min",
@@ -1676,10 +1685,10 @@
                 }
             },
             "range": [
+                0,
                 {
                     "signal": "concat_1_height"
-                },
-                0
+                }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
@@ -1688,7 +1697,7 @@
             "name": "concat_2_x",
             "type": "linear",
             "domain": {
-                "data": "data_3",
+                "data": "data_5",
                 "field": "Population_ages_65_and_above_of_total"
             },
             "range": [
@@ -1704,7 +1713,7 @@
             "name": "concat_2_y",
             "type": "linear",
             "domain": {
-                "data": "data_3",
+                "data": "data_5",
                 "field": "Population_ages_15_64_of_total"
             },
             "range": [

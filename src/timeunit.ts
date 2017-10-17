@@ -264,6 +264,15 @@ function dateMethods(singleUnit: SingleTimeUnit, isUtc: boolean) {
   return {setDateMethod, getDateMethod};
 }
 
+export function getTimeUnitParts(timeUnit: TimeUnit) {
+  return TIMEUNIT_PARTS.reduce((parts, part) => {
+    if (containsTimeUnit(timeUnit, part)) {
+      return parts.concat(part);
+    }
+    return parts;
+  }, []);
+}
+
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   const index = fullTimeUnit.indexOf(timeUnit);
@@ -299,39 +308,6 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   }, {} as {[key in SingleTimeUnit]: string});
 
   return dateTimeExpr(d);
-}
-
-/** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit: TimeUnit): NiceTime {
-  if (!timeUnit) {
-    return undefined;
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
-    return 'second';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
-    return 'minute';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
-    return 'hour';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.DAY) ||
-      containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    return 'day';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    return 'month';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    return 'year';
-  }
-  return undefined;
 }
 
 /**

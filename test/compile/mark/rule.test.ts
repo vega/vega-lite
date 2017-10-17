@@ -7,6 +7,20 @@ import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Rule', function() {
 
+  describe('without encoding', () => {
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      "mark": "rule",
+      "encoding": {}
+    });
+
+    const props = rule.encodeEntry(model);
+
+    it('should not show anything', function() {
+      assert.isUndefined(props.x);
+      assert.isUndefined(props.y);
+    });
+  });
+
   describe('with x-only', () => {
     const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "rule",

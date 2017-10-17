@@ -1,16 +1,18 @@
-import {isArray} from 'vega-util';
 import {Encoding} from '../encoding';
-import {Facet} from '../facet';
-import {Field, FieldDef, isRepeatRef} from '../fielddef';
+import {FacetMapping} from '../facet';
+import {Field, FieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
+import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
+import {isSortField} from '../sort';
+import {isArray} from '../util';
 
 export type RepeaterValue = {
   row?: string,
   column?: string
 };
 
-export function replaceRepeaterInFacet(facet: Facet<Field>, repeater: RepeaterValue): Facet<string> {
-  return replaceRepeater(facet, repeater) as Facet<string>;
+export function replaceRepeaterInFacet(facet: FacetMapping<Field>, repeater: RepeaterValue): FacetMapping<string> {
+  return replaceRepeater(facet, repeater) as FacetMapping<string>;
 }
 
 export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {
@@ -18,41 +20,85 @@ export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: R
 }
 
 /**
- * Replace repeater values in a field def with the concrete field name.
+ * Replaces repeated value and returns if the repeated value is valid.
  */
-function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: RepeaterValue): FieldDef<string> | null {
-  const field = fieldDef.field;
-  if (isRepeatRef(field)) {
-    if (field.repeat in repeater) {
-      return {
-        ...fieldDef,
-        field: repeater[field.repeat]
-      };
+function replaceRepeat<T extends {field?: Field}>(o: T, repeater: RepeaterValue): T {
+  if (isRepeatRef(o.field)) {
+    if (o.field.repeat in repeater) {
+      // any needed to calm down ts compiler
+      return {...o as any, field: repeater[o.field.repeat]};
     } else {
-      log.warn(log.message.noSuchRepeatedValue(field.repeat));
-      return null;
+      log.warn(log.message.noSuchRepeatedValue(o.field.repeat));
+      return undefined;
     }
-  } else {
-    // field is not a repeat ref so we can just return the field def
-    return fieldDef as FieldDef<string>;
   }
+  return o;
 }
 
-type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
+/**
+ * Replace repeater values in a field def with the concrete field name.
+ */
+function replaceRepeaterInFieldDef(fieldDef: ScaleFieldDef<Field>, repeater: RepeaterValue): ScaleFieldDef<string> {
+  fieldDef = replaceRepeat(fieldDef, repeater);
+
+  if (fieldDef === undefined) {
+    // the field def should be ignored
+    return undefined;
+  }
+
+  if (fieldDef.sort && isSortField(fieldDef.sort)) {
+    const sort = replaceRepeat(fieldDef.sort, repeater);
+    fieldDef = {
+      ...fieldDef,
+      ...(sort ? {sort} : {})
+    };
+  }
+
+  return fieldDef as ScaleFieldDef<string>;
+}
+
+function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: RepeaterValue): ChannelDef<string> {
+  if (isFieldDef(channelDef)) {
+    const fd = replaceRepeaterInFieldDef(channelDef, repeater);
+    if (fd) {
+      return fd;
+    } else if (isConditionalDef(channelDef)) {
+      return {value: channelDef.condition.value};
+    }
+  } else {
+    if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+      const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
+      if (fd) {
+        return {
+          ...channelDef,
+          condition: fd
+        } as ChannelDef<string>;
+      } else {
+        const {condition, ...channelDefWithoutCondition} = channelDef;
+        return channelDefWithoutCondition as ChannelDef<string>;
+      }
+    }
+    return channelDef as ValueDef;
+  }
+  return undefined;
+}
+
+type EncodingOrFacet<F> = Encoding<F> | FacetMapping<F>;
 
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
   for (const channel in mapping) {
     if (mapping.hasOwnProperty(channel)) {
-      const fieldDef: FieldDef<Field> | FieldDef<Field>[] = mapping[channel];
+      const channelDef: ChannelDef<Field> | ChannelDef<Field>[] = mapping[channel];
 
-      if (isArray(fieldDef)) {
-        out[channel] = fieldDef.map(fd => replaceRepeaterInFieldDef(fd, repeater))
-          .filter((fd: FieldDef<string> | null) => fd !== null);
+      if (isArray(channelDef)) {
+        // array cannot have condition
+        out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater))
+          .filter(cd => cd);
       } else {
-        const fd = replaceRepeaterInFieldDef(fieldDef, repeater);
-        if (fd !== null) {
-          out[channel] = fd;
+        const cd = replaceRepeaterInChannelDef(channelDef, repeater);
+        if (cd) {
+          out[channel] = cd;
         }
       }
     }

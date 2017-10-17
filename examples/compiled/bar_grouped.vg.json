@@ -37,27 +37,6 @@
                     "as": [
                         "sum_people"
                     ]
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "gender",
-                        "age"
-                    ],
-                    "field": "sum_people",
-                    "sort": {
-                        "field": [
-                            "gender"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "sum_people_start",
-                        "sum_people_end"
-                    ],
-                    "offset": "zero"
                 }
             ]
         },
@@ -138,8 +117,8 @@
                 {
                     "title": "population",
                     "scale": "y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
@@ -282,11 +261,11 @@
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "sum_people_end"
+                                "field": "sum_people"
                             },
                             "y2": {
                                 "scale": "y",
-                                "field": "sum_people_start"
+                                "value": 0
                             },
                             "fill": {
                                 "scale": "color",
@@ -320,11 +299,7 @@
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "fields": [
-                    "sum_people_start",
-                    "sum_people_end"
-                ],
-                "sort": true
+                "field": "sum_people"
             },
             "range": [
                 {

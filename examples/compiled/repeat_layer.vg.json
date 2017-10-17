@@ -431,9 +431,9 @@
             "axes": [
                 {
                     "scale": "child_temp_max_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "MONTH(date)",
+                    "labelOverlap": true,
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -456,22 +456,22 @@
                 },
                 {
                     "scale": "child_temp_max_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(temp_max)",
+                    "title": "Mean of temp_max",
                     "zindex": 1
                 },
                 {
                     "scale": "child_temp_max_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -622,9 +622,9 @@
             "axes": [
                 {
                     "scale": "child_precipitation_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "MONTH(date)",
+                    "labelOverlap": true,
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -647,22 +647,22 @@
                 },
                 {
                     "scale": "child_precipitation_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(precipitation)",
+                    "title": "Mean of precipitation",
                     "zindex": 1
                 },
                 {
                     "scale": "child_precipitation_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
@@ -813,9 +813,9 @@
             "axes": [
                 {
                     "scale": "child_wind_x",
-                    "labelOverlap": true,
                     "orient": "bottom",
-                    "title": "MONTH(date)",
+                    "labelOverlap": true,
+                    "title": "date (month)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -838,22 +838,22 @@
                 },
                 {
                     "scale": "child_wind_y",
-                    "labelOverlap": true,
                     "orient": "left",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "MEAN(wind)",
+                    "title": "Mean of wind",
                     "zindex": 1
                 },
                 {
                     "scale": "child_wind_y",
+                    "orient": "left",
                     "domain": false,
                     "grid": true,
                     "labels": false,
                     "maxExtent": 0,
                     "minExtent": 0,
-                    "orient": "left",
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },

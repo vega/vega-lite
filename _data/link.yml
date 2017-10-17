@@ -11,6 +11,10 @@ AutosizeType:
 AutoSizeParams:
   link: "size.html#autosize"
 
+## Facet Spec
+FacetMapping:
+  link: "facet.html#mapping"
+
 # Data
 Data:
   link: data.html
@@ -39,11 +43,12 @@ BinParams:
 FilterOperand:
   name: Filter
   link: "transform.html#filter"
-Summarize:
-  name: SummarizeFieldDef
+SummarizeFieldDef:
   link: "transform.html#summarize-field"
 TimeUnit:
   link: timeunit.html
+LookupData:
+  link: "lookup.html#lookup-data"
 
 # Transform - Time Unit
 Month:
@@ -146,10 +151,12 @@ Axis:
   link: axis.html
 Bin:
   link: "bin.html"
-Field:
-  link: field.html
+RepeatRef:
+  link: "field.html#repeat-ref"
 Legend:
   link: legend.html
+LegendType:
+  name: String
 Scale:
   link: scale.html
 SortOrder:

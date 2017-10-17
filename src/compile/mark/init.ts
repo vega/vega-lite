@@ -69,8 +69,8 @@ function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleComponentIn
       return undefined;
   }
 
-  const yIsRange = encoding.y && encoding.y2;
-  const xIsRange = encoding.x && encoding.x2;
+  const yIsRange = encoding.y2;
+  const xIsRange = encoding.x2;
 
   switch (mark) {
     case TICK:

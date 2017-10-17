@@ -10,10 +10,10 @@ import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, S
 import {isSortField, SortField} from '../../sort';
 import * as util from '../../util';
 import {
-  FieldRefUnionDomain,
   isDataRefDomain,
   VgDataRef,
   VgDomain,
+  VgFieldRefUnionDomain,
   VgNonUnionDomain,
   VgSortField,
   VgUnionSortField,
@@ -249,7 +249,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField<string> {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -397,7 +397,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 
   if (allData.length === 1 && allData[0] !== null) {
     // create a union domain of different fields with a single data source
-    const domain: FieldRefUnionDomain = {
+    const domain: VgFieldRefUnionDomain = {
       data: allData[0],
       fields: uniqueDomains.map(d => (d as VgDataRef).field),
       sort

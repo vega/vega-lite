@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
-import {Facet} from '../../src/facet';
+import {FacetMapping} from '../../src/facet';
 import {PositionFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {ORDINAL} from '../../src/type';
@@ -12,53 +12,47 @@ import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('FacetModel', function() {
   describe('initFacet', () => {
-    it('should drop unsupported channel and throws warning', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseFacetModel({
-          facet: ({
-            shape: {field: 'a', type: 'quantitative'}
-          }) as Facet<string>, // Cast to allow invalid facet type for test
-          spec: {
-            mark: 'point',
-            encoding: {}
-          }
-        });
-        assert.equal(model.facet['shape'], undefined);
-        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
+    it('should drop unsupported channel and throws warning', log.wrap((localLogger) => {
+      const model = parseFacetModel({
+        facet: ({
+          shape: {field: 'a', type: 'quantitative'}
+        }) as FacetMapping<string>, // Cast to allow invalid facet type for test
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
       });
-    });
+      assert.equal(model.facet['shape'], undefined);
+      assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
+    }));
 
-    it('should drop channel without field and value and throws warning', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseFacetModel({
-          facet: {
-            row: {type: 'ordinal'}
-          },
-          spec: {
-            mark: 'point',
-            encoding: {}
-          }
-        });
-        assert.equal(model.facet.row, undefined);
-        assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
+    it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
+      const model = parseFacetModel({
+        facet: {
+          row: {type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
       });
-    });
+      assert.equal(model.facet.row, undefined);
+      assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
+    }));
 
-    it('should drop channel without field and value and throws warning', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseFacetModel({
-          facet: {
-            row: {field: 'a', type: 'quantitative'}
-          },
-          spec: {
-            mark: 'point',
-            encoding: {}
-          }
-        });
-        assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
-        assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
+    it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
       });
-    });
+      assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
+      assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
+    }));
   });
 
   describe('parseAxisAndHeader', () => {
