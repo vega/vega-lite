@@ -1136,7 +1136,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -1188,7 +1188,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -1302,7 +1302,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -1354,7 +1354,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -2114,7 +2114,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -2176,7 +2176,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -3300,7 +3300,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4038,7 +4038,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4168,7 +4168,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4707,7 +4707,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
@@ -5303,7 +5303,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  or `\"nominal\"`)."
         }
       },
       "required": [
