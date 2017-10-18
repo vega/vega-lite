@@ -26,6 +26,6 @@ declare module 'vega' {
   export const loader: any;
 }
 
-declare module 'vega-event-selector' {		
-  export function selector(selector: string, source: string): any[];		
+declare module 'vega-event-selector' {
+  export function selector(selector: string, source: string): any[];
 }
