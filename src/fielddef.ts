@@ -140,7 +140,7 @@ export interface FieldDefBase<F> {
  */
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
-   * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`,  or `"nominal"`).
+   * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
