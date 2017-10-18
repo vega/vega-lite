@@ -2309,7 +2309,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for facets."
         },
         "spec": {
           "anyOf": [
@@ -2359,6 +2360,7 @@
           "type": "string"
         },
         "hconcat": {
+          "description": "A list of views that should be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -2369,7 +2371,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -2429,7 +2432,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for layers."
         },
         "title": {
           "anyOf": [
@@ -2475,10 +2479,12 @@
           "type": "string"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat"
+          "$ref": "#/definitions/Repeat",
+          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale and legend resolutions for repeated charts."
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -2672,7 +2678,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -2693,6 +2700,7 @@
           "type": "array"
         },
         "vconcat": {
+          "description": "A list of views that should be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -4352,6 +4360,7 @@
     },
     "Resolve": {
       "additionalProperties": false,
+      "description": "Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions.",
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisResolveMap"
@@ -5653,7 +5662,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for facets."
         },
         "spec": {
           "anyOf": [
@@ -5727,6 +5737,7 @@
           "type": "string"
         },
         "hconcat": {
+          "description": "A list of views that should be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -5741,7 +5752,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -5829,7 +5841,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for layers."
         },
         "title": {
           "anyOf": [
@@ -5903,10 +5916,12 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat"
+          "$ref": "#/definitions/Repeat",
+          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale and legend resolutions for repeated charts."
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -5980,7 +5995,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -6001,6 +6017,7 @@
           "type": "array"
         },
         "vconcat": {
+          "description": "A list of views that should be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
