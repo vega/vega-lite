@@ -1132,7 +1132,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -1184,7 +1184,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -1298,7 +1298,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -1350,7 +1350,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -2110,7 +2110,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -2172,7 +2172,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -2215,7 +2215,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         }
       },
       "type": "object"
@@ -3296,7 +3296,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -4034,7 +4034,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -4164,7 +4164,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -4703,7 +4703,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
@@ -5299,7 +5299,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
