@@ -5283,15 +5283,15 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-json-schema-generator@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.12.0.tgz#e36189a38cf5c4551f95f0b93d0cf46f708fa7ad"
+ts-json-schema-generator@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.14.0.tgz#29c8fef5a4b273930081ed085080db15b5bd93a7"
   dependencies:
     commander "~2.11.0"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
     ts-node "^3.3.0"
-    typescript "~2.5.2"
+    typescript "~2.5.3"
 
 ts-node@^3.2.1, ts-node@^3.3.0:
   version "3.3.0"
@@ -5405,7 +5405,7 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.4.2, typescript@~2.5.2:
+typescript@^2.4.2, typescript@~2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
