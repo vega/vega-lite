@@ -146,6 +146,7 @@
     ],
     "config": {
         "axis": {
+            "titlePadding": 5,
             "domain": false,
             "grid": false
         },

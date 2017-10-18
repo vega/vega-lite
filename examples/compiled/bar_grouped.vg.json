@@ -341,6 +341,7 @@
     ],
     "config": {
         "axis": {
+            "titlePadding": 5,
             "domainWidth": 1
         },
         "axisY": {
