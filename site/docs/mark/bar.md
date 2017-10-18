@@ -16,8 +16,7 @@ permalink: /docs/bar.html
 }
 ```
 
-The `bar` mark encodes x and y channels with a pair of discrete and continuous fields. Bar marks are useful in a wide variety of visualizations, including bar charts and timelines.
-
+Bar marks are useful in a wide variety of visualizations, including bar charts, [stacked bar charts](#stack), and [timelines](#ranged).
 
 ## Documentation Overview
 {:.no_toc}
@@ -38,6 +37,16 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 If we map a different discrete field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of the discrete field will adjust the [band and point scale's range step](scale.html#band).
 
 <span class="vl-example" data-name="bar_aggregate"></span>
+
+While the `bar` mark typically encodes x and y channels with a pair of discrete and continuous fields, it can also be used with continuous fields on both x and y channels.
+For example, given a bar chart with a temporal field on x, we can see that the x-scale is a continuous scale. By default, the size of bars on continuous scales will be set based on the [`continuousBandSize` config](#config).
+
+<span class="vl-example" data-name="bar_month_temporal"></span>
+
+If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
+
+<span class="vl-example" data-name="bar_month"></span>
+
 
 ## Histogram
 If the data is not pre-aggregated (i.e. each record in the data field represents one item),

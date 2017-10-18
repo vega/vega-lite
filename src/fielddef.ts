@@ -110,10 +110,10 @@ export interface FieldDefBase<F> {
   // function
 
   /**
-   * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   * Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.
+   * or [a temporal field that gets casted as ordinal](type.html#cast).
    *
    * __Default value:__ `undefined` (None)
-   *
    */
   timeUnit?: TimeUnit;
 
