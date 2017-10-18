@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {SummarizeTransform} from '../../../src/transform';
+import {AggregateTransform} from '../../../src/transform';
 import {StringSet} from '../../../src/util';
 import {VgAggregateTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
@@ -150,10 +150,10 @@ describe('compile/data/summary', function () {
     });
 
     it('should produce the correct summary component from transform array', function() {
-      const t: SummarizeTransform = {
-        summarize: [
-          {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
-          {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+      const t: AggregateTransform = {
+        aggregate: [
+          {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
         ],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
@@ -168,10 +168,10 @@ describe('compile/data/summary', function () {
     });
 
     it('should produce the correct summary component from transform array with different aggregrations for the same field', function() {
-      const t: SummarizeTransform = {summarize: [
-        {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
-        {aggregate: 'max', field: 'Displacement', as: 'Displacement_max'},
-        {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
+      const t: AggregateTransform = {aggregate: [
+        {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
+        {op: 'max', field: 'Displacement', as: 'Displacement_max'},
+        {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
       const agg = AggregateNode.makeFromTransform(t);

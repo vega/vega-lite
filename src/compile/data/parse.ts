@@ -3,7 +3,7 @@ import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
-import {isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -104,7 +104,7 @@ export function parseTransformArray(model: Model) {
       node = BinNode.makeFromTransform(t, {model});
     } else if (isTimeUnit(t)) {
       node = TimeUnitNode.makeFromTransform(t);
-    } else if (isSummarize(t)) {
+    } else if (isAggregate(t)) {
       node = AggregateNode.makeFromTransform(t);
 
       if (requiresSelectionId(model)) {

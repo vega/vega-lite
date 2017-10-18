@@ -2,7 +2,7 @@ import {AggregateOp} from '../../aggregate';
 import {Channel, isScaleChannel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {SummarizeTransform} from '../../transform';
+import {AggregateTransform} from '../../transform';
 import {Dict, differ, duplicate, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
@@ -98,17 +98,17 @@ export class AggregateNode extends DataFlowNode {
     return new AggregateNode(dims, meas);
   }
 
-  public static makeFromTransform(t: SummarizeTransform): AggregateNode {
+  public static makeFromTransform(t: AggregateTransform): AggregateNode {
     const dims = {};
     const meas = {};
-    for(const s of t.summarize) {
-      if (s.aggregate) {
-        if (s.aggregate === 'count') {
+    for(const s of t.aggregate) {
+      if (s.op) {
+        if (s.op === 'count') {
           meas['*'] = meas['*'] || {};
           meas['*']['count'] = s.as || field(s);
         } else {
           meas[s.field] = meas[s.field] || {};
-          meas[s.field][s.aggregate] = s.as || field(s);
+          meas[s.field][s.op] = s.as || field(s);
         }
       }
     }
