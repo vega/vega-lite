@@ -43,7 +43,7 @@ Put multiple views into a column by putting the specs for each view into an arra
 In addition to [common properties of a view specification](spec.html#common),
 a vertical concatenation specification has the following properties:
 
-{% include table.html props="vconcat,data,transform,resolve,name,description" source="VConcatSpec" %}
+{% include table.html props="vconcat,resolve" source="VConcatSpec" %}
 
 ## Resolve
 

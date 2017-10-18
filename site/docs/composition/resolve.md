@@ -11,19 +11,26 @@ Vega-Lite determines whether scale domains should be unioned. If the scale domai
 ```json
 {
   "resolve": {
-    CHANNEL: {
-      "scale": ...,  // Scale resolution
-      "axis": ...,  // Axis resolution for position channels
-      "legend": ...  // Legend resolution for non-position channels
+    // Scale resolution
+    "scale": {
+      CHANNEL: ...
+    },
+    // Axis resolution for position channels
+    "axis": {
+      POSITION_CHANNEL: ...
+    },
+    // Legend resolution for non-position channels
+    "legend": {
+      NON_POSITION_CHANNEL: ...
     }
   }
 }
 ```
 
-`resolve` is an object where the keys are channels and the values are again objects that specify the resolution for `scale`, `axis`  or `legend`.
+`resolve` is an object where the keys are `scale`, `axis`, or `legend` and the values are again objects that define the resolution for different channels.
 
-For `x` and `y` (positional channels), the resolution can be defined for scales and axes. For `color`, `opacity`, `shape`, and `size` (non-positional channels), the resolution can be defined for scales and legends.
+For scales, resolution can be specified for every channel. For axes, resolutions can be defined for `x` and `y` (positional channels). For legends, resolutions can be defined for `color`, `opacity`, `shape`, and `size` (non-positional channels).
 
-There are two options to resolve a scale, axis, or legend: `shared` and `independent`. Independent scales imply independent axes and legends.
+There are two options to resolve a scale, axis, or legend: `"shared"` and `"independent"`. Independent scales imply independent axes and legends.
 
 The defaults are documented on the [faceting](facet.html#combined-scales-and-guides), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.

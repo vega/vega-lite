@@ -14,6 +14,8 @@ AutoSizeParams:
 ## Facet Spec
 FacetMapping:
   link: "facet.html#mapping"
+Header:
+  link: "facet.html#header"
 
 # Data
 Data:
@@ -187,7 +189,7 @@ AxisOrient:
   name: String
 LegendOrient:
   name: String
-ResolveMapping:
+Resolve:
   name: Resolve
   link: resolve.html
 
