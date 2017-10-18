@@ -4,7 +4,13 @@ title: Condition
 permalink: /docs/condition.html
 ---
 
-The `condition` property can be used to determine encodings based on whether data values fall within a [selection](selection.html). It can either a [conditional field definition](#field) or a [conditional value definition](#value).
+For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values fall within a [selection](selection.html).
+
+There are two ways to use the `condition` property:
+
+1) Combining a [conditional field definition](#field) with a value definition
+
+2) Combining a [conditional value definition](#value) with a field definition or a value definition
 
 {:#field}
 ## Conditional Field Definition
@@ -16,12 +22,13 @@ The `condition` property can be used to determine encodings based on whether dat
   ...,
   "encoding": {           // Encoding
     ...: {
-      "condition": {      // Conditional rule for data inside the selection.
-        "selection": ..., // Selection name
-        "field": ...,
-        "type": "quantitative"
+      "condition": {      // Conditional rule for data inside the selection
+        // Selection name
+        "selection": ...,
+        // Field definition if the data is included in the selection (if)
+        "field": ..., "type": "quantitative"
       },
-      "value": ...        // The encoding value set for data outside the selection.
+      "value": ...        // The encoding value set for data outside the selection (else)
     },
     ...
   },
@@ -29,13 +36,15 @@ The `condition` property can be used to determine encodings based on whether dat
 }
 ```
 
-A conditional field definition uses a data-driven encoding rule when marks fall within a selection, and a value encoding otherwise. As shown in the table below, the full gamut of data-driven encoding operations (including `aggregate`, `bin`, and `timeUnit`) are available here.
+A conditional field definition uses a data-driven encoding rule when marks fall within a selection, and a value encoding otherwise. As shown in the table below, the full gamut of encoding properties including transformation functions (`aggregate`, `bin`, `timeUnit`) as well as `scale` and `legend` are available here.
 
-{% include table.html props="selection,field,type,bin,timeUnit,aggregate" source="ConditionLegendFieldDef" %}
+{% include table.html props="selection,field,type,bin,timeUnit,aggregate,scale,legend" source="ConditionLegendFieldDef" %}
 
-For example, in the following visualization, the color of `rect` marks is driven by a conditional field definition. Drag an interval selection and observe that marks are colored based on their aggregated count if they lie within the interval, and are grey otherwise. _Note:_ When using a conditional field definition, only a `value` may be specified as the else (outer) branch.
+For example, in the following visualization, the color of `rect` marks is driven by a conditional field definition. Drag an interval selection and observe that marks are colored based on their aggregated count if they lie within the interval, and are grey otherwise.
 
 <div class="vl-example" data-name="selection_type_interval"></div>
+
+__Note:__ When using a conditional field definition, only a `value` may be specified as the else (outer) branch.
 
 {:#value}
 ## Conditional Value Definition
@@ -47,11 +56,11 @@ For example, in the following visualization, the color of `rect` marks is driven
   ...,
   "encoding": {           // Encoding
     ...: {
-      "condition": {      // Conditional rule for data inside the selection.
+      "condition": {      // Conditional rule for data inside the selection
         "selection": ..., // Selection name
-        "value": ...
+        "value": ...      // Value if the data is included in the selection (if)
       },
-      ... // A field mapping or encoding value set for data outside the selection.
+      ... // A field definition or a value definition for data outside the selection (else)
     },
     ...
   },

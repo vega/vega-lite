@@ -1205,7 +1205,7 @@
           "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain.",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
             "string",
@@ -6293,7 +6293,7 @@
       "description": "Definition object for a constant value of an encoding channel.",
       "properties": {
         "value": {
-          "description": "A constant value in visual domain.",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
             "string",
