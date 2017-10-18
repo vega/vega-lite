@@ -1132,14 +1132,7 @@
         "legend": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Legend"
             },
             {
               "type": "null"
@@ -1158,17 +1151,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -1302,14 +1288,7 @@
         "legend": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Legend"
             },
             {
               "type": "null"
@@ -1324,17 +1303,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -3300,14 +3272,7 @@
         "legend": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Legend"
             },
             {
               "type": "null"
@@ -3322,17 +3287,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -4135,14 +4093,7 @@
         "axis": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Axis"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Axis"
             },
             {
               "type": "null"
@@ -4179,17 +4130,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -4729,17 +4673,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
