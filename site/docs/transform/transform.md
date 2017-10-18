@@ -27,8 +27,8 @@ When both types of transforms are specified, the top-level `transform`s are exec
 The top-level `transform` object is an array of objects describing transformations. The transformations are executed in the order in which they are specified in the array.
 Vega-Lite's `transform` supports the following types of transformations:
 
+- [Aggregate](aggregate.html#transform)
 - [Bin](bin.html#transform)
 - [Calculate](calculate.html)
 - [Filter](filter.html)
-- [Summarize](aggregate.html#summarize)
 - [TimeUnit](timeunit.html#transform)

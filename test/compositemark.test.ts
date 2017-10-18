@@ -141,29 +141,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -371,29 +371,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -498,29 +498,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -623,29 +623,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -748,29 +748,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -872,29 +872,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -996,29 +996,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -1118,29 +1118,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -1238,29 +1238,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -1354,29 +1354,29 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "min",
+                "op": "min",
                 "field": "people",
                 "as": "lowerWhisker"
               },
               {
-                "aggregate": "max",
+                "op": "max",
                 "field": "people",
                 "as": "upperWhisker"
               }
@@ -1480,19 +1480,19 @@ describe("normalizeBoxIQR", () => {
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               }
@@ -1613,24 +1613,24 @@ describe("normalizeBoxIQR", () => {
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "summarize": [
+            "aggregate": [
               {
-                "aggregate": "q1",
+                "op": "q1",
                 "field": "people",
                 "as": "lowerBox"
               },
               {
-                "aggregate": "q3",
+                "op": "q3",
                 "field": "people",
                 "as": "upperBox"
               },
               {
-                "aggregate": "median",
+                "op": "median",
                 "field": "people",
                 "as": "midBox"
               },
               {
-                "aggregate": "mean",
+                "op": "mean",
                 "field": "people",
                 "as": "mean_people"
               }
