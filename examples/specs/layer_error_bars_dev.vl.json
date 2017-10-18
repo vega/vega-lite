@@ -4,9 +4,9 @@
 
   "transform": [
     {
-      "summarize": [
-        {"aggregate": "mean", "field": "yield", "as": "mean"},
-        {"aggregate": "stdev", "field": "yield", "as": "stdev"}
+      "aggregate": [
+        {"op": "mean", "field": "yield", "as": "mean"},
+        {"op": "stdev", "field": "yield", "as": "stdev"}
       ],
       "groupby": ["variety"]
     },

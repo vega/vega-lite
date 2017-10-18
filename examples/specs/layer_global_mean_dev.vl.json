@@ -11,9 +11,9 @@
   },{
     "transform": [
       {
-        "summarize": [
-          {"aggregate": "mean", "field": "Miles_per_Gallon", "as": "mean_MPG"},
-          {"aggregate": "stdev", "field": "Miles_per_Gallon", "as": "dev_MPG"}
+        "aggregate": [
+          {"op": "mean", "field": "Miles_per_Gallon", "as": "mean_MPG"},
+          {"op": "stdev", "field": "Miles_per_Gallon", "as": "dev_MPG"}
         ],
         "groupby": []
       },
