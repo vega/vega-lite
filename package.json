@@ -51,7 +51,7 @@
     "preschema": "npm run prebuild",
     "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
-    "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
+    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint --project tsconfig.json -c tslint.json --type-check",
