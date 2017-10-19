@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
 import {ChannelDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
@@ -80,10 +81,17 @@ function wrapCondition(
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
   if (condition) {
-    const conditionValueRef = refFn(condition);
+    const conditions = isArray(condition) ? condition : [condition];
+    const vgConditions = conditions.map((c) => {
+      const conditionValueRef = refFn(c);
+      return {
+        test: predicate(model, c.selection),
+        ...conditionValueRef
+      };
+    });
     return {
       [vgChannel]: [
-        {test: predicate(model, condition.selection), ...conditionValueRef},
+        ...vgConditions,
         ...(valueRef !== undefined ? [valueRef] : [])
       ]
     };
