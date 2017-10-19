@@ -49,7 +49,7 @@ var vlSpec = {
         'color': { 'field': 'category', 'type': 'nominal' }
     }
 };
-vega.embed('#chart', vlSpec).then(function(res) {
+vegaEmbed('#chart', vlSpec).then(function(res) {
     /**
      * Generates a new tuple with random walk.
      */
