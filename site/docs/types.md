@@ -77,7 +77,7 @@ Accepts a valid URL string linking to external site or resource. For example: `"
 <br/><a name="datetime" href="#datetime">#</a>
 **DateTime**
 
-A DateTime object must have at least one of the following properties:
+A DateTime object (in [filter transform](filter.html), [scale domain](scale.html#domain), and [axis](axis.html#ticks)/[legend](legend.html#properties) values) must have at least one of the following properties:
 
 {% include table.html props="year,quarter,month,date,day,hours,minutes,seconds,milliseconds" source="DateTime" %}
 
