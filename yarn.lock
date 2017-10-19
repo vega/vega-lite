@@ -5581,9 +5581,8 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-"vega-datasets@github:vega/vega-datasets#gh-pages", vega-datasets@vega/vega-datasets#gh-pages:
+vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
-  uid "7080ba8297825d27495bdfb8386d10cff83cbacf"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
 vega-embed@^3.0.0-beta.20:
