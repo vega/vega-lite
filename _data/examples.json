@@ -228,11 +228,11 @@
   ],
   "Interactive": [
     {
-      "name": "brush",
+      "name": "interactive_brush",
       "title": "Rectangular Brush"
     },
     {
-      "name": "paintbrush",
+      "name": "interactive_paintbrush",
       "title": "Paintbrush Highlight"
     },
     {
@@ -240,7 +240,7 @@
       "title": "Scatterplot Pan & Zoom"
     },
     {
-      "name": "query_widgets",
+      "name": "interactive_query_widgets",
       "title": "Query Widgets"
     },
     {
@@ -248,11 +248,11 @@
       "title": "The selection defines the data used to compute the average"
     },
     {
-      "name": "overview_detail",
+      "name": "interactive_overview_detail",
       "title": "Overview and Detail"
     },
     {
-      "name": "layered_crossfilter",
+      "name": "interactive_layered_crossfilter",
       "title": "Crossfilter"
     },
     {
@@ -260,7 +260,7 @@
       "title": "Scatterplot Matrix"
     },
     {
-      "name": "concat_layer",
+      "name": "interactive_concat_layer",
       "title": "Interactive Dashboard with Cross Highlight"
     }
   ]
