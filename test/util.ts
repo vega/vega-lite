@@ -42,13 +42,6 @@ export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
   return model;
 }
 
-export function parseUnitModelWithScaleMarkDefLayoutSize(spec: TopLevel<UnitSpec>) {
-  const model = parseUnitModelWithScale(spec);
-  model.parseMarkDef();
-  model.parseLayoutSize();
-  return model;
-}
-
 export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<UnitSpec>) {
   const model = parseUnitModelWithScale(spec);
   model.parseLayoutSize();

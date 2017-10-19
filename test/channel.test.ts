@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Channel, isScaleChannel, rangeType, SINGLE_DEF_CHANNELS} from '../src/channel';
+import {isScaleChannel, rangeType, SINGLE_DEF_CHANNELS} from '../src/channel';
 import {CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
 import {without} from '../src/util';
 
