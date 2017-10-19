@@ -63,7 +63,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
     if (fd) {
       return fd;
     } else if (isConditionalDef(channelDef)) {
-      return {value: channelDef.condition.value};
+      return {condition: channelDef.condition};
     }
   } else {
     if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
