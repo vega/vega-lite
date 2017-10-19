@@ -9,7 +9,7 @@ import {isArray} from './util';
 export interface VgData {
   name: string;
   source?: string;
-  values?: any[] | string;
+  values?: any;
   format?: {
     type?: string;
     parse?: string | object;
