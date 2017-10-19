@@ -65,7 +65,7 @@ For example, the spec below imagines two users, Alex and Morgan, who can each dr
 
 _Note:_ the two intervals do not have any effect on the visualization yet (we'll cover that next!).
 
-<div class="vl-example" data-name="interval_mark_style"></div>
+<div class="vl-example" data-name="selection_interval_mark_style"></div>
 
 ## Selection Transformations
 
@@ -96,7 +96,7 @@ In this example, a selection (named `paintbrush`) is used to resize the points i
   <option>none</option>
 </select> of the data values.
 
-<div class="vl-example" id="paintbrush_simple" data-name="paintbrush_simple_all"></div>
+<div class="vl-example" id="paintbrush_simple" data-name="interactive_paintbrush_simple_all"></div>
 
 See the [`condition`](condition.html) documentation for more information.
 
@@ -110,7 +110,7 @@ Selections in one view can also be used to filter input data to another view. In
 
 With multiview displays, selections can also be used to determine the domains of scales in other views. For example, in the specification below, the bottom plot contains an interval selection named `brush`. We use this `brush` selection to parameterize the  `domain` of the top plot's x-scale to make it show only the selected interval. This technique is called an overview+detail display.
 
-<div class="vl-example" data-name="overview_detail"></div>
+<div class="vl-example" data-name="interactive_overview_detail"></div>
 
 An alternate way to construct this technique would be to filter out the input data to the top (detail) view like so:
 

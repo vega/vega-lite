@@ -23,7 +23,7 @@ images:
  - spec: point_binned_opacity
  - spec: line_month
  - spec: rect_heatmap
- - spec: layered_crossfilter
+ - spec: interactive_layered_crossfilter
  - spec: layer_connected_scatterplot
 
 ---

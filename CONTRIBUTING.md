@@ -74,7 +74,7 @@ Before adding a new example, you might want to search inside `examples/` folder 
 To name the example file:
 - Please begin with mark type and follow by some description for a static single view example.  For stacked marks, add `stacked_` prefix.
 - For composite views, please begin the file with the operator name (e.g., `layer`).
-- Finally, please make sure any interactive example begins with either `interactive` or `selection`.
+- For interactive example, begin with either `interactive_` or `selection_`.
 
 After adding a new example, make sure to run `yarn run build:example <examplename>` (e.g., `yarn run build:example bar_1d`) or `yarn run build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 

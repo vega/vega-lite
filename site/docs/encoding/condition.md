@@ -75,7 +75,7 @@ A condition value definition uses a value encoding when data fall within a selec
 
 For example, in the visualization below, a conditional value definition causes marks that fall within a dragged interval to be larger than those that lie outside it.
 
-<div class="vl-example" data-name="paintbrush_interval"></div>
+<div class="vl-example" data-name="interactive_paintbrush_interval"></div>
 
 A field mapping can also be specified as the else (outer) branch. For example, below, we invert our original example: a conditional value definition sets the `rect` marks to grey when they do _not_ lie within the selection, and a regular field mapping is used otherwise. Notice, all marks are initially colored grey. This is because empty selections are treated as containing all data values.
 
