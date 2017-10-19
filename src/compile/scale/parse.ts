@@ -1,5 +1,5 @@
 import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
-import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
+import {FieldDef, getFieldDef, hasConditionFieldDef, isFieldDef} from '../../fielddef';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   Scale,
@@ -53,9 +53,9 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
       specifiedScale = channelDef.scale || {};
-    } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+    } else if (hasConditionFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition.scale || {};
+      specifiedScale = channelDef.condition['scale'] || {}; // We use ['scale'] since we know that channel here has scale for sure
     } else if (channel === 'x') {
       fieldDef = getFieldDef(encoding.x2);
     } else if (channel === 'y') {

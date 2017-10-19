@@ -1271,8 +1271,18 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionValueDef",
-          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionValueDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -1348,8 +1358,18 @@
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
-          "$ref": "#/definitions/ConditionValueDef",
-          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionValueDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -1391,9 +1411,15 @@
             },
             {
               "$ref": "#/definitions/ConditionValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionValueDef"
+              },
+              "type": "array"
             }
           ],
-          "description": "A field definition or a value definition with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1417,9 +1443,15 @@
             },
             {
               "$ref": "#/definitions/ConditionValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionValueDef"
+              },
+              "type": "array"
             }
           ],
-          "description": "A field definition or a value definition with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
           "description": "A constant value in visual domain.",
