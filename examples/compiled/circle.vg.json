@@ -144,6 +144,9 @@
         }
     ],
     "config": {
+        "axis": {
+            "titlePadding": 5
+        },
         "axisY": {
             "minExtent": 30
         }
