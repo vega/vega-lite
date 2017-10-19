@@ -20,18 +20,18 @@ Besides `legend` property of a field definition, the configuration object ([`con
 By default, Vega-Lite automatically generates gradient legends for color channels with
 non-binned quantitative fields and temporal fields.
 
-<div class="vl-example" data-name="scatter_color_quantitative"></div>
+<div class="vl-example" data-name="point_color_quantitative"></div>
 
 Otherwise, symbol legends are generated.
 
-<div class="vl-example" data-name="scatter_color"></div>
+<div class="vl-example" data-name="point_color"></div>
 
 
 ## Combined Legend
 
 If multiple channels encode the same fields, Vega-lite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
 
-<div class="vl-example" data-name="scatter_colored_with_shape"></div>
+<div class="vl-example" data-name="point_color_with_shape"></div>
 
 ## Legend Properties
 

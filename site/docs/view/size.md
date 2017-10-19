@@ -88,9 +88,9 @@ Currently, width and height of multi-view displays including [concatanated](conc
 
 For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 
-<span class="vl-example" data-name="normalized/trellis_scatter_small_normalized"></span>
+<span class="vl-example" data-name="normalized/trellis_point_small_normalized"></span>
 
 __Note:__ If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot.
 For example, this specification is equilvalent to the specification above.
 
-<span class="vl-example" data-name="trellis_scatter_small"></span>
+<span class="vl-example" data-name="trellis_point_small"></span>

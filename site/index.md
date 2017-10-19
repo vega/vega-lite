@@ -20,7 +20,7 @@ images:
  - spec: circle_opacity
  - spec: line_slope
  - spec: trellis_anscombe
- - spec: scatter_binned_opacity
+ - spec: point_binned_opacity
  - spec: line_month
  - spec: rect_heatmap
  - spec: layered_crossfilter
