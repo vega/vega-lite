@@ -50,7 +50,7 @@ Here is a list of all properties describing a `data` source from URL:
 
 For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly `"json"` by default.
 
-<span class="vl-example" data-name="scatter"></span>
+<span class="vl-example" data-name="point_2d"></span>
 
 {:#named}
 ### Named Data Sources

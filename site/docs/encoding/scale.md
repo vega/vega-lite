@@ -218,7 +218,7 @@ If `range` is specified, the number of elements in `range` should match with the
 
 __Example__
 
-<div class="vl-example" data-name="diverging_color_points"></div>
+<div class="vl-example" data-name="point_diverging_color"></div>
 
 {:#discrete}
 ## Discrete Scales

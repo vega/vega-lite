@@ -24,7 +24,7 @@
       "title": "Grouped Bar Chart"
     },
     {
-      "name": "scatter",
+      "name": "point_2d",
       "title": "Scatterplot"
     },
     {
@@ -32,7 +32,7 @@
       "title": "Scatterplot with Filled Circles"
     },
     {
-      "name": "scatter_binned",
+      "name": "circle_binned",
       "title": "Binned Scatterplot"
     },
     {
@@ -44,7 +44,7 @@
       "title": "Bubble Plot"
     },
     {
-      "name": "bubble_health_income",
+      "name": "circle_bubble_health_income",
       "title": "Gapminder Bubble Plot"
     },
     {
@@ -69,10 +69,6 @@
       "title": "Step Chart"
     },
     {
-      "name": "scatter_connected",
-      "title": "Connected Scatterplot (Lines with Custom Paths)"
-    },
-    {
       "name": "area",
       "title": "Area Chart"
     },
@@ -86,7 +82,7 @@
       "title": "Table Binned heatmap"
     },
     {
-      "name": "github_punchcard",
+      "name": "circle_github_punchcard",
       "title": "Table Bubble Plot (Github Punch Card)"
     }
   ],
@@ -200,7 +196,7 @@
       "title": "Line chart with Confidence Interval Band"
     },
     {
-      "name": "layered_falkensee",
+      "name": "layer_falkensee",
       "title": "Falkensee",
       "style": "background-size: auto 90%; background-position-y: center !important;"
     },
@@ -218,6 +214,10 @@
       "name": "area_horizon",
       "title": "Horizon Graph",
       "style": "background-size: auto 70%; background-position-y: center;"
+    },
+    {
+      "name": "layer_connected_scatterplot",
+      "title": "Connected Scatterplot (Lines with Custom Paths)"
     }
   ],
   "Composition": [
