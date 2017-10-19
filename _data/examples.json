@@ -36,11 +36,11 @@
       "title": "Binned Scatterplot"
     },
     {
-      "name": "scatter_colored_with_shape",
+      "name": "point_color_with_shape",
       "title": "Colored Scatterplot"
     },
     {
-      "name": "scatter_bubble",
+      "name": "point_bubble",
       "title": "Bubble Plot"
     },
     {

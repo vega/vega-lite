@@ -48,7 +48,7 @@ For example, the following bar chart aggregates mean of `Acceleration`, grouped 
 
 The `detail` channel can be used to specify additional summary and group-by fields without mapping the field(s) to any visual properties.  For example, the following plots add `Origin` as a group by field.
 
-<div class="vl-example" data-name="scatter_aggregate_detail"></div>
+<div class="vl-example" data-name="point_aggregate_detail"></div>
 
 <span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
