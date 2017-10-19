@@ -1,5 +1,4 @@
-// utility for a field definition object
-
+// Declaration and utility for variants of a field definition object
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -14,7 +13,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {accessPath, isBoolean, isNumber, isString, titlecase} from './util';
+import {accessPath, isArray, isBoolean, isNumber, isString, titlecase} from './util';
 
 
 /**
@@ -51,12 +50,12 @@ export type Condition<T> = {
  */
 export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
   /**
-   * A value definition with a selection predicate.
+   * One or more value definition(s) with a selection predicate.
    *
-   * __Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)
+   * __Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)
    * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
    */
-  condition?: Condition<ValueDef>
+  condition?: Condition<ValueDef> | Condition<ValueDef>[];
 };
 
 /**
@@ -68,9 +67,9 @@ export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
  */
 export interface ConditionalValueDef<F extends FieldDef<any>> {
   /**
-   * A field definition or a value definition with a selection predicate.
+   * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Condition<F> | Condition<ValueDef>;
+  condition?: Condition<F> | Condition<ValueDef> | Condition<ValueDef>[];
 
   /**
    * A constant value in visual domain.
@@ -236,11 +235,13 @@ export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Co
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
 export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<FieldDef<F>>}) {
-  return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
+  return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
 export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<ValueDef>}) {
-  return !!channelDef && !!channelDef.condition && isValueDef(channelDef.condition);
+  return !!channelDef && !!channelDef.condition && (
+    isArray(channelDef.condition) || isValueDef(channelDef.condition)
+  );
 }
 
 export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {

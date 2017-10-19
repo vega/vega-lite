@@ -8,9 +8,10 @@ For [mark property channels](encoding.html#mark-prop) as well as [text and toolt
 
 There are two ways to use the `condition` property:
 
-1) Combining a [conditional field definition](#field) with a value definition
+1) Combining one [conditional field definition](#field) with one base value definition.
 
-2) Combining a [conditional value definition](#value) with a field definition or a value definition
+2) Combining one or more [conditional value](#value) with a field definition or a value definition.
+
 
 {:#field}
 ## Conditional Field Definition
