@@ -4,14 +4,14 @@ import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {Dict, duplicate, keys, stringValue, toSet} from '../../util';
+import {accessPath, Dict, duplicate, keys, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
 function parseExpression(field: string, parse: string): string {
-  const f = `datum[${stringValue(field)}]`;
+  const f = `datum${accessPath(field)}`;
   if (parse === 'number') {
     return `toNumber(${f})`;
   } else if (parse === 'boolean') {

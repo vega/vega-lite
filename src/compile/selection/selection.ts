@@ -3,7 +3,7 @@ import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {Dict, isString, logicalExpr, stringValue, varName} from '../../util';
+import {accessPath, Dict, isString, logicalExpr, stringValue, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
@@ -320,8 +320,8 @@ export function unitName(model: Model) {
   let name = stringValue(model.name);
   const facet = getFacetModel(model);
   if (facet) {
-    name += (facet.facet.row ? ` + '_' + facet[${stringValue(facet.field('row'))}]` : '')
-      + (facet.facet.column ? ` + '_' + facet[${stringValue(facet.field('column'))}]` : '');
+    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.field('row'))}` : '')
+      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.field('column'))}` : '');
   }
   return name;
 }
