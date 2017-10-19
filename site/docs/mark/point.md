@@ -28,7 +28,7 @@ Mapping a field to either only `x` or only `y` of `point` marks creates a **dot 
 
 Mapping fields to both the `x` and `y` channels creates a scatter plot.
 
-<span class="vl-example" data-name="scatter"></span>
+<span class="vl-example" data-name="point_2d"></span>
 
 
 By default, `point` marks only have borders and are transparent inside.  You can create a filled point by setting `filled` to `true`.

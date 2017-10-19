@@ -52,7 +52,7 @@ As shown in previous example, the line's path (order of points in the line) is d
 
 For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also [`layer`](layer.html) point marks over the line marks to highlight each data point.
 
-<span class="vl-example" data-name="scatter_connected"></span>
+<span class="vl-example" data-name="layer_connected_scatterplot"></span>
 
 ## Line interpolation
 
