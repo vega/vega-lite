@@ -10,13 +10,13 @@
 import {assert} from 'chai';
 import {SIZE, X, Y} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
-import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Tick', function() {
   describe('with stacked x', function() {
     // This is a simplified example for stacked tick.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "tick",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -37,7 +37,7 @@ describe('Mark: Tick', function() {
   describe('with stacked y', function() {
     // This is a simplified example for stacked tick.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "tick",
       "encoding": {
         "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -55,7 +55,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative x', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'encoding': {'x': {'field': 'Horsepower', 'type': 'quantitative'}},
       'data': {'url': 'data/cars.json'}
@@ -79,7 +79,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative y', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'encoding': {'y': {'field': 'Cylinders','type': 'quantitative'}},
       'data': {'url': 'data/cars.json'}
@@ -103,7 +103,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative x and ordinal y', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'encoding':
         {
@@ -132,7 +132,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('width should be mapped to size', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'config': {'mark': {'orient': 'vertical'}},
       'encoding':
@@ -150,7 +150,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('height should be mapped to size', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'encoding':
         {

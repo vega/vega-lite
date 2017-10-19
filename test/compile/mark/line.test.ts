@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import * as log from '../../../src/log';
 
@@ -12,7 +12,7 @@ import {LINE} from '../../../src/mark';
 describe('Mark: Line', function() {
 
   describe('with x, y', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -32,7 +32,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -51,7 +51,7 @@ describe('Mark: Line', function() {
 
   describe('with x, y, size', function () {
     it('should have scale for size', () => {
-      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/barley.json"},
         "mark": "line",
         "encoding": {
@@ -66,7 +66,7 @@ describe('Mark: Line', function() {
     });
 
     it('should drop aggregate size field', log.wrap((localLogger) => {
-      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/barley.json"},
         "mark": "line",
         "encoding": {
@@ -84,7 +84,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with stacked y', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -102,7 +102,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with stacked x', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -120,7 +120,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with x', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "line",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -141,7 +141,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with y', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "line",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}

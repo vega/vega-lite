@@ -19,7 +19,7 @@ import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
-import {initEncoding} from './mark/init';
+import {initEncoding, normalizeMarkDef} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
@@ -61,10 +61,11 @@ export class UnitModel extends ModelWithField {
       ...(spec.width ? {width: spec.width} : {}),
       ...(spec.height ? {height: spec.height} : {})
     });
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    this.markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
-    const mark = this.markDef.type;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
+
+    this.markDef = normalizeMarkDef(spec.mark, encoding, config);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);

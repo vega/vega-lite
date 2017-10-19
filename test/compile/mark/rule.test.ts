@@ -3,12 +3,12 @@
 import {assert} from 'chai';
 import {COLOR, X, Y} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
-import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Rule', function() {
 
   describe('without encoding', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {}
     });
@@ -22,7 +22,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with x-only', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {"x": {"field": "a", "type": "quantitative"}}
     });
@@ -37,7 +37,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with y-only', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {"y": {"field": "a", "type": "quantitative"}}
     });
@@ -52,7 +52,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with x and x2 only', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
@@ -73,7 +73,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with y and y2 only', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "y": {"field": "a", "type": "quantitative"},
@@ -94,7 +94,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with x, x2, and y', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
@@ -113,7 +113,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with y, y2, and x', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "y": {"field": "a", "type": "quantitative"},
@@ -132,7 +132,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with nominal x, quantitative y with no y2', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
@@ -152,7 +152,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('with nominal y, quantitative x with no y2', () => {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "y": {"field": "a", "type": "ordinal"},
@@ -173,7 +173,7 @@ describe('Mark: Rule', function() {
 
 
   describe('horizontal stacked rule with color', function () {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "y": {"field": "a", "type": "ordinal"},
@@ -195,7 +195,7 @@ describe('Mark: Rule', function() {
   });
 
   describe('vertical stacked rule with color', function () {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "rule",
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},

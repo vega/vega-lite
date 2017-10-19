@@ -34,15 +34,6 @@ const markCompiler: {[type: string]: MarkCompiler} = {
   square: square
 };
 
-export function parseMarkDef(model: Model) {
-  if (isUnitModel(model)) {
-    normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
-  } else {
-    for (const child of model.children) {
-      parseMarkDef(child);
-    }
-  }
-}
 
 export function parseMarkGroup(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {

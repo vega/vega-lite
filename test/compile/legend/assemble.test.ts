@@ -45,7 +45,7 @@ describe('legend/assemble', () => {
     assert.equal(legends.length, 1);
     assert.equal(legends[0].title, 'b');
     assert.equal(legends[0].type, 'symbol');
-    assert.equal(legends[0].stroke, 'color');
+    assert.equal(legends[0].fill, 'color');
     assert.equal(legends[0].size, 'size');
   });
 });
