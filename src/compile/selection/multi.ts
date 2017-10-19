@@ -1,4 +1,4 @@
-import {stringValue} from '../../util';
+import {accessPath, stringValue} from '../../util';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
 
@@ -19,9 +19,9 @@ const multi:SelectionCompiler = {
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
       return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
-        `[${datum}[${stringValue(model.field(channel, {}))}], ` +
-            `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
-        `${datum}[${stringValue(p.field)}]`;
+        `[${datum}${accessPath(model.field(channel, {}))}, ` +
+            `${datum}${accessPath(model.field(channel, {binSuffix: 'end'}))}]`) :
+        `${datum}${accessPath(p.field)}`;
     }).join(', ');
 
     // Only add a discrete selection to the store if a datum is present _and_

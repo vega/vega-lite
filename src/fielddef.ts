@@ -1,13 +1,11 @@
 // utility for a field definition object
 
-import {isNumber} from 'vega-util';
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
-import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
@@ -16,7 +14,8 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean, isString, stringValue, titlecase} from './util';
+import {accessPath, isBoolean, isNumber, isString, titlecase} from './util';
+
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -310,7 +309,7 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
   }
 
   if (opt.expr) {
-    field = `${opt.expr}[${stringValue(field)}]`;
+    field = `${opt.expr}${accessPath(field)}`;
   }
 
   return field;

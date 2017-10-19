@@ -28,4 +28,5 @@ declare module 'vega-util' {
 
   export function toSet<T>(array: T[]): {[T: string]: boolean}
   export function stringValue(a: any): string;
+  export function splitAccessPath(path: string): string[];
 }
