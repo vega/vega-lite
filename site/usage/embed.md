@@ -89,7 +89,7 @@ Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that
         "y": {"field": "b", "type": "quantitative"}
       }
     }
-    vega.embed("#vis", yourVlSpec);
+    vegaEmbed("#vis", yourVlSpec);
   </script>
 </body>
 </html>

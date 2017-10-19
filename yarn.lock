@@ -1182,7 +1182,7 @@ commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
 
-compare-versions@^3.0.1:
+compare-versions@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.1.0.tgz#43310256a5c555aaed4193c04d8f154cf9c6efd5"
 
@@ -5585,15 +5585,13 @@ vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
-vega-embed@^3.0.0-beta.20:
-  version "3.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.20.tgz#66b228d937256a823dd5e9dd6945d8159b34beb0"
+vega-embed@^3.0.0-rc1:
+  version "3.0.0-rc1"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc1.tgz#7a9ec0c4093cac77039b7e4cf0431ebab3d34940"
   dependencies:
-    compare-versions "^3.0.1"
+    compare-versions "^3.1.0"
     d3-selection "^1.1.0"
-    vega "^3.0.0-rc5"
-    vega-lite "^2.0.0-beta.11"
-    vega-schema-url-parser "^1.0.0-beta.2"
+    vega-schema-url-parser "^1.0.0-beta.3"
 
 vega-encode@2:
   version "2.0.4"
@@ -5644,7 +5642,7 @@ vega-hierarchy@^2.1:
     vega-dataflow "3"
     vega-util "1"
 
-vega-lite@^2.0.0-beta.11, vega-lite@^2.0.0-beta.14:
+vega-lite@^2.0.0-beta.14:
   version "2.0.0-rc4"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-rc4.tgz#1b21d5eeb98d21598bb63431cd736cbe37dbfa5e"
   dependencies:
@@ -5716,7 +5714,7 @@ vega-scenegraph@2:
     canvas "^1.6"
     canvas-prebuilt "^1.6"
 
-vega-schema-url-parser@^1.0.0-beta.2:
+vega-schema-url-parser@^1.0.0-beta.3:
   version "1.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/vega-schema-url-parser/-/vega-schema-url-parser-1.0.0-beta.3.tgz#414e9c24efa8b7c30501c4b23e780f9f8e99d25e"
 
@@ -5788,7 +5786,7 @@ vega-wordcloud@2:
     canvas "^1.6"
     canvas-prebuilt "^1.6"
 
-vega@^3.0.0, vega@^3.0.0-rc5:
+vega@^3.0.0:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.6.tgz#d7ad62d9ff7f954f72e6c1ca5288da501f560778"
   dependencies:

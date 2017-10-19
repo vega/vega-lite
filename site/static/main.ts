@@ -1,7 +1,8 @@
 import {text} from 'd3-request';
 import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
-import embed, {vega} from 'vega-embed';
+import * as vega from 'vega';
+import embed from 'vega-embed';
 import {vegaLite} from 'vega-tooltip';
 import {runStreamingExample} from './streaming';
 
@@ -37,18 +38,16 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   const spec = JSON.parse(specText);
 
-  embed(vis.node(), spec, {
+  embed(vis.node() as HTMLBaseElement, spec, {
     mode: 'vega-lite',
     renderer: 'svg',
     actions: {
       source: false,
       export: false
     },
-    viewConfig: {
-      loader: new vega.loader({
-        baseURL: BASEURL
-      })
-    }
+    loader: new vega.loader({
+      baseURL: BASEURL
+    })
   }).then(result => {
     if ($target.classed('tooltip')) {
       vegaLite(result.view, JSON.parse(specText) as any);

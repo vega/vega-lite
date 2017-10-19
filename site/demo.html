@@ -51,10 +51,10 @@
   };
 
   // Embed the visualization in the container with id `vis`
-  vega.embed("#vis", vlSpec, opt, function(error, result) {
+  vegaEmbed("#vis", vlSpec, opt).then(function(result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
-  });
+  }).catch(console.warn);
   </script>
 </body>
 </html>
