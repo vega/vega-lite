@@ -1,6 +1,6 @@
 import {Encoding} from '../encoding';
 import {FacetMapping} from '../facet';
-import {Field, FieldDef, hasConditionFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
+import {Field, FieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
 import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
@@ -66,7 +66,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
       return {condition: channelDef.condition};
     }
   } else {
-    if (hasConditionFieldDef(channelDef)) {
+    if (hasConditionalFieldDef(channelDef)) {
       const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
       if (fd) {
         return {

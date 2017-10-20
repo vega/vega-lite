@@ -111,27 +111,27 @@ Type:
   link: "encoding.html#data-type"
 
 # Channel Definitions
-ConditionalLegendFieldDef:
+LegendFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
-ConditionalLegendValueDef:
+LegendValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
-ConditionalTextFieldDef:
+TextFieldDefWithCondition:
   name: TextFieldDef
   link: "encoding.html#text-field-def"
-ConditionalTextValueDef:
+TextValueDefWithCondition:
   name: TextValueDef
   link: "encoding.html#text-value-def"
 
-ConditionLegendFieldDef:
+ConditionalLegendFieldDef:
+  name: ConditionalFieldDef
+  link: "condition.html#field"
+ConditionalTextFieldDef:
   name: ConditionFieldDef
   link: "condition.html#field"
-ConditionTextFieldDef:
-  name: ConditionFieldDef
-  link: "condition.html#field"
-ConditionValueDef:
+ConditionalValueDef:
   link: "condition.html#value"
 
 FieldDef:
@@ -143,7 +143,6 @@ OrderFieldDef:
 PositionFieldDef:
   link: "encoding.html#position-field-def"
 ValueDef:
-  name: ValueDef
   link: "encoding.html#value"
 
 # Field Definition

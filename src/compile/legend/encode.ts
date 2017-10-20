@@ -1,5 +1,5 @@
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {ConditionalFieldDef, ConditionalValueDef, FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef, LegendFieldDef} from '../../fielddef';
+import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, LegendFieldDef, ValueDefWithCondition} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
@@ -112,9 +112,9 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(labels).length > 0 ? labels : undefined;
 }
 
-function getOpacityValue(opacityDef: ConditionalFieldDef<LegendFieldDef<string>> | ConditionalValueDef<LegendFieldDef<string>>): number {
+function getOpacityValue(opacityDef: FieldDefWithCondition<LegendFieldDef<string>> | ValueDefWithCondition<LegendFieldDef<string>>): number {
   if (isValueDef(opacityDef)) {
-    if (hasConditionValueDef(opacityDef)) {
+    if (hasConditionalValueDef(opacityDef)) {
       return Math.max(opacityDef.condition.value as number, opacityDef.value as number);
     } else {
       return opacityDef.value as number;

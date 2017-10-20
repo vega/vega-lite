@@ -30,10 +30,10 @@ export interface ValueDef {
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type.
  */
-export type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F>;
+export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
 
 
-export type Condition<T> = {
+export type Conditional<T> = {
   /**
    * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
    */
@@ -48,14 +48,14 @@ export type Condition<T> = {
  *   ...
  * }
  */
-export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
   /**
    * One or more value definition(s) with a selection predicate.
    *
    * __Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)
    * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
    */
-  condition?: Condition<ValueDef> | Condition<ValueDef>[];
+  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
 };
 
 /**
@@ -65,11 +65,11 @@ export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
  *   value: ...,
  * }
  */
-export interface ConditionalValueDef<F extends FieldDef<any>> {
+export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Condition<F> | Condition<ValueDef> | Condition<ValueDef>[];
+  condition?: Conditional<F> | Conditional<ValueDef> | Conditional<ValueDef>[];
 
   /**
    * A constant value in visual domain.
@@ -225,20 +225,20 @@ export interface TextFieldDef<F> extends FieldDef<F> {
   format?: string;
 }
 
-export type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;
+export type ChannelDef<F> = ChannelDefWithCondition<FieldDef<F>>;
 
-export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ConditionalChannelDef<FieldDef<F>> {
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ChannelDefWithCondition<FieldDef<F>> {
   return !!channelDef && !!channelDef.condition;
 }
 
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<FieldDef<F>>}) {
+export function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<FieldDef<F>>}) {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<ValueDef>}) {
+export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<ValueDef>}) {
   return !!channelDef && !!channelDef.condition && (
     isArray(channelDef.condition) || isValueDef(channelDef.condition)
   );
@@ -414,7 +414,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
 export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
   if (isFieldDef(channelDef)) {
     return channelDef;
-  } else if (hasConditionFieldDef(channelDef)) {
+  } else if (hasConditionalFieldDef(channelDef)) {
     return channelDef.condition;
   }
   return undefined;
@@ -434,11 +434,11 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel): Cha
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
     return normalizeFieldDef(channelDef, channel);
-  } else if (hasConditionFieldDef(channelDef)) {
+  } else if (hasConditionalFieldDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: normalizeFieldDef(channelDef.condition, channel) as Condition<FieldDef<string>>
+      condition: normalizeFieldDef(channelDef.condition, channel) as Conditional<FieldDef<string>>
     };
   }
   return channelDef;
