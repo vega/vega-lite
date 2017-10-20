@@ -167,14 +167,14 @@ Here are the list of mark property channels:
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
 [field definitions](#field-def) for mark property channels may also include these properties:
 
-{% include table.html props="scale,legend,condition" source="ConditionalLegendFieldDef" %}
+{% include table.html props="scale,legend,condition" source="LegendFieldDefWithCondition" %}
 
 {:#mark-prop-value-def}
 ### Mark Property Value Definition
 
 In addition to the constant `value`, [value definitions](#value-def) of mark properties channels can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="ConditionalLegendValueDef" %}
+{% include table.html props="condition" source="LegendValueDefWithCondition" %}
 
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
@@ -195,14 +195,14 @@ Similar to mark property channels, definitions of text and tooltip channels can 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
 [field definitions](#field-def) for `text` and `tooltip` channels may also include these properties:
 
-{% include table.html props="format,condition" source="ConditionalTextFieldDef" %}
+{% include table.html props="format,condition" source="TextFieldDefWithCondition" %}
 
 {:#mark-prop-value-def}
 ### Text and Tooltip Value Definition
 
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="ConditionalTextValueDef" %}
+{% include table.html props="condition" source="TextValueDefWithCondition" %}
 
 
 {:#detail}
