@@ -3,7 +3,7 @@ import {Channel, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, Singl
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ChannelDef, FieldDef, getFieldDef, hasConditionFieldDef, isFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {isMarkDef, Mark, MarkDef} from '../mark';
 import {Domain, Scale} from '../scale';
@@ -112,7 +112,7 @@ export class UnitModel extends ModelWithField {
       if (isFieldDef(channelDef)) {
         fieldDef = channelDef;
         specifiedScale = channelDef.scale;
-      } else if (hasConditionFieldDef(channelDef)) {
+      } else if (hasConditionalFieldDef(channelDef)) {
         fieldDef = channelDef.condition;
         specifiedScale = channelDef.condition['scale'];
       } else if (channel === 'x') {
@@ -156,7 +156,7 @@ export class UnitModel extends ModelWithField {
       const channelDef = encoding[channel];
       if (channelDef) {
         const legend = isFieldDef(channelDef) ? channelDef.legend :
-          (hasConditionFieldDef(channelDef)) ? channelDef.condition['legend'] : null;
+          (hasConditionalFieldDef(channelDef)) ? channelDef.condition['legend'] : null;
 
         if (legend !== null && legend !== false) {
           _legend[channel] = {...legend};
