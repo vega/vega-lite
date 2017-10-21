@@ -18,8 +18,8 @@ perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
 perl -pi -e s,'FieldDefWithCondition<TextFieldDef\>','TextFieldDefWithCondition',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDefWithCondition<TextFieldDef\>','TextValueDefWithCondition',g build/vega-lite-schema.json
 
-perl -pi -e s,'FieldDefWithCondition<LegendFieldDef\>','LegendFieldDefWithCondition',g build/vega-lite-schema.json
-perl -pi -e s,'ValueDefWithCondition<LegendFieldDef\>','LegendValueDefWithCondition',g build/vega-lite-schema.json
+perl -pi -e s,'FieldDefWithCondition<MarkPropFieldDef\>','MarkPropFieldDefWithCondition',g build/vega-lite-schema.json
+perl -pi -e s,'ValueDefWithCondition<MarkPropFieldDef\>','MarkPropValueDefWithCondition',g build/vega-lite-schema.json
 
 perl -pi -e s,'LogicalOperand<string>','SelectionOperand',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalAnd<string>','SelectionAnd',g build/vega-lite-schema.json
