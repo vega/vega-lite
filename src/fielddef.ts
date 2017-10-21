@@ -238,7 +238,7 @@ export function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<ValueDef>}) {
+export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<ValueDef> | Conditional<ValueDef>[]}) {
   return !!channelDef && !!channelDef.condition && (
     isArray(channelDef.condition) || isValueDef(channelDef.condition)
   );
