@@ -111,10 +111,10 @@ Type:
   link: "encoding.html#data-type"
 
 # Channel Definitions
-LegendFieldDefWithCondition:
+MarkPropFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
-LegendValueDefWithCondition:
+MarkPropValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
@@ -125,7 +125,7 @@ TextValueDefWithCondition:
   name: TextValueDef
   link: "encoding.html#text-value-def"
 
-ConditionalLegendFieldDef:
+ConditionalMarkPropFieldDef:
   name: ConditionalFieldDef
   link: "condition.html#field"
 ConditionalTextFieldDef:

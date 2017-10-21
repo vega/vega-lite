@@ -1100,7 +1100,7 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "ConditionalLegendFieldDef": {
+    "ConditionalMarkPropFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1583,10 +1583,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
@@ -1608,10 +1608,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
@@ -1633,10 +1633,10 @@
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
@@ -1644,10 +1644,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
@@ -1727,10 +1727,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
@@ -1756,10 +1756,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
@@ -1785,10 +1785,10 @@
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
@@ -1796,10 +1796,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LegendFieldDefWithCondition"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/LegendValueDefWithCondition"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
@@ -2057,7 +2057,7 @@
       },
       "type": "object"
     },
-    "LegendFieldDefWithCondition": {
+    "MarkPropFieldDefWithCondition": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -3219,78 +3219,6 @@
       },
       "type": "object"
     },
-    "LegendFieldDef": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
-        },
-        "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "legend": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Legend"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
-        },
-        "scale": {
-          "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/SortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
     "LegendOrient": {
       "enum": [
         "left",
@@ -3900,6 +3828,79 @@
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "MarkPropFieldDef": {
+      "additionalProperties": false,
+      "description": "Field definition of a mark property, which can contain a legend.",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -6350,14 +6351,14 @@
       ],
       "type": "object"
     },
-    "LegendValueDefWithCondition": {
+    "MarkPropValueDefWithCondition": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
               "$ref": "#/definitions/ConditionalValueDef"

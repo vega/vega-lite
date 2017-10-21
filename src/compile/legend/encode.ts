@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, LegendFieldDef, ValueDefWithCondition} from '../../fielddef';
+import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDefWithCondition} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
@@ -113,7 +113,7 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(labels).length > 0 ? labels : undefined;
 }
 
-function getOpacityValue(opacityDef: FieldDefWithCondition<LegendFieldDef<string>> | ValueDefWithCondition<LegendFieldDef<string>>): number {
+function getOpacityValue(opacityDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>): number {
   if (isValueDef(opacityDef)) {
     if (hasConditionalValueDef(opacityDef)) {
       const values = isArray(opacityDef.condition) ? opacityDef.condition.map(c => c.value) : [opacityDef.condition.value];
