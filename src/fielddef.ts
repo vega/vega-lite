@@ -195,7 +195,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   stack?: StackOffset | null;
 }
 
-export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
+/**
+ * Field definition of a mark property, which can contain a legend.
+ */
+export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
    /**
     * An object defining properties of the legend.
     * If `null`, the legend for the encoding channel will be removed.
@@ -244,7 +247,7 @@ export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef
   );
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 

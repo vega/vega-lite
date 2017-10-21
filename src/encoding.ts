@@ -11,7 +11,7 @@ import {
   isConditionalDef,
   isFieldDef,
   isValueDef,
-  LegendFieldDef,
+  MarkPropFieldDef,
   normalize,
   normalizeFieldDef,
   OrderFieldDef,
@@ -56,14 +56,14 @@ export interface Encoding<F> {
    *
    * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
-  color?: FieldDefWithCondition<LegendFieldDef<F>> | ValueDefWithCondition<LegendFieldDef<F>>;
+  color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property.
    */
-  opacity?: FieldDefWithCondition<LegendFieldDef<F>> | ValueDefWithCondition<LegendFieldDef<F>>;
+  opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Size of the mark.
@@ -72,7 +72,7 @@ export interface Encoding<F> {
    * - For `"text"` – the text's font size.
    * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
    */
-  size?: FieldDefWithCondition<LegendFieldDef<F>> | ValueDefWithCondition<LegendFieldDef<F>>;
+  size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
@@ -80,7 +80,7 @@ export interface Encoding<F> {
    * or `"triangle-down"`, or else a custom SVG path string.
    * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
    */
-  shape?: FieldDefWithCondition<LegendFieldDef<F>> | ValueDefWithCondition<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
+  shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
