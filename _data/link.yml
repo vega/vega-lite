@@ -125,13 +125,13 @@ TextValueDefWithCondition:
   name: TextValueDef
   link: "encoding.html#text-value-def"
 
-ConditionalMarkPropFieldDef:
+Conditional<MarkPropFieldDef>:
   name: ConditionalFieldDef
   link: "condition.html#field"
-ConditionalTextFieldDef:
+Conditional<TextFieldDef>:
   name: ConditionFieldDef
   link: "condition.html#field"
-ConditionalValueDef:
+Conditional<ValueDef>:
   link: "condition.html#value"
 
 FieldDef:

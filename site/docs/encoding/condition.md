@@ -39,7 +39,7 @@ There are two ways to use the `condition` property:
 
 A conditional field definition uses a data-driven encoding rule when marks fall within a selection, and a value encoding otherwise. As shown in the table below, the full gamut of encoding properties including transformation functions (`aggregate`, `bin`, `timeUnit`) as well as `scale` and `legend` are available here.
 
-{% include table.html props="selection,field,type,bin,timeUnit,aggregate,scale,legend" source="ConditionalLegendFieldDef" %}
+{% include table.html props="selection,field,type,bin,timeUnit,aggregate,scale,legend" source="Conditional<LegendFieldDef>" %}
 
 For example, in the following visualization, the color of `rect` marks is driven by a conditional field definition. Drag an interval selection and observe that marks are colored based on their aggregated count if they lie within the interval, and are grey otherwise.
 
@@ -71,7 +71,7 @@ __Note:__ When using a conditional field definition, only a `value` may be speci
 
 A condition value definition uses a value encoding when data fall within a selection. When data lie outside a selection, either a value or field encoding may be used.
 
-{% include table.html props="selection,value" source="ConditionalValueDef" %}
+{% include table.html props="selection,value" source="Conditional<ValueDef>" %}
 
 For example, in the visualization below, a conditional value definition causes marks that fall within a dragged interval to be larger than those that lie outside it.
 
