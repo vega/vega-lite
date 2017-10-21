@@ -1100,7 +1100,7 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "ConditionalMarkPropFieldDef": {
+    "Conditional<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1177,7 +1177,7 @@
       ],
       "type": "object"
     },
-    "ConditionalTextFieldDef": {
+    "Conditional<TextFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1229,7 +1229,7 @@
       ],
       "type": "object"
     },
-    "ConditionalValueDef": {
+    "Conditional<ValueDef>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -2079,11 +2079,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef"
+              "$ref": "#/definitions/Conditional<ValueDef>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
+                "$ref": "#/definitions/Conditional<ValueDef>"
               },
               "type": "array"
             }
@@ -2166,11 +2166,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef"
+              "$ref": "#/definitions/Conditional<ValueDef>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
+                "$ref": "#/definitions/Conditional<ValueDef>"
               },
               "type": "array"
             }
@@ -5614,7 +5614,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedUnitSpec": {
+    "TopLevel<FacetedUnitSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5705,7 +5705,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetSpec": {
+    "TopLevel<FacetSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5792,7 +5792,7 @@
       ],
       "type": "object"
     },
-    "TopLevelHConcatSpec": {
+    "TopLevel<HConcatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5870,7 +5870,7 @@
       ],
       "type": "object"
     },
-    "TopLevelLayerSpec": {
+    "TopLevel<LayerSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5963,7 +5963,7 @@
       ],
       "type": "object"
     },
-    "TopLevelRepeatSpec": {
+    "TopLevel<RepeatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -6042,7 +6042,7 @@
       ],
       "type": "object"
     },
-    "TopLevelVConcatSpec": {
+    "TopLevel<VConcatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -6123,22 +6123,22 @@
     "TopLevelExtendedSpec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
+          "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelLayerSpec"
+          "$ref": "#/definitions/TopLevel<LayerSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelFacetSpec"
+          "$ref": "#/definitions/TopLevel<FacetSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelRepeatSpec"
+          "$ref": "#/definitions/TopLevel<RepeatSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelVConcatSpec"
+          "$ref": "#/definitions/TopLevel<VConcatSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelHConcatSpec"
+          "$ref": "#/definitions/TopLevel<HConcatSpec>"
         }
       ]
     },
@@ -6358,14 +6358,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+              "$ref": "#/definitions/Conditional<MarkPropFieldDef>"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef"
+              "$ref": "#/definitions/Conditional<ValueDef>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
+                "$ref": "#/definitions/Conditional<ValueDef>"
               },
               "type": "array"
             }
@@ -6390,14 +6390,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
+              "$ref": "#/definitions/Conditional<TextFieldDef>"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef"
+              "$ref": "#/definitions/Conditional<ValueDef>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
+                "$ref": "#/definitions/Conditional<ValueDef>"
               },
               "type": "array"
             }
