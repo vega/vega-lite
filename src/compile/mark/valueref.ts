@@ -5,7 +5,7 @@ import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {
   ChannelDef,
-  ConditionalChannelDef,
+  ChannelDefWithCondition,
   field,
   FieldDef,
   FieldRefOption,
@@ -133,7 +133,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     } else if (isValueDef(channelDef)) {
       return {value: channelDef.value};
     } else {
-      throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
+      throw new Error('A channel definition has neither field nor value.'); // FIXME add this to log.message
     }
   }
 
@@ -159,7 +159,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
   return defaultRef;
 }
 
-export function text(textDef: ConditionalChannelDef<TextFieldDef<string>>, config: Config): VgValueRef {
+export function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {

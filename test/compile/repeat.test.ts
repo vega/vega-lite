@@ -101,7 +101,7 @@ describe('Repeat', function() {
       });
     }));
 
-    it('should show warning if repeat in reversed conditional cannot be resolved', log.wrap((localLogger) => {
+    it('should show warning if repeat in a condition field def cannot be resolved', log.wrap((localLogger) => {
       const resolved = replaceRepeaterInEncoding({
         color: {
           condition: {selection: 'test', value: 'red'},
@@ -111,7 +111,9 @@ describe('Repeat', function() {
 
       assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
       assert.deepEqual(resolved, {
-        color: {value: 'red'}
+        color: {
+          condition: {selection: 'test', value: 'red'}
+        }
       });
     }));
   });

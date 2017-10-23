@@ -191,6 +191,9 @@
                     },
                     "encode": {
                         "update": {
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "age"
@@ -209,9 +212,6 @@
                             },
                             "opacity": {
                                 "value": 0.7
-                            },
-                            "orient": {
-                                "value": "vertical"
                             }
                         }
                     }

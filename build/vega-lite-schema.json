@@ -35,6 +35,52 @@
       ],
       "type": "string"
     },
+    "AggregateTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "description": "Array of objects that define fields to aggregate.",
+          "items": {
+            "$ref": "#/definitions/AggregatedFieldDef"
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The data fields to group by. If not specified, a single group containing all data objects will be used.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "aggregate"
+      ],
+      "type": "object"
+    },
+    "AggregatedFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output field names to use for each aggregated field.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data field for which to compute aggregate function.",
+          "type": "string"
+        },
+        "op": {
+          "$ref": "#/definitions/AggregateOp",
+          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)\nfor more information."
+        }
+      },
+      "required": [
+        "op",
+        "field",
+        "as"
+      ],
+      "type": "object"
+    },
     "Anchor": {
       "enum": [
         "start",
@@ -1054,7 +1100,7 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "ConditionLegendFieldDef": {
+    "Conditional<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1086,14 +1132,7 @@
         "legend": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Legend"
             },
             {
               "type": "null"
@@ -1112,17 +1151,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -1132,11 +1164,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -1145,7 +1177,7 @@
       ],
       "type": "object"
     },
-    "ConditionTextFieldDef": {
+    "Conditional<TextFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1184,11 +1216,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -1197,7 +1229,7 @@
       ],
       "type": "object"
     },
-    "ConditionValueDef": {
+    "Conditional<ValueDef>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1205,7 +1237,7 @@
           "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain.",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
             "string",
@@ -1217,201 +1249,6 @@
         "selection",
         "value"
       ],
-      "type": "object"
-    },
-    "ConditionalLegendFieldDef": {
-      "additionalProperties": false,
-      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
-        },
-        "condition": {
-          "$ref": "#/definitions/ConditionValueDef",
-          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
-        },
-        "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "legend": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
-        },
-        "scale": {
-          "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
-    "ConditionalTextFieldDef": {
-      "additionalProperties": false,
-      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
-        },
-        "condition": {
-          "$ref": "#/definitions/ConditionValueDef",
-          "description": "A value definition with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
-        },
-        "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "format": {
-          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
-          "type": "string"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
-    "ConditionalLegendValueDef": {
-      "additionalProperties": false,
-      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionLegendFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionValueDef"
-            }
-          ],
-          "description": "A field definition or a value definition with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": [
-            "number",
-            "string",
-            "boolean"
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "ConditionalTextValueDef": {
-      "additionalProperties": false,
-      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionValueDef"
-            }
-          ],
-          "description": "A field definition or a value definition with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain.",
-          "type": [
-            "number",
-            "string",
-            "boolean"
-          ]
-        }
-      },
       "type": "object"
     },
     "Config": {
@@ -1746,10 +1583,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
@@ -1771,10 +1608,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
@@ -1796,10 +1633,10 @@
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
@@ -1807,10 +1644,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
@@ -1818,10 +1655,10 @@
         "text": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -1829,10 +1666,10 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -1890,10 +1727,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
@@ -1919,10 +1756,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property."
@@ -1948,10 +1785,10 @@
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
@@ -1959,10 +1796,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalLegendFieldDef"
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalLegendValueDef"
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
@@ -1970,10 +1807,10 @@
         "text": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -1981,10 +1818,10 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -2110,11 +1947,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -2172,11 +2009,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -2215,9 +2052,158 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         }
       },
+      "type": "object"
+    },
+    "MarkPropFieldDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "TextFieldDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "Filter": {
@@ -2291,7 +2277,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for facets."
         },
         "spec": {
           "anyOf": [
@@ -2341,6 +2328,7 @@
           "type": "string"
         },
         "hconcat": {
+          "description": "A list of views that should be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -2351,7 +2339,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -2411,7 +2400,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for layers."
         },
         "title": {
           "anyOf": [
@@ -2457,10 +2447,12 @@
           "type": "string"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat"
+          "$ref": "#/definitions/Repeat",
+          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale and legend resolutions for repeated charts."
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -2654,7 +2646,8 @@
           "type": "string"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -2675,6 +2668,7 @@
           "type": "array"
         },
         "vconcat": {
+          "description": "A list of views that should be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -2761,6 +2755,9 @@
             },
             {
               "type": "string"
+            },
+            {
+              "type": "object"
             }
           ],
           "description": "The full data set, included inline. This can be an array of objects or primitive values or a string.\nArrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type."
@@ -3222,92 +3219,6 @@
       },
       "type": "object"
     },
-    "LegendFieldDef": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
-        },
-        "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "legend": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
-        },
-        "scale": {
-          "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    },
     "LegendOrient": {
       "enum": [
         "left",
@@ -3759,21 +3670,132 @@
     "MarkDef": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "$ref": "#/definitions/HorizontalAlign",
+          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+        },
+        "angle": {
+          "description": "The rotation angle of the text, in degrees.",
+          "maximum": 360,
+          "minimum": 0,
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/VerticalAlign",
+          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
         "clip": {
           "description": "Whether a mark be clipped to the enclosing group’s width and height.",
           "type": "boolean"
         },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
+          "type": "string"
+        },
+        "dx": {
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "fill": {
+          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ All marks except `\"point\"`, `\"line\"`, and `\"rule\"` are filled by default.",
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "boolean"
+        },
+        "font": {
+          "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
+          "minimum": 0,
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "The font size, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style (e.g., `\"italic\"`)."
+        },
+        "fontWeight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/FontWeightNumber"
+            }
+          ],
+          "description": "The font weight (e.g., `\"bold\"`)."
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
-          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y.\n\nFor more information about each interpolation method, please see [Vega's line interpolation docs](https://vega.github.io/vega/docs/marks/line/)."
+          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+        },
+        "limit": {
+          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "Orientation of the marks."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+        },
+        "radius": {
+          "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "shape": {
+          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "type": "string"
+        },
+        "size": {
+          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
+          "type": "number"
         },
         "style": {
           "anyOf": [
@@ -3790,14 +3812,95 @@
           "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default.\n__Note:__ Any specified style will augment the default style. For example, a bar mark with `\"style\": \"foo\"` will receive from `config.style.bar` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tension": {
-          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",
+          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
           "maximum": 1,
           "minimum": 0,
+          "type": "number"
+        },
+        "text": {
+          "description": "Placeholder text if the `text` channel is not specified",
+          "type": "string"
+        },
+        "theta": {
+          "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "MarkPropFieldDef": {
+      "additionalProperties": false,
+      "description": "Field definition of a mark property, which can contain a legend.",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4034,11 +4137,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4089,14 +4192,7 @@
         "axis": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Axis"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/Axis"
             },
             {
               "type": "null"
@@ -4133,17 +4229,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -4164,11 +4253,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -4362,6 +4451,7 @@
     },
     "Resolve": {
       "additionalProperties": false,
+      "description": "Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions.",
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisResolveMap"
@@ -4561,7 +4651,7 @@
           "type": "boolean"
         },
         "continuousPadding": {
-          "description": "Default padding for continuous scales.",
+          "description": "Default padding for continuous scales.\n\n__Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0,
           "type": "number"
         },
@@ -4683,17 +4773,10 @@
         "sort": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SortOrder"
-                },
-                {
-                  "$ref": "#/definitions/SortField"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
             },
             {
               "type": "null"
@@ -4703,11 +4786,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -5071,52 +5154,6 @@
       },
       "type": "object"
     },
-    "SummarizeFieldDef": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)\nfor more information."
-        },
-        "as": {
-          "description": "The output field names to use for each aggregated field.",
-          "type": "string"
-        },
-        "field": {
-          "description": "The data field for which to compute aggregate function.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "aggregate",
-        "field",
-        "as"
-      ],
-      "type": "object"
-    },
-    "SummarizeTransform": {
-      "additionalProperties": false,
-      "properties": {
-        "groupby": {
-          "description": "The data fields to group by. If not specified, a single group containing all data objects will be used.",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "summarize": {
-          "description": "Array of objects that define aggregate fields.",
-          "items": {
-            "$ref": "#/definitions/SummarizeFieldDef"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "summarize"
-      ],
-      "type": "object"
-    },
     "TextConfig": {
       "additionalProperties": false,
       "properties": {
@@ -5299,11 +5336,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
         }
       },
       "required": [
@@ -5577,7 +5614,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedUnitSpec": {
+    "TopLevel<FacetedUnitSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5668,7 +5705,7 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetSpec": {
+    "TopLevel<FacetSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5716,7 +5753,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for facets."
         },
         "spec": {
           "anyOf": [
@@ -5754,7 +5792,7 @@
       ],
       "type": "object"
     },
-    "TopLevelHConcatSpec": {
+    "TopLevel<HConcatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5790,6 +5828,7 @@
           "type": "string"
         },
         "hconcat": {
+          "description": "A list of views that should be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -5804,7 +5843,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -5830,7 +5870,7 @@
       ],
       "type": "object"
     },
-    "TopLevelLayerSpec": {
+    "TopLevel<LayerSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5892,7 +5932,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for layers."
         },
         "title": {
           "anyOf": [
@@ -5922,7 +5963,7 @@
       ],
       "type": "object"
     },
-    "TopLevelRepeatSpec": {
+    "TopLevel<RepeatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5966,10 +6007,12 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat"
+          "$ref": "#/definitions/Repeat",
+          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale and legend resolutions for repeated charts."
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -5999,7 +6042,7 @@
       ],
       "type": "object"
     },
-    "TopLevelVConcatSpec": {
+    "TopLevel<VConcatSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -6043,7 +6086,8 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
-          "$ref": "#/definitions/Resolve"
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
         },
         "title": {
           "anyOf": [
@@ -6064,6 +6108,7 @@
           "type": "array"
         },
         "vconcat": {
+          "description": "A list of views that should be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -6078,22 +6123,22 @@
     "TopLevelExtendedSpec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
+          "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelLayerSpec"
+          "$ref": "#/definitions/TopLevel<LayerSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelFacetSpec"
+          "$ref": "#/definitions/TopLevel<FacetSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelRepeatSpec"
+          "$ref": "#/definitions/TopLevel<RepeatSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelVConcatSpec"
+          "$ref": "#/definitions/TopLevel<VConcatSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelHConcatSpec"
+          "$ref": "#/definitions/TopLevel<HConcatSpec>"
         }
       ]
     },
@@ -6175,7 +6220,7 @@
           "$ref": "#/definitions/TimeUnitTransform"
         },
         {
-          "$ref": "#/definitions/SummarizeTransform"
+          "$ref": "#/definitions/AggregateTransform"
         }
       ]
     },
@@ -6293,7 +6338,7 @@
       "description": "Definition object for a constant value of an encoding channel.",
       "properties": {
         "value": {
-          "description": "A constant value in visual domain.",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
             "string",
@@ -6304,6 +6349,70 @@
       "required": [
         "value"
       ],
+      "type": "object"
+    },
+    "MarkPropValueDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<MarkPropFieldDef>"
+            },
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "TextValueDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<TextFieldDef>"
+            },
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
       "type": "object"
     },
     "VerticalAlign": {

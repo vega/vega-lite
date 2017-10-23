@@ -489,7 +489,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "distance (binned)",
                     "values": {
@@ -658,7 +658,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "delay (binned)",
                     "values": {
@@ -827,7 +827,7 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "time (binned)",
                     "values": {

@@ -1,5 +1,6 @@
+import {isArray} from 'vega-util';
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {ConditionalFieldDef, ConditionalValueDef, FieldDef, hasConditionValueDef, isTimeFieldDef, isValueDef, LegendFieldDef} from '../../fielddef';
+import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDefWithCondition} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys, without} from '../../util';
@@ -112,10 +113,11 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(labels).length > 0 ? labels : undefined;
 }
 
-function getOpacityValue(opacityDef: ConditionalFieldDef<LegendFieldDef<string>> | ConditionalValueDef<LegendFieldDef<string>>): number {
+function getOpacityValue(opacityDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>): number {
   if (isValueDef(opacityDef)) {
-    if (hasConditionValueDef(opacityDef)) {
-      return Math.max(opacityDef.condition.value as number, opacityDef.value as number);
+    if (hasConditionalValueDef(opacityDef)) {
+      const values = isArray(opacityDef.condition) ? opacityDef.condition.map(c => c.value) : [opacityDef.condition.value];
+      return Math.max.apply(null, [opacityDef.value].concat(values));
     } else {
       return opacityDef.value as number;
     }

@@ -92,7 +92,8 @@
                 {
                     "signal": "width"
                 }
-            ]
+            ],
+            "padding": 5
         },
         {
             "name": "y",
@@ -125,7 +126,7 @@
                 "labels": {
                     "update": {
                         "text": {
-                            "signal": "timeFormat(datum.value, '%B of %Y')"
+                            "signal": "timeFormat(datum.value, '%b %Y')"
                         }
                     }
                 }

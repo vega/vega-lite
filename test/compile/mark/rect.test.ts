@@ -2,11 +2,11 @@
 import {assert} from 'chai';
 import {rect} from '../../../src/compile/mark/rect';
 import * as log from '../../../src/log';
-import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Rect', function() {
   describe('simple vertical', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -26,7 +26,7 @@ describe('Mark: Rect', function() {
   });
 
   describe('simple horizontal', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -46,7 +46,7 @@ describe('Mark: Rect', function() {
   });
 
   describe('simple horizontal with size field', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -73,7 +73,7 @@ describe('Mark: Rect', function() {
   });
 
   describe('horizontal binned', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -91,7 +91,7 @@ describe('Mark: Rect', function() {
   });
 
   describe('vertical binned', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -110,7 +110,7 @@ describe('Mark: Rect', function() {
 
 
   describe('simple ranged', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
       "encoding": {
@@ -131,7 +131,7 @@ describe('Mark: Rect', function() {
   });
 
   describe('simple heatmap', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/cars.json"},
       "mark": "rect",
       "encoding": {

@@ -5,11 +5,11 @@ import {bar} from '../../../src/compile/mark/bar';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
-import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Bar', function() {
   describe('simple vertical', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -29,7 +29,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('simple horizontal', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -49,7 +49,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('simple horizontal with point scale', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -69,7 +69,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('simple horizontal with size value', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -87,7 +87,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('simple horizontal with size field', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -114,7 +114,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal binned', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -132,7 +132,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal binned, sort descending', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -150,7 +150,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal binned, reverse', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -168,7 +168,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical binned', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -186,7 +186,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical binned, sort descending', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -205,7 +205,7 @@ describe('Mark: Bar', function() {
 
 
   describe('horizontal binned with ordinal', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -222,7 +222,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical binned with ordinal', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -240,7 +240,7 @@ describe('Mark: Bar', function() {
 
 
   describe('horizontal binned with no spacing', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -259,7 +259,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical binned with no spacing', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -278,7 +278,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('simple horizontal binned with size', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -296,7 +296,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical binned with size', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -314,7 +314,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical, with log', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -331,7 +331,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal, with log', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -349,7 +349,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical, with fit mode', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "width": 120,
       "height": 120,
       "data": {"url": 'data/cars.json'},
@@ -374,7 +374,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal, with fit mode', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "width": 120,
       "height": 120,
       "data": {"url": 'data/cars.json'},
@@ -399,7 +399,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical with zero=false', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -416,7 +416,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal with zero=false', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
       "encoding": {
@@ -433,7 +433,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('1D vertical', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
         "data": {"url": 'data/movies.json'}
@@ -452,7 +452,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('1D vertical with size value', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"},
@@ -468,7 +468,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('1D vertical with barSize config', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": 'data/movies.json'},
         "mark": "bar",
         "encoding": {
@@ -486,7 +486,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('1D horizontal', function() {
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "bar",
       "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
       "data": {"url": 'data/movies.json'}
@@ -508,7 +508,7 @@ describe('Mark: Bar', function() {
     // This is generally a terrible idea, but we should still test
     // if the output show expected results
 
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": 'data/cars.json'},
         "mark": "bar",
         "encoding": {
@@ -533,7 +533,7 @@ describe('Mark: Bar', function() {
     // This is generally a terrible idea, but we should still test
     // if the output show expected results
 
-    const model = parseUnitModelWithScaleMarkDefLayoutSize({
+    const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": 'data/cars.json'},
         "mark": "bar",
         "encoding": {
@@ -558,7 +558,7 @@ describe('Mark: Bar', function() {
     // This is generally a terrible idea, but we should still test
     // if the output show expected results
     it('should produce vertical bar using x, width', function() {
-      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": 'data/cars.json'},
         "mark": "bar",
         "encoding": {
@@ -581,7 +581,7 @@ describe('Mark: Bar', function() {
     // TODO: gantt chart with ordinal
 
     it('vertical bars should work with aggregate', function() {
-      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/population.json"},
         "mark": "bar",
         "encoding": {
@@ -598,7 +598,7 @@ describe('Mark: Bar', function() {
     });
 
     it('horizontal bars should work with aggregate', function() {
-      const model = parseUnitModelWithScaleMarkDefLayoutSize({
+      const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/population.json"},
         "mark": "bar",
         "encoding": {

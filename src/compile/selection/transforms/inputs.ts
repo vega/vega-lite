@@ -1,4 +1,4 @@
-import {stringValue, varName} from '../../../util';
+import {accessPath, stringValue, varName} from '../../../util';
 import {TUPLE} from '../selection';
 import nearest from './nearest';
 import {TransformCompiler} from './transforms';
@@ -26,7 +26,7 @@ const inputBindings:TransformCompiler = {
           value: '',
           on: [{
             events: selCmpt.events,
-            update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`
+            update: `datum && item().mark.marktype !== 'group' ? ${datum}${accessPath(p.field)} : null`
           }],
           bind: bind[p.field] || bind[p.channel] || bind
         });

@@ -187,7 +187,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   };
 
   // Embed the visualization in the container with id `vis`
-  vega.embed("#vis", vlSpec);
+  vegaEmbed("#vis", vlSpec);
   </script>
 </body>
 </html>

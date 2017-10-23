@@ -45,7 +45,7 @@ describe('compile/data/parse', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [{bin: true, field: 'field', as: 'a'}, {summarize: [{aggregate: 'count', field: 'f', as: 'b'}, {aggregate: 'sum', field: 'f', as: 'c'}], groupby: ['field']}],
+        transform: [{bin: true, field: 'field', as: 'a'}, {aggregate: [{op: 'count', field: 'f', as: 'b'}, {op: 'sum', field: 'f', as: 'c'}], groupby: ['field']}],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }

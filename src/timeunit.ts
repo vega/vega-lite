@@ -1,8 +1,6 @@
-
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {NiceTime} from './scale';
-import {Flag, flagKeys, stringValue} from './util';
+import {accessPath, Flag, flagKeys} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -288,7 +286,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef =  `datum[${stringValue(field)}]`;
+  const fieldRef =  `datum${accessPath(field)}`;
 
   const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
   function func(timeUnit: TimeUnit) {

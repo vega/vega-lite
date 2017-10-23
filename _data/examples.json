@@ -146,6 +146,10 @@
     {
       "name": "trellis_barley",
       "title": "Becker's Barley Trellis Plot"
+    },
+    {
+      "name": "trellis_area",
+      "title": "Trellis Area"
     }
   ],
   "Layering": [

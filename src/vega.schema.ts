@@ -3,13 +3,12 @@ import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {isArray} from './util';
-
+import {Flag, flagKeys, isArray} from './util';
 
 export interface VgData {
   name: string;
   source?: string;
-  values?: any[] | string;
+  values?: any;
   format?: {
     type?: string;
     parse?: string | object;
@@ -1057,6 +1056,49 @@ export interface VgMarkConfig {
    */
   text?: string;
 }
+
+const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+  opacity: 1,
+  fill: 1,
+  fillOpacity: 1,
+  stroke: 1,
+  strokeWidth: 1,
+  strokeOpacity: 1,
+  strokeDash: 1,
+  strokeDashOffset: 1,
+  size: 1,
+  shape: 1,
+  interpolate: 1,
+  tension: 1,
+  orient: 1,
+  align: 1,
+  baseline: 1,
+  text: 1,
+  limit: 1,
+  dx: 1,
+  dy: 1,
+  radius: 1,
+  theta: 1,
+  angle: 1,
+  font: 1,
+  fontSize: 1,
+  fontWeight: 1,
+  fontStyle: 1
+  // commented below are vg channel that do not have mark config.
+  // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+  // cursor: 1,
+  // clip: 1,
+  // dir: 1,
+  // ellipsis: 1,
+  // endAngle: 1,
+  // path: 1,
+  // innerRadius: 1,
+  // outerRadius: 1,
+  // startAngle: 1,
+  // url: 1,
+};
+
+export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
 export type Anchor = 'start' | 'middle' | 'end';
 

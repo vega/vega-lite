@@ -16,6 +16,7 @@ export const rule: MarkCompiler = {
     }
 
     return {
+      ...mixins.markDefProperties(model.markDef, true),
       ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)),
       ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)),
       ...mixins.pointPosition2(model, 'zeroOrMax'),

@@ -4,7 +4,21 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform). Time unit is similar to [binning](bin.html) but specifically made to discretize date-time values.
+Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform).
+
+Vega-Lite supports the following time units:
+
+- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, , `"yearmonthdatehoursseconds"`.
+- `"quarter"`, `"quartermonth"`
+- `"month"`, `"monthdate"`
+- `"date"` (Day of month, i.e., 1 - 31)
+- `"day"` (Day of week, i.e., Monday - Friday)
+- `"hours"`, `"hoursminutes"`, `"hoursminutesseconds"`
+- `"minutes"`, `"minutesseconds"`
+- `"seconds"`, `"secondsmilliseconds"`
+- `"milliseconds"`
+
+By default, all time units represent date time using local time.  To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
 
 ## Documentation Overview
 {:.no_toc}
@@ -35,7 +49,15 @@ Time unit is used to discretize times in Vega-Lite. It can either be used [insid
 }
 ```
 
-The chart below shows the average precipitation in Seattle over multiple years aggregated by month.
+A field definition can include a `timeUnit` property.  For example, the chart below shows shows temperature in Seattle aggregated by month.
+
+<span class="vl-example" data-name="line_month"></span>
+
+Note that temporal fields use continuous scales by default for all mark types including `"bar"`.
+
+<span class="vl-example" data-name="bar_month_temporal"></span>
+
+If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
 
 <span class="vl-example" data-name="bar_month"></span>
 
@@ -58,32 +80,9 @@ A `timeUnit` transform in the `transform` array has the following properties:
 
 {% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
 
-In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite cannot automatically format the axis so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
+In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite will automatically format the axis if the `timeUnit` is applied outside `encoding` so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
 
 <span class="vl-example" data-name="line_timeunit_transform"></span>
-
-
-## Date/Time Units
-
-Vega-Lite supports the following time units:
-
-- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, , `"yearmonthdatehoursseconds"`.
-- `"quarter"`, `"quartermonth"`
-- `"month"`, `"monthdate"`
-- `"date"` (Day of month, i.e., 1 - 31)
-- `"day"` (Day of week, i.e., Monday - Friday)
-- `"hours"`, `"hoursminutes"`, `"hoursminutesseconds"`
-- `"minutes"`, `"minutesseconds"`
-- `"seconds"`, `"secondsmilliseconds"`
-- `"milliseconds"`
-
-By default, all time units represent date time using local time.  To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
-
-#### Example
-
-This example shows temperature in Seattle aggregated by month.
-
-<span class="vl-example" data-name="line_month"></span>
 
 {:#utc}
 ## UTC time

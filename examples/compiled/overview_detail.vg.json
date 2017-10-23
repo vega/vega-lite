@@ -117,6 +117,9 @@
                     },
                     "encode": {
                         "update": {
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "date"
@@ -131,9 +134,6 @@
                             },
                             "fill": {
                                 "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
                             }
                         }
                     }
@@ -458,6 +458,9 @@
                     },
                     "encode": {
                         "update": {
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "date"
@@ -472,9 +475,6 @@
                             },
                             "fill": {
                                 "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
                             }
                         }
                     }

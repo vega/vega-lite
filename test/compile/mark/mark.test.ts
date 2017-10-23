@@ -4,14 +4,14 @@ import {assert} from 'chai';
 
 import {getPathSort, parseMarkGroup} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
-import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
+import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark', function() {
   describe('parseMarkGroup', function() {
     // PATH
     describe('Multi-series Line', () => {
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": {"type": "line", "style": "trend"},
           "encoding": {
             "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
@@ -38,7 +38,7 @@ describe('Mark', function() {
 
     describe('Single Line', () => {
       it('should have a facet directive and a nested mark group', () => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": "line",
           "encoding": {
             "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
@@ -55,7 +55,7 @@ describe('Mark', function() {
     // NON-PATH
     describe('Aggregated Bar with a color with binned x', () => {
       it(' should use main stacked data source', () => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": "bar",
           "encoding": {
             "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
@@ -94,7 +94,7 @@ describe('Mark', function() {
 
     describe('Aggregated bar', () => {
       it('should use main aggregated data source', () => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": "bar",
           "encoding": {
             "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
@@ -108,7 +108,7 @@ describe('Mark', function() {
 
     describe('Bar with tooltip', () => {
       it('should pass tooltip value to encoding', () => {
-        const model = parseUnitModelWithScaleMarkDefLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": "bar",
           "encoding": {
             "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},

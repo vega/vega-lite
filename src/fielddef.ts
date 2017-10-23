@@ -1,13 +1,10 @@
-// utility for a field definition object
-
-import {isNumber} from 'vega-util';
+// Declaration and utility for variants of a field definition object
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
-import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
@@ -16,14 +13,15 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean, isString, stringValue, titlecase} from './util';
+import {accessPath, isArray, isBoolean, isNumber, isString, titlecase} from './util';
+
 
 /**
  * Definition object for a constant value of an encoding channel.
  */
 export interface ValueDef {
   /**
-   * A constant value in visual domain.
+   * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
    */
   value: number | string | boolean;
 }
@@ -32,10 +30,10 @@ export interface ValueDef {
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type.
  */
-export type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F>;
+export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
 
 
-export type Condition<T> = {
+export type Conditional<T> = {
   /**
    * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
    */
@@ -50,14 +48,14 @@ export type Condition<T> = {
  *   ...
  * }
  */
-export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
   /**
-   * A value definition with a selection predicate.
+   * One or more value definition(s) with a selection predicate.
    *
-   * __Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)
+   * __Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value)
    * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
    */
-  condition?: Condition<ValueDef>
+  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
 };
 
 /**
@@ -67,11 +65,11 @@ export type ConditionalFieldDef<F extends FieldDef<any>> = F & {
  *   value: ...,
  * }
  */
-export interface ConditionalValueDef<F extends FieldDef<any>> {
+export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
-   * A field definition or a value definition with a selection predicate.
+   * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Condition<F> | Condition<ValueDef>;
+  condition?: Conditional<F> | Conditional<ValueDef> | Conditional<ValueDef>[];
 
   /**
    * A constant value in visual domain.
@@ -110,10 +108,10 @@ export interface FieldDefBase<F> {
   // function
 
   /**
-   * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   * Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.
+   * or [a temporal field that gets casted as ordinal](type.html#cast).
    *
    * __Default value:__ `undefined` (None)
-   *
    */
   timeUnit?: TimeUnit;
 
@@ -140,8 +138,7 @@ export interface FieldDefBase<F> {
  */
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
-   * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`).
+   * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
@@ -198,7 +195,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   stack?: StackOffset | null;
 }
 
-export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
+/**
+ * Field definition of a mark property, which can contain a legend.
+ */
+export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
    /**
     * An object defining properties of the legend.
     * If `null`, the legend for the encoding channel will be removed.
@@ -228,24 +228,26 @@ export interface TextFieldDef<F> extends FieldDef<F> {
   format?: string;
 }
 
-export type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;
+export type ChannelDef<F> = ChannelDefWithCondition<FieldDef<F>>;
 
-export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ConditionalChannelDef<FieldDef<F>> {
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ChannelDefWithCondition<FieldDef<F>> {
   return !!channelDef && !!channelDef.condition;
 }
 
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<FieldDef<F>>}) {
-  return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
+export function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<FieldDef<F>>}) {
+  return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Condition<ValueDef>}) {
-  return !!channelDef && !!channelDef.condition && isValueDef(channelDef.condition);
+export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<ValueDef> | Conditional<ValueDef>[]}) {
+  return !!channelDef && !!channelDef.condition && (
+    isArray(channelDef.condition) || isValueDef(channelDef.condition)
+  );
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -311,7 +313,7 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
   }
 
   if (opt.expr) {
-    field = `${opt.expr}[${stringValue(field)}]`;
+    field = `${opt.expr}${accessPath(field)}`;
   }
 
   return field;
@@ -415,7 +417,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
 export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
   if (isFieldDef(channelDef)) {
     return channelDef;
-  } else if (hasConditionFieldDef(channelDef)) {
+  } else if (hasConditionalFieldDef(channelDef)) {
     return channelDef.condition;
   }
   return undefined;
@@ -435,11 +437,11 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel): Cha
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
     return normalizeFieldDef(channelDef, channel);
-  } else if (hasConditionFieldDef(channelDef)) {
+  } else if (hasConditionalFieldDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: normalizeFieldDef(channelDef.condition, channel) as Condition<FieldDef<string>>
+      condition: normalizeFieldDef(channelDef.condition, channel) as Conditional<FieldDef<string>>
     };
   }
   return channelDef;
