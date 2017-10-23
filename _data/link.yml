@@ -108,7 +108,7 @@ EncodingWithFacet:
   name: Encoding
   link: encoding.html
 Type:
-  link: "encoding.html#data-type"
+  link: type.html
 
 # Channel Definitions
 ConditionalLegendFieldDef:
