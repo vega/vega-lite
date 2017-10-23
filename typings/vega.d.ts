@@ -33,7 +33,7 @@ declare module 'vega' {
 
   export const Warn: number;
   export const changeset: any;
-  export const loader: () => Loader;
+  export const loader: (opt?: any) => Loader;
 }
 
 declare module 'vega-event-selector' {
