@@ -76,12 +76,12 @@ The `detail` channel can be used to specify additional summary and group-by fiel
 
 An `aggregate` transform in the [`transform`](transform.html) array has the following properties:
 
-{% include table.html props="aggregate,groupby" source="SummarizeTransform" %}
+{% include table.html props="aggregate,groupby" source="AggregateTransform" %}
 
 {:#aggregate-op-def}
 ### Aggregated Field Definition for Aggregate Transform
 
-{% include table.html props="op,field,as" source="AggregateOpDef" %}
+{% include table.html props="op,field,as" source="AggregatedFieldDef" %}
 
 {:#ops}
 ## Supported Aggregation Operations
