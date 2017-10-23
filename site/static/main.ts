@@ -10,6 +10,10 @@ window['runStreamingExample'] = runStreamingExample;
 
 declare const BASEURL: string;
 
+const loader = vega.loader({
+  baseURL: BASEURL
+});
+
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
 }
@@ -45,9 +49,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
       source: false,
       export: false
     },
-    loader: new vega.loader({
-      baseURL: BASEURL
-    })
+    loader: loader
   }).then(result => {
     if ($target.classed('tooltip')) {
       vegaLite(result.view, JSON.parse(specText) as any);
