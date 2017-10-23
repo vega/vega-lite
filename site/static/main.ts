@@ -1,8 +1,7 @@
 import {text} from 'd3-request';
 import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
-import * as vega from 'vega';
-import embed from 'vega-embed';
+import embed, {vega} from 'vega-embed';
 import {vegaLite} from 'vega-tooltip';
 import {runStreamingExample} from './streaming';
 
@@ -27,7 +26,6 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
 });
 
 /* Documentation */
-
 function renderExample($target: Selection<any, any, any, any>, specText: string) {
   $target.classed('example', true);
   $target.text('');
