@@ -5585,13 +5585,14 @@ vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
-vega-embed@^3.0.0-rc4:
-  version "3.0.0-rc4"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc4.tgz#5f09dd9b983e6addbbfa579e8b53c6205817f806"
+vega-embed@^3.0.0-rc6:
+  version "3.0.0-rc6"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc6.tgz#be2db7d61796205ccfbd221a3f7cfe137e791962"
   dependencies:
     compare-versions "^3.1.0"
     d3-selection "^1.1.0"
-    vega "^3.0.0"
+    vega "^3.0.6"
+    vega-lite "^2.0.0-rc5"
     vega-schema-url-parser "^1.0.0-beta.3"
 
 vega-encode@2:
@@ -5646,6 +5647,16 @@ vega-hierarchy@^2.1:
 vega-lite@^2.0.0-beta.14:
   version "2.0.0-rc4"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-rc4.tgz#1b21d5eeb98d21598bb63431cd736cbe37dbfa5e"
+  dependencies:
+    json-stable-stringify "^1.0.1"
+    tslib "^1.8.0"
+    vega-event-selector "^2.0.0"
+    vega-util "^1.5.0"
+    yargs "^9.0.1"
+
+vega-lite@^2.0.0-rc5:
+  version "2.0.0-rc5"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-rc5.tgz#886ad10b322322d7884666448346fe5951f5e4eb"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.8.0"
@@ -5787,7 +5798,7 @@ vega-wordcloud@2:
     canvas "^1.6"
     canvas-prebuilt "^1.6"
 
-vega@^3.0.0:
+vega@^3.0.0, vega@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.6.tgz#d7ad62d9ff7f954f72e6c1ca5288da501f560778"
   dependencies:
