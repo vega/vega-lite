@@ -5585,9 +5585,9 @@ vega-datasets@vega/vega-datasets#gh-pages:
   version "1.10.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
 
-vega-embed@^3.0.0-rc3:
-  version "3.0.0-rc3"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc3.tgz#f6d1db65e48950164872aa8e81d75eacd8659679"
+vega-embed@^3.0.0-rc4:
+  version "3.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc4.tgz#5f09dd9b983e6addbbfa579e8b53c6205817f806"
   dependencies:
     compare-versions "^3.1.0"
     d3-selection "^1.1.0"

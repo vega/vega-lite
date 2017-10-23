@@ -114,7 +114,7 @@
     "uglify-js": "^3.0.27",
     "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "^3.0.0-rc3",
+    "vega-embed": "^3.0.0-rc4",
     "vega-tooltip": "^0.4.2",
     "watchify": "^3.9.0",
     "wdio-chromedriver-service": "^0.1.0",
