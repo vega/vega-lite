@@ -1,6 +1,18 @@
+{% assign id = include.spec | replace:'/', '-' %}
+
 <div class="example">
-  {% include embed.html spec=include.spec %}
+  <div class="embed">
+    <div id="{{id}}" class="view"></div>
+  </div>
 </div>
+
+<script>
+window.onload = function() {
+  var spec = {% include_relative specs/{{ include.spec }}.vl.json %};
+
+  embedExample('#{{id}}', spec, false);
+}
+</script>
 
 <div class="editor-link">
   <a href="https://vega.github.io/editor/#/examples/vega-lite/{{ include.spec }}">View in Online Editor</a>
@@ -10,5 +22,5 @@
 
 {: .example-spec}
 ```json
-{% include_relative {{ include.spec }}.vl.json %}
+{% include_relative specs/{{ include.spec }}.vl.json %}
 ```
