@@ -1,4 +1,3 @@
-# Github Pages' Jekyll Site settings
 title: Vega-Lite
 description: Vega-Lite - a high-level grammar for statistical graphics.
   Vega-Lite provides a higher-level grammar for visual analysis,
@@ -17,14 +16,16 @@ baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
 url: "http://vega.github.io" # the base hostname & protocol for your site
 exclude:
   - bin
+  - .github
+  - .vscode
   - coverage
   - Gemfile
   - Gemfile.lock
-  - lib/schema.json
   - node_modules
   - scripts
   - test
   - test-gallery
+  - test-runtime
   - typings
   - package.json
   - bower.json
@@ -33,9 +34,6 @@ exclude:
   - tslint.json
   - nodemon.json
   - yarn.lock
-  - CONTRIBUTING.md
-  - README.md
-  - LICENSE
   - examples/specs/data
   - examples/compiled/data
 
@@ -46,3 +44,8 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   auto_id_stripping: true
+
+collections:
+  examples:
+    output: true
+    permalink: /:collection/:name
