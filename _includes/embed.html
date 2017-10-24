@@ -1,0 +1,13 @@
+{% assign id = include.spec | replace:'/', '-' %}
+
+<div class="embed">
+  <div id="{{id}}" class="view"></div>
+</div>
+
+<script>
+window.onload = function() {
+  var spec = {% include_relative {{ include.spec }}.vl.json %};
+
+  embedExample('#{{id}}', spec, false);
+}
+</script>
