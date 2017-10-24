@@ -11,6 +11,12 @@ A view that is composed of multiple views can itself be composed with other view
 
 Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
 
+## Documentation Overview
+{:.no_toc}
+
+* TOC
+{:toc}
+
 ## Faceting
 
 With the `facet` operator, you can partition the data and create a view for each subset to create a [trellis plot](https://en.wikipedia.org/wiki/Small_multiple). As a shortcut, Vega-Lite also has the [`column` and `row` encoding channels](encoding.html#facet) to quickly create a faceted view.

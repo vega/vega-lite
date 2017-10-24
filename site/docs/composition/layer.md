@@ -47,6 +47,6 @@ When you have different scales in different layers, the scale domains are unione
 
 The default [resolutions](resolve.html) for layer are shared scales, axes, and legends.
 
-In the chart below, we set the y-scales of the different layers to be independent with `"resolve": {"y": {"scale": "independent"}}`.
+In the chart below, we set the y-scales of the different layers to be independent with `"resolve": {"scale": {"y": "independent"}}`.
 
 <div class="vl-example" data-name="layer_bar_dual_axis"></div>

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "repeat": {"column": ["Origin","Cylinders"]},
+  "repeat": {"column": ["Origin", "Cylinders"]},
   "spec": {
     "data": {"url": "data/cars.json"},
     "mark": "point",
