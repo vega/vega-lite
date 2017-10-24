@@ -9,7 +9,9 @@
         {
             "name": "source_0",
             "values": [
-                {}
+                {
+                    "a": 2
+                }
             ]
         }
     ],
@@ -34,7 +36,7 @@
                         "mult": 0.5
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "purple"
                     },
                     "fill": {
                         "value": "transparent"
