@@ -133,6 +133,7 @@ would become
 
 ## [Faceting](facet.html)
 
+- Instead of scales, facet now generates [layouts](https://vega.github.io/vega/docs/layout/).
 - Facet now generates `header` instead of `axis`.
 
 ## [Configuration](config.html)
