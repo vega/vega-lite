@@ -1032,7 +1032,6 @@ export interface VgMarkConfig {
 
   /**
    * The typeface to set the text in (e.g., `"Helvetica Neue"`).
-   * @minimum 0
    */
   font?: string;
 
