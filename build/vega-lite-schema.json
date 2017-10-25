@@ -584,7 +584,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -925,7 +924,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -3519,7 +3517,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -3716,7 +3713,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -5199,7 +5195,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -5398,7 +5393,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -6979,7 +6973,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
