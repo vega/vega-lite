@@ -243,6 +243,10 @@
       "title": "Query Widgets"
     },
     {
+      "name": "selection_layer_bar_month",
+      "title": "The selection defines the data used to compute the average"
+    },
+    {
       "name": "overview_detail",
       "title": "Overview and Detail"
     },
