@@ -299,7 +299,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
       },
       {
         calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
-        as: 'lowerWhisker'
+        as: 'upperWhisker'
       }
     ];
   }

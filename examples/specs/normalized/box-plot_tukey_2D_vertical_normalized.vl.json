@@ -37,7 +37,7 @@
     },
     {
       "calculate": "datum.upperBox + datum.IQR * 1.5",
-      "as": "lowerWhisker"
+      "as": "upperWhisker"
     }
   ],
   "layer": [
