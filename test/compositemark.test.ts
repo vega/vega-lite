@@ -1509,7 +1509,7 @@ describe("normalizeBoxIQR", () => {
           },
           {
             calculate: 'datum.upperBox + datum.IQR * 1.5',
-            as: 'lowerWhisker'
+            as: 'upperWhisker'
           }
         ],
         "layer": [
@@ -1647,7 +1647,7 @@ describe("normalizeBoxIQR", () => {
           },
           {
             calculate: 'datum.upperBox + datum.IQR * 1.5',
-            as: 'lowerWhisker'
+            as: 'upperWhisker'
           }
         ],
         "layer": [
