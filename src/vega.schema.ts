@@ -529,7 +529,6 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * The offset (in pixels) into which to begin drawing with the grid dash array.
-   * @minimum 0
    */
   gridDash?: number[];
 

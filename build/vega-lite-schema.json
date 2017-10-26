@@ -297,7 +297,6 @@
           "items": {
             "type": "number"
           },
-          "minimum": 0,
           "type": "array"
         },
         "gridOpacity": {
@@ -6537,7 +6536,6 @@
           "items": {
             "type": "number"
           },
-          "minimum": 0,
           "type": "array"
         },
         "gridOpacity": {
