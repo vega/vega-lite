@@ -216,7 +216,7 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "datum.open > datum.close",
+                    "expr": "datum.open < datum.close",
                     "as": "isIncrease"
                 }
             ]

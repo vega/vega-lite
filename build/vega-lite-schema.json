@@ -4494,6 +4494,12 @@
             },
             {
               "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
