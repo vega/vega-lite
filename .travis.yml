@@ -8,6 +8,7 @@ node_js:
   - "8"
 
 before_install:
+  - pango-querymodules > '/etc/pango/pango.modules'
   # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
   - wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
   - chmod +x parallel
