@@ -92,6 +92,9 @@
                         "scale": "color",
                         "field": "year"
                     },
+                    "size": {
+                        "value": 100
+                    },
                     "opacity": {
                         "value": 0.7
                     }
@@ -150,10 +153,6 @@
                             },
                             "stroke": {
                                 "value": "#db646f"
-                            },
-                            "opacity": {
-                                "scale": "opacity",
-                                "field": "country"
                             }
                         }
                     }
@@ -221,27 +220,15 @@
                 "#e6959c",
                 "#911a24"
             ]
-        },
-        {
-            "name": "opacity",
-            "type": "point",
-            "domain": {
-                "data": "data_1",
-                "field": "country",
-                "sort": true
-            },
-            "range": [
-                0.2,
-                0.2
-            ]
         }
     ],
     "axes": [
         {
             "title": "Life Expectancy (years)",
             "scale": "x",
-            "labelOverlap": true,
             "orient": "bottom",
+            "labelFlush": true,
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -249,12 +236,12 @@
         },
         {
             "scale": "x",
+            "orient": "bottom",
             "domain": false,
             "grid": true,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
-            "orient": "bottom",
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
@@ -291,11 +278,6 @@
     "config": {
         "axisY": {
             "minExtent": 30
-        },
-        "style": {
-            "point": {
-                "size": 100
-            }
         }
     }
 }
