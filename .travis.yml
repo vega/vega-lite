@@ -15,6 +15,7 @@ before_install:
   - sudo mv parallel sem /usr/local/bin
 
 script:
+  - pango-querymodules > '/etc/pango/pango.modules'
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
   - npm run data
