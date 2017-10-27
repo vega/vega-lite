@@ -44,8 +44,3 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   auto_id_stripping: true
-
-collections:
-  examples:
-    output: true
-    permalink: /:collection/:name

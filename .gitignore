@@ -15,7 +15,9 @@ Gemfile.lock
 
 test/log
 test/log/difflist.json
-examples/images/*
+examples/compiled/*.png
+site/examples/
+!site/examples/index.md
 examples/all-examples.json
 build/*
 !build/vega-lite-schema.json
