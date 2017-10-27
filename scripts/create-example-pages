@@ -8,6 +8,7 @@
 const fs = require('fs');
 const examples = require('../_data/examples.json');
 const { execSync } = require('child_process');
+const { createConverter } = require('convert-svg-to-png');
 
 function createPage(example) {
   return (`---
@@ -25,11 +26,26 @@ ${example.description || ''}
 `);
 }
 
-for (const category of Object.keys(examples)) {
-  for (const example of examples[category]) {
-    const name = example.name;
-    fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
-    fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
-    execSync(`bin/vl2png examples/specs/${name}.vl.json > examples/compiled/${name}.png -b .`)
+const converter = createConverter();
+
+const run = async () => {
+  try {
+    for (const category of Object.keys(examples)) {
+      for (const example of examples[category]) {
+        const name = example.name;
+
+        console.log(`Processing ${name}`);
+
+        fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
+        fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
+        const svg = fs.readFileSync(`examples/compiled/${name}.svg`);
+        const output = await converter.convert(svg);
+        fs.writeFileSync(`examples/compiled/${name}.png`, output);
+      }
+    }
+  } finally {
+    await converter.destroy();
   }
 }
+
+run();
