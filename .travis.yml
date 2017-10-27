@@ -3,9 +3,7 @@ addons:
   chrome: stable
 
 language: node_js
-node_js:
-  - "6"
-  - "8"
+node_js: "8"
 
 before_install:
   # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
