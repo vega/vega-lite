@@ -45,6 +45,10 @@ To group lines by a field without mapping the field to any visual properties, we
 
 <span class="vl-example" data-name="line_detail"></span>
 
+The same method can be used to group lines for a ranged dot plot.
+
+<span class="vl-example" data-name="layer_ranged_dot"></span>
+
 {:#connected-scatter-plot}
 ## Connected Scatter Plot (Line Chart with Custom Path)
 
