@@ -3,7 +3,7 @@
 **Announcement:** The `master` branch now hosts the Vega-Lite 2.0 *release-candidate*.
 We have migrated Vega-Lite to use the new Vega 3 and D3 v4, and include composition and interaction features from [our research publication](http://idl.cs.washington.edu/papers/vega-lite). 
 
-You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://github.com/vega/vega-lite/tree/1.x).
+You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://github.com/vega/vega-lite/tree/1.x) ([website for Vega-Lite 1](https://vega.github.io/vega-lite-v1/)).
 
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
