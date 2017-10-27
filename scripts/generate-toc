@@ -25,12 +25,12 @@ function generateListItem(content, buffer) {
 	for (var i = 0; i < buffer; i++) {
 		indent += '    ';
 	}
-	return indent + '- ' + content;
+	return `${indent}- ${content}`;
 }
 
 // generate markdown for anchor tag
 function generateLink(title, page, local) {
-	return '[' + title + ']' + '(' + URL + page + '.html' + (local || '') + ')';
+	return `[${title}](${URL}${page}.html${local || ''})`;
 }
 
 // parse Docs layout
@@ -43,12 +43,10 @@ fs.readFile(DOCS_LAYOUT, function (err, contents) {
 	var sidebar = front.sidebar; // docs sidebar, top level
 
 	function parseSidebar(sidebar, depth) {
-		for (var y = 0; y < sidebar.length; y++) {
-			var el = sidebar[y];
-
+    for (const el of sidebar) {
 			// skip break and table of contents itself
 			if (!el.break && el.url !== 'toc') {
-				var page = COMPILED_DOCS + '/' + el.url + '.html';
+				var page = `${COMPILED_DOCS }/${el.url}.html`;
 
 				// generate markdown for top level navigation
 				var link = generateLink(el.text, el.url);
@@ -59,8 +57,7 @@ fs.readFile(DOCS_LAYOUT, function (err, contents) {
 				var $ = cheerio.load(fs.readFileSync(page).toString());
 
 				// iterate through links in DOM tree
-				$(CONTENT_TAG + ' ' + INNER_LINK_TAG).each(function(i, elem) {
-
+				$(CONTENT_TAG + ' ' + INNER_LINK_TAG).each(function() {
 					// generate markdown for in-page navigation
 					var hash = '#' + $(this).attr('id');
 					var link = generateLink($(this).text(), el.url, hash);

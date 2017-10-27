@@ -36,7 +36,7 @@
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "check:examples": "scripts/check-examples.sh",
     "check:schema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete",
+    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "link": "npm link && npm link vega-lite",
 
@@ -51,7 +51,7 @@
     "preschema": "npm run prebuild",
     "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
-    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
+    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && npm run build:example-pages && scripts/create-example-pages",
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint -p .",

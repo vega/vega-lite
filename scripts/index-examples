@@ -18,5 +18,5 @@ var examples = examples.filter(function(example) {
 
 fs.writeFile(DIR + OUTPUT, JSON.stringify(examples), function (err) {
   if (err) return console.log(err);
-  console.log('Indexed all examples [source: ' + SPECS + ', index: ' + OUTPUT + ']');
+  console.log(`Indexed all examples [source: ${SPECS}, index: ${OUTPUT}]`);
 });

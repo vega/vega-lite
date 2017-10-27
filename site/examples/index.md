@@ -1,12 +1,12 @@
 ---
-layout: examples
+layout: page
 menu: examples
 title: Example Gallery
 permalink: /examples/
 ---
 
 This page shows example specifications for different types of graphics.
-To see example code for embedding visualization in a webpage, please refer to [this page](../usage/embed.html).
+To see example code for embedding visualizations in a webpage, please read the [embed dcoumentation](../usage/embed.html).
 
 
 * TOC
