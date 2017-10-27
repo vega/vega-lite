@@ -8,7 +8,6 @@ node_js:
   - "8"
 
 before_install:
-  - pango-querymodules > '/etc/pango/pango.modules'
   # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
   - wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
   - chmod +x parallel
@@ -16,6 +15,7 @@ before_install:
   - sudo mv parallel sem /usr/local/bin
 
 script:
+  - pango-querymodules > '/etc/pango/pango.modules'
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
   - npm run data
