@@ -3,13 +3,12 @@ import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {isArray} from './util';
-
+import {Flag, flagKeys, isArray} from './util';
 
 export interface VgData {
   name: string;
   source?: string;
-  values?: any[] | string;
+  values?: any;
   format?: {
     type?: string;
     parse?: string | object;
@@ -440,7 +439,7 @@ export interface VgAxisBase {
   labelAngle?: number;
 
   /**
-   * Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
+   * Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
    *
    * __Default value:__ `false`.
    */
@@ -448,6 +447,8 @@ export interface VgAxisBase {
 
   /**
    * Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.
+   *
+   * __Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.
    */
   labelFlush?: boolean | number;
 
@@ -530,7 +531,6 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * The offset (in pixels) into which to begin drawing with the grid dash array.
-   * @minimum 0
    */
   gridDash?: number[];
 
@@ -1033,7 +1033,6 @@ export interface VgMarkConfig {
 
   /**
    * The typeface to set the text in (e.g., `"Helvetica Neue"`).
-   * @minimum 0
    */
   font?: string;
 
@@ -1057,6 +1056,49 @@ export interface VgMarkConfig {
    */
   text?: string;
 }
+
+const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+  opacity: 1,
+  fill: 1,
+  fillOpacity: 1,
+  stroke: 1,
+  strokeWidth: 1,
+  strokeOpacity: 1,
+  strokeDash: 1,
+  strokeDashOffset: 1,
+  size: 1,
+  shape: 1,
+  interpolate: 1,
+  tension: 1,
+  orient: 1,
+  align: 1,
+  baseline: 1,
+  text: 1,
+  limit: 1,
+  dx: 1,
+  dy: 1,
+  radius: 1,
+  theta: 1,
+  angle: 1,
+  font: 1,
+  fontSize: 1,
+  fontWeight: 1,
+  fontStyle: 1
+  // commented below are vg channel that do not have mark config.
+  // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+  // cursor: 1,
+  // clip: 1,
+  // dir: 1,
+  // ellipsis: 1,
+  // endAngle: 1,
+  // path: 1,
+  // innerRadius: 1,
+  // outerRadius: 1,
+  // startAngle: 1,
+  // url: 1,
+};
+
+export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
 export type Anchor = 'start' | 'middle' | 'end';
 

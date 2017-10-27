@@ -66,11 +66,11 @@ export interface TimeUnitTransform {
   as: string;
 }
 
-export interface SummarizeTransform {
+export interface AggregateTransform {
   /**
-   * Array of objects that define aggregate fields.
+   * Array of objects that define fields to aggregate.
    */
-  summarize: SummarizeFieldDef[];
+  aggregate: AggregatedFieldDef[];
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
@@ -78,13 +78,13 @@ export interface SummarizeTransform {
   groupby?: string[];
 }
 
-export interface SummarizeFieldDef {
+export interface AggregatedFieldDef {
   /**
    * The aggregation operations to apply to the fields, such as sum, average or count.
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)
    * for more information.
    */
-  aggregate: AggregateOp;
+  op: AggregateOp;
 
   /**
    * The data field for which to compute aggregate function.
@@ -155,11 +155,11 @@ export function isTimeUnit(t: Transform): t is TimeUnitTransform {
   return t['timeUnit'] !== undefined;
 }
 
-export function isSummarize(t: Transform): t is SummarizeTransform {
-  return t['summarize'] !== undefined;
+export function isAggregate(t: Transform): t is AggregateTransform {
+  return t['aggregate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | SummarizeTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

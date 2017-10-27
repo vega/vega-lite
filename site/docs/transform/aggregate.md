@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-To aggregate data in Vega-Lite, users can either use a `summarize` transform as a part of the [`transform`](transform.html) array or use an `aggregate` property of an [encoding field definition](encoding.html#field-def).
+To aggregate data in Vega-Lite, users can either use use an `aggregate` property of an [encoding field definition](#encoding) or an `aggregate` transform inside the [`transform`](#transform) array.
 
 ## Documentation Overview
 {:.no_toc}
@@ -13,7 +13,7 @@ To aggregate data in Vega-Lite, users can either use a `summarize` transform as 
 {:toc}
 
 
-{:#aggregate}
+{:#encoding}
 ## Aggregate (Encoding)
 
 <!-- TODO why aggregation -->
@@ -38,7 +38,7 @@ To aggregate data in Vega-Lite, users can either use a `summarize` transform as 
 }
 ```
 
-The `aggregate` property of a field definition can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
+The `aggregate` property of [a field definition](encoding.html#field-def) can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
 
 If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process.
 
@@ -53,8 +53,8 @@ The `detail` channel can be used to specify additional summary and group-by fiel
 <span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
 
-{:#summarize}
-## Summarize (Transform)
+{:#transform}
+## Aggregate Transform
 
 
 {: .suppress-error}
@@ -64,8 +64,8 @@ The `detail` channel can be used to specify additional summary and group-by fiel
   ...
   "transform": [
     {
-      // Summarize Transform
-      "summarize": [{"aggregate": ..., "field": ..., "as": ...}],
+      // Aggregate Transform
+      "aggregate": [{"op": ..., "field": ..., "as": ...}],
       "groupby": [...]
     }
      ...
@@ -74,14 +74,14 @@ The `detail` channel can be used to specify additional summary and group-by fiel
 }
 ```
 
-A `summarize` transform in the `transform` array has the following properties:
+An `aggregate` transform in the [`transform`](transform.html) array has the following properties:
 
-{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
+{% include table.html props="aggregate,groupby" source="AggregateTransform" %}
 
-{:#summarize-field}
-### Aggregate Field Definition for Summarize Transform
+{:#aggregate-op-def}
+### Aggregated Field Definition for Aggregate Transform
 
-{% include table.html props="aggregate,field,as" source="Summarize" %}
+{% include table.html props="op,field,as" source="AggregatedFieldDef" %}
 
 {:#ops}
 ## Supported Aggregation Operations

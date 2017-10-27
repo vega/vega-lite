@@ -92,7 +92,8 @@
                 {
                     "signal": "width"
                 }
-            ]
+            ],
+            "padding": 5
         },
         {
             "name": "y",
@@ -115,6 +116,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

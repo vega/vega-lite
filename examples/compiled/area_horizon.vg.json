@@ -155,6 +155,9 @@
             },
             "encode": {
                 "update": {
+                    "orient": {
+                        "value": "vertical"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "x"
@@ -173,9 +176,6 @@
                     },
                     "opacity": {
                         "value": 0.6
-                    },
-                    "orient": {
-                        "value": "vertical"
                     }
                 }
             }
@@ -196,6 +196,9 @@
             },
             "encode": {
                 "update": {
+                    "orient": {
+                        "value": "vertical"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "x"
@@ -214,9 +217,6 @@
                     },
                     "opacity": {
                         "value": 0.3
-                    },
-                    "orient": {
-                        "value": "vertical"
                     }
                 }
             }
@@ -269,6 +269,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

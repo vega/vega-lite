@@ -19,6 +19,7 @@ export const bar: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
     return {
+      ...mixins.markDefProperties(model.markDef, true),
       ...x(model, stack),
       ...y(model, stack),
       ...mixins.color(model),

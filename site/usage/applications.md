@@ -30,6 +30,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Visdown](http://visdown.com), a web app to create Vega-Lite visualizations in Markdown. Specs are written in [YAML](http://www.yaml.org/) (not JSON) within `code` blocks.
 * [vega-element](https://www.webcomponents.org/element/PolymerVis/vega-element) is a Polymer web component to embed Vega or Vega-Lite visualization using custom HTML tags.
 * [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) is a Polymer web component to parse image/code markdowns into Vega and Vega-Lite charts.
+* [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
 
 ## Libraries
 

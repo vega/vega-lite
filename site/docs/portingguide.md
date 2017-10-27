@@ -69,6 +69,8 @@ would become
 
 - We now support `"aggregate": "count"` without `"field": "*"`.
 
+- `timeUnit` can now be used with both `"temporal"` and `"ordinal"` type.  When used with temporal, the date-time field will be treated as a [continuous](scale.html#continuous) field, When casted as ordinal, the date-time field will be treated as a [discrete](scale.html#discrete) field.
+
 ### [Scale](scale.html)
 
 - Following D3 4.0 and Vega 3 's design, the `"ordinal"` scale type has now been broken up into three different scale types: `"ordinal"` (for strict lookup tables), `"band"` (for spatial ordinal scales) and `"point"` (spatial ordinal scales with no padding, similar to `{"point": true}` in Vega 2).
@@ -131,6 +133,7 @@ would become
 
 ## [Faceting](facet.html)
 
+- Instead of scales, facet now generates [layouts](https://vega.github.io/vega/docs/layout/).
 - Facet now generates `header` instead of `axis`.
 
 ## [Configuration](config.html)

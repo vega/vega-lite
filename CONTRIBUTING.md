@@ -37,7 +37,9 @@ To run the script, you need to install [gnu parallel](https://www.gnu.org/softwa
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
-you can run `npm run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+you can run `yarn run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+
+Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You will have to run `yarn run build:site` to recompile the JavaScript so that interactive examples work.
 
 ### Documentation Guide
 

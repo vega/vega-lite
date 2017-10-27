@@ -9,6 +9,10 @@ window['runStreamingExample'] = runStreamingExample;
 
 declare const BASEURL: string;
 
+const loader = vega.loader({
+  baseURL: BASEURL
+});
+
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
 }
@@ -22,7 +26,6 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
 });
 
 /* Documentation */
-
 function renderExample($target: Selection<any, any, any, any>, specText: string) {
   $target.classed('example', true);
   $target.text('');
@@ -37,18 +40,14 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   const spec = JSON.parse(specText);
 
-  embed(vis.node(), spec, {
+  embed(vis.node() as HTMLBaseElement, spec, {
     mode: 'vega-lite',
     renderer: 'svg',
     actions: {
       source: false,
       export: false
     },
-    viewConfig: {
-      loader: new vega.loader({
-        baseURL: BASEURL
-      })
-    }
+    loader: loader
   }).then(result => {
     if ($target.classed('tooltip')) {
       vegaLite(result.view, JSON.parse(specText) as any);

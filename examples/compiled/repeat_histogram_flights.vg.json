@@ -235,9 +235,10 @@
                 {
                     "scale": "child_distance_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "distance (binned)",
                     "values": {
@@ -326,9 +327,10 @@
                 {
                     "scale": "child_delay_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "delay (binned)",
                     "values": {
@@ -417,9 +419,10 @@
                 {
                     "scale": "child_time_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 20)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "time (binned)",
                     "values": {

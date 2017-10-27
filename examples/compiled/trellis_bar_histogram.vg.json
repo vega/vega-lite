@@ -186,9 +186,10 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(child_width/40), 15)"
+                        "signal": "ceil(child_width/20)"
                     },
                     "title": "Horsepower (binned)",
                     "values": {

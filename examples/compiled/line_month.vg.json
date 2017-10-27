@@ -60,6 +60,9 @@
             },
             "encode": {
                 "update": {
+                    "interpolate": {
+                        "value": "monotone"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date"
@@ -70,9 +73,6 @@
                     },
                     "stroke": {
                         "value": "#4c78a8"
-                    },
-                    "interpolate": {
-                        "value": "monotone"
                     }
                 }
             }
@@ -114,6 +114,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "title": "date (month)",
             "zindex": 1,

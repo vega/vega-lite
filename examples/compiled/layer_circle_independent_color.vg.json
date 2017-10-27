@@ -322,9 +322,10 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
-                "signal": "min(ceil(width/40), 10)"
+                "signal": "ceil(width/20)"
             },
             "title": "Acceleration (binned)",
             "values": {
@@ -337,7 +338,7 @@
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
-                "signal": "min(ceil(height/40), 10)"
+                "signal": "ceil(height/20)"
             },
             "title": "Horsepower (binned)",
             "values": {

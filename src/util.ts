@@ -1,9 +1,9 @@
 import * as stringify from 'json-stable-stringify';
-import {isArray, isNumber, isString} from 'vega-util';
+import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 
-export {isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
+export {isArray, isObject, isNumber, isString, truncate, toSet, stringValue, splitAccessPath} from 'vega-util';
 
 /**
  * Creates an object composed of the picked object properties.
@@ -277,4 +277,11 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
 
 export function titlecase(s: string) {
   return s.charAt(0).toUpperCase() + s.substr(1);
+}
+
+/**
+ * Converts a path to an access path.
+ */
+export function accessPath(path: string) {
+  return `[${splitAccessPath(path).map(stringValue).join('][')}]`;
 }

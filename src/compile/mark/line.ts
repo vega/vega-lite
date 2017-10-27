@@ -10,6 +10,7 @@ export const line: MarkCompiler = {
     const {width, height} = model;
 
     return {
+      ...mixins.markDefProperties(model.markDef, true),
       ...mixins.pointPosition('x', model, ref.mid(width)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.color(model),
@@ -17,8 +18,7 @@ export const line: MarkCompiler = {
       ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'strokeWidth'  // VL's line size is strokeWidth
-      }),
-      ...mixins.markDefProperties(model.markDef, ['interpolate', 'tension'])
+      })
     };
   }
 };

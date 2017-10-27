@@ -292,9 +292,10 @@
                 {
                     "scale": "child_Horsepower_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Horsepower (binned)",
                     "values": {
@@ -384,9 +385,10 @@
                 {
                     "scale": "child_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Miles_per_Gallon (binned)",
                     "values": {
@@ -476,9 +478,10 @@
                 {
                     "scale": "child_Acceleration_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
-                        "signal": "min(ceil(width/40), 10)"
+                        "signal": "ceil(width/20)"
                     },
                     "title": "Acceleration (binned)",
                     "values": {

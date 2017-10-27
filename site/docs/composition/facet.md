@@ -87,13 +87,12 @@ The [facet channels](encoding.html#facet) are encoding channels, which produce a
 
 {% include table.html props="row,column" source="EncodingWithFacet" %}
 
-TODO: add an example shortcut spec and a compiled/normalized spec.
 
 ### Example
 
 <span class="vl-example" data-name="trellis_bar_histogram"></span>
 
-vega-Lite translates this spec to the more flexible spec with the facet operator above.
+Vega-Lite translates this spec to the more flexible [spec with the facet operator above](#example).
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
 

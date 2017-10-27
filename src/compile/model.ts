@@ -36,7 +36,6 @@ import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
-import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -225,7 +224,6 @@ export abstract class Model {
 
   public parse() {
     this.parseScale();
-    this.parseMarkDef();
 
     this.parseLayoutSize(); // depends on scale
     this.renameTopLevelLayoutSize();
@@ -260,10 +258,6 @@ export abstract class Model {
     if (this.getName('height') !== 'height') {
       this.renameLayoutSize(this.getName('height'), 'height');
     }
-  }
-
-  public parseMarkDef() {
-    parseMarkDef(this);
   }
 
   public abstract parseMarkGroup(): void;

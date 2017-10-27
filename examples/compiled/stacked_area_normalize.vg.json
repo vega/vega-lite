@@ -118,6 +118,9 @@
                     },
                     "encode": {
                         "update": {
+                            "orient": {
+                                "value": "vertical"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "yearmonth_date"
@@ -133,9 +136,6 @@
                             "fill": {
                                 "scale": "color",
                                 "field": "series"
-                            },
-                            "orient": {
-                                "value": "vertical"
                             }
                         }
                     }
@@ -192,6 +192,7 @@
             "domain": false,
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

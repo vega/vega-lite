@@ -3,22 +3,22 @@ import {Channel, CHANNELS, supportMark} from './channel';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
-  ConditionalFieldDef,
-  ConditionalValueDef,
   Field,
   FieldDef,
+  FieldDefWithCondition,
   getFieldDef,
-  hasConditionFieldDef,
+  hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
   isValueDef,
-  LegendFieldDef,
+  MarkPropFieldDef,
   normalize,
   normalizeFieldDef,
   OrderFieldDef,
   PositionFieldDef,
   TextFieldDef,
-  ValueDef
+  ValueDef,
+  ValueDefWithCondition
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
@@ -56,14 +56,14 @@ export interface Encoding<F> {
    *
    * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
-  color?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+  color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property.
    */
-  opacity?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+  opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Size of the mark.
@@ -72,7 +72,7 @@ export interface Encoding<F> {
    * - For `"text"` – the text's font size.
    * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
    */
-  size?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+  size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
@@ -80,7 +80,7 @@ export interface Encoding<F> {
    * or `"triangle-down"`, or else a custom SVG path string.
    * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
    */
-  shape?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>; // TODO: maybe distinguish ordinal-only
+  shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -91,12 +91,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
+  text?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
 
   /**
    * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
@@ -114,7 +114,7 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionFieldDef(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef(channelDef);
     }
   }
   return false;
@@ -194,7 +194,7 @@ export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[]
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((def) => {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionFieldDef(def)) {
+        } else if (hasConditionalFieldDef(def)) {
           arr.push(def.condition);
         }
       });

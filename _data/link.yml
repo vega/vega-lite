@@ -14,6 +14,8 @@ AutoSizeParams:
 ## Facet Spec
 FacetMapping:
   link: "facet.html#mapping"
+Header:
+  link: "facet.html#header"
 
 # Data
 Data:
@@ -43,8 +45,8 @@ BinParams:
 FilterOperand:
   name: Filter
   link: "transform.html#filter"
-SummarizeFieldDef:
-  link: "transform.html#summarize-field"
+AggregateOpDef:
+  link: "transform.html#aggregate-op-def"
 TimeUnit:
   link: timeunit.html
 LookupData:
@@ -106,30 +108,30 @@ EncodingWithFacet:
   name: Encoding
   link: encoding.html
 Type:
-  link: "encoding.html#data-type"
+  link: type.html
 
 # Channel Definitions
-ConditionalLegendFieldDef:
+MarkPropFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
-ConditionalLegendValueDef:
+MarkPropValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
-ConditionalTextFieldDef:
+TextFieldDefWithCondition:
   name: TextFieldDef
   link: "encoding.html#text-field-def"
-ConditionalTextValueDef:
+TextValueDefWithCondition:
   name: TextValueDef
   link: "encoding.html#text-value-def"
 
-ConditionLegendFieldDef:
+Conditional<MarkPropFieldDef>:
+  name: ConditionalFieldDef
+  link: "condition.html#field"
+Conditional<TextFieldDef>:
   name: ConditionFieldDef
   link: "condition.html#field"
-ConditionTextFieldDef:
-  name: ConditionFieldDef
-  link: "condition.html#field"
-ConditionValueDef:
+Conditional<ValueDef>:
   link: "condition.html#value"
 
 FieldDef:
@@ -141,7 +143,6 @@ OrderFieldDef:
 PositionFieldDef:
   link: "encoding.html#position-field-def"
 ValueDef:
-  name: ValueDef
   link: "encoding.html#value"
 
 # Field Definition
@@ -187,7 +188,7 @@ AxisOrient:
   name: String
 LegendOrient:
   name: String
-ResolveMapping:
+Resolve:
   name: Resolve
   link: resolve.html
 

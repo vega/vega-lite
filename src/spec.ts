@@ -129,6 +129,9 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
    */
   layer: (GenericLayerSpec<U> | U)[];
 
+  /**
+   * Scale, axis, and legend resolutions for layers.
+   */
   resolve?: Resolve;
 }
 
@@ -146,30 +149,51 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
   spec: GenericLayerSpec<U> | U;
   // TODO: replace this with GenericSpec<U> once we support all cases;
 
+  /**
+   * Scale, axis, and legend resolutions for facets.
+   */
   resolve?: Resolve;
 }
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
 
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  /**
+   * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
+   */
   repeat: Repeat;
 
   spec: GenericSpec<U>;
 
+  /**
+   * Scale and legend resolutions for repeated charts.
+   */
   resolve?: Resolve;
 }
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  /**
+   * A list of views that should be concatenated and put into a column.
+   */
   vconcat: (GenericSpec<U>)[];
 
+  /**
+   * Scale, axis, and legend resolutions for vertically concatenated charts.
+   */
   resolve?: Resolve;
 }
 
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  /**
+   * A list of views that should be concatenated and put into a row.
+   */
   hconcat: (GenericSpec<U>)[];
 
+  /**
+   * Scale, axis, and legend resolutions for horizontally concatenated charts.
+   */
   resolve?: Resolve;
 }
 

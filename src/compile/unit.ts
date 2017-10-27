@@ -3,7 +3,7 @@ import {Channel, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, Singl
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ChannelDef, FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {isMarkDef, Mark, MarkDef} from '../mark';
 import {Domain, Scale} from '../scale';
@@ -19,7 +19,7 @@ import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
-import {initEncoding} from './mark/init';
+import {initEncoding, normalizeMarkDef} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
@@ -61,10 +61,11 @@ export class UnitModel extends ModelWithField {
       ...(spec.width ? {width: spec.width} : {}),
       ...(spec.height ? {height: spec.height} : {})
     });
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    this.markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
-    const mark = this.markDef.type;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
+
+    this.markDef = normalizeMarkDef(spec.mark, encoding, config);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);
@@ -111,9 +112,9 @@ export class UnitModel extends ModelWithField {
       if (isFieldDef(channelDef)) {
         fieldDef = channelDef;
         specifiedScale = channelDef.scale;
-      } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+      } else if (hasConditionalFieldDef(channelDef)) {
         fieldDef = channelDef.condition;
-        specifiedScale = channelDef.condition.scale;
+        specifiedScale = channelDef.condition['scale'];
       } else if (channel === 'x') {
         fieldDef = getFieldDef(encoding.x2);
       } else if (channel === 'y') {
@@ -155,7 +156,7 @@ export class UnitModel extends ModelWithField {
       const channelDef = encoding[channel];
       if (channelDef) {
         const legend = isFieldDef(channelDef) ? channelDef.legend :
-          (channelDef.condition && isFieldDef(channelDef.condition)) ? channelDef.condition.legend : null;
+          (hasConditionalFieldDef(channelDef)) ? channelDef.condition['legend'] : null;
 
         if (legend !== null && legend !== false) {
           _legend[channel] = {...legend};

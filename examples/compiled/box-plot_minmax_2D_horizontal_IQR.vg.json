@@ -47,7 +47,7 @@
                 {
                     "type": "formula",
                     "expr": "datum.upperBox + datum.IQR * 1.5",
-                    "as": "lowerWhisker"
+                    "as": "upperWhisker"
                 }
             ]
         },
@@ -355,6 +355,7 @@
             "title": "population",
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

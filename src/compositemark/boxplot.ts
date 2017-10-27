@@ -2,7 +2,7 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {BinTransform, CalculateTransform, SummarizeFieldDef, TimeUnitTransform} from '../transform';
+import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
 import {field, Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
@@ -257,19 +257,19 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
   const encoding = spec.encoding;
 
   const isMinMax = kIQRScalar === undefined;
-  const summarize: SummarizeFieldDef[] = [
+  const aggregate: AggregatedFieldDef[] = [
     {
-      aggregate: 'q1',
+      op: 'q1',
       field: continuousAxisChannelDef.field,
       as: 'lowerBox'
     },
     {
-      aggregate: 'q3',
+      op: 'q3',
       field: continuousAxisChannelDef.field,
       as: 'upperBox'
     },
     {
-      aggregate: 'median',
+      op: 'median',
       field: continuousAxisChannelDef.field,
       as: 'midBox'
     }
@@ -277,13 +277,13 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
   let postAggregateCalculates: CalculateTransform[] = [];
 
   if (isMinMax) {
-    summarize.push({
-      aggregate: 'min',
+    aggregate.push({
+      op: 'min',
       field: continuousAxisChannelDef.field,
       as: 'lowerWhisker'
     });
-    summarize.push({
-      aggregate: 'max',
+    aggregate.push({
+      op: 'max',
       field: continuousAxisChannelDef.field,
       as: 'upperWhisker'
     });
@@ -299,7 +299,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
       },
       {
         calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
-        as: 'lowerWhisker'
+        as: 'upperWhisker'
       }
     ];
   }
@@ -316,8 +316,8 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
     }
     if (isFieldDef(channelDef)) {
       if (channelDef.aggregate && channelDef.aggregate !== BOXPLOT) {
-        summarize.push({
-          aggregate: channelDef.aggregate,
+        aggregate.push({
+          op: channelDef.aggregate,
           field: channelDef.field,
           as: field(channelDef)
         });
@@ -351,7 +351,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
     transform: [].concat(
       bins,
       timeUnits,
-      [{summarize, groupby}],
+      [{aggregate, groupby}],
       postAggregateCalculates
     ),
     continuousAxisChannelDef,

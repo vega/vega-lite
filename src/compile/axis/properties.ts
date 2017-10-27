@@ -1,5 +1,5 @@
 import {Axis} from '../../axis';
-import {BinParams, binToString} from '../../bin';
+import {binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
@@ -41,6 +41,19 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel, isGri
   return undefined;
 }
 
+export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis, isGridAxis: boolean) {
+  if (isGridAxis) {
+    return undefined;
+  }
+
+  if (specifiedAxis.labelFlush !== undefined) {
+    return specifiedAxis.labelFlush;
+  }
+  if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
+    return true;
+  }
+  return undefined;
+}
 
 export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType) {
   if (specifiedAxis.labelOverlap !== undefined) {
@@ -84,7 +97,7 @@ export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<stri
 
     if (fieldDef.bin) {
       // for binned data, we don't want more ticks than maxbins
-      return {signal: `min(ceil(${size.signal}/40), ${(fieldDef.bin as BinParams).maxbins})`};
+      return {signal: `ceil(${size.signal}/20)`};
     }
     return {signal: `ceil(${size.signal}/40)`};
   }

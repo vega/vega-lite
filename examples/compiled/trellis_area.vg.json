@@ -189,6 +189,7 @@
                     "title": "Time",
                     "scale": "x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
@@ -280,6 +281,9 @@
                             },
                             "encode": {
                                 "update": {
+                                    "orient": {
+                                        "value": "vertical"
+                                    },
                                     "x": {
                                         "scale": "x",
                                         "field": "date"
@@ -295,9 +299,6 @@
                                     "fill": {
                                         "scale": "color",
                                         "field": "symbol"
-                                    },
-                                    "orient": {
-                                        "value": "vertical"
                                     }
                                 }
                             }
