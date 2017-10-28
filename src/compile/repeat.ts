@@ -1,5 +1,6 @@
 
 import {Config} from '../config';
+import * as log from '../log';
 import {Repeat} from '../repeat';
 import {RepeatSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
@@ -17,6 +18,10 @@ export class RepeatModel extends BaseConcatModel {
 
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
+
+    if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
+      log.warn(log.message.REPEAT_CANNOT_SHARE_AXIS);
+    }
 
     this.repeat = spec.repeat;
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
