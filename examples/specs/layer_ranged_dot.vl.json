@@ -32,9 +32,7 @@
           "field": "country",
           "type": "nominal"
         },
-        "color": {
-          "value": "#db646f"
-        }
+        "color": {"value": "#db646f"}
       }
     },
     {
@@ -43,9 +41,6 @@
         "filled": true
       },
       "encoding": {
-        "size": {
-          "value": 100
-        },
         "x": {
           "field": "life_expect",
           "type": "quantitative",
@@ -72,7 +67,8 @@
           "legend": {
             "title": "Year"
           }
-        }
+        },
+        "size": {"value": 100}
       }
     }
   ]
