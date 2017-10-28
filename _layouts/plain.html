@@ -5,7 +5,12 @@ layout: base
 <div class="fill">
   <header>
     <nav class="page-centered">
-      <a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a>
+      <div class="dropdown">
+        <a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+        </div>
+      </div>
       <div class="vl-links">
         <div class="primary-links">
           <a href="{{site.baseurl}}/tutorials/getting_started.html" {% if page.menu == 'tutorials' %}class="active"{% endif %}>Tutorials</a>
