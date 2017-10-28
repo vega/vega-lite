@@ -6,21 +6,41 @@
     {
       "filter": {
         "field": "country",
-          "oneOf": ["China", "India", "United States", "Indonesia", "Brazil"]
-        }
+        "oneOf": ["China", "India", "United States", "Indonesia", "Brazil"]
+      }
     },
     {
       "filter": {
-          "field": "year",
-          "oneOf": [1955, 2000]
+        "field": "year",
+        "oneOf": [1955, 2000]
       }
     }
   ],
   "layer": [
     {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "life_expect",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "country",
+          "type": "nominal"
+        },
+        "detail": {
+          "field": "country",
+          "type": "nominal"
+        },
+        "color": {
+          "value": "#db646f"
+        }
+      }
+    },
+    {
       "mark": {
-          "type": "point",
-          "filled": true
+        "type": "point",
+        "filled": true
       },
       "encoding": {
         "size": {
@@ -52,26 +72,6 @@
           "legend": {
             "title": "Year"
           }
-        }
-      }
-    },
-    {
-      "mark": "line",
-      "encoding": {
-        "x": {
-          "field": "life_expect",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "country",
-          "type": "nominal"
-        },
-        "detail": {
-          "field": "country",
-          "type": "nominal"
-        },
-        "color": {
-          "value": "#db646f"
         }
       }
     }

@@ -70,13 +70,71 @@
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "layer_0_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
+                    "groupby": [
+                        "country"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "style": [
+                        "line"
+                    ],
+                    "sort": {
+                        "field": "datum[\"country\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_0_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "life_expect"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "country"
+                            },
+                            "stroke": {
+                                "value": "#db646f"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -100,64 +158,6 @@
                     }
                 }
             }
-        },
-        {
-            "name": "layer_1_pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_layer_1_main",
-                    "data": "data_1",
-                    "groupby": [
-                        "country"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"country\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_layer_1_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "life_expect"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "country"
-                            },
-                            "stroke": {
-                                "value": "#db646f"
-                            }
-                        }
-                    }
-                }
-            ]
         }
     ],
     "scales": [
