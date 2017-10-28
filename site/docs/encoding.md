@@ -228,6 +228,12 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 <div class="vl-example" data-name="line_detail"></div>
 
+Here is a ranged dot plot showing life expectancy change in the five largest countries
+between 1955 and 2000. We use `detail` here to group the lines such that they range only
+from one year to another within a country (as opposed to jumping between countries as well).
+
+<div class="vl-example" data-name="layer_ranged_dot"></div>
+
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
 
 {:#order}

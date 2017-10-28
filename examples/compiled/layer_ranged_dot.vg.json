@@ -70,41 +70,12 @@
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "life_expect"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "country"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "year"
-                    },
-                    "opacity": {
-                        "value": 0.7
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_1_main",
-                    "data": "data_1",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "country"
                     ]
@@ -126,7 +97,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_1_marks",
+                    "name": "layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -136,7 +107,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_1_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -150,15 +121,43 @@
                             },
                             "stroke": {
                                 "value": "#db646f"
-                            },
-                            "opacity": {
-                                "scale": "opacity",
-                                "field": "country"
                             }
                         }
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "life_expect"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "country"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "year"
+                    },
+                    "size": {
+                        "value": 100
+                    },
+                    "opacity": {
+                        "value": 1
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -221,19 +220,6 @@
                 "#e6959c",
                 "#911a24"
             ]
-        },
-        {
-            "name": "opacity",
-            "type": "point",
-            "domain": {
-                "data": "data_1",
-                "field": "country",
-                "sort": true
-            },
-            "range": [
-                0.2,
-                0.2
-            ]
         }
     ],
     "axes": [
@@ -282,7 +268,7 @@
                 "symbols": {
                     "update": {
                         "opacity": {
-                            "value": 0.7
+                            "value": 1
                         }
                     }
                 }
@@ -292,11 +278,6 @@
     "config": {
         "axisY": {
             "minExtent": 30
-        },
-        "style": {
-            "point": {
-                "size": 100
-            }
         }
     }
 }
