@@ -226,6 +226,7 @@
                 {
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "title": "date (month)",
                     "zindex": 1,
@@ -357,6 +358,7 @@
                 {
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "title": "date (month)",
                     "zindex": 1,
@@ -488,6 +490,7 @@
                 {
                     "scale": "child_wind_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "title": "date (month)",
                     "zindex": 1,
