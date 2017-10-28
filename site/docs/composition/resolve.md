@@ -34,3 +34,9 @@ For scales, resolution can be specified for every channel. For axes, resolutions
 There are two options to resolve a scale, axis, or legend: `"shared"` and `"independent"`. Independent scales imply independent axes and legends.
 
 The defaults are documented on the [faceting](facet.html#combined-scales-and-guides), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.
+
+## Example
+
+In this example, we use two independent color scales for two repeated charts. Note how Vega-Lite automatically creates separate legends for each chart.
+
+<span class="vl-example" data-name="repeat_independent_colors"></span>
