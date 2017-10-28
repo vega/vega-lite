@@ -68,7 +68,8 @@
             "title": "Year"
           }
         },
-        "size": {"value": 100}
+        "size": {"value": 100},
+        "opacity": {"value": 1}
       }
     }
   ]

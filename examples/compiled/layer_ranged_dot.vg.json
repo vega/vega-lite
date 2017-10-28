@@ -154,7 +154,7 @@
                         "value": 100
                     },
                     "opacity": {
-                        "value": 0.7
+                        "value": 1
                     }
                 }
             }
@@ -268,7 +268,7 @@
                 "symbols": {
                     "update": {
                         "opacity": {
-                            "value": 0.7
+                            "value": 1
                         }
                     }
                 }
