@@ -179,4 +179,22 @@ describe('Repeat', function() {
       assert.equal(keys(model.component.legends).length, 1);
     });
   });
+
+  describe('resolve', () => {
+    it('cannot share axes', log.wrap((localLogger) => {
+      parseRepeatModel({
+        repeat: {},
+        spec: {
+          mark: 'point',
+          encoding: {}
+        },
+        resolve: {
+          axis: {
+            x: 'shared'
+          }
+        }
+      });
+      assert.equal(localLogger.warns[0], log.message.REPEAT_CANNOT_SHARE_AXIS);
+    }));
+  });
 });
