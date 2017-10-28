@@ -102,7 +102,7 @@ After adding a new example, make sure to run `yarn run build:example <examplenam
 
   For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
   ```sh
-  brew install ruby
+  brew install ruby@2.3
   ```
 
   For bundler:
