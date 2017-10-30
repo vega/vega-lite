@@ -113,7 +113,7 @@
     "typescript": "^2.5.3",
     "uglify-js": "^3.1.5",
     "vega": "^3.0.7",
-    "vega-datasets": "vega/vega-datasets#gh-pages",
+    "vega-datasets": "^1.10.0",
     "vega-embed": "^3.0.0-rc6",
     "vega-tooltip": "^0.4.4",
     "watchify": "^3.9.0",
