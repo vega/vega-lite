@@ -18,6 +18,8 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
 {:#encoding}
 ## Binning Encoding Field
 
+This is the preferred way to express binning in Vega-Lite. 
+
 {: .suppress-error}
 ```json
 // A Single View Specification
@@ -58,6 +60,8 @@ You can use binning to discretize color scales. Vega-Lite automatically creates 
 
 {:#transform}
 ## Bin Transform
+
+While Vega-Lite supports binning in transforms, the preferred way is to use binning in the encoding field. 
 
 {: .suppress-error}
 ```json
