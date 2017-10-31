@@ -64,7 +64,7 @@ export function binToString(bin: BinParams | boolean) {
   if (isBoolean(bin)) {
     return 'bin';
   }
-  return 'bin' + keys(bin).map(p => `_${p}_${bin[p]}`).join('');
+  return 'bin' + keys(bin).map(p => `_${p}_${bin[p]}`.replace(',', '_')).join('');
 }
 
 export function autoMaxBins(channel: Channel): number {

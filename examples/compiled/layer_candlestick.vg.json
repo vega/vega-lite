@@ -216,7 +216,7 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "datum.open > datum.close",
+                    "expr": "datum.open < datum.close",
                     "as": "isIncrease"
                 }
             ]
@@ -434,6 +434,7 @@
             "title": "Date in 2009",
             "scale": "x",
             "orient": "bottom",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

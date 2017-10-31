@@ -243,6 +243,7 @@
                         {
                             "scale": "x",
                             "orient": "bottom",
+                            "labelFlush": true,
                             "labelOverlap": true,
                             "tickCount": {
                                 "signal": "ceil(child_child_width/40)"

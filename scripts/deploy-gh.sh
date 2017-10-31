@@ -14,6 +14,8 @@ npm run presite
 git add data/* -f
 git add build/** -f
 git add _data/* -f
+git add examples/compiled/*.png -f
+git add site/examples/*.md -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then

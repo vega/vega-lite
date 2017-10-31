@@ -206,7 +206,7 @@
   },
   "transform": [
     {
-      "calculate": "datum.open > datum.close",
+      "calculate": "datum.open < datum.close",
       "as": "isIncrease"
     }
   ],
@@ -218,18 +218,20 @@
           "field": "date",
           "type": "temporal",
           "timeUnit": "yearmonthdate",
-          "scale": {"domain": [{"month": 5, "date": 31, "year": 2009},{"month": 7, "date": 1, "year": 2009}]},
+          "scale": {"domain": [{"month": 5, "date": 31, "year": 2009}, {"month": 7, "date": 1, "year": 2009}]},
           "axis": {
             "format": "%m/%d",
             "title": "Date in 2009"
           }
         },
-        "y": {"field": "low","type": "quantitative","scale": {"zero": false}},
-        "y2": {"field": "high","type": "quantitative"},
+        "y": {"field": "low", "type": "quantitative", "scale": {"zero": false}},
+        "y2": {"field": "high", "type": "quantitative"},
         "color": {
           "field": "isIncrease",
           "type": "nominal",
-          "scale": {"range": ["#ae1325","#06982d"]},
+          "scale": {
+            "range": ["#ae1325", "#06982d"]
+          },
           "legend": null
         }
       }
@@ -242,13 +244,12 @@
           "type": "temporal",
           "timeUnit": "yearmonthdate"
         },
-        "y": {"field": "open","type": "quantitative"},
-        "y2": {"field": "close","type": "quantitative"},
+        "y": {"field": "open", "type": "quantitative"},
+        "y2": {"field": "close", "type": "quantitative"},
         "size": {"value": 5},
         "color": {
           "field": "isIncrease",
           "type": "nominal",
-          "scale": {"range": ["#ae1325","#06982d"]},
           "legend": null
         }
       }

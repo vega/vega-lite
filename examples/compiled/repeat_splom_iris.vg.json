@@ -376,6 +376,7 @@
                 {
                     "scale": "child_petalWidth_sepalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -477,6 +478,7 @@
                 {
                     "scale": "child_petalWidth_sepalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -578,6 +580,7 @@
                 {
                     "scale": "child_petalWidth_petalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -679,6 +682,7 @@
                 {
                     "scale": "child_petalWidth_petalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -780,6 +784,7 @@
                 {
                     "scale": "child_petalLength_sepalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -881,6 +886,7 @@
                 {
                     "scale": "child_petalLength_sepalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -982,6 +988,7 @@
                 {
                     "scale": "child_petalLength_petalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1083,6 +1090,7 @@
                 {
                     "scale": "child_petalLength_petalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1184,6 +1192,7 @@
                 {
                     "scale": "child_sepalWidth_sepalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1285,6 +1294,7 @@
                 {
                     "scale": "child_sepalWidth_sepalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1386,6 +1396,7 @@
                 {
                     "scale": "child_sepalWidth_petalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1487,6 +1498,7 @@
                 {
                     "scale": "child_sepalWidth_petalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1588,6 +1600,7 @@
                 {
                     "scale": "child_sepalLength_sepalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1689,6 +1702,7 @@
                 {
                     "scale": "child_sepalLength_sepalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1790,6 +1804,7 @@
                 {
                     "scale": "child_sepalLength_petalLength_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
@@ -1891,6 +1906,7 @@
                 {
                     "scale": "child_sepalLength_petalWidth_x",
                     "orient": "bottom",
+                    "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"

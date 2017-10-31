@@ -376,7 +376,7 @@ export type SelectionDomain = {
   encoding?: string
 };
 
-export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
+export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | SchemeParams;
 
 export type Range = number[] | string[] | string;
@@ -415,7 +415,7 @@ export interface Scale {
    *
    * The `selection` property can be used to [interactively determine](selection.html#scale-domains) the scale domain.
    */
-  domain?: number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
+  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 
 
   // Hide because we might not really need this.

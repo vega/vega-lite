@@ -1,0 +1,35 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "",
+  "data": {
+    "url": "data/weather.csv"
+  },
+  "repeat": {
+    "column": [
+      "temp_max",
+      "precipitation",
+      "wind"
+    ]
+  },
+  "spec": {
+    "mark": "line",
+    "encoding": {
+      "x": {
+        "field": "date",
+        "timeUnit": "month",
+        "type": "temporal"
+      },
+      "y": {
+        "field": {
+          "repeat": "column"
+        },
+        "type": "quantitative",
+        "aggregate": "mean"
+      },
+      "color": {
+        "field": "location",
+        "type": "nominal"
+      }
+    }
+  }
+}

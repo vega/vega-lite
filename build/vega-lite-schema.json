@@ -151,14 +151,14 @@
           "type": "number"
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
           "type": [
             "boolean",
             "number"
           ]
         },
         "labelFlush": {
-          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
             "boolean",
             "number"
@@ -297,7 +297,6 @@
           "items": {
             "type": "number"
           },
-          "minimum": 0,
           "type": "array"
         },
         "gridOpacity": {
@@ -318,7 +317,7 @@
           "type": "number"
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
           "type": [
             "boolean",
             "number"
@@ -329,7 +328,7 @@
           "type": "string"
         },
         "labelFlush": {
-          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
             "boolean",
             "number"
@@ -584,7 +583,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -925,7 +923,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -3519,7 +3516,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -3716,7 +3712,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -4499,6 +4494,12 @@
             },
             {
               "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
@@ -5199,7 +5200,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -5398,7 +5398,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {
@@ -6442,14 +6441,14 @@
           "type": "number"
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
           "type": [
             "boolean",
             "number"
           ]
         },
         "labelFlush": {
-          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
             "boolean",
             "number"
@@ -6543,7 +6542,6 @@
           "items": {
             "type": "number"
           },
-          "minimum": 0,
           "type": "array"
         },
         "gridOpacity": {
@@ -6564,7 +6562,7 @@
           "type": "number"
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false ` no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
           "type": [
             "boolean",
             "number"
@@ -6575,7 +6573,7 @@
           "type": "string"
         },
         "labelFlush": {
-          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.",
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
             "boolean",
             "number"
@@ -6979,7 +6977,6 @@
         },
         "font": {
           "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "minimum": 0,
           "type": "string"
         },
         "fontSize": {

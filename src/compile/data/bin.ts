@@ -49,10 +49,22 @@ function getSignalsFromParams(
   return params;
 }
 
+function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
+  return 'as' in t;
+}
+
 function createBinComponent(
-  t: FieldDef<string>|BinTransform,
+  t: FieldDef<string> | BinTransform,
   params: {model: Model} | {signal?: string, extentSignal?: string}
 ) {
+  let as: [string, string];
+
+  if (isBinTransform(t)) {
+    as = [t.as, `${t.as}_end`];
+  } else {
+    as = [field(t, {}), field(t, {binSuffix: 'end'})];
+  }
+
   const bin = normalizeBin(t.bin, undefined) || {};
   const key = binKey(bin, t.field);
   const {signal, extentSignal} = getSignalsFromParams(params, key);
@@ -60,7 +72,7 @@ function createBinComponent(
   const binComponent: BinComponent = {
     bin: bin,
     field: t.field,
-    as: [field(t, {}), field(t, {binSuffix: 'end'})],
+    as: as,
     ...signal ? {signal} : {},
     ...extentSignal ? {extentSignal} : {}
   };

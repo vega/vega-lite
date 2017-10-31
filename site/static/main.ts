@@ -3,9 +3,11 @@ import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed, {vega} from 'vega-embed';
 import {vegaLite} from 'vega-tooltip';
+import {TopLevelExtendedSpec} from '../../src/spec';
 import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;
+window['embedExample'] = embedExample;
 
 declare const BASEURL: string;
 
@@ -40,17 +42,21 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   const spec = JSON.parse(specText);
 
-  embed(vis.node() as HTMLBaseElement, spec, {
+  embedExample(vis.node(), spec, true, $target.classed('tooltip'));
+}
+
+function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, tooltip=false) {
+  embed($target as HTMLBaseElement, spec, {
     mode: 'vega-lite',
     renderer: 'svg',
-    actions: {
+    actions: actions ? {
       source: false,
       export: false
-    },
+    } : false,
     loader: loader
   }).then(result => {
-    if ($target.classed('tooltip')) {
-      vegaLite(result.view, JSON.parse(specText) as any);
+    if (tooltip) {
+      vegaLite(result.view, spec as any);
     }
   }).catch(console.error);
 }
