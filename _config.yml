@@ -14,6 +14,8 @@ description: Vega-Lite - a high-level grammar for statistical graphics.
 
 baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
 url: "http://vega.github.io" # the base hostname & protocol for your site
+twitter:
+  username: vega_vis
 exclude:
   - bin
   - .github
