@@ -48,3 +48,9 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   auto_id_stripping: true
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-mentions
