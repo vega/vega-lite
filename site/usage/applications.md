@@ -31,6 +31,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [vega-element](https://www.webcomponents.org/element/PolymerVis/vega-element) is a Polymer web component to embed Vega or Vega-Lite visualization using custom HTML tags.
 * [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) is a Polymer web component to parse image/code markdowns into Vega and Vega-Lite charts.
 * [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
+* [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science
 
 ## Libraries
 
