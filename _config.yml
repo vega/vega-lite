@@ -28,12 +28,14 @@ exclude:
   - test-runtime
   - typings
   - package.json
+  - yarn.lock
   - bower.json
-  - src
   - tsconfig.json
   - tslint.json
   - nodemon.json
-  - yarn.lock
+  - LICENSE
+  - README.md
+  - src
   - examples/specs/data
   - examples/compiled/data
 
