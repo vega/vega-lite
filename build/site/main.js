@@ -22450,7 +22450,7 @@ if (typeof Object.create === 'function') {
 /*!
  * Determine if an object is a Buffer
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
 
@@ -28854,10 +28854,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var versionCompare = require("compare-versions");
 var d3 = require("d3-selection");
 var vegaImport = require("vega");
-var vlImport = require("vega-lite");
+var VegaLite = require("vega-lite");
 var vega_schema_url_parser_1 = require("vega-schema-url-parser");
 exports.vega = vegaImport;
-exports.vl = vlImport;
+exports.vl = VegaLite;
 var post_1 = require("./post");
 var NAMES = {
     'vega': 'Vega',
@@ -29268,7 +29268,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-rc4",
+  "version": "2.0.0-rc5",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -29318,7 +29318,7 @@ module.exports={
     "preschema": "npm run prebuild",
     "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
-    "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
+    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint --project tsconfig.json -c tslint.json --type-check",
@@ -29372,7 +29372,7 @@ module.exports={
     "nodemon": "^1.11.0",
     "nyc": "^11.1.0",
     "source-map-support": "^0.5.0",
-    "ts-json-schema-generator": "^0.12.0",
+    "ts-json-schema-generator": "^0.14.0",
     "ts-node": "^3.2.1",
     "tsify": "^3.0.1",
     "tslint": "5.4.3",
@@ -29381,7 +29381,7 @@ module.exports={
     "uglify-js": "^3.0.27",
     "vega": "^3.0.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "^3.0.0-beta.20",
+    "vega-embed": "^3.0.0-rc4",
     "vega-tooltip": "^0.4.2",
     "watchify": "^3.9.0",
     "wdio-chromedriver-service": "^0.1.0",
@@ -30216,7 +30216,7 @@ function tickCount(channel, fieldDef, scaleType, size) {
     if (!scale_1.hasDiscreteDomain(scaleType) && scaleType !== 'log' && !util_1.contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
         if (fieldDef.bin) {
             // for binned data, we don't want more ticks than maxbins
-            return { signal: "min(ceil(" + size.signal + "/40), " + fieldDef.bin.maxbins + ")" };
+            return { signal: "ceil(" + size.signal + "/20)" };
         }
         return { signal: "ceil(" + size.signal + "/40)" };
     }
@@ -30775,16 +30775,16 @@ var AggregateNode = /** @class */ (function (_super) {
     AggregateNode.makeFromTransform = function (t) {
         var dims = {};
         var meas = {};
-        for (var _i = 0, _a = t.summarize; _i < _a.length; _i++) {
+        for (var _i = 0, _a = t.aggregate; _i < _a.length; _i++) {
             var s = _a[_i];
-            if (s.aggregate) {
-                if (s.aggregate === 'count') {
+            if (s.op) {
+                if (s.op === 'count') {
                     meas['*'] = meas['*'] || {};
                     meas['*']['count'] = s.as || fielddef_1.field(s);
                 }
                 else {
                     meas[s.field] = meas[s.field] || {};
-                    meas[s.field][s.aggregate] = s.as || fielddef_1.field(s);
+                    meas[s.field][s.op] = s.as || fielddef_1.field(s);
                 }
             }
         }
@@ -31625,7 +31625,7 @@ var util_1 = require("../../util");
 var model_1 = require("../model");
 var dataflow_1 = require("./dataflow");
 function parseExpression(field, parse) {
-    var f = "datum[" + util_1.stringValue(field) + "]";
+    var f = "datum" + util_1.accessPath(field);
     if (parse === 'number') {
         return "toNumber(" + f + ")";
     }
@@ -32165,7 +32165,7 @@ function parseTransformArray(model) {
         else if (transform_1.isTimeUnit(t)) {
             node = timeunit_1.TimeUnitNode.makeFromTransform(t);
         }
-        else if (transform_1.isSummarize(t)) {
+        else if (transform_1.isAggregate(t)) {
             node = aggregate_1.AggregateNode.makeFromTransform(t);
             if (selection_1.requiresSelectionId(model)) {
                 insert(node);
@@ -32350,12 +32350,10 @@ var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
-var counter = 0;
 var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this) || this;
-        _this._id = counter++;
         data = data || { name: 'source' };
         if (data_1.isInlineData(data)) {
             _this._data = { values: data.values };
@@ -32421,11 +32419,11 @@ var SourceNode = /** @class */ (function (_super) {
      */
     SourceNode.prototype.hash = function () {
         if (data_1.isInlineData(this._data)) {
-            // We want to avoid hashes of very large dataset. We will not merge large embedded datasets.
-            if (this._data.values.length > 1000) {
-                return util_1.hash([this._data.format, this._id]);
+            if (!this._hash) {
+                // Hashing can be expensive for large inline datasets.
+                this._hash = util_1.hash(this._data);
             }
-            return util_1.hash(this._data);
+            return this._hash;
         }
         else if (data_1.isUrlData(this._data)) {
             return util_1.hash([this._data.url, this._data.format]);
@@ -33368,6 +33366,7 @@ exports.LegendComponent = LegendComponent;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var mark_1 = require("../../mark");
@@ -33460,8 +33459,9 @@ function labels(fieldDef, labelsSpec, model, channel, type) {
 exports.labels = labels;
 function getOpacityValue(opacityDef) {
     if (fielddef_1.isValueDef(opacityDef)) {
-        if (fielddef_1.hasConditionValueDef(opacityDef)) {
-            return Math.max(opacityDef.condition.value, opacityDef.value);
+        if (fielddef_1.hasConditionalValueDef(opacityDef)) {
+            var values = vega_util_1.isArray(opacityDef.condition) ? opacityDef.condition.map(function (c) { return c.value; }) : [opacityDef.condition.value];
+            return Math.max.apply(null, [opacityDef.value].concat(values));
         }
         else {
             return opacityDef.value;
@@ -33470,7 +33470,7 @@ function getOpacityValue(opacityDef) {
     return undefined;
 }
 
-},{"../../channel":240,"../../fielddef":325,"../../mark":332,"../../scale":333,"../../util":343,"../common":249,"../mark/mixins":284,"tslib":226}],277:[function(require,module,exports){
+},{"../../channel":240,"../../fielddef":325,"../../mark":332,"../../scale":333,"../../util":343,"../common":249,"../mark/mixins":284,"tslib":226,"vega-util":353}],277:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -33684,7 +33684,7 @@ var mixins = require("./mixins");
 exports.area = {
     vgMark: 'area',
     encodeEntry: function (model) {
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, 'zeroOrMin'), mixins.pointPosition('y', model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin'), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.markDefProperties(model.markDef, ['orient', 'interpolate', 'tension']));
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef), mixins.pointPosition('x', model, 'zeroOrMin'), mixins.pointPosition('y', model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin'), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model));
     }
 };
 
@@ -33704,7 +33704,7 @@ exports.bar = {
     vgMark: 'rect',
     encodeEntry: function (model) {
         var stack = model.stack;
-        return tslib_1.__assign({}, x(model, stack), y(model, stack), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model));
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), x(model, stack), y(model, stack), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model));
     }
 };
 function x(model, stack) {
@@ -33787,17 +33787,18 @@ function defaultSizeRef(scaleName, scale, config) {
 },{"../../channel":240,"../../fielddef":325,"../../log":330,"../../scale":333,"../../vega.schema":345,"./mixins":284,"./valueref":290,"tslib":226,"vega-util":353}],281:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var encoding_1 = require("../../encoding");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
 var mark_1 = require("../../mark");
-var scale_1 = require("../../scale");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
 var common_1 = require("../common");
-function normalizeMarkDef(markDef, encoding, scales, config) {
+function normalizeMarkDef(mark, encoding, config) {
+    var markDef = mark_1.isMarkDef(mark) ? tslib_1.__assign({}, mark) : { type: mark };
     var specifiedOrient = markDef.orient || common_1.getMarkConfig('orient', markDef, config);
-    markDef.orient = orient(markDef.type, encoding, scales, specifiedOrient);
+    markDef.orient = orient(markDef.type, encoding, specifiedOrient);
     if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
         log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
     }
@@ -33805,6 +33806,7 @@ function normalizeMarkDef(markDef, encoding, scales, config) {
     if (specifiedFilled === undefined) {
         markDef.filled = filled(markDef, config);
     }
+    return markDef;
 }
 exports.normalizeMarkDef = normalizeMarkDef;
 /**
@@ -33835,7 +33837,7 @@ function filled(markDef, config) {
     var mark = markDef.type;
     return filledConfig !== undefined ? filledConfig : mark !== mark_1.POINT && mark !== mark_1.LINE && mark !== mark_1.RULE;
 }
-function orient(mark, encoding, scales, specifiedOrient) {
+function orient(mark, encoding, specifiedOrient) {
     switch (mark) {
         case mark_1.POINT:
         case mark_1.CIRCLE:
@@ -33848,17 +33850,6 @@ function orient(mark, encoding, scales, specifiedOrient) {
     var yIsRange = encoding.y2;
     var xIsRange = encoding.x2;
     switch (mark) {
-        case mark_1.TICK:
-            var xScaleType = scales.x ? scales.x.get('type') : null;
-            var yScaleType = scales.y ? scales.y.get('type') : null;
-            // Tick is opposite to bar, line, area and never have ranged mark.
-            if (!scale_1.hasDiscreteDomain(xScaleType) && (!encoding.y ||
-                scale_1.hasDiscreteDomain(yScaleType) ||
-                (fielddef_1.isFieldDef(encoding.y) && encoding.y.bin))) {
-                return 'vertical';
-            }
-            // y:Q or Ambiguous case, return horizontal
-            return 'horizontal';
         case mark_1.RULE:
         case mark_1.BAR:
         case mark_1.AREA:
@@ -33878,15 +33869,16 @@ function orient(mark, encoding, scales, specifiedOrient) {
                 }
             }
         /* tslint:disable */
-        case mark_1.LINE:// intentional fall through
+        case mark_1.LINE: // intentional fall through
+        case mark_1.TICK:// Tick is opposite to bar, line, area and never have ranged mark.
             /* tslint:enable */
             var xIsContinuous = fielddef_1.isFieldDef(encoding.x) && fielddef_1.isContinuous(encoding.x);
             var yIsContinuous = fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y);
             if (xIsContinuous && !yIsContinuous) {
-                return 'horizontal';
+                return mark !== 'tick' ? 'horizontal' : 'vertical';
             }
             else if (!xIsContinuous && yIsContinuous) {
-                return 'vertical';
+                return mark !== 'tick' ? 'vertical' : 'horizontal';
             }
             else if (xIsContinuous && yIsContinuous) {
                 var xDef = encoding.x; // we can cast here since they are surely fieldDef
@@ -33895,16 +33887,16 @@ function orient(mark, encoding, scales, specifiedOrient) {
                 var yIsTemporal = yDef.type === type_1.TEMPORAL;
                 // temporal without timeUnit is considered continuous, but better serves as dimension
                 if (xIsTemporal && !yIsTemporal) {
-                    return 'vertical';
+                    return mark !== 'tick' ? 'vertical' : 'horizontal';
                 }
                 else if (!xIsTemporal && yIsTemporal) {
-                    return 'horizontal';
+                    return mark !== 'tick' ? 'horizontal' : 'vertical';
                 }
                 if (!xDef.aggregate && yDef.aggregate) {
-                    return 'vertical';
+                    return mark !== 'tick' ? 'vertical' : 'horizontal';
                 }
                 else if (xDef.aggregate && !yDef.aggregate) {
-                    return 'horizontal';
+                    return mark !== 'tick' ? 'horizontal' : 'vertical';
                 }
                 if (specifiedOrient) {
                     // When ambiguous, use user specified one.
@@ -33925,7 +33917,7 @@ function orient(mark, encoding, scales, specifiedOrient) {
     return 'vertical';
 }
 
-},{"../../encoding":323,"../../fielddef":325,"../../log":330,"../../mark":332,"../../scale":333,"../../type":342,"../../util":343,"../common":249}],282:[function(require,module,exports){
+},{"../../encoding":323,"../../fielddef":325,"../../log":330,"../../mark":332,"../../type":342,"../../util":343,"../common":249,"tslib":226}],282:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -33935,9 +33927,9 @@ exports.line = {
     vgMark: 'line',
     encodeEntry: function (model) {
         var width = model.width, height = model.height;
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
             vgChannel: 'strokeWidth' // VL's line size is strokeWidth
-        }), mixins.markDefProperties(model.markDef, ['interpolate', 'tension']));
+        }));
     }
 };
 
@@ -33954,10 +33946,8 @@ var mark_1 = require("../../mark");
 var sort_1 = require("../../sort");
 var util_1 = require("../../util");
 var common_1 = require("../common");
-var model_1 = require("../model");
 var area_1 = require("./area");
 var bar_1 = require("./bar");
-var init_1 = require("./init");
 var line_1 = require("./line");
 var point_1 = require("./point");
 var rect_1 = require("./rect");
@@ -33976,18 +33966,6 @@ var markCompiler = {
     circle: point_1.circle,
     square: point_1.square
 };
-function parseMarkDef(model) {
-    if (model_1.isUnitModel(model)) {
-        init_1.normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
-    }
-    else {
-        for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
-            var child = _a[_i];
-            parseMarkDef(child);
-        }
-    }
-}
-exports.parseMarkDef = parseMarkDef;
 function parseMarkGroup(model) {
     if (util_1.contains([mark_1.LINE, mark_1.AREA], model.mark())) {
         return parsePathMark(model);
@@ -34116,13 +34094,15 @@ function scaleClip(model) {
         (yScale && yScale.get('domainRaw')) ? true : false;
 }
 
-},{"../../channel":240,"../../data":321,"../../encoding":323,"../../fielddef":325,"../../mark":332,"../../sort":335,"../../util":343,"../common":249,"../model":291,"./area":279,"./bar":280,"./init":281,"./line":282,"./point":285,"./rect":286,"./rule":287,"./text":288,"./tick":289,"tslib":226,"vega-util":353}],284:[function(require,module,exports){
+},{"../../channel":240,"../../data":321,"../../encoding":323,"../../fielddef":325,"../../mark":332,"../../sort":335,"../../util":343,"../common":249,"./area":279,"./bar":280,"./line":282,"./point":285,"./rect":286,"./rule":287,"./text":288,"./tick":289,"tslib":226,"vega-util":353}],284:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
 var util = require("../../util");
+var vega_schema_1 = require("../../vega.schema");
 var common_1 = require("../common");
 var selection_1 = require("../selection/selection");
 var ref = require("./valueref");
@@ -34132,8 +34112,11 @@ function color(model) {
     var vgChannel = filled ? 'fill' : 'stroke';
     var e = nonPosition('color', model, {
         vgChannel: vgChannel,
-        // fill/stroke has higher precedence than color
-        defaultValue: common_1.getMarkConfig(vgChannel, model.markDef, config) ||
+        // Mark definition has higher predecence than config;
+        // fill/stroke has higher precedence than color.
+        defaultValue: model.markDef[vgChannel] ||
+            model.markDef.color ||
+            common_1.getMarkConfig(vgChannel, model.markDef, config) ||
             common_1.getMarkConfig('color', model.markDef, config)
     });
     // If there is no fill, always fill symbols
@@ -34144,9 +34127,9 @@ function color(model) {
     return e;
 }
 exports.color = color;
-function markDefProperties(mark, props) {
-    return props.reduce(function (m, prop) {
-        if (mark[prop]) {
+function markDefProperties(mark, ignoreOrient) {
+    return vega_schema_1.VG_MARK_CONFIGS.reduce(function (m, prop) {
+        if (mark[prop] && (!ignoreOrient || prop !== 'orient')) {
             m[prop] = { value: mark[prop] };
         }
         return m;
@@ -34184,11 +34167,13 @@ function wrapCondition(model, channelDef, vgChannel, refFn) {
     var condition = channelDef && channelDef.condition;
     var valueRef = refFn(channelDef);
     if (condition) {
-        var conditionValueRef = refFn(condition);
+        var conditions = vega_util_1.isArray(condition) ? condition : [condition];
+        var vgConditions = conditions.map(function (c) {
+            var conditionValueRef = refFn(c);
+            return tslib_1.__assign({ test: selection_1.predicate(model, c.selection) }, conditionValueRef);
+        });
         return _a = {},
-            _a[vgChannel] = [
-                tslib_1.__assign({ test: selection_1.predicate(model, condition.selection) }, conditionValueRef)
-            ].concat((valueRef !== undefined ? [valueRef] : [])),
+            _a[vgChannel] = vgConditions.concat((valueRef !== undefined ? [valueRef] : [])),
             _a;
     }
     else {
@@ -34284,7 +34269,7 @@ function pointPosition2(model, defaultRef, channel) {
 }
 exports.pointPosition2 = pointPosition2;
 
-},{"../../fielddef":325,"../../log":330,"../../util":343,"../common":249,"../selection/selection":304,"./valueref":290,"tslib":226}],285:[function(require,module,exports){
+},{"../../fielddef":325,"../../log":330,"../../util":343,"../../vega.schema":345,"../common":249,"../selection/selection":304,"./valueref":290,"tslib":226,"vega-util":353}],285:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -34293,7 +34278,7 @@ var mixins = require("./mixins");
 var ref = require("./valueref");
 function encodeEntry(model, fixedShape) {
     var config = model.config, width = model.width, height = model.height;
-    return tslib_1.__assign({}, mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('size', model), shapeMixins(model, config, fixedShape), mixins.nonPosition('opacity', model));
+    return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('size', model), shapeMixins(model, config, fixedShape), mixins.nonPosition('opacity', model));
 }
 function shapeMixins(model, config, fixedShape) {
     if (fixedShape) {
@@ -34334,7 +34319,7 @@ var mixins = require("./mixins");
 exports.rect = {
     vgMark: 'rect',
     encodeEntry: function (model) {
-        return tslib_1.__assign({}, x(model), y(model), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model));
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), x(model), y(model), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model));
     }
 };
 function x(model) {
@@ -34397,7 +34382,7 @@ exports.rule = {
             // if we have neither x or y, show nothing
             return {};
         }
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)), mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)), mixins.pointPosition2(model, 'zeroOrMax'), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)), mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)), mixins.pointPosition2(model, 'zeroOrMax'), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
             vgChannel: 'strokeWidth' // VL's rule size is strokeWidth
         }));
     }
@@ -34419,7 +34404,7 @@ exports.text = {
     encodeEntry: function (model) {
         var config = model.config, encoding = model.encoding, height = model.height;
         var textDef = encoding.text;
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, xDefault(config, textDef)), mixins.pointPosition('y', model, ref.mid(height)), mixins.text(model), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), mixins.pointPosition('x', model, xDefault(config, textDef)), mixins.pointPosition('y', model, ref.mid(height)), mixins.text(model), mixins.color(model), mixins.text(model, 'tooltip'), mixins.nonPosition('opacity', model), mixins.nonPosition('size', model, {
             vgChannel: 'fontSize' // VL's text size is fontSize
         }), mixins.valueIfDefined('align', align(model.markDef, encoding, config)));
     }
@@ -34432,8 +34417,8 @@ function xDefault(config, textDef) {
     return { value: config.scale.textXRangeStep / 2 };
 }
 function align(markDef, encoding, config) {
-    var alignConfig = common_1.getMarkConfig('align', markDef, config);
-    if (alignConfig === undefined) {
+    var align = markDef.align || common_1.getMarkConfig('align', markDef, config);
+    if (align === undefined) {
         return encoding_1.channelHasField(encoding, channel_1.X) ? 'center' : 'right';
     }
     // If there is a config, Vega-parser will process this already.
@@ -34454,7 +34439,7 @@ exports.tick = {
         var orient = markDef.orient;
         var vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
         var vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, ref.mid(width), 'xc'), mixins.pointPosition('y', model, ref.mid(height), 'yc'), mixins.nonPosition('size', model, {
+        return tslib_1.__assign({}, mixins.markDefProperties(model.markDef, true), mixins.pointPosition('x', model, ref.mid(width), 'xc'), mixins.pointPosition('y', model, ref.mid(height), 'yc'), mixins.nonPosition('size', model, {
             defaultValue: defaultSize(model),
             vgChannel: vgSizeChannel
         }), (_a = {}, _a[vgThicknessChannel] = { value: config.tick.thickness }, _a), mixins.color(model), mixins.nonPosition('opacity', model));
@@ -34594,7 +34579,7 @@ function midPoint(channel, channelDef, scaleName, scale, stack, defaultRef) {
             return { value: channelDef.value };
         }
         else {
-            throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
+            throw new Error('A channel definition has neither field nor value.'); // FIXME add this to log.message
         }
     }
     if (defaultRef === 'zeroOrMin') {
@@ -34722,7 +34707,6 @@ var header_1 = require("./layout/header");
 var assemble_2 = require("./layoutsize/assemble");
 var assemble_3 = require("./legend/assemble");
 var parse_1 = require("./legend/parse");
-var mark_1 = require("./mark/mark");
 var assemble_4 = require("./scale/assemble");
 var domain_1 = require("./scale/domain");
 var parse_2 = require("./scale/parse");
@@ -34849,7 +34833,6 @@ var Model = /** @class */ (function () {
     };
     Model.prototype.parse = function () {
         this.parseScale();
-        this.parseMarkDef();
         this.parseLayoutSize(); // depends on scale
         this.renameTopLevelLayoutSize();
         this.parseSelection();
@@ -34873,9 +34856,6 @@ var Model = /** @class */ (function () {
         if (this.getName('height') !== 'height') {
             this.renameLayoutSize(this.getName('height'), 'height');
         }
-    };
-    Model.prototype.parseMarkDef = function () {
-        mark_1.parseMarkDef(this);
     };
     Model.prototype.parseLegend = function () {
         parse_1.parseLegend(this);
@@ -35140,7 +35120,7 @@ var ModelWithField = /** @class */ (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":240,"../encoding":323,"../fielddef":325,"../log":330,"../scale":333,"../title":339,"../transform":341,"../util":343,"../vega.schema":345,"./axis/assemble":241,"./layout/header":271,"./layoutsize/assemble":272,"./legend/assemble":274,"./legend/parse":277,"./mark/mark":283,"./scale/assemble":295,"./scale/domain":297,"./scale/parse":298,"./split":314,"tslib":226,"vega-util":353}],292:[function(require,module,exports){
+},{"../channel":240,"../encoding":323,"../fielddef":325,"../log":330,"../scale":333,"../title":339,"../transform":341,"../util":343,"../vega.schema":345,"./axis/assemble":241,"./layout/header":271,"./layoutsize/assemble":272,"./legend/assemble":274,"./legend/parse":277,"./scale/assemble":295,"./scale/domain":297,"./scale/parse":298,"./split":314,"tslib":226,"vega-util":353}],292:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -35246,11 +35226,11 @@ function replaceRepeaterInChannelDef(channelDef, repeater) {
             return fd;
         }
         else if (fielddef_1.isConditionalDef(channelDef)) {
-            return { value: channelDef.condition.value };
+            return { condition: channelDef.condition };
         }
     }
     else {
-        if (fielddef_1.isConditionalDef(channelDef) && fielddef_1.isFieldDef(channelDef.condition)) {
+        if (fielddef_1.hasConditionalFieldDef(channelDef)) {
             var fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
             if (fd) {
                 return tslib_1.__assign({}, channelDef, { condition: fd });
@@ -35877,9 +35857,9 @@ function parseUnitScaleCore(model) {
             fieldDef = channelDef;
             specifiedScale = channelDef.scale || {};
         }
-        else if (fielddef_1.isConditionalDef(channelDef) && fielddef_1.isFieldDef(channelDef.condition)) {
+        else if (fielddef_1.hasConditionalFieldDef(channelDef)) {
             fieldDef = channelDef.condition;
-            specifiedScale = channelDef.condition.scale || {};
+            specifiedScale = channelDef.condition['scale'] || {}; // We use ['scale'] since we know that channel here has scale for sure
         }
         else if (channel === 'x') {
             fieldDef = fielddef_1.getFieldDef(encoding.x2);
@@ -35957,8 +35937,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var log = require("../../log");
 var scale_1 = require("../../scale");
-var util = require("../../util");
 var util_1 = require("../../util");
+var util = require("../../util");
 var model_1 = require("../model");
 var split_1 = require("../split");
 var range_1 = require("./range");
@@ -35999,7 +35979,7 @@ function parseUnitScaleProperty(model, property) {
                 localScaleCmpt.copyKeyFromObject(property, specifiedScale);
             }
             else {
-                var value = getDefaultValue(property, channel, fieldDef, sort, mergedScaleCmpt.get('type'), mergedScaleCmpt.get('padding'), mergedScaleCmpt.get('paddingInner'), specifiedScale.domain, config.scale);
+                var value = getDefaultValue(property, channel, fieldDef, sort, mergedScaleCmpt.get('type'), mergedScaleCmpt.get('padding'), mergedScaleCmpt.get('paddingInner'), specifiedScale.domain, model.markDef, config);
                 if (value !== undefined) {
                     localScaleCmpt.set(property, value, false);
                 }
@@ -36008,13 +35988,14 @@ function parseUnitScaleProperty(model, property) {
     });
 }
 // Note: This method is used in Voyager.
-function getDefaultValue(property, channel, fieldDef, sort, scaleType, scalePadding, scalePaddingInner, specifiedDomain, scaleConfig) {
+function getDefaultValue(property, channel, fieldDef, sort, scaleType, scalePadding, scalePaddingInner, specifiedDomain, markDef, config) {
+    var scaleConfig = config.scale;
     // If we have default rule-base, determine default value first
     switch (property) {
         case 'nice':
             return nice(scaleType, channel, fieldDef);
         case 'padding':
-            return padding(channel, scaleType, scaleConfig);
+            return padding(channel, scaleType, scaleConfig, fieldDef, markDef, config.bar);
         case 'paddingInner':
             return paddingInner(scalePadding, channel, scaleConfig);
         case 'paddingOuter':
@@ -36070,13 +36051,19 @@ function nice(scaleType, channel, fieldDef) {
     return util.contains([channel_1.X, channel_1.Y], channel); // return true for quantitative X/Y unless binned
 }
 exports.nice = nice;
-function padding(channel, scaleType, scaleConfig) {
+function padding(channel, scaleType, scaleConfig, fieldDef, markDef, barConfig) {
     if (util.contains([channel_1.X, channel_1.Y], channel)) {
         if (scale_1.isContinuousToContinuous(scaleType)) {
             if (scaleConfig.continuousPadding !== undefined) {
                 return scaleConfig.continuousPadding;
             }
-            // TODO: better default rule for bar
+            var type = markDef.type, orient = markDef.orient;
+            if (type === 'bar' && !fieldDef.bin) {
+                if ((orient === 'vertical' && channel === 'x') ||
+                    (orient === 'horizontal' && channel === 'y')) {
+                    return barConfig.continuousBandSize;
+                }
+            }
         }
         if (scaleType === scale_1.ScaleType.POINT) {
             return scaleConfig.pointPadding;
@@ -36693,9 +36680,9 @@ var multi = {
             var fieldDef = model.fieldDef(channel);
             // Binned fields should capture extents, for a range test against the raw field.
             return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
-                "[" + datum + "[" + util_1.stringValue(model.field(channel, {})) + "], " +
-                    (datum + "[" + util_1.stringValue(model.field(channel, { binSuffix: 'end' })) + "]]")) :
-                datum + "[" + util_1.stringValue(p.field) + "]";
+                "[" + datum + util_1.accessPath(model.field(channel, {})) + ", " +
+                    ("" + datum + util_1.accessPath(model.field(channel, { binSuffix: 'end' })) + "]")) :
+                "" + datum + util_1.accessPath(p.field);
         }).join(', ');
         // Only add a discrete selection to the store if a datum is present _and_
         // the interaction isn't occuring on a group mark. This guards against
@@ -36976,8 +36963,8 @@ function unitName(model) {
     var name = util_1.stringValue(model.name);
     var facet = getFacetModel(model);
     if (facet) {
-        name += (facet.facet.row ? " + '_' + facet[" + util_1.stringValue(facet.field('row')) + "]" : '')
-            + (facet.facet.column ? " + '_' + facet[" + util_1.stringValue(facet.field('column')) + "]" : '');
+        name += (facet.facet.row ? " + '_' + facet" + util_1.accessPath(facet.field('row')) : '')
+            + (facet.facet.column ? " + '_' + facet" + util_1.accessPath(facet.field('column')) : '');
     }
     return name;
 }
@@ -37067,7 +37054,7 @@ var inputBindings = {
                     value: '',
                     on: [{
                             events: selCmpt.events,
-                            update: "datum && item().mark.marktype !== 'group' ? " + datum + "[" + util_1.stringValue(p.field) + "] : null"
+                            update: "datum && item().mark.marktype !== 'group' ? " + datum + util_1.accessPath(p.field) + " : null"
                         }],
                     bind: bind[p.field] || bind[p.channel] || bind
                 });
@@ -37620,9 +37607,9 @@ var UnitModel = /** @class */ (function (_super) {
         _this.selection = {};
         _this.children = [];
         _this.initSize(tslib_1.__assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {})));
-        _this.markDef = mark_1.isMarkDef(spec.mark) ? tslib_1.__assign({}, spec.mark) : { type: spec.mark };
-        var mark = _this.markDef.type;
+        var mark = mark_1.isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
         var encoding = _this.encoding = encoding_1.normalizeEncoding(repeater_1.replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
+        _this.markDef = init_1.normalizeMarkDef(spec.mark, encoding, config);
         // calculate stack properties
         _this.stack = stack_1.stack(mark, encoding, _this.config.stack);
         _this.specifiedScales = _this.initScales(mark, encoding);
@@ -37660,9 +37647,9 @@ var UnitModel = /** @class */ (function (_super) {
                 fieldDef = channelDef;
                 specifiedScale = channelDef.scale;
             }
-            else if (fielddef_1.isConditionalDef(channelDef) && fielddef_1.isFieldDef(channelDef.condition)) {
+            else if (fielddef_1.hasConditionalFieldDef(channelDef)) {
                 fieldDef = channelDef.condition;
-                specifiedScale = channelDef.condition.scale;
+                specifiedScale = channelDef.condition['scale'];
             }
             else if (channel === 'x') {
                 fieldDef = fielddef_1.getFieldDef(encoding.x2);
@@ -37698,7 +37685,7 @@ var UnitModel = /** @class */ (function (_super) {
             var channelDef = encoding[channel];
             if (channelDef) {
                 var legend = fielddef_1.isFieldDef(channelDef) ? channelDef.legend :
-                    (channelDef.condition && fielddef_1.isFieldDef(channelDef.condition)) ? channelDef.condition.legend : null;
+                    (fielddef_1.hasConditionalFieldDef(channelDef)) ? channelDef.condition['legend'] : null;
                 if (legend !== null && legend !== false) {
                     _legend[channel] = tslib_1.__assign({}, legend);
                 }
@@ -37953,32 +37940,32 @@ function boxParams(spec, orient, kIQRScalar) {
     var _a = boxContinousAxis(spec, orient), continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis;
     var encoding = spec.encoding;
     var isMinMax = kIQRScalar === undefined;
-    var summarize = [
+    var aggregate = [
         {
-            aggregate: 'q1',
+            op: 'q1',
             field: continuousAxisChannelDef.field,
             as: 'lowerBox'
         },
         {
-            aggregate: 'q3',
+            op: 'q3',
             field: continuousAxisChannelDef.field,
             as: 'upperBox'
         },
         {
-            aggregate: 'median',
+            op: 'median',
             field: continuousAxisChannelDef.field,
             as: 'midBox'
         }
     ];
     var postAggregateCalculates = [];
     if (isMinMax) {
-        summarize.push({
-            aggregate: 'min',
+        aggregate.push({
+            op: 'min',
             field: continuousAxisChannelDef.field,
             as: 'lowerWhisker'
         });
-        summarize.push({
-            aggregate: 'max',
+        aggregate.push({
+            op: 'max',
             field: continuousAxisChannelDef.field,
             as: 'upperWhisker'
         });
@@ -38010,8 +37997,8 @@ function boxParams(spec, orient, kIQRScalar) {
         }
         if (fielddef_1.isFieldDef(channelDef)) {
             if (channelDef.aggregate && channelDef.aggregate !== exports.BOXPLOT) {
-                summarize.push({
-                    aggregate: channelDef.aggregate,
+                aggregate.push({
+                    op: channelDef.aggregate,
                     field: channelDef.field,
                     as: fielddef_1.field(channelDef)
                 });
@@ -38042,7 +38029,7 @@ function boxParams(spec, orient, kIQRScalar) {
         }
     });
     return {
-        transform: [].concat(bins, timeUnits, [{ summarize: summarize, groupby: groupby }], postAggregateCalculates),
+        transform: [].concat(bins, timeUnits, [{ aggregate: aggregate, groupby: groupby }], postAggregateCalculates),
         continuousAxisChannelDef: continuousAxisChannelDef,
         continuousAxis: continuousAxis,
         encodingWithoutContinuousAxis: encodingWithoutContinuousAxis
@@ -38433,7 +38420,7 @@ function channelHasField(encoding, channel) {
             return util_1.some(channelDef, function (fieldDef) { return !!fieldDef.field; });
         }
         else {
-            return fielddef_1.isFieldDef(channelDef) || fielddef_1.hasConditionFieldDef(channelDef);
+            return fielddef_1.isFieldDef(channelDef) || fielddef_1.hasConditionalFieldDef(channelDef);
         }
     }
     return false;
@@ -38512,7 +38499,7 @@ function fieldDefs(encoding) {
                 if (fielddef_1.isFieldDef(def)) {
                     arr.push(def);
                 }
-                else if (fielddef_1.hasConditionFieldDef(def)) {
+                else if (fielddef_1.hasConditionalFieldDef(def)) {
                     arr.push(def.condition);
                 }
             });
@@ -38560,10 +38547,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 },{}],325:[function(require,module,exports){
 "use strict";
-// utility for a field definition object
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
+// Declaration and utility for variants of a field definition object
 var aggregate_1 = require("./aggregate");
 var bin_1 = require("./bin");
 var channel_1 = require("./channel");
@@ -38582,14 +38568,14 @@ exports.isConditionalDef = isConditionalDef;
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-function hasConditionFieldDef(channelDef) {
-    return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
+function hasConditionalFieldDef(channelDef) {
+    return !!channelDef && !!channelDef.condition && !util_1.isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
-exports.hasConditionFieldDef = hasConditionFieldDef;
-function hasConditionValueDef(channelDef) {
-    return !!channelDef && !!channelDef.condition && isValueDef(channelDef.condition);
+exports.hasConditionalFieldDef = hasConditionalFieldDef;
+function hasConditionalValueDef(channelDef) {
+    return !!channelDef && !!channelDef.condition && (util_1.isArray(channelDef.condition) || isValueDef(channelDef.condition));
 }
-exports.hasConditionValueDef = hasConditionValueDef;
+exports.hasConditionalValueDef = hasConditionalValueDef;
 function isFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
@@ -38639,7 +38625,7 @@ function field(fieldDef, opt) {
         field = prefix + "_" + field;
     }
     if (opt.expr) {
-        field = opt.expr + "[" + util_1.stringValue(field) + "]";
+        field = "" + opt.expr + util_1.accessPath(field);
     }
     return field;
 }
@@ -38743,7 +38729,7 @@ function getFieldDef(channelDef) {
     if (isFieldDef(channelDef)) {
         return channelDef;
     }
-    else if (hasConditionFieldDef(channelDef)) {
+    else if (hasConditionalFieldDef(channelDef)) {
         return channelDef.condition;
     }
     return undefined;
@@ -38753,9 +38739,9 @@ exports.getFieldDef = getFieldDef;
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
 function normalize(channelDef, channel) {
-    if (util_1.isString(channelDef) || vega_util_1.isNumber(channelDef) || util_1.isBoolean(channelDef)) {
+    if (util_1.isString(channelDef) || util_1.isNumber(channelDef) || util_1.isBoolean(channelDef)) {
         var primitiveType = util_1.isString(channelDef) ? 'string' :
-            vega_util_1.isNumber(channelDef) ? 'number' : 'boolean';
+            util_1.isNumber(channelDef) ? 'number' : 'boolean';
         log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
         return { value: channelDef };
     }
@@ -38763,7 +38749,7 @@ function normalize(channelDef, channel) {
     if (isFieldDef(channelDef)) {
         return normalizeFieldDef(channelDef, channel);
     }
-    else if (hasConditionFieldDef(channelDef)) {
+    else if (hasConditionalFieldDef(channelDef)) {
         return tslib_1.__assign({}, channelDef, { 
             // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
             condition: normalizeFieldDef(channelDef.condition, channel) });
@@ -38886,7 +38872,7 @@ function isTimeFieldDef(fieldDef) {
 }
 exports.isTimeFieldDef = isTimeFieldDef;
 
-},{"./aggregate":237,"./bin":239,"./channel":240,"./log":330,"./timeunit":338,"./type":342,"./util":343,"tslib":226,"vega-util":353}],326:[function(require,module,exports){
+},{"./aggregate":237,"./bin":239,"./channel":240,"./log":330,"./timeunit":338,"./type":342,"./util":343,"tslib":226}],326:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -40348,7 +40334,7 @@ exports.containsTimeUnit = containsTimeUnit;
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 function fieldExpr(fullTimeUnit, field) {
-    var fieldRef = "datum[" + util_1.stringValue(field) + "]";
+    var fieldRef = "datum" + util_1.accessPath(field);
     var utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
     function func(timeUnit) {
         if (timeUnit === TimeUnit.QUARTER) {
@@ -40521,10 +40507,10 @@ function isTimeUnit(t) {
     return t['timeUnit'] !== undefined;
 }
 exports.isTimeUnit = isTimeUnit;
-function isSummarize(t) {
-    return t['summarize'] !== undefined;
+function isAggregate(t) {
+    return t['aggregate'] !== undefined;
 }
-exports.isSummarize = isSummarize;
+exports.isAggregate = isAggregate;
 function normalizeTransform(transform) {
     return transform.map(function (t) {
         if (isFilter(t)) {
@@ -40605,6 +40591,7 @@ exports.isString = vega_util_2.isString;
 exports.truncate = vega_util_2.truncate;
 exports.toSet = vega_util_2.toSet;
 exports.stringValue = vega_util_2.stringValue;
+exports.splitAccessPath = vega_util_2.splitAccessPath;
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -40864,6 +40851,13 @@ function titlecase(s) {
     return s.charAt(0).toUpperCase() + s.substr(1);
 }
 exports.titlecase = titlecase;
+/**
+ * Converts a path to an access path.
+ */
+function accessPath(path) {
+    return "[" + vega_util_1.splitAccessPath(path).map(vega_util_1.stringValue).join('][') + "]";
+}
+exports.accessPath = accessPath;
 
 },{"./logical":331,"json-stable-stringify":199,"vega-util":353}],344:[function(require,module,exports){
 "use strict";
@@ -40973,6 +40967,47 @@ function isSignalRefDomain(domain) {
     return false;
 }
 exports.isSignalRefDomain = isSignalRefDomain;
+var VG_MARK_CONFIG_INDEX = {
+    opacity: 1,
+    fill: 1,
+    fillOpacity: 1,
+    stroke: 1,
+    strokeWidth: 1,
+    strokeOpacity: 1,
+    strokeDash: 1,
+    strokeDashOffset: 1,
+    size: 1,
+    shape: 1,
+    interpolate: 1,
+    tension: 1,
+    orient: 1,
+    align: 1,
+    baseline: 1,
+    text: 1,
+    limit: 1,
+    dx: 1,
+    dy: 1,
+    radius: 1,
+    theta: 1,
+    angle: 1,
+    font: 1,
+    fontSize: 1,
+    fontWeight: 1,
+    fontStyle: 1
+    // commented below are vg channel that do not have mark config.
+    // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+    // cursor: 1,
+    // clip: 1,
+    // dir: 1,
+    // ellipsis: 1,
+    // endAngle: 1,
+    // path: 1,
+    // innerRadius: 1,
+    // outerRadius: 1,
+    // startAngle: 1,
+    // url: 1,
+};
+exports.VG_MARK_CONFIGS = util_1.flagKeys(VG_MARK_CONFIG_INDEX);
 
 },{"./util":343}],346:[function(require,module,exports){
 "use strict";
@@ -42292,14 +42327,23 @@ var isRegExp = function(_) {
   return Object.prototype.toString.call(_) === '[object RegExp]';
 };
 
-var key = function(fields) {
-  fields = fields ? array(fields) : fields;
+var key = function(fields, flat) {
+  if (fields) {
+    fields = flat
+      ? array(fields).map(function(f) { return f.replace(/\\(.)/g, '$1'); })
+      : array(fields);
+  }
+
   var fn = !(fields && fields.length)
     ? function() { return ''; }
     : Function('_', 'return \'\'+' +
         fields.map(function(f) {
-          return '_[' + splitAccessPath(f).map($).join('][') + ']';
+          return '_[' + (flat
+              ? $(f)
+              : splitAccessPath(f).map($).join('][')
+            ) + ']';
         }).join('+\'|\'+') + ';');
+
   return accessor(fn, fields, 'key');
 };
 
@@ -42940,14 +42984,23 @@ var isRegExp = function(_) {
   return Object.prototype.toString.call(_) === '[object RegExp]';
 };
 
-var key = function(fields) {
-  fields = fields ? array(fields) : fields;
+var key = function(fields, flat) {
+  if (fields) {
+    fields = flat
+      ? array(fields).map(function(f) { return f.replace(/\\(.)/g, '$1'); })
+      : array(fields);
+  }
+
   var fn = !(fields && fields.length)
     ? function() { return ''; }
     : Function('_', 'return \'\'+' +
         fields.map(function(f) {
-          return '_[' + splitAccessPath(f).map($).join('][') + ']';
+          return '_[' + (flat
+              ? $(f)
+              : splitAccessPath(f).map($).join('][')
+            ) + ']';
         }).join('+\'|\'+') + ';');
+
   return accessor(fn, fields, 'key');
 };
 
@@ -49794,6 +49847,9 @@ prototype$23.changes = function() {
  * @constructor
  * @param {object} params - The parameters for this operator.
  * @param {Array<string>} params.fields - The field name(s) for the key function.
+ * @param {boolean} params.flat - A boolean flag indicating if the field names
+ *  should be treated as flat property names, side-stepping nested field
+ *  lookups normally indicated by dot or bracket notation.
  */
 function Key(params) {
   Operator.call(this, null, update$3, params);
@@ -49802,7 +49858,7 @@ function Key(params) {
 inherits(Key, Operator);
 
 function update$3(_) {
-  return (this.value && !_.modified()) ? this.value : key(_.fields);
+  return (this.value && !_.modified()) ? this.value : key(_.fields, _.flat);
 }
 
 /**
@@ -60734,14 +60790,14 @@ prototype$53.transform = function(_, pulse) {
     out.encode = null;
   }
 
+  if (map && (_.modified('key') || pulse.modified(key$$1))) {
+    error$1('DataJoin does not support modified key function or fields.');
+  }
+
   if (!map) {
     pulse = pulse.addAll();
     this.value = map = fastmap().test(isExit);
     map.lookup = function(t) { return map.get(key$$1(t)); };
-  }
-
-  if (_.modified('key') || pulse.modified(key$$1)) {
-    error$1('DataJoin does not support modified key function or fields.');
   }
 
   pulse.visit(pulse.ADD, function(t) {
@@ -70384,7 +70440,7 @@ var xf = Object.freeze({
 	resolvefilter: ResolveFilter
 });
 
-var version = "3.0.6";
+var version = "3.0.7";
 
 var Default = 'default';
 
@@ -74216,8 +74272,10 @@ function compareRef(fields, orders) {
   return {$compare: fields, $order: orders};
 }
 
-function keyRef(fields) {
-  return {$key: fields};
+function keyRef(fields, flat) {
+  var ref = {$key: fields};
+  if (flat) ref.$flat = true;
+  return ref;
 }
 
 // -----
@@ -75374,20 +75432,20 @@ var parseData = function(from, group, scope) {
     if (facet.field != null) {
       dataRef = parent = ref(scope.getData(facet.data).output);
     } else {
-      key$$1 = scope.keyRef(facet.groupby);
-
       // generate facet aggregates if no direct data specification
       if (!from.data) {
         op = parseTransform(extend({
           type:    'aggregate',
           groupby: array(facet.groupby)
-        }, facet.aggregate));
-        op.params.key = key$$1;
+        }, facet.aggregate), scope);
+        op.params.key = scope.keyRef(facet.groupby);
         op.params.pulse = ref(scope.getData(facet.data).output);
         dataRef = parent = ref(scope.add(op));
       } else {
         parent = ref(scope.getData(from.data).aggregate);
       }
+
+      key$$1 = scope.keyRef(facet.groupby, true);
     }
   }
 
@@ -76735,7 +76793,7 @@ prototype$83.compareRef = function(cmp) {
     : compareRef(fields, orders);
 };
 
-prototype$83.keyRef = function(fields) {
+prototype$83.keyRef = function(fields, flat) {
   function check(_) {
     if (isSignal(_)) {
       signal = true;
@@ -76750,8 +76808,8 @@ prototype$83.keyRef = function(fields) {
   fields = array(fields).map(check);
 
   return signal
-    ? ref(this.add(Key$1({fields: fields})))
-    : keyRef(fields);
+    ? ref(this.add(Key$1({fields: fields, flat: flat})))
+    : keyRef(fields, flat);
 };
 
 prototype$83.sortRef = function(sort) {
@@ -77280,8 +77338,8 @@ function getExpression(_, ctx) {
  * Resolve a key accessor reference.
  */
 function getKey(_, ctx) {
-  var k = 'k:' + _.$key;
-  return ctx.fn[k] || (ctx.fn[k] = key(_.$key));
+  var k = 'k:' + _.$key + '_' + (!!_.$flat);
+  return ctx.fn[k] || (ctx.fn[k] = key(_.$key, _.$flat));
 }
 
 /**
@@ -78888,6 +78946,7 @@ var vega_embed_1 = require("vega-embed");
 var vega_tooltip_1 = require("vega-tooltip");
 var streaming_1 = require("./streaming");
 window['runStreamingExample'] = streaming_1.runStreamingExample;
+window['embedExample'] = embedExample;
 var loader = vega_embed_1.vega.loader({
     baseURL: BASEURL
 });
@@ -78912,17 +78971,22 @@ function renderExample($target, specText) {
         .append('code').attr('class', 'json').text(textClean);
     hljs.highlightBlock(code.node());
     var spec = JSON.parse(specText);
-    vega_embed_1.default(vis.node(), spec, {
+    embedExample(vis.node(), spec, true, $target.classed('tooltip'));
+}
+function embedExample($target, spec, actions, tooltip) {
+    if (actions === void 0) { actions = true; }
+    if (tooltip === void 0) { tooltip = false; }
+    vega_embed_1.default($target, spec, {
         mode: 'vega-lite',
         renderer: 'svg',
-        actions: {
+        actions: actions ? {
             source: false,
             export: false
-        },
+        } : false,
         loader: loader
     }).then(function (result) {
-        if ($target.classed('tooltip')) {
-            vega_tooltip_1.vegaLite(result.view, JSON.parse(specText));
+        if (tooltip) {
+            vega_tooltip_1.vegaLite(result.view, spec);
         }
     }).catch(console.error);
 }
