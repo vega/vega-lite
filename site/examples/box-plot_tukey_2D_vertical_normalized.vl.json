@@ -1,0 +1,133 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {
+    "url": "data/population.json"
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "q1",
+          "field": "people",
+          "as": "lowerBox"
+        },
+        {
+          "op": "q3",
+          "field": "people",
+          "as": "upperBox"
+        },
+        {
+          "op": "median",
+          "field": "people",
+          "as": "midBox"
+        }
+      ],
+      "groupby": [
+        "age"
+      ]
+    },
+    {
+      "calculate": "datum.upperBox - datum.lowerBox",
+      "as": "IQR"
+    },
+    {
+      "calculate": "datum.lowerBox - datum.IQR * 1.5",
+      "as": "lowerWhisker"
+    },
+    {
+      "calculate": "datum.upperBox + datum.IQR * 1.5",
+      "as": "upperWhisker"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "style": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "field": "lowerWhisker",
+          "type": "quantitative",
+          "axis": {
+            "title": "population"
+          }
+        },
+        "y2": {
+          "field": "lowerBox",
+          "type": "quantitative"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "style": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "field": "upperBox",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "upperWhisker",
+          "type": "quantitative"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "style": "box"
+      },
+      "encoding": {
+        "y": {
+          "field": "lowerBox",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "upperBox",
+          "type": "quantitative"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "size": {
+          "value": 5
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "style": "boxMid"
+      },
+      "encoding": {
+        "y": {
+          "field": "midBox",
+          "type": "quantitative"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "color": {
+          "value": "white"
+        },
+        "size": {
+          "value": 5
+        }
+      }
+    }
+  ]
+}
