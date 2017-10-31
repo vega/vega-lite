@@ -37,12 +37,12 @@ images:
     Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). The Vega-Lite compiler **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting. Moreover, Vega-Lite specifications can be **composed** into layered and multi-view displays, and made **interactive with selections**.
   </span>
   <span class="lead-buttons">
-    [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{site.baseurl}}/tutorials/getting_started.html)
+    [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{ site.baseurl }}/tutorials/getting_started.html)
     [Try online](https://vega.github.io/editor/#/custom/vega-lite)
   </span>
 </span>
 
-Read our [introduction article to Vega-Lite v1 on Medium](https://medium.com/p/438f9215f09e), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
+Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/).
 
 ## Example
 
@@ -61,7 +61,7 @@ Read our [introduction article to Vega-Lite v1 on Medium](https://medium.com/p/4
     <div class="slide video-demo">
       <div class="vl-example" data-name="selection_layer_bar_month"></div>
       <video loop>
-        <source src="{{site.baseurl}}/site/static/moving-avg.mp4" type="video/mp4">
+        <source src="{{ site.baseurl }}/site/static/moving-avg.mp4" type="video/mp4">
       </video>
     </div>
   </div>
