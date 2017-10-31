@@ -11,7 +11,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 ## Bindings for programming languages
 
 * [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
-* [Vega for Jupyter notebooks](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts. Will be replaced by [Jupyter Vega](https://github.com/altair-viz/jupyter_vega) soon.
+* [Vega for Jupyter notebooks](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts. Soon, Vega-Lite and Vega will be integrated into JupyterLab.
 * [Vega-Lite for Julia](https://github.com/fredo-dedup/VegaLite.jl)
 * [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 * [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
