@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Drag out a rectangular brush to highlight points.",
+  "data": {"url": "data/cars.json"},
+  "selection": {
+    "brush": {
+      "type": "interval"
+    }
+  },
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "color": {
+      "condition": {"selection": "brush", "field": "Cylinders", "type": "ordinal"},
+      "value": "grey"
+    }
+  }
+}
