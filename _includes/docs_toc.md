@@ -236,7 +236,7 @@
     - [Title Configuration]({{site.baseurl}}/docs/config.html#title-config)
     - [View Configuration]({{site.baseurl}}/docs/config.html#view-configuration)
 - [Parameter Types]({{site.baseurl}}/docs/types.html)
-    - [Parameter Type Reference]({{site.baseurl}}/docs/types.html#parameter-type-reference)
+    - [Parameter Type Reference]({{site.baseurl}}/docs/types.html#reference)
     - [Literal Values]({{site.baseurl}}/docs/types.html#literal-values)
 - [Tooltip]({{site.baseurl}}/docs/tooltip.html)
     - [Documentation Overview]({{site.baseurl}}/docs/tooltip.html#documentation-overview)

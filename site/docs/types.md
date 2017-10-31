@@ -7,7 +7,8 @@ permalink: /docs/types.html
 
 Reference documentation for common parameter **types** expected by Vega specification properties.
 
-## <a name="reference"></a>Parameter Type Reference
+{:#reference}
+## Parameter Type Reference
 
 - [Any](#Any)
 - [Array](#Array)
@@ -82,5 +83,3 @@ A DateTime object (in [filter transform](filter.html), [scale domain](scale.html
 {% include table.html props="year,quarter,month,date,day,hours,minutes,seconds,milliseconds" source="DateTime" %}
 
 For example `{"year": 2006, "month": "jan", "date": 1}` represents _Jan 1, 2006_.
-
-[Back to top](#reference)
