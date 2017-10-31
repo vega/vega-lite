@@ -72,9 +72,10 @@ Then you can use the following span tag to include the specification (e.g., for 
 Before adding a new example, you might want to search inside `examples/` folder to see if there are other redundant examples that you can reuse.
 
 To name the example file:
-- Please begin with mark type and follow by some description for a static single view example.
+- Please begin with mark type and follow by some description for a static single view example.  For stacked marks, add `stacked_` prefix.
 - For composite views, please begin the file with the operator name (e.g., `layer`).
-- Finally, please make sure any interactive example begins with `interactive`.
+- For interactive example, begin with either `interactive_` or `selection_`.
+- For examples that are only for regression test, begin with `test_`.
 
 After adding a new example, make sure to run `yarn run build:example <examplename>` (e.g., `yarn run build:example bar_1d`) or `yarn run build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 

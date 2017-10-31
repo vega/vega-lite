@@ -158,4 +158,4 @@ __See also:__ [Axis Title Properties](#title) and [`guide-title` style config](m
 
 Setting axis config's `domain` and `grid` to `false` hides all axis domain lines and grids.
 
-<div class="vl-example" data-name="scatter_no_axis_domain_grid"></div> -->
+<div class="vl-example" data-name="point_no_axis_domain_grid"></div> -->

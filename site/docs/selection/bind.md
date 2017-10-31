@@ -30,8 +30,8 @@ With interval selections, the `bind` property can be set to the value `"scales"`
 
 In multi-view displays, binding shared scales will keep the views synchronized. For example, below we explicitly share the `x` scale between the two vertically concatenated views. Panning/zooming the bound interval selection in the first view also updates the second view.
 
-<div class="vl-example" data-name="panzoom_vconcat_shared"></div>
+<div class="vl-example" data-name="interactive_panzoom_vconcat_shared"></div>
 
 A similar setup can be used to pan and zoom the cells of a scatterplot matrix:
 
-<div class="vl-example" data-name="panzoom_splom"></div>
+<div class="vl-example" data-name="interactive_panzoom_splom"></div>

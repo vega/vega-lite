@@ -152,6 +152,9 @@ export function isAxisProperty(prop: string): prop is keyof Axis {
 
 export const VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
 
+// Export for dependent projects
+export const AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
+
 export interface AxisConfigMixins {
   /**
    * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config).

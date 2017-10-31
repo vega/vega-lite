@@ -10,7 +10,7 @@
     {% seo %}
 
     <script>
-      var BASEURL = "{{ site.baseurl |absolute_url }}";
+      var BASEURL = window.location.origin + "{{site.baseurl}}";
     </script>
 
     <link rel="stylesheet" href="{{ site.baseurl }}/site/static/syntax.css">

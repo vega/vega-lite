@@ -55,7 +55,7 @@ Mapping binned values and its count to a `bar` mark produces a histogram.
 
 You can use binning to discretize color scales. Vega-Lite automatically creates legends with range labels.
 
-<div class="vl-example" data-name="scatter_binned_color"></div>
+<div class="vl-example" data-name="point_binned_color"></div>
 
 
 {:#transform}

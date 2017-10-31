@@ -40,7 +40,7 @@ You can also use `text` marks as labels for other marks and set offset (`dx` or 
 
 Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can make a colored scatterplot with text marks showing the initial character of its origin, instead of [`point`](point.html#color) marks.
 
-<span class="vl-example" data-name="text_scatter_colored"></span>
+<span class="vl-example" data-name="text_scatterplot_colored"></span>
 
 
 {:#config}

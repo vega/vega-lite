@@ -28,7 +28,7 @@ Mapping a field to either only `x` or only `y` of `point` marks creates a **dot 
 
 Mapping fields to both the `x` and `y` channels creates a scatter plot.
 
-<span class="vl-example" data-name="scatter"></span>
+<span class="vl-example" data-name="point_2d"></span>
 
 
 By default, `point` marks only have borders and are transparent inside.  You can create a filled point by setting `filled` to `true`.
@@ -39,7 +39,7 @@ By default, `point` marks only have borders and are transparent inside.  You can
 
 By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
-<span class="vl-example" data-name="scatter_bubble"></span>
+<span class="vl-example" data-name="point_bubble"></span>
 
 {:#color}
 
@@ -48,7 +48,7 @@ By mapping a third field to the `size` channel in the [scatter plot](#scatter), 
 Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
 For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
-<span class="vl-example" data-name="scatter_colored_with_shape"></span>
+<span class="vl-example" data-name="point_color_with_shape"></span>
 
 {:#config}
 ## Point Config

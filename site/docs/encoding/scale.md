@@ -112,17 +112,17 @@ By default, Vega-Lite assigns different [default color schemes](#range-config) b
 
 -  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the `"category20"` scheme by default).
 
-<div class="vl-example" data-name="scatter_color"></div>
+<div class="vl-example" data-name="point_color"></div>
 
 - _Ordinal_ fields use the `"ordinal"` [pre-defined named color range](#range-config) (the `"blues"` color scheme by default).
 
-<div class="vl-example" data-name="scatter_color_ordinal"></div>
+<div class="vl-example" data-name="point_color_ordinal"></div>
 
 - _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the `"viridis"` scheme by default) for rect marks and `"ramp"` (the `"blues"` scheme by default) for other marks.
 
 <div class="vl-example" data-name="rect_heatmap"></div>
 
-<div class="vl-example" data-name="scatter_color_quantitative"></div>
+<div class="vl-example" data-name="point_color_quantitative"></div>
 
 There are multiple ways to customize the scale range for the color encoding channel:
 
@@ -142,7 +142,7 @@ The `scheme` property can also be a __scheme parameter object__, which contain t
 
 2) Setting the `range` property to an array of valid CSS color strings.
 
-<div class="vl-example" data-name="scatter_color_custom"></div>
+<div class="vl-example" data-name="point_color_custom"></div>
 
 3) Change the default color schemes using the [range config](#range-config).
 
@@ -187,7 +187,7 @@ A log scale with a positive domain has a well-defined behavior for positive valu
 
 __Example:__ The following plot has a logarithmic y-scale.
 
-<div class="vl-example" data-name="scatter_log"></div>
+<div class="vl-example" data-name="point_log"></div>
 
 <!-- {% include table.html props="base" source="Scale" %} -->
 
@@ -218,7 +218,7 @@ If `range` is specified, the number of elements in `range` should match with the
 
 __Example__
 
-<div class="vl-example" data-name="diverging_color_points"></div>
+<div class="vl-example" data-name="point_diverging_color"></div>
 
 {:#discrete}
 ## Discrete Scales
@@ -232,7 +232,7 @@ Ordinal scales (`"ordinal"`) have a discrete domain and range. These scales func
 
 By default, Vega-Lite automatically creates ordinal scales for `color` and `shape` channels.  For example, the following plot implicitly has two ordinal scales, which map the values of the field `"Origin"` to a set of `color`s and a set of `shape`s.
 
-<div class="vl-example" data-name="scatter_colored_with_shape"></div>
+<div class="vl-example" data-name="point_color_with_shape"></div>
 
 The [`range`](#range) of an ordinal scale can be an array of desired output values, which are directly mapped to elements in the [`domain`](#domain).  Both `domain` and `range` array can be re-ordered to specify the order and mapping between the domain and the output range. For ordinal color scales, a custom [`scheme`](#scheme) can be set as well.
 
@@ -289,7 +289,7 @@ Vega-Lite _always_ uses binned linear scales with binned quantitative fields on 
 
 For example, the following plot has a binned field on the `size` channel.
 
-<span class="vl-example" data-name="scatter_binned_size"></span>
+<span class="vl-example" data-name="point_binned_size"></span>
 
 
 {:#bin-ordinal}
@@ -300,7 +300,7 @@ Vega-Lite _always_ uses binned ordinal scales with binned quantitative fields on
 
 For example, the following plot has a binned field on the `color` channel.
 
-<span class="vl-example" data-name="scatter_binned_color"></span>
+<span class="vl-example" data-name="point_binned_color"></span>
 
 Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
 

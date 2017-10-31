@@ -2,15 +2,24 @@
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "width": 21,
-    "height": 21,
+    "width": 200,
+    "height": 200,
     "style": "cell",
     "data": [
         {
             "name": "source_0",
-            "values": [
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number",
+                    "Miles_per_Gallon": "number"
+                }
+            },
+            "transform": [
                 {
-                    "a": 2
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
             ]
         }
@@ -28,21 +37,134 @@
             "encode": {
                 "update": {
                     "x": {
-                        "signal": "width",
-                        "mult": 0.5
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
                     "y": {
-                        "signal": "height",
-                        "mult": 0.5
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
                     },
                     "stroke": {
-                        "value": "purple"
+                        "scale": "color",
+                        "field": "Origin"
                     },
                     "fill": {
                         "value": "transparent"
                     },
                     "opacity": {
                         "value": 0.7
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "title": "Horsepower",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "Miles_per_Gallon",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "Origin",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
                     }
                 }
             }

@@ -26,7 +26,7 @@ to map a constant value to an [encoding channel](encoding.html#channels).
 
 For example, you can set `color` and `shape` of a scatter plot to constant values.
 
-<span class="vl-example" data-name="scatter_color_shape_constant"></span>
+<span class="vl-example" data-name="point_color_shape_constant"></span>
 
 
 {:#ex-bar-size}

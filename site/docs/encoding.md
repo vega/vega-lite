@@ -220,7 +220,7 @@ For [aggregated plots](aggregate.html), all unaggregated fields encoded are used
 
 Here is a scatterplot showing average horsepower and displacement for cars from different origins. We map `Origin` to `detail` channel to use the field as a group-by field without mapping it to visual properties of the marks.
 
-<div class="vl-example" data-name="scatter_aggregate_detail"></div>
+<div class="vl-example" data-name="point_aggregate_detail"></div>
 
 
 Here is a line chart showing stock prices of 5 tech companies over time.
