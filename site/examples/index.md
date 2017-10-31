@@ -6,7 +6,7 @@ permalink: /examples/
 ---
 
 This page shows example specifications for different types of graphics.
-To see example code for embedding visualizations in a webpage, please read the [embed dcoumentation](../usage/embed.html).
+To see example code for embedding visualizations in a webpage, please read the [embed documentation](../usage/embed.html).
 
 
 * TOC
