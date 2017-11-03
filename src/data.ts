@@ -13,12 +13,6 @@ export interface DataFormatBase {
    * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
    */
   parse?: 'auto' | object;
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
-  type?: DataFormatType;
 }
 
 export interface CsvDataFormat extends DataFormatBase {
