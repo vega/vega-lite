@@ -20,12 +20,10 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   model.parseScale();
   const selCmpts = selection.parseUnitSelection(model, {
     "one": {
-      "type": "single",
-      "zoom": true
+      "type": "single"
     },
     "two": {
-      "type": "multi",
-      "zoom": true
+      "type": "multi"
     },
     "three": {
       "type": "interval",
@@ -42,7 +40,10 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
       "type": "interval",
       "bind": "scales"
     },
-    "seven": {"type": "interval", "zoom": null}
+    "seven": {
+      "type": "interval",
+      "zoom": null
+    }
   });
 
   return {model, selCmpts};
