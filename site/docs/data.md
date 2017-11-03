@@ -75,7 +75,7 @@ For example, to create a data source named `myData`, use the following data
 
 The format object describes the data format and additional parsing instructions.
 
-{% include table.html props="type,parse" source="DataFormatBase" %}
+{% include table.html props="type,parse" source="CsvDataFormat" %}
 
 ### json
 
