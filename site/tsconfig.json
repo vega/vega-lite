@@ -6,6 +6,8 @@
     "isolatedModules": false,
     "declaration": true,
     "noImplicitAny": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "removeComments": false,
     "preserveConstEnums": true,
