@@ -90,7 +90,7 @@ export function parseLayerAxis(model: LayerModel) {
             // Change axis orient if the number do not match
             const oppositeOrient = OPPOSITE_ORIENT[orient];
             if (axisCount[orient] > axisCount[oppositeOrient]) {
-              axisComponent.main.set('orient', oppositeOrient,  false);
+              axisComponent.main.set('orient', oppositeOrient, false);
             }
           }
           axisCount[orient]++;

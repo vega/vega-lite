@@ -310,7 +310,7 @@ export abstract class Model {
         if (layoutHeader[headerType]) {
           for (const header of layoutHeader[headerType]) {
             const headerGroup = getHeaderGroup(this, channel, headerType, layoutHeader, header);
-            if (headerGroup)  {
+            if (headerGroup) {
               headerMarks.push(headerGroup);
             }
           }
@@ -542,7 +542,7 @@ export abstract class Model {
     if (localScaleComponent && !localScaleComponent.merged) {
       return localScaleComponent;
     }
-    return  (this.parent ? this.parent.getScaleComponent(channel) : undefined);
+    return (this.parent ? this.parent.getScaleComponent(channel) : undefined);
   }
 
   /**

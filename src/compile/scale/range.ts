@@ -39,7 +39,7 @@ export function parseScaleRange(model: Model) {
 }
 
 function parseUnitScaleRange(model: UnitModel) {
-  const  localScaleComponents: ScaleComponentIndex = model.component.scales;
+  const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
   SCALE_CHANNELS.forEach((channel: ScaleChannel) => {

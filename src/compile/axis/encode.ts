@@ -25,7 +25,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
-    labelsSpec.text =  {
+    labelsSpec.text = {
       signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   }
@@ -74,7 +74,7 @@ export function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign {
   if (angle > 0) {
     if (angle % 360 > 180) {
       return orient === 'top' ? 'left' : 'right';
-    }  else if (angle % 360 < 180) {
+    } else if (angle % 360 < 180) {
       return orient === 'top' ? 'right': 'left';
     }
   } else if (angle < 0) {

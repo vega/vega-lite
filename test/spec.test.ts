@@ -521,7 +521,7 @@ describe('normalize()', function () {
   });
 });
 
-describe('normalizeRangedUnitSpec',  () => {
+describe('normalizeRangedUnitSpec', () => {
   it('should convert y2 -> y if there is no y in the encoding', function() {
     const spec: Spec = {
       "data": {"url": "data/population.json"},

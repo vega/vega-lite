@@ -10,7 +10,7 @@ import {TransformCompiler} from './transforms';
 
 
 const ANCHOR = '_zoom_anchor';
-const DELTA  = '_zoom_delta';
+const DELTA = '_zoom_delta';
 
 const zoom:TransformCompiler = {
   has: function(selCmpt) {
@@ -73,7 +73,7 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleCh
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt.get('type');
   const base = hasScales ? domain(model, channel) : signal.name;
-  const delta  = name + DELTA;
+  const delta = name + DELTA;
   const anchor = `${name}${ANCHOR}.${channel}`;
   const zoomFn = !hasScales ? 'zoomLinear' :
     scaleType === 'log' ? 'zoomLog' :
