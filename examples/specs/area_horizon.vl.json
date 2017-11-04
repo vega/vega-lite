@@ -18,13 +18,7 @@
     ]
   },
   "layer": [{
-    "transform": [
-      {
-        "calculate": "if(datum.y <= 50, datum.y, 50)",
-        "as": "ny"
-      }
-    ],
-    "mark": {"type": "area", "clip": true},
+    "mark": {"type": "area", "clip": true, "orient": "vertical"},
     "encoding": {
       "x": {
         "field": "x", "type": "quantitative",
@@ -43,7 +37,7 @@
         "as": "ny"
       }
     ],
-    "mark": {"type": "area", "clip": true},
+    "mark": {"type": "area", "clip": true, "orient": "vertical"},
     "encoding": {
       "x": {
         "field": "x", "type": "quantitative"

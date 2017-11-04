@@ -107,11 +107,6 @@
                     "as": "y"
                 },
                 {
-                    "type": "formula",
-                    "expr": "if(datum.y <= 50, datum.y, 50)",
-                    "as": "ny"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                 }
