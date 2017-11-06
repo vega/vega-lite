@@ -1,24 +1,10 @@
 {
+  "extends": "../tsconfig",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "isolatedModules": false,
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "preserveConstEnums": true,
-    "pretty": true,
-    "removeComments": false,
-    "strictFunctionTypes": true,
-    "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true
+    "forceConsistentCasingInFileNames": false
   },
   "include": [
     "../typings/*.d.ts",

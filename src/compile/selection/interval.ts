@@ -106,7 +106,7 @@ const interval:SelectionCompiler = {
       return marks;
     }
 
-    const update = {
+    const update: any = {
       x: xi !== null ? {signal: `${name}_x[0]`} : {value: 0},
       y: yi !== null ? {signal: `${name}_y[0]`} : {value: 0},
       x2: xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
@@ -118,12 +118,12 @@ const interval:SelectionCompiler = {
     // this based on the `unit` property. Hide the brush mark if it corresponds
     // to a unit different from the one in the store.
     if (selCmpt.resolve === 'global') {
-      keys(update).forEach(function(key) {
+      for (const key of keys(update)) {
         update[key] = [{
           test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
           ...update[key]
         }, {value: 0}];
-      });
+      }
     }
 
     // Two brush marks ensure that fill colors and other aesthetic choices do

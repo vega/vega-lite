@@ -51,7 +51,7 @@ export class AggregateNode extends DataFlowNode {
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict of aggregation functions and names to use
    */
-  constructor(private dimensions: StringSet, private measures: Dict<Dict<string>>) {
+  constructor(private dimensions: StringSet, private measures: Dict<{[key in AggregateOp]?: string}>) {
     super();
   }
 
@@ -162,13 +162,14 @@ export class AggregateNode extends DataFlowNode {
     const ops: AggregateOp[] = [];
     const fields: string[] = [];
     const as: string[] = [];
-    keys(this.measures).forEach(field => {
-      keys(this.measures[field]).forEach((op: AggregateOp) => {
+
+    for (const field of keys(this.measures)) {
+      for (const op of keys(this.measures[field])) {
         as.push(this.measures[field][op]);
         ops.push(op);
         fields.push(field);
-      });
-    });
+      }
+    }
 
     const result: VgAggregateTransform = {
       type: 'aggregate',

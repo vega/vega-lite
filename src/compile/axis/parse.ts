@@ -53,7 +53,7 @@ export function parseLayerAxis(model: LayerModel) {
   for (const child of model.children) {
     child.parseAxisAndHeader();
 
-    keys(child.component.axes).forEach((channel: PositionScaleChannel) => {
+    for (const channel of keys(child.component.axes)) {
       resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
       if (resolve.axis[channel] === 'shared') {
         // If the resolve says shared (and has not been overridden)
@@ -68,11 +68,11 @@ export function parseLayerAxis(model: LayerModel) {
           delete axes[channel];
         }
       }
-    });
+    }
   }
 
   // Move axes to layer's axis component and merge shared axes
-  ['x', 'y'].forEach((channel: PositionScaleChannel) => {
+  for (const channel of ['x', 'y']) {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis
@@ -84,7 +84,7 @@ export function parseLayerAxis(model: LayerModel) {
         axes[channel] = (axes[channel] || []).concat(child.component.axes[channel]);
 
         // Automatically adjust orient
-        child.component.axes[channel].forEach(axisComponent => {
+        for (const axisComponent of child.component.axes[channel]) {
           const {value: orient, explicit} = axisComponent.main.getWithExplicit('orient');
           if (axisCount[orient] > 0 && !explicit) {
             // Change axis orient if the number do not match
@@ -96,13 +96,13 @@ export function parseLayerAxis(model: LayerModel) {
           axisCount[orient]++;
 
           // TODO(https://github.com/vega/vega-lite/issues/2634): automaticaly add extra offset?
-        });
+        }
       }
 
       // After merging, make sure to remove axes from child
       delete child.component.axes[channel];
     }
-  });
+  }
 }
 
 function mergeAxisComponents(mergedAxisCmpts: AxisComponent[], childAxisCmpts: AxisComponent[]): AxisComponent[] {

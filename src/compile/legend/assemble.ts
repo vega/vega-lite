@@ -10,7 +10,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
   const legendByDomain: {[domainHash: string]: LegendComponent[]} = {};
 
-  keys(legendComponentIndex).forEach((channel: NonPositionScaleChannel) => {
+  for (const channel of keys(legendComponentIndex)) {
     const scaleComponent = model.getScaleComponent(channel);
     const domainHash = stringify(scaleComponent.domains);
     if (legendByDomain[domainHash]) {
@@ -25,7 +25,7 @@ export function assembleLegends(model: Model): VgLegend[] {
     } else {
       legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
     }
-  });
+  }
 
   return flatten(vals(legendByDomain)).map((legendCmpt: LegendComponent) => legendCmpt.combine());
 }

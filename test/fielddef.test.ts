@@ -81,47 +81,47 @@ describe('fieldDef', () => {
   describe('channelCompatability', () => {
     describe('row/column', () => {
       it('is incompatible with continuous field', () => {
-        ['row', 'column'].forEach((channel:Channel) => {
+        for (const channel of ['row', 'column'] as Channel[]) {
           assert(!channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
-        });
+        }
       });
       it('is compatible with discrete field', () => {
-        ['row', 'column'].forEach((channel:Channel) => {
+        for (const channel of ['row', 'column'] as Channel[]) {
           assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
-        });
+        }
       });
     });
 
     describe('x/y/color/text/detail', () => {
       it('is compatible with continuous field', () => {
-        ['x', 'y', 'color', 'text', 'detail'].forEach((channel:Channel) => {
+        for (const channel of ['x', 'y', 'color', 'text', 'detail'] as Channel[]) {
           assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
-        });
+        }
       });
       it('is compatible with discrete field', () => {
-        ['x', 'y', 'color', 'text', 'detail'].forEach((channel:Channel) => {
+        for (const channel of ['x', 'y', 'color', 'text', 'detail'] as Channel[]) {
           assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
-        });
+        }
       });
     });
 
     describe('opacity/size/x2/y2', () => {
       it('is compatible with continuous field', () => {
-        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+        for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
           assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
-        });
+        }
       });
 
       it('is compatible with binned field', () => {
-        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+        for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
           assert(channelCompatibility({bin: true, field: 'a', type: 'quantitative'}, channel).compatible);
-        });
+        }
       });
 
       it('is incompatible with discrete field', () => {
-        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+        for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
           assert(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
-        });
+        }
       });
     });
 

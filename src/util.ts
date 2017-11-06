@@ -17,11 +17,11 @@ export {isArray, isObject, isNumber, isString, truncate, toSet, stringValue, spl
  */
 export function pick(obj: object, props: string[]) {
   const copy = {};
-  props.forEach((prop) => {
+  for (const prop of props) {
     if (obj.hasOwnProperty(prop)) {
       copy[prop] = obj[prop];
     }
-  });
+  }
   return copy;
 }
 
@@ -31,9 +31,9 @@ export function pick(obj: object, props: string[]) {
  */
 export function omit(obj: object, props: string[]) {
   const copy = duplicate(obj);
-  props.forEach((prop) => {
+  for (const prop of props) {
     delete copy[prop];
-  });
+  }
   return copy;
 }
 
@@ -201,7 +201,8 @@ export function differArray<T>(array: T[], other: T[]) {
   return false;
 }
 
-export const keys = Object.keys;
+// This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
+export const keys = Object.keys as <T>(o: T) => (keyof T)[];
 
 export function vals<T>(x: {[key: string]: T}): T[] {
   const _vals: T[] = [];
