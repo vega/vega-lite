@@ -5,7 +5,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "declaration": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "inlineSourceMap": true,
     "inlineSources": true,
     "isolatedModules": false,
