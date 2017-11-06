@@ -811,7 +811,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -888,7 +888,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
           "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
@@ -1586,7 +1586,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
           "$ref": "#/definitions/Header",
@@ -1652,7 +1652,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1710,7 +1710,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1797,7 +1797,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
           "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
@@ -3584,7 +3584,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder",
@@ -3675,7 +3675,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.\nMake sure you use proper escape characters if dots or brackets are part of the field name.\nYou can find details about escaping in the [field docs](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
           "$ref": "#/definitions/Scale",
