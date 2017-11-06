@@ -55,7 +55,7 @@ export namespace TimeUnit {
 
 export type LocalSingleTimeUnit =
   typeof TimeUnit.YEAR |
-  typeof TimeUnit.QUARTER  |
+  typeof TimeUnit.QUARTER |
   typeof TimeUnit.MONTH |
   typeof TimeUnit.DAY |
   typeof TimeUnit.DATE |
@@ -286,7 +286,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef =  `datum${accessPath(field)}`;
+  const fieldRef = `datum${accessPath(field)}`;
 
   const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
   function func(timeUnit: TimeUnit) {

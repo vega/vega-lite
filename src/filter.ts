@@ -152,7 +152,7 @@ export function fieldFilterExpression(filter: FieldFilter, useInRange=true) {
     const lower = filter.range[0];
     const upper = filter.range[1];
 
-    if (lower !== null &&  upper !== null && useInRange) {
+    if (lower !== null && upper !== null && useInRange) {
       return 'inrange(' + fieldExpr + ', [' +
         valueExpr(lower, filter.timeUnit) + ', ' +
         valueExpr(upper, filter.timeUnit) + '])';

@@ -16,7 +16,7 @@ const STACK_OFFSET_INDEX: Flag<StackOffset> = {
   normalize: 1
 };
 
-export function isStackOffset(stack: string): stack  is StackOffset {
+export function isStackOffset(stack: string): stack is StackOffset {
   return !!STACK_OFFSET_INDEX[stack];
 }
 

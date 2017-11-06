@@ -100,7 +100,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   for (const child of model.children) {
     if (property === 'range') {
       parseScaleRange(child);
-    }  else {
+    } else {
       parseScaleProperty(child, property);
     }
   }
@@ -167,7 +167,7 @@ export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: Sca
   return undefined;
 }
 
-export function paddingInner(padding: number, channel: Channel,  scaleConfig: ScaleConfig) {
+export function paddingInner(padding: number, channel: Channel, scaleConfig: ScaleConfig) {
   if (padding !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
     return undefined;

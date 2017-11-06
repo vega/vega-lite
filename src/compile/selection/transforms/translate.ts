@@ -9,7 +9,7 @@ import {TransformCompiler} from './transforms';
 
 
 const ANCHOR = '_translate_anchor';
-const DELTA  = '_translate_delta';
+const DELTA = '_translate_delta';
 
 const translate:TransformCompiler = {
   has: function(selCmpt) {
@@ -69,7 +69,7 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleCh
     return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
   })[0];
   const anchor = name + ANCHOR;
-  const delta  = name + DELTA;
+  const delta = name + DELTA;
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt.get('type');

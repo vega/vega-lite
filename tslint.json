@@ -43,7 +43,7 @@
     "no-extra-boolean-cast": true,
     "no-inferrable-types": [true, "ignore-params"],
     "no-internal-module": true,
-    // TODO: enable "no-multi-spaces": true,
+    "no-multi-spaces": true,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
     "no-string-literal": false,

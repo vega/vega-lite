@@ -104,7 +104,7 @@ export class FacetModel extends ModelWithField {
     if (this.channelHasField(channel)) {
       const fieldDef = this.facet[channel];
       const header = fieldDef.header || {};
-      let title = header.title !== undefined ?  header.title : fieldDefTitle(fieldDef, this.config);
+      let title = header.title !== undefined ? header.title : fieldDefTitle(fieldDef, this.config);
 
       if (this.child.component.layoutHeaders[channel].title) {
         // merge title with child to produce "Title / Subtitle / Sub-subtitle"

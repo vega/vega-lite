@@ -53,7 +53,7 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
+export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end', offset?: number) {
   const binSuffix = side === 'start' ? undefined : 'end';
   return fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
 }

@@ -24,8 +24,8 @@ describe('Toggle Selection Transform', function() {
     },
     "three": {"type": "multi", "toggle": false},
     "four": {"type": "multi", "toggle": null},
-    "five": {"type": "single", "toggle": true},
-    "six": {"type": "interval", "toggle": true}
+    "five": {"type": "single"},
+    "six": {"type": "interval"}
   });
 
   it('identifies transform invocation', function() {

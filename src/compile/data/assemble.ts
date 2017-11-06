@@ -53,7 +53,7 @@ function makeWalkTree(data: VgData[]) {
     }
 
     if (node instanceof ParseNode) {
-      if (node.parent instanceof SourceNode && !dataSource.source)  {
+      if (node.parent instanceof SourceNode && !dataSource.source) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
           ...dataSource.format || {},

@@ -9,7 +9,9 @@ pushd ../schema/vega-lite/
 git checkout master
 git pull
 
+rm -f v$version.json
 cp ../../vega-lite/build/vega-lite-schema.json v$version.json
+echo "Copied schema to v$version.json"
 
 prefix=$version
 while echo "$prefix" | grep -q '\.'; do

@@ -347,7 +347,7 @@ function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, AnyMark>, 
     }
 
     const overlayConfig: OverlayConfig = config && config.overlay;
-    const overlayWithLine = overlayConfig  && spec.mark === AREA &&
+    const overlayWithLine = overlayConfig && spec.mark === AREA &&
       contains(['linepoint', 'line'], overlayConfig.area);
     const overlayWithPoint = overlayConfig && (
       (overlayConfig.line && spec.mark === LINE) ||

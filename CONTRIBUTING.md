@@ -159,7 +159,7 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 You can see if specific lines are covered in the unit test by running `open coverage/index.html`
 and browsing through the report.
 
-A lot of linting errors can be fixed automatically by running `npm run lint -- --fix`.
+A lot of linting errors can be fixed automatically by running `npm run lint --fix`.
 
 ### Watch tasks
 
@@ -182,7 +182,7 @@ If you only want subset of these actions, you can use:
 
 #### Fast iteration testing
 
-To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
+To quickly run tests without long compile times, run `npm run tsc -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
 
 ### Website
 

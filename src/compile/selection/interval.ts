@@ -173,7 +173,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   const scaleStr = stringValue(scaleName);
   const scale = model.getScaleComponent(channel);
   const scaleType = scale ? scale.get('type') : undefined;
-  const size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
+  const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
   const on = events(selCmpt, function(def: any[], evt: VgEventStream) {

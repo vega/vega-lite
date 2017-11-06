@@ -50,11 +50,20 @@ export interface BoxPlotConfig extends MarkConfig {
 }
 
 export interface BoxPlotConfigMixins {
-  /** Box Config */
+  /**
+   * Box Config
+   * @hide
+   */
   box?: BoxPlotConfig;
 
+  /**
+   * @hide
+   */
   boxWhisker?: MarkConfig;
 
+  /**
+   * @hide
+   */
   boxMid?: MarkConfig;
 }
 

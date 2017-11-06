@@ -19,7 +19,7 @@ import {forEachTransform} from './transforms/transforms';
 
 
 export const STORE = '_store';
-export const TUPLE  = '_tuple';
+export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 
@@ -346,7 +346,7 @@ export function positionalProjections(selCmpt: SelectionComponent) {
 
   selCmpt.project.forEach((p, i) => {
     if (p.channel === X) {
-      x  = p;
+      x = p;
       xi = i;
     } else if (p.channel === Y) {
       y = p;

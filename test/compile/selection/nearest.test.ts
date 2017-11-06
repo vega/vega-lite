@@ -21,7 +21,7 @@ function getModel(markType: any) {
   model.component.selection = selection.parseUnitSelection(model, {
     "one": {"type": "single", "nearest": true},
     "two": {"type": "multi", "nearest": true},
-    "three": {"type": "interval", "nearest": true},
+    "three": {"type": "interval"},
     "four": {"type": "single", "nearest": false},
     "five": {"type": "multi"},
     "six": {"type": "multi", "nearest": null},
