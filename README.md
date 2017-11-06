@@ -4,9 +4,10 @@ The `master` branch hosts Vega-Lite 2.0. In Version 2, we have migrated Vega-Lit
 
 You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://github.com/vega/vega-lite/tree/1.x) ([website for Vega-Lite 1](https://vega.github.io/vega-lite-v1/)).
 
-[![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
-[![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+[![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
+[![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite)
+[![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
 ![Teaser](site/static/teaser.png)
 
