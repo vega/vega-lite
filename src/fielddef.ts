@@ -101,6 +101,10 @@ export interface FieldDefBase<F> {
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](repeat.html) operator.
    *
+   * __Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects.
+   * Make sure you use proper escape characters if dots or brackets are part of the field name.
+   * You can find details about escaping in the [field docs](field.html).
+   *
    * __Note:__ `field` is not required if `aggregate` is `count`.
    */
   field?: F;
