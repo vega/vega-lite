@@ -1,5 +1,5 @@
 import * as stringify from 'json-stable-stringify';
-import {NonPositionScaleChannel} from '../../channel';
+
 import {flatten, keys, vals} from '../../util';
 import {VgLegend} from '../../vega.schema';
 import {Model} from '../model';
