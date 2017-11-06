@@ -2,7 +2,7 @@ import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
 import {Model} from '../model';
-import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
+import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LayoutSize, LayoutSizeIndex} from './component';
 
@@ -54,7 +54,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'hei
         break;
       }
       mergedSize = mergeValuesWithExplicit<LayoutSizeIndex, LayoutSize>(
-        mergedSize, childSize, sizeType, '', defaultTieBreaker
+        mergedSize, childSize, sizeType, ''
       );
     } else {
       mergedSize = childSize;

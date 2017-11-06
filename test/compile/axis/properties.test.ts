@@ -51,12 +51,12 @@ describe('compile/axis', ()=> {
       assert.deepEqual(tickCount, {signal: 'ceil(a/20)'});
     });
 
-    ['month', 'hours', 'day', 'quarter'].forEach((timeUnit: TimeUnit) => {
+    for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
         it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
           const tickCount = properties.tickCount('x', {timeUnit, field: 'a', type: 'temporal'}, 'linear', {signal : 'a'});
           assert.isUndefined(tickCount);
         });
-    });
+    }
 
     it('should return size/40 by default for linear scale', () => {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});

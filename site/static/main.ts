@@ -20,7 +20,7 @@ function trim(str: string) {
 }
 
 /* Anchors */
-selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
+selectAll('h2, h3, h4, h5, h6').each(function(this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
@@ -61,7 +61,7 @@ function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, to
   }).catch(console.error);
 }
 
-function getSpec(el: Element) {
+function getSpec(el: d3.BaseType) {
   const sel = select(el);
   const name = sel.attr('data-name');
   if (name) {
@@ -98,7 +98,7 @@ window['buildSpecOpts'] = function(id: string, baseName: string) {
   }
 };
 
-selectAll('.vl-example').each(function(this: Element) {
+selectAll('.vl-example').each(function(this: d3.BaseType) {
   getSpec(this);
 });
 

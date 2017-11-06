@@ -235,7 +235,7 @@ export function convert(unit: TimeUnit, date: Date): Date {
     // start with uniform date
     new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0)) :
     new Date(0, 0, 1, 0, 0, 0, 0);
-  TIMEUNIT_PARTS.forEach(function(timeUnitPart) {
+    for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
       switch (timeUnitPart) {
         case TimeUnit.DAY:
@@ -251,7 +251,7 @@ export function convert(unit: TimeUnit, date: Date): Date {
           result[setDateMethod](date[getDateMethod]());
       }
     }
-  });
+  }
   return result;
 }
 

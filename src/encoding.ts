@@ -210,7 +210,7 @@ export function forEach(mapping: any,
     return;
   }
 
-  keys(mapping).forEach((channel: Channel) => {
+  for (const channel of keys(mapping)) {
     if (isArray(mapping[channel])) {
       mapping[channel].forEach(function(channelDef: ChannelDef<string>) {
         f.call(thisArg, channelDef, channel);
@@ -218,23 +218,24 @@ export function forEach(mapping: any,
     } else {
       f.call(thisArg, mapping[channel], channel);
     }
-  });
+  }
 }
 
-export function reduce<T, U>(mapping: U,
+export function reduce<T, U extends {[k in Channel]?: any}>(mapping: U,
     f: (acc: any, fd: FieldDef<string>, c: Channel) => U,
     init: T, thisArg?: any) {
   if (!mapping) {
     return init;
   }
 
-  return keys(mapping).reduce((r: T, channel: Channel) => {
-    if (isArray(mapping[channel])) {
-      return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef<string>) {
+  return keys(mapping).reduce((r, channel) => {
+    const map = mapping[channel];
+    if (isArray(map)) {
+      return map.reduce((r1: T, channelDef: ChannelDef<string>) => {
         return f.call(thisArg, r1, channelDef, channel);
       }, r);
     } else {
-      return f.call(thisArg, r, mapping[channel], channel);
+      return f.call(thisArg, r, map, channel);
     }
   }, init);
 }
