@@ -3,11 +3,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "definitions": {
     "Aggregate": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/AggregateOp"
-        }
-      ]
+      "$ref": "#/definitions/AggregateOp"
     },
     "AggregateOp": {
       "enum": [
