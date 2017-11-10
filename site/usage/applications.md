@@ -32,6 +32,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
 * [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
 * [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
+* [Vega-Lite in PowerBI](https://github.com/Microsoft/vegalite-for-powerbi/) Rxample of a PowerBI custom visual built with Vega-Lite.
 
 ## Libraries
 
