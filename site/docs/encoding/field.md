@@ -31,9 +31,9 @@ For example, we can set `field` to `"precipitation"` to map it to `x` position.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
-Valid JavaScript object access paths using either dot (`.`) or bracket (`foo['bar']`) notation will be converted into lookups on nested objects. Make sure you use proper escape characters if that's not desired. For example, to specify field names that contain dots but are not nested lookups, escape the dot like in `"my\\.field"`. Similarly, escape `[` and `]` as `\\[` and `\\]`.
+Valid JavaScript object access paths using either dot (e.g., `foo.bar`) or bracket with quotes (e.g., `foo['bar']`) notations can be used in `field` to perform nested object lookups. If field names contain dots or brackets but are not nested, use `\\` to escape dots and brackets.  For example, if the field name is `a.b`, use `a\\.b`.  Similarly, if the field name is `a[0]`, use `a\\[0\\]`.
 
-Further note that in JSON, you have to escape backslashes. Hence, a single backslash`\` is escaped as `\\\\` in JSON. You also need to escape quotes (`\"`) and use special escape characters for newlines (`\n`), carriage returns (`\r`), and tabs (`\t`).
+Further note that in JSON, you have to escape backslashes. Hence, a single backslash (`\`) is escaped as `\\\\` in JSON. You also need to escape quotes (`\"`) and use special escape characters for newlines (`\n`), carriage returns (`\r`), and tabs (`\t`).
 
 {:#repeat-ref}
 **2) An object defining iterated values from the `repeat` operator**
