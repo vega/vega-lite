@@ -31,6 +31,8 @@ For example, we can set `field` to `"precipitation"` to map it to `x` position.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
+Take care to make sure you use proper escape characters as needed. Valid JavaScript object access paths using either dot (`.`) or bracket (`foo['bar']`) notation will be converted into lookups on nested objects. For example, to specify field names that contain dots but are not nested lookups, escape the dot like in `"my\\.field"`. Similarly, escape `[` and `]` as `\\[` and `\\]`.
+
 {:#repeat-ref}
 **2) An object defining iterated values from the `repeat` operator**
 

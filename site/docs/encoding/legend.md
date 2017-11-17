@@ -78,7 +78,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 {
   ...
   "config": {
-    "axis": : {
+    "legend": {
       ...
     }
   }
