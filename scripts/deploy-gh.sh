@@ -4,7 +4,6 @@ set -x
 set -e
 
 scripts/pre-deploy.sh
-cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
 
 git checkout gh-pages
 git pull
@@ -12,6 +11,7 @@ git merge master --no-edit
 
 # build
 npm run presite
+cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
 git add data/* -f
 git add build/** -f
 git add _data/* -f
