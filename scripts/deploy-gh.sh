@@ -4,6 +4,7 @@ set -x
 set -e
 
 scripts/pre-deploy.sh
+cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
 
 git checkout gh-pages
 git pull
