@@ -3,6 +3,7 @@
  */
 import {FacetFieldDef} from '../../facet';
 import {field} from '../../fielddef';
+import {keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
@@ -62,6 +63,14 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   const title = model.component.layoutHeaders[channel].title;
   const textOrient = channel === 'row' ? 'vertical' : undefined;
 
+  const update = {
+    align: {value: 'center'},
+    text: {value: title},
+    ...(textOrient === 'vertical' ? {angle: {value: 270}}: {}),
+    // TODO*https://github.com/vega/vega-lite/issues/2446): add title* properties (e.g., titleAlign)
+    // also make sure that guide-title config override these Vega-lite default
+  };
+
   return {
     name:  model.getName(`${channel}_title`),
     role: `${channel}-title`,
@@ -70,14 +79,7 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
       type: 'text',
       role: `${channel}-title-text`,
       style: 'guide-title',
-      encode: {
-        update: {
-          // TODO: add title align
-          align: {value: 'center'},
-          text: {value: title},
-          ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
-        }
-      }
+      ...(keys(update).length > 0 ? {encode: {update}} : {})
     }]
   };
 }
@@ -89,22 +91,20 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const {facetFieldDef} = layoutHeader;
       const format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
 
+      const update = {
+        ... (channel === 'row' ? {
+          align: {value: 'right'},
+          baseline: {value: 'middle'}
+        } : {})
+        // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
+      };
+
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
-        encode: {
-          update: {
-            fontWeight: {value: 'normal'},
-            angle: {value: 0},
-            fontSize: {value: 10}, // default label font size
-            ... (channel === 'row' ? {
-              align: {value: 'right'},
-              baseline: {value: 'middle'}
-            } : {})
-          }
-        }
+        ...(keys(update).length > 0 ? {encode: {update}} : {})
       };
     }
 
