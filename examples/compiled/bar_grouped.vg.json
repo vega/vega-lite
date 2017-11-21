@@ -143,20 +143,7 @@
                 },
                 "offset": 10,
                 "orient": "top",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "fontWeight": {
-                            "value": "normal"
-                        },
-                        "angle": {
-                            "value": 0
-                        },
-                        "fontSize": {
-                            "value": 10
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {
