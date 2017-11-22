@@ -9,9 +9,9 @@ The `nearest` selection transform is a simple boolean operator that can be appli
 
 ## Examples
 
-In the scatterplot below, points <select onchange="changeSpec('paintbrush_nearest', 'paintbrush_color' + this.value)"><option value="_nearest">nearest</option><option value="">directly underneath</option></select> the mouse cursor are highlighted as it moves.
+In the scatterplot below, points <select onchange="changeSpec('paintbrush_nearest', 'interactive_paintbrush_color' + this.value)"><option value="_nearest">nearest</option><option value="">directly underneath</option></select> the mouse cursor are highlighted as it moves.
 
-<div id="paintbrush_nearest" class="vl-example" data-name="interactive_color_nearest"></div>
+<div id="paintbrush_nearest" class="vl-example" data-name="interactive_paintbrush_color_nearest"></div>
 
 The `nearest` transform also respects any [position encoding projections](project.html) applied to the selection. For instance, in the example below, moving the mouse cursor back-and-forth snaps the vertical rule and label to the nearest `date` value.
 
