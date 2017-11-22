@@ -22,14 +22,14 @@ These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`]
 
 All view specifications in Vega-Lite can contain the following properties:
 
-{% include table.html props="name,description,title,data,transform" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="name,description,title,data,transform" source="TopLevel<FacetedUnitSpec>" %}
 
 ## Top-Level Specifications
 {:top-level-spec}
 
 In addition to the [common properties](#common), any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
-{% include table.html props="$schema,background,padding,autosize,config" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="$schema,background,padding,autosize,config" source="TopLevel<FacetedUnitSpec>" %}
 
 
 ## Single View Specifications
@@ -75,7 +75,7 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
 
-{% include table.html props="width,height,selection,mark,encoding" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="width,height,selection,mark,encoding" source="TopLevel<FacetedUnitSpec>" %}
 
 ## Layered and Multi-view Specifications
 
