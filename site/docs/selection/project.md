@@ -12,7 +12,7 @@ A [selection's type](selection.html#selection-types) determines which data value
 
 These default inclusion criteria can be modified with the **project** selection transformation, which offers the following two properties:
 
-{% include table.html props="encodings,fields" source="BaseSelectionDef" %}
+{% include table.html props="encodings,fields" source="SingleSelection" %}
 
 ## Examples
 

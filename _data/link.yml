@@ -109,6 +109,9 @@ EncodingWithFacet:
   link: encoding.html
 Type:
   link: type.html
+SingleDefChannel:
+  name: Encoding
+  link: encoding.html
 
 # Channel Definitions
 MarkPropFieldDefWithCondition:
