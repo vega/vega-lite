@@ -84,18 +84,25 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   };
 }
 
-export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent) {
-  if (header) {
+export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
+  if (headerCmpt) {
     let title = null;
-    if (layoutHeader.facetFieldDef && header.labels) {
+    if (layoutHeader.facetFieldDef && headerCmpt.labels) {
       const {facetFieldDef} = layoutHeader;
-      const format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
+      const {header = {}} = facetFieldDef;
+      const {format, labelAngle} = header;
 
       const update = {
-        ... (channel === 'row' ? {
-          align: {value: 'right'},
-          baseline: {value: 'middle'}
-        } : {})
+        ...(
+          labelAngle ? {angle: {value: labelAngle}} :
+          // Default align / baseline for row (only apply if there is no custom labelAngle specified)
+          channel === 'row' ? {
+            align: {value: 'right'},
+            baseline: {value: 'middle'}
+          } :
+          {}
+        )
+
         // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
       };
 
@@ -108,7 +115,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       };
     }
 
-    const axes = header.axes;
+    const axes = headerCmpt.axes;
 
     const hasAxes = axes && axes.length > 0;
     if (title || hasAxes) {
@@ -126,10 +133,10 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
           }
         } : {}),
         ...(title ? {title} : {}),
-        ...(header.sizeSignal ? {
+        ...(headerCmpt.sizeSignal ? {
           encode: {
             update: {
-              [sizeChannel]: header.sizeSignal
+              [sizeChannel]: headerCmpt.sizeSignal
             }
           }
         }: {}),
