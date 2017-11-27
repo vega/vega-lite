@@ -29,6 +29,17 @@ export interface Axis extends VgAxisBase, Guide {
    */
   position?: number;
 
+
+  /**
+   * The rotation angle of the axis labels.
+   *
+   * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
+   *
+   * @minimum -360
+   * @maximum 360
+   */
+  labelAngle?: number;
+
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
    * @minimum 0
