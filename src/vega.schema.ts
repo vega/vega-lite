@@ -429,16 +429,6 @@ export interface VgAxisBase {
   labels?: boolean;
 
   /**
-   * The rotation angle of the axis labels.
-   *
-   * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
-   *
-   * @minimum -360
-   * @maximum 360
-   */
-  labelAngle?: number;
-
-  /**
    * Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
    *
    * __Default value:__ `false`.
@@ -554,6 +544,17 @@ export interface VgAxisConfig extends VgAxisBase {
    * The color of the axis's tick.
    */
   tickColor?: string;
+
+
+  /**
+   * The rotation angle of the axis labels.
+   *
+   * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
+   *
+   * @minimum -360
+   * @maximum 360
+   */
+  labelAngle?: number;
 
   /**
    * The color of the tick label, can be in hex color code or regular color name.

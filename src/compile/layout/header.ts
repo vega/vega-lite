@@ -3,6 +3,7 @@
  */
 import {FacetFieldDef} from '../../facet';
 import {field} from '../../fielddef';
+import {keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
@@ -62,6 +63,14 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   const title = model.component.layoutHeaders[channel].title;
   const textOrient = channel === 'row' ? 'vertical' : undefined;
 
+  const update = {
+    align: {value: 'center'},
+    text: {value: title},
+    ...(textOrient === 'vertical' ? {angle: {value: 270}}: {}),
+    // TODO*https://github.com/vega/vega-lite/issues/2446): add title* properties (e.g., titleAlign)
+    // also make sure that guide-title config override these Vega-lite default
+  };
+
   return {
     name:  model.getName(`${channel}_title`),
     role: `${channel}-title`,
@@ -70,45 +79,43 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
       type: 'text',
       role: `${channel}-title-text`,
       style: 'guide-title',
-      encode: {
-        update: {
-          // TODO: add title align
-          align: {value: 'center'},
-          text: {value: title},
-          ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
-        }
-      }
+      ...(keys(update).length > 0 ? {encode: {update}} : {})
     }]
   };
 }
 
-export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent) {
-  if (header) {
+export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
+  if (headerCmpt) {
     let title = null;
-    if (layoutHeader.facetFieldDef && header.labels) {
+    if (layoutHeader.facetFieldDef && headerCmpt.labels) {
       const {facetFieldDef} = layoutHeader;
-      const format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
+      const {header = {}} = facetFieldDef;
+      const {format, labelAngle} = header;
+
+      const update = {
+        ...(
+          labelAngle ? {angle: {value: labelAngle}} :
+          // Default align / baseline for row (only apply if there is no custom labelAngle specified)
+          channel === 'row' ? {
+            align: {value: 'right'},
+            baseline: {value: 'middle'}
+          } :
+          {}
+        )
+
+        // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
+      };
 
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
-        encode: {
-          update: {
-            fontWeight: {value: 'normal'},
-            angle: {value: 0},
-            fontSize: {value: 10}, // default label font size
-            ... (channel === 'row' ? {
-              align: {value: 'right'},
-              baseline: {value: 'middle'}
-            } : {})
-          }
-        }
+        ...(keys(update).length > 0 ? {encode: {update}} : {})
       };
     }
 
-    const axes = header.axes;
+    const axes = headerCmpt.axes;
 
     const hasAxes = axes && axes.length > 0;
     if (title || hasAxes) {
@@ -126,10 +133,10 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
           }
         } : {}),
         ...(title ? {title} : {}),
-        ...(header.sizeSignal ? {
+        ...(headerCmpt.sizeSignal ? {
           encode: {
             update: {
-              [sizeChannel]: header.sizeSignal
+              [sizeChannel]: headerCmpt.sizeSignal
             }
           }
         }: {}),
