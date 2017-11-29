@@ -67,7 +67,7 @@
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)\nfor more information."
+          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)\nfor more information."
         }
       },
       "required": [
