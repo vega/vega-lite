@@ -12,6 +12,6 @@
       "aggregate": "count",
       "type": "quantitative"
     },
-    "row": {"field": "Origin","type": "nominal"}
+    "row": {"field": "Origin", "type": "nominal"}
   }
 }
