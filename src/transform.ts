@@ -81,7 +81,7 @@ export interface AggregateTransform {
 export interface AggregatedFieldDef {
   /**
    * The aggregation operations to apply to the fields, such as sum, average or count.
-   * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#supported-aggregation-operations)
+   * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
   op: AggregateOp;
