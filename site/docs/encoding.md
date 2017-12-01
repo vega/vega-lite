@@ -189,7 +189,7 @@ Similar to mark property channels, definitions of text and tooltip channels can 
 {% include table.html props="text,tooltip" source="Encoding" %}
 
 
-{:#mark-prop-field-def}
+{:#text-field-def}
 ### Text and Tooltip Field Definition
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
@@ -197,7 +197,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 {% include table.html props="format,condition" source="TextFieldDefWithCondition" %}
 
-{:#mark-prop-value-def}
+{:#text-value-def}
 ### Text and Tooltip Value Definition
 
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
