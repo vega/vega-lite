@@ -53,7 +53,7 @@ If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's 
 
 {% include table.html props="field,op,order" source="SortField" %}
 
-3) Unsorted – `"none`" – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
+3) Unsorted – `null` – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
 
 4) Specify custom order by providing custom `scale`'s [`domain`](scale.html#domain).  (In this case, you don't need to use `sort` property.)
 
