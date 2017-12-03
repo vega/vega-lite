@@ -712,9 +712,9 @@ describe('compile/scale', () => {
   });
 
   describe('domainSort()', () => {
-    it('should return undefined for discrete domain', () => {
+    it('should return undefined for continuous domain', () => {
       const model = parseUnitModel({
-          mark: 'bar',
+          mark: 'point',
           encoding: {
             x: {field: 'a', type: 'quantitative'},
           }
@@ -723,11 +723,44 @@ describe('compile/scale', () => {
       assert.deepEqual(sort, undefined);
     });
 
+    it('should return true by default for discrete domain', () => {
+      const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            x: {field: 'a', type: 'ordinal'},
+          }
+        });
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
+      assert.deepEqual(sort, true);
+    });
+
+    it('should return true for ascending', () => {
+      const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            x: {field: 'a', type: 'quantitative', sort: 'ascending'},
+          }
+        });
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
+      assert.deepEqual(sort, true);
+    });
+
+    it('should return false if sort = null', () => {
+      const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'a', type: 'quantitative', sort: null},
+          }
+        });
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
+      assert.deepEqual(sort, false);
+    });
+
     it('should return normal sort spec if specified and aggregration is not count', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'nominal', sort:{op: 'sum', field:'y'}},
+          x: {field: 'a', type: 'nominal', sort: {op: 'sum', field:'y'}},
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
@@ -739,7 +772,7 @@ describe('compile/scale', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'nominal', sort:{op: 'count'}},
+          x: {field: 'a', type: 'nominal', sort: {op: 'count'}},
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });

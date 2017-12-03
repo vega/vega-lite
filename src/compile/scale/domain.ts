@@ -208,7 +208,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         // Use range if we added it and the scale does not support computing a range as a signal.
         field: model.field(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
         // we have to use a sort object if sort = true to make the sort correct by bin start
-        sort: sort === true || !isSortField(sort) ? {
+        sort: sort !== false && (sort === true || !isSortField(sort)) ? {
           field: model.field(channel, {}),
           op: 'min' // min or max doesn't matter since we sort by the start of the bin range
         } : sort
@@ -232,7 +232,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         }];
       }
     }
-  } else if (sort) {
+  } else if (sort !== undefined) {
     return [{
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
@@ -249,7 +249,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField<string> {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): boolean | SortField<string> {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -273,8 +273,8 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
     return true;
   }
 
-  // sort === 'none'
-  return undefined;
+  // sort == null
+  return false;
 }
 
 
