@@ -15,7 +15,7 @@ describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
 
   it('should be disabled for non-stackable marks with at least of of the stack channel', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       NON_STACKABLE_MARKS.forEach((nonStackableMark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
@@ -71,7 +71,7 @@ describe('stack', () => {
   });
 
   it('should always be disabled if there is no stackby channel', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
@@ -91,7 +91,7 @@ describe('stack', () => {
   });
 
   it('should always be disabled if the stackby channel is aggregated', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
@@ -112,7 +112,7 @@ describe('stack', () => {
   });
 
   it('should always be disabled if the stackby channel is identical to y', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
@@ -181,7 +181,7 @@ describe('stack', () => {
   });
 
   it('should always be disabled if both x and y are aggregate', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
@@ -202,7 +202,7 @@ describe('stack', () => {
   });
 
   it('should always be disabled if neither x nor y is aggregate or stack', () => {
-    for (const stacked of [undefined, 'center', 'none', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
         const spec: TopLevel<UnitSpec> = {
           "data": {"url": "data/barley.json"},
