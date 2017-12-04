@@ -180,8 +180,7 @@
                         "data": "data_1",
                         "field": "mean_precipitation"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

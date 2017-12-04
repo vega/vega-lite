@@ -183,8 +183,7 @@
                         "data": "data_1",
                         "field": "mean_price"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

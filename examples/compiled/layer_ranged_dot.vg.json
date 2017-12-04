@@ -174,8 +174,7 @@
                         "data": "data_1",
                         "field": "life_expect"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

@@ -282,8 +282,7 @@
                 "fields": [
                     "bin_maxbins_15_Horsepower",
                     "bin_maxbins_15_Horsepower_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

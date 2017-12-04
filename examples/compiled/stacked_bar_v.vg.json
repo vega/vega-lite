@@ -125,8 +125,7 @@
                 "fields": [
                     "sum_yield_start",
                     "sum_yield_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

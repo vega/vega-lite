@@ -467,8 +467,7 @@
                 "fields": [
                     "bin_maxbins_20_distance",
                     "bin_maxbins_20_distance_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -502,8 +501,7 @@
                 "fields": [
                     "bin_maxbins_20_delay",
                     "bin_maxbins_20_delay_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -537,8 +535,7 @@
                 "fields": [
                     "bin_maxbins_20_time",
                     "bin_maxbins_20_time_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

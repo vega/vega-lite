@@ -279,8 +279,7 @@
                         "data": "data_3",
                         "field": "min_Miles_per_Gallon"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

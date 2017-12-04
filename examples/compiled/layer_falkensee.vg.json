@@ -391,8 +391,7 @@
                         "data": "data_3",
                         "field": "year_year"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -424,8 +423,7 @@
                         "data": "data_3",
                         "field": "population"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

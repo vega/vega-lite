@@ -251,8 +251,7 @@
                         "data": "data_1",
                         "field": "bin_maxbins_10_Acceleration_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -283,8 +282,7 @@
                         "data": "data_1",
                         "field": "bin_maxbins_10_Horsepower_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -307,8 +305,7 @@
                         "data": "data_1",
                         "field": "count_*"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

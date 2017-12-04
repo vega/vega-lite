@@ -101,8 +101,7 @@
                 "fields": [
                     "start",
                     "end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

@@ -322,8 +322,7 @@
                 "fields": [
                     "price_start",
                     "price_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

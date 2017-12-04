@@ -165,8 +165,7 @@
                         "data": "data_1",
                         "field": "lower"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
