@@ -129,12 +129,9 @@ After adding a new example, make sure to run `yarn run build:example <examplenam
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery.
 - `src/` - Main source code directory.
-  - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
-  Other files under `src/` reflect namespace structure.
-  All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.
-  For example, `vl.channel.*` methods are in `src/channel.ts`.
-  `vl.compile` is in `src/compile/compile.ts`.
   - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
+    - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
+    - Other files under `src/` reflect namespace structure. All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.   For example, `vl.channel.*` methods are in `src/channel.ts` while `vl.compile` is in `src/compile/compile.ts`.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
 For example, `test/compile/` tests files inside `src/compile/`.
@@ -142,6 +139,9 @@ For example, `test/compile/` tests files inside `src/compile/`.
   to allow putting JSON specs in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
 
+## Understanding How Vega-Lite Works
+
+- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process.
 
 ## Commands
 
