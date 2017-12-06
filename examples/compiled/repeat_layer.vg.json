@@ -313,8 +313,8 @@
                             "name": "faceted_path_child_temp_max_layer_0_main",
                             "data": "data_0",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
@@ -504,8 +504,8 @@
                             "name": "faceted_path_child_precipitation_layer_0_main",
                             "data": "data_2",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
@@ -695,8 +695,8 @@
                             "name": "faceted_path_child_wind_layer_0_main",
                             "data": "data_4",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
