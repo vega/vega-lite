@@ -1,3 +1,4 @@
+/_data
 /_includes
 /_layouts
 /_site
@@ -6,8 +7,7 @@
 /build/test-runtime
 /coverage
 /data
-/examples/*.test.ts
-/examples/compiled
+/examples/
 /node_modules
 /scripts
 /site
