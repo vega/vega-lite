@@ -25,6 +25,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 * [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
 * [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
+* [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
 * [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 * [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 * [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. Can also be used for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
