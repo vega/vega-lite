@@ -193,7 +193,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'href'|'cursor';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -1056,6 +1056,18 @@ export interface VgMarkConfig {
    * Placeholder text if the `text` channel is not specified
    */
   text?: string;
+
+  /**
+   * A URL to load upon mouse click. If defined, the mark acts as a hyperlink.
+   *
+   * @format uri
+   */
+  href?: string;
+
+  /**
+   * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   */
+  cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -1084,17 +1096,18 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   font: 1,
   fontSize: 1,
   fontWeight: 1,
-  fontStyle: 1
+  fontStyle: 1,
+  cursor: 1,
+  href: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
-  // cursor: 1,
   // clip: 1,
   // dir: 1,
   // ellipsis: 1,
   // endAngle: 1,
-  // path: 1,
   // innerRadius: 1,
   // outerRadius: 1,
+  // path: 1,
   // startAngle: 1,
   // url: 1,
 };

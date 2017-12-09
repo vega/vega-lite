@@ -125,10 +125,15 @@ The rest of this section describe groups of properties supported by the `mark` c
 
 {% include table.html props="opacity,fillOpacity,strokeOpacity" source="MarkConfig" %}
 
-
 ### Stroke Style
 
 {% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkConfig" %}
+
+### Link Properties
+
+Marks can act as hyperlinks when the `href` property is defined. A `cursor` property can also be provided to serve as affordance for the links.
+
+{% include table.html props="href,cursor" source="MarkConfig" %}
 
 <!-- one example for custom fill/stroke -->
 
