@@ -1011,7 +1011,10 @@
           "enum": [
             "filter"
           ],
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
