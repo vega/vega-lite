@@ -40,6 +40,10 @@
       "title": "Colored Scatterplot"
     },
     {
+      "name": "point_invalid_color",
+      "title": "Scatterplot with Null Values in Grey"
+    },
+    {
       "name": "point_bubble",
       "title": "Bubble Plot"
     },
