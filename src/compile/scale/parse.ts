@@ -1,5 +1,6 @@
-import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, X2, Y, Y2} from '../../channel';
 import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
+import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   Scale,
@@ -7,7 +8,8 @@ import {
   ScaleType,
   scaleTypePrecedence,
 } from '../../scale';
-import {keys} from '../../util';
+import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
+import {contains, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
@@ -50,15 +52,21 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     const channelDef = encoding[channel];
 
+    // if mark is geoshape scale channel encodes the geojson
+    if (isFieldDef(channelDef) && ((mark === GEOSHAPE && isFieldDef(channelDef) && channel === SHAPE && channelDef.type === GEOJSON)
+    || (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)))) {
+      return scaleComponents;
+    }
+
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
       specifiedScale = channelDef.scale || {};
     } else if (hasConditionalFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
       specifiedScale = channelDef.condition['scale'] || {}; // We use ['scale'] since we know that channel here has scale for sure
-    } else if (channel === 'x') {
+    } else if (channel === X) {
       fieldDef = getFieldDef(encoding.x2);
-    } else if (channel === 'y') {
+    } else if (channel === Y) {
       fieldDef = getFieldDef(encoding.y2);
     }
 

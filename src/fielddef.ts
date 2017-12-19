@@ -152,6 +152,7 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
+   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when applicable.
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
@@ -254,7 +255,7 @@ export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef
   );
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -330,10 +331,13 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
+    case 'geojson':
       return true;
     case 'quantitative':
       return !!fieldDef.bin;
-    case 'temporal':
+      case 'latitude':
+      case 'longitude':
+      case 'temporal':
       return false;
   }
   throw new Error(log.message.invalidFieldType(fieldDef.type));
@@ -560,10 +564,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal') {
+      if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data only'
+          warning: 'Shape channel should be used with nominal data or geojson only'
         };
       }
       return COMPATIBLE;

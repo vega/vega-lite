@@ -1,4 +1,4 @@
-import {VgEncodeEntry} from '../../vega.schema';
+import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 /**
@@ -8,7 +8,12 @@ export interface MarkCompiler {
   /**
    * Underlying vega Mark type for the Vega-Lite mark.
    */
-  vgMark: 'area' | 'line' | 'symbol' | 'rect' | 'rule' | 'text';
+  vgMark: 'area' | 'line' | 'symbol' | 'rect' | 'rule' | 'text' | 'shape';
 
   encodeEntry: (model: UnitModel) => VgEncodeEntry;
+
+  /**
+   * Transform on a mark after render, used for layout and projections
+   */
+  postEncodingTransform?: (model: UnitModel) => VgPostEncodingTransform[];
 }

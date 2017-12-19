@@ -15,6 +15,7 @@ import {
 } from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
+import {LATITUDE, LONGITUDE, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
 import {VgSignalRef, VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
@@ -99,17 +100,20 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
 export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties,
-  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',): VgValueRef {
+  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
+      if (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)) {
+        return {field: vgField(channelDef, {suffix: 'geo'})};
+      }
       if (channelDef.bin) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-        if (contains(['x', 'y'], channel) && channelDef.type === 'quantitative') {
+        if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
           if (stack && stack.impute) {
             // For stack, we computed bin_mid so we can impute.
             return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});

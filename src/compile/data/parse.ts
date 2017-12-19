@@ -1,3 +1,4 @@
+import {isArray} from 'util';
 import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
@@ -15,6 +16,8 @@ import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
+import {GeoJSONNode} from './geojson';
+import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {DataComponent} from './index';
 import {LookupNode} from './lookup';
@@ -230,6 +233,22 @@ export function parseData(model: Model): DataComponent {
         bin.parent = head;
         head = bin;
       }
+    }
+
+    const geojson = GeoJSONNode.make(model);
+    if (geojson) {
+      geojson.parent = head;
+      head = geojson;
+    }
+
+    const geopoints = GeoPointNode.makeAll(model);
+    if (geopoints && isArray(geopoints)) {
+      geopoints.forEach((geopoint) => {
+        if (geopoint) {
+          geopoint.parent = head;
+          head = geopoint;
+        }
+      });
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

@@ -24,6 +24,7 @@ import {
   VgSignalRef,
   VgTitle,
 } from '../vega.schema';
+import {VgProjection} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -36,6 +37,9 @@ import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
+import {assembleProjections} from './projection/assemble';
+import {ProjectionComponent} from './projection/component';
+import {parseProjection} from './projection/parse';
 import {RepeatModel} from './repeat';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -65,6 +69,7 @@ export interface Component {
 
   mark: VgMarkGroup[];
   scales: ScaleComponentIndex;
+  projection: ProjectionComponent;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -154,6 +159,9 @@ export abstract class Model {
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
 
+  /** Name map for projections, which can be renamed by a model's parent. */
+  protected projectionNameMap: NameMapInterface;
+
   /** Name map for size, which can be renamed by a model's parent. */
   protected layoutSizeNameMap: NameMapInterface;
 
@@ -174,6 +182,7 @@ export abstract class Model {
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
+    this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
     this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
 
     this.data = spec.data;
@@ -199,6 +208,7 @@ export abstract class Model {
       },
       selection: null,
       scales: null,
+      projection: null,
       axes: {},
       legends: {},
     };
@@ -231,7 +241,8 @@ export abstract class Model {
     this.renameTopLevelLayoutSize();
 
     this.parseSelection();
-    this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
+    this.parseProjection();
+    this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection.
     this.parseAxisAndHeader(); // depends on scale and layout size
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
@@ -244,6 +255,10 @@ export abstract class Model {
 
   public parseScale() {
     parseScale(this);
+  }
+
+  public parseProjection() {
+    parseProjection(this);
   }
 
   public abstract parseLayoutSize(): void;
@@ -320,6 +335,10 @@ export abstract class Model {
 
   public assembleLegends(): VgLegend[] {
     return assembleLegends(this);
+  }
+
+  public assembleProjections(): VgProjection[] {
+    return assembleProjections(this);
   }
 
   public assembleTitle(): VgTitle {
@@ -478,6 +497,10 @@ export abstract class Model {
     this.scaleNameMap.rename(oldName, newName);
   }
 
+  public renameProjection(oldName: string, newName: string) {
+    this.projectionNameMap.rename(oldName, newName);
+  }
+
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
@@ -498,6 +521,23 @@ export abstract class Model {
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));
+    }
+    return undefined;
+  }
+
+  /**
+   * @return projection name after the projection has been parsed and named.
+   */
+  public projectionName(parse?: boolean): string {
+    if (parse) {
+      // During the parse phase always return a value
+      // No need to refer to rename map because a projection can't be renamed
+      // before it has the original name.
+      return this.getName('projection');
+    }
+
+    if ((this.component.projection && !this.component.projection.merged) || this.projectionNameMap.has(this.getName('projection'))) {
+      return this.projectionNameMap.get(this.getName('projection'));
     }
     return undefined;
   }

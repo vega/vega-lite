@@ -8,6 +8,7 @@ import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
@@ -94,7 +95,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
+   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
    */
   mark: M;
 
@@ -102,6 +103,11 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
    * A key-value mapping between encoding channels and definition of fields.
    */
   encoding: E;
+
+  /**
+   * A geo projection
+   */
+  projection?: Projection;
 
   /**
    * A key-value mapping between selection names and definitions.
@@ -315,7 +321,7 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   const {row: row, column: column, ...encoding} = spec.encoding;
 
   // Mark and encoding should be moved into the inner spec
-  const {mark, width, height, selection, encoding: _, ...outerSpec} = spec;
+  const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
 
   return {
     ...outerSpec,
@@ -324,6 +330,7 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
       ...(column ? {column}: {}),
     },
     spec: normalizeNonFacetUnit({
+      ...(projection ? {projection} : {}),
       mark,
       ...(width ? {width} : {}),
       ...(height ? {height} : {}),
@@ -388,7 +395,9 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 // FIXME(#1804): re-design this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
-  const {mark, selection, encoding, ...outerSpec} = spec;
+  // _ is used to denote a dropped property of the unit spec
+  // which should not be carried over to the layer spec
+  const {mark, selection, projection: _p, encoding, ...outerSpec} = spec;
   const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer

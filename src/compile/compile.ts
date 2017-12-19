@@ -120,6 +120,14 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
 
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
+
+  const data = [].concat(
+    model.assembleSelectionData([]),
+    // only assemble data in the root
+    assembleRootData(model.component.data)
+  );
+
+  const projections = model.assembleProjections();
   const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
 
@@ -140,11 +148,8 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     ...topLevelProperties,
     ...(title? {title} : {}),
     ...(style? {style} : {}),
-    data: [].concat(
-      model.assembleSelectionData([]),
-      // only assemble data in the root
-      assembleRootData(model.component.data)
-    ),
+    data: data,
+    ...(projections.length > 0 ? {projections: projections} : {}),
     ...model.assembleGroup([
       ...layoutSignals,
       ...model.assembleSelectionTopLevelSignals([])
