@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
 import {getPathSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
+import {GEOSHAPE} from '../../../src/mark';
 import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark', function() {
@@ -34,6 +35,28 @@ describe('Mark', function() {
         assert.deepEqual(submarkGroup.style, ['line', 'trend']);
         assert.equal(submarkGroup.from.data, 'faceted_path_main');
       });
+
+      it('should not have post encoding transform', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": {"type": "line", "style": "trend"},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+            "y": {"field": "price", "type": "quantitative"},
+            "color": {"field": "symbol", "type": "nominal"}
+          }
+        });
+        const markGroup = parseMarkGroup(model)[0];
+        assert.equal(markGroup.name, 'pathgroup');
+        assert.deepEqual(markGroup.from, {
+          facet: {
+            name: 'faceted_path_main',
+            data: 'main',
+            groupby: ['symbol']
+          }
+        });
+        const submarkGroup = markGroup.marks[0];
+        assert.isUndefined(submarkGroup.transform);
+      });
     });
 
     describe('Single Line', () => {
@@ -50,11 +73,45 @@ describe('Mark', function() {
         assert.equal(markGroup.type, 'line');
         assert.equal(markGroup.from.data, 'main');
       });
+
+      it('should not have post encoding transform', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+            "y": {"field": "price", "type": "quantitative"}
+          }
+        });
+        const markGroup = parseMarkGroup(model);
+        assert.isUndefined(markGroup[0].transform);
+      });
     });
 
     // NON-PATH
+    describe('Geoshape', () => {
+      it('should have post encoding transform', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": "geoshape",
+          "projection": {
+            "type": "albersUsa"
+          },
+          "data": {
+            "url": "data/us-10m.json",
+            "format": {
+              "type": "topojson",
+              "feature": "states"
+            }
+          },
+          "encoding": {}
+        });
+        const markGroup = parseMarkGroup(model);
+        assert.isDefined(markGroup[0].transform);
+        assert.equal(markGroup[0].transform[0].type, GEOSHAPE);
+      });
+    });
+
     describe('Aggregated Bar with a color with binned x', () => {
-      it(' should use main stacked data source', () => {
+      it('should use main stacked data source', () => {
         const model = parseUnitModelWithScaleAndLayoutSize({
           "mark": "bar",
           "encoding": {
@@ -66,6 +123,18 @@ describe('Mark', function() {
         const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
         assert.equal(markGroup[0].style, 'bar');
+      });
+      it('should not have post encoding transform', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+            "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+          }
+        });
+        const markGroup = parseMarkGroup(model);
+        assert.isUndefined(markGroup[0].transform);
       });
     });
 
@@ -90,6 +159,27 @@ describe('Mark', function() {
         const markGroup = parseMarkGroup(model.child as UnitModel);
         assert.equal(markGroup[0].from.data, 'child_main');
       });
+
+      it('should not have post encoding transform', () => {
+        const model = parseFacetModel({
+          facet: {
+            row: {field: 'a', type: 'nominal'}
+          },
+          spec: {
+            "mark": "bar",
+            "encoding": {
+              "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+              "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+              "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+            }
+          }
+        });
+        model.parseScale();
+        model.parseLayoutSize();
+
+        const markGroup = parseMarkGroup(model.child as UnitModel);
+        assert.isUndefined(markGroup[0].transform);
+      });
     });
 
     describe('Aggregated bar', () => {
@@ -103,6 +193,18 @@ describe('Mark', function() {
         });
         const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
+      });
+
+      it('should not have post encoding transform', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"}
+          }
+        });
+        const markGroup = parseMarkGroup(model);
+        assert.isUndefined(markGroup[0].transform);
       });
     });
   });

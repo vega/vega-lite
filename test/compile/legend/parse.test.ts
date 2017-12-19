@@ -3,7 +3,9 @@
 import {assert} from 'chai';
 import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
+import {isFieldDef} from '../../../src/fielddef';
 import {UnitSpec} from '../../../src/spec';
+import {GEOJSON} from '../../../src/type';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
@@ -26,17 +28,22 @@ describe('compile/legend', function() {
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, function() {
-        const s: UnitSpec = {
+        const spec: UnitSpec = {
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"}
           }
         };
-        s.encoding[channel] = {field: "a", type: "nominal"};
+        spec.encoding[channel] = {field: "a", type: "nominal"};
 
-        const model = parseUnitModelWithScale(s);
+        const model = parseUnitModelWithScale(spec);
 
         const def = legendParse.parseLegendForChannel(model, channel).combine();
+
+        const channelDef = model.encoding[channel];
+        if (isFieldDef(channelDef)) {
+          assert.notEqual(channelDef.type, GEOJSON);
+        }
 
         if (channel !== OPACITY) {
           assert.equal(def.encode.symbols.update.opacity.value, 0.7);
@@ -46,6 +53,38 @@ describe('compile/legend', function() {
         assert.isObject(def);
         assert.equal(def.title, "a");
       });
+    });
+
+    it(`should not produce a Vega legend object when channel is 'shape' with type 'geojson'`, function() {
+      const spec: UnitSpec = {
+        "mark": "geoshape",
+        "data": {"url": "data/income.json"},
+        "transform": [
+          {
+            "lookup": "id",
+            "from": {
+              "data": {
+                "url": "data/us-10m.json",
+                "format": {"type": "topojson","feature": "states"}
+              },
+              "key": "id"
+            },
+            "as": "geo"
+          }
+        ],
+      "encoding": {
+          "shape": {"field": "geo", "type": "geojson"}
+        }
+      };
+
+      const model = parseUnitModelWithScale(spec);
+      const channelDef = model.encoding[SHAPE];
+      assert.isTrue(isFieldDef(channelDef));
+      if (isFieldDef(channelDef)) {
+        assert.equal(channelDef.type, GEOJSON);
+      }
+      const def = legendParse.parseLegendForChannel(model, SHAPE);
+      assert.isUndefined(def);
     });
   });
 
