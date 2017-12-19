@@ -7,7 +7,6 @@ import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString, logicalExpr} from './util';
 
-
 export type Predicate =
   // a) FieldPrecidate (but we don't type FieldFilter here so the schema has no nesting
   // and thus the documentation shows all of the types clearly)

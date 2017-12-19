@@ -8,13 +8,13 @@ import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
+import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {accessPath, isArray, isBoolean, isNumber, isString, titlecase} from './util';
-
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -32,13 +32,22 @@ export interface ValueDef {
  */
 export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
 
+export type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
 
-export type Conditional<T> = {
+export type ConditionalPredicate<T> = {
+  test: LogicalOperand<Predicate>;
+} & T;
+
+export type ConditionalSelection<T> = {
   /**
    * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
    */
   selection: LogicalOperand<string>;
 } & T;
+
+export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T> {
+  return c['selection'];
+}
 
 /**
  * A FieldDef with Condition<ValueDef>
