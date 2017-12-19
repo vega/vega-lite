@@ -120,9 +120,15 @@
             },
             "encode": {
                 "update": {
-                    "fill": {
-                        "value": "white"
-                    },
+                    "fill": [
+                        {
+                            "test": "datum['count_*'] > 100",
+                            "value": "black"
+                        },
+                        {
+                            "value": "white"
+                        }
+                    ],
                     "x": {
                         "scale": "x",
                         "field": "Cylinders",
