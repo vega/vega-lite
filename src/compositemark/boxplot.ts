@@ -131,12 +131,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         },
         encoding: {
           [continuousAxis]: {
-            field: 'lowerWhisker',
+            field: 'lower_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type,
             ...continuousAxisScaleAndAxis
           },
           [continuousAxis + '2']: {
-            field: 'lowerBox',
+            field: 'lower_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis,
@@ -149,11 +149,11 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         },
         encoding: {
           [continuousAxis]: {
-            field: 'upperBox',
+            field: 'upper_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           [continuousAxis + '2']: {
-            field: 'upperWhisker',
+            field: 'upper_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis,
@@ -167,11 +167,11 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         },
         encoding: {
           [continuousAxis]: {
-            field: 'lowerBox',
+            field: 'lower_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           [continuousAxis + '2']: {
-            field: 'upperBox',
+            field: 'upper_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutContinuousAxis,
@@ -185,7 +185,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         },
         encoding: {
           [continuousAxis]: {
-            field: 'midBox',
+            field: 'mid_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis,
@@ -270,45 +270,45 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
     {
       op: 'q1',
       field: continuousAxisChannelDef.field,
-      as: 'lowerBox'
+      as: 'lower_box_' + continuousAxisChannelDef.field
     },
     {
       op: 'q3',
       field: continuousAxisChannelDef.field,
-      as: 'upperBox'
+      as: 'upper_box_' + continuousAxisChannelDef.field
     },
     {
       op: 'median',
       field: continuousAxisChannelDef.field,
-      as: 'midBox'
+      as: 'mid_box_' + continuousAxisChannelDef.field
     }
   ];
   let postAggregateCalculates: CalculateTransform[] = [];
 
-  if (isMinMax) {
-    aggregate.push({
-      op: 'min',
-      field: continuousAxisChannelDef.field,
-      as: 'lowerWhisker'
-    });
-    aggregate.push({
-      op: 'max',
-      field: continuousAxisChannelDef.field,
-      as: 'upperWhisker'
-    });
-  } else {
+  aggregate.push({
+    op: 'min',
+    field: continuousAxisChannelDef.field,
+    as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
+  });
+  aggregate.push({
+    op: 'max',
+    field: continuousAxisChannelDef.field,
+    as:  (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
+  });
+
+  if (!isMinMax) {
     postAggregateCalculates = [
       {
-        calculate: 'datum.upperBox - datum.lowerBox',
-        as: 'IQR'
+        calculate: `datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}`,
+        as: 'iqr_' + continuousAxisChannelDef.field
       },
       {
-        calculate: 'datum.lowerBox - datum.IQR * ' + kIQRScalar,
-        as: 'lowerWhisker'
+        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.max_${continuousAxisChannelDef.field})`,
+        as: 'upper_whisker_' + continuousAxisChannelDef.field
       },
       {
-        calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
-        as: 'upperWhisker'
+        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.min_${continuousAxisChannelDef.field})`,
+        as: 'lower_whisker_' + continuousAxisChannelDef.field
       }
     ];
   }

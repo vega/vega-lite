@@ -145,27 +145,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -180,12 +180,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -198,11 +198,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -215,11 +215,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -234,7 +234,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -375,27 +375,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -410,12 +410,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -428,11 +428,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -445,11 +445,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -464,7 +464,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -502,27 +502,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -537,12 +537,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "x2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -555,11 +555,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -572,11 +572,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -591,7 +591,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -627,27 +627,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -662,12 +662,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -680,11 +680,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -697,11 +697,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -716,7 +716,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -752,27 +752,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -787,12 +787,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "x2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -805,11 +805,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -822,11 +822,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -841,7 +841,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -876,27 +876,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -911,12 +911,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -929,11 +929,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -946,11 +946,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -965,7 +965,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1000,27 +1000,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -1035,12 +1035,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "x2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1053,11 +1053,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1070,11 +1070,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -1089,7 +1089,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1122,27 +1122,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": ["age"]
@@ -1157,12 +1157,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "x2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1175,11 +1175,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1192,11 +1192,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 14}
@@ -1210,7 +1210,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1242,27 +1242,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": []
@@ -1276,12 +1276,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "x": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "x2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1293,11 +1293,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "x": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1309,11 +1309,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "x": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "x2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 14}
@@ -1326,7 +1326,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "x": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1358,27 +1358,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
               },
               {
                 "op": "min",
                 "field": "people",
-                "as": "lowerWhisker"
+                "as": "lower_whisker_people"
               },
               {
                 "op": "max",
                 "field": "people",
-                "as": "upperWhisker"
+                "as": "upper_whisker_people"
               }
             ],
             "groupby": []
@@ -1392,12 +1392,12 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1409,11 +1409,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1425,11 +1425,11 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 14}
@@ -1442,7 +1442,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             },
             "encoding": {
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1484,32 +1484,42 @@ describe("normalizeBoxIQR", () => {
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
+              },
+              {
+                "op": "min",
+                "field": "people",
+                "as": "min_people"
+              },
+              {
+                "op": "max",
+                "field": "people",
+                "as": "max_people"
               }
             ],
             "groupby": ["age"]
           },
           {
-            calculate: 'datum.upperBox - datum.lowerBox',
-            as: 'IQR'
+            calculate: 'datum.upper_box_people - datum.lower_box_people',
+            as: 'iqr_people'
           },
           {
-            calculate: 'datum.lowerBox - datum.IQR * 1.5',
-            as: 'lowerWhisker'
+            "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+            "as": "upper_whisker_people"
           },
           {
-            calculate: 'datum.upperBox + datum.IQR * 1.5',
-            as: 'upperWhisker'
+            "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+            "as": "lower_whisker_people"
           }
         ],
         "layer": [
@@ -1521,12 +1531,12 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1539,11 +1549,11 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1556,11 +1566,11 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -1575,7 +1585,7 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},
@@ -1617,17 +1627,27 @@ describe("normalizeBoxIQR", () => {
               {
                 "op": "q1",
                 "field": "people",
-                "as": "lowerBox"
+                "as": "lower_box_people"
               },
               {
                 "op": "q3",
                 "field": "people",
-                "as": "upperBox"
+                "as": "upper_box_people"
               },
               {
                 "op": "median",
                 "field": "people",
-                "as": "midBox"
+                "as": "mid_box_people"
+              },
+              {
+                "op": "min",
+                "field": "people",
+                "as": "min_people"
+              },
+              {
+                "op": "max",
+                "field": "people",
+                "as": "max_people"
               },
               {
                 "op": "mean",
@@ -1638,16 +1658,16 @@ describe("normalizeBoxIQR", () => {
             "groupby": ["age"]
           },
           {
-            calculate: 'datum.upperBox - datum.lowerBox',
-            as: 'IQR'
+            calculate: 'datum.upper_box_people - datum.lower_box_people',
+            as: 'iqr_people'
           },
           {
-            calculate: 'datum.lowerBox - datum.IQR * 1.5',
-            as: 'lowerWhisker'
+            "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+            "as": "upper_whisker_people"
           },
           {
-            calculate: 'datum.upperBox + datum.IQR * 1.5',
-            as: 'upperWhisker'
+            "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+            "as": "lower_whisker_people"
           }
         ],
         "layer": [
@@ -1659,12 +1679,12 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerWhisker",
+                "field": "lower_whisker_people",
                 "type": "quantitative",
                 "axis": {"title": "population"}
               },
               "y2": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               }
             }
@@ -1677,11 +1697,11 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperWhisker",
+                "field": "upper_whisker_people",
                 "type": "quantitative"
               }
             }
@@ -1694,11 +1714,11 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lowerBox",
+                "field": "lower_box_people",
                 "type": "quantitative"
               },
               "y2": {
-                "field": "upperBox",
+                "field": "upper_box_people",
                 "type": "quantitative"
               },
               "size": {"value": 5},
@@ -1716,7 +1736,7 @@ describe("normalizeBoxIQR", () => {
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "midBox",
+                "field": "mid_box_people",
                 "type": "quantitative"
               },
               "color": {"value": "white"},

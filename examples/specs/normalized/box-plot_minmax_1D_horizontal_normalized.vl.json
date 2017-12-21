@@ -10,27 +10,27 @@
         {
           "op": "q1",
           "field": "people",
-          "as": "lowerBox"
+          "as": "lower_box_people"
         },
         {
           "op": "q3",
           "field": "people",
-          "as": "upperBox"
+          "as": "upper_box_people"
         },
         {
           "op": "median",
           "field": "people",
-          "as": "midBox"
+          "as": "mid_box_people"
         },
         {
           "op": "min",
           "field": "people",
-          "as": "lowerWhisker"
+          "as": "lower_whisker_people"
         },
         {
           "op": "max",
           "field": "people",
-          "as": "upperWhisker"
+          "as": "upper_whisker_people"
         }
       ],
       "groupby": []
@@ -44,14 +44,14 @@
       },
       "encoding": {
         "x": {
-          "field": "lowerWhisker",
+          "field": "lower_whisker_people",
           "type": "quantitative",
           "axis": {
             "title": "population"
           }
         },
         "x2": {
-          "field": "lowerBox",
+          "field": "lower_box_people",
           "type": "quantitative"
         }
       }
@@ -63,11 +63,11 @@
       },
       "encoding": {
         "x": {
-          "field": "upperBox",
+          "field": "upper_box_people",
           "type": "quantitative"
         },
         "x2": {
-          "field": "upperWhisker",
+          "field": "upper_whisker_people",
           "type": "quantitative"
         }
       }
@@ -79,11 +79,11 @@
       },
       "encoding": {
         "x": {
-          "field": "lowerBox",
+          "field": "lower_box_people",
           "type": "quantitative"
         },
         "x2": {
-          "field": "upperBox",
+          "field": "upper_box_people",
           "type": "quantitative"
         },
         "size": {
@@ -98,7 +98,7 @@
       },
       "encoding": {
         "x": {
-          "field": "midBox",
+          "field": "mid_box_people",
           "type": "quantitative"
         },
         "color": {

@@ -10,17 +10,27 @@
         {
           "op": "q1",
           "field": "people",
-          "as": "lowerBox"
+          "as": "lower_box_people"
         },
         {
           "op": "q3",
           "field": "people",
-          "as": "upperBox"
+          "as": "upper_box_people"
         },
         {
           "op": "median",
           "field": "people",
-          "as": "midBox"
+          "as": "mid_box_people"
+        },
+        {
+          "op": "min",
+          "field": "people",
+          "as": "min_people"
+        },
+        {
+          "op": "max",
+          "field": "people",
+          "as": "max_people"
         }
       ],
       "groupby": [
@@ -28,16 +38,16 @@
       ]
     },
     {
-      "calculate": "datum.upperBox - datum.lowerBox",
-      "as": "IQR"
+      "calculate": "datum.upper_box_people - datum.lower_box_people",
+      "as": "iqr_people"
     },
     {
-      "calculate": "datum.lowerBox - datum.IQR * 1.5",
-      "as": "lowerWhisker"
+      "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+      "as": "upper_whisker_people"
     },
     {
-      "calculate": "datum.upperBox + datum.IQR * 1.5",
-      "as": "upperWhisker"
+      "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+      "as": "lower_whisker_people"
     }
   ],
   "layer": [
@@ -48,14 +58,14 @@
       },
       "encoding": {
         "x": {
-          "field": "lowerWhisker",
+          "field": "lower_whisker_people",
           "type": "quantitative",
           "axis": {
             "title": "population"
           }
         },
         "x2": {
-          "field": "lowerBox",
+          "field": "lower_box_people",
           "type": "quantitative"
         },
         "y": {
@@ -71,11 +81,11 @@
       },
       "encoding": {
         "x": {
-          "field": "upperBox",
+          "field": "upper_box_people",
           "type": "quantitative"
         },
         "x2": {
-          "field": "upperWhisker",
+          "field": "upper_whisker_people",
           "type": "quantitative"
         },
         "y": {
@@ -91,11 +101,11 @@
       },
       "encoding": {
         "x": {
-          "field": "lowerBox",
+          "field": "lower_box_people",
           "type": "quantitative"
         },
         "x2": {
-          "field": "upperBox",
+          "field": "upper_box_people",
           "type": "quantitative"
         },
         "y": {
@@ -114,7 +124,7 @@
       },
       "encoding": {
         "x": {
-          "field": "midBox",
+          "field": "mid_box_people",
           "type": "quantitative"
         },
         "y": {
