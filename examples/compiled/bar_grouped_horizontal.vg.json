@@ -120,17 +120,7 @@
                 },
                 "offset": 10,
                 "orient": "left",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {
