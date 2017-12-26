@@ -20,7 +20,6 @@ This is an incomplete list of integrations, applications, and extensions of the 
 
 ## Tools
 
-* [Polestar](https://github.com/vega/polestar), lightweight Tableau-style interface for visual analysis
 * [Voyager](https://github.com/vega/voyager), visualization browser for open-ended data exploration
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 * [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
