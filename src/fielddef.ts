@@ -163,8 +163,6 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).
    *
    * __Default value:__ `"ascending"`
-   *
-   * @nullable
    */
   sort?: SortOrder | SortField<F> | null;
 }
@@ -175,8 +173,6 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * If `null`, the axis for the encoding channel will be removed.
    *
    * __Default value:__ If undefined, default [axis properties](axis.html) are applied.
-   *
-   * @nullable
    */
   axis?: Axis | null;
 
@@ -208,8 +204,6 @@ export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
     * If `null`, the legend for the encoding channel will be removed.
     *
     * __Default value:__ If undefined, default [legend properties](legend.html) are applied.
-    *
-    * @nullable
     */
   legend?: Legend | null;
 }

@@ -164,7 +164,6 @@ export interface ScaleConfig {
    * __Default value:__ `21`
    *
    * @minimum 0
-   * @nullable
    */
   rangeStep?: number | null;
 
@@ -455,7 +454,6 @@ export interface Scale {
    * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
    *
    * @minimum 0
-   * @nullable
    */
   rangeStep?: number | null;
 
