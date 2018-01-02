@@ -1,0 +1,118 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 800,
+    "height": 500,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/us-state-capitals.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "lon",
+                        "lat"
+                    ],
+                    "signal": "layer_1_geojson"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "lon",
+                        "lat"
+                    ],
+                    "as": [
+                        "lon_geo",
+                        "lat_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "[data('source_0'), layer_1_geojson]"
+            },
+            "type": "albersUsa"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "shape",
+            "style": [
+                "geoshape"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#A9ACB5"
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "geoshape",
+                    "projection": "projection"
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "source_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "field": "lon_geo"
+                    },
+                    "y": {
+                        "field": "lat_geo"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"city\"]"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "align": {
+                        "value": "center"
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

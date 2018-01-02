@@ -1,0 +1,121 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 500,
+    "height": 300,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/airports.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "signal": "layer_1_geojson"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "[data('source_0'), layer_1_geojson]"
+            },
+            "type": "albersUsa"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "shape",
+            "style": [
+                "geoshape"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "gray"
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "geoshape",
+                    "projection": "projection"
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "source_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "x": {
+                        "field": "longitude_geo"
+                    },
+                    "y": {
+                        "field": "latitude_geo"
+                    },
+                    "fill": {
+                        "value": "steelblue"
+                    },
+                    "size": {
+                        "value": 10
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

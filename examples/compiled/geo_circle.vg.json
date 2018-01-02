@@ -1,0 +1,126 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 500,
+    "height": 300,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/zipcodes.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "substring(datum.zip_code, 0, 1)",
+                    "as": "digit"
+                },
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "signal": "geojson"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "geojson"
+            },
+            "type": "albersUsa"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "x": {
+                        "field": "longitude_geo"
+                    },
+                    "y": {
+                        "field": "latitude_geo"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "digit"
+                    },
+                    "size": {
+                        "value": 1
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "digit",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "digit",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
