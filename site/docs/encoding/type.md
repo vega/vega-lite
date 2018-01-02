@@ -5,7 +5,12 @@ permalink: /docs/type.html
 ---
 
 If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement).
-The supported data types are: `"quantitative"`, `"temporal"`, `"ordinal"`, and `"nominal"`.
+The supported data types are: `"quantitative"`, `"temporal"`, `"ordinal"`, `"nominal"`, `"latitude"`, `"longitude"`, and `"geojson"`.
+
+{% include table.html props="type" source="FieldDef" %}
+
+**Note**:
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal, latitude, or longitude data.
 
 ## Quantitative
 
@@ -34,7 +39,14 @@ Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be so
 
 Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, and name are nominal data. Numbers maybe used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
 
-{% include table.html props="type" source="FieldDef" %}
+## Latitude
 
-**Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+Latitude data represents geographic north-south position for use in map projections. This is always numerical data ranging between -90.0 (at the south pole) and 90.0 (at the north pole).
+
+## Longitude
+
+Longitude data represents geographic east-west position for use in map projections. This is always numerical data ranging between -180.0 (in the west) and 180.0 (in the east).
+
+## GeoJSON
+
+GeoJSON data represents geographic shapes specified as [GeoJSON](http://geojson.org/).
