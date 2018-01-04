@@ -56,6 +56,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "signal": "width",
                         "mult": 0.5
@@ -69,9 +72,6 @@
                     },
                     "fill": {
                         "value": "transparent"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }

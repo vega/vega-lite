@@ -4,7 +4,6 @@ import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
-import {StackProperties} from '../../stack';
 import {TEMPORAL} from '../../type';
 import {contains} from '../../util';
 import {getMarkConfig} from '../common';
@@ -13,10 +12,18 @@ import {Orient} from './../../vega.schema';
 
 export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
+
+  // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
+  }
+
+  // set opacity and filled if not specified in mark config
+  const specifiedOpacity = markDef.opacity || getMarkConfig('opacity', markDef, config);
+  if (specifiedOpacity === undefined) {
+    markDef.opacity = defaultOpacity(markDef.type, encoding);
   }
 
   const specifiedFilled = markDef.filled;
@@ -26,23 +33,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   return markDef;
 }
 
-/**
- * Initialize encoding's value with some special default values
- */
-export function initEncoding(mark: MarkDef, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
-  const opacityConfig = getMarkConfig('opacity', mark, config);
-  if (!encoding.opacity && opacityConfig === undefined) {
-    const opacity = defaultOpacity(mark.type, encoding, stacked);
-    if (opacity !== undefined) {
-      encoding.opacity = {value: opacity};
-    }
-  }
-
-  return encoding;
-}
-
-
-function defaultOpacity(mark: Mark, encoding: Encoding<string>, stacked: StackProperties) {
+function defaultOpacity(mark: Mark, encoding: Encoding<string>) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {

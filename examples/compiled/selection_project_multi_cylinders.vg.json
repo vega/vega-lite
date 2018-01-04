@@ -93,6 +93,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -122,10 +125,7 @@
                         {
                             "value": 50
                         }
-                    ],
-                    "opacity": {
-                        "value": 0.7
-                    }
+                    ]
                 }
             }
         }

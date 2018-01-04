@@ -252,6 +252,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "mid_box_people"
@@ -269,9 +272,6 @@
                     },
                     "fill": {
                         "value": "white"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }

@@ -1486,6 +1486,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_2_x",
                                 "field": "Population_ages_65_and_above_of_total"
@@ -1505,9 +1508,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

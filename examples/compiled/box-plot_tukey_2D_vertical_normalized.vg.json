@@ -246,6 +246,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "age",
@@ -263,9 +266,6 @@
                     },
                     "fill": {
                         "value": "white"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
