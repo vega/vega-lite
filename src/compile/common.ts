@@ -39,7 +39,7 @@ export function getStyles(mark: MarkDef): string[] {
 }
 
 /**
- * Return value mark specific config property if exists.
+ * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
 export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P] {
@@ -52,6 +52,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
     value = markSpecificConfig[prop];
   }
 
+  // Then read style config, which has even higher precedence.
   const styles = getStyles(mark);
   for (const style of styles) {
     const styleConfig = config.style[style];
