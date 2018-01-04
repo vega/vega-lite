@@ -524,6 +524,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Horsepower_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -544,9 +547,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -979,6 +979,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Horsepower_Acceleration_x",
                                 "field": "Acceleration"
@@ -999,9 +1002,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -1367,6 +1367,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Horsepower_Horsepower_x",
                                 "field": "Horsepower"
@@ -1387,9 +1390,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -1824,6 +1824,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Acceleration_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -1844,9 +1847,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -2212,6 +2212,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Acceleration_Acceleration_x",
                                 "field": "Acceleration"
@@ -2232,9 +2235,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -2669,6 +2669,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Acceleration_Horsepower_x",
                                 "field": "Horsepower"
@@ -2689,9 +2692,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -3057,6 +3057,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -3077,9 +3080,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -3514,6 +3514,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Acceleration_x",
                                 "field": "Acceleration"
@@ -3534,9 +3537,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -3969,6 +3969,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Horsepower_x",
                                 "field": "Horsepower"
@@ -3989,9 +3992,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

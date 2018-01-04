@@ -205,6 +205,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 1
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "X"
@@ -218,9 +221,6 @@
                             },
                             "shape": {
                                 "value": "circle"
-                            },
-                            "opacity": {
-                                "value": 1
                             }
                         }
                     }

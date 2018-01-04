@@ -223,6 +223,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "xc": {
                         "signal": "width",
                         "mult": 0.5
@@ -239,9 +242,6 @@
                     },
                     "fill": {
                         "value": "white"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
