@@ -296,8 +296,7 @@
                         "data": "data_3",
                         "field": "mid_box_people"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

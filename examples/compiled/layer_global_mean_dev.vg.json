@@ -238,8 +238,7 @@
                         "data": "data_3",
                         "field": "upper"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

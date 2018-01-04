@@ -1,4 +1,3 @@
-import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -16,7 +15,7 @@ import {
   VgFieldRefUnionDomain,
   VgNonUnionDomain,
   VgSortField,
-  VgUnionSortField,
+  VgUnionSortField
 } from '../../vega.schema';
 import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {binRequiresRange} from '../common';
@@ -24,7 +23,7 @@ import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
+import {ScaleComponentIndex} from './component';
 
 
 export function parseScaleDomain(model: Model) {
@@ -273,7 +272,7 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
     return true;
   }
 
-  // sort === 'none'
+  // sort == null
   return undefined;
 }
 
@@ -361,31 +360,24 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   }
 
   // only keep simple sort properties that work with unioned domains
-  const onlySimpleSorts = sorts.filter(s => {
-    if (util.isBoolean(s)) {
-      return true;
+  const simpleSorts = util.unique(sorts.map(s => {
+    if (s === true) {
+      return s;
     }
     if (s.op === 'count') {
-      return true;
+      return s;
     }
     log.warn(log.message.domainSortDropped(s));
-    return false;
-  }) as VgUnionSortField[];
+    return true;
+  }), util.hash) as VgUnionSortField[];
 
-  let sort: VgUnionSortField = true;
+  let sort: VgUnionSortField = undefined;
 
-  if (onlySimpleSorts.length === 1) {
-    sort = onlySimpleSorts[0];
-  } else if (onlySimpleSorts.length > 1) {
-    // ignore sort = false if we have another sort property
-    const filteredSorts = onlySimpleSorts.filter(s => s !== false);
-
-    if (filteredSorts.length > 1) {
-      log.warn(log.message.MORE_THAN_ONE_SORT);
-      sort = true;
-    } else {
-      sort = filteredSorts[0];
-    }
+  if (simpleSorts.length === 1) {
+    sort = simpleSorts[0];
+  } else if (simpleSorts.length > 1) {
+    log.warn(log.message.MORE_THAN_ONE_SORT);
+    sort = true;
   }
 
   const allData = util.unique(domains.map(d => {
@@ -400,13 +392,13 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     const domain: VgFieldRefUnionDomain = {
       data: allData[0],
       fields: uniqueDomains.map(d => (d as VgDataRef).field),
-      sort
+      ...(sort ? {sort} : {})
     };
 
     return domain;
   }
 
-  return {fields: uniqueDomains, sort};
+  return {fields: uniqueDomains, ...(sort ? {sort} : {})};
 }
 
 /**
@@ -415,12 +407,12 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
  *
  */
 export function getFieldFromDomain(domain: VgDomain): string {
-  if (isDataRefDomain(domain) && isString(domain.field)) {
+  if (isDataRefDomain(domain) && util.isString(domain.field)) {
     return domain.field;
   } else if (isDataRefUnionedDomain(domain)) {
     let field;
     for (const nonUnionDomain of domain.fields) {
-      if (isDataRefDomain(nonUnionDomain) && isString(nonUnionDomain.field)) {
+      if (isDataRefDomain(nonUnionDomain) && util.isString(nonUnionDomain.field)) {
         if (!field) {
           field = nonUnionDomain.field;
         } else if (field !== nonUnionDomain.field) {
@@ -431,10 +423,10 @@ export function getFieldFromDomain(domain: VgDomain): string {
     }
     log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result view size maybe incorrect.');
     return field;
-  } else if (isFieldRefUnionDomain(domain) && isString) {
+  } else if (isFieldRefUnionDomain(domain)) {
     log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.');
     const field = domain.fields[0];
-    return isString(field) ? field : undefined;
+    return util.isString(field) ? field : undefined;
   }
 
   return undefined;

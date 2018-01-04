@@ -285,8 +285,7 @@
                         "data": "data_2",
                         "field": "min_temp_min"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

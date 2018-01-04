@@ -395,8 +395,7 @@
                 "fields": [
                     "bin_maxbins_10_temp_min",
                     "bin_maxbins_10_temp_min_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -414,8 +413,7 @@
                 "fields": [
                     "bin_maxbins_10_temp_max",
                     "bin_maxbins_10_temp_max_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

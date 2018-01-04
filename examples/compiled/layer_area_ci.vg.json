@@ -181,8 +181,7 @@
                         "data": "data_1",
                         "field": "year_Year"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -208,8 +207,7 @@
                         "data": "data_1",
                         "field": "mean_Miles_per_Gallon"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

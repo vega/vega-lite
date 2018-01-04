@@ -173,8 +173,7 @@
                         "data": "data_0",
                         "field": "mean_IMDB_Rating"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

@@ -448,8 +448,7 @@
                         "data": "data_1",
                         "field": "Acceleration"
                     }
-                ],
-                "sort": true
+                ]
             },
             "domainRaw": {
                 "signal": "region_Miles_per_Gallon"

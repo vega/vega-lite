@@ -327,8 +327,7 @@
                         "data": "data_1",
                         "field": "sum_people_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

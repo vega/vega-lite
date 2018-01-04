@@ -199,8 +199,7 @@
                         "data": "data_2",
                         "field": "c"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

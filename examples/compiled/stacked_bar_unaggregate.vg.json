@@ -138,8 +138,7 @@
                 "fields": [
                     "b_start",
                     "b_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

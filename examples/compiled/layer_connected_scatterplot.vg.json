@@ -136,8 +136,7 @@
                         "data": "data_1",
                         "field": "miles"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -161,8 +160,7 @@
                         "data": "data_1",
                         "field": "gas"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

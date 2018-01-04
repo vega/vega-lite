@@ -196,8 +196,7 @@
                         "data": "data_2",
                         "field": "date"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -223,8 +222,7 @@
                         "data": "data_2",
                         "field": "price"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
