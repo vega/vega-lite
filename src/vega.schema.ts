@@ -27,7 +27,7 @@ export interface VgParentRef {
 
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
-export type VgSortField = boolean | {
+export type VgSortField = true | {
   field?: VgFieldRef,
   op: AggregateOp,
   order?: SortOrder
@@ -36,7 +36,7 @@ export type VgSortField = boolean | {
 /**
  * Unioned domains can only be sorted by count aggregate.
  */
-export type VgUnionSortField = boolean | {
+export type VgUnionSortField = true | {
   op: 'count'
   order?: SortOrder
 };

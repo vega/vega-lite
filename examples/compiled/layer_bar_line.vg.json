@@ -190,8 +190,7 @@
                         "data": "data_2",
                         "field": "b"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

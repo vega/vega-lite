@@ -304,8 +304,7 @@
                         "data": "data_4",
                         "field": "min_Horsepower"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

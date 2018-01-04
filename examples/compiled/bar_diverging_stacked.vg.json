@@ -407,8 +407,7 @@
                 "fields": [
                     "percentage_start",
                     "percentage_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

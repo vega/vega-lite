@@ -208,8 +208,7 @@
                         "data": "data_1",
                         "field": "bin_maxbins_10_distance_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -232,8 +231,7 @@
                         "data": "data_1",
                         "field": "count_*"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

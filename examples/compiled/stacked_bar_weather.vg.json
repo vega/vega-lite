@@ -130,8 +130,7 @@
                 "fields": [
                     "count_*_start",
                     "count_*_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

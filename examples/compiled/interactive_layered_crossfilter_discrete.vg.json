@@ -888,8 +888,7 @@
                         "data": "data_1",
                         "field": "bin_maxbins_20_distance_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -912,8 +911,7 @@
                         "data": "data_1",
                         "field": "count_*"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -945,8 +943,7 @@
                         "data": "data_3",
                         "field": "bin_maxbins_20_delay_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -969,8 +966,7 @@
                         "data": "data_3",
                         "field": "count_*"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -1002,8 +998,7 @@
                         "data": "data_5",
                         "field": "bin_maxbins_20_time_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -1026,8 +1021,7 @@
                         "data": "data_5",
                         "field": "count_*"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

@@ -351,8 +351,7 @@
                         "data": "data_5",
                         "field": "people"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

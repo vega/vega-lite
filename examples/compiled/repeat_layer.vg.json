@@ -935,8 +935,7 @@
                         "data": "data_1",
                         "field": "mean_temp_max"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -983,8 +982,7 @@
                         "data": "data_3",
                         "field": "mean_precipitation"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -1031,8 +1029,7 @@
                         "data": "data_5",
                         "field": "mean_wind"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

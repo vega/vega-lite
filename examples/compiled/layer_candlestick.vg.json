@@ -363,8 +363,7 @@
                         "data": "data_2",
                         "field": "yearmonthdate_date"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -395,8 +394,7 @@
                         "data": "data_2",
                         "field": "close"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

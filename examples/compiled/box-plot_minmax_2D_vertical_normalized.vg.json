@@ -328,8 +328,7 @@
                         "data": "data_3",
                         "field": "midBox"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

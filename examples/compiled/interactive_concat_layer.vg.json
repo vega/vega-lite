@@ -539,8 +539,7 @@
                         "data": "data_2",
                         "field": "bin_maxbins_10_IMDB_Rating_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -571,8 +570,7 @@
                         "data": "data_2",
                         "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

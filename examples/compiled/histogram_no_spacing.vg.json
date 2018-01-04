@@ -101,8 +101,7 @@
                 "fields": [
                     "bin_maxbins_10_IMDB_Rating",
                     "bin_maxbins_10_IMDB_Rating_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

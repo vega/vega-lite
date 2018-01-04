@@ -456,8 +456,7 @@
                         "data": "data_2",
                         "field": "sum_people"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
