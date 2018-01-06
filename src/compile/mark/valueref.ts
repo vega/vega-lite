@@ -133,7 +133,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     } else if (isValueDef(channelDef)) {
       return {value: channelDef.value};
     } else {
-      throw new Error('A channel definition has neither field nor value.'); // FIXME add this to log.message
+      return undefined;
     }
   }
 
