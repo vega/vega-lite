@@ -159,6 +159,24 @@ describe('Mark: Point', function() {
     });
   });
 
+  describe('with x, y, and condition-only color', function () {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      ...pointXY({
+      "color": {"condition": {"selection": "test", "field": "yield", "type": "quantitative"}}
+      }),
+      selection: {test: {type: 'single'}}
+    });
+    model.parseSelection();
+    const props = point.encodeEntry(model);
+
+    it('should have one condition for color with scale for "yield"', function () {
+      assert.isArray(props.stroke);
+      assert.equal(props.stroke['length'], 1);
+      assert.equal(props.stroke[0].scale, COLOR);
+      assert.equal(props.stroke[0].field, 'yield');
+    });
+  });
+
   describe('with x, y, shape', function () {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({
       "shape": {"field": "site", "type": "nominal"}
