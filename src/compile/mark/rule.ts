@@ -23,6 +23,7 @@ export const rule: MarkCompiler = {
 
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
+      ...mixins.text(model, 'href'),
       ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'strokeWidth'  // VL's rule size is strokeWidth

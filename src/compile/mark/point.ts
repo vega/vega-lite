@@ -17,6 +17,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
 
     ...mixins.color(model),
     ...mixins.text(model, 'tooltip'),
+    ...mixins.text(model, 'href'),
     ...mixins.nonPosition('size', model),
     ...shapeMixins(model, config, fixedShape),
     ...mixins.nonPosition('opacity', model),

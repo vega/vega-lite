@@ -12,6 +12,9 @@ perl -pi -e s,'GenericHConcatSpec<CompositeUnitSpec>','HConcatSpec',g build/vega
 perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json
 
+perl -pi -e s,'FieldDefWithCondition<FieldDef\>','FieldDefWithCondition',g build/vega-lite-schema.json
+perl -pi -e s,'ValueDefWithCondition<FieldDef\>','ValueDefWithCondition',g build/vega-lite-schema.json
+
 perl -pi -e s,'FieldDefWithCondition<TextFieldDef\>','TextFieldDefWithCondition',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDefWithCondition<TextFieldDef\>','TextValueDefWithCondition',g build/vega-lite-schema.json
 

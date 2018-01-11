@@ -30,6 +30,9 @@ The `encoding` property of a single view specification represents the mapping be
     "text": ...,
     "tooltip": ...,
 
+    // Hyperlink Channel
+    "href": ...,
+
     // Order Channel
     "order": ...,
 
@@ -51,7 +54,8 @@ The keys in the `encoding` object are encoding channels.  Vega-lite supports the
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`
 - [Mark Property Channels](#mark-prop): `color`, `opacity`, `shape`, `size`
-- [Text and Tooltip Channels](#text):  `text`, `tooltip`
+- [Text and Tooltip Channels](#text): `text`, `tooltip`
+- [Hyperlink Channel](#href): `href`
 - [Level of Detail Channel](#detail): `detail`
 - [Order Channel](#order): `order`
 - [Facet Channels](#facet): `row`, `column`
@@ -203,6 +207,29 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="TextValueDefWithCondition" %}
+
+{:#href}
+## Hyperlink Channel
+
+By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a muse click. The `cursor` mark property can be set to `pointer` to serve as affordance for hyperlinks.
+
+{% include table.html props="href" source="Encoding" %}
+
+
+{:#href-field-def}
+### Hyperlink Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html),
+[field definitions](#field-def) for the `href` channel can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="FieldDefWithCondition" %}
+
+{:#href-value-def}
+### Hyperlink Value Definition
+
+In addition to the constant `value`, [value definitions](#value-def) of the `href` channel can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="ValueDefWithCondition" %}
 
 
 {:#detail}

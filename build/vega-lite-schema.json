@@ -827,6 +827,54 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
+    "Conditional<FieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+        }
+      },
+      "required": [
+        "selection",
+        "type"
+      ],
+      "type": "object"
+    },
     "Conditional<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
@@ -1303,6 +1351,17 @@
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1450,6 +1509,17 @@
             }
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+        },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
         },
         "opacity": {
           "anyOf": [
@@ -1689,6 +1759,64 @@
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "FieldDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -4512,7 +4640,8 @@
         "color",
         "opacity",
         "text",
-        "tooltip"
+        "tooltip",
+        "href"
       ],
       "type": "string"
     },
@@ -5829,6 +5958,38 @@
       "required": [
         "value"
       ],
+      "type": "object"
+    },
+    "ValueDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<FieldDef>"
+            },
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
       "type": "object"
     },
     "MarkPropValueDefWithCondition": {

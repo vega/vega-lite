@@ -100,7 +100,7 @@ function wrapCondition(
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'tooltip' = 'text') {
+export function text(model: UnitModel, channel: 'text' | 'tooltip' | 'href' = 'text') {
   const channelDef = model.encoding[channel];
   return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }

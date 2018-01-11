@@ -26,6 +26,7 @@ export const text: MarkCompiler = {
       ...mixins.text(model),
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
+      ...mixins.text(model, 'href'),
       ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'fontSize'  // VL's text size is fontSize

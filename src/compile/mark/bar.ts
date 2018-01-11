@@ -24,6 +24,7 @@ export const bar: MarkCompiler = {
       ...y(model, stack),
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
+      ...mixins.text(model, 'href'),
       ...mixins.nonPosition('opacity', model)
     };
   }

@@ -154,9 +154,10 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       case 'y':
       case 'order':
       case 'tooltip':
+      case 'href':
       case 'x2':
       case 'y2':
-      // TODO: case 'href', 'cursor':
+      // TODO: case 'cursor':
 
       // text, shape, shouldn't be a part of line/area
       case 'text':

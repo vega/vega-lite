@@ -120,6 +120,21 @@ describe('Mark', function() {
         assert.equal(markGroup[0].encode.update.tooltip.value, 'foo');
       });
     });
+
+    describe('Bar with href', () => {
+      it('should pass href value to encoding', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+            "href": {"value": "https://idl.cs.washington.edu/"}
+          }
+        });
+        const markGroup = parseMarkGroup(model);
+        assert.equal(markGroup[0].encode.update.href.value, 'https://idl.cs.washington.edu/');
+      });
+    });
   });
 
   describe('getPathSort', () => {
