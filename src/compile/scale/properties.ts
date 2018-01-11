@@ -167,8 +167,8 @@ export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: Sca
   return undefined;
 }
 
-export function paddingInner(padding: number, channel: Channel, scaleConfig: ScaleConfig) {
-  if (padding !== undefined) {
+export function paddingInner(paddingValue: number, channel: Channel, scaleConfig: ScaleConfig) {
+  if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
     return undefined;
   }
@@ -183,8 +183,8 @@ export function paddingInner(padding: number, channel: Channel, scaleConfig: Sca
   return undefined;
 }
 
-export function paddingOuter(padding: number, channel: Channel, scaleType: ScaleType, paddingInner: number, scaleConfig: ScaleConfig) {
-  if (padding !== undefined) {
+export function paddingOuter(paddingValue: number, channel: Channel, scaleType: ScaleType, paddingInnerValue: number, scaleConfig: ScaleConfig) {
+  if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingOuter.
     return undefined;
   }
@@ -200,7 +200,7 @@ export function paddingOuter(padding: number, channel: Channel, scaleType: Scale
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
           Note that step (by default) and cardinality are integers.) */
-      return paddingInner / 2;
+      return paddingInnerValue / 2;
     }
   }
   return undefined;

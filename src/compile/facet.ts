@@ -8,7 +8,7 @@ import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
+import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -17,7 +17,6 @@ import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
-import {assembleScalesForModel} from './scale/assemble';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
@@ -272,9 +271,9 @@ export class FacetModel extends ModelWithField {
 
           if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
             const domain = assembleDomain(this.child, channel);
-            const field = getFieldFromDomain(domain);
-            if (field) {
-              fields.push(field);
+            const fieldName = getFieldFromDomain(domain);
+            if (fieldName) {
+              fields.push(fieldName);
               ops.push('distinct');
             } else {
               log.warn('Unknown field for ${channel}.  Cannot calculate view size.');

@@ -16,11 +16,11 @@ export function values(legend: Legend) {
   return vals;
 }
 
-export function type(type: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
+export function type(t: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
   if (
       channel === COLOR && (
-        (type === 'quantitative' && !isBinScale(scaleType)) ||
-        (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
+        (t === 'quantitative' && !isBinScale(scaleType)) ||
+        (t === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
       )
     ) {
     return 'gradient';

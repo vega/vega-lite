@@ -75,10 +75,10 @@ export function fieldRef(
   return ref;
 }
 
-export function band(scaleName: string, band: number|boolean = true): VgValueRef {
+export function band(scaleName: string, banding: number|boolean = true): VgValueRef {
   return {
     scale: scaleName,
-    band: band
+    band: banding
   };
 }
 

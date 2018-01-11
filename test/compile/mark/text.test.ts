@@ -109,7 +109,7 @@ describe('Mark: Text', function() {
     it('should scale on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'Acceleration'});
     });
-    it('should scale on y', function(){
+    it('should scale on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'Displacement'});
     });
 

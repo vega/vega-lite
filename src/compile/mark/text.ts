@@ -44,8 +44,8 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
 }
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const align = markDef.align || getMarkConfig('align', markDef, config);
-  if (align === undefined) {
+  const a = markDef.align || getMarkConfig('align', markDef, config);
+  if (a === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';
   }
   // If there is a config, Vega-parser will process this already.

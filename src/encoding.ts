@@ -159,13 +159,13 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
         normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef])
-          .reduce((fieldDefs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+          .reduce((aggregator: FieldDef<string>[], fieldDef: FieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
-              fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+              aggregator.push(normalizeFieldDef(fieldDef, channel));
             }
-            return fieldDefs;
+            return aggregator;
           }, []);
       }
     } else {

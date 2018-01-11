@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+
 import {expression, fieldFilterExpression, isEqualFilter, isOneOfFilter, isRangeFilter} from '../src/filter';
 import {TimeUnit} from '../src/timeunit';
 

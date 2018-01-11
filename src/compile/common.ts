@@ -119,12 +119,12 @@ export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string
   return undefined;
 }
 
-function formatExpr(field: string, format: string) {
-  return `format(${field}, "${format || ''}")`;
+function formatExpr(fieldName: string, format: string) {
+  return `format(${fieldName}, "${format || ''}")`;
 }
 
-export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
-  return formatExpr(field, specifiedFormat || config.numberFormat);
+export function numberFormatExpr(fieldName: string, specifiedFormat: string, config: Config) {
+  return formatExpr(fieldName, specifiedFormat || config.numberFormat);
 }
 
 
@@ -136,17 +136,17 @@ export function binFormatExpression(startField: string, endField: string, format
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
+export function timeFormatExpression(fieldName: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
     if (isUTCScale) {
-      return `utcFormat(${field}, '${_format}')`;
+      return `utcFormat(${fieldName}, '${_format}')`;
     } else {
-      return `timeFormat(${field}, '${_format}')`;
+      return `timeFormat(${fieldName}, '${_format}')`;
     }
   } else {
-    return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
+    return formatExpression(timeUnit, fieldName, shortTimeLabels, isUTCScale);
   }
 }
 

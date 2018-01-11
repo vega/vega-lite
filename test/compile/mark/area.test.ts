@@ -36,7 +36,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', function(){
+    it('should has no height', function() {
       assert.isUndefined(props.height);
     });
   });
@@ -73,7 +73,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', function(){
+    it('should has no height', function() {
       assert.isUndefined(props.height);
     });
   });
@@ -86,7 +86,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', function(){
+    it('should have scale for y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -103,7 +103,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', function(){
+    it('should have scale for y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -153,7 +153,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'year_Year'});
     });
 
-    it('should have scale for x', function(){
+    it('should have scale for x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'count_*'});
     });
 
@@ -178,7 +178,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', function(){
+    it('should have no width', function() {
       assert.isUndefined(props.width);
     });
   });
@@ -199,7 +199,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', function(){
+    it('should have no width', function() {
       assert.isUndefined(props.width);
     });
   });

@@ -52,8 +52,8 @@ export class LocalLogger implements LoggerInterface {
 
 export function wrap(f: (logger: LocalLogger) => void) {
   return () => {
-    const logger = current = new LocalLogger();
-    f(logger);
+    const currentLogger = current = new LocalLogger();
+    f(currentLogger);
     reset();
   };
 }
@@ -61,8 +61,8 @@ export function wrap(f: (logger: LocalLogger) => void) {
 /**
  * Set the singleton logger to be a custom logger
  */
-export function set(logger: LoggerInterface) {
-  current = logger;
+export function set(newLogger: LoggerInterface) {
+  current = newLogger;
   return current;
 }
 
