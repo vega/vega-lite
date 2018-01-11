@@ -7,8 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {FacetMapping} from './facet';
 import {Mark} from './mark';
-import {SCALE_TYPES, ScaleType} from './scale';
-import {contains, Flag, flagKeys} from './util';
+import {Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet

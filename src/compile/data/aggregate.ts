@@ -149,9 +149,9 @@ export class AggregateNode extends DataFlowNode {
   public producedFields() {
     const out = {};
 
-    keys(this.measures).forEach(field => {
-      keys(this.measures[field]).forEach(op => {
-        out[`${op}_${field}`] = true;
+    keys(this.measures).forEach(fieldName => {
+      keys(this.measures[fieldName]).forEach(op => {
+        out[`${op}_${fieldName}`] = true;
       });
     });
 
@@ -163,11 +163,11 @@ export class AggregateNode extends DataFlowNode {
     const fields: string[] = [];
     const as: string[] = [];
 
-    for (const field of keys(this.measures)) {
-      for (const op of keys(this.measures[field])) {
-        as.push(this.measures[field][op]);
+    for (const fieldName of keys(this.measures)) {
+      for (const op of keys(this.measures[fieldName])) {
+        as.push(this.measures[fieldName][op]);
         ops.push(op);
-        fields.push(field);
+        fields.push(fieldName);
       }
     }
 

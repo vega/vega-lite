@@ -1,6 +1,6 @@
 import {Encoding} from '../encoding';
 import {FacetMapping} from '../facet';
-import {Field, FieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
+import {Field, hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
 import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';

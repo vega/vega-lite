@@ -18,8 +18,8 @@ const hits = {
 
 type InOut = 'in' | 'out';
 
-function zoom(key: string, idx: number, zoom: InOut, parent?: string, targetBrush?: boolean) {
-  const delta = zoom === 'out' ? 200 : -200;
+function zoom(key: string, idx: number, direction: InOut, parent?: string, targetBrush?: boolean) {
+  const delta = direction === 'out' ? 200 : -200;
   return `return zoom(${hits[key][idx]}, ${delta}, ${parent}, ${targetBrush})`;
 }
 

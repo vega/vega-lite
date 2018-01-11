@@ -76,7 +76,7 @@ describe('FacetModel', function() {
       });
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(function(d){
+      const columnHeader = headerMarks.filter(d => {
         return d.name === "column_header";
       })[0];
 
@@ -98,7 +98,7 @@ describe('FacetModel', function() {
       });
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(function(d){
+      const columnHeader = headerMarks.filter(d => {
         return d.name === "column_header";
       })[0];
 
@@ -120,7 +120,7 @@ describe('FacetModel', function() {
       });
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(function(d){
+      const columnHeader = headerMarks.filter(d => {
         return d.name === "column_header";
       })[0];
 
@@ -185,7 +185,7 @@ describe('FacetModel', function() {
       model.parseAxisAndHeader();
 
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(function(d){
+      const columnHeader = headerMarks.filter(d => {
         return d.name === "column_header";
       })[0];
 

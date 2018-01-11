@@ -1,10 +1,8 @@
 import {assert} from 'chai';
+
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {LookupNode} from '../../../src/compile/data/lookup';
 import {parseTransformArray} from '../../../src/compile/data/parse';
-import * as log from '../../../src/log';
 import {Dict} from '../../../src/util';
-import {VgLookupTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/filter', () => {

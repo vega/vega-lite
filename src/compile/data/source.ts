@@ -1,5 +1,5 @@
-import {Data, DataFormat, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains, duplicate, hash, keys} from '../../util';
+import {Data, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
+import {contains, hash} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 

@@ -14,18 +14,18 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     return undefined;
   }
 
-  let symbols:any = {};
+  let out: any = {};
   const mark = model.mark();
 
   switch (mark) {
     case BAR:
     case TICK:
     case TEXT:
-      symbols.shape = {value: 'square'};
+      out.shape = {value: 'square'};
       break;
     case CIRCLE:
     case SQUARE:
-      symbols.shape = {value: mark};
+      out.shape = {value: mark};
       break;
     case POINT:
     case LINE:
@@ -44,7 +44,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
 
   config = without(config, ['strokeDash', 'strokeDashOffset']);
 
-  applyMarkConfig(symbols, model, config);
+  applyMarkConfig(out, model, config);
 
   if (channel !== COLOR) {
     const colorMixins = mixins.color(model);
@@ -56,47 +56,47 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
       delete colorMixins.stroke;
     }
-    symbols = {...symbols, ...colorMixins};
+    out = {...out, ...colorMixins};
   }
 
   if (channel !== SHAPE) {
     const shapeDef = model.encoding.shape;
     if (isValueDef(shapeDef)) {
-      symbols.shape = {value: shapeDef.value};
+      out.shape = {value: shapeDef.value};
     }
   }
 
   if (channel !== OPACITY) {
     const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
-      symbols.opacity = {value: opacity};
+      out.opacity = {value: opacity};
     }
   }
 
-  symbols = {...symbols, ...symbolsSpec};
+  out = {...out, ...symbolsSpec};
 
-  return keys(symbols).length > 0 ? symbols : undefined;
+  return keys(out).length > 0 ? out : undefined;
 }
 
 export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
-  let gradient:any = {};
+  let out: any = {};
 
   if (type === 'gradient') {
     const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
-      gradient.opacity = {value: opacity};
+      out.opacity = {value: opacity};
     }
   }
 
-  gradient = {...gradient, ...gradientSpec};
-  return keys(gradient).length > 0 ? gradient : undefined;
+  out = {...out, ...gradientSpec};
+  return keys(out).length > 0 ? out : undefined;
 }
 
 export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, type: LegendType) {
   const legend = model.legend(channel);
   const config = model.config;
 
-  let labels: any = {};
+  let out: any = {};
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
@@ -108,9 +108,9 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
     };
   }
 
-  labels = {...labels, ...labelsSpec};
+  out = {...out, ...labelsSpec};
 
-  return keys(labels).length > 0 ? labels : undefined;
+  return keys(out).length > 0 ? out : undefined;
 }
 
 function getOpacityValue(opacityDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>): number {

@@ -86,8 +86,8 @@ export type RepeatRef = {
 
 export type Field = string | RepeatRef;
 
-export function isRepeatRef(field: Field): field is RepeatRef {
-  return field && !isString(field) && 'repeat' in field;
+export function isRepeatRef(fieldName: Field): fieldName is RepeatRef {
+  return fieldName && !isString(fieldName) && 'repeat' in fieldName;
 }
 
 /** @hide */
@@ -277,12 +277,12 @@ export interface FieldRefOption {
 }
 
 export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
-  let field = fieldDef.field;
+  let fieldName = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    field = 'count_*';
+    fieldName = 'count_*';
   } else {
     let fn: string = undefined;
 
@@ -298,23 +298,23 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
     }
 
     if (fn) {
-      field = `${fn}_${field}`;
+      fieldName = `${fn}_${fieldName}`;
     }
   }
 
   if (suffix) {
-    field = `${field}_${suffix}`;
+    fieldName = `${fieldName}_${suffix}`;
   }
 
   if (prefix) {
-    field = `${prefix}_${field}`;
+    fieldName = `${prefix}_${fieldName}`;
   }
 
   if (opt.expr) {
-    field = `${opt.expr}${accessPath(field)}`;
+    fieldName = `${opt.expr}${accessPath(fieldName)}`;
   }
 
-  return field;
+  return fieldName;
 }
 
 export function isDiscrete(fieldDef: FieldDef<Field>) {
@@ -341,18 +341,18 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
 
 export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
-  const {field, bin, timeUnit, aggregate} = fieldDef;
+  const {field: fieldName, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
   } else if (bin) {
-    return `${field} (binned)`;
+    return `${fieldName} (binned)`;
   } else if (timeUnit) {
     const units = getTimeUnitParts(timeUnit).join('-');
-    return `${field} (${units})`;
+    return `${fieldName} (${units})`;
   } else if (aggregate) {
-    return `${titlecase(aggregate)} of ${field}`;
+    return `${titlecase(aggregate)} of ${fieldName}`;
   }
-  return field;
+  return fieldName;
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {

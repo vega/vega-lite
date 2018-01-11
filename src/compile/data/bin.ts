@@ -27,8 +27,8 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
     return {};
 }
 
-function binKey(bin: BinParams, field: string) {
-  return `${binToString(bin)}_${field}`;
+function binKey(bin: BinParams, fieldName: string) {
+  return `${binToString(bin)}_${fieldName}`;
 }
 
 function isModelParams(p: {model: Model} | {signal?: string, extentSignal?: string}): p is {model: Model} {

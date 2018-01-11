@@ -321,24 +321,24 @@ export function stripAndRedirectConfig(config: Config) {
     }
   }
 
-  for (const mark of MARK_STYLES) {
+  for (const markType of MARK_STYLES) {
     // Remove Vega-Lite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-      delete config[mark][prop];
+      delete config[markType][prop];
     }
 
     // Remove Vega-Lite only mark-specific config
-    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[mark];
+    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[mark][prop];
+        delete config[markType][prop];
       }
     }
 
     // Redirect mark config to config.style so that mark config only affect its own mark type
     // without affecting other marks that share the same underlying Vega marks.
     // For example, config.rect should not affect bar marks.
-    redirectConfig(config, mark);
+    redirectConfig(config, markType);
   }
 
   // Redirect config.title -- so that title config do not

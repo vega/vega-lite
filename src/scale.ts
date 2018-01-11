@@ -1,5 +1,4 @@
 import {Channel} from './channel';
-import {ScaleComponentProps} from './compile/scale/component';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, Flag, flagKeys, keys, toSet} from './util';

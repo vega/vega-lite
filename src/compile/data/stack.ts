@@ -87,8 +87,8 @@ export class StackNode extends DataFlowNode {
     } else {
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
-      sort = stackby.reduce((s, field) => {
-        s.field.push(field);
+      sort = stackby.reduce((s, fieldName) => {
+        s.field.push(fieldName);
         s.order.push('descending');
         return s;
       }, {field:[], order: []});
@@ -120,8 +120,8 @@ export class StackNode extends DataFlowNode {
 
     this.getGroupbyFields().forEach(f => out[f] = true);
     this._stack.facetby.forEach(f => out[f] = true);
-    const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => out[f] = true) : out[field] = true;
+    const fieldName = this._stack.sort.field;
+    isArray(fieldName) ? fieldName.forEach(f => out[f] = true) : out[fieldName] = true;
 
     return out;
   }

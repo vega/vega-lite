@@ -98,14 +98,14 @@ function parseNonUnitScaleCore(model: Model) {
       resolve.scale[channel] = resolve.scale[channel] || defaultScaleResolve(channel, model);
 
       if (resolve.scale[channel] === 'shared') {
-        const scaleType = scaleTypeWithExplicitIndex[channel];
+        const explicitScaleType = scaleTypeWithExplicitIndex[channel];
         const childScaleType = child.component.scales[channel].getWithExplicit('type');
 
-        if (scaleType) {
-          if (scaleCompatible(scaleType.value, childScaleType.value)) {
+        if (explicitScaleType) {
+          if (scaleCompatible(explicitScaleType.value, childScaleType.value)) {
             // merge scale component if type are compatible
             scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit<VgScale, ScaleType>(
-              scaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker
+              explicitScaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker
             );
           } else {
             // Otherwise, update conflicting channel to be independent

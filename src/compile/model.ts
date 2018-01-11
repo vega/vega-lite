@@ -548,10 +548,10 @@ export abstract class Model {
   /**
    * Traverse a model's hierarchy to get a particular selection component.
    */
-  public getSelectionComponent(varName: string, origName: string): SelectionComponent {
-    let sel = this.component.selection[varName];
+  public getSelectionComponent(variableName: string, origName: string): SelectionComponent {
+    let sel = this.component.selection[variableName];
     if (!sel && this.parent) {
-      sel = this.parent.getSelectionComponent(varName, origName);
+      sel = this.parent.getSelectionComponent(variableName, origName);
     }
     if (!sel) {
       throw new Error(log.message.selectionNotFound(origName));

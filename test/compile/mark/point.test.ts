@@ -112,11 +112,11 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
 
-    it('should scale on y', function(){
+    it('should scale on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
 
-    it('should be an unfilled circle', function(){
+    it('should be an unfilled circle', function() {
       assert.deepEqual(props.fill, {value: 'transparent'});
       assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
     });
