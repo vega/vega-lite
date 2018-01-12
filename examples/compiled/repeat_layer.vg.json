@@ -313,8 +313,8 @@
                             "name": "faceted_path_child_temp_max_layer_0_main",
                             "data": "data_0",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
@@ -504,8 +504,8 @@
                             "name": "faceted_path_child_precipitation_layer_0_main",
                             "data": "data_2",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
@@ -695,8 +695,8 @@
                             "name": "faceted_path_child_wind_layer_0_main",
                             "data": "data_4",
                             "groupby": [
-                                "location",
-                                "year_date"
+                                "year_date",
+                                "location"
                             ]
                         }
                     },
@@ -935,8 +935,7 @@
                         "data": "data_1",
                         "field": "mean_temp_max"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -983,8 +982,7 @@
                         "data": "data_3",
                         "field": "mean_precipitation"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -1031,8 +1029,7 @@
                         "data": "data_5",
                         "field": "mean_wind"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

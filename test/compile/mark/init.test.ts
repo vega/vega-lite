@@ -3,10 +3,65 @@
 import * as log from '../../../src/log';
 
 import {assert} from 'chai';
-import {BAR} from '../../../src/mark';
+import {BAR, CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
+import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-describe('compile/mark/normalize', function() {
+describe('compile/mark/init', function() {
+  describe('defaultOpacity', () => {
+    it('should return 0.7 by default for unaggregated point, tick, circle, and square', () => {
+      for (const mark of [POINT, TICK, CIRCLE, SQUARE]) {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          mark,
+          "encoding": {
+            "y": {"type": "quantitative", "field": "foo"},
+            "x": {"type": "quantitative", "field": "bar"}
+          },
+        });
+        assert.equal(model.markDef.opacity, 0.7);
+      }
+    });
+
+    it('should return undefined by default for aggregated point, tick, circle, and square', () => {
+      for (const mark of [POINT, TICK, CIRCLE, SQUARE]) {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          mark,
+          "encoding": {
+            "y": {"aggregate": "mean", "type": "quantitative", "field": "foo"},
+            "x": {"type": "nominal", "field": "bar"}
+          },
+        });
+        assert.equal(model.markDef.opacity, undefined);
+      }
+    });
+
+    it('should use specified opacity', () => {
+      for (const mark of [POINT, TICK, CIRCLE, SQUARE]) {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          mark: {type: mark, opacity: 0.9},
+          "encoding": {
+            "y": {"type": "quantitative", "field": "foo"},
+            "x": {"type": "quantitative", "field": "bar"}
+          },
+        });
+        assert.equal(model.markDef.opacity, 0.9);
+      }
+    });
+
+    it('should return undefined by default for other marks', () => {
+      const otherMarks = without(PRIMITIVE_MARKS, [POINT, TICK, CIRCLE, SQUARE]);
+      for (const mark of otherMarks) {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          mark,
+          "encoding": {
+            "y": {"type": "quantitative", "field": "foo"},
+            "x": {"type": "nominal", "field": "bar"}
+          },
+        });
+        assert.equal(model.markDef.opacity, undefined);
+      }
+    });
+  });
 
   describe('orient', function() {
     it('should return correct default for QxQ', log.wrap((localLogger) => {

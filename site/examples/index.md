@@ -19,7 +19,7 @@ To see example code for embedding visualizations in a webpage, please read the [
 
 ## Community Examples
 
-Here we list great examples of Vega-Lite visualizations that were created by the community. Please help us expand this gallery by [forking our example block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and sending us a [pull request](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) with your example added to this list.
+Here we list great examples of Vega-Lite visualizations that were created by the community. Please help us expand this gallery by [forking our example block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and sending us a [pull request](https://github.com/vega/vega-lite/edit/master/site/examples/index.md) with your example added to this list.
 
 * [Grouped Bar Chart](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364) by @churtado
 * [Multi Line Highlight](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701) by @amitkaps
@@ -30,3 +30,5 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Unit Chart Stacked](https://bl.ocks.org/amitkaps/cdc7dacd8f7d9f2a9cff4b10d3279b86) by @amitkaps
 * [Unit Chart Small Multiple](https://bl.ocks.org/amitkaps/67bd6dcb2af300a2b76f1e2351c1afdc) by @amitkaps
 * [Dot-dash plot](https://bl.ocks.org/g3o2/bd4362574137061c243a2994ba648fb8) by @g3o2
+* [Natural Disasters Bubble Chart](https://bl.ocks.org/domoritz/8afa8f0ce5e03b43497e821f7a9cf216) by @domoritz
+* [Cumulative Wikipedia Donations](https://bl.ocks.org/domoritz/bef687de0e2dba1f522f674c260ac17f) by @domoritz

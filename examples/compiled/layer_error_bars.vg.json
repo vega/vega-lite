@@ -152,8 +152,7 @@
                         "data": "data_1",
                         "field": "ci1_yield"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

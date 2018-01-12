@@ -1009,9 +1009,13 @@
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
-            "filter"
+            "filter",
+            null
           ],
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
@@ -4527,22 +4531,14 @@
       "type": "object"
     },
     "SortOrder": {
-      "anyOf": [
-        {
-          "enum": [
-            "ascending"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "descending"
-          ],
-          "type": "string"
-        },
-        {
-          "type": "null"
-        }
+      "enum": [
+        "ascending",
+        "descending",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
       ]
     },
     "StackOffset": {

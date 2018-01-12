@@ -33,11 +33,11 @@
                         "people"
                     ],
                     "as": [
-                        "lowerBox",
-                        "upperBox",
-                        "midBox",
-                        "lowerWhisker",
-                        "upperWhisker"
+                        "lower_box_people",
+                        "upper_box_people",
+                        "mid_box_people",
+                        "lower_whisker_people",
+                        "upper_whisker_people"
                     ]
                 }
             ]
@@ -48,17 +48,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"lowerWhisker\"])",
-                    "as": "lowerWhisker"
+                    "expr": "toNumber(datum[\"lower_whisker_people\"])",
+                    "as": "lower_whisker_people"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"lowerBox\"])",
-                    "as": "lowerBox"
+                    "expr": "toNumber(datum[\"lower_box_people\"])",
+                    "as": "lower_box_people"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"lowerWhisker\"] !== null && !isNaN(datum[\"lowerWhisker\"])"
+                    "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
                 }
             ]
         },
@@ -68,17 +68,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"upperBox\"])",
-                    "as": "upperBox"
+                    "expr": "toNumber(datum[\"upper_box_people\"])",
+                    "as": "upper_box_people"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"upperWhisker\"])",
-                    "as": "upperWhisker"
+                    "expr": "toNumber(datum[\"upper_whisker_people\"])",
+                    "as": "upper_whisker_people"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"upperBox\"] !== null && !isNaN(datum[\"upperBox\"])"
+                    "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
                 }
             ]
         },
@@ -88,17 +88,17 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"lowerBox\"])",
-                    "as": "lowerBox"
+                    "expr": "toNumber(datum[\"lower_box_people\"])",
+                    "as": "lower_box_people"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"upperBox\"])",
-                    "as": "upperBox"
+                    "expr": "toNumber(datum[\"upper_box_people\"])",
+                    "as": "upper_box_people"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"lowerBox\"] !== null && !isNaN(datum[\"lowerBox\"])"
+                    "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
                 }
             ]
         },
@@ -108,12 +108,12 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"midBox\"])",
-                    "as": "midBox"
+                    "expr": "toNumber(datum[\"mid_box_people\"])",
+                    "as": "mid_box_people"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"midBox\"] !== null && !isNaN(datum[\"midBox\"])"
+                    "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
                 }
             ]
         }
@@ -143,7 +143,7 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "lowerWhisker"
+                        "field": "lower_whisker_people"
                     },
                     "y": {
                         "scale": "y",
@@ -152,7 +152,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "lowerBox"
+                        "field": "lower_box_people"
                     },
                     "stroke": {
                         "value": "black"
@@ -174,7 +174,7 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "upperBox"
+                        "field": "upper_box_people"
                     },
                     "y": {
                         "scale": "y",
@@ -183,7 +183,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "upperWhisker"
+                        "field": "upper_whisker_people"
                     },
                     "stroke": {
                         "value": "black"
@@ -205,11 +205,11 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "lowerBox"
+                        "field": "lower_box_people"
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "upperBox"
+                        "field": "upper_box_people"
                     },
                     "yc": {
                         "scale": "y",
@@ -237,9 +237,12 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "xc": {
                         "scale": "x",
-                        "field": "midBox"
+                        "field": "mid_box_people"
                     },
                     "yc": {
                         "scale": "y",
@@ -254,9 +257,6 @@
                     },
                     "fill": {
                         "value": "orange"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
@@ -270,34 +270,33 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "lowerWhisker"
+                        "field": "lower_whisker_people"
                     },
                     {
                         "data": "data_0",
-                        "field": "lowerBox"
+                        "field": "lower_box_people"
                     },
                     {
                         "data": "data_1",
-                        "field": "upperBox"
+                        "field": "upper_box_people"
                     },
                     {
                         "data": "data_1",
-                        "field": "upperWhisker"
+                        "field": "upper_whisker_people"
                     },
                     {
                         "data": "data_2",
-                        "field": "lowerBox"
+                        "field": "lower_box_people"
                     },
                     {
                         "data": "data_2",
-                        "field": "upperBox"
+                        "field": "upper_box_people"
                     },
                     {
                         "data": "data_3",
-                        "field": "midBox"
+                        "field": "mid_box_people"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

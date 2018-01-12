@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -107,7 +107,7 @@
     "nyc": "^11.3.0",
     "source-map-support": "^0.5.0",
     "svg2png-many": "^0.0.7",
-    "ts-json-schema-generator": "^0.16.0",
+    "ts-json-schema-generator": "^0.18.0",
     "ts-node": "^3.3.0",
     "tsify": "^3.0.3",
     "tslint": "5.4.3",

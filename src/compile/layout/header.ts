@@ -94,13 +94,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
 
       const update = {
         ...(
-          labelAngle ? {angle: {value: labelAngle}} :
-          // Default align / baseline for row (only apply if there is no custom labelAngle specified)
-          channel === 'row' ? {
-            align: {value: 'right'},
-            baseline: {value: 'middle'}
-          } :
-          {}
+          labelAngle ? {angle: {value: labelAngle}} : {}
         )
 
         // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here

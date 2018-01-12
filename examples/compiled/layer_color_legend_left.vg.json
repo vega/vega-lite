@@ -126,6 +126,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -137,9 +140,6 @@
                     "fill": {
                         "scale": "color",
                         "field": "symbol"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
@@ -159,8 +159,7 @@
                         "data": "data_1",
                         "field": "date"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -182,8 +181,7 @@
                         "data": "data_1",
                         "field": "price"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

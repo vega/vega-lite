@@ -1,18 +1,15 @@
 import {isArray} from 'vega-util';
-import {NONPOSITION_CHANNELS} from '../../channel';
 import {MAIN} from '../../data';
-import {isAggregate} from '../../encoding';
+import {Encoding, isAggregate} from '../../encoding';
 import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
 import {isSortField} from '../../sort';
-import {contains} from '../../util';
+import {contains, keys} from '../../util';
 import {getStyles, sortParams} from '../common';
-import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
-import {normalizeMarkDef} from './init';
 import {line} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -47,8 +44,7 @@ const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
   const mark = model.mark();
-  // FIXME: replace this with more general case for composition
-  const details = detailFields(model);
+  const details = pathGroupingFields(model.encoding);
 
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
   const style = getStyles(model.markDef);
@@ -147,31 +143,48 @@ function parseNonPathMark(model: UnitModel) {
 }
 
 /**
- * Returns list of detail (group-by) fields
+ * Returns list of path grouping fields
  * that the model's spec contains.
  */
-function detailFields(model: UnitModel): string[] {
-  return NONPOSITION_CHANNELS.reduce(function(details, channel) {
-    const {encoding} = model;
-    if (channel === 'order') {
-      return details;
+export function pathGroupingFields(encoding: Encoding<string>): string[] {
+  return keys(encoding).reduce((details, channel) => {
+    switch (channel) {
+      // x, y, x2, y2, order, tooltip, href, cursor should not cause lines to group
+      case 'x':
+      case 'y':
+      case 'order':
+      case 'tooltip':
+      case 'x2':
+      case 'y2':
+      // TODO: case 'href', 'cursor':
+
+      // text, shape, shouldn't be a part of line/area
+      case 'text':
+      case 'shape':
+        return details;
+
+      case 'detail':
+        const channelDef = encoding[channel];
+        if (channelDef) {
+          (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
+            if (!fieldDef.aggregate) {
+              details.push(field(fieldDef, {}));
+            }
+          });
+        }
+        return details;
+      case 'color':
+      case 'size':
+      case 'opacity':
+      // TODO strokeDashOffset:
+        const fieldDef = getFieldDef<string>(encoding[channel]);
+        if (fieldDef && !fieldDef.aggregate) {
+          details.push(field(fieldDef, {}));
+        }
+        return details;
+      default:
+        throw new Error(`Bug: Channel ${channel} unimplemented for line mark`);
     }
-    if (channel === 'detail') {
-      const channelDef = encoding[channel];
-      if (channelDef) {
-        (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-          if (!fieldDef.aggregate) {
-            details.push(field(fieldDef, {}));
-          }
-        });
-      }
-    } else {
-      const fieldDef = getFieldDef<string>(encoding[channel]);
-      if (fieldDef && !fieldDef.aggregate) {
-        details.push(field(fieldDef, {}));
-      }
-    }
-    return details;
   }, []);
 }
 

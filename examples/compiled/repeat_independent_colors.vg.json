@@ -90,6 +90,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Origin_x",
                                 "field": "Horsepower"
@@ -104,9 +107,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -207,6 +207,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "child_Cylinders_x",
                                 "field": "Horsepower"
@@ -221,9 +224,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

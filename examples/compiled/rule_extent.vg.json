@@ -102,8 +102,7 @@
                 "fields": [
                     "min_Horsepower",
                     "max_Horsepower"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

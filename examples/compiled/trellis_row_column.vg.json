@@ -132,17 +132,7 @@
                 },
                 "offset": 10,
                 "orient": "left",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {
@@ -272,6 +262,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "Horsepower"
@@ -290,9 +283,6 @@
                             "shape": {
                                 "scale": "shape",
                                 "field": "Origin"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

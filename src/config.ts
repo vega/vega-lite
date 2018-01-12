@@ -150,7 +150,7 @@ export interface VLOnlyConfig {
    * - If set to `"filter"` (default), all data items with null values are filtered.
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
-  invalidValues?: 'filter';
+  invalidValues?: 'filter' | null;
 
   /**
    * Defines how Vega-Lite generates title for fields.  There are three possible styles:

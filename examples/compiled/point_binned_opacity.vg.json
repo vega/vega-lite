@@ -56,6 +56,10 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "scale": "opacity",
+                        "field": "bin_maxbins_6_Acceleration"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -69,10 +73,6 @@
                     },
                     "fill": {
                         "value": "transparent"
-                    },
-                    "opacity": {
-                        "scale": "opacity",
-                        "field": "bin_maxbins_6_Acceleration"
                     }
                 }
             }

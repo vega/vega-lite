@@ -318,8 +318,7 @@
                         "data": "data_3",
                         "field": "mean_people"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

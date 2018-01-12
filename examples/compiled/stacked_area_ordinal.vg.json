@@ -169,8 +169,7 @@
                 "fields": [
                     "sum_Weight_in_lbs_start",
                     "sum_Weight_in_lbs_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

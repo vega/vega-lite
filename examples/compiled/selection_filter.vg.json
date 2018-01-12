@@ -410,6 +410,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Horsepower"
@@ -423,9 +426,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -564,6 +564,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Acceleration"
@@ -577,9 +580,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

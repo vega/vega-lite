@@ -415,6 +415,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Miles_per_Gallon"
@@ -428,9 +431,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -707,6 +707,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Displacement"
@@ -726,9 +729,6 @@
                             ],
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

@@ -167,8 +167,7 @@
                 "fields": [
                     "sum_count_start",
                     "sum_count_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

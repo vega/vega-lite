@@ -187,6 +187,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "income"
@@ -204,9 +207,6 @@
                     },
                     "shape": {
                         "value": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }

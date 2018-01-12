@@ -122,6 +122,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -135,9 +138,6 @@
                     },
                     "fill": {
                         "value": "transparent"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
@@ -279,8 +279,7 @@
                         "data": "data_3",
                         "field": "min_Miles_per_Gallon"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -320,13 +319,13 @@
             "gridScale": "y"
         },
         {
+            "title": "Miles per Gallon",
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Miles_per_Gallon, Min of Miles_per_Gallon, Max of Miles_per_Gallon, Max of Miles_per_Gallon",
             "zindex": 1
         },
         {

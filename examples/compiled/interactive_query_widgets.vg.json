@@ -154,6 +154,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -174,9 +177,6 @@
                     ],
                     "shape": {
                         "value": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
@@ -192,6 +192,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -209,9 +212,6 @@
                     },
                     "shape": {
                         "value": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }
@@ -231,8 +231,7 @@
                         "data": "data_1",
                         "field": "Horsepower"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -256,8 +255,7 @@
                         "data": "data_1",
                         "field": "Miles_per_Gallon"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {

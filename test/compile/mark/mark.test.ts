@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
-import {getPathSort, parseMarkGroup} from '../../../src/compile/mark/mark';
+import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
+import {getPathSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -124,65 +124,108 @@ describe('Mark', function() {
 
   describe('getPathSort', () => {
     describe('compileUnit', function() {
-    it('should order by order field for line with order (connected scatterplot)', function () {
-      const model = parseUnitModel({
-        "data": {"url": "data/driving.json"},
-        "mark": "line",
-        "encoding": {
-          "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
-          "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
-          "order": {"field": "year","type": "temporal"}
-        }
-      });
-      assert.deepEqual(getPathSort(model), {
-        field: ['datum[\"year\"]'],
-        order: ['ascending']
-      });
-    });
-
-    it('should order by x by default if x is the dimension', function () {
-      const model = parseUnitModelWithScale({
-        "data": {"url": "data/movies.json"},
-        "mark": "line",
-        "encoding": {
-          "x": {
-            "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
-            "type": "quantitative"
-          },
-          "color": {
-            "field": "Source",
-            "type": "nominal"
-          },
-          "y": {
-            "aggregate": "count",
-            "type": "quantitative"
+      it('should order by order field for line with order (connected scatterplot)', function () {
+        const model = parseUnitModel({
+          "data": {"url": "data/driving.json"},
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
+            "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
+            "order": {"field": "year","type": "temporal"}
           }
-        }
+        });
+        assert.deepEqual(getPathSort(model), {
+          field: ['datum[\"year\"]'],
+          order: ['ascending']
+        });
       });
-      assert.deepEqual(getPathSort(model), {
-        field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
-        order: 'descending'
-      });
-    });
 
-    it('should not order by a missing dimension', function () {
-      const model = parseUnitModelWithScale({
-        "data": {"url": "data/movies.json"},
-        "mark": "line",
-        "encoding": {
-          "color": {
-            "field": "Source",
-            "type": "nominal"
-          },
-          "y": {
-            "aggregate": "count",
-            "type": "quantitative"
+      it('should order by x by default if x is the dimension', function () {
+        const model = parseUnitModelWithScale({
+          "data": {"url": "data/movies.json"},
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "bin": {"maxbins": 10},
+              "field": "IMDB_Rating",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "Source",
+              "type": "nominal"
+            },
+            "y": {
+              "aggregate": "count",
+              "type": "quantitative"
+            }
           }
-        }
+        });
+        assert.deepEqual(getPathSort(model), {
+          field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
+          order: 'descending'
+        });
       });
-      assert.deepEqual(getPathSort(model), undefined);
+
+      it('should not order by a missing dimension', function () {
+        const model = parseUnitModelWithScale({
+          "data": {"url": "data/movies.json"},
+          "mark": "line",
+          "encoding": {
+            "color": {
+              "field": "Source",
+              "type": "nominal"
+            },
+            "y": {
+              "aggregate": "count",
+              "type": "quantitative"
+            }
+          }
+        });
+        assert.deepEqual(getPathSort(model), undefined);
+      });
     });
   });
+
+  describe('pathGroupingFields', () => {
+    it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
+        assert.deepEqual(
+          pathGroupingFields({[channel]: {field: 'a', type: 'nominal'}}),
+          ['a']
+        );
+      }
+    });
+
+    it('should not return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
+        assert.deepEqual(
+          pathGroupingFields({[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}}),
+          []
+        );
+      }
+    });
+
+    it('should return condition detail fields for color, size, shape', () => {
+      for (const channel of [COLOR, SIZE, OPACITY]) {
+        assert.deepEqual(
+          pathGroupingFields({[channel]: {
+            condition: {selection: 'sel', field: 'a', type: 'nominal'}
+          }}),
+          ['a']
+        );
+      }
+    });
+
+    it('should not return errors for all channels', () => {
+      for (const channel of UNIT_CHANNELS) {
+        assert.doesNotThrow(
+          () => {
+            pathGroupingFields({
+              [channel]: {field: 'a', type: 'nominal'}
+            });
+          }
+        );
+      }
+    });
   });
 });

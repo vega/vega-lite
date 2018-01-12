@@ -209,6 +209,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -223,9 +226,6 @@
                     },
                     "fill": {
                         "value": "transparent"
-                    },
-                    "opacity": {
-                        "value": 0
                     }
                 }
             }
@@ -349,8 +349,7 @@
                         "data": "data_3",
                         "field": "date"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
@@ -372,8 +371,7 @@
                         "data": "data_1",
                         "field": "price"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 {
@@ -433,7 +431,16 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "symbol"
+            "title": "symbol",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

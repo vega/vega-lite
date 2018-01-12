@@ -256,6 +256,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Horsepower"
@@ -269,9 +272,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -358,6 +358,9 @@
                     },
                     "encode": {
                         "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Horsepower"
@@ -371,9 +374,6 @@
                             },
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -448,8 +448,7 @@
                         "data": "data_1",
                         "field": "Acceleration"
                     }
-                ],
-                "sort": true
+                ]
             },
             "domainRaw": {
                 "signal": "region_Miles_per_Gallon"

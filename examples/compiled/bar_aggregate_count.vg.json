@@ -102,8 +102,7 @@
                 "fields": [
                     "bin_maxbins_10_precipitation",
                     "bin_maxbins_10_precipitation_end"
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,

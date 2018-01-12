@@ -138,6 +138,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 1
+                    },
                     "x": {
                         "scale": "x",
                         "field": "life_expect"
@@ -152,9 +155,6 @@
                     },
                     "size": {
                         "value": 100
-                    },
-                    "opacity": {
-                        "value": 1
                     }
                 }
             }
@@ -174,8 +174,7 @@
                         "data": "data_1",
                         "field": "life_expect"
                     }
-                ],
-                "sort": true
+                ]
             },
             "range": [
                 0,
