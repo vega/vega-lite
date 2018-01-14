@@ -196,7 +196,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal rule', function() {
+    it('should return correct orient for horizontal rule', function () {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -204,6 +204,30 @@ describe('compile/mark/init', function() {
         },
       });
       assert.equal(model.markDef.orient, 'horizontal');
+    });
+
+    it('should return undefined for line segment rule', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "rule",
+        "encoding": {
+          "y": {"value": 0},
+          "x": {"value": 0},
+          "y2": {"value": 100},
+          "x2": {"value": 100},
+        },
+      });
+      assert.equal(model.markDef.orient, undefined);
+    });
+
+    it('should return undefined for line segment rule with only x and y without x2, y2', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "rule",
+        "encoding": {
+          "y": {"value": 0},
+          "x": {"value": 0}
+        },
+      });
+      assert.equal(model.markDef.orient, undefined);
     });
 
     it('should return correct orient for horizontal rules without x2 ', function() {
