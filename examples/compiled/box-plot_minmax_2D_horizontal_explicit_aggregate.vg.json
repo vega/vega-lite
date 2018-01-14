@@ -36,9 +36,24 @@
                         "lower_box_people",
                         "upper_box_people",
                         "mid_box_people",
-                        "lower_whisker_people",
-                        "upper_whisker_people"
+                        "min_people",
+                        "max_people"
                     ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.upper_box_people - datum.lower_box_people",
+                    "as": "iqr_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+                    "as": "upper_whisker_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+                    "as": "lower_whisker_people"
                 }
             ]
         },
