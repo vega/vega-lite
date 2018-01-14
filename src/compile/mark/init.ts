@@ -65,6 +65,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
 
   switch (mark) {
     case RULE:
+      // return undefined for line segment rule
+      if (xIsRange && yIsRange) {
+        return undefined;
+      }
+      /* tslint:disable */
+      // intentional fall through
     case BAR:
     case AREA:
       // If there are range for both x and y, y (vertical) has higher precedence.
@@ -80,7 +86,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
         }
       }
 
-      /* tslint:disable */
+
     case LINE: // intentional fall through
     case TICK: // Tick is opposite to bar, line, area and never have ranged mark.
 

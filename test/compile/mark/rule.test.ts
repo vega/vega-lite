@@ -105,9 +105,47 @@ describe('Mark: Rule', function() {
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rules', function() {
+    it('should create horizontal rules', function () {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
+      assert.deepEqual(props.y, {scale: Y, field: 'b'});
+    });
+  });
+
+  describe('with x, x2, y, and y2', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "rule",
+      "encoding": {
+        "x": {"field": "a", "type": "quantitative"},
+        "x2": {"field": "a2", "type": "quantitative"},
+        "y": {"field": "b", "type": "quantitative"},
+        "y2": {"field": "b2", "type": "quantitative"}
+      }
+    });
+
+    const props = rule.encodeEntry(model);
+
+    it('should create oblique rules', function () {
+      assert.deepEqual(props.x, {scale: X, field: 'a'});
+      assert.deepEqual(props.x2, {scale: X, field: 'a2'});
+      assert.deepEqual(props.y, {scale: Y, field: 'b'});
+      assert.deepEqual(props.y2, {scale: Y, field: 'b2'});
+    });
+  });
+
+  describe('with x and y', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "rule",
+      "encoding": {
+        "x": {"field": "a", "type": "quantitative"},
+        "y": {"field": "b", "type": "quantitative"}
+      }
+    });
+
+    const props = rule.encodeEntry(model);
+
+    it('should create oblique rules', function () {
+      assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
     });
   });
