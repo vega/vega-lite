@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import {COUNTING_OPS} from '../src/aggregate';
 import {Channel} from '../src/channel';
-import {channelCompatibility, ChannelDef, defaultType, field, FieldDef, normalize, title} from '../src/fielddef';
+import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title, vgField} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -10,7 +10,7 @@ import {QUANTITATIVE, TEMPORAL} from '../src/type';
 describe('fieldDef', () => {
   describe('field()', () => {
     it ('should construct paths', () => {
-      assert.deepEqual(field({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo"]["bar.baz"]');
+      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo"]["bar.baz"]');
     });
   });
 

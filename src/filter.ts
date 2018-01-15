@@ -2,7 +2,7 @@ import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
 import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {field} from './fielddef';
+import {vgField} from './fielddef';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString, logicalExpr} from './util';
@@ -138,7 +138,7 @@ export function fieldFilterExpression(filter: FieldFilter, useInRange=true) {
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
     ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
-    field(filter, {expr: 'datum'});
+    vgField(filter, {expr: 'datum'});
 
   if (isEqualFilter(filter)) {
     return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);

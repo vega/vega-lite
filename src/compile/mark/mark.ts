@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
-import {field, getFieldDef} from '../../fielddef';
+import {getFieldDef, vgField} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, keys} from '../../util';
@@ -99,7 +99,7 @@ export function getPathSort(model: UnitModel) {
     const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
     const s = model.sort(dimensionChannel);
     const sortField = isSortField(s) ?
-      field({
+      vgField({
         // FIXME: this op might not already exist?
         // FIXME: what if dimensionChannel (x or y) contains custom domain?
         aggregate: isAggregate(model.encoding) ? s.op : undefined,
@@ -168,7 +168,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
         if (channelDef) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
             if (!fieldDef.aggregate) {
-              details.push(field(fieldDef, {}));
+              details.push(vgField(fieldDef, {}));
             }
           });
         }
@@ -179,7 +179,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       // TODO strokeDashOffset:
         const fieldDef = getFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
-          details.push(field(fieldDef, {}));
+          details.push(vgField(fieldDef, {}));
         }
         return details;
       default:

@@ -4,7 +4,7 @@ import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -439,9 +439,9 @@ export abstract class Model {
         if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
           const scaleName = scaleComponent.get('name');
           const domain = assembleDomain(this, channel);
-          const fieldName = getFieldFromDomain(domain);
-          if (fieldName) {
-            const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
+          const field = getFieldFromDomain(domain);
+          if (field) {
+            const fieldRef = vgField({aggregate: 'distinct', field}, {expr: 'datum'});
             return {
               signal: sizeExpr(scaleName, scaleComponent, fieldRef)
             };
@@ -572,7 +572,7 @@ export abstract class ModelWithField extends Model {
       return undefined;
     }
 
-    return field(fieldDef, opt);
+    return vgField(fieldDef, opt);
   }
 
   protected abstract getMapping(): {[key in Channel]?: any};

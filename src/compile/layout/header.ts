@@ -2,7 +2,7 @@
  * Utility for generating row / column headers
  */
 import {FacetFieldDef} from '../../facet';
-import {field} from '../../fielddef';
+import {vgField} from '../../fielddef';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
 import {formatSignalRef} from '../common';
@@ -122,7 +122,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         ...(layoutHeader.facetFieldDef ? {
           from: {data: model.getName(channel + '_domain')},
           sort: {
-            field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
+            field: vgField(layoutHeader.facetFieldDef, {expr: 'datum'}),
             order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.sort) || 'ascending'
           }
         } : {}),

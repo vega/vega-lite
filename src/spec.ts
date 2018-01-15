@@ -437,8 +437,8 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
-function accumulate(dict: any, fieldDefinitions: FieldDef<Field>[]): any {
-  fieldDefinitions.forEach(function(fieldDef) {
+function accumulate(dict: any, defs: FieldDef<Field>[]): any {
+  defs.forEach(function(fieldDef) {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
       if (fieldDef[key] !== undefined) {

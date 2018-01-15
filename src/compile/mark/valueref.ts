@@ -6,12 +6,12 @@ import {Config} from '../../config';
 import {
   ChannelDef,
   ChannelDefWithCondition,
-  field,
   FieldDef,
   FieldRefOption,
   isFieldDef,
   isValueDef,
   TextFieldDef,
+  vgField,
 } from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
@@ -64,7 +64,7 @@ export function fieldRef(
   ): VgValueRef {
   const ref: VgValueRef = {
     scale: scaleName,
-    field: field(fieldDef, opt),
+    field: vgField(fieldDef, opt),
   };
   if (mixins) {
     return {
@@ -75,10 +75,10 @@ export function fieldRef(
   return ref;
 }
 
-export function band(scaleName: string, banding: number|boolean = true): VgValueRef {
+export function bandRef(scaleName: string, band: number|boolean = true): VgValueRef {
   return {
     scale: scaleName,
-    band: banding
+    band: band
   };
 }
 
@@ -88,9 +88,9 @@ export function band(scaleName: string, banding: number|boolean = true): VgValue
 function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
-      `scale("${scaleName}", ${field(fieldDef, {expr: 'datum'})})` +
+      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
       ` + ` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
+      `scale("${scaleName}", ${vgField(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
     `)/2`
   };
 }

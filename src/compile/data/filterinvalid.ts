@@ -1,5 +1,5 @@
 import {isScaleChannel} from '../../channel';
-import {field as fieldRef, FieldDef} from '../../fielddef';
+import {FieldDef, vgField as fieldRef} from '../../fielddef';
 import {hasContinuousDomain, ScaleType} from '../../scale';
 import {Dict, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';

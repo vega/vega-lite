@@ -3,7 +3,7 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetMapping} from '../facet';
-import {field, FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
+import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
@@ -241,7 +241,7 @@ export class FacetModel extends ModelWithField {
             update: {
               // TODO(https://github.com/vega/vega-lite/issues/2759):
               // Correct the signal for facet of concat of facet_column
-              columns: {field: field(this.facet.column, {prefix: 'distinct'})}
+              columns: {field: vgField(this.facet.column, {prefix: 'distinct'})}
             }
           }
         } : {}),
@@ -259,7 +259,7 @@ export class FacetModel extends ModelWithField {
     const ops: AggregateOp[] = [];
     if (this.child instanceof FacetModel) {
       if (this.child.channelHasField('column')) {
-        fields.push(field(this.child.facet.column));
+        fields.push(vgField(this.child.facet.column));
         ops.push('distinct');
       }
     } else {
@@ -271,9 +271,9 @@ export class FacetModel extends ModelWithField {
 
           if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
             const domain = assembleDomain(this.child, channel);
-            const fieldName = getFieldFromDomain(domain);
-            if (fieldName) {
-              fields.push(fieldName);
+            const field = getFieldFromDomain(domain);
+            if (field) {
+              fields.push(field);
               ops.push('distinct');
             } else {
               log.warn('Unknown field for ${channel}.  Cannot calculate view size.');

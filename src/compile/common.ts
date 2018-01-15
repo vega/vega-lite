@@ -1,6 +1,6 @@
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
-import {field, FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef} from '../fielddef';
+import {FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
@@ -71,23 +71,23 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
   if (fieldDef.bin) {
-    const startField = field(fieldDef, {expr});
-    const endField = field(fieldDef, {expr, binSuffix: 'end'});
+    const startField = vgField(fieldDef, {expr});
+    const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
     return {
       signal: binFormatExpression(startField, endField, format, config)
     };
   } else if (fieldDef.type === 'quantitative') {
     return {
-      signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+      signal: `${formatExpr(vgField(fieldDef, {expr}), format)}`
     };
   } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
-      signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
+      signal: timeFormatExpression(vgField(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   } else {
     return {
-      signal: `''+${field(fieldDef, {expr})}`
+      signal: `''+${vgField(fieldDef, {expr})}`
     };
   }
 }
@@ -119,12 +119,12 @@ export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string
   return undefined;
 }
 
-function formatExpr(fieldName: string, format: string) {
-  return `format(${fieldName}, "${format || ''}")`;
+function formatExpr(field: string, format: string) {
+  return `format(${field}, "${format || ''}")`;
 }
 
-export function numberFormatExpr(fieldName: string, specifiedFormat: string, config: Config) {
-  return formatExpr(fieldName, specifiedFormat || config.numberFormat);
+export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
+  return formatExpr(field, specifiedFormat || config.numberFormat);
 }
 
 
@@ -136,17 +136,17 @@ export function binFormatExpression(startField: string, endField: string, format
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(fieldName: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
+export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
     if (isUTCScale) {
-      return `utcFormat(${fieldName}, '${_format}')`;
+      return `utcFormat(${field}, '${_format}')`;
     } else {
-      return `timeFormat(${fieldName}, '${_format}')`;
+      return `timeFormat(${field}, '${_format}')`;
     }
   } else {
-    return formatExpression(timeUnit, fieldName, shortTimeLabels, isUTCScale);
+    return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
   }
 }
 
@@ -155,7 +155,7 @@ export function timeFormatExpression(fieldName: string, timeUnit: TimeUnit, form
  */
 export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(field(orderChannelDef, fieldRefOption));
+    s.field.push(vgField(orderChannelDef, fieldRefOption));
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});

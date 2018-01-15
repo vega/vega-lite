@@ -86,8 +86,8 @@ export type RepeatRef = {
 
 export type Field = string | RepeatRef;
 
-export function isRepeatRef(fieldName: Field): fieldName is RepeatRef {
-  return fieldName && !isString(fieldName) && 'repeat' in fieldName;
+export function isRepeatRef(field: Field): field is RepeatRef {
+  return field && !isString(field) && 'repeat' in field;
 }
 
 /** @hide */
@@ -276,13 +276,13 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
-  let fieldName = fieldDef.field;
+export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
+  let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    fieldName = 'count_*';
+    field = 'count_*';
   } else {
     let fn: string = undefined;
 
@@ -298,23 +298,23 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
     }
 
     if (fn) {
-      fieldName = `${fn}_${fieldName}`;
+      field = `${fn}_${field}`;
     }
   }
 
   if (suffix) {
-    fieldName = `${fieldName}_${suffix}`;
+    field = `${field}_${suffix}`;
   }
 
   if (prefix) {
-    fieldName = `${prefix}_${fieldName}`;
+    field = `${prefix}_${field}`;
   }
 
   if (opt.expr) {
-    fieldName = `${opt.expr}${accessPath(fieldName)}`;
+    field = `${opt.expr}${accessPath(field)}`;
   }
 
-  return fieldName;
+  return field;
 }
 
 export function isDiscrete(fieldDef: FieldDef<Field>) {
@@ -341,18 +341,18 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
 
 export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
-  const {field: fieldName, bin, timeUnit, aggregate} = fieldDef;
+  const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
   } else if (bin) {
-    return `${fieldName} (binned)`;
+    return `${field} (binned)`;
   } else if (timeUnit) {
     const units = getTimeUnitParts(timeUnit).join('-');
-    return `${fieldName} (${units})`;
+    return `${field} (${units})`;
   } else if (aggregate) {
-    return `${titlecase(aggregate)} of ${fieldName}`;
+    return `${titlecase(aggregate)} of ${field}`;
   }
-  return fieldName;
+  return field;
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {

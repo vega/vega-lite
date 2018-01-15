@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
-import {field} from '../../src/fielddef';
+import {vgField} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
@@ -11,25 +11,25 @@ describe('Common', function() {
   describe('timeFormat()', function() {
     it('should get the right time expression for month with shortTimeLabels=true', function() {
       const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, true, defaultConfig.timeFormat, false);
+      const expression = timeFormatExpression(vgField(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, true, defaultConfig.timeFormat, false);
       assert.equal(expression, `timeFormat(datum["month_a"], '%b')`);
     });
 
     it('should get the right time expression for month with shortTimeLabels=false', function() {
       const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, false, defaultConfig.timeFormat, false);
+      const expression = timeFormatExpression(vgField(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, false, defaultConfig.timeFormat, false);
       assert.equal(expression, `timeFormat(datum["month_a"], '%B')`);
     });
 
     it('should get the right time expression for yearmonth with custom format', function() {
       const fieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat, false);
+      const expression = timeFormatExpression(vgField(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat, false);
       assert.equal(expression, `timeFormat(datum["yearmonth_a"], '%Y')`);
     });
 
     it('should get the right time expression for quarter', function() {
       const fieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.QUARTER, undefined, true, defaultConfig.timeFormat, false);
+      const expression = timeFormatExpression(vgField(fieldDef, {expr: 'datum'}), TimeUnit.QUARTER, undefined, true, defaultConfig.timeFormat, false);
       assert.equal(expression, `'Q' + quarter(datum["quarter_a"])`);
     });
 
@@ -40,7 +40,7 @@ describe('Common', function() {
 
     it('should get the right time expression for yearmonth with custom format and utc scale type', function() {
       const fieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat, true);
+      const expression = timeFormatExpression(vgField(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat, true);
       assert.equal(expression, `utcFormat(datum["yearmonth_a"], '%Y')`);
     });
   });
