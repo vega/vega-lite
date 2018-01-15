@@ -32,3 +32,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Dot-dash plot](https://bl.ocks.org/g3o2/bd4362574137061c243a2994ba648fb8) by @g3o2
 * [Natural Disasters Bubble Chart](https://bl.ocks.org/domoritz/8afa8f0ce5e03b43497e821f7a9cf216) by @domoritz
 * [Cumulative Wikipedia Donations](https://bl.ocks.org/domoritz/bef687de0e2dba1f522f674c260ac17f) by @domoritz
+* [CO2 Concentration in the Atmosphere](https://bl.ocks.org/domoritz/4e3289f9266fb3ef7e9baa201060361b) by @domoritz
