@@ -129,7 +129,7 @@ export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 const {
   // x2 and y2 share the same scale as x and y
   // text and tooltip have format instead of scale,
-  // href has neother format, nor scale
+  // href has neither format, nor scale
   text: _t, tooltip: _tt, href: _hr,
   // detail and order have no scale
   detail: _dd, order: _oo,
