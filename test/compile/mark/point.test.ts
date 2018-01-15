@@ -243,6 +243,34 @@ describe('Mark: Point', function() {
     });
 
   });
+
+  describe('with tooltip', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "point",
+      "encoding": {
+        "tooltip": {"value": "foo"}
+      }
+    });
+    const props = point.encodeEntry(model);
+
+    it('should pass tooltip value to encoding', () => {
+      assert.deepEqual(props.tooltip, {value: "foo"});
+    });
+  });
+
+  describe('with href', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "point",
+      "encoding": {
+        "href": {"value": "https://idl.cs.washington.edu/"}
+      }
+    });
+    const props = point.encodeEntry(model);
+
+    it('should pass href value to encoding', () => {
+      assert.deepEqual(props.href, {value: 'https://idl.cs.washington.edu/'});
+    });
+  });
 });
 
 describe('Mark: Square', function() {
