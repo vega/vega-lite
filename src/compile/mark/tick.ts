@@ -28,6 +28,8 @@ export const tick: MarkCompiler = {
       [vgThicknessChannel]: {value: config.tick.thickness},
 
       ...mixins.color(model),
+      ...mixins.text(model, 'tooltip'),
+      ...mixins.text(model, 'href'),
       ...mixins.nonPosition('opacity', model),
     };
   }

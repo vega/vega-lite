@@ -99,6 +99,11 @@ export interface Encoding<F> {
   tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
 
   /**
+   * A URL to load upon mouse click.
+   */
+  href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
+
+  /**
    * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.

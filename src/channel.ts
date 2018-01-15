@@ -32,6 +32,7 @@ export namespace Channel {
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
   export const TOOLTIP: 'tooltip' = 'tooltip';
+  export const HREF: 'href' = 'href';
 }
 
 export type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
@@ -50,6 +51,7 @@ export const DETAIL = Channel.DETAIL;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 export const TOOLTIP = Channel.TOOLTIP;
+export const HREF = Channel.HREF;
 
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   x: 1,
@@ -63,7 +65,8 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   opacity: 1,
   text: 1,
   detail: 1,
-  tooltip: 1
+  tooltip: 1,
+  href: 1,
 };
 
 const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
@@ -93,7 +96,7 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
+export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip' | 'href';
 
 
 
@@ -124,9 +127,10 @@ export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
 const {
-    // x2 and y2 share the same scale as x and y
-  // text and tooltip has format instead of scale
-  text: _t, tooltip: _tt,
+  // x2 and y2 share the same scale as x and y
+  // text and tooltip have format instead of scale,
+  // href has neither format, nor scale
+  text: _t, tooltip: _tt, href: _hr,
   // detail and order have no scale
   detail: _dd, order: _oo,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
@@ -159,7 +163,6 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
-  tooltip?: boolean;
 }
 
 /**
@@ -184,6 +187,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLOR:
     case DETAIL:
     case TOOLTIP:
+    case HREF:
     case ORDER:    // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
     case ROW:
@@ -223,9 +227,10 @@ export function rangeType(channel: Channel): RangeType {
     case ROW:
     case COLUMN:
     case SHAPE:
-    // TEXT and TOOLTIP have no scale but have discrete output
+    // TEXT, TOOLTIP, and HREF have no scale but have discrete output
     case TEXT:
     case TOOLTIP:
+    case HREF:
       return 'discrete';
 
     // Color can be either continuous or discrete, depending on scale type.

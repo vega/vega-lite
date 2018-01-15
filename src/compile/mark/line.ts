@@ -15,6 +15,7 @@ export const line: MarkCompiler = {
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.color(model),
       ...mixins.text(model, 'tooltip'),
+      ...mixins.text(model, 'href'),
       ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'strokeWidth'  // VL's line size is strokeWidth

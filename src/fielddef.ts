@@ -535,6 +535,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'text':
     case 'detail':
     case 'tooltip':
+    case 'href':
       return COMPATIBLE;
 
     case 'opacity':
