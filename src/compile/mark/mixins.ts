@@ -137,7 +137,7 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
   }
   return {
     [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}),
-    [sizeChannel]: ref.band(scaleName)
+    [sizeChannel]: ref.bandRef(scaleName)
   };
 }
 

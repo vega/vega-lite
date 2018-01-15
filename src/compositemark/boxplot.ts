@@ -4,7 +4,7 @@ import {Config} from '../config';
 import {reduce} from '../encoding';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
-import {field, Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from './../fielddef';
+import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
 import {MarkConfig} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
@@ -328,26 +328,26 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         aggregate.push({
           op: channelDef.aggregate,
           field: channelDef.field,
-          as: field(channelDef)
+          as: vgField(channelDef)
         });
       } else if (channelDef.aggregate === undefined) {
-        const transformedField = field(channelDef);
+        const transformedField = vgField(channelDef);
 
         // Add bin or timeUnit transform if applicable
         const bin = channelDef.bin;
         if (bin) {
-          const {field: fieldName} = channelDef;
-          bins.push({bin, field: fieldName, as: transformedField});
+          const {field} = channelDef;
+          bins.push({bin, field, as: transformedField});
         } else if (channelDef.timeUnit) {
-          const {timeUnit, field: fieldName} = channelDef;
-          timeUnits.push({timeUnit, field: fieldName, as: transformedField});
+          const {timeUnit, field} = channelDef;
+          timeUnits.push({timeUnit, field, as: transformedField});
         }
 
         groupby.push(transformedField);
       }
       // now the field should refer to post-transformed field instead
       encodingWithoutContinuousAxis[channel] = {
-        field: field(channelDef),
+        field: vgField(channelDef),
         type: channelDef.type
       };
     } else {
