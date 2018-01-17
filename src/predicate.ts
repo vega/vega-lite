@@ -1,6 +1,6 @@
 import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
-import {predicate} from './compile/selection/selection';
+import {selectionPredicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {vgField} from './fielddef';
 import {LogicalOperand} from './logical';
@@ -8,26 +8,31 @@ import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit,
 import {isArray, isString, logicalExpr} from './util';
 
 
-export type Filter =
-  // FieldFilter (but we don't type FieldFilter here so the schema has no nesting
+export type Predicate =
+  // a) FieldPrecidate (but we don't type FieldFilter here so the schema has no nesting
   // and thus the documentation shows all of the types clearly)
-  EqualFilter | RangeFilter | OneOfFilter |
-  SelectionFilter | string;
+  FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate |
+  // b) Selection Predicate
+  SelectionPredicate |
+  // c) Vega Expression string
+  string;
 
-export type FieldFilter = EqualFilter | RangeFilter | OneOfFilter;
 
-export interface SelectionFilter {
+
+export type FieldPredicate = FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate;
+
+export interface SelectionPredicate {
   /**
    * Filter using a selection name.
    */
   selection: LogicalOperand<string>;
 }
 
-export function isSelectionFilter(filter: LogicalOperand<Filter>): filter is SelectionFilter {
-  return filter && filter['selection'];
+export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): predicate is SelectionPredicate {
+  return predicate && predicate['selection'];
 }
 
-export interface EqualFilter {
+export interface FieldEqualPredicate {
   // TODO: support aggregate
 
   /**
@@ -47,11 +52,11 @@ export interface EqualFilter {
 
 }
 
-export function isEqualFilter(filter: any): filter is EqualFilter {
-  return filter && !!filter.field && filter.equal!==undefined;
+export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
+  return predicate && !!predicate.field && predicate.equal !== undefined;
 }
 
-export interface RangeFilter {
+export interface FieldRangePredicate {
   // TODO: support aggregate
 
   /**
@@ -74,16 +79,16 @@ export interface RangeFilter {
 
 }
 
-export function isRangeFilter(filter: any): filter is RangeFilter {
-  if (filter && filter.field) {
-    if (isArray(filter.range) && filter.range.length === 2) {
+export function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate {
+  if (predicate && predicate.field) {
+    if (isArray(predicate.range) && predicate.range.length === 2) {
       return true;
     }
   }
   return false;
 }
 
-export interface OneOfFilter {
+export interface FieldOneOfPredicate {
   // TODO: support aggregate
 
   /**
@@ -104,73 +109,73 @@ export interface OneOfFilter {
 
 }
 
-export function isOneOfFilter(filter: any): filter is OneOfFilter {
-  return filter && !!filter.field && (
-    isArray(filter.oneOf) ||
-    isArray(filter.in) // backward compatibility
+export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate {
+  return predicate && !!predicate.field && (
+    isArray(predicate.oneOf) ||
+    isArray(predicate.in) // backward compatibility
   );
 }
 
-export function isFieldFilter(filter: Filter): filter is OneOfFilter | EqualFilter | RangeFilter {
-  return isOneOfFilter(filter) || isEqualFilter(filter) || isRangeFilter(filter);
+export function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate {
+  return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate);
 }
 
 /**
- * Converts a filter into an expression.
+ * Converts a predicate into an expression.
  */
 // model is only used for selection filters.
-export function expression(model: Model, filterOp: LogicalOperand<Filter>, node?: DataFlowNode): string {
-  return logicalExpr(filterOp, (filter: Filter) => {
-    if (isString(filter)) {
-      return filter;
-    } else if (isSelectionFilter(filter)) {
-      return predicate(model, filter.selection, node);
+export function expression(model: Model, filterOp: LogicalOperand<Predicate>, node?: DataFlowNode): string {
+  return logicalExpr(filterOp, (predicate: Predicate) => {
+    if (isString(predicate)) {
+      return predicate;
+    } else if (isSelectionPredicate(predicate)) {
+      return selectionPredicate(model, predicate.selection, node);
     } else { // Filter Object
-      return fieldFilterExpression(filter);
+      return fieldFilterExpression(predicate);
     }
   });
 }
 
 // This method is used by Voyager.  Do not change its behavior without changing Voyager.
-export function fieldFilterExpression(filter: FieldFilter, useInRange=true) {
-  const fieldExpr = filter.timeUnit ?
+export function fieldFilterExpression(predicate: FieldPredicate, useInRange=true) {
+  const fieldExpr = predicate.timeUnit ?
     // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-    ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
-    vgField(filter, {expr: 'datum'});
+    ('time(' + timeUnitFieldExpr(predicate.timeUnit, predicate.field) + ')') :
+    vgField(predicate, {expr: 'datum'});
 
-  if (isEqualFilter(filter)) {
-    return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
-  } else if (isOneOfFilter(filter)) {
+  if (isFieldEqualPredicate(predicate)) {
+    return fieldExpr + '===' + valueExpr(predicate.equal, predicate.timeUnit);
+  } else if (isFieldOneOfPredicate(predicate)) {
     // "oneOf" was formerly "in" -- so we need to add backward compatibility
-    const oneOf: OneOfFilter[] = filter.oneOf || filter['in'];
+    const oneOf: FieldOneOfPredicate[] = predicate.oneOf || predicate['in'];
     return 'indexof([' +
-      oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
+      oneOf.map((v) => valueExpr(v, predicate.timeUnit)).join(',') +
       '], ' + fieldExpr + ') !== -1';
-  } else if (isRangeFilter(filter)) {
-    const lower = filter.range[0];
-    const upper = filter.range[1];
+  } else if (isFieldRangePredicate(predicate)) {
+    const lower = predicate.range[0];
+    const upper = predicate.range[1];
 
     if (lower !== null && upper !== null && useInRange) {
       return 'inrange(' + fieldExpr + ', [' +
-        valueExpr(lower, filter.timeUnit) + ', ' +
-        valueExpr(upper, filter.timeUnit) + '])';
+        valueExpr(lower, predicate.timeUnit) + ', ' +
+        valueExpr(upper, predicate.timeUnit) + '])';
     }
 
     const exprs = [];
     if (lower !== null) {
-      exprs.push(`${fieldExpr} >= ${valueExpr(lower, filter.timeUnit)}`);
+      exprs.push(`${fieldExpr} >= ${valueExpr(lower, predicate.timeUnit)}`);
     }
     if (upper !== null) {
-      exprs.push(`${fieldExpr} <= ${valueExpr(upper, filter.timeUnit)}`);
+      exprs.push(`${fieldExpr} <= ${valueExpr(upper, predicate.timeUnit)}`);
     }
 
     return exprs.length > 0 ? exprs.join(' && ') : 'true';
   }
 
   /* istanbul ignore next: it should never reach here */
-  throw new Error(`Invalid field filter: ${JSON.stringify(filter)}`);
+  throw new Error(`Invalid field predicate: ${JSON.stringify(predicate)}`);
 }
 
 function valueExpr(v: any, timeUnit: TimeUnit): string {
@@ -189,8 +194,8 @@ function valueExpr(v: any, timeUnit: TimeUnit): string {
   return JSON.stringify(v);
 }
 
-export function normalizeFilter(f: Filter): Filter {
-  if (isFieldFilter(f) && f.timeUnit) {
+export function normalizePredicate(f: Predicate): Predicate {
+  if (isFieldPredicate(f) && f.timeUnit) {
     return {
       ...f,
       timeUnit: normalizeTimeUnit(f.timeUnit)

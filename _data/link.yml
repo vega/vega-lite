@@ -42,9 +42,8 @@ Bin:
   link: bin.html
 BinParams:
   link: "bin.html#bin-parameters"
-FilterOperand:
-  name: Filter
-  link: "transform.html#filter"
+"LogicalOperand<Predicate>":
+  link: "transform.html#predicate"
 AggregateOpDef:
   link: "transform.html#aggregate-op-def"
 TimeUnit:

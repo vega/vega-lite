@@ -1,8 +1,8 @@
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
-import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
+import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
 import {accessPath, Dict, duplicate, keys, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
@@ -54,7 +54,7 @@ export class ParseNode extends DataFlowNode {
         calcFieldMap[transform.as] = true;
       } else if (isFilter(transform)) {
         forEachLeave(transform.filter, (filter) => {
-          if (isEqualFilter(filter) || isRangeFilter(filter) || isOneOfFilter(filter)) {
+          if (isFieldPredicate(filter)) {
             if (filter.timeUnit) {
               parse[filter.field] = 'date';
             }

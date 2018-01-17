@@ -212,7 +212,7 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
+export function selectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
   const stores: string[] = [];
   function expr(name: string): string {
     const vname = varName(name);

@@ -1,19 +1,23 @@
 import {AggregateOp} from './aggregate';
 import {BinParams} from './bin';
 import {Data} from './data';
-import {Filter, normalizeFilter} from './filter';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
+import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
 
 
 export interface FilterTransform {
   /**
-   * The `filter` property must be either (1) a filter object for [equal-filters](filter.html#equalfilter),
-   * [range-filters](filter.html#rangefilter), [one-of filters](filter.html#oneoffilter), or [selection filters](filter.html#selectionfilter);
-   * (2) a [Vega Expression](filter.html#expression) string,
-   * where `datum` can be used to refer to the current data object; or (3) an array of filters (either objects or expression strings) that must all be true for a datum to pass the filter and be included.
+   * The `filter` property must be one of the predicate definitions:
+   * (1) a [Vega Expression](filter.html#expression) string,
+   * where `datum` can be used to refer to the current data object;
+   * (2) one of the field predicates: [equal predicate](filter.html#equal-predicate);
+   * [range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);
+   * (3) a [selection predicate](filter.html#selection-predicate);
+   * or (4) a logical operand that combines (1), (2), or (3).
    */
-  filter: LogicalOperand<Filter>;
+  // TODO: https://github.com/vega/vega-lite/issues/2901
+  filter: LogicalOperand<Predicate>;
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
@@ -165,7 +169,7 @@ export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
     if (isFilter(t)) {
       return {
-        filter: normalizeLogicalOperand(t.filter, normalizeFilter)
+        filter: normalizeLogicalOperand(t.filter, normalizePredicate)
       };
     }
     return t;
