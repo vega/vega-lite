@@ -1641,41 +1641,6 @@
       },
       "type": "object"
     },
-    "EqualFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "equal": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/DateTime"
-            }
-          ],
-          "description": "The value that the field should be equal to."
-        },
-        "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "equal"
-      ],
-      "type": "object"
-    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -1992,31 +1957,128 @@
       ],
       "type": "object"
     },
-    "Filter": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/EqualFilter"
+    "FieldEqualPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "equal": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be equal to."
         },
-        {
-          "$ref": "#/definitions/RangeFilter"
-        },
-        {
-          "$ref": "#/definitions/OneOfFilter"
-        },
-        {
-          "$ref": "#/definitions/SelectionFilter"
-        },
-        {
+        "field": {
+          "description": "Field to be filtered.",
           "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
         }
-      ]
+      },
+      "required": [
+        "field",
+        "equal"
+      ],
+      "type": "object"
+    },
+    "FieldOneOfPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered",
+          "type": "string"
+        },
+        "oneOf": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "oneOf"
+      ],
+      "type": "object"
+    },
+    "FieldRangePredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered",
+          "type": "string"
+        },
+        "range": {
+          "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "$ref": "#/definitions/DateTime"
+              }
+            ]
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "range"
+      ],
+      "type": "object"
     },
     "FilterTransform": {
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/FilterOperand",
-          "description": "The `filter` property must be either (1) a filter object for [equal-filters](filter.html#equalfilter),\n[range-filters](filter.html#rangefilter), [one-of filters](filter.html#oneoffilter), or [selection filters](filter.html#selectionfilter);\n(2) a [Vega Expression](filter.html#expression) string,\nwhere `datum` can be used to refer to the current data object; or (3) an array of filters (either objects or expression strings) that must all be true for a datum to pass the filter and be included."
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "The `filter` property must be one of the predicate definitions:\n(1) a [Vega Expression](filter.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
@@ -3045,12 +3107,12 @@
       ],
       "type": "string"
     },
-    "AndFilter": {
+    "LogicalAnd<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/FilterOperand"
+            "$ref": "#/definitions/LogicalOperand<Predicate>"
           },
           "type": "array"
         }
@@ -3075,11 +3137,11 @@
       ],
       "type": "object"
     },
-    "NotFilter": {
+    "LogicalNot<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "not": {
-          "$ref": "#/definitions/FilterOperand"
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
         }
       },
       "required": [
@@ -3099,19 +3161,19 @@
       ],
       "type": "object"
     },
-    "FilterOperand": {
+    "LogicalOperand<Predicate>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/NotFilter"
+          "$ref": "#/definitions/LogicalNot<Predicate>"
         },
         {
-          "$ref": "#/definitions/AndFilter"
+          "$ref": "#/definitions/LogicalAnd<Predicate>"
         },
         {
-          "$ref": "#/definitions/OrFilter"
+          "$ref": "#/definitions/LogicalOr<Predicate>"
         },
         {
-          "$ref": "#/definitions/Filter"
+          "$ref": "#/definitions/Predicate"
         }
       ]
     },
@@ -3131,12 +3193,12 @@
         }
       ]
     },
-    "OrFilter": {
+    "LogicalOr<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/FilterOperand"
+            "$ref": "#/definitions/LogicalOperand<Predicate>"
           },
           "type": "array"
         }
@@ -3788,53 +3850,6 @@
       ],
       "type": "string"
     },
-    "OneOfFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "field": {
-          "description": "Field to be filtered",
-          "type": "string"
-        },
-        "oneOf": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "boolean"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "oneOf"
-      ],
-      "type": "object"
-    },
     "OrderFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -3998,6 +4013,25 @@
       ],
       "type": "object"
     },
+    "Predicate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldEqualPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldRangePredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldOneOfPredicate"
+        },
+        {
+          "$ref": "#/definitions/SelectionPredicate"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
     "RangeConfig": {
       "additionalProperties": {
         "$ref": "#/definitions/RangeConfigValue"
@@ -4110,40 +4144,6 @@
           "type": "object"
         }
       ]
-    },
-    "RangeFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "field": {
-          "description": "Field to be filtered",
-          "type": "string"
-        },
-        "range": {
-          "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/definitions/DateTime"
-              }
-            ]
-          },
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "range"
-      ],
-      "type": "object"
     },
     "Repeat": {
       "additionalProperties": false,
@@ -4606,7 +4606,7 @@
         }
       ]
     },
-    "SelectionFilter": {
+    "SelectionPredicate": {
       "additionalProperties": false,
       "properties": {
         "selection": {

@@ -3,11 +3,11 @@
 import {assert} from 'chai';
 import {nonPosition} from '../../../src/compile/mark/mixins';
 import * as selection from '../../../src/compile/selection/selection';
-import {expression} from '../../../src/filter';
+import {expression} from '../../../src/predicate';
 import {VgEncodeEntry} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
-const predicate = selection.predicate;
+const predicate = selection.selectionPredicate;
 
 describe('Selection Predicate', function() {
   const model = parseUnitModel({

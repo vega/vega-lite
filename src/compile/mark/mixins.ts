@@ -6,7 +6,7 @@ import {MarkDef} from '../../mark';
 import * as util from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
-import {predicate} from '../selection/selection';
+import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
@@ -95,7 +95,7 @@ function wrapCondition(
     const vgConditions = conditions.map((c) => {
       const conditionValueRef = refFn(c);
       return {
-        test: predicate(model, c.selection),
+        test: selectionPredicate(model, c.selection),
         ...conditionValueRef
       };
     });

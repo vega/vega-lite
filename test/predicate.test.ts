@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {expression, fieldFilterExpression, isEqualFilter, isOneOfFilter, isRangeFilter} from '../src/filter';
+import {expression, fieldFilterExpression, isFieldEqualPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../src/predicate';
 import {TimeUnit} from '../src/timeunit';
 
 describe('filter', () => {
@@ -11,36 +11,36 @@ describe('filter', () => {
 
   describe('isEqualFilter', () => {
     it('should return true for an equal filter', () => {
-      assert.isTrue(isEqualFilter(equalFilter));
+      assert.isTrue(isFieldEqualPredicate(equalFilter));
     });
 
     it('should return false for other filters', () => {
       [oneOfFilter, rangeFilter, exprFilter].forEach((filter) => {
-        assert.isFalse(isEqualFilter(filter));
+        assert.isFalse(isFieldEqualPredicate(filter));
       });
     });
   });
 
   describe('isOneOfFilter', () => {
     it('should return true for an in filter', () => {
-      assert.isTrue(isOneOfFilter(oneOfFilter));
+      assert.isTrue(isFieldOneOfPredicate(oneOfFilter));
     });
 
     it('should return false for other filters', () => {
       [equalFilter, rangeFilter, exprFilter].forEach((filter) => {
-        assert.isFalse(isOneOfFilter(filter));
+        assert.isFalse(isFieldOneOfPredicate(filter));
       });
     });
   });
 
   describe('isRangeFilter', () => {
     it('should return true for a range filter', () => {
-      assert.isTrue(isRangeFilter(rangeFilter));
+      assert.isTrue(isFieldRangePredicate(rangeFilter));
     });
 
     it('should return false for other filters', () => {
       [oneOfFilter, equalFilter, exprFilter].forEach((filter) => {
-        assert.isFalse(isRangeFilter(filter));
+        assert.isFalse(isFieldRangePredicate(filter));
       });
     });
   });
