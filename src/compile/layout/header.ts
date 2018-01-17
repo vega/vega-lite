@@ -94,7 +94,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
 
       const update = {
         ...(
-          labelAngle ? {angle: {value: labelAngle}} : {}
+          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
         )
 
         // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
