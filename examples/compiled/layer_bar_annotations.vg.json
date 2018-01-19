@@ -361,7 +361,19 @@
             "orient": "bottom",
             "labelOverlap": true,
             "title": "Day",
-            "zindex": 1
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "align": {
+                            "value": "center"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
         },
         {
             "title": "PM2.5 Value",

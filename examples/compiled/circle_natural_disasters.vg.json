@@ -135,7 +135,19 @@
             "orient": "bottom",
             "labelOverlap": true,
             "title": "Year",
-            "zindex": 1
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "align": {
+                            "value": "center"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
         },
         {
             "scale": "y",

@@ -471,6 +471,9 @@
                                 },
                                 "align": {
                                     "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "top"
                                 }
                             }
                         }

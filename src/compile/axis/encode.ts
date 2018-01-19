@@ -39,16 +39,13 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
     }
   }
 
-  if (angle !== undefined && channel === 'x') {
+  if (angle !== undefined) {
     const align = labelAlign(angle, orient);
     if (align) {
       labelsSpec.align = {value: align};
     }
 
-    // Auto set baseline if x is rotated by 90, or -90
-    if (contains([90, 270], angle)) {
-      labelsSpec.baseline = {value: 'middle'};
-    }
+    labelsSpec.baseline = labelBaseline(angle, orient);
   }
 
   labelsSpec = {
@@ -58,6 +55,27 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
 
   return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
 }
+
+export function labelBaseline(angle: number, orient: AxisOrient) {
+  if (orient === 'top' || orient === 'bottom') {
+    if (angle % 90 === 0) {
+      return {value: 'middle'};
+    } else if (angle < 90 || 270 < angle) {
+      return {value: orient === 'bottom' ? 'top' : 'bottom'};
+    } else {
+      return {value: orient === 'bottom'? 'bottom' : 'top'};
+    }
+  } else {
+    if (angle % 180 === 0) {
+      return {value: 'middle'};
+    } else if (0 < angle && angle < 180) {
+      return {value: orient === 'left' ? 'top' : 'bottom'};
+    } else {
+      return {value: orient === 'left'? 'bottom' : 'top'};
+    }
+  }
+}
+
 export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
   if (axis.labelAngle !== undefined) {
     // Make angle within [0,360)
@@ -71,15 +89,23 @@ export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<stri
 }
 
 export function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign {
-  if (angle > 0) {
-    if (angle % 360 > 180) {
+  angle = ((angle % 360) + 360) % 360;
+  if (orient === 'top' || orient === 'bottom') {
+    if (angle % 180 === 0) {
+      return 'center';
+    } else if (angle > 180) {
       return orient === 'top' ? 'left' : 'right';
-    } else if (angle % 360 < 180) {
+    } else {
       return orient === 'top' ? 'right': 'left';
     }
-  } else if (angle < 0) {
-    return labelAlign((angle % 360) + 360 /* convert to positive value*/, orient);
+  } else {
+    if (angle === 90 || angle === 270) {  // for 90 and 270
+      return 'center';
+    } else if (angle < 90 || 270 < angle) {
+      return orient === 'left' ? 'right': 'left';
+    } else {
+      return orient === 'left' ? 'left' : 'right';
+    }
   }
-  return undefined;
 }
 
