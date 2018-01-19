@@ -87,8 +87,8 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
 export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
   if (headerCmpt) {
     let title = null;
-    if (layoutHeader.facetFieldDef && headerCmpt.labels) {
-      const {facetFieldDef} = layoutHeader;
+    const {facetFieldDef} = layoutHeader;
+    if (facetFieldDef && headerCmpt.labels) {
       const {header = {}} = facetFieldDef;
       const {format, labelAngle} = header;
 
@@ -122,8 +122,8 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         ...(layoutHeader.facetFieldDef ? {
           from: {data: model.getName(channel + '_domain')},
           sort: {
-            field: vgField(layoutHeader.facetFieldDef, {expr: 'datum'}),
-            order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.sort) || 'ascending'
+            field: vgField(facetFieldDef, {expr: 'datum'}),
+            order: facetFieldDef.sort || 'ascending'
           }
         } : {}),
         ...(title ? {title} : {}),
