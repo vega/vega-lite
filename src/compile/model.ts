@@ -30,7 +30,7 @@ import {ConcatModel} from './concat';
 import {DataComponent} from './data/index';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {getHeaderGroups, getTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './layout/header';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
@@ -296,7 +296,7 @@ export abstract class Model {
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
-    const headerMarks = [];
+    let headerMarks = [];
 
     for (const channel of HEADER_CHANNELS) {
       if (layoutHeaders[channel].title) {
@@ -305,17 +305,7 @@ export abstract class Model {
     }
 
     for (const channel of HEADER_CHANNELS) {
-      const layoutHeader = layoutHeaders[channel];
-      for (const headerType of HEADER_TYPES) {
-        if (layoutHeader[headerType]) {
-          for (const header of layoutHeader[headerType]) {
-            const headerGroup = getHeaderGroup(this, channel, headerType, layoutHeader, header);
-            if (headerGroup) {
-              headerMarks.push(headerGroup);
-            }
-          }
-        }
-      }
+      headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
     }
     return headerMarks;
   }

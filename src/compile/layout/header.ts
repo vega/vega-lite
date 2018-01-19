@@ -4,7 +4,7 @@
 import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
 import {keys} from '../../util';
-import {AxisOrient, VgAxis} from '../../vega.schema';
+import {AxisOrient, VgAxis, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
 
@@ -84,7 +84,20 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   };
 }
 
-export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
+export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
+  const layoutHeader = model.component.layoutHeaders[channel];
+  const groups = [];
+  for (const headerType of HEADER_TYPES) {
+    if (layoutHeader[headerType]) {
+      for (const headerCmpt of layoutHeader[headerType]) {
+        groups.push(getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt));
+      }
+    }
+  }
+  return groups;
+}
+
+function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
   if (headerCmpt) {
     let title = null;
     const {facetFieldDef} = layoutHeader;

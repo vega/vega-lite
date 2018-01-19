@@ -1,9 +1,35 @@
 import {assert} from 'chai';
-import {getTitleGroup} from '../../../src/compile/layout/header';
+import {getHeaderGroups, getTitleGroup} from '../../../src/compile/layout/header';
 import {VgMarkGroup} from '../../../src/vega.schema';
 import {parseFacetModel} from '../../util';
 
 describe('compile/layout/header', () => {
+  describe('getHeaderGroups', () => {
+    const model = parseFacetModel({
+      facet: {
+        row: {field: 'a', type: 'ordinal', sort: 'ascending'},
+        column: {field: 'a', type: 'ordinal', sort: 'descending'}
+      },
+      spec: {
+        mark: 'point',
+        encoding: {
+          x: {field: 'b', type: 'quantitative'},
+          y: {field: 'c', type: 'quantitative'}
+        }
+      }
+    });
+    model.parseScale();
+    model.parseLayoutSize();
+    model.parseAxisAndHeader();
+
+    const rowHeaderGroups = getHeaderGroups(model, 'row');
+    const columnHeaderGroups = getHeaderGroups(model, 'column');
+    it('should correctly process sort', () => {
+      assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
+      assert.equal(columnHeaderGroups[0].sort.order, 'descending');
+    });
+  });
+
   describe('getTitleGroup', () => {
     const model = parseFacetModel({
       facet: {
