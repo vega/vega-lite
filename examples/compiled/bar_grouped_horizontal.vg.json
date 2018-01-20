@@ -198,6 +198,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "sum_people"
@@ -213,10 +217,6 @@
                             "height": {
                                 "scale": "y",
                                 "band": true
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
                             }
                         }
                     }

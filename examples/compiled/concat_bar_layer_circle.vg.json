@@ -257,14 +257,17 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "opacity": {
+                                "value": 0.4
+                            },
                             "x": {
                                 "signal": "(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                             },
                             "y": {
                                 "signal": "(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) + scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             },
                             "size": {
                                 "scale": "size",
@@ -272,9 +275,6 @@
                             },
                             "shape": {
                                 "value": "circle"
-                            },
-                            "opacity": {
-                                "value": 0.4
                             }
                         }
                     }
@@ -290,14 +290,14 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x": {
                                 "signal": "(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                             },
                             "y": {
                                 "signal": "(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) + scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             },
                             "size": {
                                 "scale": "size",
@@ -432,6 +432,15 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": [
+                                {
+                                    "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+                                    "value": "steelblue"
+                                },
+                                {
+                                    "value": "grey"
+                                }
+                            ],
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Major_Genre"
@@ -447,16 +456,7 @@
                             "y2": {
                                 "scale": "concat_1_y",
                                 "value": 0
-                            },
-                            "fill": [
-                                {
-                                    "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                                    "value": "steelblue"
-                                },
-                                {
-                                    "value": "grey"
-                                }
-                            ]
+                            }
                         }
                     }
                 }

@@ -85,14 +85,6 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
                     "fill": [
                         {
                             "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
@@ -103,6 +95,14 @@
                             "value": "grey"
                         }
                     ],
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
                     "size": {
                         "value": 75
                     },

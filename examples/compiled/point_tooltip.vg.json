@@ -40,14 +40,6 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
                     "stroke": {
                         "value": "#4c78a8"
                     },
@@ -56,6 +48,14 @@
                     },
                     "tooltip": {
                         "signal": "''+datum[\"Origin\"]"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
                     }
                 }
             }

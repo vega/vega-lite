@@ -238,6 +238,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "gender"
@@ -253,10 +257,6 @@
                             "y2": {
                                 "scale": "y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
                             }
                         }
                     }

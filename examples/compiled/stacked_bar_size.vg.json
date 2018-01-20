@@ -81,6 +81,12 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.5
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date"
@@ -96,12 +102,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "count_*_start"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.5
                     }
                 }
             }

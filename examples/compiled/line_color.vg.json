@@ -68,6 +68,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "date"
@@ -75,10 +79,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "price"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "symbol"
                             }
                         }
                     }

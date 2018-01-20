@@ -674,6 +674,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "count_*"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -689,10 +693,6 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "count_*"
                     }
                 }
             }

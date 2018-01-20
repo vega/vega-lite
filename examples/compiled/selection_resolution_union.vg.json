@@ -503,14 +503,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Horsepower_Miles_per_Gallon_x",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "y": {
-                                "scale": "child_Horsepower_Miles_per_Gallon_y",
-                                "field": "Horsepower"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -523,6 +515,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Horsepower_Miles_per_Gallon_x",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "y": {
+                                "scale": "child_Horsepower_Miles_per_Gallon_y",
+                                "field": "Horsepower"
                             }
                         }
                     }
@@ -910,14 +910,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Horsepower_Acceleration_x",
-                                "field": "Acceleration"
-                            },
-                            "y": {
-                                "scale": "child_Horsepower_Acceleration_y",
-                                "field": "Horsepower"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -930,6 +922,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Horsepower_Acceleration_x",
+                                "field": "Acceleration"
+                            },
+                            "y": {
+                                "scale": "child_Horsepower_Acceleration_y",
+                                "field": "Horsepower"
                             }
                         }
                     }
@@ -1250,14 +1250,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Horsepower_Horsepower_x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "child_Horsepower_Horsepower_y",
-                                "field": "Horsepower"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -1270,6 +1262,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Horsepower_Horsepower_x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "child_Horsepower_Horsepower_y",
+                                "field": "Horsepower"
                             }
                         }
                     }
@@ -1659,14 +1659,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Acceleration_Miles_per_Gallon_x",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "y": {
-                                "scale": "child_Acceleration_Miles_per_Gallon_y",
-                                "field": "Acceleration"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -1679,6 +1671,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Acceleration_Miles_per_Gallon_x",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "y": {
+                                "scale": "child_Acceleration_Miles_per_Gallon_y",
+                                "field": "Acceleration"
                             }
                         }
                     }
@@ -1999,14 +1999,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Acceleration_Acceleration_x",
-                                "field": "Acceleration"
-                            },
-                            "y": {
-                                "scale": "child_Acceleration_Acceleration_y",
-                                "field": "Acceleration"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2019,6 +2011,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Acceleration_Acceleration_x",
+                                "field": "Acceleration"
+                            },
+                            "y": {
+                                "scale": "child_Acceleration_Acceleration_y",
+                                "field": "Acceleration"
                             }
                         }
                     }
@@ -2408,14 +2408,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Acceleration_Horsepower_x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "child_Acceleration_Horsepower_y",
-                                "field": "Acceleration"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2428,6 +2420,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Acceleration_Horsepower_x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "child_Acceleration_Horsepower_y",
+                                "field": "Acceleration"
                             }
                         }
                     }
@@ -2748,14 +2748,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "y": {
-                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                                "field": "Miles_per_Gallon"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2768,6 +2760,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "y": {
+                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                                "field": "Miles_per_Gallon"
                             }
                         }
                     }
@@ -3157,14 +3157,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Miles_per_Gallon_Acceleration_x",
-                                "field": "Acceleration"
-                            },
-                            "y": {
-                                "scale": "child_Miles_per_Gallon_Acceleration_y",
-                                "field": "Miles_per_Gallon"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -3177,6 +3169,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Miles_per_Gallon_Acceleration_x",
+                                "field": "Acceleration"
+                            },
+                            "y": {
+                                "scale": "child_Miles_per_Gallon_Acceleration_y",
+                                "field": "Miles_per_Gallon"
                             }
                         }
                     }
@@ -3564,14 +3564,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "child_Miles_per_Gallon_Horsepower_x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "child_Miles_per_Gallon_Horsepower_y",
-                                "field": "Miles_per_Gallon"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -3584,6 +3576,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "child_Miles_per_Gallon_Horsepower_x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "child_Miles_per_Gallon_Horsepower_y",
+                                "field": "Miles_per_Gallon"
                             }
                         }
                     }

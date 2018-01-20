@@ -263,6 +263,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
                             "x2": {
                                 "scale": "child_Horsepower_x",
                                 "field": "bin_maxbins_10_Horsepower",
@@ -279,10 +283,6 @@
                             "y2": {
                                 "scale": "child_Horsepower_y",
                                 "field": "count_*_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "Origin"
                             }
                         }
                     }
@@ -356,6 +356,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
                             "x2": {
                                 "scale": "child_Miles_per_Gallon_x",
                                 "field": "bin_maxbins_10_Miles_per_Gallon",
@@ -372,10 +376,6 @@
                             "y2": {
                                 "scale": "child_Miles_per_Gallon_y",
                                 "field": "count_*_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "Origin"
                             }
                         }
                     }
@@ -449,6 +449,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
                             "x2": {
                                 "scale": "child_Acceleration_x",
                                 "field": "bin_maxbins_10_Acceleration",
@@ -465,10 +469,6 @@
                             "y2": {
                                 "scale": "child_Acceleration_y",
                                 "field": "count_*_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "Origin"
                             }
                         }
                     }

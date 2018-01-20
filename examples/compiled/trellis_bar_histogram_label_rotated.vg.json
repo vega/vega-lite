@@ -230,6 +230,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x2": {
                                 "scale": "x",
                                 "field": "bin_maxbins_15_Horsepower",
@@ -246,9 +249,6 @@
                             "y2": {
                                 "scale": "y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }

@@ -277,6 +277,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x": {
                                 "scale": "child_x",
                                 "field": "a"
@@ -292,9 +295,6 @@
                             "height": {
                                 "scale": "child_y",
                                 "band": true
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }

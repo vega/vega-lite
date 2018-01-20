@@ -418,6 +418,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Miles_per_Gallon"
@@ -425,12 +431,6 @@
                             "y": {
                                 "scale": "concat_0_y",
                                 "field": "Horsepower"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -710,14 +710,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "Displacement"
-                            },
-                            "y": {
-                                "scale": "concat_1_y",
-                                "field": "Acceleration"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -729,6 +721,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "concat_1_x",
+                                "field": "Displacement"
+                            },
+                            "y": {
+                                "scale": "concat_1_y",
+                                "field": "Acceleration"
                             }
                         }
                     }

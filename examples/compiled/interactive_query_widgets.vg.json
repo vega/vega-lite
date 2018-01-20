@@ -157,14 +157,6 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
                     "fill": [
                         {
                             "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
@@ -175,6 +167,14 @@
                             "value": "grey"
                         }
                     ],
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
                     "shape": {
                         "value": "circle"
                     }
@@ -195,6 +195,10 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "scale": "color",
+                        "field": "Origin"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -202,10 +206,6 @@
                     "y": {
                         "scale": "y",
                         "field": "Miles_per_Gallon"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "Origin"
                     },
                     "size": {
                         "value": 100

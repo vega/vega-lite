@@ -41,6 +41,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "Origin"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -51,10 +55,6 @@
                     },
                     "text": {
                         "signal": "''+datum[\"OriginInitial\"]"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "Origin"
                     },
                     "align": {
                         "value": "center"

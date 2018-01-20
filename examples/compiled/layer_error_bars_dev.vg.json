@@ -103,6 +103,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean"
@@ -110,9 +113,6 @@
                     "y": {
                         "scale": "y",
                         "field": "variety"
-                    },
-                    "fill": {
-                        "value": "black"
                     }
                 }
             }
@@ -128,6 +128,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "upper"
@@ -139,9 +142,6 @@
                     "x2": {
                         "scale": "x",
                         "field": "lower"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }

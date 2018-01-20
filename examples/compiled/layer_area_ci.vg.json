@@ -116,6 +116,12 @@
                     "orient": {
                         "value": "vertical"
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.3
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_Year"
@@ -127,12 +133,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "ci1_Miles_per_Gallon"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.3
                     }
                 }
             }
@@ -152,6 +152,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_Year"
@@ -159,9 +162,6 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }

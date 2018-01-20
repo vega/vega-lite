@@ -59,6 +59,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_Horsepower"
@@ -74,9 +77,6 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

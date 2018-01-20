@@ -63,6 +63,9 @@
                     "interpolate": {
                         "value": "monotone"
                     },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date"
@@ -70,9 +73,6 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_temp"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }

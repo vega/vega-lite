@@ -195,6 +195,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -202,9 +205,6 @@
                     "y": {
                         "scale": "y",
                         "field": "Miles_per_Gallon"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     },
                     "size": {
                         "scale": "size",

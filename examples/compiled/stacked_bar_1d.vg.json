@@ -64,6 +64,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "Origin"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "sum_Acceleration_end"
@@ -78,10 +82,6 @@
                     },
                     "height": {
                         "value": 20
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "Origin"
                     }
                 }
             }

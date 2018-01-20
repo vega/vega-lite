@@ -348,6 +348,13 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
+                                    "opacity": {
+                                        "value": 0.2
+                                    },
                                     "x": {
                                         "scale": "child_temp_max_x",
                                         "field": "month_date"
@@ -355,13 +362,6 @@
                                     "y": {
                                         "scale": "child_temp_max_y",
                                         "field": "mean_temp_max"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
-                                    },
-                                    "opacity": {
-                                        "value": 0.2
                                     }
                                 }
                             }
@@ -410,6 +410,10 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
                                     "x": {
                                         "scale": "child_temp_max_x",
                                         "field": "month_date"
@@ -417,10 +421,6 @@
                                     "y": {
                                         "scale": "child_temp_max_y",
                                         "field": "mean_temp_max"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
                                     }
                                 }
                             }
@@ -539,6 +539,13 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
+                                    "opacity": {
+                                        "value": 0.2
+                                    },
                                     "x": {
                                         "scale": "child_precipitation_x",
                                         "field": "month_date"
@@ -546,13 +553,6 @@
                                     "y": {
                                         "scale": "child_precipitation_y",
                                         "field": "mean_precipitation"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
-                                    },
-                                    "opacity": {
-                                        "value": 0.2
                                     }
                                 }
                             }
@@ -601,6 +601,10 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
                                     "x": {
                                         "scale": "child_precipitation_x",
                                         "field": "month_date"
@@ -608,10 +612,6 @@
                                     "y": {
                                         "scale": "child_precipitation_y",
                                         "field": "mean_precipitation"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
                                     }
                                 }
                             }
@@ -730,6 +730,13 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
+                                    "opacity": {
+                                        "value": 0.2
+                                    },
                                     "x": {
                                         "scale": "child_wind_x",
                                         "field": "month_date"
@@ -737,13 +744,6 @@
                                     "y": {
                                         "scale": "child_wind_y",
                                         "field": "mean_wind"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
-                                    },
-                                    "opacity": {
-                                        "value": 0.2
                                     }
                                 }
                             }
@@ -792,6 +792,10 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "location"
+                                    },
                                     "x": {
                                         "scale": "child_wind_x",
                                         "field": "month_date"
@@ -799,10 +803,6 @@
                                     "y": {
                                         "scale": "child_wind_y",
                                         "field": "mean_wind"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "location"
                                     }
                                 }
                             }

@@ -125,6 +125,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -132,12 +138,6 @@
                     "y": {
                         "scale": "y",
                         "field": "Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }
@@ -153,6 +153,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "value": 0
                     },
@@ -164,9 +167,6 @@
                         "field": {
                             "group": "width"
                         }
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -182,6 +182,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "value": 0
                     },
@@ -193,9 +196,6 @@
                         "field": {
                             "group": "width"
                         }
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -211,6 +211,12 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.2
+                    },
                     "x": {
                         "field": {
                             "group": "width"
@@ -226,12 +232,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "min_Miles_per_Gallon"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.2
                     }
                 }
             }

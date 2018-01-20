@@ -190,6 +190,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "#000"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "income"
@@ -197,9 +200,6 @@
                     "y": {
                         "scale": "y",
                         "field": "health"
-                    },
-                    "fill": {
-                        "value": "#000"
                     },
                     "size": {
                         "scale": "size",

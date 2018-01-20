@@ -187,6 +187,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "month_date"
@@ -202,9 +205,6 @@
                             "y2": {
                                 "scale": "concat_0_y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }
@@ -289,17 +289,17 @@
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "signal": "(scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min\"]) + scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min_end\"]))/2"
-                            },
-                            "y": {
-                                "signal": "(scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max\"]) + scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max_end\"]))/2"
-                            },
                             "stroke": {
                                 "value": "#4c78a8"
                             },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "signal": "(scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min\"]) + scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min_end\"]))/2"
+                            },
+                            "y": {
+                                "signal": "(scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max\"]) + scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max_end\"]))/2"
                             },
                             "size": {
                                 "scale": "size",

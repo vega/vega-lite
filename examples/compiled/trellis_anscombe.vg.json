@@ -208,6 +208,9 @@
                             "opacity": {
                                 "value": 1
                             },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "X"
@@ -215,9 +218,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "Y"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             },
                             "shape": {
                                 "value": "circle"

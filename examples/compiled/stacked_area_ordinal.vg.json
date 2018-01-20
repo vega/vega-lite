@@ -124,6 +124,10 @@
                             "orient": {
                                 "value": "vertical"
                             },
+                            "fill": {
+                                "scale": "color",
+                                "field": "Cylinders"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "year_Year"
@@ -135,10 +139,6 @@
                             "y2": {
                                 "scale": "y",
                                 "field": "sum_Weight_in_lbs_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "Cylinders"
                             }
                         }
                     }

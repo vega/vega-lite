@@ -79,6 +79,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "miles"
@@ -86,9 +89,6 @@
                     "y": {
                         "scale": "y",
                         "field": "gas"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -107,6 +107,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "miles"
@@ -114,9 +117,6 @@
                     "y": {
                         "scale": "y",
                         "field": "gas"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
