@@ -18,7 +18,7 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task.
+You can find [tasks with the "Help wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/Help%20wanted). Please get in touch if you are planning to work on a major task.
 
 ### Help Create New Examples
 
