@@ -16,7 +16,8 @@ export const tick: MarkCompiler = {
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.markDefProperties(model.markDef, true),
+      ...mixins.baseEncodeEntry(model, true),
+
       ...mixins.pointPosition('x', model, ref.mid(width), 'xc'),
       ...mixins.pointPosition('y', model, ref.mid(height), 'yc'),
 
@@ -26,11 +27,6 @@ export const tick: MarkCompiler = {
         vgChannel: vgSizeChannel
       }),
       [vgThicknessChannel]: {value: config.tick.thickness},
-
-      ...mixins.color(model),
-      ...mixins.text(model, 'tooltip'),
-      ...mixins.text(model, 'href'),
-      ...mixins.nonPosition('opacity', model),
     };
   }
 };

@@ -19,13 +19,9 @@ export const bar: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
     return {
-      ...mixins.markDefProperties(model.markDef, true),
+      ...mixins.baseEncodeEntry(model, true),
       ...x(model, stack),
       ...y(model, stack),
-      ...mixins.color(model),
-      ...mixins.text(model, 'tooltip'),
-      ...mixins.text(model, 'href'),
-      ...mixins.nonPosition('opacity', model)
     };
   }
 };

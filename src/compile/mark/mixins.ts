@@ -33,7 +33,17 @@ export function color(model: UnitModel) {
   return e;
 }
 
-export function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
+export function baseEncodeEntry(model: UnitModel, ignoreOrient: boolean) {
+  return {
+    ...markDefProperties(model.markDef, ignoreOrient),
+    ...color(model),
+    ...nonPosition('opacity', model),
+    ...text(model, 'tooltip'),
+    ...text(model, 'href')
+  };
+}
+
+function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
     if (mark[prop] && (!ignoreOrient || prop !== 'orient')) {
       m[prop] = {value: mark[prop]};
