@@ -353,6 +353,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalWidth_sepalLength_x",
                                 "field": "sepalLength"
@@ -360,13 +367,6 @@
                             "y": {
                                 "scale": "child_petalWidth_sepalLength_y",
                                 "field": "petalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -455,6 +455,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalWidth_sepalWidth_x",
                                 "field": "sepalWidth"
@@ -462,13 +469,6 @@
                             "y": {
                                 "scale": "child_petalWidth_sepalWidth_y",
                                 "field": "petalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -557,6 +557,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalWidth_petalLength_x",
                                 "field": "petalLength"
@@ -564,13 +571,6 @@
                             "y": {
                                 "scale": "child_petalWidth_petalLength_y",
                                 "field": "petalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -659,6 +659,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalWidth_petalWidth_x",
                                 "field": "petalWidth"
@@ -666,13 +673,6 @@
                             "y": {
                                 "scale": "child_petalWidth_petalWidth_y",
                                 "field": "petalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -761,6 +761,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalLength_sepalLength_x",
                                 "field": "sepalLength"
@@ -768,13 +775,6 @@
                             "y": {
                                 "scale": "child_petalLength_sepalLength_y",
                                 "field": "petalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -863,6 +863,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalLength_sepalWidth_x",
                                 "field": "sepalWidth"
@@ -870,13 +877,6 @@
                             "y": {
                                 "scale": "child_petalLength_sepalWidth_y",
                                 "field": "petalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -965,6 +965,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalLength_petalLength_x",
                                 "field": "petalLength"
@@ -972,13 +979,6 @@
                             "y": {
                                 "scale": "child_petalLength_petalLength_y",
                                 "field": "petalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1067,6 +1067,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_petalLength_petalWidth_x",
                                 "field": "petalWidth"
@@ -1074,13 +1081,6 @@
                             "y": {
                                 "scale": "child_petalLength_petalWidth_y",
                                 "field": "petalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1169,6 +1169,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalWidth_sepalLength_x",
                                 "field": "sepalLength"
@@ -1176,13 +1183,6 @@
                             "y": {
                                 "scale": "child_sepalWidth_sepalLength_y",
                                 "field": "sepalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1271,6 +1271,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalWidth_sepalWidth_x",
                                 "field": "sepalWidth"
@@ -1278,13 +1285,6 @@
                             "y": {
                                 "scale": "child_sepalWidth_sepalWidth_y",
                                 "field": "sepalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1373,6 +1373,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalWidth_petalLength_x",
                                 "field": "petalLength"
@@ -1380,13 +1387,6 @@
                             "y": {
                                 "scale": "child_sepalWidth_petalLength_y",
                                 "field": "sepalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1475,6 +1475,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalWidth_petalWidth_x",
                                 "field": "petalWidth"
@@ -1482,13 +1489,6 @@
                             "y": {
                                 "scale": "child_sepalWidth_petalWidth_y",
                                 "field": "sepalWidth"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1577,6 +1577,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalLength_sepalLength_x",
                                 "field": "sepalLength"
@@ -1584,13 +1591,6 @@
                             "y": {
                                 "scale": "child_sepalLength_sepalLength_y",
                                 "field": "sepalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1679,6 +1679,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalLength_sepalWidth_x",
                                 "field": "sepalWidth"
@@ -1686,13 +1693,6 @@
                             "y": {
                                 "scale": "child_sepalLength_sepalWidth_y",
                                 "field": "sepalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1781,6 +1781,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalLength_petalLength_x",
                                 "field": "petalLength"
@@ -1788,13 +1795,6 @@
                             "y": {
                                 "scale": "child_sepalLength_petalLength_y",
                                 "field": "sepalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -1883,6 +1883,13 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "species"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_sepalLength_petalWidth_x",
                                 "field": "petalWidth"
@@ -1890,13 +1897,6 @@
                             "y": {
                                 "scale": "child_sepalLength_petalWidth_y",
                                 "field": "sepalLength"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "species"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

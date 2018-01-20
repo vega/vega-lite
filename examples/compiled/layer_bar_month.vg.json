@@ -95,6 +95,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date"
@@ -110,9 +113,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -128,6 +128,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "firebrick"
+                    },
                     "x": {
                         "value": 0
                     },
@@ -139,9 +142,6 @@
                         "field": {
                             "group": "width"
                         }
-                    },
-                    "stroke": {
-                        "value": "firebrick"
                     },
                     "strokeWidth": {
                         "value": 3

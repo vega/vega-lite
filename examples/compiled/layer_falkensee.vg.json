@@ -285,6 +285,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "event"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_start"
@@ -300,10 +304,6 @@
                         "field": {
                             "group": "height"
                         }
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "event"
                     }
                 }
             }
@@ -323,6 +323,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#333"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_year"
@@ -330,9 +333,6 @@
                     "y": {
                         "scale": "y",
                         "field": "population"
-                    },
-                    "stroke": {
-                        "value": "#333"
                     }
                 }
             }
@@ -351,6 +351,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "value": "#333"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_year"
@@ -358,12 +364,6 @@
                     "y": {
                         "scale": "y",
                         "field": "population"
-                    },
-                    "stroke": {
-                        "value": "#333"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

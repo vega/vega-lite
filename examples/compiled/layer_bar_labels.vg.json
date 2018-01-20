@@ -76,6 +76,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "b"
@@ -91,9 +94,6 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -118,6 +118,9 @@
                     "dx": {
                         "value": 3
                     },
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "b"
@@ -129,9 +132,6 @@
                     },
                     "text": {
                         "signal": "format(datum[\"b\"], \"\")"
-                    },
-                    "fill": {
-                        "value": "black"
                     }
                 }
             }

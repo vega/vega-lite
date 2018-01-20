@@ -55,6 +55,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "field": {
                             "group": "width"
@@ -67,9 +70,6 @@
                     },
                     "text": {
                         "signal": "format(datum[\"mean_Horsepower\"], \".2f\")"
-                    },
-                    "fill": {
-                        "value": "black"
                     },
                     "align": {
                         "value": "right"

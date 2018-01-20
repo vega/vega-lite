@@ -39,6 +39,13 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "Origin"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -46,13 +53,6 @@
                     "y": {
                         "scale": "y",
                         "field": "Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "Origin"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

@@ -56,6 +56,13 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "scale": "color",
+                        "field": "yearmonth_date"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_temp"
@@ -63,13 +70,6 @@
                     "y": {
                         "signal": "height",
                         "mult": 0.5
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "yearmonth_date"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

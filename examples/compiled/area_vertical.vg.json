@@ -67,6 +67,9 @@
                     "orient": {
                         "value": "horizontal"
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "sum_Weight_in_lbs"
@@ -78,9 +81,6 @@
                     "x2": {
                         "scale": "x",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

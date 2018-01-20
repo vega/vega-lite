@@ -149,6 +149,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "min_people"
@@ -160,9 +163,6 @@
                     "x2": {
                         "scale": "x",
                         "field": "max_people"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -178,6 +178,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "min_people"
@@ -191,9 +194,6 @@
                     },
                     "width": {
                         "value": 1
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -209,6 +209,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "max_people"
@@ -222,9 +225,6 @@
                     },
                     "width": {
                         "value": 1
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -240,6 +240,12 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_people"
@@ -247,12 +253,6 @@
                     "y": {
                         "scale": "y",
                         "field": "age"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "size": {
                         "value": 2

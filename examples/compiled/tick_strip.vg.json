@@ -48,6 +48,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -61,9 +64,6 @@
                     },
                     "width": {
                         "value": 1
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

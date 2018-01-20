@@ -51,6 +51,12 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_Horsepower"
@@ -58,12 +64,6 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_Displacement"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

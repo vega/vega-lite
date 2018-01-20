@@ -94,6 +94,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "quarter_date"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "year_date"
@@ -101,10 +105,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "mean_price"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "quarter_date"
                             }
                         }
                     }

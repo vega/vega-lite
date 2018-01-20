@@ -107,6 +107,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date"
@@ -122,9 +125,6 @@
                     "y2": {
                         "scale": "layer_0_y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -144,6 +144,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "firebrick"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month_date",
@@ -152,9 +155,6 @@
                     "y": {
                         "scale": "layer_1_y",
                         "field": "mean_temp_max"
-                    },
-                    "stroke": {
-                        "value": "firebrick"
                     }
                 }
             }

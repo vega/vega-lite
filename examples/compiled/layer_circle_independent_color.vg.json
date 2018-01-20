@@ -179,14 +179,14 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
                     },
                     "y": {
                         "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     },
                     "size": {
                         "scale": "size",
@@ -209,14 +209,14 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "firebrick"
+                    },
                     "x": {
                         "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
                     },
                     "y": {
                         "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
-                    },
-                    "fill": {
-                        "value": "firebrick"
                     },
                     "size": {
                         "scale": "size",

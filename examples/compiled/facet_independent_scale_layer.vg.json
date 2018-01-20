@@ -329,6 +329,10 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "gender"
+                                    },
                                     "x": {
                                         "scale": "child_x",
                                         "field": "age"
@@ -336,10 +340,6 @@
                                     "y": {
                                         "scale": "y",
                                         "field": "sum_people"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "gender"
                                     }
                                 }
                             }
@@ -357,6 +357,13 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "child_x",
                                 "field": "age"
@@ -364,13 +371,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "sum_people"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "gender"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

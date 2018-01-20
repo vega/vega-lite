@@ -104,6 +104,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "bin_maxbins_6_Acceleration"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "Year"
@@ -111,10 +115,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "mean_Horsepower"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "bin_maxbins_6_Acceleration"
                             }
                         }
                     }

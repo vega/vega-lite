@@ -108,6 +108,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "a"
@@ -123,9 +126,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -145,6 +145,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "red"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "b",
@@ -153,9 +156,6 @@
                     "y": {
                         "scale": "y",
                         "field": "c"
-                    },
-                    "stroke": {
-                        "value": "red"
                     }
                 }
             }

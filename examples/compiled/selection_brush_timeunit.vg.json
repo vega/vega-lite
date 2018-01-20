@@ -378,14 +378,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "seconds_date"
-                            },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "price"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -397,6 +389,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "concat_0_x",
+                                "field": "seconds_date"
+                            },
+                            "y": {
+                                "scale": "concat_0_y",
+                                "field": "price"
                             }
                         }
                     }
@@ -549,6 +549,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "value": "goldenrod"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "minutes_date"
@@ -556,12 +562,6 @@
                             "y": {
                                 "scale": "concat_1_y",
                                 "field": "price"
-                            },
-                            "stroke": {
-                                "value": "goldenrod"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

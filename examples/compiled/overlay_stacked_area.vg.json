@@ -194,6 +194,13 @@
                             "orient": {
                                 "value": "vertical"
                             },
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "age"
@@ -205,13 +212,6 @@
                             "y2": {
                                 "scale": "y",
                                 "field": "sum_people_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }
@@ -261,6 +261,13 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "age"
@@ -268,13 +275,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "sum_people_end"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "gender"
-                            },
-                            "opacity": {
-                                "value": 0.7
                             }
                         }
                     }

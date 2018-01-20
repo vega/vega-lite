@@ -76,6 +76,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "site"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "sum_yield_end"
@@ -91,10 +95,6 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "site"
                     }
                 }
             }

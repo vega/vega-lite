@@ -130,6 +130,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "signal": "width",
                         "mult": 0.5
@@ -141,9 +144,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "lower_box_people"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -160,6 +160,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "signal": "width",
                         "mult": 0.5
@@ -171,9 +174,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "upper_whisker_people"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -190,6 +190,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "xc": {
                         "signal": "width",
                         "mult": 0.5
@@ -204,9 +207,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "upper_box_people"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -226,6 +226,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "white"
+                    },
                     "xc": {
                         "signal": "width",
                         "mult": 0.5
@@ -239,9 +242,6 @@
                     },
                     "height": {
                         "value": 1
-                    },
-                    "fill": {
-                        "value": "white"
                     }
                 }
             }

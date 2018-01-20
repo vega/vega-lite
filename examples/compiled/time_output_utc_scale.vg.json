@@ -74,6 +74,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "yearmonthdatehoursminutes_date"
@@ -81,9 +84,6 @@
                     "y": {
                         "scale": "y",
                         "field": "price"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }

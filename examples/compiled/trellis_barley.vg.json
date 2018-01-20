@@ -228,6 +228,13 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "trellis_barley_color",
+                                "field": "year"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "trellis_barley_x",
                                 "field": "median_yield"
@@ -235,13 +242,6 @@
                             "y": {
                                 "scale": "trellis_barley_y",
                                 "field": "variety"
-                            },
-                            "stroke": {
-                                "scale": "trellis_barley_color",
-                                "field": "year"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

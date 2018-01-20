@@ -48,6 +48,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "sum_people"
@@ -62,9 +65,6 @@
                     },
                     "height": {
                         "value": 20
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

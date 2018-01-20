@@ -104,6 +104,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "date"
@@ -111,10 +115,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "price"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "symbol"
                             }
                         }
                     }
@@ -132,6 +132,10 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
                     "x": {
                         "value": 0
                     },
@@ -143,10 +147,6 @@
                         "field": {
                             "group": "width"
                         }
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "symbol"
                     },
                     "strokeWidth": {
                         "value": 2

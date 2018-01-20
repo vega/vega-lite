@@ -60,6 +60,12 @@
                         "scale": "opacity",
                         "field": "bin_maxbins_6_Acceleration"
                     },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -67,12 +73,6 @@
                     "y": {
                         "scale": "y",
                         "field": "Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

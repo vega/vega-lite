@@ -60,6 +60,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "signal": "width",
                         "mult": 0.5
@@ -67,12 +73,6 @@
                     "y": {
                         "scale": "y",
                         "field": "hours_date"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

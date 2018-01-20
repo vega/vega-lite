@@ -294,6 +294,10 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "scale": "color",
+                        "field": "isIncrease"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "yearmonthdate_date"
@@ -305,10 +309,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "high"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "isIncrease"
                     }
                 }
             }
@@ -324,6 +324,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "isIncrease"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "yearmonthdate_date"
@@ -338,10 +342,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "close"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "isIncrease"
                     }
                 }
             }

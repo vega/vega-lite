@@ -635,14 +635,6 @@
                             "opacity": {
                                 "value": 1
                             },
-                            "x": {
-                                "scale": "x",
-                                "field": "X"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Y"
-                            },
                             "fill": [
                                 {
                                     "test": "!(length(data(\"xenc_store\"))) || (vlSingle(\"xenc_store\", datum))",
@@ -652,6 +644,14 @@
                                     "value": "steelblue"
                                 }
                             ],
+                            "x": {
+                                "scale": "x",
+                                "field": "X"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Y"
+                            },
                             "size": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",

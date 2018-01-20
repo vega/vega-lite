@@ -47,6 +47,10 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
                     "x": {
                         "value": 0
                     },
@@ -58,10 +62,6 @@
                         "field": {
                             "group": "width"
                         }
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "symbol"
                     },
                     "strokeWidth": {
                         "value": 2
