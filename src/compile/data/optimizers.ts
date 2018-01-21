@@ -1,5 +1,6 @@
 import {hasIntersection, keys} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
+import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
@@ -58,11 +59,12 @@ export function moveParseUp(node: DataFlowNode) {
 }
 
 /**
- * Repeatedly remove leaf nodes that are not output nodes.
+ * Repeatedly remove leaf nodes that are not output or facet nodes.
  * The reason is that we don't need subtrees that don't have any output nodes.
+ * Facet nodes are needed for the row or column domains.
  */
 export function removeUnusedSubtrees(node: DataFlowNode) {
-  if (node instanceof OutputNode || node.numChildren() > 0) {
+  if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
     // no need to continue with parent because it is output node or will have children (there was a fork)
     return false;
   } else {
