@@ -23,7 +23,7 @@ export function isFilter(t: Transform): t is FilterTransform {
 
 export interface CalculateTransform {
   /**
-   * A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.
+   * A string containing a [Vega Expression](filter.html#expression). Use the variable `datum` to refer to the current data object.
    */
   calculate: string;
   /**
