@@ -8,7 +8,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec} from '../spec';
+import {BaseSpec, isFacetSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
@@ -27,7 +27,7 @@ import {
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
-import {DataComponent} from './data/index';
+import {DataComponent} from './data';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {getHeaderGroups, getTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './layout/header';
@@ -186,7 +186,9 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
+        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {},
+        // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
+        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders:{row: {}, column: {}},

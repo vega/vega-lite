@@ -1,12 +1,13 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+
 import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
-import {parseModel, parseUnitModelWithScale} from '../../util';
+import {parseModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
 
 describe('src/compile', function() {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
@@ -352,6 +353,7 @@ describe('src/compile', function() {
 
       const xScale = model.getScaleComponent('x');
       const yscale = model.getScaleComponent('y');
+
       it('should add a raw selection domain', function() {
         assert.property(xScale.explicit, 'domainRaw');
         assert.propertyVal(xScale.explicit.domainRaw, 'signal',
@@ -360,6 +362,73 @@ describe('src/compile', function() {
         assert.property(yscale.explicit, 'domainRaw');
         assert.propertyVal(yscale.explicit.domainRaw, 'signal',
           SELECTION_DOMAIN + '{"selection":"foobar","field":"Miles_per_Gallon"}');
+      });
+    });
+  });
+
+  describe('parseScaleDomain', function() {
+    describe('faceted domains', function() {
+      it('should use cloned subtree', function() {
+        const model = parseModelWithScale({
+          facet: {
+            row: {field: "symbol", type: "nominal"}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'quantitative'},
+            }
+          }
+        });
+
+        assert.deepEqual(model.component.scales.x.domains, [{
+          data: 'scale_child_main',
+          field: 'a'
+        }]);
+      });
+
+      it('should not use cloned subtree if the data is not faceted', function() {
+        const model = parseModelWithScale({
+          facet: {
+            row: {field: "symbol", type: "nominal"}
+          },
+          spec: {
+            data: {url: 'foo'},
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'quantitative'},
+            }
+          }
+        });
+
+        assert.deepEqual(model.component.scales.x.domains, [{
+          data: 'child_main',
+          field: 'a'
+        }]);
+      });
+
+      it('should not use cloned subtree if the scale is independent', function() {
+        const model = parseModelWithScale({
+          facet: {
+            row: {field: "symbol", type: "nominal"}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'quantitative'},
+            }
+          },
+          resolve: {
+            scale: {
+              x: 'independent'
+            }
+          }
+        });
+
+        assert.deepEqual(model.children[0].component.scales.x.domains, [{
+          data: 'child_main',
+          field: 'a'
+        }]);
       });
     });
   });

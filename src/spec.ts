@@ -208,31 +208,31 @@ export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel
 /* Custom type guards */
 
 
-export function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
+export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
   return spec['facet'] !== undefined;
 }
 
-export function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is FacetedCompositeUnitSpec | UnitSpec {
+export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | UnitSpec {
   return !!spec['mark'];
 }
 
-export function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
+export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
   return spec['layer'] !== undefined;
 }
 
-export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
+export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
   return spec['repeat'] !== undefined;
 }
 
-export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> | GenericHConcatSpec<GenericUnitSpec<any, any>> {
+export function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> | GenericHConcatSpec<GenericUnitSpec<any, any>> {
   return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
 
-export function isVConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
+export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
   return spec['vconcat'] !== undefined;
 }
 
-export function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
+export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
   return spec['hconcat'] !== undefined;
 }
 

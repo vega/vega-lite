@@ -1,6 +1,6 @@
 
 import * as log from '../log';
-import {duplicate} from '../util';
+import {duplicate, hash} from '../util';
 
 /**
  * Generic class for storing properties that are explicitly specified
@@ -101,7 +101,7 @@ export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
 
 export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) {
   if (v1.explicit && v2.explicit) {
-    log.warn(log.message.mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
+    log.warn(log.message.mergeConflictingProperty(property, propertyOf, hash(v1.value), hash(v2.value)));
   }
   // If equal score, prefer v1.
   return v1;
