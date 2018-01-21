@@ -218,9 +218,11 @@ VgEventStream:
 SelectionResolution:
   link: "selection.html#resolve"
 
-# Others
+# Types
 DateTime:
   link: "types.html#datetime"
+
+# Others
 HorizontalAlign:
   name: String
 VerticalAlign:

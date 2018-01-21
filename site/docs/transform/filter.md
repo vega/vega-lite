@@ -27,7 +27,7 @@ Vega-Lite filter transforms must have the `filter` property describing the predi
 {:#expression}
 ## Filter Expression
 
-For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
+For an [expression](types.html#expression) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
 
 
 ## Field Predicate
