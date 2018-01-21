@@ -5,9 +5,11 @@ import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
+import {ResolveMode} from '../../resolve';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField, SortField} from '../../sort';
 import * as util from '../../util';
+import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {
   isDataRefDomain,
   VgDataRef,
@@ -15,9 +17,8 @@ import {
   VgFieldRefUnionDomain,
   VgNonUnionDomain,
   VgSortField,
-  VgUnionSortField
+  VgUnionSortField,
 } from '../../vega.schema';
-import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -57,6 +58,26 @@ function parseUnitScaleDomain(model: UnitModel) {
         signal: SELECTION_DOMAIN + JSON.stringify(specifiedDomain)
       }, true);
     }
+
+    if (model.component.data.isFaceted) {
+      // get resolve from closest facet parent as this decides whether we need to refer to cloned subtree or not
+      let facetParent: Model = model;
+      while (!isFacetModel(facetParent) && facetParent.parent) {
+        facetParent = facetParent.parent;
+      }
+
+      const resolve = facetParent.component.resolve.scale[channel];
+
+      if (resolve === 'shared') {
+        for (const domain of domains) {
+          // Replace the scale domain with data output from a cloned subtree after the facet.
+          if (isDataRefDomain(domain)) {
+            // use data from cloned subtree (which is the same as data but with a prefix added once)
+            domain.data = FACET_SCALE_PREFIX + domain.data.replace(FACET_SCALE_PREFIX, '');
+          }
+        }
+      }
+    }
   });
 }
 
@@ -81,16 +102,6 @@ function parseNonUnitScaleDomain(model: Model) {
           domains = domains.concat(childComponent.domains);
         }
       }
-    }
-
-    if (isFacetModel(model)) {
-      domains.forEach((domain) => {
-        // Replace the scale domain with data output from a cloned subtree after the facet.
-        if (isDataRefDomain(domain)) {
-          // use data from cloned subtree (which is the same as data but with a prefix added once)
-          domain.data = FACET_SCALE_PREFIX + domain.data.replace(FACET_SCALE_PREFIX, '');
-        }
-      });
     }
 
     localScaleComponents[channel].domains = domains;
