@@ -14,7 +14,7 @@ To aggregate data in Vega-Lite, users can either use use an `aggregate` property
 
 
 {:#encoding}
-## Aggregate (Encoding)
+## Aggregate Encoding
 
 <!-- TODO why aggregation -->
 
@@ -73,6 +73,9 @@ The `detail` channel can be used to specify additional summary and group-by fiel
   ...
 }
 ```
+For example, here is the same bar chart which aggregates mean of Acceleration, grouped by the number of Cylinders, but this time using the `aggregate` property as part of the `transform`.
+
+<div class="vl-example" data-name="bar_aggregate_transform"></div>
 
 An `aggregate` transform in the [`transform`](transform.html) array has the following properties:
 
@@ -111,3 +114,5 @@ The supported **aggregation operations** are:
 | max       | The maximum field value.|
 | argmin    | An input data object containing the minimum field value.|
 | argmax    | An input data object containing the maximum field value.|
+
+Note: It is important you [`parse`](data.html#format) your data types explicitly, especially if you are likely to have `null` values in your dataset and automatic type inference will fail.
