@@ -9,7 +9,7 @@ import {TimeUnit} from './timeunit';
 export interface FilterTransform {
   /**
    * The `filter` property must be one of the predicate definitions:
-   * (1) a [Vega Expression](filter.html#expression) string,
+   * (1) an [expression](types.html#expression) string,
    * where `datum` can be used to refer to the current data object;
    * (2) one of the field predicates: [equal predicate](filter.html#equal-predicate);
    * [range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);
@@ -24,12 +24,12 @@ export function isFilter(t: Transform): t is FilterTransform {
   return t['filter'] !== undefined;
 }
 
-
 export interface CalculateTransform {
   /**
-   * A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.
+   * A [expression](types.html#expression) string. Use the variable `datum` to refer to the current data object.
    */
   calculate: string;
+
   /**
    * The field for storing the computed formula value.
    */

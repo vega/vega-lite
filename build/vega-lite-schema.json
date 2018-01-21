@@ -813,7 +813,7 @@
           "type": "string"
         },
         "calculate": {
-          "description": "A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.",
+          "description": "A [expression](types.html#expression) string. Use the variable `datum` to refer to the current data object.",
           "type": "string"
         }
       },
@@ -2078,7 +2078,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n(1) a [Vega Expression](filter.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
+          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
