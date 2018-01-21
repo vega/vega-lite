@@ -81,7 +81,7 @@ function moveMainDownToFacet(node: DataFlowNode) {
 }
 
 /**
- * Start optimization path from the root. Useful for removing nodes.
+ * Remove nodes that are not required starting from a root.
  */
 function removeUnnecessaryNodes(node: DataFlowNode) {
 
