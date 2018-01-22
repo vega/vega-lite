@@ -1,4 +1,5 @@
 
+import * as stringify from 'json-stable-stringify';
 import * as log from '../log';
 import {duplicate, hash} from '../util';
 
@@ -122,7 +123,7 @@ export function mergeValuesWithExplicit<S, T>(
     return v1;
   } else if (v2.explicit && !v1.explicit) {
     return v2;
-  } else if (v1.value === v2.value) {
+  } else if (stringify(v1.value) === stringify(v2.value)) {
     return v1;
   } else {
     return tieBreaker(v1, v2, property, propertyOf);
