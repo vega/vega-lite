@@ -388,11 +388,11 @@ describe('src/compile', function() {
       it('should add a raw selection domain', function() {
         assert.property(xScale.explicit, 'domainRaw');
         assert.propertyVal(xScale.explicit.domainRaw, 'signal',
-          SELECTION_DOMAIN + '{"selection":"brush","encoding":"x"}');
+          SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
 
         assert.property(yscale.explicit, 'domainRaw');
         assert.propertyVal(yscale.explicit.domainRaw, 'signal',
-          SELECTION_DOMAIN + '{"selection":"foobar","field":"Miles_per_Gallon"}');
+          SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}');
       });
     });
   });

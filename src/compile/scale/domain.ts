@@ -5,9 +5,9 @@ import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {ResolveMode} from '../../resolve';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField, SortField} from '../../sort';
+import {hash} from '../../util';
 import * as util from '../../util';
 import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {
@@ -55,7 +55,7 @@ function parseUnitScaleDomain(model: UnitModel) {
 
       // FIXME: replace this with a special property in the scaleComponent
       localScaleCmpt.set('domainRaw', {
-        signal: SELECTION_DOMAIN + JSON.stringify(specifiedDomain)
+        signal: SELECTION_DOMAIN + hash(specifiedDomain)
       }, true);
     }
 
