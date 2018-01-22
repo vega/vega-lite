@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {parseScaleCore} from '../../../src/compile/scale/parse';
+import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
@@ -147,6 +147,37 @@ describe('src/compile', function() {
   });
 
   describe('parseScale', () => {
+    it('does not throw warning when two equivalent objects are specified', log.wrap((logger) => {
+      const model = parseModel({
+        "data": {"url": "data/seattle-weather.csv"},
+        "layer": [
+          {
+            "mark": "circle",
+            "encoding": {
+              "y": {
+                "field": "a",
+                "type": "nominal",
+                "scale": {"rangeStep": 17}
+              }
+            }
+          },
+          {
+            "mark": "point",
+            "encoding": {
+              "y": {
+                "field": "a",
+                "type": "nominal",
+                "scale": {"rangeStep": 17}
+              }
+            }
+          }
+        ]
+      });
+      parseScale(model);
+      assert.deepEqual(model.getScaleComponent('y').explicit.range, {step: 17});
+      assert.equal(logger.warns.length, 0);
+    }));
+
     describe('x ordinal point', () => {
       it('should create an x point scale with rangeStep and no range', () => {
         const model = parseUnitModelWithScale({
