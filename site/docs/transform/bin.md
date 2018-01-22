@@ -16,7 +16,7 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
 
 
 {:#encoding}
-## Binning Encoding Field
+## Binning in Encoding Field Definition
 
 
 {: .suppress-error}

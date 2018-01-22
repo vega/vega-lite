@@ -28,7 +28,7 @@ By default, all time units represent date time using local time.  To use UTC tim
 
 
 {: #encoding}
-## Encoding
+## Timeunit in Encoding Field Definition
 
 {: .suppress-error}
 ```json
