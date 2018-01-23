@@ -19,8 +19,8 @@ const multi:SelectionCompiler = {
       const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
       return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
-        `[${datum}${accessPath(model.field(channel, {}))}, ` +
-            `${datum}${accessPath(model.field(channel, {binSuffix: 'end'}))}]`) :
+        `[${datum}${accessPath(model.vgField(channel, {}))}, ` +
+            `${datum}${accessPath(model.vgField(channel, {binSuffix: 'end'}))}]`) :
         `${datum}${accessPath(p.field)}`;
     }).join(', ');
 

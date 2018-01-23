@@ -321,16 +321,16 @@ export class FacetModel extends ModelWithField {
           name: facetRoot.name,
           data: facetRoot.data,
           groupby: [].concat(
-            hasRow ? [this.field(ROW)] : [],
-            hasColumn ? [this.field(COLUMN)] : []
+            hasRow ? [this.vgField(ROW)] : [],
+            hasColumn ? [this.vgField(COLUMN)] : []
           ),
           ...aggregateMixins
         }
       },
       sort: {
         field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum',})] : [],
-          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+          hasRow ? [this.vgField(ROW, {expr: 'datum',})] : [],
+          hasColumn ? [this.vgField(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
           hasRow ? [ (facet.row.sort) || 'ascending'] : [],
