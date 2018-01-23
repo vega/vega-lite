@@ -1,6 +1,6 @@
-import {SingleDefChannel, X, X2, Y, Y2} from '../../channel';
+import {X, X2, Y, Y2} from '../../channel';
 import {LATITUDE, LONGITUDE} from '../../type';
-import {Dict, duplicate, keys} from '../../util';
+import {contains, Dict, duplicate} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -16,31 +16,29 @@ export class GeoPointNode extends DataFlowNode {
   }
 
   public static makeAll(model: ModelWithField): GeoPointNode[] {
+    const nodes: GeoPointNode[] = [];
+
     if (!model.projectionName()) {
-      return null;
+      return nodes;
     }
 
-    const points: Dict<string>[] = [];
-
-    const possiblePairs: SingleDefChannel[][] = [[X, Y], [X2, Y2]];
-    possiblePairs.forEach((posssiblePair) => {
-      if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
-        const pair: Dict<string> = {};
-        posssiblePair.forEach((channel) => {
-          if (model.channelHasField(channel)) {
-            const fieldDef = model.fieldDef(channel);
+    for (const coordinates of [[X, Y], [X2, Y2]]) {
+      const pair: Dict<string> = {};
+      for (const channel of coordinates) {
+        if (model.channelHasField(channel)) {
+          const fieldDef = model.fieldDef(channel);
+          if (contains([LATITUDE, LONGITUDE], fieldDef.type)) {
             pair[fieldDef.type] = fieldDef.field;
           }
-        });
-        points.push(pair);
+        }
       }
-    });
 
-    if (points.length <= 0 || keys(points[0]).length <= 0) { // no points found
-      return null;
+      if (LONGITUDE in pair || LATITUDE in pair) {
+        nodes.push(new GeoPointNode(model.projectionName(), [pair[LONGITUDE], pair[LATITUDE]], [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']));
+      }
     }
 
-    return points.map((coordinates) => new GeoPointNode(model.projectionName(), [coordinates[LONGITUDE], coordinates[LATITUDE]], [coordinates[LONGITUDE] + '_geo', coordinates[LATITUDE] + '_geo']));
+    return nodes;
   }
 
   public assemble(): VgGeoPointTransform {

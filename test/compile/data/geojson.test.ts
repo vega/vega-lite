@@ -25,11 +25,14 @@ describe('compile/data/geojson', () => {
         }
       }
     });
-    const node: GeoJSONNode = GeoJSONNode.make(model);
-    assert.isNotNull(node);
-    const transform = node.assemble();
-    assert.equal(transform.type, 'geojson');
-    assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
-    assert.isUndefined(transform.geojson);
+    const nodes: GeoJSONNode[] = GeoJSONNode.makeAll(model);
+    assert.isNotEmpty(nodes);
+    nodes.forEach((node) => {
+      assert.isNotNull(node);
+      const transform = node.assemble();
+      assert.equal(transform.type, 'geojson');
+      assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
+      assert.isUndefined(transform.geojson);
+    });
   });
 });

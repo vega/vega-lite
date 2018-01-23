@@ -4,10 +4,9 @@ import {MAIN} from '../../data';
 import {isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {Projection, PROJECTION_PROPERTIES} from '../../projection';
-import {LookupData} from '../../transform';
-import {LATITUDE, LONGITUDE} from '../../type';
+import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
 import {contains, duplicate, every, hash} from '../../util';
-import {VgProjection, VgSignalRef} from '../../vega.schema';
+import {VgSignalRef} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
@@ -28,36 +27,46 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
   const {specifiedProjection, markDef, config, encoding} = model;
 
   const isGeoShapeMark = markDef && markDef.type === GEOSHAPE;
-  const isGeoPointMark = encoding && [X, Y, X2, Y2].some(
+  const isGeoPointOrLineMark = encoding && [X, Y, X2, Y2].some(
     (channel) => {
       const def = encoding[channel];
       return isFieldDef(def) && contains([LATITUDE, LONGITUDE], def.type);
   });
 
-  if (isGeoShapeMark || isGeoPointMark) {
-    let data: VgSignalRef | string;
-    if (isGeoPointMark || (isGeoShapeMark && encoding[SHAPE])) {
-      // if there is a shape encoding or latitude / longitude encoding,
-      // the compiler added a geojson transform w/ a signal as specified
-      data = {
-        signal: model.getName('geojson')
-      };
-    } else {
+  if (isGeoShapeMark || isGeoPointOrLineMark) {
+    const data: (VgSignalRef | string)[] = [];
+
+    [[X, Y], [X2, Y2]].forEach((posssiblePair) => {
+      if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
+        data.push({
+          signal: model.getName(`geojson_${data.length}`)
+        });
+      }
+    });
+
+    if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
+      data.push({
+        signal: model.getName(`geojson_${data.length}`)
+      });
+    }
+
+    if (data.length === 0) {
       // main source is geojson, so we can just use that
-      data = model.requestDataName(MAIN);
+      data.push(model.requestDataName(MAIN));
     }
 
     return new ProjectionComponent(model.projectionName(true), {
       ...(config.projection || {}),
       ...(specifiedProjection || {}),
-    }, [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], [data]);
+    }, [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data);
   }
 
   return undefined;
 }
 
-function dryMerge(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
-  const properties = every(PROJECTION_PROPERTIES, (prop) => {
+
+function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
+  const allPropertiesShared = every(PROJECTION_PROPERTIES, (prop) => {
     // neither has the poperty
     if (!first.explicit.hasOwnProperty(prop) &&
       !second.explicit.hasOwnProperty(prop)) {
@@ -66,25 +75,25 @@ function dryMerge(first: ProjectionComponent, second: ProjectionComponent): Proj
     // both have property and an equal value for property
     if (first.explicit.hasOwnProperty(prop) &&
       second.explicit.hasOwnProperty(prop) &&
+      // some properties might be signals or objects and require hashing for comparison
       hash(first.get(prop)) === hash(second.get(prop))) {
       return true;
     }
     return false;
   });
 
-  const size = hash(first.size) === hash
-    (second.size);
+  const size = hash(first.size) === hash(second.size);
   if (size) {
-    if (properties) {
+    if (allPropertiesShared) {
       return first;
-    } else if (hash(first.explicit) === hash
-      ({})) {
+    } else if (hash(first.explicit) === hash({})) {
       return second;
-    } else if (hash(second.explicit) === hash
-      ({})) {
+    } else if (hash(second.explicit) === hash({})) {
       return first;
     }
   }
+
+  // if all properties don't match, let each unit spec have its own projection
   return null;
 }
 
@@ -105,7 +114,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
       nonUnitProjection = projection;
       return true;
     } else {
-      const merge = dryMerge(nonUnitProjection, projection);
+      const merge = mergeIfNoConflict(nonUnitProjection, projection);
       if (merge) {
         nonUnitProjection = merge;
       }

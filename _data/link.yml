@@ -177,6 +177,7 @@ ScaleType:
   name: String
 ProjectionType:
   name: String
+  link: "projection.html#projection-types"
 SchemeParams:
   link: "scale.html#scheme-params"
 SelectionDomain:

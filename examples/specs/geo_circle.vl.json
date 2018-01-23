@@ -2,13 +2,13 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "width": 500,
   "height": 300,
-  "projection": {
-    "type": "albersUsa"
-  },
   "data": {
     "url": "data/zipcodes.csv"
   },
   "transform": [{"calculate": "substring(datum.zip_code, 0, 1)", "as": "digit"}],
+  "projection": {
+    "type": "albersUsa"
+  },
   "mark": "circle",
   "encoding": {
     "x": {

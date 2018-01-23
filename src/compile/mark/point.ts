@@ -14,7 +14,6 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
     ...mixins.baseEncodeEntry(model, true),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
-
     ...mixins.nonPosition('size', model),
     ...shapeMixins(model, config, fixedShape),
   };

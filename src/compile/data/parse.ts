@@ -1,4 +1,3 @@
-import {isArray} from 'util';
 import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
@@ -235,20 +234,14 @@ export function parseData(model: Model): DataComponent {
       }
     }
 
-    const geojson = GeoJSONNode.make(model);
-    if (geojson) {
+    for (const geojson of GeoJSONNode.makeAll(model)) {
       geojson.parent = head;
       head = geojson;
     }
 
-    const geopoints = GeoPointNode.makeAll(model);
-    if (geopoints && isArray(geopoints)) {
-      geopoints.forEach((geopoint) => {
-        if (geopoint) {
-          geopoint.parent = head;
-          head = geopoint;
-        }
-      });
+    for (const geopoint of GeoPointNode.makeAll(model)) {
+      geopoint.parent = head;
+      head = geopoint;
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

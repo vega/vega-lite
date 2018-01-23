@@ -914,7 +914,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -990,7 +990,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1041,7 +1041,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1110,7 +1110,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1187,7 +1187,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1239,7 +1239,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1648,7 +1648,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.\nFor `geoshape` marks it should be a fielddef of the geojson data"
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -1811,7 +1811,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.\nFor `geoshape` marks it should be a fielddef of the geojson data"
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -1936,7 +1936,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1994,7 +1994,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -2052,7 +2052,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -2139,7 +2139,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -2201,7 +2201,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -2633,7 +2633,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "A geo projection"
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {
@@ -2700,7 +2700,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "A geo projection"
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {
@@ -4158,7 +4158,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -4274,7 +4274,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when applicable."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -4305,18 +4305,18 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "description": "The center of the projection. The default is `[0, 0]`.",
+          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "clipAngle": {
-          "description": "The clip angle of the projection. The default is `null`.",
+          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
           "type": "number"
         },
         "clipExtent": {
-          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The default is `null`.",
+          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
           "items": {
             "items": {
               "type": "number"
@@ -4325,11 +4325,27 @@
           },
           "type": "array"
         },
+        "coefficient": {
+          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "fraction": {
+          "type": "number"
+        },
+        "lobes": {
+          "type": "number"
+        },
+        "parallel": {
+          "type": "number"
+        },
         "precision": {
           "additionalProperties": {
             "type": "string"
           },
-          "description": "The desired precision of the projection. If precision is not specified, returns the projection’s current resampling precision which defaults to √0.5 ≅ 0.70710….",
+          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
           "properties": {
             "length": {
               "description": "Returns the length of a String object. ",
@@ -4341,16 +4357,28 @@
           ],
           "type": "object"
         },
+        "radius": {
+          "type": "number"
+        },
+        "ratio": {
+          "type": "number"
+        },
         "rotate": {
-          "description": "The rotation of the projection. The default is `[0, 0, 0]`.",
+          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
+        "spacing": {
+          "type": "number"
+        },
+        "tilt": {
+          "type": "number"
+        },
         "type": {
           "$ref": "#/definitions/ProjectionType",
-          "description": "The type of the projection. The default is \"mercator\"."
+          "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `mercator`"
         }
       },
       "type": "object"
@@ -4360,18 +4388,18 @@
       "description": "Any property of Projection can be in config",
       "properties": {
         "center": {
-          "description": "The center of the projection. The default is `[0, 0]`.",
+          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "clipAngle": {
-          "description": "The clip angle of the projection. The default is `null`.",
+          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
           "type": "number"
         },
         "clipExtent": {
-          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The default is `null`.",
+          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
           "items": {
             "items": {
               "type": "number"
@@ -4380,11 +4408,27 @@
           },
           "type": "array"
         },
+        "coefficient": {
+          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "fraction": {
+          "type": "number"
+        },
+        "lobes": {
+          "type": "number"
+        },
+        "parallel": {
+          "type": "number"
+        },
         "precision": {
           "additionalProperties": {
             "type": "string"
           },
-          "description": "The desired precision of the projection. If precision is not specified, returns the projection’s current resampling precision which defaults to √0.5 ≅ 0.70710….",
+          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
           "properties": {
             "length": {
               "description": "Returns the length of a String object. ",
@@ -4396,16 +4440,28 @@
           ],
           "type": "object"
         },
+        "radius": {
+          "type": "number"
+        },
+        "ratio": {
+          "type": "number"
+        },
         "rotate": {
-          "description": "The rotation of the projection. The default is `[0, 0, 0]`.",
+          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
+        "spacing": {
+          "type": "number"
+        },
+        "tilt": {
+          "type": "number"
+        },
         "type": {
           "$ref": "#/definitions/ProjectionType",
-          "description": "The type of the projection. The default is \"mercator\"."
+          "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `mercator`"
         }
       },
       "type": "object"
@@ -5736,7 +5792,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "A geo projection"
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {

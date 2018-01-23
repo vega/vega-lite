@@ -27,7 +27,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
     const def = encoding[channel];
-    if (model.legend(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
+    if (model.legend(channel) && model.getScaleComponent(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
     }
     return legendComponent;
@@ -53,10 +53,6 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
-
-  if (!model.getScaleComponent(channel)) {
-    return undefined;
-  }
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 

@@ -244,8 +244,8 @@
       "title": "One dot per airport in the US overlayed on geoshape"
     },
     {
-      "name": "geo_line",
-      "title": "Lines connecting SEA to every airport reachable via direct flight"
+      "name": "geo_rule",
+      "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
     },
     {
       "name": "geo_repeat",

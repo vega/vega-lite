@@ -44,18 +44,10 @@
     },
     {
       "data": {
-        "values": [
-          {"origin": "SEA", "destination": "SFO", "order": 1},
-          {"origin": "SFO", "destination": "LAX", "order": 2},
-          {"origin": "LAX", "destination": "LAS", "order": 3},
-          {"origin": "LAS", "destination": "DFW", "order": 4},
-          {"origin": "DFW", "destination": "DEN", "order": 5},
-          {"origin": "DEN", "destination": "ORD", "order": 6},
-          {"origin": "ORD", "destination": "JFK", "order": 7},
-          {"origin": "JFK", "destination": "ATL", "order": 8}
-        ]
+        "url": "data/flights-airport.csv"
       },
       "transform": [
+        {"filter": {"field": "origin", "equal": "SEA"}},
         {
           "lookup": "origin",
           "from": {
@@ -82,7 +74,7 @@
       "projection": {
         "type": "albersUsa"
       },
-      "mark": "line",
+      "mark": "rule",
       "encoding": {
         "x": {
           "field": "origin_longitude",
@@ -92,7 +84,14 @@
           "field": "origin_latitude",
           "type": "latitude"
         },
-        "order": {"field": "order", "type": "ordinal"}
+        "x2": {
+          "field": "dest_longitude",
+          "type": "longitude"
+        },
+        "y2": {
+          "field": "dest_latitude",
+          "type": "latitude"
+        }
       }
     }
   ]

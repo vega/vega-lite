@@ -150,6 +150,17 @@ export type VgProjection = {
    * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
    */
   size?: VgSignalRef | (number | VgSignalRef)[];
+
+  /** The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
+  coefficient?: number;
+  distance?: number;
+  fraction?: number;
+  lobes?: number;
+  parallel?: number;
+  radius?: number;
+  ratio?: number;
+  spacing?: number;
+  tilt?: number;
 };
 
 export interface VgScale {

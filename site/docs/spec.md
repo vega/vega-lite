@@ -75,7 +75,7 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
 
-{% include table.html props="width,height,selection,mark,encoding" source="TopLevel<FacetedUnitSpec>" %}
+{% include table.html props="width,height,selection,projection,mark,encoding" source="TopLevel<FacetedUnitSpec>" %}
 
 ## Layered and Multi-view Specifications
 

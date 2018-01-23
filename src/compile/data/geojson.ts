@@ -1,6 +1,6 @@
 import {SHAPE, X, X2, Y, Y2} from '../../channel';
 import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, duplicate, keys} from '../../util';
+import {contains, Dict, duplicate} from '../../util';
 import {VgGeoJSONTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -10,27 +10,33 @@ export class GeoJSONNode extends DataFlowNode {
     return new GeoJSONNode(duplicate(this.fields), this.geojson, this.signal);
   }
 
-  public static make(model: ModelWithField): GeoJSONNode {
-    const geo = model.reduceFieldDef((rel, fieldDef, channel) => {
-      if ((contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], fieldDef.type))
-        || (channel === SHAPE && fieldDef.type === GEOJSON)) {
-        rel[fieldDef.type] = fieldDef.field;
+  public static makeAll(model: ModelWithField): GeoJSONNode[] {
+    const nodes: GeoJSONNode[] = [];
+
+    for (const coordinates of [[X, Y], [X2, Y2]]) {
+      const pair: Dict<string> = {};
+      for (const channel of coordinates) {
+        if (model.channelHasField(channel)) {
+          const fieldDef = model.fieldDef(channel);
+          if (contains([LATITUDE, LONGITUDE], fieldDef.type)) {
+            pair[fieldDef.type] = fieldDef.field;
+          }
+        }
       }
-      return rel;
-    }, {});
 
-    const types = keys(geo);
-
-    let geojson;
-    let fields;
-    if (types.length === 1 && contains(types, GEOJSON)) {
-      geojson = geo[GEOJSON];
-    }
-    if (types.length === 2 && contains(types, LATITUDE) && contains(types, LONGITUDE)) {
-      fields = [geo[LONGITUDE], geo[LATITUDE]];
+      if (LONGITUDE in pair || LATITUDE in pair) {
+        nodes.push(new GeoJSONNode([pair[LONGITUDE], pair[LATITUDE]], null, model.getName(`geojson_${nodes.length}`)));
+      }
     }
 
-    return (geojson || fields) ? new GeoJSONNode(fields, geojson, model.getName('geojson')) : null;
+    if (model.channelHasField(SHAPE)) {
+      const fieldDef = model.fieldDef(SHAPE);
+      if (fieldDef.type === GEOJSON) {
+        nodes.push(new GeoJSONNode(null, fieldDef.field, model.getName(`geojson_${nodes.length}`)));
+      }
+    }
+
+    return nodes;
   }
 
   constructor(private fields?: string[], private geojson?: string, private signal?: string) {

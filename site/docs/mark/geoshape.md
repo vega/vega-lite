@@ -18,6 +18,11 @@ permalink: /docs/geoshape.html
 
 The `geoshape` mark represents an arbitrary shapes whose geometry is determined by specified GeoJSON shape data.
 
+Here are an example choropleth making use of `geoshape` marks:
+
+<span class="vl-example" data-name="geo_choropleth"></span>
+
+
 {:#config}
 ## Geoshape Config
 

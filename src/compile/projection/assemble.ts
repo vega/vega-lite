@@ -1,9 +1,7 @@
 import {error} from 'util';
 import {contains} from '../../util';
 import {isVgSignalRef, VgProjection, VgSignalRef} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {isConcatModel, isLayerModel, isRepeatModel, isUnitModel, Model, ModelWithField} from '../model';
-import {UnitModel} from '../unit';
+import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
@@ -26,7 +24,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   }
 
   const projection = component.combine();
-  const {name, ...rest} = projection;
+  const {name, ...rest} = projection;  // name is always defined
 
   const size: VgSignalRef = {
     signal: `[${component.size.map((ref) => ref.signal).join(', ')}]`

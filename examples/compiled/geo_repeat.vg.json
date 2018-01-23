@@ -44,7 +44,7 @@
                 {
                     "type": "geojson",
                     "geojson": "geo",
-                    "signal": "child_population_geojson"
+                    "signal": "child_population_geojson_0"
                 },
                 {
                     "type": "filter",
@@ -75,7 +75,7 @@
                 {
                     "type": "geojson",
                     "geojson": "geo",
-                    "signal": "child_engineers_geojson"
+                    "signal": "child_engineers_geojson_0"
                 },
                 {
                     "type": "filter",
@@ -106,7 +106,7 @@
                 {
                     "type": "geojson",
                     "geojson": "geo",
-                    "signal": "child_hurricanes_geojson"
+                    "signal": "child_hurricanes_geojson_0"
                 },
                 {
                     "type": "filter",
@@ -122,7 +122,7 @@
                 "signal": "[width, height]"
             },
             "fit": {
-                "signal": "[child_population_geojson, child_engineers_geojson, child_hurricanes_geojson]"
+                "signal": "[child_population_geojson_0, child_engineers_geojson_0, child_hurricanes_geojson_0]"
             },
             "type": "albersUsa"
         }

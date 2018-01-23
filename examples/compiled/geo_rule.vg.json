@@ -22,51 +22,6 @@
             }
         },
         {
-            "name": "source_2",
-            "values": [
-                {
-                    "origin": "SEA",
-                    "destination": "SFO",
-                    "order": 1
-                },
-                {
-                    "origin": "SFO",
-                    "destination": "LAX",
-                    "order": 2
-                },
-                {
-                    "origin": "LAX",
-                    "destination": "LAS",
-                    "order": 3
-                },
-                {
-                    "origin": "LAS",
-                    "destination": "DFW",
-                    "order": 4
-                },
-                {
-                    "origin": "DFW",
-                    "destination": "DEN",
-                    "order": 5
-                },
-                {
-                    "origin": "DEN",
-                    "destination": "ORD",
-                    "order": 6
-                },
-                {
-                    "origin": "ORD",
-                    "destination": "JFK",
-                    "order": 7
-                },
-                {
-                    "origin": "JFK",
-                    "destination": "ATL",
-                    "order": 8
-                }
-            ]
-        },
-        {
             "name": "data_0",
             "source": "source_1",
             "transform": [
@@ -93,9 +48,19 @@
             ]
         },
         {
-            "name": "data_1",
-            "source": "source_2",
+            "name": "source_2",
+            "url": "data/flights-airport.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "origin": "string"
+                }
+            },
             "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"origin\"]===\"SEA\""
+                },
                 {
                     "type": "lookup",
                     "from": "source_1",
@@ -137,6 +102,14 @@
                     "signal": "layer_2_geojson_0"
                 },
                 {
+                    "type": "geojson",
+                    "fields": [
+                        "dest_longitude",
+                        "dest_latitude"
+                    ],
+                    "signal": "layer_2_geojson_1"
+                },
+                {
                     "type": "geopoint",
                     "projection": "projection",
                     "fields": [
@@ -146,6 +119,18 @@
                     "as": [
                         "origin_longitude_geo",
                         "origin_latitude_geo"
+                    ]
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "dest_longitude",
+                        "dest_latitude"
+                    ],
+                    "as": [
+                        "dest_longitude_geo",
+                        "dest_latitude_geo"
                     ]
                 }
             ]
@@ -158,7 +143,7 @@
                 "signal": "[width, height]"
             },
             "fit": {
-                "signal": "[data('source_0'), layer_1_geojson_0, layer_2_geojson_0]"
+                "signal": "[data('source_0'), layer_1_geojson_0, layer_2_geojson_0, layer_2_geojson_1]"
             },
             "type": "albersUsa"
         }
@@ -221,31 +206,29 @@
         },
         {
             "name": "layer_2_marks",
-            "type": "line",
+            "type": "rule",
             "style": [
-                "line"
+                "rule"
             ],
-            "sort": {
-                "field": [
-                    "datum[\"order\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
             "from": {
-                "data": "data_1"
+                "data": "source_2"
             },
             "encode": {
                 "update": {
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     },
                     "x": {
                         "field": "origin_longitude_geo"
                     },
                     "y": {
                         "field": "origin_latitude_geo"
+                    },
+                    "x2": {
+                        "field": "dest_longitude_geo"
+                    },
+                    "y2": {
+                        "field": "dest_latitude_geo"
                     }
                 }
             }

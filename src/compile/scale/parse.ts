@@ -52,7 +52,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     const channelDef = encoding[channel];
 
-    // if mark is geoshape scale channel encodes the geojson
+    // If mark has a projection (potentially implicitly), there is no need to generate a scale.
     if (isFieldDef(channelDef) && ((mark === GEOSHAPE && isFieldDef(channelDef) && channel === SHAPE && channelDef.type === GEOJSON)
     || (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)))) {
       return scaleComponents;

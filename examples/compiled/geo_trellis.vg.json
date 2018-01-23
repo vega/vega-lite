@@ -35,7 +35,7 @@
                 {
                     "type": "geojson",
                     "geojson": "geo",
-                    "signal": "child_geojson"
+                    "signal": "child_geojson_0"
                 },
                 {
                     "type": "filter",
@@ -63,7 +63,7 @@
                 "signal": "[child_width, child_height]"
             },
             "fit": {
-                "signal": "child_geojson"
+                "signal": "child_geojson_0"
             },
             "type": "albersUsa"
         }

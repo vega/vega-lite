@@ -78,8 +78,9 @@ export interface Encoding<F> {
    * For `point` marks the supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
+   * For `geoshape` marks it should be a field definition of the geojson data
+   *
    * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
-   * For `geoshape` marks it should be a fielddef of the geojson data
    */
   shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
 

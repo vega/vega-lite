@@ -27,7 +27,7 @@
                         "lon",
                         "lat"
                     ],
-                    "signal": "layer_1_geojson"
+                    "signal": "layer_1_geojson_0"
                 },
                 {
                     "type": "geopoint",
@@ -51,7 +51,7 @@
                 "signal": "[width, height]"
             },
             "fit": {
-                "signal": "[data('source_0'), layer_1_geojson]"
+                "signal": "[data('source_0'), layer_1_geojson_0]"
             },
             "type": "albersUsa"
         }
@@ -91,6 +91,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "field": "lon_geo"
                     },
@@ -99,9 +102,6 @@
                     },
                     "text": {
                         "signal": "''+datum[\"city\"]"
-                    },
-                    "fill": {
-                        "value": "black"
                     },
                     "align": {
                         "value": "center"

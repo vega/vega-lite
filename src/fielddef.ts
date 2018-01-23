@@ -141,7 +141,6 @@ export interface FieldDefBase<F> {
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
    *
    * __Default value:__ `undefined` (None)
-   *
    */
   aggregate?: Aggregate;
 }
@@ -152,7 +151,7 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
-   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when applicable.
+   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when projecting geographical coordinates using a `"point"` mark (on `"x"`, and `"y"` channels), a `"rule"` mark (on `"x"`, `"x2"`, `"y"`, and `"y2"` channels) or projecting a GeoJSON shapefile on a `"geoshape"` mark (on the `"shape"` channel).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
@@ -335,9 +334,9 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
       return true;
     case 'quantitative':
       return !!fieldDef.bin;
-      case 'latitude':
-      case 'longitude':
-      case 'temporal':
+    case 'latitude':
+    case 'longitude':
+    case 'temporal':
       return false;
   }
   throw new Error(log.message.invalidFieldType(fieldDef.type));

@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {midPoint} from '../../../src/compile/mark/valueref';
-import {field, isFieldDef} from '../../../src/fielddef';
+import {isFieldDef, vgField} from '../../../src/fielddef';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/valueref', () => {
@@ -39,7 +39,7 @@ describe('compile/mark/valueref', () => {
         );
         assert.isTrue(channelDef && isFieldDef(channelDef));
         if (channelDef && isFieldDef(channelDef)) {
-          assert.equal(def.field, field(channelDef, {suffix: 'geo'}));
+          assert.equal(def.field, vgField(channelDef, {suffix: 'geo'}));
         }
       });
     });

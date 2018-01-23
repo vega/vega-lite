@@ -24,7 +24,7 @@
                         "longitude",
                         "latitude"
                     ],
-                    "signal": "geojson"
+                    "signal": "geojson_0"
                 },
                 {
                     "type": "geopoint",
@@ -48,7 +48,7 @@
                 "signal": "[width, height]"
             },
             "fit": {
-                "signal": "geojson"
+                "signal": "geojson_0"
             },
             "type": "albersUsa"
         }
@@ -68,15 +68,15 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "scale": "color",
+                        "field": "digit"
+                    },
                     "x": {
                         "field": "longitude_geo"
                     },
                     "y": {
                         "field": "latitude_geo"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "digit"
                     },
                     "size": {
                         "value": 1

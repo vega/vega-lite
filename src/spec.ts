@@ -105,7 +105,9 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   encoding: E;
 
   /**
-   * A geo projection
+   * An object defining properties of geographic projection.
+   *
+   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have a channel (one or more of `"X"`, `"X2"`, `"Y"`, `"Y2"`) with type `"latitude"`, or `"longitude"`.
    */
   projection?: Projection;
 
@@ -397,7 +399,7 @@ function normalizeRangedUnit(spec: UnitSpec) {
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
-  const {mark, selection, projection: _p, encoding, ...outerSpec} = spec;
+  const {mark, selection, projection, encoding, ...outerSpec} = spec;
   const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer
@@ -417,6 +419,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 
   if (overlayWithLine) {
     layer.push({
+      ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
         style: 'lineOverlay'
@@ -427,6 +430,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
   }
   if (overlayWithPoint) {
     layer.push({
+      ...(projection ? {projection} : {}),
       mark: {
         type: 'point',
         filled: true,
