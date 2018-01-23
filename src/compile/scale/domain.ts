@@ -184,10 +184,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     const data = model.requestDataName(MAIN);
     return [{
       data,
-      field: model.field(channel, {suffix: 'start'})
+      field: model.vgField(channel, {suffix: 'start'})
     }, {
       data,
-      field: model.field(channel, {suffix: 'end'})
+      field: model.vgField(channel, {suffix: 'end'})
     }];
   }
 
@@ -197,10 +197,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     const data = model.requestDataName(MAIN);
     return [{
       data,
-      field: model.field(channel, {aggregate: 'min'})
+      field: model.vgField(channel, {aggregate: 'min'})
     }, {
       data,
-      field: model.field(channel, {aggregate: 'max'})
+      field: model.vgField(channel, {aggregate: 'max'})
     }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
@@ -216,10 +216,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         // so we can aggregate values for the scale independently from the main aggregation.
         data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
         // Use range if we added it and the scale does not support computing a range as a signal.
-        field: model.field(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
+        field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
         // we have to use a sort object if sort = true to make the sort correct by bin start
         sort: sort === true || !isSortField(sort) ? {
-          field: model.field(channel, {}),
+          field: model.vgField(channel, {}),
           op: 'min' // min or max doesn't matter since we sort by the start of the bin range
         } : sort
       }];
@@ -229,16 +229,16 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         const data = model.requestDataName(MAIN);
         return [{
           data,
-          field: model.field(channel, {})
+          field: model.vgField(channel, {})
         }, {
           data,
-          field: model.field(channel, {binSuffix: 'end'})
+          field: model.vgField(channel, {binSuffix: 'end'})
         }];
       } else {
         // TODO: use bin_mid
         return [{
           data: model.requestDataName(MAIN),
-          field: model.field(channel, {})
+          field: model.vgField(channel, {})
         }];
       }
     }
@@ -247,13 +247,13 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
-      field: model.field(channel),
+      field: model.vgField(channel),
       sort: sort
     }];
   } else {
     return [{
       data: model.requestDataName(MAIN),
-      field: model.field(channel)
+      field: model.vgField(channel)
     }];
   }
 }
@@ -274,7 +274,7 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   if (sort === 'descending') {
     return {
       op: 'min',
-      field: model.field(channel),
+      field: model.vgField(channel),
       order: 'descending'
     };
   }

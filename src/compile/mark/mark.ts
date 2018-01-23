@@ -105,7 +105,7 @@ export function getPathSort(model: UnitModel) {
         aggregate: isAggregate(model.encoding) ? s.op : undefined,
         field: s.field
       }, {expr: 'datum'}) :
-      model.field(dimensionChannel, {
+      model.vgField(dimensionChannel, {
         // For stack with imputation, we only have bin_mid
         binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
         expr: 'datum'

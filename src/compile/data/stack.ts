@@ -96,7 +96,7 @@ export class StackNode extends DataFlowNode {
 
     return new StackNode({
       dimensionFieldDef,
-      field: model.field(stackProperties.fieldChannel),
+      field: model.vgField(stackProperties.fieldChannel),
       facetby: [],
       stackby,
       sort,

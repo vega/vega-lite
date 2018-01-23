@@ -320,8 +320,8 @@ export function unitName(model: Model) {
   let name = stringValue(model.name);
   const facet = getFacetModel(model);
   if (facet) {
-    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.field('row'))}` : '')
-      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.field('column'))}` : '');
+    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.vgField('row'))}` : '')
+      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.vgField('column'))}` : '');
   }
   return name;
 }
