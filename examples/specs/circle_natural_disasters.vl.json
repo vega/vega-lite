@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
-    "url": "disasters.csv"
+    "url": "data/disasters.csv"
   },
   "width": 600,
   "height": 400,
