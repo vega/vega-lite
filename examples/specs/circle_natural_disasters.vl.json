@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
-    "url": "data/disasters.csv"
+    "url": "disasters.csv"
   },
   "width": 600,
   "height": 400,
@@ -20,7 +20,7 @@
       "type": "ordinal",
       "axis": {"labelAngle": 0}
     },
-    "y": {"field": "Entity", "type": "nominal", "axis": {"title": ""}},
+    "y": {"field": "Entity", "type": "nominal", "axis": {"title": null}},
     "size": {
       "field": "Deaths",
       "type": "quantitative",
