@@ -258,7 +258,7 @@ export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef
 }
 
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
-    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+  return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
 export interface FieldRefOption {
