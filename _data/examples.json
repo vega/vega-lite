@@ -87,7 +87,8 @@
     },
     {
         "name": "circle_natural_disasters",
-      "title": "Natural Disasters"
+        "description": "Visualization of annual death total from natural disasters since 1900.",
+        "title": "Natural Disasters"
     }
   ],
   "Stack": [
