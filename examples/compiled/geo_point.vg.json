@@ -1,0 +1,95 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 500,
+    "height": 300,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/airports.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "signal": "geojson_0"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "geojson_0"
+            },
+            "type": "albersUsa"
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "steelblue"
+                    },
+                    "x": {
+                        "field": "longitude_geo"
+                    },
+                    "y": {
+                        "field": "latitude_geo"
+                    },
+                    "size": {
+                        "value": 10
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
+        }
+    }
+}

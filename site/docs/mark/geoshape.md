@@ -16,7 +16,7 @@ permalink: /docs/geoshape.html
 }
 ```
 
-The `geoshape` mark represents an arbitrary shapes whose geometry is determined by specified GeoJSON shape data.
+The `geoshape` mark represents an arbitrary shapes whose geometry is determined by specified GeoJSON shape data that is [projected](projection.html) from geographical coordinates to pixels.
 
 Here are an example choropleth making use of `geoshape` marks:
 
