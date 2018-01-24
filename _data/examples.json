@@ -256,6 +256,10 @@
       "title": "U.S. state capitals overlayed on a map of the U.S."
     },
     {
+      "name": "geo_line",
+      "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
+    },
+    {
       "name": "geo_trellis",
       "title": "Income in the U.S. by state, faceted over income brackets"
     }
