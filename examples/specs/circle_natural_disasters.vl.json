@@ -20,7 +20,7 @@
       "type": "ordinal",
       "axis": {"labelAngle": 0}
     },
-    "y": {"field": "Entity", "type": "nominal", "axis": {"title": null}},
+    "y": {"field": "Entity", "type": "nominal", "axis": {"title": ""}},
     "size": {
       "field": "Deaths",
       "type": "quantitative",
