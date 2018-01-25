@@ -914,7 +914,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -990,7 +990,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1041,7 +1041,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1110,7 +1110,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1187,7 +1187,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1239,7 +1239,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1936,7 +1936,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -1994,7 +1994,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -2052,7 +2052,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -2139,7 +2139,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -2201,7 +2201,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -4158,7 +4158,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -4274,7 +4274,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
         }
       },
       "required": [
@@ -4326,7 +4326,6 @@
           "type": "array"
         },
         "coefficient": {
-          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
           "type": "number"
         },
         "distance": {
@@ -4409,7 +4408,6 @@
           "type": "array"
         },
         "coefficient": {
-          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
           "type": "number"
         },
         "distance": {
