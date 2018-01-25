@@ -1,0 +1,259 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 800,
+    "height": 500,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/airports.csv",
+            "format": {
+                "type": "csv"
+            }
+        },
+        {
+            "name": "source_2",
+            "values": [
+                {
+                    "origin": "SEA",
+                    "destination": "SFO",
+                    "order": 1
+                },
+                {
+                    "origin": "SFO",
+                    "destination": "LAX",
+                    "order": 2
+                },
+                {
+                    "origin": "LAX",
+                    "destination": "LAS",
+                    "order": 3
+                },
+                {
+                    "origin": "LAS",
+                    "destination": "DFW",
+                    "order": 4
+                },
+                {
+                    "origin": "DFW",
+                    "destination": "DEN",
+                    "order": 5
+                },
+                {
+                    "origin": "DEN",
+                    "destination": "ORD",
+                    "order": 6
+                },
+                {
+                    "origin": "ORD",
+                    "destination": "JFK",
+                    "order": 7
+                },
+                {
+                    "origin": "JFK",
+                    "destination": "ATL",
+                    "order": 8
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_1",
+            "transform": [
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "signal": "layer_1_geojson_0"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_2",
+            "transform": [
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "iata",
+                    "fields": [
+                        "origin"
+                    ],
+                    "values": [
+                        "latitude",
+                        "longitude"
+                    ],
+                    "as": [
+                        "origin_latitude",
+                        "origin_longitude"
+                    ]
+                },
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "iata",
+                    "fields": [
+                        "destination"
+                    ],
+                    "values": [
+                        "latitude",
+                        "longitude"
+                    ],
+                    "as": [
+                        "dest_latitude",
+                        "dest_longitude"
+                    ]
+                },
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "origin_longitude",
+                        "origin_latitude"
+                    ],
+                    "signal": "layer_2_geojson_0"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "origin_longitude",
+                        "origin_latitude"
+                    ],
+                    "as": [
+                        "origin_longitude_geo",
+                        "origin_latitude_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "[data('source_0'), layer_1_geojson_0, layer_2_geojson_0]"
+            },
+            "type": "albersUsa"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "shape",
+            "style": [
+                "geoshape"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#A9ACB5"
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "geoshape",
+                    "projection": "projection"
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "gray"
+                    },
+                    "x": {
+                        "field": "longitude_geo"
+                    },
+                    "y": {
+                        "field": "latitude_geo"
+                    },
+                    "size": {
+                        "value": 5
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "line",
+            "style": [
+                "line"
+            ],
+            "sort": {
+                "field": [
+                    "datum[\"order\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "field": "origin_longitude_geo"
+                    },
+                    "y": {
+                        "field": "origin_latitude_geo"
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

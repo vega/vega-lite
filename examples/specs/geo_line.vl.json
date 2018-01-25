@@ -1,0 +1,99 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "value": "#A9ACB5"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/airports.csv"
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "latitude",
+          "type": "latitude"
+        },
+        "size": {"value": 5},
+        "color": {"value": "gray"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"origin": "SEA", "destination": "SFO", "order": 1},
+          {"origin": "SFO", "destination": "LAX", "order": 2},
+          {"origin": "LAX", "destination": "LAS", "order": 3},
+          {"origin": "LAS", "destination": "DFW", "order": 4},
+          {"origin": "DFW", "destination": "DEN", "order": 5},
+          {"origin": "DEN", "destination": "ORD", "order": 6},
+          {"origin": "ORD", "destination": "JFK", "order": 7},
+          {"origin": "JFK", "destination": "ATL", "order": 8}
+        ]
+      },
+      "transform": [
+        {
+          "lookup": "origin",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["origin_latitude", "origin_longitude"]
+        },
+        {
+          "lookup": "destination",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["dest_latitude", "dest_longitude"]
+        }
+      ],
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "origin_longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "origin_latitude",
+          "type": "latitude"
+        },
+        "order": {"field": "order", "type": "ordinal"}
+      }
+    }
+  ]
+}

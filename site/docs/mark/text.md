@@ -43,6 +43,13 @@ Mapping a field to `text` channel of text mark sets the mark's text value. For e
 <span class="vl-example" data-name="text_scatterplot_colored"></span>
 
 
+## Geo Text
+
+With the [types](type.html) `longitude` and `latitude` instead of `x` and `y` and a corresponding [projection](projection.html), we can show text at accurate locations. The example below shows the name of every US state capital at the location of the capital.
+
+<span class="vl-example" data-name="geo_text"></span>
+
+
 {:#config}
 ## Text Config
 

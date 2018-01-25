@@ -17,6 +17,11 @@ permalink: /docs/point.html
 
 `point` mark represents each data point with a symbol. Point marks are commonly used in visualizations like scatterplots.
 
+## Documentation Overview
+{:.no_toc}
+
+* TOC
+{:toc}
 
 ## Dot Plot
 
@@ -49,6 +54,12 @@ Fields can also be encoded in the [scatter plot](#scatter) using the `color` or 
 For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
 <span class="vl-example" data-name="point_color_with_shape"></span>
+
+## Geo Point
+
+With the [types](type.html) `longitude` and `latitude` instead of `x` and `y` and a corresponding [projection](projection.html), we can visualize geographic points. The example below shows major airports in the US.
+
+<span class="vl-example" data-name="geo_point"></span>
 
 {:#config}
 ## Point Config

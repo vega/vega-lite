@@ -15,6 +15,8 @@ import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
+import {GeoJSONNode} from './geojson';
+import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {DataComponent} from './index';
 import {LookupNode} from './lookup';
@@ -230,6 +232,16 @@ export function parseData(model: Model): DataComponent {
         bin.parent = head;
         head = bin;
       }
+    }
+
+    for (const geojson of GeoJSONNode.makeAll(model)) {
+      geojson.parent = head;
+      head = geojson;
+    }
+
+    for (const geopoint of GeoPointNode.makeAll(model)) {
+      geopoint.parent = head;
+      head = geopoint;
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

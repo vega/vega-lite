@@ -230,6 +230,40 @@
       "title": "Repeat and layer to show different weather measures"
     }
   ],
+  "Geographical (Maps)": [
+    {
+      "name": "geo_choropleth",
+      "title": "Choropleth of unemployment rate per county"
+    },
+    {
+      "name": "geo_circle",
+      "title": "One dot per zipcode in the U.S."
+    },
+    {
+      "name": "geo_layer",
+      "title": "One dot per airport in the US overlayed on geoshape"
+    },
+    {
+      "name": "geo_rule",
+      "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
+    },
+    {
+      "name": "geo_repeat",
+      "title": "Three choropleths representing disjoint data from the same table"
+    },
+    {
+      "name": "geo_text",
+      "title": "U.S. state capitals overlayed on a map of the U.S."
+    },
+    {
+      "name": "geo_line",
+      "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
+    },
+    {
+      "name": "geo_trellis",
+      "title": "Income in the U.S. by state, faceted over income brackets"
+    }
+  ],
   "Interactive": [
     {
       "name": "interactive_brush",

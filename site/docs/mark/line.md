@@ -70,6 +70,12 @@ We can also set `interpolate` to `"step-after"` to create a step-chart.
 
 For the list of all supported `interpolate` properties, please see the [mark definition](mark.html#mark-def) documentation.
 
+## Geo Line
+
+With the [types](type.html) `longitude` and `latitude` instead of `x` and `y` and a corresponding [projection](projection.html), we can draw lines through geographic points.
+
+<span class="vl-example" data-name="geo_line"></span>
+
 {:#config}
 ## Line Config
 

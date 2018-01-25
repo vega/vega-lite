@@ -144,6 +144,56 @@ describe('src/compile', function() {
       parseScaleCore(model);
       assert.equal(model.getScaleComponent('x').implicit.type, 'band');
     });
+
+    it('correctly ignores x/y when lon/lat', () => {
+      const model = parseModel({
+        "data": {
+          "url": "data/zipcodes.csv",
+          "format": {
+            "type": "csv"
+          }
+        },
+        "mark": "point",
+        "encoding": {
+          "x": {
+            "field": "longitude",
+            "type": "longitude"
+          },
+          "y": {
+            "field": "latitude",
+            "type": "latitude"
+          }
+        }
+      });
+      parseScaleCore(model);
+      assert.isUndefined(model.getScaleComponent('x'));
+      assert.isUndefined(model.getScaleComponent('y'));
+    });
+
+    it('correctly ignores shape when geojson', () => {
+      const model = parseModel({
+        "mark": "geoshape",
+        "data": {"url": "data/income.json"},
+        "transform": [
+          {
+            "lookup": "id",
+            "from": {
+              "data": {
+                "url": "data/us-10m.json",
+                "format": {"type": "topojson","feature": "states"}
+              },
+              "key": "id"
+            },
+            "as": "geo"
+          }
+        ],
+        "encoding": {
+          "shape": {"field": "geo","type": "geojson"},
+        }
+      });
+      parseScaleCore(model);
+      assert.isUndefined(model.getScaleComponent('shape'));
+    });
   });
 
   describe('parseScale', () => {

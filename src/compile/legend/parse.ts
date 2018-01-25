@@ -1,6 +1,7 @@
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
-import {title as fieldDefTitle} from '../../fielddef';
+import {isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
+import {GEOJSON} from '../../type';
 import {deleteNestedProperty, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
@@ -23,8 +24,10 @@ export function parseLegend(model: Model) {
 }
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
-  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
-    if (model.legend(channel)) {
+  const {encoding} = model;
+  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
+    const def = encoding[channel];
+    if (model.legend(channel) && model.getScaleComponent(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
     }
     return legendComponent;

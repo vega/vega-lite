@@ -5,6 +5,7 @@ import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
+import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
@@ -225,6 +226,11 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   title?: VgTitleConfig;
 
+  /**
+   * Projection configuration, which determines default properties for all [projections](projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](projection.html#config).
+   */
+  projection?: ProjectionConfig;
+
   /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
   style?: StyleConfigIndex;
 
@@ -247,6 +253,7 @@ export const defaultConfig: Config = {
   area: {},
   bar: mark.defaultBarConfig,
   circle: {},
+  geoshape: {},
   line: {},
   point: {},
   rect: {},
@@ -260,6 +267,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
+  projection: {},
   axis: {},
   axisX: {},
   axisY: {minExtent: 30},

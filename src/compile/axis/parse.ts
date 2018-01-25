@@ -17,7 +17,7 @@ const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce(function(axis, channel) {
-    if (model.axis(channel)) {
+    if (model.component.scales[channel] && model.axis(channel)) {
       const axisComponent: AxisComponent = {};
       // TODO: support multiple axis
       const main = parseMainAxis(channel, model);

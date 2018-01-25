@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 500,
+  "height": 300,
+  "data": {
+    "url": "data/airports.csv"
+  },
+  "projection": {
+    "type": "albersUsa"
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "longitude",
+      "type": "longitude"
+    },
+    "y": {
+      "field": "latitude",
+      "type": "latitude"
+    },
+    "size": {"value": 10},
+    "color": {"value": "steelblue"}
+  },
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    }
+  }
+}
