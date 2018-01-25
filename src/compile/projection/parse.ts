@@ -5,7 +5,7 @@ import {isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {Projection, PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, duplicate, every, hash} from '../../util';
+import {contains, duplicate, every, stringify} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -76,19 +76,19 @@ function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionCompone
     if (first.explicit.hasOwnProperty(prop) &&
       second.explicit.hasOwnProperty(prop) &&
       // some properties might be signals or objects and require hashing for comparison
-      hash(first.get(prop)) === hash(second.get(prop))) {
+      stringify(first.get(prop)) === stringify(second.get(prop))) {
       return true;
     }
     return false;
   });
 
-  const size = hash(first.size) === hash(second.size);
+  const size = stringify(first.size) === stringify(second.size);
   if (size) {
     if (allPropertiesShared) {
       return first;
-    } else if (hash(first.explicit) === hash({})) {
+    } else if (stringify(first.explicit) === stringify({})) {
       return second;
-    } else if (hash(second.explicit) === hash({})) {
+    } else if (stringify(second.explicit) === stringify({})) {
       return first;
     }
   }
