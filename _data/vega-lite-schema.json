@@ -512,6 +512,48 @@
           "minimum": 0,
           "type": "number"
         },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
+          "type": "string"
+        },
         "discreteBandSize": {
           "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
           "minimum": 0,
@@ -562,6 +604,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -637,6 +684,15 @@
         }
       },
       "type": "object"
+    },
+    "BasicType": {
+      "enum": [
+        "quantitative",
+        "ordinal",
+        "temporal",
+        "nominal"
+      ],
+      "type": "string"
     },
     "BinParams": {
       "additionalProperties": false,
@@ -766,7 +822,7 @@
           "type": "string"
         },
         "calculate": {
-          "description": "A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.",
+          "description": "A [expression](types.html#expression) string. Use the variable `datum` to refer to the current data object.",
           "type": "string"
         }
       },
@@ -780,7 +836,290 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
+    "Conditional<FieldDef>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<FieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<FieldDef>"
+        }
+      ]
+    },
     "Conditional<MarkPropFieldDef>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef>"
+        }
+      ]
+    },
+    "Conditional<TextFieldDef>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<TextFieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<TextFieldDef>"
+        }
+      ]
+    },
+    "Conditional<ValueDef>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef>"
+        }
+      ]
+    },
+    "ConditionalPredicate<FieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+        }
+      },
+      "required": [
+        "test",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<MarkPropFieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale",
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+        },
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+        }
+      },
+      "required": [
+        "test",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<TextFieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+        }
+      },
+      "required": [
+        "test",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<FieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+        }
+      },
+      "required": [
+        "selection",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -848,7 +1187,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -857,7 +1196,7 @@
       ],
       "type": "object"
     },
-    "Conditional<TextFieldDef>": {
+    "ConditionalSelection<TextFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -900,7 +1239,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -909,7 +1248,7 @@
       ],
       "type": "object"
     },
-    "Conditional<ValueDef>": {
+    "ConditionalSelection<ValueDef>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1006,6 +1345,10 @@
           ],
           "type": "string"
         },
+        "geoshape": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Geoshape-Specific Config "
+        },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
@@ -1040,6 +1383,10 @@
         "point": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Point-Specific Config "
+        },
+        "projection": {
+          "$ref": "#/definitions/ProjectionConfig",
+          "description": "Projection configuration, which determines default properties for all [projections](projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](projection.html#config)."
         },
         "range": {
           "$ref": "#/definitions/RangeConfig",
@@ -1256,6 +1603,17 @@
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1290,7 +1648,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -1404,6 +1762,17 @@
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1442,7 +1811,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property."
         },
         "size": {
           "anyOf": [
@@ -1524,41 +1893,6 @@
       },
       "type": "object"
     },
-    "EqualFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "equal": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/DateTime"
-            }
-          ],
-          "description": "The value that the field should be equal to."
-        },
-        "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "equal"
-      ],
-      "type": "object"
-    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -1602,7 +1936,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1660,7 +1994,65 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "FieldDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1747,7 +2139,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1809,7 +2201,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -1817,31 +2209,128 @@
       ],
       "type": "object"
     },
-    "Filter": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/EqualFilter"
+    "FieldEqualPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "equal": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be equal to."
         },
-        {
-          "$ref": "#/definitions/RangeFilter"
-        },
-        {
-          "$ref": "#/definitions/OneOfFilter"
-        },
-        {
-          "$ref": "#/definitions/SelectionFilter"
-        },
-        {
+        "field": {
+          "description": "Field to be filtered.",
           "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
         }
-      ]
+      },
+      "required": [
+        "field",
+        "equal"
+      ],
+      "type": "object"
+    },
+    "FieldOneOfPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered",
+          "type": "string"
+        },
+        "oneOf": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "oneOf"
+      ],
+      "type": "object"
+    },
+    "FieldRangePredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered",
+          "type": "string"
+        },
+        "range": {
+          "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "$ref": "#/definitions/DateTime"
+              }
+            ]
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "range"
+      ],
+      "type": "object"
     },
     "FilterTransform": {
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/FilterOperand",
-          "description": "The `filter` property must be either (1) a filter object for [equal-filters](filter.html#equalfilter),\n[range-filters](filter.html#rangefilter), [one-of filters](filter.html#oneoffilter), or [selection filters](filter.html#selectionfilter);\n(2) a [Vega Expression](filter.html#expression) string,\nwhere `datum` can be used to refer to the current data object; or (3) an array of filters (either objects or expression strings) that must all be true for a datum to pass the filter and be included."
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
@@ -2136,11 +2625,15 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
           "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {
@@ -2199,11 +2692,15 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
           "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {
@@ -2290,6 +2787,14 @@
         "vconcat"
       ],
       "type": "object"
+    },
+    "GeoType": {
+      "enum": [
+        "latitude",
+        "longitude",
+        "geojson"
+      ],
+      "type": "string"
     },
     "Header": {
       "additionalProperties": false,
@@ -2870,12 +3375,12 @@
       ],
       "type": "string"
     },
-    "AndFilter": {
+    "LogicalAnd<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/FilterOperand"
+            "$ref": "#/definitions/LogicalOperand<Predicate>"
           },
           "type": "array"
         }
@@ -2900,11 +3405,11 @@
       ],
       "type": "object"
     },
-    "NotFilter": {
+    "LogicalNot<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "not": {
-          "$ref": "#/definitions/FilterOperand"
+          "$ref": "#/definitions/LogicalOperand<Predicate>"
         }
       },
       "required": [
@@ -2924,19 +3429,19 @@
       ],
       "type": "object"
     },
-    "FilterOperand": {
+    "LogicalOperand<Predicate>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/NotFilter"
+          "$ref": "#/definitions/LogicalNot<Predicate>"
         },
         {
-          "$ref": "#/definitions/AndFilter"
+          "$ref": "#/definitions/LogicalAnd<Predicate>"
         },
         {
-          "$ref": "#/definitions/OrFilter"
+          "$ref": "#/definitions/LogicalOr<Predicate>"
         },
         {
-          "$ref": "#/definitions/Filter"
+          "$ref": "#/definitions/Predicate"
         }
       ]
     },
@@ -2956,12 +3461,12 @@
         }
       ]
     },
-    "OrFilter": {
+    "LogicalOr<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/FilterOperand"
+            "$ref": "#/definitions/LogicalOperand<Predicate>"
           },
           "type": "array"
         }
@@ -3059,7 +3564,8 @@
         "rect",
         "rule",
         "circle",
-        "square"
+        "square",
+        "geoshape"
       ],
       "type": "string"
     },
@@ -3082,6 +3588,48 @@
         },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
+          "type": "string"
+        },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
           "type": "string"
         },
         "dx": {
@@ -3129,6 +3677,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -3230,6 +3783,48 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
+          "type": "string"
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -3275,6 +3870,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -3364,7 +3964,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+          "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
         }
       },
       "required": [
@@ -3519,53 +4119,6 @@
       ],
       "type": "string"
     },
-    "OneOfFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "field": {
-          "description": "Field to be filtered",
-          "type": "string"
-        },
-        "oneOf": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "boolean"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "oneOf"
-      ],
-      "type": "object"
-    },
     "OrderFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -3605,7 +4158,7 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
@@ -3721,13 +4274,200 @@
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`)."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when projecting geographical coordinates using a `\"point\"` mark (on `\"x\"`, and `\"y\"` channels), a `\"rule\"` mark (on `\"x\"`, `\"x2\"`, `\"y\"`, and `\"y2\"` channels) or projecting a GeoJSON shapefile on a `\"geoshape\"` mark (on the `\"shape\"` channel)."
         }
       },
       "required": [
         "type"
       ],
       "type": "object"
+    },
+    "Predicate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldEqualPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldRangePredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldOneOfPredicate"
+        },
+        {
+          "$ref": "#/definitions/SelectionPredicate"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "Projection": {
+      "additionalProperties": false,
+      "properties": {
+        "center": {
+          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "clipAngle": {
+          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+          "type": "number"
+        },
+        "clipExtent": {
+          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "coefficient": {
+          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "fraction": {
+          "type": "number"
+        },
+        "lobes": {
+          "type": "number"
+        },
+        "parallel": {
+          "type": "number"
+        },
+        "precision": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+          "properties": {
+            "length": {
+              "description": "Returns the length of a String object. ",
+              "type": "number"
+            }
+          },
+          "required": [
+            "length"
+          ],
+          "type": "object"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "ratio": {
+          "type": "number"
+        },
+        "rotate": {
+          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "spacing": {
+          "type": "number"
+        },
+        "tilt": {
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/ProjectionType",
+          "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `mercator`"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectionConfig": {
+      "additionalProperties": false,
+      "description": "Any property of Projection can be in config",
+      "properties": {
+        "center": {
+          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "clipAngle": {
+          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+          "type": "number"
+        },
+        "clipExtent": {
+          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "coefficient": {
+          "description": "The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection ",
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "fraction": {
+          "type": "number"
+        },
+        "lobes": {
+          "type": "number"
+        },
+        "parallel": {
+          "type": "number"
+        },
+        "precision": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+          "properties": {
+            "length": {
+              "description": "Returns the length of a String object. ",
+              "type": "number"
+            }
+          },
+          "required": [
+            "length"
+          ],
+          "type": "object"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "ratio": {
+          "type": "number"
+        },
+        "rotate": {
+          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "spacing": {
+          "type": "number"
+        },
+        "tilt": {
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/ProjectionType",
+          "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `mercator`"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectionType": {
+      "$ref": "#/definitions/VgProjectionType"
     },
     "RangeConfig": {
       "additionalProperties": {
@@ -3841,40 +4581,6 @@
           "type": "object"
         }
       ]
-    },
-    "RangeFilter": {
-      "additionalProperties": false,
-      "properties": {
-        "field": {
-          "description": "Field to be filtered",
-          "type": "string"
-        },
-        "range": {
-          "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/definitions/DateTime"
-              }
-            ]
-          },
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
-        }
-      },
-      "required": [
-        "field",
-        "range"
-      ],
-      "type": "object"
     },
     "Repeat": {
       "additionalProperties": false,
@@ -4337,7 +5043,7 @@
         }
       ]
     },
-    "SelectionFilter": {
+    "SelectionPredicate": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -4371,7 +5077,8 @@
         "color",
         "opacity",
         "text",
-        "tooltip"
+        "tooltip",
+        "href"
       ],
       "type": "string"
     },
@@ -4576,6 +5283,48 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
+          "type": "string"
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -4621,6 +5370,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -4727,6 +5481,48 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](mark.html#style-config).",
           "type": "string"
         },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
+          "type": "string"
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -4772,6 +5568,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -4979,7 +5780,7 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -4988,6 +5789,10 @@
         "padding": {
           "$ref": "#/definitions/Padding",
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
         },
         "selection": {
           "additionalProperties": {
@@ -5520,14 +6325,15 @@
       ]
     },
     "Type": {
-      "description": "Constants and utilities for data type  \n Data type based on level of measurement ",
-      "enum": [
-        "quantitative",
-        "ordinal",
-        "temporal",
-        "nominal"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BasicType"
+        },
+        {
+          "$ref": "#/definitions/GeoType"
+        }
       ],
-      "type": "string"
+      "description": "Constants and utilities for data type  \n Data type based on level of measurement "
     },
     "UrlData": {
       "additionalProperties": false,
@@ -5594,6 +6400,38 @@
       "required": [
         "value"
       ],
+      "type": "object"
+    },
+    "ValueDefWithCondition": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Conditional<FieldDef>"
+            },
+            {
+              "$ref": "#/definitions/Conditional<ValueDef>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Conditional<ValueDef>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
       "type": "object"
     },
     "MarkPropValueDefWithCondition": {
@@ -5934,6 +6772,48 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
+        "cursor": {
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
+          "enum": [
+            "auto",
+            "default",
+            "none",
+            "context-menu",
+            "help",
+            "pointer",
+            "progress",
+            "wait",
+            "cell",
+            "crosshair",
+            "text",
+            "vertical-text",
+            "alias",
+            "copy",
+            "move",
+            "no-drop",
+            "not-allowed",
+            "e-resize",
+            "n-resize",
+            "ne-resize",
+            "nw-resize",
+            "s-resize",
+            "se-resize",
+            "sw-resize",
+            "w-resize",
+            "ew-resize",
+            "ns-resize",
+            "nesw-resize",
+            "nwse-resize",
+            "col-resize",
+            "row-resize",
+            "all-scroll",
+            "zoom-in",
+            "zoom-out",
+            "grab",
+            "grabbing"
+          ],
+          "type": "string"
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -5975,6 +6855,11 @@
             }
           ],
           "description": "The font weight (e.g., `\"bold\"`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -6050,6 +6935,24 @@
         }
       },
       "type": "object"
+    },
+    "VgProjectionType": {
+      "enum": [
+        "albers",
+        "albersUsa",
+        "azimuthalEqualArea",
+        "azimuthalEquidistant",
+        "conicConformal",
+        "conicEqualArea",
+        "conicEquidistant",
+        "equirectangular",
+        "gnomonic",
+        "mercator",
+        "orthographic",
+        "stereographic",
+        "transverseMercator"
+      ],
+      "type": "string"
     },
     "VgRadioBinding": {
       "additionalProperties": false,

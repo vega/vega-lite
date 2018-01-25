@@ -2563,7 +2563,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],11:[function(require,module,exports){
-// https://d3js.org/d3-format/ Version 1.2.1. Copyright 2017 Mike Bostock.
+// https://d3js.org/d3-format/ Version 1.2.2. Copyright 2018 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2793,7 +2793,7 @@ var formatLocale = function(locale) {
 
         // Compute the prefix and suffix.
         valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-        valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
+        valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
         // Break the formatted value into the integer “value” part that can be
         // grouped, and fractional or exponential “suffix” part that is not.
@@ -26517,6 +26517,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 },{"buffer":4}],221:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
+var IncomingMessage = require('./lib/response')
 var extend = require('xtend')
 var statusCodes = require('builtin-status-codes')
 var url = require('url')
@@ -26562,6 +26563,9 @@ http.get = function get (opts, cb) {
 	return req
 }
 
+http.ClientRequest = ClientRequest
+http.IncomingMessage = IncomingMessage
+
 http.Agent = function () {}
 http.Agent.defaultMaxSockets = 4
 
@@ -26597,9 +26601,13 @@ http.METHODS = [
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/request":223,"builtin-status-codes":5,"url":226,"xtend":355}],222:[function(require,module,exports){
+},{"./lib/request":223,"./lib/response":224,"builtin-status-codes":5,"url":226,"xtend":355}],222:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
+
+exports.writableStream = isFunction(global.WritableStream)
+
+exports.abortController = isFunction(global.AbortController)
 
 exports.blobConstructor = false
 try {
@@ -26713,9 +26721,8 @@ var ClientRequest = module.exports = function (opts) {
 
 	var preferBinary
 	var useFetch = true
-	if (opts.mode === 'disable-fetch' || 'timeout' in opts) {
-		// If the use of XHR should be preferred and includes preserving the 'content-type' header.
-		// Force XHR to be used since the Fetch API does not yet support timeouts.
+	if (opts.mode === 'disable-fetch' || ('requestTimeout' in opts && !capability.abortController)) {
+		// If the use of XHR should be preferred. Not typically needed.
 		useFetch = false
 		preferBinary = true
 	} else if (opts.mode === 'prefer-streaming') {
@@ -26777,7 +26784,9 @@ ClientRequest.prototype._onFinish = function () {
 	var headersObj = self._headers
 	var body = null
 	if (opts.method !== 'GET' && opts.method !== 'HEAD') {
-		if (capability.blobConstructor) {
+		if (capability.arraybuffer) {
+			body = toArrayBuffer(Buffer.concat(self._body))
+		} else if (capability.blobConstructor) {
 			body = new global.Blob(self._body.map(function (buffer) {
 				return toArrayBuffer(buffer)
 			}), {
@@ -26804,12 +26813,28 @@ ClientRequest.prototype._onFinish = function () {
 	})
 
 	if (self._mode === 'fetch') {
+		var signal = null
+		if (capability.abortController) {
+			var controller = new AbortController()
+			signal = controller.signal
+			self._fetchAbortController = controller
+
+			if ('requestTimeout' in opts && opts.requestTimeout !== 0) {
+				global.setTimeout(function () {
+					self.emit('requestTimeout')
+					if (self._fetchAbortController)
+						self._fetchAbortController.abort()
+				}, opts.requestTimeout)
+			}
+		}
+
 		global.fetch(self._opts.url, {
 			method: self._opts.method,
 			headers: headersList,
 			body: body || undefined,
 			mode: 'cors',
-			credentials: opts.withCredentials ? 'include' : 'same-origin'
+			credentials: opts.withCredentials ? 'include' : 'same-origin',
+			signal: signal
 		}).then(function (response) {
 			self._fetchResponse = response
 			self._connect()
@@ -26837,10 +26862,10 @@ ClientRequest.prototype._onFinish = function () {
 		if (self._mode === 'text' && 'overrideMimeType' in xhr)
 			xhr.overrideMimeType('text/plain; charset=x-user-defined')
 
-		if ('timeout' in opts) {
-			xhr.timeout = opts.timeout
+		if ('requestTimeout' in opts) {
+			xhr.timeout = opts.requestTimeout
 			xhr.ontimeout = function () {
-				self.emit('timeout')
+				self.emit('requestTimeout')
 			}
 		}
 
@@ -26936,8 +26961,8 @@ ClientRequest.prototype.abort = ClientRequest.prototype.destroy = function () {
 		self._response._destroyed = true
 	if (self._xhr)
 		self._xhr.abort()
-	// Currently, there isn't a way to truly abort a fetch.
-	// If you like bikeshedding, see https://github.com/whatwg/fetch/issues/27
+	else if (self._fetchAbortController)
+		self._fetchAbortController.abort()
 }
 
 ClientRequest.prototype.end = function (data, encoding, cb) {
@@ -27021,13 +27046,40 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 		self.statusCode = response.status
 		self.statusMessage = response.statusText
 		
-		response.headers.forEach(function(header, key){
+		response.headers.forEach(function (header, key){
 			self.headers[key.toLowerCase()] = header
 			self.rawHeaders.push(key, header)
 		})
 
+		if (capability.writableStream) {
+			var writable = new WritableStream({
+				write: function (chunk) {
+					return new Promise(function (resolve, reject) {
+						if (self._destroyed) {
+							return
+						} else if(self.push(new Buffer(chunk))) {
+							resolve()
+						} else {
+							self._resumeFetch = resolve
+						}
+					})
+				},
+				close: function () {
+					if (!self._destroyed)
+						self.push(null)
+				},
+				abort: function (err) {
+					if (!self._destroyed)
+						self.emit('error', err)
+				}
+			})
 
-		// TODO: this doesn't respect backpressure. Once WritableStream is available, this can be fixed
+			try {
+				response.body.pipeTo(writable)
+				return
+			} catch (e) {} // pipeTo method isn't defined. Can't find a better way to feature test this
+		}
+		// fallback for when writableStream or pipeTo aren't available
 		var reader = response.body.getReader()
 		function read () {
 			reader.read().then(function (result) {
@@ -27040,11 +27092,11 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 				self.push(new Buffer(result.value))
 				read()
 			}).catch(function(err) {
-				self.emit('error', err)
+				if (!self._destroyed)
+					self.emit('error', err)
 			})
 		}
 		read()
-
 	} else {
 		self._xhr = xhr
 		self._pos = 0
@@ -27088,7 +27140,15 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 
 inherits(IncomingMessage, stream.Readable)
 
-IncomingMessage.prototype._read = function () {}
+IncomingMessage.prototype._read = function () {
+	var self = this
+
+	var resolve = self._resumeFetch
+	if (resolve) {
+		self._resumeFetch = null
+		resolve()
+	}
+}
 
 IncomingMessage.prototype._onXHRProgress = function () {
 	var self = this
@@ -29042,7 +29102,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -29123,15 +29183,15 @@ module.exports={
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.4",
-    "@types/d3": "^4.11.0",
-    "@types/highlight.js": "^9.1.10",
+    "@types/chai": "^4.0.6",
+    "@types/d3": "^4.12.0",
+    "@types/highlight.js": "^9.12.2",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/mkdirp": "^0.5.1",
-    "@types/mocha": "^2.2.43",
-    "@types/node": "^8.0.47",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.53",
     "@types/webdriverio": "^4.8.6",
-    "ajv": "^5.3.0",
+    "ajv": "^5.5.0",
     "browser-sync": "^2.18.13",
     "browserify": "^14.5.0",
     "browserify-shim": "^3.8.14",
@@ -29139,23 +29199,23 @@ module.exports={
     "cheerio": "^1.0.0-rc.2",
     "chromedriver": "^2.33.2",
     "codecov": "^3.0.0",
-    "d3": "^4.11.0",
+    "d3": "^4.12.0",
     "exorcist": "^1.0.0",
     "highlight.js": "^9.12.0",
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "source-map-support": "^0.5.0",
     "svg2png-many": "^0.0.7",
-    "ts-json-schema-generator": "^0.16.0",
-    "tslint": "5.4.3",
+    "ts-json-schema-generator": "^0.18.0",
     "ts-node": "^3.3.0",
     "tsify": "^3.0.3",
+    "tslint": "5.4.3",
     "tslint-eslint-rules": "^4.1.1",
-    "typescript": "^2.6.1",
-    "uglify-js": "^3.1.5",
-    "vega": "^3.0.7",
+    "typescript": "^2.6.2",
+    "uglify-js": "^3.2.0",
+    "vega": "^3.0.8",
     "vega-datasets": "^1.11.0",
     "vega-embed": "^3.0.0-rc7",
     "vega-tooltip": "^0.4.4",
@@ -29164,7 +29224,7 @@ module.exports={
     "wdio-dot-reporter": "0.0.9",
     "wdio-mocha-framework": "^0.5.11",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "^4.8.0",
+    "webdriverio": "^4.9.11",
     "yaml-front-matter": "^3.4.0"
   },
   "dependencies": {
@@ -30257,7 +30317,7 @@ function getStyles(mark) {
 }
 exports.getStyles = getStyles;
 /**
- * Return value mark specific config property if exists.
+ * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
 function getMarkConfig(prop, mark, config) {
@@ -30268,6 +30328,7 @@ function getMarkConfig(prop, mark, config) {
     if (markSpecificConfig[prop] !== undefined) {
         value = markSpecificConfig[prop];
     }
+    // Then read style config, which has even higher precedence.
     var styles = getStyles(mark);
     for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
         var style = styles_1[_i];
@@ -30419,10 +30480,35 @@ var buildmodel_1 = require("./buildmodel");
 var assemble_1 = require("./data/assemble");
 var optimize_1 = require("./data/optimize");
 /**
- * Module for compiling Vega-lite spec into Vega spec.
+ * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
+ *
+ * At a high-level, we make the following transformations in different phases:
+ *
+ * Input spec
+ *     |
+ *     |  (Normalization)
+ *     v
+ * Normalized Spec
+ *     |
+ *     |  (Build Model)
+ *     v
+ * A model tree of the spec
+ *     |
+ *     |  (Parse)
+ *     v
+ * A model tree with parsed components (intermediate structure of visualization primitives in a format that can be easily merged)
+ *     |
+ *     | (Optimize)
+ *     v
+ * A model tree with parsed components with the data component optimized
+ *     |
+ *     | (Assemble)
+ *     v
+ * Vega spec
  */
 function compile(inputSpec, opt) {
     if (opt === void 0) { opt = {}; }
+    // 0. Augment opt with default opts
     if (opt.logger) {
         // set the singleton logger to the provided logger
         log.set(opt.logger);
@@ -30432,18 +30518,19 @@ function compile(inputSpec, opt) {
         vlFieldDef.setTitleFormatter(opt.fieldTitle);
     }
     try {
-        // 1. initialize config
+        // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
         var config = config_1.initConfig(util_1.mergeDeep({}, opt.config, inputSpec.config));
-        // 2. Convert input spec into a normalized form
-        // (Normalize autosize to be a autosize properties object.)
-        // (Decompose all extended unit specs into composition of unit spec.)
+        // 2. Normalize: Convert input spec -> normalized spec
+        // - Decompose all extended unit specs into composition of unit spec.  For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
         var spec = spec_1.normalize(inputSpec, config);
-        // 3. Instantiate the models with default config by doing a top-down traversal.
-        // This allows us to pass properties that child models derive from their parents via their constructors.
+        // - Normalize autosize to be a autosize properties object.
         var autosize = toplevelprops_1.normalizeAutoSize(inputSpec.autosize, config.autosize, spec_1.isLayerSpec(spec) || spec_1.isUnitSpec(spec));
+        // 3. Build Model: normalized spec -> Model (a tree structure)
+        // This phases instantiates the models with default config by doing a top-down traversal. This allows us to pass properties that child models derive from their parents via their constructors.
+        // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, RepeatModel, ConcatModel) for different types of models.
         var model = buildmodel_1.buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
-        // 4. Parse parts of each model to produce components that can be merged
-        // and assembled easily as a part of a model.
+        // 4 Parse: Model --> Model with components (components = intermediate that can be merged
+        // and assembled easily)
         // In this phase, we do a bottom-up traversal over the whole tree to
         // parse for each type of components once (e.g., data, layout, mark, scale).
         // By doing bottom-up traversal, we start parsing components of unit specs and
@@ -30451,9 +30538,9 @@ function compile(inputSpec, opt) {
         //
         // Please see inside model.parse() for order of different components parsed.
         model.parse();
-        // 5. Optimize the datafow.
+        // 5. Optimize the dataflow.  This will modify the data component of the model.
         optimize_1.optimizeDataflow(model.component.data);
-        // 6. Assemble a Vega Spec from the parsed components.
+        // 6. Assemble: convert model and components --> Vega Spec.
         return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
     }
     finally {
@@ -33231,13 +33318,7 @@ function getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt) {
             var facetFieldDef = layoutHeader.facetFieldDef;
             var _a = facetFieldDef.header, header = _a === void 0 ? {} : _a;
             var format = header.format, labelAngle = header.labelAngle;
-            var update = __assign({}, (labelAngle ? { angle: { value: labelAngle } } :
-                // Default align / baseline for row (only apply if there is no custom labelAngle specified)
-                channel === 'row' ? {
-                    align: { value: 'right' },
-                    baseline: { value: 'middle' }
-                } :
-                    {})
+            var update = __assign({}, (labelAngle ? { angle: { value: labelAngle } } : {})
             // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
             );
             title = __assign({ text: common_1.formatSignalRef(facetFieldDef, format, 'parent', model.config), offset: 10, orient: channel === 'row' ? 'left' : 'top', style: 'guide-label' }, (util_1.keys(update).length > 0 ? { encode: { update: update } } : {}));
@@ -33574,7 +33655,7 @@ function symbols(fieldDef, symbolsSpec, model, channel, type) {
         }
     }
     if (channel !== channel_1.OPACITY) {
-        var opacity = getOpacityValue(model.encoding.opacity);
+        var opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
         if (opacity) {
             symbols.opacity = { value: opacity };
         }
@@ -33586,7 +33667,7 @@ exports.symbols = symbols;
 function gradient(fieldDef, gradientSpec, model, channel, type) {
     var gradient = {};
     if (type === 'gradient') {
-        var opacity = getOpacityValue(model.encoding.opacity);
+        var opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
         if (opacity) {
             gradient.opacity = { value: opacity };
         }
@@ -33970,10 +34051,16 @@ var util_1 = require("../../util");
 var common_1 = require("../common");
 function normalizeMarkDef(mark, encoding, config) {
     var markDef = mark_1.isMarkDef(mark) ? __assign({}, mark) : { type: mark };
+    // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
     var specifiedOrient = markDef.orient || common_1.getMarkConfig('orient', markDef, config);
     markDef.orient = orient(markDef.type, encoding, specifiedOrient);
     if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
         log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
+    }
+    // set opacity and filled if not specified in mark config
+    var specifiedOpacity = markDef.opacity || common_1.getMarkConfig('opacity', markDef, config);
+    if (specifiedOpacity === undefined) {
+        markDef.opacity = defaultOpacity(markDef.type, encoding);
     }
     var specifiedFilled = markDef.filled;
     if (specifiedFilled === undefined) {
@@ -33982,21 +34069,7 @@ function normalizeMarkDef(mark, encoding, config) {
     return markDef;
 }
 exports.normalizeMarkDef = normalizeMarkDef;
-/**
- * Initialize encoding's value with some special default values
- */
-function initEncoding(mark, encoding, stacked, config) {
-    var opacityConfig = common_1.getMarkConfig('opacity', mark, config);
-    if (!encoding.opacity && opacityConfig === undefined) {
-        var opacity = defaultOpacity(mark.type, encoding, stacked);
-        if (opacity !== undefined) {
-            encoding.opacity = { value: opacity };
-        }
-    }
-    return encoding;
-}
-exports.initEncoding = initEncoding;
-function defaultOpacity(mark, encoding, stacked) {
+function defaultOpacity(mark, encoding) {
     if (util_1.contains([mark_1.POINT, mark_1.TICK, mark_1.CIRCLE, mark_1.SQUARE], mark)) {
         // point-based marks
         if (!encoding_1.isAggregate(encoding)) {
@@ -34125,7 +34198,6 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_util_1 = require("vega-util");
-var channel_1 = require("../../channel");
 var data_1 = require("../../data");
 var encoding_1 = require("../../encoding");
 var fielddef_1 = require("../../fielddef");
@@ -34165,8 +34237,7 @@ exports.parseMarkGroup = parseMarkGroup;
 var FACETED_PATH_PREFIX = 'faceted_path_';
 function parsePathMark(model) {
     var mark = model.mark();
-    // FIXME: replace this with more general case for composition
-    var details = detailFields(model);
+    var details = pathGroupingFields(model.encoding);
     var clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
     var style = common_1.getStyles(model.markDef);
     var sort = getPathSort(model);
@@ -34241,34 +34312,49 @@ function parseNonPathMark(model) {
     return marks;
 }
 /**
- * Returns list of detail (group-by) fields
+ * Returns list of path grouping fields
  * that the model's spec contains.
  */
-function detailFields(model) {
-    return channel_1.NONPOSITION_CHANNELS.reduce(function (details, channel) {
-        var encoding = model.encoding;
-        if (channel === 'order') {
-            return details;
+function pathGroupingFields(encoding) {
+    return util_1.keys(encoding).reduce(function (details, channel) {
+        switch (channel) {
+            // x, y, x2, y2, order, tooltip, href, cursor should not cause lines to group
+            case 'x':
+            case 'y':
+            case 'order':
+            case 'tooltip':
+            case 'x2':
+            case 'y2':
+            // TODO: case 'href', 'cursor':
+            // text, shape, shouldn't be a part of line/area
+            case 'text':
+            case 'shape':
+                return details;
+            case 'detail':
+                var channelDef = encoding[channel];
+                if (channelDef) {
+                    (vega_util_1.isArray(channelDef) ? channelDef : [channelDef]).forEach(function (fieldDef) {
+                        if (!fieldDef.aggregate) {
+                            details.push(fielddef_1.field(fieldDef, {}));
+                        }
+                    });
+                }
+                return details;
+            case 'color':
+            case 'size':
+            case 'opacity':
+                // TODO strokeDashOffset:
+                var fieldDef = fielddef_1.getFieldDef(encoding[channel]);
+                if (fieldDef && !fieldDef.aggregate) {
+                    details.push(fielddef_1.field(fieldDef, {}));
+                }
+                return details;
+            default:
+                throw new Error("Bug: Channel " + channel + " unimplemented for line mark");
         }
-        if (channel === 'detail') {
-            var channelDef = encoding[channel];
-            if (channelDef) {
-                (vega_util_1.isArray(channelDef) ? channelDef : [channelDef]).forEach(function (fieldDef) {
-                    if (!fieldDef.aggregate) {
-                        details.push(fielddef_1.field(fieldDef, {}));
-                    }
-                });
-            }
-        }
-        else {
-            var fieldDef = fielddef_1.getFieldDef(encoding[channel]);
-            if (fieldDef && !fieldDef.aggregate) {
-                details.push(fielddef_1.field(fieldDef, {}));
-            }
-        }
-        return details;
     }, []);
 }
+exports.pathGroupingFields = pathGroupingFields;
 /**
  * If scales are bound to interval selections, we want to automatically clip
  * marks to account for panning/zooming interactions. We identify bound scales
@@ -34281,7 +34367,7 @@ function scaleClip(model) {
         (yScale && yScale.get('domainRaw')) ? true : false;
 }
 
-},{"../../channel":239,"../../data":320,"../../encoding":322,"../../fielddef":324,"../../mark":331,"../../sort":334,"../../util":342,"../common":248,"./area":278,"./bar":279,"./line":281,"./point":284,"./rect":285,"./rule":286,"./text":287,"./tick":288,"vega-util":352}],283:[function(require,module,exports){
+},{"../../data":320,"../../encoding":322,"../../fielddef":324,"../../mark":331,"../../sort":334,"../../util":342,"../common":248,"./area":278,"./bar":279,"./line":281,"./point":284,"./rect":285,"./rule":286,"./text":287,"./tick":288,"vega-util":352}],283:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -34815,7 +34901,7 @@ function midPoint(channel, channelDef, scaleName, scale, stack, defaultRef) {
             return { value: channelDef.value };
         }
         else {
-            throw new Error('A channel definition has neither field nor value.'); // FIXME add this to log.message
+            return undefined;
         }
     }
     if (defaultRef === 'zeroOrMin') {
@@ -35718,7 +35804,6 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var vega_util_1 = require("vega-util");
 var aggregate_1 = require("../../aggregate");
 var bin_1 = require("../../bin");
 var channel_1 = require("../../channel");
@@ -35961,7 +36046,7 @@ function domainSort(model, channel, scaleType) {
     if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
         return true;
     }
-    // sort === 'none'
+    // sort == null
     return undefined;
 }
 exports.domainSort = domainSort;
@@ -36038,30 +36123,23 @@ function mergeDomains(domains) {
         return domain;
     }
     // only keep simple sort properties that work with unioned domains
-    var onlySimpleSorts = sorts.filter(function (s) {
-        if (util.isBoolean(s)) {
-            return true;
+    var simpleSorts = util.unique(sorts.map(function (s) {
+        if (s === true) {
+            return s;
         }
         if (s.op === 'count') {
-            return true;
+            return s;
         }
         log.warn(log.message.domainSortDropped(s));
-        return false;
-    });
-    var sort = true;
-    if (onlySimpleSorts.length === 1) {
-        sort = onlySimpleSorts[0];
+        return true;
+    }), util.hash);
+    var sort = undefined;
+    if (simpleSorts.length === 1) {
+        sort = simpleSorts[0];
     }
-    else if (onlySimpleSorts.length > 1) {
-        // ignore sort = false if we have another sort property
-        var filteredSorts = onlySimpleSorts.filter(function (s) { return s !== false; });
-        if (filteredSorts.length > 1) {
-            log.warn(log.message.MORE_THAN_ONE_SORT);
-            sort = true;
-        }
-        else {
-            sort = filteredSorts[0];
-        }
+    else if (simpleSorts.length > 1) {
+        log.warn(log.message.MORE_THAN_ONE_SORT);
+        sort = true;
     }
     var allData = util.unique(domains.map(function (d) {
         if (vega_schema_1.isDataRefDomain(d)) {
@@ -36071,14 +36149,10 @@ function mergeDomains(domains) {
     }), function (x) { return x; });
     if (allData.length === 1 && allData[0] !== null) {
         // create a union domain of different fields with a single data source
-        var domain = {
-            data: allData[0],
-            fields: uniqueDomains.map(function (d) { return d.field; }),
-            sort: sort
-        };
+        var domain = __assign({ data: allData[0], fields: uniqueDomains.map(function (d) { return d.field; }) }, (sort ? { sort: sort } : {}));
         return domain;
     }
-    return { fields: uniqueDomains, sort: sort };
+    return __assign({ fields: uniqueDomains }, (sort ? { sort: sort } : {}));
 }
 exports.mergeDomains = mergeDomains;
 /**
@@ -36087,14 +36161,14 @@ exports.mergeDomains = mergeDomains;
  *
  */
 function getFieldFromDomain(domain) {
-    if (vega_schema_1.isDataRefDomain(domain) && vega_util_1.isString(domain.field)) {
+    if (vega_schema_1.isDataRefDomain(domain) && util.isString(domain.field)) {
         return domain.field;
     }
     else if (vega_schema_2.isDataRefUnionedDomain(domain)) {
         var field = void 0;
         for (var _i = 0, _a = domain.fields; _i < _a.length; _i++) {
             var nonUnionDomain = _a[_i];
-            if (vega_schema_1.isDataRefDomain(nonUnionDomain) && vega_util_1.isString(nonUnionDomain.field)) {
+            if (vega_schema_1.isDataRefDomain(nonUnionDomain) && util.isString(nonUnionDomain.field)) {
                 if (!field) {
                     field = nonUnionDomain.field;
                 }
@@ -36107,10 +36181,10 @@ function getFieldFromDomain(domain) {
         log.warn('Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result view size maybe incorrect.');
         return field;
     }
-    else if (vega_schema_2.isFieldRefUnionDomain(domain) && vega_util_1.isString) {
+    else if (vega_schema_2.isFieldRefUnionDomain(domain)) {
         log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.');
         var field = domain.fields[0];
-        return vega_util_1.isString(field) ? field : undefined;
+        return util.isString(field) ? field : undefined;
     }
     return undefined;
 }
@@ -36131,7 +36205,7 @@ function assembleDomain(model, channel) {
 }
 exports.assembleDomain = assembleDomain;
 
-},{"../../aggregate":236,"../../bin":238,"../../channel":239,"../../data":320,"../../datetime":321,"../../log":329,"../../scale":332,"../../sort":334,"../../util":342,"../../vega.schema":344,"../common":248,"../data/optimize":262,"../model":290,"../selection/selection":303,"vega-util":352}],297:[function(require,module,exports){
+},{"../../aggregate":236,"../../bin":238,"../../channel":239,"../../data":320,"../../datetime":321,"../../log":329,"../../scale":332,"../../sort":334,"../../util":342,"../../vega.schema":344,"../common":248,"../data/optimize":262,"../model":290,"../selection/selection":303}],297:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -37985,8 +38059,6 @@ var UnitModel = /** @class */ (function (_super) {
         // calculate stack properties
         _this.stack = stack_1.stack(mark, encoding, _this.config.stack);
         _this.specifiedScales = _this.initScales(mark, encoding);
-        // FIXME: this one seems out of place!
-        _this.encoding = init_1.initEncoding(_this.markDef, encoding, _this.stack, _this.config);
         _this.specifiedAxes = _this.initAxes(encoding);
         _this.specifiedLegends = _this.initLegend(encoding);
         // Selections will be initialized upon parse.
@@ -38224,8 +38296,8 @@ function normalizeBoxPlot(spec, config) {
                     type: 'rule',
                     style: 'boxWhisker'
                 },
-                encoding: __assign((_b = {}, _b[continuousAxis] = __assign({ field: 'lowerWhisker', type: continuousAxisChannelDef.type }, continuousAxisScaleAndAxis), _b[continuousAxis + '2'] = {
-                    field: 'lowerBox',
+                encoding: __assign((_b = {}, _b[continuousAxis] = __assign({ field: 'lower_whisker_' + continuousAxisChannelDef.field, type: continuousAxisChannelDef.type }, continuousAxisScaleAndAxis), _b[continuousAxis + '2'] = {
+                    field: 'lower_box_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _b), encodingWithoutSizeColorAndContinuousAxis, common_1.getMarkSpecificConfigMixins(config.boxWhisker, 'color'))
             }, {
@@ -38234,10 +38306,10 @@ function normalizeBoxPlot(spec, config) {
                     style: 'boxWhisker'
                 },
                 encoding: __assign((_c = {}, _c[continuousAxis] = {
-                    field: 'upperBox',
+                    field: 'upper_box_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _c[continuousAxis + '2'] = {
-                    field: 'upperWhisker',
+                    field: 'upper_whisker_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _c), encodingWithoutSizeColorAndContinuousAxis, common_1.getMarkSpecificConfigMixins(config.boxWhisker, 'color'))
             },
@@ -38245,10 +38317,10 @@ function normalizeBoxPlot(spec, config) {
                     type: 'bar',
                     style: 'box'
                 }, encoding: __assign((_d = {}, _d[continuousAxis] = {
-                    field: 'lowerBox',
+                    field: 'lower_box_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _d[continuousAxis + '2'] = {
-                    field: 'upperBox',
+                    field: 'upper_box_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _d), encodingWithoutContinuousAxis, (encodingWithoutContinuousAxis.color ? {} : common_1.getMarkSpecificConfigMixins(config.box, 'color')), sizeMixins) }),
             {
@@ -38257,7 +38329,7 @@ function normalizeBoxPlot(spec, config) {
                     style: 'boxMid'
                 },
                 encoding: __assign((_e = {}, _e[continuousAxis] = {
-                    field: 'midBox',
+                    field: 'mid_box_' + continuousAxisChannelDef.field,
                     type: continuousAxisChannelDef.type
                 }, _e), encodingWithoutSizeColorAndContinuousAxis, common_1.getMarkSpecificConfigMixins(config.boxMid, 'color'), sizeMixins)
             }
@@ -38332,45 +38404,43 @@ function boxParams(spec, orient, kIQRScalar) {
         {
             op: 'q1',
             field: continuousAxisChannelDef.field,
-            as: 'lowerBox'
+            as: 'lower_box_' + continuousAxisChannelDef.field
         },
         {
             op: 'q3',
             field: continuousAxisChannelDef.field,
-            as: 'upperBox'
+            as: 'upper_box_' + continuousAxisChannelDef.field
         },
         {
             op: 'median',
             field: continuousAxisChannelDef.field,
-            as: 'midBox'
+            as: 'mid_box_' + continuousAxisChannelDef.field
         }
     ];
     var postAggregateCalculates = [];
-    if (isMinMax) {
-        aggregate.push({
-            op: 'min',
-            field: continuousAxisChannelDef.field,
-            as: 'lowerWhisker'
-        });
-        aggregate.push({
-            op: 'max',
-            field: continuousAxisChannelDef.field,
-            as: 'upperWhisker'
-        });
-    }
-    else {
+    aggregate.push({
+        op: 'min',
+        field: continuousAxisChannelDef.field,
+        as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
+    });
+    aggregate.push({
+        op: 'max',
+        field: continuousAxisChannelDef.field,
+        as: (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
+    });
+    if (!isMinMax) {
         postAggregateCalculates = [
             {
-                calculate: 'datum.upperBox - datum.lowerBox',
-                as: 'IQR'
+                calculate: "datum.upper_box_" + continuousAxisChannelDef.field + " - datum.lower_box_" + continuousAxisChannelDef.field,
+                as: 'iqr_' + continuousAxisChannelDef.field
             },
             {
-                calculate: 'datum.lowerBox - datum.IQR * ' + kIQRScalar,
-                as: 'lowerWhisker'
+                calculate: "min(datum.upper_box_" + continuousAxisChannelDef.field + " + datum.iqr_" + continuousAxisChannelDef.field + " * " + kIQRScalar + ", datum.max_" + continuousAxisChannelDef.field + ")",
+                as: 'upper_whisker_' + continuousAxisChannelDef.field
             },
             {
-                calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
-                as: 'upperWhisker'
+                calculate: "max(datum.lower_box_" + continuousAxisChannelDef.field + " - datum.iqr_" + continuousAxisChannelDef.field + " * " + kIQRScalar + ", datum.min_" + continuousAxisChannelDef.field + ")",
+                as: 'lower_whisker_' + continuousAxisChannelDef.field
             }
         ];
     }
@@ -41524,6 +41594,7 @@ exports.VG_MARK_CONFIGS = util_1.flagKeys(VG_MARK_CONFIG_INDEX);
 
 },{"./util":342}],345:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Parse a vega schema url into library and version.
  */
@@ -41532,7 +41603,6 @@ function default_1(url) {
     var _a = regex.exec(url).slice(1, 3), library = _a[0], version = _a[1];
     return { library: library, version: version };
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 
 },{}],346:[function(require,module,exports){
@@ -47245,15 +47315,21 @@ function getPulse(op, encode) {
   if (s && isArray(s)) {
     p = s.map(function(_) { return _.pulse; });
     return new MultiPulse(this, stamp, p, encode);
-  } else {
-    s = s && s.pulse;
-    p = this._pulses[op.id];
-    if (s && s !== StopPropagation) {
-      if (s.stamp === stamp && p.target !== op) p = s;
-      else p.source = s.source;
-    }
-    return p;
   }
+
+  p = this._pulses[op.id];
+  if (s) {
+    s = s.pulse;
+    if (!s || s === StopPropagation) {
+      p.source = [];
+    } else if (s.stamp === stamp && p.target !== op) {
+      p = s;
+    } else {
+      p.source = s.source;
+    }
+  }
+
+  return p;
 }
 
 var NO_OPT = {skip: false, force: false};
@@ -51559,84 +51635,60 @@ function GroupItem(mark) {
 
 inherits(GroupItem, Item);
 
-// create a new DOM element
-function domCreate(doc, tag, ns) {
-  if (!doc && typeof document !== 'undefined' && document.createElement) {
-    doc = document;
+function domCanvas(w, h) {
+  if (typeof document !== 'undefined' && document.createElement) {
+    var c = document.createElement('canvas');
+    if (c && c.getContext) {
+      c.width = w;
+      c.height = h;
+      return c;
+    }
   }
-  return doc
-    ? (ns ? doc.createElementNS(ns, tag) : doc.createElement(tag))
-    : null;
+  return null;
 }
 
-// find first child element with matching tag
-function domFind(el, tag) {
-  tag = tag.toLowerCase();
-  var nodes = el.childNodes, i = 0, n = nodes.length;
-  for (; i<n; ++i) if (nodes[i].tagName.toLowerCase() === tag) {
-    return nodes[i];
-  }
+function domImage() {
+  return typeof Image !== 'undefined' ? Image : null;
 }
 
-// retrieve child element at given index
-// create & insert if doesn't exist or if tags do not match
-function domChild(el, index, tag, ns) {
-  var a = el.childNodes[index], b;
-  if (!a || a.tagName.toLowerCase() !== tag.toLowerCase()) {
-    b = a || null;
-    a = domCreate(el.ownerDocument, tag, ns);
-    el.insertBefore(a, b);
-  }
-  return a;
-}
-
-// remove all child elements at or above the given index
-function domClear(el, index) {
-  var nodes = el.childNodes,
-      curr = nodes.length;
-  while (curr > index) el.removeChild(nodes[--curr]);
-  return el;
-}
-
-// generate css class name for mark
-function cssClass(mark) {
-  return 'mark-' + mark.marktype
-    + (mark.role ? ' role-' + mark.role : '')
-    + (mark.name ? ' ' + mark.name : '');
-}
-
-var Canvas;
+var NodeCanvas;
 
 try {
   // try to load canvas module
-  Canvas = require('canvas');
+  NodeCanvas = require('canvas');
+  if (!NodeCanvas) throw 1;
 } catch (e) {
   try {
     // if canvas fails, try to load canvas-prebuilt
-    Canvas = require('canvas-prebuilt');
+    NodeCanvas = require('canvas-prebuilt');
   } catch (e2) {
     // if all options fail, set to null
-    Canvas = null;
+    NodeCanvas = null;
   }
 }
 
-var Canvas$1 = function(w, h) {
-  var canvas = domCreate(null, 'canvas');
-  if (canvas && canvas.getContext) {
-    canvas.width = w;
-    canvas.height = h;
-  } else if (Canvas) {
+function nodeCanvas(w, h) {
+  if (NodeCanvas) {
     try {
-      canvas = new Canvas(w, h);
+      return new NodeCanvas(w, h);
     } catch (e) {
-      canvas = null;
+      // do nothing, return null on error
     }
   }
-  return canvas;
-};
+  return null;
+}
 
-var Image$1 = typeof Image !== 'undefined' ? Image
-  : (Canvas && Canvas.Image || null);
+function nodeImage() {
+  return NodeCanvas && NodeCanvas.Image || null;
+}
+
+function canvas(w, h) {
+  return domCanvas(w, h) || nodeCanvas(w, h) || null;
+}
+
+function image() {
+  return domImage() || nodeImage() || null;
+}
 
 function ResourceLoader(customLoader) {
   this._pending = 0;
@@ -51673,29 +51725,30 @@ prototype$38.sanitizeURL = function(uri) {
 };
 
 prototype$38.loadImage = function(uri) {
-  var loader$$1 = this;
+  var loader$$1 = this,
+      Image = image();
   increment(loader$$1);
 
   return loader$$1._loader
-    .sanitize(uri, {context:'image'})
+    .sanitize(uri, {context: 'image'})
     .then(function(opt) {
       var url = opt.href;
-      if (!url || !Image$1) throw {url: url};
+      if (!url || !Image) throw {url: url};
 
-      var image = new Image$1();
+      var img = new Image();
 
-      image.onload = function() {
+      img.onload = function() {
         decrement(loader$$1);
-        image.loaded = true;
+        img.loaded = true;
       };
 
-      image.onerror = function() {
+      img.onerror = function() {
         decrement(loader$$1);
-        image.loaded = false;
+        img.loaded = false;
       };
 
-      image.src = url;
-      return image;
+      img.src = url;
+      return img;
     })
     .catch(function(e) {
       decrement(loader$$1);
@@ -54782,7 +54835,7 @@ function draw$1(context, scene, bounds) {
   });
 }
 
-var image = {
+var image$1 = {
   type:     'image',
   tag:      'image',
   nested:   false,
@@ -54927,10 +54980,10 @@ var textMetrics = {
   measureWidth: measureWidth,
   estimateWidth: estimateWidth,
   width: estimateWidth,
-  canvas: canvas
+  canvas: useCanvas
 };
 
-canvas(true);
+useCanvas(true);
 
 // make dumb, simple estimate if no canvas is available
 function estimateWidth(item) {
@@ -54956,8 +55009,8 @@ function height(item) {
   return item.fontSize != null ? item.fontSize : 11;
 }
 
-function canvas(use) {
-  context$1 = use && (context$1 = Canvas$1(1,1)) ? context$1.getContext('2d') : null;
+function useCanvas(use) {
+  context$1 = use && (context$1 = canvas(1,1)) ? context$1.getContext('2d') : null;
   textMetrics.width = context$1 ? measureWidth : estimateWidth;
 }
 
@@ -55173,7 +55226,7 @@ var marks = {
   arc:     arc,
   area:    area$2,
   group:   group,
-  image:   image,
+  image:   image$1,
   line:    line$2,
   path:    path$3,
   rect:    rect,
@@ -55312,6 +55365,52 @@ function createMark(def, group) {
   };
 }
 
+// create a new DOM element
+function domCreate(doc, tag, ns) {
+  if (!doc && typeof document !== 'undefined' && document.createElement) {
+    doc = document;
+  }
+  return doc
+    ? (ns ? doc.createElementNS(ns, tag) : doc.createElement(tag))
+    : null;
+}
+
+// find first child element with matching tag
+function domFind(el, tag) {
+  tag = tag.toLowerCase();
+  var nodes = el.childNodes, i = 0, n = nodes.length;
+  for (; i<n; ++i) if (nodes[i].tagName.toLowerCase() === tag) {
+    return nodes[i];
+  }
+}
+
+// retrieve child element at given index
+// create & insert if doesn't exist or if tags do not match
+function domChild(el, index, tag, ns) {
+  var a = el.childNodes[index], b;
+  if (!a || a.tagName.toLowerCase() !== tag.toLowerCase()) {
+    b = a || null;
+    a = domCreate(el.ownerDocument, tag, ns);
+    el.insertBefore(a, b);
+  }
+  return a;
+}
+
+// remove all child elements at or above the given index
+function domClear(el, index) {
+  var nodes = el.childNodes,
+      curr = nodes.length;
+  while (curr > index) el.removeChild(nodes[--curr]);
+  return el;
+}
+
+// generate css class name for mark
+function cssClass(mark) {
+  return 'mark-' + mark.marktype
+    + (mark.role ? ' role-' + mark.role : '')
+    + (mark.name ? ' ' + mark.name : '');
+}
+
 function Handler(customLoader) {
   this._active = null;
   this._handlers = {};
@@ -55395,15 +55494,17 @@ var prototype$41 = Renderer.prototype;
 /**
  * Initialize a new Renderer instance.
  * @param {DOMElement} el - The containing DOM element for the display.
- * @param {number} width - The width of the display, in pixels.
- * @param {number} height - The height of the display, in pixels.
+ * @param {number} width - The coordinate width of the display, in pixels.
+ * @param {number} height - The coordinate height of the display, in pixels.
  * @param {Array<number>} origin - The origin of the display, in pixels.
  *   The coordinate system will be translated to this point.
+ * @param {number} [scaleFactor=1] - Optional scaleFactor by which to multiply
+ *   the width and height to determine the final pixel size.
  * @return {Renderer} - This renderer instance;
  */
-prototype$41.initialize = function(el, width, height, origin) {
+prototype$41.initialize = function(el, width, height, origin, scaleFactor) {
   this._el = el;
-  return this.resize(width, height, origin);
+  return this.resize(width, height, origin, scaleFactor);
 };
 
 /**
@@ -55434,16 +55535,19 @@ prototype$41.background = function(bgcolor) {
 
 /**
  * Resize the display.
- * @param {number} width - The new width of the display, in pixels.
- * @param {number} height - The new height of the display, in pixels.
+ * @param {number} width - The new coordinate width of the display, in pixels.
+ * @param {number} height - The new coordinate height of the display, in pixels.
  * @param {Array<number>} origin - The new origin of the display, in pixels.
  *   The coordinate system will be translated to this point.
+ * @param {number} [scaleFactor=1] - Optional scaleFactor by which to multiply
+ *   the width and height to determine the final pixel size.
  * @return {Renderer} - This renderer instance;
  */
-prototype$41.resize = function(width, height, origin) {
+prototype$41.resize = function(width, height, origin, scaleFactor) {
   this._width = width;
   this._height = height;
   this._origin = origin || [0, 0];
+  this._scale = scaleFactor || 1;
   return this;
 };
 
@@ -55763,18 +55867,18 @@ var clip$1 = function(context, scene) {
 var devicePixelRatio = typeof window !== 'undefined'
   ? window.devicePixelRatio || 1 : 1;
 
-var resize = function(canvas, width, height, origin) {
-  var scale = typeof HTMLElement !== 'undefined'
+var resize = function(canvas, width, height, origin, scaleFactor) {
+  var inDOM = typeof HTMLElement !== 'undefined'
     && canvas instanceof HTMLElement
     && canvas.parentNode != null;
 
   var context = canvas.getContext('2d'),
-      ratio = scale ? devicePixelRatio : 1;
+      ratio = inDOM ? devicePixelRatio : scaleFactor;
 
   canvas.width = width * ratio;
   canvas.height = height * ratio;
 
-  if (ratio !== 1) {
+  if (inDOM && ratio !== 1) {
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
   }
@@ -55799,19 +55903,19 @@ var prototype$43 = inherits(CanvasRenderer, Renderer);
 var base = Renderer.prototype;
 var tempBounds$1 = new Bounds();
 
-prototype$43.initialize = function(el, width, height, origin) {
-  this._canvas = Canvas$1(1, 1); // instantiate a small canvas
+prototype$43.initialize = function(el, width, height, origin, scaleFactor) {
+  this._canvas = canvas(1, 1); // instantiate a small canvas
   if (el) {
     domClear(el, 0).appendChild(this._canvas);
     this._canvas.setAttribute('class', 'marks');
   }
   // this method will invoke resize to size the canvas appropriately
-  return base.initialize.call(this, el, width, height, origin);
+  return base.initialize.call(this, el, width, height, origin, scaleFactor);
 };
 
-prototype$43.resize = function(width, height, origin) {
-  base.resize.call(this, width, height, origin);
-  resize(this._canvas, this._width, this._height, this._origin);
+prototype$43.resize = function(width, height, origin, scaleFactor) {
+  base.resize.call(this, width, height, origin, scaleFactor);
+  resize(this._canvas, this._width, this._height, this._origin, this._scale);
   this._redraw = true;
   return this;
 };
@@ -56016,8 +56120,8 @@ var styles = {
   'fill':             'fill',
   'fillOpacity':      'fill-opacity',
   'stroke':           'stroke',
-  'strokeWidth':      'stroke-width',
   'strokeOpacity':    'stroke-opacity',
+  'strokeWidth':      'stroke-width',
   'strokeCap':        'stroke-linecap',
   'strokeJoin':       'stroke-linejoin',
   'strokeDash':       'stroke-dasharray',
@@ -56071,12 +56175,12 @@ prototype$45.background = function(bgcolor) {
   return base$1.background.apply(this, arguments);
 };
 
-prototype$45.resize = function(width, height, origin) {
-  base$1.resize.call(this, width, height, origin);
+prototype$45.resize = function(width, height, origin, scaleFactor) {
+  base$1.resize.call(this, width, height, origin, scaleFactor);
 
   if (this._svg) {
-    this._svg.setAttribute('width', this._width);
-    this._svg.setAttribute('height', this._height);
+    this._svg.setAttribute('width', this._width * this._scale);
+    this._svg.setAttribute('height', this._height * this._scale);
     this._svg.setAttribute('viewBox', '0 0 ' + this._width + ' ' + this._height);
     this._root.setAttribute('transform', 'translate(' + this._origin + ')');
   }
@@ -56091,8 +56195,8 @@ prototype$45.svg = function() {
 
   var attr = {
     class:   'marks',
-    width:   this._width,
-    height:  this._height,
+    width:   this._width * this._scale,
+    height:  this._height * this._scale,
     viewBox: '0 0 ' + this._width + ' ' + this._height
   };
   for (var key$$1 in metadata) {
@@ -56505,15 +56609,15 @@ function SVGStringRenderer(loader) {
 var prototype$46 = inherits(SVGStringRenderer, Renderer);
 var base$2 = Renderer.prototype;
 
-prototype$46.resize = function(width, height, origin) {
-  base$2.resize.call(this, width, height, origin);
+prototype$46.resize = function(width, height, origin, scaleFactor) {
+  base$2.resize.call(this, width, height, origin, scaleFactor);
   var o = this._origin,
       t = this._text;
 
   var attr = {
     class:   'marks',
-    width:   this._width,
-    height:  this._height,
+    width:   this._width * this._scale,
+    height:  this._height * this._scale,
     viewBox: '0 0 ' + this._width + ' ' + this._height
   };
   for (var key$$1 in metadata) {
@@ -56522,11 +56626,14 @@ prototype$46.resize = function(width, height, origin) {
 
   t.head = openTag('svg', attr);
 
-  if (this._bgcolor) {
+  var bg = this._bgcolor;
+  if (bg === 'transparent' || bg === 'none') bg = null;
+
+  if (bg) {
     t.bg = openTag('rect', {
       width:  this._width,
       height: this._height,
-      style:  'fill: ' + this._bgcolor + ';'
+      style:  'fill: ' + bg + ';'
     }) + closeTag('rect');
   } else {
     t.bg = '';
@@ -56544,7 +56651,7 @@ prototype$46.resize = function(width, height, origin) {
 prototype$46.background = function() {
   var rv = base$2.background.apply(this, arguments);
   if (arguments.length && this._text.head) {
-    this.resize(this._width, this._height, this._origin);
+    this.resize(this._width, this._height, this._origin, this._scale);
   }
   return rv;
 };
@@ -56705,11 +56812,11 @@ function applyStyles(o, mark, tag, defs) {
   var i, n, prop, name, value, s = '';
 
   if (tag === 'bgrect' && mark.interactive === false) {
-    s += 'pointer-events: none;';
+    s += 'pointer-events: none; ';
   }
 
   if (tag === 'text') {
-    s += 'font: ' + font(o) + ';';
+    s += 'font: ' + font(o) + '; ';
   }
 
   for (i=0, n=styleProperties.length; i<n; ++i) {
@@ -56719,19 +56826,22 @@ function applyStyles(o, mark, tag, defs) {
 
     if (value == null) {
       if (name === 'fill') {
-        s += (s.length ? ' ' : '') + 'fill: none;';
+        s += 'fill: none; ';
       }
+    } else if (value === 'transparent' && (name === 'fill' || name === 'stroke')) {
+      // transparent is not a legal SVG value, so map to none instead
+      s += name + ': none; ';
     } else {
       if (value.id) {
         // ensure definition is included
         defs.gradient[value.id] = value;
         value = 'url(#' + value.id + ')';
       }
-      s += (s.length ? ' ' : '') + name + ': ' + value + ';';
+      s += name + ': ' + value + '; ';
     }
   }
 
-  return s ? 'style="' + s + '"' : null;
+  return s ? 'style="' + s.trim() + '"' : null;
 }
 
 function escape_text(s) {
@@ -56740,13 +56850,13 @@ function escape_text(s) {
           .replace(/>/g, '&gt;');
 }
 
-var Canvas$2 = 'canvas';
+var Canvas = 'canvas';
 var PNG = 'png';
 var SVG = 'svg';
 var None$1 = 'none';
 
 var RenderType = {
-  Canvas: Canvas$2,
+  Canvas: Canvas,
   PNG:    PNG,
   SVG:    SVG,
   None:   None$1
@@ -56754,7 +56864,7 @@ var RenderType = {
 
 var modules = {};
 
-modules[Canvas$2] = modules[PNG] = {
+modules[Canvas] = modules[PNG] = {
   renderer: CanvasRenderer,
   headless: CanvasRenderer,
   handler:  CanvasHandler
@@ -59398,7 +59508,7 @@ var formatLocale$1 = function(locale) {
 
         // Compute the prefix and suffix.
         valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-        valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
+        valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
         // Break the formatted value into the integer “value” part that can be
         // grouped, and fractional or exponential “suffix” part that is not.
@@ -62255,20 +62365,20 @@ var noop$3 = function() {};
 
 var cases = [
   [],
-  [[[1,1.5],[0.5,1]]],
-  [[[1.5,1],[1,1.5]]],
-  [[[1.5,1],[0.5,1]]],
-  [[[1,0.5],[1.5,1]]],
-  [[[1,0.5],[0.5,1]],[[1,1.5],[1.5,1]]],
-  [[[1,0.5],[1,1.5]]],
-  [[[1,0.5],[0.5,1]]],
-  [[[0.5,1],[1,0.5]]],
-  [[[1,1.5],[1,0.5]]],
-  [[[0.5,1],[1,1.5]],[[1.5,1],[1,0.5]]],
-  [[[1.5,1],[1,0.5]]],
-  [[[0.5,1],[1.5,1]]],
-  [[[1,1.5],[1.5,1]]],
-  [[[0.5,1],[1,1.5]]],
+  [[[1.0, 1.5], [0.5, 1.0]]],
+  [[[1.5, 1.0], [1.0, 1.5]]],
+  [[[1.5, 1.0], [0.5, 1.0]]],
+  [[[1.0, 0.5], [1.5, 1.0]]],
+  [[[1.0, 1.5], [0.5, 1.0]], [[1.0, 0.5], [1.5, 1.0]]],
+  [[[1.0, 0.5], [1.0, 1.5]]],
+  [[[1.0, 0.5], [0.5, 1.0]]],
+  [[[0.5, 1.0], [1.0, 0.5]]],
+  [[[1.0, 1.5], [1.0, 0.5]]],
+  [[[0.5, 1.0], [1.0, 0.5]], [[1.5, 1.0], [1.0, 1.5]]],
+  [[[1.5, 1.0], [1.0, 0.5]]],
+  [[[0.5, 1.0], [1.5, 1.0]]],
+  [[[1.0, 1.5], [1.5, 1.0]]],
+  [[[0.5, 1.0], [1.0, 1.5]]],
   []
 ];
 
@@ -69729,8 +69839,7 @@ var cloud = function() {
       spiral = archimedeanSpiral,
       words = [],
       random = Math.random,
-      cloud = {},
-      canvas = cloudCanvas;
+      cloud = {};
 
   cloud.layout = function() {
     var contextAndRatio = getContext(canvas()),
@@ -69778,13 +69887,13 @@ var cloud = function() {
     return tags;
   };
 
-  function getContext(canvas) {
-    canvas.width = canvas.height = 1;
-    var ratio = Math.sqrt(canvas.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
-    canvas.width = (cw << 5) / ratio;
-    canvas.height = ch / ratio;
+  function getContext(canvas$$1) {
+    canvas$$1.width = canvas$$1.height = 1;
+    var ratio = Math.sqrt(canvas$$1.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
+    canvas$$1.width = (cw << 5) / ratio;
+    canvas$$1.height = ch / ratio;
 
-    var context = canvas.getContext("2d");
+    var context = canvas$$1.getContext("2d");
     context.fillStyle = context.strokeStyle = "red";
     context.textAlign = "center";
 
@@ -70101,25 +70210,6 @@ function zeroArray(n) {
       i = -1;
   while (++i < n) a[i] = 0;
   return a;
-}
-
-function cloudCanvas() {
-  try {
-    var canvas = typeof document !== 'undefined' && document.createElement
-      ? document.createElement('canvas')
-      : 0;
-
-    if (canvas && canvas.getContext) {
-      return canvas;
-    }
-    try {
-      return new (require('canvas'))();
-    } catch (e) {
-      return new (require('canvas-prebuilt'))()
-    }
-  } catch (e) {
-    error$1('Canvas unavailable. Run in browser or install node-canvas.');
-  }
 }
 
 function functor(d) {
@@ -70964,7 +71054,7 @@ var xf = Object.freeze({
 	resolvefilter: ResolveFilter
 });
 
-var version = "3.0.8";
+var version = "3.0.10";
 
 var Default = 'default';
 
@@ -71532,10 +71622,10 @@ function valuesEqual(a, b) {
   return a === b || (a+'' === b+'');
 }
 
-var initializeRenderer = function(view, r, el, constructor) {
+var initializeRenderer = function(view, r, el, constructor, scaleFactor) {
   r = r || new constructor(view.loader());
   return r
-    .initialize(el, width(view), height$1(view), offset$1(view))
+    .initialize(el, width(view), height$1(view), offset$1(view), scaleFactor)
     .background(view._background);
 };
 
@@ -71622,12 +71712,13 @@ function lookup$2(view, el) {
  * This method is asynchronous, returning a Promise instance.
  * @return {Promise} - A Promise that resolves to a renderer.
  */
-var renderHeadless = function(view, type) {
-  var module = renderModule(type);
-  return !(module && module.headless)
+var renderHeadless = function(view, type, scaleFactor) {
+  var module = renderModule(type),
+      ctr = module && module.headless;
+  return !ctr
     ? Promise.reject('Unrecognized renderer type: ' + type)
     : view.runAsync().then(function() {
-        return initializeRenderer(view, null, null, module.headless)
+        return initializeRenderer(view, null, null, ctr, scaleFactor)
           .renderAsync(view._scenegraph.root);
       });
 };
@@ -71641,10 +71732,10 @@ var renderHeadless = function(view, type) {
  *   The 'canvas' and 'png' types are synonyms for a PNG image.
  * @return {Promise} - A promise that resolves to an image URL.
  */
-var renderToImageURL = function(type) {
+var renderToImageURL = function(type, scaleFactor) {
   return (type !== RenderType.Canvas && type !== RenderType.SVG && type !== RenderType.PNG)
     ? Promise.reject('Unrecognized image type: ' + type)
-    : renderHeadless(this, type).then(function(renderer) {
+    : renderHeadless(this, type, scaleFactor).then(function(renderer) {
         return type === RenderType.SVG
           ? toBlobURL(renderer.svg(), 'image/svg+xml')
           : renderer.canvas().toDataURL('image/png');
@@ -71661,8 +71752,8 @@ function toBlobURL(data, mime) {
  * This method is asynchronous, returning a Promise instance.
  * @return {Promise} - A promise that resolves to a Canvas instance.
  */
-var renderToCanvas = function() {
-  return renderHeadless(this, RenderType.Canvas)
+var renderToCanvas = function(scaleFactor) {
+  return renderHeadless(this, RenderType.Canvas, scaleFactor)
     .then(function(renderer) { return renderer.canvas(); });
 };
 
@@ -71671,8 +71762,8 @@ var renderToCanvas = function() {
  * This method is asynchronous, returning a Promise instance.
  * @return {Promise} - A promise that resolves to an SVG string.
  */
-var renderToSVG = function() {
-  return renderHeadless(this, RenderType.SVG)
+var renderToSVG = function(scaleFactor) {
+  return renderHeadless(this, RenderType.SVG, scaleFactor)
     .then(function(renderer) { return renderer.svg(); });
 };
 
@@ -75015,7 +75106,8 @@ function fieldRef(data, scope) {
   if (isArray(data)) {
     coll.value = {$ingest: data};
   } else if (data.signal) {
-    scope.signalRef('setdata(' + $(name) + ',' + data.signal + ')');
+    var code = 'setdata(' + $(name) + ',' + data.signal + ')';
+    coll.params.input = scope.signalRef(code);
   }
   scope.addDataPipeline(name, [coll, Sieve$1({})]);
   return {data: name, field: 'data'};
@@ -75631,6 +75723,7 @@ var legendGradientLabels = function(spec, config, userEncode, dataRef) {
   addEncode(enter, 'fill', config.labelColor);
   addEncode(enter, 'font', config.labelFont);
   addEncode(enter, 'fontSize', config.labelFontSize);
+  addEncode(enter, 'fontWeight', config.labelFontWeight);
   addEncode(enter, 'baseline', config.gradientLabelBaseline);
   addEncode(enter, 'limit', config.gradientLabelLimit);
 
@@ -75670,6 +75763,7 @@ var legendLabels = function(spec, config, userEncode, dataRef) {
   addEncode(enter, 'fill', config.labelColor);
   addEncode(enter, 'font', config.labelFont);
   addEncode(enter, 'fontSize', config.labelFontSize);
+  addEncode(enter, 'fontWeight', config.labelFontWeight);
   addEncode(enter, 'limit', config.labelLimit);
 
   encode.exit = {
@@ -76829,6 +76923,7 @@ var axisLabels = function(spec, config, userEncode, dataRef, size) {
   addEncode(enter, 'fill', config.labelColor);
   addEncode(enter, 'font', config.labelFont);
   addEncode(enter, 'fontSize', config.labelFontSize);
+  addEncode(enter, 'fontWeight', config.labelFontWeight);
   addEncode(enter, 'limit', config.labelLimit);
 
   encode.exit = exit = {
@@ -77538,7 +77633,7 @@ prototype$83.addDataPipeline = function(name, entries) {
 var defaults = function(configs) {
   var output = defaults$1();
   (configs || []).forEach(function(config) {
-    var key$$1, style;
+    var key$$1, value, style;
     if (config) {
       for (key$$1 in config) {
         if (key$$1 === 'style') {
@@ -77547,9 +77642,10 @@ var defaults = function(configs) {
             style[key$$1] = extend(style[key$$1] || {}, config.style[key$$1]);
           }
         } else {
-          output[key$$1] = isObject(config[key$$1])
-            ? extend(output[key$$1] || {}, config[key$$1])
-            : config[key$$1];
+          value = config[key$$1];
+          output[key$$1] = isObject(value) && !isArray(value)
+            ? extend(isObject(output[key$$1]) ? output[key$$1] : {}, value)
+            : value;
         }
       }
     }
@@ -77673,7 +77769,6 @@ function defaults$1() {
       grid: false,
       gridWidth: 1,
       gridColor: lightGray,
-      gridDash: [],
       gridOpacity: 1,
       labels: true,
       labelAngle: 0,
@@ -78812,7 +78907,6 @@ exports.pathTrail = vg_trail;
 exports.pathParse = pathParse;
 exports.pathRender = pathRender;
 exports.point = point$4;
-exports.canvas = Canvas$1;
 exports.domCreate = domCreate;
 exports.domFind = domFind;
 exports.domChild = domChild;
