@@ -5931,14 +5931,14 @@ vega-hierarchy@^2.1:
     vega-util "1"
 
 vega-lite@^2.0.0, vega-lite@^2.0.0-beta.14:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.4.tgz#a30531e294dd2a831d96df05c58eed902d2cbb20"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.1.0.tgz#8e6c1d438da6400eebdb53f0da7f9801b9da96f9"
   dependencies:
     json-stable-stringify "^1.0.1"
-    tslib "^1.8.0"
+    tslib "^1.9.0"
     vega-event-selector "^2.0.0"
     vega-util "^1.6.2"
-    yargs "^10.0.3"
+    yargs "^11.0.0"
 
 vega-loader@2:
   version "2.0.3"
