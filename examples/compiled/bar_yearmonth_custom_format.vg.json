@@ -57,6 +57,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "yearmonth_date"
@@ -71,9 +74,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

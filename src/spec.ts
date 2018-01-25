@@ -8,6 +8,7 @@ import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
@@ -94,7 +95,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
+   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
    */
   mark: M;
 
@@ -102,6 +103,13 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
    * A key-value mapping between encoding channels and definition of fields.
    */
   encoding: E;
+
+  /**
+   * An object defining properties of geographic projection.
+   *
+   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have a channel (one or more of `"X"`, `"X2"`, `"Y"`, `"Y2"`) with type `"latitude"`, or `"longitude"`.
+   */
+  projection?: Projection;
 
   /**
    * A key-value mapping between selection names and definitions.
@@ -208,31 +216,31 @@ export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel
 /* Custom type guards */
 
 
-export function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
+export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
   return spec['facet'] !== undefined;
 }
 
-export function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is FacetedCompositeUnitSpec | UnitSpec {
+export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | UnitSpec {
   return !!spec['mark'];
 }
 
-export function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
+export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
   return spec['layer'] !== undefined;
 }
 
-export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
+export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
   return spec['repeat'] !== undefined;
 }
 
-export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> | GenericHConcatSpec<GenericUnitSpec<any, any>> {
+export function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> | GenericHConcatSpec<GenericUnitSpec<any, any>> {
   return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
 
-export function isVConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
+export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
   return spec['vconcat'] !== undefined;
 }
 
-export function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
+export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
   return spec['hconcat'] !== undefined;
 }
 
@@ -315,7 +323,7 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   const {row: row, column: column, ...encoding} = spec.encoding;
 
   // Mark and encoding should be moved into the inner spec
-  const {mark, width, height, selection, encoding: _, ...outerSpec} = spec;
+  const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
 
   return {
     ...outerSpec,
@@ -324,6 +332,7 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
       ...(column ? {column}: {}),
     },
     spec: normalizeNonFacetUnit({
+      ...(projection ? {projection} : {}),
       mark,
       ...(width ? {width} : {}),
       ...(height ? {height} : {}),
@@ -388,7 +397,9 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 // FIXME(#1804): re-design this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
-  const {mark, selection, encoding, ...outerSpec} = spec;
+  // _ is used to denote a dropped property of the unit spec
+  // which should not be carried over to the layer spec
+  const {mark, selection, projection, encoding, ...outerSpec} = spec;
   const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer
@@ -408,6 +419,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 
   if (overlayWithLine) {
     layer.push({
+      ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
         style: 'lineOverlay'
@@ -418,6 +430,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
   }
   if (overlayWithPoint) {
     layer.push({
+      ...(projection ? {projection} : {}),
       mark: {
         type: 'point',
         filled: true,
@@ -437,8 +450,8 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
-function accumulate(dict: any, fieldDefs: FieldDef<Field>[]): any {
-  fieldDefs.forEach(function(fieldDef) {
+function accumulate(dict: any, defs: FieldDef<Field>[]): any {
+  defs.forEach(function(fieldDef) {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
       if (fieldDef[key] !== undefined) {

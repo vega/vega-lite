@@ -1,12 +1,13 @@
 import {isArray} from 'vega-util';
 import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
+import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
+import {expression} from '../../predicate';
 import * as util from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
-import {predicate} from '../selection/selection';
+import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
@@ -27,13 +28,23 @@ export function color(model: UnitModel) {
 
   // If there is no fill, always fill symbols
   // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square'], model.mark())) {
+  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square', 'geoshape'], model.mark())) {
     e.fill = {value: 'transparent'};
   }
   return e;
 }
 
-export function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
+export function baseEncodeEntry(model: UnitModel, ignoreOrient: boolean) {
+  return {
+    ...markDefProperties(model.markDef, ignoreOrient),
+    ...color(model),
+    ...nonPosition('opacity', model),
+    ...text(model, 'tooltip'),
+    ...text(model, 'href')
+  };
+}
+
+function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
     if (mark[prop] && (!ignoreOrient || prop !== 'orient')) {
       m[prop] = {value: mark[prop]};
@@ -84,8 +95,9 @@ function wrapCondition(
     const conditions = isArray(condition) ? condition : [condition];
     const vgConditions = conditions.map((c) => {
       const conditionValueRef = refFn(c);
+      const test = isConditionalSelection(c) ? selectionPredicate(model, c.selection) : expression(model, c.test);
       return {
-        test: predicate(model, c.selection),
+        test,
         ...conditionValueRef
       };
     });
@@ -100,7 +112,7 @@ function wrapCondition(
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'tooltip' = 'text') {
+export function text(model: UnitModel, channel: 'text' | 'tooltip' | 'href' = 'text') {
   const channelDef = model.encoding[channel];
   return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }
@@ -137,7 +149,7 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
   }
   return {
     [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}),
-    [sizeChannel]: ref.band(scaleName)
+    [sizeChannel]: ref.bandRef(scaleName)
   };
 }
 

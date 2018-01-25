@@ -42,9 +42,8 @@ Bin:
   link: bin.html
 BinParams:
   link: "bin.html#bin-parameters"
-FilterOperand:
-  name: Filter
-  link: "transform.html#filter"
+"LogicalOperand<Predicate>":
+  link: "transform.html#predicate"
 AggregateOpDef:
   link: "transform.html#aggregate-op-def"
 TimeUnit:
@@ -88,6 +87,8 @@ RangeConfig:
   link: "scale.html#range-config"
 ScaleConfig:
   link: "scale.html#config"
+ProjectionConfig:
+  link: "projection.html#config"
 SelectionConfig:
   link: "selection.html#config"
 StyleConfigIndex:
@@ -171,9 +172,12 @@ StackOffset:
   name: String
   link: "stack.html"
 
-# Scale / Axis / Legend
+# Scale / Axis / Legend / Projection
 ScaleType:
   name: String
+ProjectionType:
+  name: String
+  link: "projection.html#projection-types"
 SchemeParams:
   link: "scale.html#scheme-params"
 SelectionDomain:
@@ -219,9 +223,11 @@ VgEventStream:
 SelectionResolution:
   link: "selection.html#resolve"
 
-# Others
+# Types
 DateTime:
   link: "types.html#datetime"
+
+# Others
 HorizontalAlign:
   name: String
 VerticalAlign:

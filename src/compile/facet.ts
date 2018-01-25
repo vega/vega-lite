@@ -3,12 +3,12 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetMapping} from '../facet';
-import {field, FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
+import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
+import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -17,7 +17,6 @@ import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
-import {assembleScalesForModel} from './scale/assemble';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
 export class FacetModel extends ModelWithField {
@@ -242,7 +241,7 @@ export class FacetModel extends ModelWithField {
             update: {
               // TODO(https://github.com/vega/vega-lite/issues/2759):
               // Correct the signal for facet of concat of facet_column
-              columns: {field: field(this.facet.column, {prefix: 'distinct'})}
+              columns: {field: vgField(this.facet.column, {prefix: 'distinct'})}
             }
           }
         } : {}),
@@ -260,7 +259,7 @@ export class FacetModel extends ModelWithField {
     const ops: AggregateOp[] = [];
     if (this.child instanceof FacetModel) {
       if (this.child.channelHasField('column')) {
-        fields.push(field(this.child.facet.column));
+        fields.push(vgField(this.child.facet.column));
         ops.push('distinct');
       }
     } else {
@@ -322,16 +321,16 @@ export class FacetModel extends ModelWithField {
           name: facetRoot.name,
           data: facetRoot.data,
           groupby: [].concat(
-            hasRow ? [this.field(ROW)] : [],
-            hasColumn ? [this.field(COLUMN)] : []
+            hasRow ? [this.vgField(ROW)] : [],
+            hasColumn ? [this.vgField(COLUMN)] : []
           ),
           ...aggregateMixins
         }
       },
       sort: {
         field: [].concat(
-          hasRow ? [this.field(ROW, {expr: 'datum',})] : [],
-          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+          hasRow ? [this.vgField(ROW, {expr: 'datum',})] : [],
+          hasColumn ? [this.vgField(COLUMN, {expr: 'datum'})] : []
         ),
         order: [].concat(
           hasRow ? [ (facet.row.sort) || 'ascending'] : [],

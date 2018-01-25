@@ -60,6 +60,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_date"
@@ -67,9 +70,6 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_temp_max"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }

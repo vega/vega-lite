@@ -57,6 +57,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "year_Year"
@@ -67,9 +70,6 @@
                     },
                     "text": {
                         "signal": "timeFormat(datum[\"year_Year\"], '%Y')"
-                    },
-                    "fill": {
-                        "value": "black"
                     },
                     "align": {
                         "value": "center"

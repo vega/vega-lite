@@ -88,6 +88,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "site"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "year"
@@ -95,10 +99,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "median_yield"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "site"
                             }
                         }
                     }

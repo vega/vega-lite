@@ -211,19 +211,8 @@
             ]
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "datum.open < datum.close",
-                    "as": "isIncrease"
-                }
-            ]
-        },
-        {
             "name": "data_1",
-            "source": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
@@ -253,7 +242,7 @@
         },
         {
             "name": "data_2",
-            "source": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
@@ -294,6 +283,15 @@
             },
             "encode": {
                 "update": {
+                    "stroke": [
+                        {
+                            "test": "datum.open < datum.close",
+                            "value": "#06982d"
+                        },
+                        {
+                            "value": "#ae1325"
+                        }
+                    ],
                     "x": {
                         "scale": "x",
                         "field": "yearmonthdate_date"
@@ -305,10 +303,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "high"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "isIncrease"
                     }
                 }
             }
@@ -324,6 +318,15 @@
             },
             "encode": {
                 "update": {
+                    "fill": [
+                        {
+                            "test": "datum.open < datum.close",
+                            "value": "#06982d"
+                        },
+                        {
+                            "value": "#ae1325"
+                        }
+                    ],
                     "xc": {
                         "scale": "x",
                         "field": "yearmonthdate_date"
@@ -338,10 +341,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "close"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "isIncrease"
                     }
                 }
             }
@@ -404,27 +403,6 @@
             ],
             "zero": false,
             "nice": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "isIncrease"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "isIncrease"
-                    }
-                ],
-                "sort": true
-            },
-            "range": [
-                "#ae1325",
-                "#06982d"
-            ]
         }
     ],
     "axes": [

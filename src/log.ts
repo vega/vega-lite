@@ -11,6 +11,7 @@ import {FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {ScaleType} from './scale';
 import {Type} from './type';
+import {stringify} from './util';
 import {VgSortField} from './vega.schema';
 
 
@@ -52,8 +53,8 @@ export class LocalLogger implements LoggerInterface {
 
 export function wrap(f: (logger: LocalLogger) => void) {
   return () => {
-    const logger = current = new LocalLogger();
-    f(logger);
+    current = new LocalLogger();
+    f(current as LocalLogger);
     reset();
   };
 }
@@ -61,8 +62,8 @@ export function wrap(f: (logger: LocalLogger) => void) {
 /**
  * Set the singleton logger to be a custom logger
  */
-export function set(logger: LoggerInterface) {
-  current = logger;
+export function set(newLogger: LoggerInterface) {
+  current = newLogger;
   return current;
 }
 
@@ -139,7 +140,7 @@ export namespace message {
 
   // TRANSFORMS
   export function invalidTransformIgnored(transform: any) {
-    return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
+    return `Ignoring an invalid transform: ${stringify(transform)}.`;
   }
 
   export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the the data from the secondary source.';
@@ -147,7 +148,7 @@ export namespace message {
   // ENCODING & FACET
 
   export function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean) {
-    return `Channel ${channel} is a ${type}. Converted to {value: ${value}}.`;
+    return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
   }
 
   export function invalidFieldType(type: Type) {
@@ -167,7 +168,7 @@ export namespace message {
   }
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
-    return `Dropping ${JSON.stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
+    return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
@@ -205,7 +206,7 @@ export namespace message {
   }
 
   export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
-    return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
+    return `Using unaggregated domain with raw field has no effect (${stringify(fieldDef)}).`;
   }
 
   export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
@@ -213,7 +214,7 @@ export namespace message {
   }
 
   export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
-    return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
+    return `Unaggregated domain is currently unsupported for log scale (${stringify(fieldDef)}).`;
   }
 
   export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
@@ -246,7 +247,7 @@ export namespace message {
   }
 
   export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
-    return `Conflicting ${propertyOf} property "${property}" ("${v1}" and "${v2}").  Using "${v1}".`;
+    return `Conflicting ${propertyOf} property "${property}" (${stringify(v1)} and ${stringify(v2)}).  Using ${stringify(v1)}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {
@@ -258,7 +259,7 @@ export namespace message {
   }
 
   export function domainSortDropped(sort: VgSortField) {
-    return `Dropping sort property "${JSON.stringify(sort)}" as unioned domains only support boolean or op 'count'.`;
+    return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
   }
 
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
@@ -283,7 +284,7 @@ export namespace message {
 
   // TIMEUNIT
   export function invalidTimeUnit(unitName: string, value: string | number) {
-    return `Invalid ${unitName}: "${value}"`;
+    return `Invalid ${unitName}: ${stringify(value)}`;
   }
 
   export function dayReplacedWithDate(fullTimeUnit: string) {
@@ -292,7 +293,7 @@ export namespace message {
   }
 
   export function droppedDay(d: DateTime | DateTimeExpr) {
-    return `Dropping day from datetime ${JSON.stringify(d)} as day cannot be combined with other units.`;
+    return `Dropping day from datetime ${stringify(d)} as day cannot be combined with other units.`;
   }
 }
 

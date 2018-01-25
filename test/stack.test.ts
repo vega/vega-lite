@@ -301,17 +301,19 @@ describe('stack', () => {
   }));
 
   it('should throws warning if the aggregated axis has a non-summative aggregate', log.wrap((localLogger) => {
-    for (const stack of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
+    for (const stackOffset of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       for (const aggregate of ['average', 'variance', 'q3'] as AggregateOp[]) {
-        const marks = stack === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+        const marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           const spec: TopLevel<UnitSpec> = {
             "data": {"url": "data/barley.json"},
             "mark": mark,
             "encoding": {
               "x": {
-                aggregate, stack,
-                "field": "a", "type": "quantitative"
+                aggregate,
+                stack: stackOffset,
+                "field": "a",
+                "type": "quantitative"
               },
               "y": {"field": "variety", "type": "nominal"},
               "color": {"field": "site", "type": "nominal"}

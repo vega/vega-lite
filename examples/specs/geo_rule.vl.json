@@ -1,0 +1,98 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "value": "#A9ACB5"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/airports.csv"
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "latitude",
+          "type": "latitude"
+        },
+        "size": {"value": 5},
+        "color": {"value": "gray"}
+      }
+    },
+    {
+      "data": {
+        "url": "data/flights-airport.csv"
+      },
+      "transform": [
+        {"filter": {"field": "origin", "equal": "SEA"}},
+        {
+          "lookup": "origin",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["origin_latitude", "origin_longitude"]
+        },
+        {
+          "lookup": "destination",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["dest_latitude", "dest_longitude"]
+        }
+      ],
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "rule",
+      "encoding": {
+        "x": {
+          "field": "origin_longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "origin_latitude",
+          "type": "latitude"
+        },
+        "x2": {
+          "field": "dest_longitude",
+          "type": "longitude"
+        },
+        "y2": {
+          "field": "dest_latitude",
+          "type": "latitude"
+        }
+      }
+    }
+  ]
+}

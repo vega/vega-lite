@@ -207,6 +207,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "Worldwide_Gross"
@@ -214,12 +220,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "US_DVD_Sales"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

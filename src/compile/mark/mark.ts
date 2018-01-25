@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
-import {field, getFieldDef} from '../../fielddef';
+import {getFieldDef, vgField} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, keys} from '../../util';
@@ -10,6 +10,7 @@ import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
+import {geoshape} from './geoshape';
 import {line} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -28,7 +29,8 @@ const markCompiler: {[type: string]: MarkCompiler} = {
   rect: rect,
   rule: rule,
   circle: circle,
-  square: square
+  square: square,
+  geoshape: geoshape
 };
 
 
@@ -46,6 +48,8 @@ function parsePathMark(model: UnitModel) {
   const mark = model.mark();
   const details = pathGroupingFields(model.encoding);
 
+  const postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
+
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
   const style = getStyles(model.markDef);
   const sort = getPathSort(model);
@@ -60,7 +64,8 @@ function parsePathMark(model: UnitModel) {
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
-      encode: {update: markCompiler[mark].encodeEntry(model)}
+      encode: {update: markCompiler[mark].encodeEntry(model)},
+      ...postEncodingTransform ? {transform: postEncodingTransform} : {}
     }
   ];
 
@@ -99,13 +104,13 @@ export function getPathSort(model: UnitModel) {
     const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
     const s = model.sort(dimensionChannel);
     const sortField = isSortField(s) ?
-      field({
+      vgField({
         // FIXME: this op might not already exist?
         // FIXME: what if dimensionChannel (x or y) contains custom domain?
         aggregate: isAggregate(model.encoding) ? s.op : undefined,
         field: s.field
       }, {expr: 'datum'}) :
-      model.field(dimensionChannel, {
+      model.vgField(dimensionChannel, {
         // For stack with imputation, we only have bin_mid
         binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
         expr: 'datum'
@@ -126,6 +131,8 @@ function parseNonPathMark(model: UnitModel) {
   const style = getStyles(model.markDef);
   const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
 
+  const postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
+
   const marks: any[] = []; // TODO: vgMarks
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
@@ -136,7 +143,8 @@ function parseNonPathMark(model: UnitModel) {
     ...(clip ? {clip: true} : {}),
     ...(style? {style} : {}),
     from: {data: model.requestDataName(MAIN)},
-    encode: {update: markCompiler[mark].encodeEntry(model)}
+    encode: {update: markCompiler[mark].encodeEntry(model)},
+    ...(postEncodingTransform ? {transform: postEncodingTransform} : {})
   });
 
   return marks;
@@ -154,9 +162,10 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       case 'y':
       case 'order':
       case 'tooltip':
+      case 'href':
       case 'x2':
       case 'y2':
-      // TODO: case 'href', 'cursor':
+      // TODO: case 'cursor':
 
       // text, shape, shouldn't be a part of line/area
       case 'text':
@@ -168,7 +177,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
         if (channelDef) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
             if (!fieldDef.aggregate) {
-              details.push(field(fieldDef, {}));
+              details.push(vgField(fieldDef, {}));
             }
           });
         }
@@ -179,7 +188,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       // TODO strokeDashOffset:
         const fieldDef = getFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
-          details.push(field(fieldDef, {}));
+          details.push(vgField(fieldDef, {}));
         }
         return details;
       default:

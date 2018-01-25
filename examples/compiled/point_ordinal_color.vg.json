@@ -77,6 +77,13 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "a"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "x"
@@ -84,13 +91,6 @@
                     "y": {
                         "scale": "y",
                         "field": "y"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "a"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

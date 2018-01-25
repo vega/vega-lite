@@ -674,6 +674,16 @@
             },
             "encode": {
                 "update": {
+                    "fill": [
+                        {
+                            "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlInterval(\"alex_store\", datum)) || (vlInterval(\"morgan_store\", datum)))",
+                            "scale": "color",
+                            "field": "count_*"
+                        },
+                        {
+                            "value": "grey"
+                        }
+                    ],
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -689,17 +699,7 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": [
-                        {
-                            "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlInterval(\"alex_store\", datum)) || (vlInterval(\"morgan_store\", datum)))",
-                            "scale": "color",
-                            "field": "count_*"
-                        },
-                        {
-                            "value": "grey"
-                        }
-                    ]
+                    }
                 }
             }
         },

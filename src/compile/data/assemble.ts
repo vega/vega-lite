@@ -10,6 +10,8 @@ import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
+import {GeoJSONNode} from './geojson';
+import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {LookupNode} from './lookup';
 import {SourceNode} from './source';
@@ -85,6 +87,8 @@ function makeWalkTree(data: VgData[]) {
 
     if (node instanceof FilterNode ||
       node instanceof CalculateNode ||
+      node instanceof GeoPointNode ||
+      node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof IdentifierNode) {

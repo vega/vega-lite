@@ -28,7 +28,7 @@ describe('Axis', function() {
     });
   });
   describe('parseUnitAxis', function() {
-    it('should produce Vega grid axis objects for both main axis and for grid axis)', function() {
+    it('should produce Vega grid axis objects for both main axis and for grid axis', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -45,7 +45,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].grid.explicit.grid, true);
     });
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled)', function() {
+    it('should produce Vega grid axis objects for only main axis if grid is disabled', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -61,7 +61,26 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
     });
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axisX)', function() {
+    it('should ignore null scales', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "longitude"
+          },
+          y: {
+            field: "b",
+            type: "latitude"
+          }
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.isUndefined(axisComponent['x']);
+      assert.isUndefined(axisComponent['y']);
+    });
+
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axisX', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -78,7 +97,7 @@ describe('Axis', function() {
     });
 
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axis)', function() {
+    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axis', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {

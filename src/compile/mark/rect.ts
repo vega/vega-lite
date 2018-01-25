@@ -7,17 +7,13 @@ import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-
 export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.markDefProperties(model.markDef, true),
+      ...mixins.baseEncodeEntry(model, true),
       ...x(model),
       ...y(model),
-      ...mixins.color(model),
-      ...mixins.text(model, 'tooltip'),
-      ...mixins.nonPosition('opacity', model),
     };
   }
 };

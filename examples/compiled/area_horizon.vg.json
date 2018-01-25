@@ -153,6 +153,12 @@
                     "orient": {
                         "value": "vertical"
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.6
+                    },
                     "x": {
                         "scale": "x",
                         "field": "x"
@@ -165,12 +171,6 @@
                         "field": {
                             "group": "height"
                         }
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.6
                     }
                 }
             }
@@ -194,6 +194,12 @@
                     "orient": {
                         "value": "vertical"
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.3
+                    },
                     "x": {
                         "scale": "x",
                         "field": "x"
@@ -206,12 +212,6 @@
                         "field": {
                             "group": "height"
                         }
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.3
                     }
                 }
             }

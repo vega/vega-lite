@@ -207,6 +207,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x2": {
                                 "scale": "child_distance_x",
                                 "field": "bin_maxbins_20_distance",
@@ -223,9 +226,6 @@
                             "y2": {
                                 "scale": "child_distance_y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }
@@ -299,6 +299,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x2": {
                                 "scale": "child_delay_x",
                                 "field": "bin_maxbins_20_delay",
@@ -315,9 +318,6 @@
                             "y2": {
                                 "scale": "child_delay_y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }
@@ -391,6 +391,9 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
                             "x2": {
                                 "scale": "child_time_x",
                                 "field": "bin_maxbins_20_time",
@@ -407,9 +410,6 @@
                             "y2": {
                                 "scale": "child_time_y",
                                 "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
                             }
                         }
                     }

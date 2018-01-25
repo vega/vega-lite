@@ -90,6 +90,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_yield"
@@ -97,9 +100,6 @@
                     "y": {
                         "scale": "y",
                         "field": "variety"
-                    },
-                    "fill": {
-                        "value": "black"
                     }
                 }
             }
@@ -115,6 +115,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "ci0_yield"
@@ -126,9 +129,6 @@
                     "x2": {
                         "scale": "x",
                         "field": "ci1_yield"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }

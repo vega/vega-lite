@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {field, FieldDef} from '../../fielddef';
+import {FieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {duplicate} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
@@ -12,7 +12,7 @@ function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
     const fieldDef = by.fieldDef;
 
-    const _field = field(fieldDef);
+    const _field = vgField(fieldDef);
     if (_field) {
       fields.push(_field);
     }
@@ -96,7 +96,7 @@ export class StackNode extends DataFlowNode {
 
     return new StackNode({
       dimensionFieldDef,
-      field: model.field(stackProperties.fieldChannel),
+      field: model.vgField(stackProperties.fieldChannel),
       facetby: [],
       stackby,
       sort,
@@ -142,15 +142,15 @@ export class StackNode extends DataFlowNode {
         if (impute) {
           // For binned group by field with impute, we calculate bin_mid
           // as we cannot impute two fields simultaneously
-          return [field(dimensionFieldDef, {binSuffix: 'mid'})];
+          return [vgField(dimensionFieldDef, {binSuffix: 'mid'})];
         }
         return [
           // For binned group by field without impute, we need both bin (start) and bin_end
-          field(dimensionFieldDef, {}),
-          field(dimensionFieldDef, {binSuffix: 'end'})
+          vgField(dimensionFieldDef, {}),
+          vgField(dimensionFieldDef, {binSuffix: 'end'})
         ];
       }
-      return [field(dimensionFieldDef)];
+      return [vgField(dimensionFieldDef)];
     }
     return [];
   }
@@ -162,7 +162,7 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      const dimensionField = dimensionFieldDef ? field(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
+      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
 
       if (dimensionFieldDef.bin) {
         // As we can only impute one field at a time, we need to calculate
@@ -170,9 +170,9 @@ export class StackNode extends DataFlowNode {
         transform.push({
           type: 'formula',
           expr: '(' +
-            field(dimensionFieldDef, {expr: 'datum'}) +
+            vgField(dimensionFieldDef, {expr: 'datum'}) +
             '+' +
-            field(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
+            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
             ')/2',
           as: dimensionField
         });

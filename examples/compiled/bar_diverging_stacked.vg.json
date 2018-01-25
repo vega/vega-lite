@@ -374,6 +374,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "type"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "percentage_start"
@@ -389,10 +393,6 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "type"
                     }
                 }
             }

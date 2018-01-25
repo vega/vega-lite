@@ -7,7 +7,9 @@ import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField, SortField} from '../../sort';
+import {hash} from '../../util';
 import * as util from '../../util';
+import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {
   isDataRefDomain,
   VgDataRef,
@@ -15,9 +17,8 @@ import {
   VgFieldRefUnionDomain,
   VgNonUnionDomain,
   VgSortField,
-  VgUnionSortField
+  VgUnionSortField,
 } from '../../vega.schema';
-import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -54,8 +55,28 @@ function parseUnitScaleDomain(model: UnitModel) {
 
       // FIXME: replace this with a special property in the scaleComponent
       localScaleCmpt.set('domainRaw', {
-        signal: SELECTION_DOMAIN + JSON.stringify(specifiedDomain)
+        signal: SELECTION_DOMAIN + hash(specifiedDomain)
       }, true);
+    }
+
+    if (model.component.data.isFaceted) {
+      // get resolve from closest facet parent as this decides whether we need to refer to cloned subtree or not
+      let facetParent: Model = model;
+      while (!isFacetModel(facetParent) && facetParent.parent) {
+        facetParent = facetParent.parent;
+      }
+
+      const resolve = facetParent.component.resolve.scale[channel];
+
+      if (resolve === 'shared') {
+        for (const domain of domains) {
+          // Replace the scale domain with data output from a cloned subtree after the facet.
+          if (isDataRefDomain(domain)) {
+            // use data from cloned subtree (which is the same as data but with a prefix added once)
+            domain.data = FACET_SCALE_PREFIX + domain.data.replace(FACET_SCALE_PREFIX, '');
+          }
+        }
+      }
     }
   });
 }
@@ -81,16 +102,6 @@ function parseNonUnitScaleDomain(model: Model) {
           domains = domains.concat(childComponent.domains);
         }
       }
-    }
-
-    if (isFacetModel(model)) {
-      domains.forEach((domain) => {
-        // Replace the scale domain with data output from a cloned subtree after the facet.
-        if (isDataRefDomain(domain)) {
-          // use data from cloned subtree (which is the same as data but with a prefix added once)
-          domain.data = FACET_SCALE_PREFIX + domain.data.replace(FACET_SCALE_PREFIX, '');
-        }
-      });
     }
 
     localScaleComponents[channel].domains = domains;
@@ -173,10 +184,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     const data = model.requestDataName(MAIN);
     return [{
       data,
-      field: model.field(channel, {suffix: 'start'})
+      field: model.vgField(channel, {suffix: 'start'})
     }, {
       data,
-      field: model.field(channel, {suffix: 'end'})
+      field: model.vgField(channel, {suffix: 'end'})
     }];
   }
 
@@ -186,10 +197,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     const data = model.requestDataName(MAIN);
     return [{
       data,
-      field: model.field(channel, {aggregate: 'min'})
+      field: model.vgField(channel, {aggregate: 'min'})
     }, {
       data,
-      field: model.field(channel, {aggregate: 'max'})
+      field: model.vgField(channel, {aggregate: 'max'})
     }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
@@ -205,10 +216,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         // so we can aggregate values for the scale independently from the main aggregation.
         data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
         // Use range if we added it and the scale does not support computing a range as a signal.
-        field: model.field(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
+        field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
         // we have to use a sort object if sort = true to make the sort correct by bin start
         sort: sort === true || !isSortField(sort) ? {
-          field: model.field(channel, {}),
+          field: model.vgField(channel, {}),
           op: 'min' // min or max doesn't matter since we sort by the start of the bin range
         } : sort
       }];
@@ -218,16 +229,16 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
         const data = model.requestDataName(MAIN);
         return [{
           data,
-          field: model.field(channel, {})
+          field: model.vgField(channel, {})
         }, {
           data,
-          field: model.field(channel, {binSuffix: 'end'})
+          field: model.vgField(channel, {binSuffix: 'end'})
         }];
       } else {
         // TODO: use bin_mid
         return [{
           data: model.requestDataName(MAIN),
-          field: model.field(channel, {})
+          field: model.vgField(channel, {})
         }];
       }
     }
@@ -236,13 +247,13 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
-      field: model.field(channel),
+      field: model.vgField(channel),
       sort: sort
     }];
   } else {
     return [{
       data: model.requestDataName(MAIN),
-      field: model.field(channel)
+      field: model.vgField(channel)
     }];
   }
 }
@@ -263,7 +274,7 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   if (sort === 'descending') {
     return {
       op: 'min',
-      field: model.field(channel),
+      field: model.vgField(channel),
       order: 'descending'
     };
   }

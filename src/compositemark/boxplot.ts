@@ -4,7 +4,7 @@ import {Config} from '../config';
 import {reduce} from '../encoding';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
-import {field, Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from './../fielddef';
+import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
 import {MarkConfig} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
@@ -93,7 +93,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
-  const {mark, encoding, selection, ...outerSpec} = spec;
+  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -198,7 +198,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
-  const {mark: mark, encoding: encoding, ..._outerSpec} = spec;
+  const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
     // x is continuous
@@ -233,7 +233,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 
 
 function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
-  const {mark: mark, encoding: encoding, ..._outerSpec} = spec;
+  const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
   let continuousAxis: 'x' | 'y';
@@ -328,10 +328,10 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         aggregate.push({
           op: channelDef.aggregate,
           field: channelDef.field,
-          as: field(channelDef)
+          as: vgField(channelDef)
         });
       } else if (channelDef.aggregate === undefined) {
-        const transformedField = field(channelDef);
+        const transformedField = vgField(channelDef);
 
         // Add bin or timeUnit transform if applicable
         const bin = channelDef.bin;
@@ -347,7 +347,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
       }
       // now the field should refer to post-transformed field instead
       encodingWithoutContinuousAxis[channel] = {
-        field: field(channelDef),
+        field: vgField(channelDef),
         type: channelDef.type
       };
     } else {

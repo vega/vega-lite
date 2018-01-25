@@ -28,7 +28,7 @@ By default, all time units represent date time using local time.  To use UTC tim
 
 
 {: #encoding}
-## Encoding
+## Time Unit in Encoding Field Definition
 
 {: .suppress-error}
 ```json
@@ -62,7 +62,7 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 <span class="vl-example" data-name="bar_month"></span>
 
 {: #transform}
-## Transform
+## Time Unit Transform
 
 {: .suppress-error}
 ```json

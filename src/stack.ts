@@ -1,7 +1,7 @@
 import {SUM_OPS} from './aggregate';
 import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
 import {channelHasField, Encoding} from './encoding';
-import {Field, field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFieldDef} from './fielddef';
+import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFieldDef, vgField} from './fielddef';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
@@ -16,8 +16,8 @@ const STACK_OFFSET_INDEX: Flag<StackOffset> = {
   normalize: 1
 };
 
-export function isStackOffset(stack: string): stack is StackOffset {
-  return !!STACK_OFFSET_INDEX[stack];
+export function isStackOffset(s: string): s is StackOffset {
+  return !!STACK_OFFSET_INDEX[s];
 }
 
 export interface StackProperties {
@@ -91,11 +91,11 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string>;
-  const stackedField = isStringFieldDef(stackedFieldDef) ? field(stackedFieldDef, {}) : undefined;
+  const stackedField = isStringFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
   const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
   const dimensionDef = encoding[dimensionChannel];
-  const dimensionField = isStringFieldDef(dimensionDef) ? field(dimensionDef, {}) : undefined;
+  const dimensionField = isStringFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -108,7 +108,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
         }
 
         // Check whether the channel's field is identical to x/y's field or if the channel is a repeat
-        const f = isStringFieldDef(fieldDef) ? field(fieldDef, {}) : undefined;
+        const f = isStringFieldDef(fieldDef) ? vgField(fieldDef, {}) : undefined;
         if (
           // if fielddef is a repeat, just include it in the stack by
           !f ||

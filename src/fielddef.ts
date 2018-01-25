@@ -8,13 +8,13 @@ import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
+import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {accessPath, isArray, isBoolean, isNumber, isString, titlecase} from './util';
-
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -32,13 +32,22 @@ export interface ValueDef {
  */
 export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
 
+export type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
 
-export type Conditional<T> = {
+export type ConditionalPredicate<T> = {
+  test: LogicalOperand<Predicate>;
+} & T;
+
+export type ConditionalSelection<T> = {
   /**
    * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
    */
   selection: LogicalOperand<string>;
 } & T;
+
+export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T> {
+  return c['selection'];
+}
 
 /**
  * A FieldDef with Condition<ValueDef>
@@ -132,7 +141,6 @@ export interface FieldDefBase<F> {
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
    *
    * __Default value:__ `undefined` (None)
-   *
    */
   aggregate?: Aggregate;
 }
@@ -143,6 +151,7 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
+   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when projecting geographical coordinates using a `"point"` mark (on `"x"`, and `"y"` channels), a `"rule"` mark (on `"x"`, `"x2"`, `"y"`, and `"y2"` channels) or projecting a GeoJSON shapefile on a `"geoshape"` mark (on the `"shape"` channel).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
@@ -245,7 +254,7 @@ export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef
   );
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -258,7 +267,7 @@ export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef
 }
 
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
-    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+  return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
 export interface FieldRefOption {
@@ -276,7 +285,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
+export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -321,9 +330,12 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
+    case 'geojson':
       return true;
     case 'quantitative':
       return !!fieldDef.bin;
+    case 'latitude':
+    case 'longitude':
     case 'temporal':
       return false;
   }
@@ -341,7 +353,7 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
 
 export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
-  const {field, bin, timeUnit, aggregate} = fieldDef;
+  const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
   } else if (bin) {
@@ -535,6 +547,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'text':
     case 'detail':
     case 'tooltip':
+    case 'href':
       return COMPATIBLE;
 
     case 'opacity':
@@ -550,10 +563,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal') {
+      if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data only'
+          warning: 'Shape channel should be used with nominal data or geojson only'
         };
       }
       return COMPATIBLE;

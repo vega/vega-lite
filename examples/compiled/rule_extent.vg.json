@@ -59,6 +59,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Origin"
@@ -70,9 +73,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "max_Horsepower"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }

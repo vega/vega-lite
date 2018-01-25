@@ -201,7 +201,7 @@ export function defaultRange(
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       }
-      return mark === 'rect' ? 'heatmap' : 'ramp';
+      return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];

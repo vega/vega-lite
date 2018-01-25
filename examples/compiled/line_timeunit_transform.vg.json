@@ -67,6 +67,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "month"
@@ -74,9 +77,6 @@
                     "y": {
                         "scale": "y",
                         "field": "max_temp_max"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }

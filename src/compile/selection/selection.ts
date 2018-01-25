@@ -212,7 +212,7 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-export function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
+export function selectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
   const stores: string[] = [];
   function expr(name: string): string {
     const vname = varName(name);
@@ -320,8 +320,8 @@ export function unitName(model: Model) {
   let name = stringValue(model.name);
   const facet = getFacetModel(model);
   if (facet) {
-    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.field('row'))}` : '')
-      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.field('column'))}` : '');
+    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.vgField('row'))}` : '')
+      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.vgField('column'))}` : '');
   }
   return name;
 }

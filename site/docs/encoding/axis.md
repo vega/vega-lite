@@ -125,8 +125,6 @@ __See also:__ [General Axis Properties](#general).
 
 {% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="AxisConfig" %}
 
-__See also:__ [Axis Grid Properties](#grid).
-
 {:#labels-config}
 ### Labels
 

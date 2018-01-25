@@ -156,6 +156,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "lower_whisker_people"
@@ -168,9 +171,6 @@
                     "x2": {
                         "scale": "x",
                         "field": "lower_box_people"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -187,6 +187,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "upper_box_people"
@@ -199,9 +202,6 @@
                     "x2": {
                         "scale": "x",
                         "field": "upper_whisker_people"
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -218,6 +218,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "lower_box_people"
@@ -233,9 +236,6 @@
                     },
                     "height": {
                         "value": 14
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -255,6 +255,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "white"
+                    },
                     "xc": {
                         "scale": "x",
                         "field": "mid_box_people"
@@ -269,9 +272,6 @@
                     },
                     "width": {
                         "value": 1
-                    },
-                    "fill": {
-                        "value": "white"
                     }
                 }
             }

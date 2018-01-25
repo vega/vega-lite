@@ -2,9 +2,9 @@
  * Utility for generating row / column headers
  */
 import {FacetFieldDef} from '../../facet';
-import {field} from '../../fielddef';
+import {vgField} from '../../fielddef';
 import {keys} from '../../util';
-import {AxisOrient, VgAxis} from '../../vega.schema';
+import {AxisOrient, VgAxis, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
 
@@ -84,17 +84,30 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   };
 }
 
-export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
+export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
+  const layoutHeader = model.component.layoutHeaders[channel];
+  const groups = [];
+  for (const headerType of HEADER_TYPES) {
+    if (layoutHeader[headerType]) {
+      for (const headerCmpt of layoutHeader[headerType]) {
+        groups.push(getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt));
+      }
+    }
+  }
+  return groups;
+}
+
+function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
   if (headerCmpt) {
     let title = null;
-    if (layoutHeader.facetFieldDef && headerCmpt.labels) {
-      const {facetFieldDef} = layoutHeader;
+    const {facetFieldDef} = layoutHeader;
+    if (facetFieldDef && headerCmpt.labels) {
       const {header = {}} = facetFieldDef;
       const {format, labelAngle} = header;
 
       const update = {
         ...(
-          labelAngle ? {angle: {value: labelAngle}} : {}
+          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
         )
 
         // TODO(https://github.com/vega/vega-lite/issues/2446): apply label* (e.g, labelAlign, labelBaseline) here
@@ -122,8 +135,8 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         ...(layoutHeader.facetFieldDef ? {
           from: {data: model.getName(channel + '_domain')},
           sort: {
-            field: field(layoutHeader.facetFieldDef, {expr: 'datum'}),
-            order: (layoutHeader.facetFieldDef.header && layoutHeader.facetFieldDef.sort) || 'ascending'
+            field: vgField(facetFieldDef, {expr: 'datum'}),
+            order: facetFieldDef.sort || 'ascending'
           }
         } : {}),
         ...(title ? {title} : {}),

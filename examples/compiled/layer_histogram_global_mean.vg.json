@@ -99,6 +99,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x2": {
                         "scale": "x",
                         "field": "bin_maxbins_10_IMDB_Rating",
@@ -115,9 +118,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -133,6 +133,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "red"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "mean_IMDB_Rating"
@@ -144,9 +147,6 @@
                     },
                     "y2": {
                         "value": 0
-                    },
-                    "stroke": {
-                        "value": "red"
                     },
                     "strokeWidth": {
                         "value": 5

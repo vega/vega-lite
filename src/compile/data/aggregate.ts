@@ -1,6 +1,6 @@
 import {AggregateOp} from '../../aggregate';
 import {Channel, isScaleChannel} from '../../channel';
-import {field, FieldDef} from '../../fielddef';
+import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, differ, duplicate, keys, StringSet} from '../../util';
@@ -11,14 +11,14 @@ import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
-    dims[field(fieldDef, {})] = true;
-    dims[field(fieldDef, {binSuffix: 'end'})] = true;
+    dims[vgField(fieldDef, {})] = true;
+    dims[vgField(fieldDef, {binSuffix: 'end'})] = true;
 
     if (binRequiresRange(fieldDef, channel)) {
-      dims[field(fieldDef, {binSuffix: 'range'})] = true;
+      dims[vgField(fieldDef, {binSuffix: 'range'})] = true;
     }
   } else {
-    dims[field(fieldDef)] = true;
+    dims[vgField(fieldDef)] = true;
   }
   return dims;
 }
@@ -75,15 +75,15 @@ export class AggregateNode extends DataFlowNode {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = field(fieldDef, {aggregate: 'count'});
+          meas['*']['count'] = vgField(fieldDef, {aggregate: 'count'});
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = field(fieldDef);
+          meas[fieldDef.field][fieldDef.aggregate] = vgField(fieldDef);
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[fieldDef.field]['min'] = field(fieldDef, {aggregate: 'min'});
-            meas[fieldDef.field]['max'] = field(fieldDef, {aggregate: 'max'});
+            meas[fieldDef.field]['min'] = vgField(fieldDef, {aggregate: 'min'});
+            meas[fieldDef.field]['max'] = vgField(fieldDef, {aggregate: 'max'});
           }
         }
       } else {
@@ -105,10 +105,10 @@ export class AggregateNode extends DataFlowNode {
       if (s.op) {
         if (s.op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = s.as || field(s);
+          meas['*']['count'] = s.as || vgField(s);
         } else {
           meas[s.field] = meas[s.field] || {};
-          meas[s.field][s.op] = s.as || field(s);
+          meas[s.field][s.op] = s.as || vgField(s);
         }
       }
     }

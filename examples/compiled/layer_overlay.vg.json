@@ -155,6 +155,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "darkred"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -162,9 +165,6 @@
                     "y": {
                         "scale": "y",
                         "field": "max_Horsepower"
-                    },
-                    "stroke": {
-                        "value": "darkred"
                     }
                 }
             }
@@ -181,6 +181,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "darkred"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -188,9 +191,6 @@
                     "y": {
                         "scale": "y",
                         "field": "max_Horsepower"
-                    },
-                    "fill": {
-                        "value": "darkred"
                     }
                 }
             }
@@ -210,6 +210,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -217,9 +220,6 @@
                     "y": {
                         "scale": "y",
                         "field": "min_Horsepower"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -236,6 +236,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -243,9 +246,6 @@
                     "y": {
                         "scale": "y",
                         "field": "min_Horsepower"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

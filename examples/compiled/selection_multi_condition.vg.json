@@ -396,14 +396,6 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
                     "stroke": [
                         {
                             "test": "!(length(data(\"hoverbrush_store\"))) || (vlMulti(\"hoverbrush_store\", datum))",
@@ -419,6 +411,14 @@
                     ],
                     "fill": {
                         "value": "transparent"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
                     }
                 }
             }

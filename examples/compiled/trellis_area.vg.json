@@ -265,6 +265,10 @@
                                     "orient": {
                                         "value": "vertical"
                                     },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "symbol"
+                                    },
                                     "x": {
                                         "scale": "x",
                                         "field": "date"
@@ -276,10 +280,6 @@
                                     "y2": {
                                         "scale": "y",
                                         "field": "price_start"
-                                    },
-                                    "fill": {
-                                        "scale": "color",
-                                        "field": "symbol"
                                     }
                                 }
                             }

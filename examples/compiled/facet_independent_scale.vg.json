@@ -228,6 +228,10 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
                             "x": {
                                 "scale": "child_x",
                                 "field": "age"
@@ -243,10 +247,6 @@
                             "y2": {
                                 "scale": "y",
                                 "field": "sum_people_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
                             }
                         }
                     }

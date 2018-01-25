@@ -259,6 +259,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Horsepower"
@@ -266,12 +272,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "Miles_per_Gallon"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }
@@ -361,6 +361,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Horsepower"
@@ -368,12 +374,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "Acceleration"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             }
                         }
                     }

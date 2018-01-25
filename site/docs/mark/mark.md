@@ -17,7 +17,8 @@ The supported `mark` types are
 [`"rule"`](rule.html),
 [`"square"`](square.html),
 [`"text"`](text.html),
-and [`"tick"`](tick.html).
+[`"tick"`](tick.html),
+and [`"geoshape"`](geoshape.html).
 In general, one mark instance is generated per input data element. However, line and area marks represent multiple data elements as a contiguous line or shape.
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
@@ -104,6 +105,7 @@ You can use [`text`](text.html) marks as labels and set its offset (`dx` or `dy`
     "point": ...,
     "rect": ...,
     "rule": ...,
+    "geoshape": ...,
     "square": ...,
     "text": ...,
     "tick": ...
@@ -125,10 +127,16 @@ The rest of this section describe groups of properties supported by the `mark` c
 
 {% include table.html props="opacity,fillOpacity,strokeOpacity" source="MarkConfig" %}
 
-
 ### Stroke Style
 
 {% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkConfig" %}
+
+{:#hyperlink}
+### Hyperlink Properties
+
+Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. A `cursor` property can also be provided to serve as affordance for the links.
+
+{% include table.html props="href,cursor" source="MarkConfig" %}
 
 <!-- one example for custom fill/stroke -->
 

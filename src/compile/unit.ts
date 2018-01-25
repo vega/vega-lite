@@ -6,6 +6,7 @@ import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {isMarkDef, Mark, MarkDef} from '../mark';
+import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
@@ -49,6 +50,8 @@ export class UnitModel extends ModelWithField {
 
   protected specifiedLegends: LegendIndex = {};
 
+  public specifiedProjection: Projection = {};
+
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
@@ -73,6 +76,7 @@ export class UnitModel extends ModelWithField {
 
     this.specifiedAxes = this.initAxes(encoding);
     this.specifiedLegends = this.initLegend(encoding);
+    this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;

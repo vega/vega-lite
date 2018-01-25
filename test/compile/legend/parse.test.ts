@@ -3,10 +3,48 @@
 import {assert} from 'chai';
 import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
+import {parseLegend} from '../../../src/compile/legend/parse';
+import {isFieldDef} from '../../../src/fielddef';
 import {UnitSpec} from '../../../src/spec';
+import {GEOJSON} from '../../../src/type';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
-describe('compile/legend', function() {
+describe('compile/legend', function () {
+  describe('parseUnitLegend()', function () {
+    it(`should not produce a Vega legend object on channel 'shape' with type 'geojson'`, function () {
+      const spec: UnitSpec = {
+        "mark": "geoshape",
+        "data": {"url": "data/income.json"},
+        "transform": [
+          {
+            "lookup": "id",
+            "from": {
+              "data": {
+                "url": "data/us-10m.json",
+                "format": {"type": "topojson", "feature": "states"}
+              },
+              "key": "id"
+            },
+            "as": "geo"
+          }
+        ],
+        "encoding": {
+          "shape": {"field": "geo", "type": "geojson"}
+        }
+      };
+
+      const unitModel = parseUnitModelWithScale(spec);
+      const channelDef = unitModel.encoding[SHAPE];
+      assert.isTrue(isFieldDef(channelDef));
+      if (isFieldDef(channelDef)) {
+        assert.equal(channelDef.type, GEOJSON);
+      }
+      parseLegend(unitModel);
+      const legendComp = unitModel.component.legends;
+      assert.isUndefined(legendComp[SHAPE]);
+    });
+  });
+
   describe('parseLegendForChannel()', function() {
     it('should produce a Vega legend object with correct type and scale for color', function() {
       const model = parseUnitModelWithScale({
@@ -26,17 +64,22 @@ describe('compile/legend', function() {
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, function() {
-        const s: UnitSpec = {
+        const spec: UnitSpec = {
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"}
           }
         };
-        s.encoding[channel] = {field: "a", type: "nominal"};
+        spec.encoding[channel] = {field: "a", type: "nominal"};
 
-        const model = parseUnitModelWithScale(s);
+        const model = parseUnitModelWithScale(spec);
 
         const def = legendParse.parseLegendForChannel(model, channel).combine();
+
+        const channelDef = model.encoding[channel];
+        if (isFieldDef(channelDef)) {
+          assert.notEqual(channelDef.type, GEOJSON);
+        }
 
         if (channel !== OPACITY) {
           assert.equal(def.encode.symbols.update.opacity.value, 0.7);

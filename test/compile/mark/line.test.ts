@@ -1,13 +1,12 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
-
-import * as log from '../../../src/log';
 
 import {COLOR, SIZE, X, Y} from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
+import * as log from '../../../src/log';
 import {LINE} from '../../../src/mark';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Line', function() {
 
@@ -26,7 +25,7 @@ describe('Mark: Line', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
 
-    it('should have scale for y', function(){
+    it('should have scale for y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
   });

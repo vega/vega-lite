@@ -297,6 +297,12 @@
                                     "opacity": {
                                         "value": 0.7
                                     },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
                                     "x": {
                                         "scale": "x",
                                         "field": "Horsepower"
@@ -304,12 +310,6 @@
                                     "y": {
                                         "scale": "y",
                                         "field": "Acceleration"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
                                     }
                                 }
                             }

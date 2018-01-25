@@ -66,6 +66,13 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "gender"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "x": {
                         "scale": "x",
                         "field": "age"
@@ -81,13 +88,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "gender"
-                    },
-                    "opacity": {
-                        "value": 0.7
                     }
                 }
             }

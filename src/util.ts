@@ -1,4 +1,4 @@
-import * as stringify from 'json-stable-stringify';
+import * as stableStringify from 'json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
@@ -37,12 +37,20 @@ export function omit(obj: object, props: string[]) {
   return copy;
 }
 
+/**
+ * Converts any object into a string representation that can be consumed by humans.
+ */
+export const stringify = stableStringify;
+
+/**
+ * Converts any object into a string of limited size, or a number.
+ */
 export function hash(a: any) {
-  if (isString(a) || isNumber(a) || isBoolean(a)) {
-    return String(a);
+  if (isNumber(a)) {
+    return a;
   }
 
-  const str = stringify(a);
+  const str = isString(a) ? a : stableStringify(a);
 
   // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
   if (str.length < 100) {

@@ -368,6 +368,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x2": {
                         "scale": "x",
                         "field": "bin_maxbins_10_Acceleration",
@@ -384,9 +387,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -402,6 +402,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "goldenrod"
+                    },
                     "x2": {
                         "scale": "x",
                         "field": "bin_maxbins_10_Acceleration",
@@ -418,9 +421,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "goldenrod"
                     }
                 }
             }

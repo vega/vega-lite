@@ -90,14 +90,14 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                     },
                     "y": {
                         "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) + scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     },
                     "size": {
                         "scale": "size",

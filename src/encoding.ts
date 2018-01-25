@@ -75,9 +75,11 @@ export interface Encoding<F> {
   size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
-   * The symbol's shape (only for `point` marks). The supported values are
+   * For `point` marks the supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
+   * For `geoshape` marks it should be a field definition of the geojson data
+   *
    * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
    */
   shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
@@ -97,6 +99,11 @@ export interface Encoding<F> {
    * The tooltip text to show upon mouse hover.
    */
   tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
+
+  /**
+   * A URL to load upon mouse click.
+   */
+  href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
 
   /**
    * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
@@ -159,13 +166,13 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
         normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef])
-          .reduce((fieldDefs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+          .reduce((defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
-              fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+              defs.push(normalizeFieldDef(fieldDef, channel));
             }
-            return fieldDefs;
+            return defs;
           }, []);
       }
     } else {

@@ -5,6 +5,7 @@ import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
+import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
@@ -225,6 +226,11 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   title?: VgTitleConfig;
 
+  /**
+   * Projection configuration, which determines default properties for all [projections](projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](projection.html#config).
+   */
+  projection?: ProjectionConfig;
+
   /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
   style?: StyleConfigIndex;
 
@@ -247,6 +253,7 @@ export const defaultConfig: Config = {
   area: {},
   bar: mark.defaultBarConfig,
   circle: {},
+  geoshape: {},
   line: {},
   point: {},
   rect: {},
@@ -260,6 +267,7 @@ export const defaultConfig: Config = {
   boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
+  projection: {},
   axis: {},
   axisX: {},
   axisY: {minExtent: 30},
@@ -321,24 +329,24 @@ export function stripAndRedirectConfig(config: Config) {
     }
   }
 
-  for (const mark of MARK_STYLES) {
+  for (const markType of MARK_STYLES) {
     // Remove Vega-Lite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-      delete config[mark][prop];
+      delete config[markType][prop];
     }
 
     // Remove Vega-Lite only mark-specific config
-    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[mark];
+    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[mark][prop];
+        delete config[markType][prop];
       }
     }
 
     // Redirect mark config to config.style so that mark config only affect its own mark type
     // without affecting other marks that share the same underlying Vega marks.
     // For example, config.rect should not affect bar marks.
-    redirectConfig(config, mark);
+    redirectConfig(config, markType);
   }
 
   // Redirect config.title -- so that title config do not

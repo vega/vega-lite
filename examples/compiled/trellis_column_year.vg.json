@@ -277,6 +277,10 @@
                             },
                             "encode": {
                                 "update": {
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "symbol"
+                                    },
                                     "x": {
                                         "scale": "x",
                                         "field": "quarter_date"
@@ -284,10 +288,6 @@
                                     "y": {
                                         "scale": "y",
                                         "field": "mean_price"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
                                     }
                                 }
                             }

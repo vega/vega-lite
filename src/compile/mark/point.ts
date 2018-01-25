@@ -11,15 +11,11 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;
 
   return {
-    ...mixins.markDefProperties(model.markDef, true),
+    ...mixins.baseEncodeEntry(model, true),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
-
-    ...mixins.color(model),
-    ...mixins.text(model, 'tooltip'),
     ...mixins.nonPosition('size', model),
     ...shapeMixins(model, config, fixedShape),
-    ...mixins.nonPosition('opacity', model),
   };
 }
 

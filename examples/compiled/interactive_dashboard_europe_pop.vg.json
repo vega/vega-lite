@@ -673,6 +673,15 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": [
+                                {
+                                    "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
+                                    "value": "steelblue"
+                                },
+                                {
+                                    "value": "goldenrod"
+                                }
+                            ],
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "Population_ages_15_64_of_total"
@@ -688,16 +697,7 @@
                             "height": {
                                 "scale": "concat_0_y",
                                 "band": true
-                            },
-                            "fill": [
-                                {
-                                    "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
-                                    "value": "steelblue"
-                                },
-                                {
-                                    "value": "goldenrod"
-                                }
-                            ]
+                            }
                         }
                     }
                 },
@@ -1046,6 +1046,15 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": [
+                                {
+                                    "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
+                                    "value": "steelblue"
+                                },
+                                {
+                                    "value": "goldenrod"
+                                }
+                            ],
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Population_ages_65_and_above_of_total"
@@ -1061,16 +1070,7 @@
                             "height": {
                                 "scale": "concat_1_y",
                                 "band": true
-                            },
-                            "fill": [
-                                {
-                                    "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
-                                    "value": "steelblue"
-                                },
-                                {
-                                    "value": "goldenrod"
-                                }
-                            ]
+                            }
                         }
                     }
                 },
@@ -1489,14 +1489,6 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "x": {
-                                "scale": "concat_2_x",
-                                "field": "Population_ages_65_and_above_of_total"
-                            },
-                            "y": {
-                                "scale": "concat_2_y",
-                                "field": "Population_ages_15_64_of_total"
-                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
@@ -1508,6 +1500,14 @@
                             ],
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "x": {
+                                "scale": "concat_2_x",
+                                "field": "Population_ages_65_and_above_of_total"
+                            },
+                            "y": {
+                                "scale": "concat_2_y",
+                                "field": "Population_ages_15_64_of_total"
                             }
                         }
                     }

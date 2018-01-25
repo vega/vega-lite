@@ -181,6 +181,10 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "date"
@@ -188,10 +192,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "price"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "symbol"
                             }
                         }
                     }
@@ -212,6 +212,13 @@
                     "opacity": {
                         "value": 0
                     },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -219,13 +226,6 @@
                     "y": {
                         "scale": "y",
                         "field": "price"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "symbol"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }
@@ -281,6 +281,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -292,9 +295,6 @@
                     },
                     "y2": {
                         "value": 0
-                    },
-                    "stroke": {
-                        "value": "black"
                     }
                 }
             }
@@ -310,6 +310,9 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "black"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -319,9 +322,6 @@
                     },
                     "text": {
                         "signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"
-                    },
-                    "fill": {
-                        "value": "black"
                     }
                 }
             }

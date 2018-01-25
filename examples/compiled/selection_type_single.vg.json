@@ -112,6 +112,16 @@
             },
             "encode": {
                 "update": {
+                    "fill": [
+                        {
+                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+                            "scale": "color",
+                            "field": "count_*"
+                        },
+                        {
+                            "value": "grey"
+                        }
+                    ],
                     "x": {
                         "scale": "x",
                         "field": "Cylinders"
@@ -127,17 +137,7 @@
                     "height": {
                         "scale": "y",
                         "band": true
-                    },
-                    "fill": [
-                        {
-                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                            "scale": "color",
-                            "field": "count_*"
-                        },
-                        {
-                            "value": "grey"
-                        }
-                    ]
+                    }
                 }
             }
         }

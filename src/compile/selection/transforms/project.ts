@@ -23,7 +23,7 @@ const project: TransformCompiler = {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         if (fieldDef.timeUnit) {
-          const tuField = model.field(channel);
+          const tuField = model.vgField(channel);
           channels[tuField] = channel;
 
           // Construct TimeUnitComponents which will be combined into a

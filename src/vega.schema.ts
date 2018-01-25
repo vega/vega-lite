@@ -98,6 +98,71 @@ export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDo
 
 export type VgMarkGroup = any;
 
+export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
+
+
+export type VgProjection = {
+  /*
+   * The name of the projection.
+   */
+  name: string;
+  /*
+   * The type of the projection.
+   */
+  type?: VgProjectionType;
+  /*
+   * The clip angle of the projection.
+   */
+  clipAngle?: number;
+  /*
+   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   */
+  clipExtent?: number[][];
+  /*
+   * Sets the projection’s scale factor to the specified value
+   */
+  scale?: number;
+  /*
+   * The translation of the projection.
+   */
+  translate?: number[];
+  /*
+   * The center of the projection.
+   */
+  center?: number[];
+  /**
+   * The rotation of the projection.
+   */
+  rotate?: number[];
+  /*
+   * The desired precision of the projection.
+   */
+  precision?: String;
+  /*
+   * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
+   */
+  fit?: VgSignalRef | Object | any[];
+  /*
+   * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
+   */
+  extent?: VgSignalRef | number[][];
+  /*
+   * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
+   */
+  size?: VgSignalRef | (number | VgSignalRef)[];
+
+  /** The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
+  coefficient?: number;
+  distance?: number;
+  fraction?: number;
+  lobes?: number;
+  parallel?: number;
+  radius?: number;
+  ratio?: number;
+  spacing?: number;
+  tilt?: number;
+};
+
 export interface VgScale {
   name: string;
   type: ScaleType;
@@ -193,7 +258,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -330,7 +395,30 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform;
+
+export interface VgGeoPointTransform {
+  type: 'geopoint';
+  projection: string; // projection name
+  fields: VgFieldRef[];
+  as?: string[];
+}
+
+export interface VgGeoShapeTransform {
+  type: 'geoshape';
+  projection: string; // projection name
+  field?: VgFieldRef;
+  as?: string;
+}
+
+export interface VgGeoJSONTransform {
+  type: 'geojson';
+  fields?: VgFieldRef[];
+  geojson?: VgFieldRef;
+  signal: string;
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
@@ -1056,6 +1144,18 @@ export interface VgMarkConfig {
    * Placeholder text if the `text` channel is not specified
    */
   text?: string;
+
+  /**
+   * A URL to load upon mouse click. If defined, the mark acts as a hyperlink.
+   *
+   * @format uri
+   */
+  href?: string;
+
+  /**
+   * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   */
+  cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -1084,17 +1184,18 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   font: 1,
   fontSize: 1,
   fontWeight: 1,
-  fontStyle: 1
+  fontStyle: 1,
+  cursor: 1,
+  href: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
-  // cursor: 1,
   // clip: 1,
   // dir: 1,
   // ellipsis: 1,
   // endAngle: 1,
-  // path: 1,
   // innerRadius: 1,
   // outerRadius: 1,
+  // path: 1,
   // startAngle: 1,
   // url: 1,
 };

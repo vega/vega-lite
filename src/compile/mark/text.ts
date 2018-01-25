@@ -20,13 +20,10 @@ export const text: MarkCompiler = {
     const textDef = encoding.text;
 
     return {
-      ...mixins.markDefProperties(model.markDef, true),
+      ...mixins.baseEncodeEntry(model, true),
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
-      ...mixins.color(model),
-      ...mixins.text(model, 'tooltip'),
-      ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'fontSize'  // VL's text size is fontSize
       }),
@@ -44,8 +41,8 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
 }
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const align = markDef.align || getMarkConfig('align', markDef, config);
-  if (align === undefined) {
+  const a = markDef.align || getMarkConfig('align', markDef, config);
+  if (a === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';
   }
   // If there is a config, Vega-parser will process this already.

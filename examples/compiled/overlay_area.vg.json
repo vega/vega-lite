@@ -100,6 +100,9 @@
                     "orient": {
                         "value": "vertical"
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -111,9 +114,6 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -134,6 +134,9 @@
             },
             "encode": {
                 "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -141,9 +144,6 @@
                     "y": {
                         "scale": "y",
                         "field": "price"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
                     }
                 }
             }
@@ -163,6 +163,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "date"
@@ -170,9 +173,6 @@
                     "y": {
                         "scale": "y",
                         "field": "price"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
                     }
                 }
             }

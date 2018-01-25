@@ -1,8 +1,8 @@
 import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
-import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
+import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../../predicate';
 import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
@@ -15,6 +15,8 @@ import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
+import {GeoJSONNode} from './geojson';
+import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {DataComponent} from './index';
 import {LookupNode} from './lookup';
@@ -76,11 +78,11 @@ export function parseTransformArray(model: Model) {
       // For EqualFilter, just use the equal property.
       // For RangeFilter and OneOfFilter, all array members should have
       // the same type, so we only use the first one.
-      if (isEqualFilter(filter)) {
+      if (isFieldEqualPredicate(filter)) {
         val = filter.equal;
-      } else if (isRangeFilter(filter)) {
+      } else if (isFieldRangePredicate(filter)) {
         val = filter.range[0];
-      } else if (isOneOfFilter(filter)) {
+      } else if (isFieldOneOfPredicate(filter)) {
         val = (filter.oneOf || filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
 
@@ -230,6 +232,16 @@ export function parseData(model: Model): DataComponent {
         bin.parent = head;
         head = bin;
       }
+    }
+
+    for (const geojson of GeoJSONNode.makeAll(model)) {
+      geojson.parent = head;
+      head = geojson;
+    }
+
+    for (const geopoint of GeoPointNode.makeAll(model)) {
+      geopoint.parent = head;
+      head = geopoint;
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

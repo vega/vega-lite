@@ -111,6 +111,9 @@
                     },
                     "encode": {
                         "update": {
+                            "stroke": {
+                                "value": "#db646f"
+                            },
                             "x": {
                                 "scale": "x",
                                 "field": "life_expect"
@@ -118,9 +121,6 @@
                             "y": {
                                 "scale": "y",
                                 "field": "country"
-                            },
-                            "stroke": {
-                                "value": "#db646f"
                             }
                         }
                     }
@@ -141,6 +141,10 @@
                     "opacity": {
                         "value": 1
                     },
+                    "fill": {
+                        "scale": "color",
+                        "field": "year"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "life_expect"
@@ -148,10 +152,6 @@
                     "y": {
                         "scale": "y",
                         "field": "country"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "year"
                     },
                     "size": {
                         "value": 100

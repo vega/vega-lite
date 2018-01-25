@@ -1,5 +1,5 @@
-export import axis = require('./axis');
 export import aggregate = require('./aggregate');
+export import axis = require('./axis');
 export import bin = require('./bin');
 export import channel = require('./channel');
 export import compositeMark = require('./compositemark');

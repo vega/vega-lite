@@ -4,11 +4,11 @@ import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec} from '../spec';
+import {BaseSpec, isFacetSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
@@ -24,18 +24,22 @@ import {
   VgSignalRef,
   VgTitle,
 } from '../vega.schema';
+import {VgProjection} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
-import {DataComponent} from './data/index';
+import {DataComponent} from './data';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {getHeaderGroups, getTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './layout/header';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
+import {assembleProjections} from './projection/assemble';
+import {ProjectionComponent} from './projection/component';
+import {parseProjection} from './projection/parse';
 import {RepeatModel} from './repeat';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -65,6 +69,7 @@ export interface Component {
 
   mark: VgMarkGroup[];
   scales: ScaleComponentIndex;
+  projection: ProjectionComponent;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -154,6 +159,9 @@ export abstract class Model {
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
 
+  /** Name map for projections, which can be renamed by a model's parent. */
+  protected projectionNameMap: NameMapInterface;
+
   /** Name map for size, which can be renamed by a model's parent. */
   protected layoutSizeNameMap: NameMapInterface;
 
@@ -174,6 +182,7 @@ export abstract class Model {
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
+    this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
     this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
 
     this.data = spec.data;
@@ -186,7 +195,9 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
+        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {},
+        // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
+        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders:{row: {}, column: {}},
@@ -197,6 +208,7 @@ export abstract class Model {
       },
       selection: null,
       scales: null,
+      projection: null,
       axes: {},
       legends: {},
     };
@@ -229,7 +241,8 @@ export abstract class Model {
     this.renameTopLevelLayoutSize();
 
     this.parseSelection();
-    this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections.
+    this.parseProjection();
+    this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
     this.parseAxisAndHeader(); // depends on scale and layout size
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
@@ -242,6 +255,10 @@ export abstract class Model {
 
   public parseScale() {
     parseScale(this);
+  }
+
+  public parseProjection() {
+    parseProjection(this);
   }
 
   public abstract parseLayoutSize(): void;
@@ -296,7 +313,7 @@ export abstract class Model {
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
-    const headerMarks = [];
+    let headerMarks = [];
 
     for (const channel of HEADER_CHANNELS) {
       if (layoutHeaders[channel].title) {
@@ -305,17 +322,7 @@ export abstract class Model {
     }
 
     for (const channel of HEADER_CHANNELS) {
-      const layoutHeader = layoutHeaders[channel];
-      for (const headerType of HEADER_TYPES) {
-        if (layoutHeader[headerType]) {
-          for (const header of layoutHeader[headerType]) {
-            const headerGroup = getHeaderGroup(this, channel, headerType, layoutHeader, header);
-            if (headerGroup) {
-              headerMarks.push(headerGroup);
-            }
-          }
-        }
-      }
+      headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
     }
     return headerMarks;
   }
@@ -328,6 +335,10 @@ export abstract class Model {
 
   public assembleLegends(): VgLegend[] {
     return assembleLegends(this);
+  }
+
+  public assembleProjections(): VgProjection[] {
+    return assembleProjections(this);
   }
 
   public assembleTitle(): VgTitle {
@@ -439,9 +450,9 @@ export abstract class Model {
         if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
           const scaleName = scaleComponent.get('name');
           const domain = assembleDomain(this, channel);
-          const fieldName = getFieldFromDomain(domain);
-          if (fieldName) {
-            const fieldRef = field({aggregate: 'distinct', field: fieldName}, {expr: 'datum'});
+          const field = getFieldFromDomain(domain);
+          if (field) {
+            const fieldRef = vgField({aggregate: 'distinct', field}, {expr: 'datum'});
             return {
               signal: sizeExpr(scaleName, scaleComponent, fieldRef)
             };
@@ -486,6 +497,10 @@ export abstract class Model {
     this.scaleNameMap.rename(oldName, newName);
   }
 
+  public renameProjection(oldName: string, newName: string) {
+    this.projectionNameMap.rename(oldName, newName);
+  }
+
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
@@ -506,6 +521,23 @@ export abstract class Model {
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));
+    }
+    return undefined;
+  }
+
+  /**
+   * @return projection name after the projection has been parsed and named.
+   */
+  public projectionName(parse?: boolean): string {
+    if (parse) {
+      // During the parse phase always return a value
+      // No need to refer to rename map because a projection can't be renamed
+      // before it has the original name.
+      return this.getName('projection');
+    }
+
+    if ((this.component.projection && !this.component.projection.merged) || this.projectionNameMap.has(this.getName('projection'))) {
+      return this.projectionNameMap.get(this.getName('projection'));
     }
     return undefined;
   }
@@ -548,10 +580,10 @@ export abstract class Model {
   /**
    * Traverse a model's hierarchy to get a particular selection component.
    */
-  public getSelectionComponent(varName: string, origName: string): SelectionComponent {
-    let sel = this.component.selection[varName];
+  public getSelectionComponent(variableName: string, origName: string): SelectionComponent {
+    let sel = this.component.selection[variableName];
     if (!sel && this.parent) {
-      sel = this.parent.getSelectionComponent(varName, origName);
+      sel = this.parent.getSelectionComponent(variableName, origName);
     }
     if (!sel) {
       throw new Error(log.message.selectionNotFound(origName));
@@ -565,14 +597,14 @@ export abstract class ModelWithField extends Model {
   public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
 
   /** Get "field" reference for vega */
-  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
+  public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
     if (!fieldDef) {
       return undefined;
     }
 
-    return field(fieldDef, opt);
+    return vgField(fieldDef, opt);
   }
 
   protected abstract getMapping(): {[key in Channel]?: any};

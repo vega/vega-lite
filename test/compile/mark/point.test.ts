@@ -112,11 +112,11 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
 
-    it('should scale on y', function(){
+    it('should scale on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
 
-    it('should be an unfilled circle', function(){
+    it('should be an unfilled circle', function() {
       assert.deepEqual(props.fill, {value: 'transparent'});
       assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
     });
@@ -162,7 +162,7 @@ describe('Mark: Point', function() {
   describe('with x, y, and condition-only color', function () {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
-      "color": {"condition": {"selection": "test", "field": "yield", "type": "quantitative"}}
+        "color": {"condition": {"selection": "test", "field": "yield", "type": "quantitative"}}
       }),
       selection: {test: {type: 'single'}}
     });
@@ -174,6 +174,22 @@ describe('Mark: Point', function() {
       assert.equal(props.stroke['length'], 1);
       assert.equal(props.stroke[0].scale, COLOR);
       assert.equal(props.stroke[0].field, 'yield');
+    });
+  });
+
+  describe('with x, y, and predicate condition color', function () {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      ...pointXY({
+        "color": {"condition": {"test": "true", "field": "yield", "type": "quantitative"}}
+      })
+    });
+    model.parseSelection();
+    const props = point.encodeEntry(model);
+
+    it('should have one condition for color with scale for "yield"', function () {
+      assert.isArray(props.stroke);
+      assert.equal(props.stroke['length'], 1);
+      assert.equal(props.stroke[0].test, "true");
     });
   });
 
@@ -242,6 +258,34 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.stroke, {value: "blue"});
     });
 
+  });
+
+  describe('with tooltip', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "point",
+      "encoding": {
+        "tooltip": {"value": "foo"}
+      }
+    });
+    const props = point.encodeEntry(model);
+
+    it('should pass tooltip value to encoding', () => {
+      assert.deepEqual(props.tooltip, {value: "foo"});
+    });
+  });
+
+  describe('with href', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "point",
+      "encoding": {
+        "href": {"value": "https://idl.cs.washington.edu/"}
+      }
+    });
+    const props = point.encodeEntry(model);
+
+    it('should pass href value to encoding', () => {
+      assert.deepEqual(props.href, {value: 'https://idl.cs.washington.edu/'});
+    });
   });
 });
 

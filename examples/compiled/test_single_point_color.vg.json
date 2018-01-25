@@ -30,6 +30,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "stroke": {
+                        "value": "purple"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "x": {
                         "signal": "width",
                         "mult": 0.5
@@ -37,12 +43,6 @@
                     "y": {
                         "signal": "height",
                         "mult": 0.5
-                    },
-                    "stroke": {
-                        "value": "purple"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             }

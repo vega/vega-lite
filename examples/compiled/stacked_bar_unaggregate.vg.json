@@ -89,6 +89,10 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "c"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "a"
@@ -104,10 +108,6 @@
                     "y2": {
                         "scale": "y",
                         "field": "b_start"
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "c"
                     }
                 }
             }

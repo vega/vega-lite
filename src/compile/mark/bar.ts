@@ -19,12 +19,9 @@ export const bar: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
     return {
-      ...mixins.markDefProperties(model.markDef, true),
+      ...mixins.baseEncodeEntry(model, true),
       ...x(model, stack),
       ...y(model, stack),
-      ...mixins.color(model),
-      ...mixins.text(model, 'tooltip'),
-      ...mixins.nonPosition('opacity', model)
     };
   }
 };
@@ -110,7 +107,7 @@ function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config
       }
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
     } else if (scaleType === ScaleType.BAND) {
-      return ref.band(scaleName);
+      return ref.bandRef(scaleName);
     } else { // non-ordinal scale
       return {value: config.bar.continuousBandSize};
     }

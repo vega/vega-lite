@@ -10,7 +10,8 @@ describe('Schema', function() {
     const ajv = new Ajv({
       allErrors: true,
       verbose: true,
-      extendRefs: 'fail'
+      extendRefs: 'fail',
+      schemaId: 'id'
     });
 
     ajv.addMetaSchema(metaSchema, 'http://json-schema.org/draft-04/schema#');

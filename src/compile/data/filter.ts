@@ -1,5 +1,5 @@
-import {expression, Filter} from '../../filter';
 import {LogicalOperand} from '../../logical';
+import {expression, Predicate} from '../../predicate';
 import {duplicate} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
@@ -11,7 +11,7 @@ export class FilterNode extends DataFlowNode {
     return new FilterNode(this.model, duplicate(this.filter));
   }
 
-  constructor(private readonly model: Model, private filter: LogicalOperand<Filter>) {
+  constructor(private readonly model: Model, private filter: LogicalOperand<Predicate>) {
     super();
     this.expr = expression(this.model, this.filter, this);
   }

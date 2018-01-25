@@ -13,12 +13,13 @@ export namespace Mark {
   export const TICK: 'tick' = 'tick';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
+  export const GEOSHAPE: 'geoshape' = 'geoshape';
 }
 
 /**
  * All types of primitive marks.
  */
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE;
+export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
 
 
 export const AREA = Mark.AREA;
@@ -29,6 +30,7 @@ export const TEXT = Mark.TEXT;
 export const TICK = Mark.TICK;
 export const RECT = Mark.RECT;
 export const RULE = Mark.RULE;
+export const GEOSHAPE = Mark.GEOSHAPE;
 
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
@@ -42,6 +44,7 @@ const MARK_INDEX: {[M in Mark]: 1} = {
   text: 1,
   tick: 1,
   rect: 1,
+  geoshape: 1,
   rule: 1,
   circle: 1,
   square: 1
@@ -82,7 +85,7 @@ export interface MarkDef extends MarkConfig {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
    */
   type: Mark;
 
@@ -177,6 +180,9 @@ export interface MarkConfigMixins {
 
   /** Tick-Specific Config */
   tick?: TickConfig;
+
+  /** Geoshape-Specific Config */
+  geoshape?: MarkConfig;
 }
 
 export interface BarConfig extends MarkConfig {
