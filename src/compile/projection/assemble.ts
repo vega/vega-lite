@@ -24,7 +24,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   }
 
   const projection = component.combine();
-  const {name, ...rest} = projection;  // name is always defined
+  const {name, ...rest} = projection;  // we need to extract name so that it is always present in the output and pass TS type validation
 
   const size: VgSignalRef = {
     signal: `[${component.size.map((ref) => ref.signal).join(', ')}]`

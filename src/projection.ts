@@ -40,7 +40,7 @@ export interface Projection {
    */
   precision?: String;
 
-  /** The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
+  /* The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
   coefficient?: number;
   distance?: number;
   fraction?: number;
