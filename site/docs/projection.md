@@ -15,7 +15,7 @@ For example, this example chart shows all airports in the United States by proje
 ## Projection Properties
 {% include table.html props="type,clipAngle,clipExtent,center,rotate,precision" source="Projection" %}
 
-If you want to explore the various available properties in more depth, Vega's projection documentation [hosts a useful demo]
+If you want to explore the various available properties in more depth, Vega's projection documentation [hosts a useful demo](https://vega.github.io/vega/docs/projections/)
 
 In addition to the shared properties above, the following properties are supported for specific projection types in the [d3-geo-projection](https://github.com/d3/d3-geo-projection) library: [`coefficient`](https://github.com/d3/d3-geo-projection#hammer_coefficient), [`distance`](https://github.com/d3/d3-geo-projection#satellite_distance), [`fraction`](https://github.com/d3/d3-geo-projection#bottomley_fraction), [`lobes`](https://github.com/d3/d3-geo-projection#berghaus_lobes), [`parallel`](https://github.com/d3/d3-geo-projection#armadillo_parallel), [`radius`](https://github.com/d3/d3-geo-projection#gingery_radius), [`ratio`](https://github.com/d3/d3-geo-projection#hill_ratio), [`spacing`](https://github.com/d3/d3-geo-projection#lagrange_spacing), [`tilt`](https://github.com/d3/d3-geo-projection#satellite_tilt).
 
