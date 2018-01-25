@@ -30,7 +30,7 @@ function validateVL(spec: TopLevelExtendedSpec) {
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 
-  assert.equal(spec.$schema, 'https://vega.github.io/schema/vega-lite/v2.json');
+  assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/vega-lite/v2');
 }
 
 function validateVega(spec: TopLevelExtendedSpec) {
