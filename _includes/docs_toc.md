@@ -20,7 +20,6 @@
     - [Types of Data Sources]({{site.baseurl}}/docs/data.html#types-of-data-sources)
     - [Format]({{site.baseurl}}/docs/data.html#format)
 - [Projection]({{site.baseurl}}/docs/projection.html)
-    - [Projection Overview]({{site.baseurl}}/docs/projection.html#projection-overview)
     - [Projection Properties]({{site.baseurl}}/docs/projection.html#properties)
     - [Projection Types]({{site.baseurl}}/docs/projection.html#projection-types)
     - [Projection Configuration]({{site.baseurl}}/docs/projection.html#config)
