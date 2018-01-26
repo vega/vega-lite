@@ -1674,7 +1674,7 @@ d3-force@1, d3-force@1.1.0:
     d3-quadtree "1"
     d3-timer "1"
 
-d3-format@1, d3-format@^1.2.0:
+d3-format@1, d3-format@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
 
@@ -1745,7 +1745,7 @@ d3-scale@1, d3-scale@1.0.7:
     d3-time "1"
     d3-time-format "2"
 
-d3-selection@1, d3-selection@1.2.0, d3-selection@^1.1.0:
+d3-selection@1, d3-selection@1.2.0, d3-selection@^1.1.0, d3-selection@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.2.0.tgz#1b8ec1c7cedadfb691f2ba20a4a3cfbeb71bbc88"
 
@@ -1755,7 +1755,7 @@ d3-shape@1, d3-shape@1.2.0:
   dependencies:
     d3-path "1"
 
-d3-time-format@2, d3-time-format@2.1.1, d3-time-format@^2.0.5:
+d3-time-format@2, d3-time-format@2.1.1, d3-time-format@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.1.1.tgz#85b7cdfbc9ffca187f14d3c456ffda268081bb31"
   dependencies:
@@ -5871,15 +5871,15 @@ vega-datasets@^1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.11.0.tgz#45fba548806d5b4a11ad4e2efe39ecdae46d3a7a"
 
-vega-embed@^3.0.0-rc7:
-  version "3.0.0-rc7"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-rc7.tgz#0bf58649def3d772db0392c63e61071c5b7f9361"
+vega-embed@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0.tgz#d4e59f48f7d2141961b21afe824c058199c44a79"
   dependencies:
     compare-versions "^3.1.0"
-    d3-selection "^1.1.0"
+    d3-selection "^1.2.0"
     vega "^3.0.0"
     vega-lite "^2.0.0"
-    vega-schema-url-parser "^1.0.0-beta.3"
+    vega-schema-url-parser "^1.0.0"
 
 vega-encode@2:
   version "2.0.6"
@@ -5930,10 +5930,21 @@ vega-hierarchy@^2.1:
     vega-dataflow "3"
     vega-util "1"
 
-vega-lite@^2.0.0, vega-lite@^2.0.0-beta.14:
+vega-lite@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.1.0.tgz#8e6c1d438da6400eebdb53f0da7f9801b9da96f9"
   dependencies:
+    json-stable-stringify "^1.0.1"
+    tslib "^1.9.0"
+    vega-event-selector "^2.0.0"
+    vega-util "^1.6.2"
+    yargs "^11.0.0"
+
+vega-lite@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.1.1.tgz#c17ab9f847b8c2923c8cc37d61f6ae76504fa0bf"
+  dependencies:
+    "@types/json-stable-stringify" "^1.0.32"
     json-stable-stringify "^1.0.1"
     tslib "^1.9.0"
     vega-event-selector "^2.0.0"
@@ -6000,7 +6011,7 @@ vega-scenegraph@2, vega-scenegraph@^2.2:
     vega-loader "2"
     vega-util "^1.1"
 
-vega-schema-url-parser@^1.0.0-beta.3:
+vega-schema-url-parser@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vega-schema-url-parser/-/vega-schema-url-parser-1.0.0.tgz#fc17631e354280d663ed39e3fa8eddb62145402e"
 
@@ -6010,15 +6021,15 @@ vega-statistics@^1.2:
   dependencies:
     d3-array "1"
 
-vega-tooltip@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.4.4.tgz#c2dd6f24ffe5eda64a920e505f86c3551e819155"
+vega-tooltip@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.5.1.tgz#8ec54177cf9444470c445e9f9433366f922a4b9c"
   dependencies:
-    d3-format "^1.2.0"
-    d3-selection "^1.1.0"
-    d3-time-format "^2.0.5"
-    vega "^3.0.0"
-    vega-lite "^2.0.0-beta.14"
+    d3-format "^1.2.2"
+    d3-selection "^1.2.0"
+    d3-time-format "^2.1.1"
+    vega "^3.0.10"
+    vega-lite "^2.1.1"
 
 vega-transforms@^1.1:
   version "1.1.2"

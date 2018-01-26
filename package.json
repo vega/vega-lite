@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -10,6 +10,8 @@
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "build/src/index.js",
+  "unpkg": "build/vega-lite.min.js",
+  "jsdelivr": "build/vega-lite.min.js",
   "types": "typings/vega-lite.d.ts",
   "bin": {
     "vl2png": "./bin/vl2png",
@@ -114,8 +116,8 @@
     "typescript": "^2.6.2",
     "uglify-js": "^3.3.8",
     "vega-datasets": "^1.11.0",
-    "vega-embed": "^3.0.0-rc7",
-    "vega-tooltip": "^0.4.4",
+    "vega-embed": "^3.0.0",
+    "vega-tooltip": "^0.5.1",
     "vega": "^3.0.10",
     "watchify": "^3.9.0",
     "wdio-chromedriver-service": "^0.1.2",

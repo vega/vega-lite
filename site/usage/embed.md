@@ -17,13 +17,14 @@ You can get Vega, Vega-Lite, and Vega-Embed via a CDN, NPM, or manually download
 
 ### CDN
 
-For production deployments you will likely want to serve your own files or use a [content delivery network (CDN)](https://en.wikipedia.org/wiki/Content_delivery_network). Vega-Lite releases are hosted on [cdnjs](https://cdnjs.com/libraries/vega-lite):
+For production deployments you will likely want to serve your own files or use a [content delivery network (CDN)](https://en.wikipedia.org/wiki/Content_delivery_network). Vega-Lite releases are hosted on [jsDelivr](https://www.jsdelivr.com/package/npm/vega-lite):
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
 ```
+
 ### NPM
 
 If you prefer to host the dependencies yourself, we suggest that you use npm to install the libraries([Vega](https://www.npmjs.com/package/vega), [Vega-Lite](https://www.npmjs.com/package/vega-lite), and [Vega-Embed](https://www.npmjs.com/package/vega-embed)) to get the latest stable version. To install with npm, simply install it as you would any other npm module.
@@ -64,9 +65,9 @@ Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that
 <html>
 <head>
   <title>Embedding Vega-Lite</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
 </head>
 <body>
 
