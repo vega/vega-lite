@@ -26,5 +26,5 @@ To show more than one field, you can calculate a new field that concatenates mul
 While [`tooltip`]({{site.baseurl}}/docs/encoding.html#mark-properties-channels) provides a quick and easy way to add a tooltip, it is limited to displaying one field on the tooltip at a time.
 [`Vega-tooltip`](https://github.com/vega/vega-tooltip/) is a tooltip plugin for both Vega and Vega-lite visualizations that generates tooltips using a HTML table element to show values of multiple data fields.  For more information about how to create a tooltip using `vega-tooltip`, please see [`vega-tooltip`'s documentation](https://github.com/vega/vega-tooltip). Below is an example of Vega-lite visualization with [`vega-tooltip`](https://github.com/vega/vega-tooltip/) plugin.
 
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/{{ site.data.versions.vega-tooltip }}/vega-tooltip.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vega-tooltip@{{ site.data.versions.vega-tooltip }}/build/vega-tooltip.css">
 <div class="vl-example tooltip" data-name="bar"></div>

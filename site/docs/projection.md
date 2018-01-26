@@ -4,12 +4,14 @@ menu: docs
 title: Projection
 permalink: /docs/projection.html
 ---
-## Projection Overview
+
 A cartographic projection maps longitude and latitude pairs to x, y coordinates. As with Vega, one can use projections in Vega-lite to layout both geographic points (such as locations on a map) represented by longitude and latitude coordinates, or to project geographic regions (such as countries and states) represented using the GeoJSON format. Projection's are specified at the unit specification level, alongside encoding.
 
 For example, this example chart shows all airports in the United States by projecting `latitude`, `longitude` as `x`, `y` coordinates using the albersUsa projection.
 
 <span class="vl-example" data-name="geo_point"></span>
+
+See [the example gallery for more examples with geographic projection](../examples/#geographical-maps). 
 
 {:#properties}
 ## Projection Properties
