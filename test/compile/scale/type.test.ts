@@ -120,7 +120,7 @@ describe('compile/scale', () => {
           });
         }));
 
-        it('should return point scale for ordinal/nominal fields for continous channels other than x and y.', () => {
+        it('should return point scale for ordinal/nominal fields for continuous channels other than x and y.', () => {
           const OTHER_CONTINUOUS_CHANNELS = SCALE_CHANNELS.filter((c) => rangeType(c) === 'continuous' && !util.contains([X, Y], c));
           PRIMITIVE_MARKS.forEach((mark) => {
             [ORDINAL, NOMINAL].forEach((t) => {

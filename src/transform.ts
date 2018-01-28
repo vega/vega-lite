@@ -12,7 +12,7 @@ export interface FilterTransform {
    * (1) an [expression](types.html#expression) string,
    * where `datum` can be used to refer to the current data object;
    * (2) one of the field predicates: [equal predicate](filter.html#equal-predicate);
-   * [range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);
+   * [range predicate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);
    * (3) a [selection predicate](filter.html#selection-predicate);
    * or (4) a logical operand that combines (1), (2), or (3).
    */
@@ -112,7 +112,7 @@ export interface LookupData {
   key: string;
   /**
    * Fields in foreign data to lookup.
-   * If not specificied, the entire object is queried.
+   * If not specified, the entire object is queried.
    */
   fields?: string[];
 }

@@ -9,7 +9,7 @@ This document describes the various changes needed to port Vega-Lite 1.x visuali
 
 ## Interaction and Composition
 
-The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now egenrates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations.
+The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now generates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations.
 
 ## General
 

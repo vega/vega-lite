@@ -62,7 +62,7 @@ export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
    * One or more value definition(s) with a selection predicate.
    *
    * __Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)
-   * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
+   * since Vega-Lite only allows at most one encoded field per encoding channel.
    */
   condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
 };

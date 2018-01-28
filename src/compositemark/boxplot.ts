@@ -240,10 +240,10 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxP
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
+    continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
   } else {
     continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
+    continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
