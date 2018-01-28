@@ -98,10 +98,11 @@ A field mapping can also be specified as the else (outer) branch. For example, b
 
 Besides specifying `selection` name, we can also specify a `test` condition.
 
-The following plot uses a conditional value definition to color data points with null values in grey.
-
-<div class="vl-example" data-name="point_invalid_color"></div>
 
 This plot uses a conditional value definition value to use a black label for a light background.
 
 <div class="vl-example" data-name="layer_text_heatmap"></div>
+
+The next plot uses a conditional value definition to color data points with null values in grey. Note that if the "else" case value is not specified, default mark color will be applied.
+
+<div class="vl-example" data-name="point_invalid_color"></div>
