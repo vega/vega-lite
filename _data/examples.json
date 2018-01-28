@@ -88,6 +88,11 @@
     {
       "name": "circle_github_punchcard",
       "title": "Table Bubble Plot (Github Punch Card)"
+    },
+    {
+      "name": "circle_natural_disasters",
+      "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
+      "title": "Natural Disasters"
     }
   ],
   "Stack": [
