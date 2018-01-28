@@ -99,7 +99,7 @@
       "additionalProperties": false,
       "properties": {
         "contains": {
-          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
+          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) interprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
           "enum": [
             "content",
             "padding"
@@ -2033,7 +2033,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2091,7 +2091,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2178,7 +2178,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2330,7 +2330,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
+          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range predicate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
@@ -3499,7 +3499,7 @@
           "description": "Secondary data source to lookup in."
         },
         "fields": {
-          "description": "Fields in foreign data to lookup.\nIf not specificied, the entire object is queried.",
+          "description": "Fields in foreign data to lookup.\nIf not specified, the entire object is queried.",
           "items": {
             "type": "string"
           },

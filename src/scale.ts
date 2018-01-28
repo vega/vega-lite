@@ -71,7 +71,7 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
 }
 
 /**
- * Index for scale predecence -- high score = higher priority for merging.
+ * Index for scale precedence -- high score = higher priority for merging.
  */
 const SCALE_PRECEDENCE_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)

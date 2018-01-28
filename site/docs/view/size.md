@@ -84,13 +84,13 @@ Below is an example of a bar chart that fits exactly into 300px width.
 
 ## Width and Height of Multi-View Displays
 
-Currently, width and height of multi-view displays including [concatanated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views.  To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
+Currently, width and height of multi-view displays including [concatenated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views.  To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
 
 For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 
 <span class="vl-example" data-name="normalized/trellis_point_small_normalized"></span>
 
 __Note:__ If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot.
-For example, this specification is equilvalent to the specification above.
+For example, this specification is equivalent to the specification above.
 
 <span class="vl-example" data-name="trellis_point_small"></span>
