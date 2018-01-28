@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A simple bar chart with annotation.",
+  "data": {
+    "values": [
+      {"Day": "D01", "Value": "50"},
+      {"Day": "D02", "Value": "110"},
+      {"Day": "D03", "Value": "70"},
+      {"Day": "D04", "Value": "50"},
+      {"Day": "D05", "Value": "80"},
+      {"Day": "D06", "Value": "150"},
+      {"Day": "D07", "Value": "140"},
+      {"Day": "D08", "Value": "130"},
+      {"Day": "D09", "Value": "390"},
+      {"Day": "D10", "Value": "200"},
+      {"Day": "D11", "Value": "70"},
+      {"Day": "D12", "Value": "50"},
+      {"Day": "D13", "Value": "100"},
+      {"Day": "D14", "Value": "150"},
+      {"Day": "D15", "Value": "130"},
+      {"Threshold": "hazardous", "ThresholdValue": "300"}
+    ]
+  },
+  "transform": [{
+    "calculate": "datum.Value > 300 ? 300 : datum.Value", "as": "diff"
+  }],
+  "layer": [
+    {
+      "mark": "rule",
+      "encoding": {
+        "y": {"field": "ThresholdValue", "type": "quantitative"}
+      }
+    }, {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Day", "type": "ordinal"},
+        "y": {"field": "Value", "type": "quantitative"}
+      }
+    }, {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 210,
+        "dy": -5
+      },
+      "encoding": {
+         "y": {"field": "ThresholdValue", "type": "quantitative"},
+         "text": {"field": "Threshold", "type": "ordinal"}
+      }
+    }, {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Day", "type": "ordinal"},
+        "y": {"field": "diff", "type": "quantitative", "axis": {"title": "Value"}},
+        "y2": {"field": "Value", "type": "quantitative"},
+        "color": {"value": "#e45755"}
+      }
+    }
+  ]
+}

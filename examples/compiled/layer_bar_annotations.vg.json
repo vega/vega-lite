@@ -1,0 +1,414 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A simple bar chart with annotation.",
+    "autosize": "pad",
+    "padding": 5,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "Day": "D01",
+                    "Value": "50"
+                },
+                {
+                    "Day": "D02",
+                    "Value": "110"
+                },
+                {
+                    "Day": "D03",
+                    "Value": "70"
+                },
+                {
+                    "Day": "D04",
+                    "Value": "50"
+                },
+                {
+                    "Day": "D05",
+                    "Value": "80"
+                },
+                {
+                    "Day": "D06",
+                    "Value": "150"
+                },
+                {
+                    "Day": "D07",
+                    "Value": "140"
+                },
+                {
+                    "Day": "D08",
+                    "Value": "130"
+                },
+                {
+                    "Day": "D09",
+                    "Value": "390"
+                },
+                {
+                    "Day": "D10",
+                    "Value": "200"
+                },
+                {
+                    "Day": "D11",
+                    "Value": "70"
+                },
+                {
+                    "Day": "D12",
+                    "Value": "50"
+                },
+                {
+                    "Day": "D13",
+                    "Value": "100"
+                },
+                {
+                    "Day": "D14",
+                    "Value": "150"
+                },
+                {
+                    "Day": "D15",
+                    "Value": "130"
+                },
+                {
+                    "Threshold": "hazardous",
+                    "ThresholdValue": "300"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "datum.Value > 300 ? 300 : datum.Value",
+                    "as": "diff"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ThresholdValue\"])",
+                    "as": "ThresholdValue"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Value\"])",
+                    "as": "Value"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Value\"] !== null && !isNaN(datum[\"Value\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ThresholdValue\"])",
+                    "as": "ThresholdValue"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"diff\"])",
+                    "as": "diff"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Value\"])",
+                    "as": "Value"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"diff\"] !== null && !isNaN(datum[\"diff\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "ThresholdValue"
+                    },
+                    "x2": {
+                        "field": {
+                            "group": "width"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Day"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Value"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "align": {
+                        "value": "left"
+                    },
+                    "dx": {
+                        "value": 210
+                    },
+                    "dy": {
+                        "value": -5
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "value": 45
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "ThresholdValue"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"Threshold\"]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#e45755"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Day"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "diff"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "Value"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "ThresholdValue"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "Value"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "ThresholdValue"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "diff"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "Value"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_2",
+                        "field": "Day"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "Day"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "labelOverlap": true,
+            "title": "Day",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Value",
+            "scale": "y",
+            "orient": "left",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
