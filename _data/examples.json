@@ -86,9 +86,9 @@
       "title": "Table Bubble Plot (Github Punch Card)"
     },
     {
-        "name": "circle_natural_disasters",
-        "description": "Visualization of annual death total from natural disasters since 1900.",
-        "title": "Natural Disasters"
+      "name": "circle_natural_disasters",
+      "description": "Visualization of global deaths from natural disasters.",
+      "title": "Natural Disasters"
     }
   ],
   "Stack": [
