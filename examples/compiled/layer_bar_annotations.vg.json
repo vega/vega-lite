@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health",
+    "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health. Data source https://chartaccent.github.io/chartaccent.html",
     "autosize": "pad",
     "padding": 5,
     "height": 200,
@@ -11,63 +11,63 @@
             "values": [
                 {
                     "Day": 1,
-                    "Value": 50
+                    "Value": 54.8
                 },
                 {
                     "Day": 2,
-                    "Value": 110
+                    "Value": 112.1
                 },
                 {
                     "Day": 3,
-                    "Value": 70
+                    "Value": 63.6
                 },
                 {
                     "Day": 4,
-                    "Value": 50
+                    "Value": 37.6
                 },
                 {
                     "Day": 5,
-                    "Value": 80
+                    "Value": 79.7
                 },
                 {
                     "Day": 6,
-                    "Value": 150
+                    "Value": 137.9
                 },
                 {
                     "Day": 7,
-                    "Value": 140
+                    "Value": 120.1
                 },
                 {
                     "Day": 8,
-                    "Value": 130
+                    "Value": 103.3
                 },
                 {
                     "Day": 9,
-                    "Value": 390
+                    "Value": 394.8
                 },
                 {
                     "Day": 10,
-                    "Value": 200
+                    "Value": 199.5
                 },
                 {
                     "Day": 11,
-                    "Value": 70
+                    "Value": 72.3
                 },
                 {
                     "Day": 12,
-                    "Value": 50
+                    "Value": 51.1
                 },
                 {
                     "Day": 13,
-                    "Value": 100
+                    "Value": 112
                 },
                 {
                     "Day": 14,
-                    "Value": 150
+                    "Value": 174.5
                 },
                 {
                     "Day": 15,
-                    "Value": 130
+                    "Value": 130.5
                 }
             ]
         },
