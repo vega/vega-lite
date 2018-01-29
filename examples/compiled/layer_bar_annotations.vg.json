@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "A simple bar chart with annotation.",
+    "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health",
     "autosize": "pad",
     "padding": 5,
     "height": 200,
@@ -10,100 +10,87 @@
             "name": "source_0",
             "values": [
                 {
-                    "Day": "D01",
-                    "Value": "50"
+                    "Day": 1,
+                    "Value": 50
                 },
                 {
-                    "Day": "D02",
-                    "Value": "110"
+                    "Day": 2,
+                    "Value": 110
                 },
                 {
-                    "Day": "D03",
-                    "Value": "70"
+                    "Day": 3,
+                    "Value": 70
                 },
                 {
-                    "Day": "D04",
-                    "Value": "50"
+                    "Day": 4,
+                    "Value": 50
                 },
                 {
-                    "Day": "D05",
-                    "Value": "80"
+                    "Day": 5,
+                    "Value": 80
                 },
                 {
-                    "Day": "D06",
-                    "Value": "150"
+                    "Day": 6,
+                    "Value": 150
                 },
                 {
-                    "Day": "D07",
-                    "Value": "140"
+                    "Day": 7,
+                    "Value": 140
                 },
                 {
-                    "Day": "D08",
-                    "Value": "130"
+                    "Day": 8,
+                    "Value": 130
                 },
                 {
-                    "Day": "D09",
-                    "Value": "390"
+                    "Day": 9,
+                    "Value": 390
                 },
                 {
-                    "Day": "D10",
-                    "Value": "200"
+                    "Day": 10,
+                    "Value": 200
                 },
                 {
-                    "Day": "D11",
-                    "Value": "70"
+                    "Day": 11,
+                    "Value": 70
                 },
                 {
-                    "Day": "D12",
-                    "Value": "50"
+                    "Day": 12,
+                    "Value": 50
                 },
                 {
-                    "Day": "D13",
-                    "Value": "100"
+                    "Day": 13,
+                    "Value": 100
                 },
                 {
-                    "Day": "D14",
-                    "Value": "150"
+                    "Day": 14,
+                    "Value": 150
                 },
                 {
-                    "Day": "D15",
-                    "Value": "130"
-                },
-                {
-                    "Threshold": "hazardous",
-                    "ThresholdValue": "300"
+                    "Day": 15,
+                    "Value": 130
                 }
             ]
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
+            "name": "source_1",
+            "values": [
                 {
-                    "type": "formula",
-                    "expr": "datum.Value > 300 ? 300 : datum.Value",
-                    "as": "diff"
+                    "ThresholdValue": 300
+                }
+            ]
+        },
+        {
+            "name": "source_2",
+            "values": [
+                {
+                    "ThresholdValue": 300,
+                    "Threshold": "hazardous"
                 }
             ]
         },
         {
             "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"ThresholdValue\"])",
-                    "as": "ThresholdValue"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
@@ -117,8 +104,28 @@
             ]
         },
         {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Value\"])",
+                    "as": "Value"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.Value >= 300 ? 300 : datum.Value",
+                    "as": "baseline"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"baseline\"] !== null && !isNaN(datum[\"baseline\"])"
+                }
+            ]
+        },
+        {
             "name": "data_3",
-            "source": "data_0",
+            "source": "source_1",
             "transform": [
                 {
                     "type": "formula",
@@ -133,21 +140,16 @@
         },
         {
             "name": "data_4",
-            "source": "data_0",
+            "source": "source_2",
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"diff\"])",
-                    "as": "diff"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Value\"])",
-                    "as": "Value"
+                    "expr": "toNumber(datum[\"ThresholdValue\"])",
+                    "as": "ThresholdValue"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"diff\"] !== null && !isNaN(datum[\"diff\"])"
+                    "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
                 }
             ]
         }
@@ -165,41 +167,12 @@
     "marks": [
         {
             "name": "layer_0_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "value": 0
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "ThresholdValue"
-                    },
-                    "x2": {
-                        "field": {
-                            "group": "width"
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
             "type": "rect",
             "style": [
                 "bar"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -226,13 +199,75 @@
             }
         },
         {
+            "name": "layer_1_marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#e45755"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Day"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "baseline"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "Value"
+                    }
+                }
+            }
+        },
+        {
             "name": "layer_2_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "ThresholdValue"
+                    },
+                    "x2": {
+                        "field": {
+                            "group": "width"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -240,7 +275,7 @@
                         "value": "left"
                     },
                     "dx": {
-                        "value": 210
+                        "value": 215
                     },
                     "dy": {
                         "value": -5
@@ -260,89 +295,20 @@
                     }
                 }
             }
-        },
-        {
-            "name": "layer_3_marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "data_4"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#e45755"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Day"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "diff"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "Value"
-                    }
-                }
-            }
         }
     ],
     "scales": [
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "ThresholdValue"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "Value"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "ThresholdValue"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "diff"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "Value"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
         {
             "name": "x",
             "type": "band",
             "domain": {
                 "fields": [
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "Day"
                     },
                     {
-                        "data": "data_4",
+                        "data": "data_2",
                         "field": "Day"
                     }
                 ],
@@ -355,6 +321,42 @@
             },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "Value"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "baseline"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "Value"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "ThresholdValue"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "ThresholdValue"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
         }
     ],
     "axes": [
@@ -381,7 +383,7 @@
             }
         },
         {
-            "title": "Value",
+            "title": "PM2.5 Value",
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
