@@ -161,7 +161,8 @@
     },
     {
       "name": "layer_bar_annotations",
-      "title": "Bar chart with highlighting annotation overlay"
+      "title": "Bar chart that highlights values beyond a threshold",
+      "description": "A bar chart encodes quantitative values, that marks a user specified data domain value, and highlights the area above this value."
     },
     {
       "name": "layer_precipitation_mean",
