@@ -2307,6 +2307,9 @@
               },
               {
                 "$ref": "#/definitions/DateTime"
+              },
+              {
+                "type": "null"
               }
             ]
           },
