@@ -1,77 +1,72 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health",
-  "data": {
-    "values": [
-      {"Day": 1, "Value": 50},
-      {"Day": 2, "Value": 110},
-      {"Day": 3, "Value": 70},
-      {"Day": 4, "Value": 50},
-      {"Day": 5, "Value": 80},
-      {"Day": 6, "Value": 150},
-      {"Day": 7, "Value": 140},
-      {"Day": 8, "Value": 130},
-      {"Day": 9, "Value": 390},
-      {"Day": 10, "Value": 200},
-      {"Day": 11, "Value": 70},
-      {"Day": 12, "Value": 50},
-      {"Day": 13, "Value": 100},
-      {"Day": 14, "Value": 150},
-      {"Day": 15, "Value": 130}
-    ]
-  },
-  "layer": [
-    {
-      "mark": "bar",
-      "encoding": {
-        "x": {"field": "Day", "type": "ordinal"},
-        "y": {"field": "Value", "type": "quantitative"}
-      }
-    },
-    {
-      "mark": "bar",
-      "transform": [{
-        "calculate": "datum.Value >= 300 ? 300 : datum.Value",
-        "as": "baseline"
-      }],
-      "encoding": {
-        "x": {"field": "Day", "type": "ordinal"},
-        "y": {"field": "baseline", "type": "quantitative"},
-        "y2": {"field": "Value", "type": "quantitative"},
-        "color": {"value": "#e45755"}
-      }
-    },
-    {
-      "mark": "rule",
+    "layer": [{
       "data": {
         "values": [
-          {"ThresholdValue": 300}
+          {"Day": 1, "Value": 50},
+          {"Day": 2, "Value": 110},
+          {"Day": 3, "Value": 70},
+          {"Day": 4, "Value": 50},
+          {"Day": 5, "Value": 80},
+          {"Day": 6, "Value": 150},
+          {"Day": 7, "Value": 140},
+          {"Day": 8, "Value": 130},
+          {"Day": 9, "Value": 390},
+          {"Day": 10, "Value": 200},
+          {"Day": 11, "Value": 70},
+          {"Day": 12, "Value": 50},
+          {"Day": 13, "Value": 100},
+          {"Day": 14, "Value": 150},
+          {"Day": 15, "Value": 130}
         ]
       },
-      "encoding": {
-        "y": {"field": "ThresholdValue", "type": "quantitative"}
+      "layer": [{
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "Day", "type": "ordinal"},
+          "y": {"field": "Value", "type": "quantitative"}
+        }
+      }, {
+        "mark": "bar",
+        "transform": [
+          {"filter": "datum.Value >= 300"},
+          {"calculate": "300", "as": "baseline"}
+        ],
+        "encoding": {
+          "x": {"field": "Day", "type": "ordinal"},
+          "y": {"field": "baseline", "type": "quantitative"},
+          "y2": {"field": "Value", "type": "quantitative"},
+          "color": {"value": "#e45755"}
+        }
       }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 215,
-        "dy": -5
-      },
-       "data": {
+    ]}, {
+      "data": {
          "values": [
           {"ThresholdValue": 300, "Threshold": "hazardous"}
         ]
       },
-      "encoding": {
-         "y": {
+      "layer": [{
+        "mark": "rule",
+        "encoding": {
+          "y": {"field": "ThresholdValue", "type": "quantitative"}
+        }
+      }, {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 215,
+          "dy": -5
+        },
+        "encoding": {
+          "y": {
             "field": "ThresholdValue",
             "type": "quantitative",
             "axis": {"title": "PM2.5 Value"}
           },
-         "text": {"field": "Threshold", "type": "ordinal"}
-      }
+          "text": {"field": "Threshold", "type": "ordinal"}
+        }
+      }]
     }
   ]
 }
