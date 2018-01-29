@@ -24,7 +24,7 @@
       "layer": [{
         "mark": "bar",
         "encoding": {
-          "x": {"field": "Day", "type": "ordinal"},
+          "x": {"field": "Day", "type": "ordinal", "axis": {"labelAngle": 0}},
           "y": {"field": "Value", "type": "quantitative"}
         }
       }, {
@@ -34,7 +34,7 @@
           {"calculate": "300", "as": "baseline"}
         ],
         "encoding": {
-          "x": {"field": "Day", "type": "ordinal"},
+          "x": {"field": "Day", "type": "ordinal", "axis": {"labelAngle": 0}},
           "y": {"field": "baseline", "type": "quantitative"},
           "y2": {"field": "Value", "type": "quantitative"},
           "color": {"value": "#e45755"}
