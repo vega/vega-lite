@@ -160,6 +160,10 @@
       "style": "background-size: auto 70%; background-position-y: center;"
     },
     {
+      "name": "layer_bar_annotations",
+      "title": "Bar chart with highlighting annotation overlay"
+    },
+    {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
     },{
