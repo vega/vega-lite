@@ -133,7 +133,7 @@ export interface RangeConfig {
    */
   symbol?: string[];
 
-  [name: string]: RangeConfigValue;
+  [name: string]: RangeConfigValue | undefined;
 }
 
 export interface VLOnlyConfig {
