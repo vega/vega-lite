@@ -1,4 +1,5 @@
 import {SELECTION_ID} from '../../selection';
+import {StringSet} from '../../util';
 import {VgIdentifierTransform} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
@@ -11,7 +12,7 @@ export class IdentifierNode extends DataFlowNode {
     super();
   }
 
-  public producedFields() {
+  public producedFields(): StringSet {
     return {[SELECTION_ID]: true};
   }
 
