@@ -24,6 +24,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 
 -   [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser).
 -   [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
+-   [Vega-Editor](https://vega.github.io/editor/), the editor for Vega and Vega-Lite.
 -   [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
 -   [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
 -   [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook.
