@@ -233,6 +233,10 @@
     {
       "name": "layer_connected_scatterplot",
       "title": "Connected Scatterplot (Lines with Custom Paths)"
+    },
+    {
+      "name": "layer_line_co2_concentration",
+      "title": "Carbon Dioxide in the Atmosphere"
     }
   ],
   "Composition": [
