@@ -400,7 +400,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
   const {mark, selection, projection, encoding, ...outerSpec} = spec;
-  const layer = [{mark, encoding}];
+  const layer = [{mark, encoding} as UnitSpec];
 
   // Need to copy stack config to overlayed layer
   const stackProps = stack(mark, encoding, config ? config.stack : undefined);
