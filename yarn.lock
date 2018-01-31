@@ -5867,9 +5867,9 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-vega-datasets@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.12.0.tgz#72ed607d6de45a9fac374658c761a9f50863dbba"
+vega-datasets@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.13.0.tgz#4eda36ebb432e832a332430541204bb52e8f0ed6"
 
 vega-embed@^3.0.0:
   version "3.0.0"
