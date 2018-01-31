@@ -102,7 +102,7 @@ export const defaultViewConfig: ViewConfig = {
 
 export type RangeConfigValue = (number|string)[] | VgScheme | {step: number};
 
-export interface RangeConfig {
+export interface RangeConfig extends Partial<Record<string, RangeConfigValue>> {
   /**
    * Default range for _nominal_ (categorical) fields.
    */
@@ -132,8 +132,6 @@ export interface RangeConfig {
    * Default range palette for the `shape` channel.
    */
   symbol?: string[];
-
-  [name: string]: RangeConfigValue | undefined;
 }
 
 export interface VLOnlyConfig {
