@@ -4,7 +4,7 @@ import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPath, Dict, duplicate, keys, toSet} from '../../util';
+import {accessPath, Dict, duplicate, keys, StringSet, toSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -116,11 +116,11 @@ export class ParseNode extends DataFlowNode {
   }
 
   // format parse depends and produces all fields in its parse
-  public producedFields() {
+  public producedFields(): StringSet {
     return toSet(keys(this.parse));
   }
 
-  public dependentFields() {
+  public dependentFields(): StringSet {
     return toSet(keys(this.parse));
   }
 

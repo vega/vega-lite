@@ -163,7 +163,7 @@ export interface Dict<T> {
   [key: string]: T;
 }
 
-export type StringSet = Dict<boolean>;
+export type StringSet = Dict<true>;
 
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
