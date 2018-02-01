@@ -26,6 +26,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 -   [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 -   [Vega-Editor](https://vega.github.io/editor/), the editor for Vega and Vega-Lite.
 -   [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
+-   [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas.
 -   [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
 -   [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook.
 -   [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
