@@ -5,7 +5,7 @@ permalink: /docs/type.html
 ---
 
 If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement).
-The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), [`"latitude"`,](#latitude), [`"longitude"`](#longitude), and [`"geojson"`](#geojson).
+The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), [`"latitude"`](#latitude), [`"longitude"`](#longitude), and [`"geojson"`](#geojson).
 
 {% include table.html props="type" source="FieldDef" %}
 
