@@ -18,8 +18,7 @@
       "field": "latitude",
       "type": "latitude"
     },
-    "size": {"value": 10},
-    "color": {"value": "steelblue"}
+    "size": {"value": 10}
   },
   "config": {
     "view": {

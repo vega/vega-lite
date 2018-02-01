@@ -64,7 +64,7 @@
                         "value": 0.7
                     },
                     "fill": {
-                        "value": "steelblue"
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "field": "longitude_geo"
