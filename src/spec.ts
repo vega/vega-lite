@@ -102,7 +102,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   /**
    * A key-value mapping between encoding channels and definition of fields.
    */
-  encoding: E;
+  encoding?: E;
 
   /**
    * An object defining properties of geographic projection.
