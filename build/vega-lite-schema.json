@@ -2669,8 +2669,7 @@
         }
       },
       "required": [
-        "mark",
-        "encoding"
+        "mark"
       ],
       "type": "object"
     },
@@ -2736,8 +2735,7 @@
         }
       },
       "required": [
-        "mark",
-        "encoding"
+        "mark"
       ],
       "type": "object"
     },
@@ -5826,7 +5824,6 @@
         }
       },
       "required": [
-        "encoding",
         "mark"
       ],
       "type": "object"
