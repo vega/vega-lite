@@ -161,7 +161,10 @@
             "encode": {
                 "update": {
                     "fill": {
-                        "value": "#A9ACB5"
+                        "value": "lightgray"
+                    },
+                    "stroke": {
+                        "value": "white"
                     }
                 }
             },
