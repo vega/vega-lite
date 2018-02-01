@@ -53,7 +53,7 @@ Then use Vega-Embed's provided function to embed your spec.
 
 ```js
 // More argument info at https://github.com/vega/vega-embed
-vega.embed("#vis", yourVlSpec);
+vegaEmbed("#vis", yourVlSpec);
 ```
 
 Vega-Embed automatically adds links to export an image, view the source, and open the specification in the online editor. These links can be individually disabled. For more information, read the [Vega-Embed documentation](https://github.com/vega/vega-embed).
