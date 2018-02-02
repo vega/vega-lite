@@ -22,17 +22,14 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 -   [Vizard](https://github.com/yieldbot/vizard) provides a tiny REPL client to visualize Clojure data in the browser.
 
-## Tools where you can use Vega-Lite
+## Applications where you can use Vega-Lite
 
+-   <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the editor for Vega and Vega-Lite.
 -   [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
 -   [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
 -   <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
 -   [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 -   <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. Can also be used for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
-
-## Authoring Tools
-
--   <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the editor for Vega and Vega-Lite.
 
 ## Tools that use Vega-Lite
 
