@@ -34,7 +34,13 @@ export class GeoPointNode extends DataFlowNode {
       }
 
       if (LONGITUDE in pair || LATITUDE in pair) {
-        nodes.push(new GeoPointNode(model.projectionName(), [pair[LONGITUDE], pair[LATITUDE]], [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']));
+        nodes.push(
+            new GeoPointNode(
+            model.projectionName(),
+            [pair[LONGITUDE], pair[LATITUDE]],
+            [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']
+          )
+        );
       }
     }
 
