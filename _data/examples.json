@@ -285,6 +285,11 @@
       "name": "geo_trellis",
       "png": true,
       "title": "Income in the U.S. by state, faceted over income brackets"
+    },
+    {
+      "name": "geo_layer_line_london",
+      "title": "London Tube Lines",
+      "description": "This example was created by Jo Wood."
     }
   ],
   "Interactive": [
