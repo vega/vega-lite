@@ -49,6 +49,9 @@ dt {
 dd {
   margin-bottom: 10px;
 }
+li {
+  margin: 0.1em 0;
+}
 
 /* Table */
 
