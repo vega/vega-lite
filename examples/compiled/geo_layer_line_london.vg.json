@@ -1,0 +1,219 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 700,
+    "height": 500,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/londonBoroughs.json",
+            "format": {
+                "type": "topojson",
+                "feature": "boroughs"
+            }
+        },
+        {
+            "name": "source_2",
+            "url": "data/londonTubeLines.json",
+            "format": {
+                "type": "topojson",
+                "feature": "line"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/londonCentroids.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name",
+                    "as": "bLabel"
+                },
+                {
+                    "type": "geojson",
+                    "fields": [
+                        "cx",
+                        "cy"
+                    ],
+                    "signal": "layer_1_geojson_0"
+                },
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "cx",
+                        "cy"
+                    ],
+                    "as": [
+                        "cx_geo",
+                        "cy_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "size": {
+                "signal": "[width, height]"
+            },
+            "fit": {
+                "signal": "[data('source_0'), layer_1_geojson_0, data('source_2')]"
+            }
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "shape",
+            "style": [
+                "geoshape"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "white"
+                    },
+                    "strokeWidth": {
+                        "value": 2
+                    },
+                    "fill": {
+                        "value": "#eee"
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "geoshape",
+                    "projection": "projection"
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "source_1"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "black"
+                    },
+                    "opacity": {
+                        "value": 0.6
+                    },
+                    "x": {
+                        "field": "cx_geo"
+                    },
+                    "y": {
+                        "field": "cy_geo"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"bLabel\"]"
+                    },
+                    "fontSize": {
+                        "value": 8
+                    },
+                    "align": {
+                        "value": "center"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "shape",
+            "style": [
+                "geoshape"
+            ],
+            "from": {
+                "data": "source_2"
+            },
+            "encode": {
+                "update": {
+                    "strokeWidth": {
+                        "value": 2
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "id"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "geoshape",
+                    "projection": "projection"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": [
+                "Bakerloo",
+                "Central",
+                "Circle",
+                "District",
+                "DLR",
+                "Hammersmith & City",
+                "Jubilee",
+                "Metropolitan",
+                "Northern",
+                "Piccadilly",
+                "Victoria",
+                "Waterloo & City"
+            ],
+            "range": [
+                "rgb(137,78,36)",
+                "rgb(220,36,30)",
+                "rgb(255,206,0)",
+                "rgb(1,114,41)",
+                "rgb(0,175,173)",
+                "rgb(215,153,175)",
+                "rgb(106,114,120)",
+                "rgb(114,17,84)",
+                "rgb(0,0,0)",
+                "rgb(0,24,168)",
+                "rgb(0,160,226)",
+                "rgb(106,187,170)"
+            ]
+        }
+    ],
+    "legends": [
+        {
+            "offset": 0,
+            "orient": "bottom-right",
+            "title": null,
+            "stroke": "color"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
+        }
+    }
+}
