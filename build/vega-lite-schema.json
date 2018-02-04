@@ -99,7 +99,7 @@
       "additionalProperties": false,
       "properties": {
         "contains": {
-          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
+          "description": "Determines how size calculation should be performed, one of `\"content\"` or `\"padding\"`. The default setting (`\"content\"`) interprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `\"padding\"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.\n\n__Default value__: `\"content\"`",
           "enum": [
             "content",
             "padding"
@@ -822,7 +822,7 @@
           "type": "string"
         },
         "calculate": {
-          "description": "A [expression](types.html#expression) string. Use the variable `datum` to refer to the current data object.",
+          "description": "A [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string. Use the variable `datum` to refer to the current data object.",
           "type": "string"
         }
       },
@@ -892,7 +892,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -903,18 +903,18 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -939,7 +939,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -950,7 +950,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -961,11 +961,11 @@
               "type": "null"
             }
           ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied."
         },
         "scale": {
           "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
           "anyOf": [
@@ -979,18 +979,18 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1015,7 +1015,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1026,10 +1026,10 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "test": {
@@ -1037,11 +1037,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1087,7 +1087,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1098,19 +1098,19 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1135,7 +1135,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1146,7 +1146,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -1157,15 +1157,15 @@
               "type": "null"
             }
           ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied."
         },
         "scale": {
           "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
           "anyOf": [
@@ -1179,15 +1179,15 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1212,7 +1212,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1223,23 +1223,23 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1253,7 +1253,7 @@
       "properties": {
         "selection": {
           "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](selection.html), or a series of [composed selections](selection.html#compose)."
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
@@ -1909,7 +1909,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1920,7 +1920,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
           "$ref": "#/definitions/Header",
@@ -1932,11 +1932,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -1975,7 +1975,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1986,15 +1986,15 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -2019,7 +2019,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2033,7 +2033,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2044,15 +2044,15 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -2077,7 +2077,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2091,7 +2091,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2102,7 +2102,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
           "anyOf": [
@@ -2113,11 +2113,11 @@
               "type": "null"
             }
           ],
-          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](legend.html) are applied."
+          "description": "An object defining properties of the legend.\nIf `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied."
         },
         "scale": {
           "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
           "anyOf": [
@@ -2131,15 +2131,15 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -2164,7 +2164,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2178,7 +2178,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](encoding.html#value-def)\nsince Vega-Lite only allows at mosty  one encoded field per encoding channel."
+          "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "anyOf": [
@@ -2189,19 +2189,19 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -2307,6 +2307,9 @@
               },
               {
                 "$ref": "#/definitions/DateTime"
+              },
+              {
+                "type": "null"
               }
             ]
           },
@@ -2330,7 +2333,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](filter.html#equal-predicate);\n[range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);\n(3) a [selection predicate](filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
+          "description": "The `filter` property must be one of the predicate definitions:\n(1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object;\n(2) one of the field predicates: [equal predicate](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate);\n[range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);\n(3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate);\nor (4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
@@ -2478,7 +2481,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -2522,7 +2525,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         }
       },
@@ -2620,12 +2623,12 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2661,13 +2664,12 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         }
       },
       "required": [
-        "mark",
-        "encoding"
+        "mark"
       ],
       "type": "object"
     },
@@ -2687,12 +2689,12 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2728,13 +2730,12 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         }
       },
       "required": [
-        "mark",
-        "encoding"
+        "mark"
       ],
       "type": "object"
     },
@@ -2893,26 +2894,6 @@
         "monotone"
       ],
       "type": "string"
-    },
-    "InterpolateParams": {
-      "additionalProperties": false,
-      "properties": {
-        "gamma": {
-          "type": "number"
-        },
-        "type": {
-          "enum": [
-            "rgb",
-            "cubehelix",
-            "cubehelix-long"
-          ],
-          "type": "string"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
     },
     "IntervalSelection": {
       "additionalProperties": false,
@@ -3499,7 +3480,7 @@
           "description": "Secondary data source to lookup in."
         },
         "fields": {
-          "description": "Fields in foreign data to lookup.\nIf not specificied, the entire object is queried.",
+          "description": "Fields in foreign data to lookup.\nIf not specified, the entire object is queried.",
           "items": {
             "type": "string"
           },
@@ -4135,7 +4116,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -4146,7 +4127,7 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
           "$ref": "#/definitions/SortOrder",
@@ -4154,11 +4135,11 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -4215,7 +4196,7 @@
               "type": "null"
             }
           ],
-          "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](axis.html) are applied."
+          "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied."
         },
         "bin": {
           "anyOf": [
@@ -4226,7 +4207,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).\nIf `true`, default [binning parameters](bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -4237,11 +4218,11 @@
               "$ref": "#/definitions/RepeatRef"
             }
           ],
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "scale": {
           "$ref": "#/definitions/Scale",
-          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](scale.html) are applied."
+          "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
           "anyOf": [
@@ -4255,7 +4236,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
           "anyOf": [
@@ -4266,15 +4247,15 @@
               "type": "null"
             }
           ],
-          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).\n- `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default."
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).\n- `null` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](type.html#cast).\n\n__Default value:__ `undefined` (None)"
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
         },
         "type": {
           "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](projection.html) is applied."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a geo type (`\"latitude\"`, `\"longitude\"`, and `\"geojson\"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied."
         }
       },
       "required": [
@@ -4696,10 +4677,10 @@
         "interpolate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Interpolate"
+              "$ref": "#/definitions/ScaleInterpolate"
             },
             {
-              "$ref": "#/definitions/InterpolateParams"
+              "$ref": "#/definitions/ScaleInterpolateParams"
             }
           ],
           "description": "The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).\n\n__Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `\"linear\"` to customize `interpolate`."
@@ -4909,6 +4890,39 @@
           "type": "boolean"
         }
       },
+      "type": "object"
+    },
+    "ScaleInterpolate": {
+      "enum": [
+        "rgb",
+        "lab",
+        "hcl",
+        "hsl",
+        "hsl-long",
+        "hcl-long",
+        "cubehelix",
+        "cubehelix-long"
+      ],
+      "type": "string"
+    },
+    "ScaleInterpolateParams": {
+      "additionalProperties": false,
+      "properties": {
+        "gamma": {
+          "type": "number"
+        },
+        "type": {
+          "enum": [
+            "rgb",
+            "cubehelix",
+            "cubehelix-long"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "ScaleResolveMap": {
@@ -5773,12 +5787,12 @@
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5818,12 +5832,11 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         }
       },
       "required": [
-        "encoding",
         "mark"
       ],
       "type": "object"
@@ -6029,7 +6042,7 @@
           "type": "string"
         },
         "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](scale.html#continuous), the height will be the value of [`config.view.height`](spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "layer": {
@@ -6077,7 +6090,7 @@
           "type": "array"
         },
         "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](scale.html#continuous), the width will be the value of [`config.view.width`](spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](size.html) contains more examples.",
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         }
       },

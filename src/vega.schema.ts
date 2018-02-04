@@ -173,14 +173,21 @@ export interface VgScale {
   clamp?: boolean;
   base?: number;
   exponent?: number;
-  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-  nice?: boolean | NiceTime;
+  interpolate?: ScaleInterpolate | ScaleInterpolateParams;
+  nice?: boolean | number | NiceTime | {interval: string, step: number};
   padding?: number;
   paddingInner?: number;
   paddingOuter?: number;
   reverse?: boolean;
   round?: boolean;
   zero?: boolean;
+}
+
+export type ScaleInterpolate = 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+
+export interface ScaleInterpolateParams {
+  type: 'rgb' | 'cubehelix' | 'cubehelix-long';
+  gamma?: number;
 }
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';

@@ -148,7 +148,7 @@ function parseNonUnitLegend(model: Model) {
   return legends;
 }
 
-export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {
+export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent): LegendComponent {
   if (!mergedLegend) {
     return childLegend.clone();
   }

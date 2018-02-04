@@ -13,7 +13,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
 describe('compile/scale', () => {
   describe('parseRange()', function() {
     describe('position', () => {
-      it('should return [0, plot_width] for x-continous scales by default.', () => {
+      it('should return [0, plot_width] for x-continuous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           assert.deepEqual(
             parseRangeForChannel('x', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', false, 'plot_width', []),

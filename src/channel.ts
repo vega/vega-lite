@@ -87,7 +87,7 @@ const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
  *
  * (The only two channels that can have an array of channelDefs are "detail" and "order".
  * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
- * are not applicable for them.  Similarly, selection projecttion won't work with "detail" and "order".)
+ * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 
 export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);

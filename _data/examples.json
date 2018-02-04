@@ -88,6 +88,11 @@
     {
       "name": "circle_github_punchcard",
       "title": "Table Bubble Plot (Github Punch Card)"
+    },
+    {
+      "name": "circle_natural_disasters",
+      "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
+      "title": "Natural Disasters"
     }
   ],
   "Stack": [
@@ -158,6 +163,11 @@
       "name": "layer_bar_labels",
       "title": "Simple Bar Chart with Labels",
       "style": "background-size: auto 70%; background-position-y: center;"
+    },
+    {
+      "name": "layer_bar_annotations",
+      "title": "Bar chart that highlights values beyond a threshold",
+      "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
     },
     {
       "name": "layer_precipitation_mean",

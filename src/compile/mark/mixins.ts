@@ -18,7 +18,7 @@ export function color(model: UnitModel) {
   const vgChannel = filled ? 'fill' : 'stroke';
   const e = nonPosition('color', model, {
     vgChannel,
-    // Mark definition has higher predecence than config;
+    // Mark definition has higher precedence than config;
     // fill/stroke has higher precedence than color.
     defaultValue: model.markDef[vgChannel] ||
       model.markDef.color ||

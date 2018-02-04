@@ -74,7 +74,7 @@ export interface FieldRangePredicate {
    * @maxItems 2
    * @minItems 2
    */
-  range: (number|DateTime)[];
+  range: (number|DateTime|null)[];
 
 }
 

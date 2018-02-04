@@ -14,11 +14,10 @@
       "projection": {
         "type": "albersUsa"
       },
-      "mark": "geoshape",
-      "encoding": {
-        "color": {
-          "value": "#A9ACB5"
-        }
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgray",
+        "stroke": "white"
       }
     },
     {

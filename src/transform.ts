@@ -9,11 +9,11 @@ import {TimeUnit} from './timeunit';
 export interface FilterTransform {
   /**
    * The `filter` property must be one of the predicate definitions:
-   * (1) an [expression](types.html#expression) string,
+   * (1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,
    * where `datum` can be used to refer to the current data object;
-   * (2) one of the field predicates: [equal predicate](filter.html#equal-predicate);
-   * [range precidate](filter.html#range-predicate), [one-of predicate](filter.html#one-of-predicate);
-   * (3) a [selection predicate](filter.html#selection-predicate);
+   * (2) one of the field predicates: [equal predicate](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate);
+   * [range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);
+   * (3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate);
    * or (4) a logical operand that combines (1), (2), or (3).
    */
   // TODO: https://github.com/vega/vega-lite/issues/2901
@@ -26,7 +26,7 @@ export function isFilter(t: Transform): t is FilterTransform {
 
 export interface CalculateTransform {
   /**
-   * A [expression](types.html#expression) string. Use the variable `datum` to refer to the current data object.
+   * A [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string. Use the variable `datum` to refer to the current data object.
    */
   calculate: string;
 
@@ -112,7 +112,7 @@ export interface LookupData {
   key: string;
   /**
    * Fields in foreign data to lookup.
-   * If not specificied, the entire object is queried.
+   * If not specified, the entire object is queried.
    */
   fields?: string[];
 }

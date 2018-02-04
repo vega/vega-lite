@@ -283,7 +283,7 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
       return properties.gridScale(model, channel, isGridAxis);
 
     case 'domain':
-      return properties.domain(property, specifiedAxis, isGridAxis, channel);
+      return properties.domain('domain', specifiedAxis, isGridAxis, channel);
     case 'format':
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
@@ -315,7 +315,7 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
       return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size));
     }
     case 'ticks':
-      return properties.ticks(property, specifiedAxis, isGridAxis, channel);
+      return properties.ticks('ticks', specifiedAxis, isGridAxis, channel);
     case 'title':
       return getSpecifiedOrDefaultValue(specifiedAxis.title, properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
     case 'values':

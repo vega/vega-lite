@@ -187,7 +187,7 @@ export namespace message {
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continous fields. In this case, we use vertical by default`;
+    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;
   }
 
   export function unclearOrientDiscreteOrEmpty(mark: Mark) {

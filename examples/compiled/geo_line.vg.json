@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Line drawn between airports in the U.S. simulating a flight itinerary",
     "autosize": "pad",
     "padding": 5,
     "width": 800,
@@ -8,6 +9,43 @@
     "data": [
         {
             "name": "source_0",
+            "values": [
+                {
+                    "airport": "SEA",
+                    "order": 1
+                },
+                {
+                    "airport": "SFO",
+                    "order": 2
+                },
+                {
+                    "airport": "LAX",
+                    "order": 3
+                },
+                {
+                    "airport": "LAS",
+                    "order": 4
+                },
+                {
+                    "airport": "DFW",
+                    "order": 5
+                },
+                {
+                    "airport": "DEN",
+                    "order": 6
+                },
+                {
+                    "airport": "ORD",
+                    "order": 7
+                },
+                {
+                    "airport": "JFK",
+                    "order": 8
+                }
+            ]
+        },
+        {
+            "name": "source_1",
             "url": "data/us-10m.json",
             "format": {
                 "type": "topojson",
@@ -15,60 +53,53 @@
             }
         },
         {
-            "name": "source_1",
+            "name": "source_2",
             "url": "data/airports.csv",
             "format": {
                 "type": "csv"
             }
         },
         {
-            "name": "source_2",
-            "values": [
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
                 {
-                    "origin": "SEA",
-                    "destination": "SFO",
-                    "order": 1
+                    "type": "lookup",
+                    "from": "source_2",
+                    "key": "iata",
+                    "fields": [
+                        "airport"
+                    ],
+                    "values": [
+                        "latitude",
+                        "longitude"
+                    ]
                 },
                 {
-                    "origin": "SFO",
-                    "destination": "LAX",
-                    "order": 2
+                    "type": "geojson",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "signal": "layer_2_geojson_0"
                 },
                 {
-                    "origin": "LAX",
-                    "destination": "LAS",
-                    "order": 3
-                },
-                {
-                    "origin": "LAS",
-                    "destination": "DFW",
-                    "order": 4
-                },
-                {
-                    "origin": "DFW",
-                    "destination": "DEN",
-                    "order": 5
-                },
-                {
-                    "origin": "DEN",
-                    "destination": "ORD",
-                    "order": 6
-                },
-                {
-                    "origin": "ORD",
-                    "destination": "JFK",
-                    "order": 7
-                },
-                {
-                    "origin": "JFK",
-                    "destination": "ATL",
-                    "order": 8
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
                 }
             ]
         },
         {
-            "name": "data_0",
-            "source": "source_1",
+            "name": "data_1",
+            "source": "source_2",
             "transform": [
                 {
                     "type": "geojson",
@@ -91,64 +122,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_2",
-            "transform": [
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "iata",
-                    "fields": [
-                        "origin"
-                    ],
-                    "values": [
-                        "latitude",
-                        "longitude"
-                    ],
-                    "as": [
-                        "origin_latitude",
-                        "origin_longitude"
-                    ]
-                },
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "iata",
-                    "fields": [
-                        "destination"
-                    ],
-                    "values": [
-                        "latitude",
-                        "longitude"
-                    ],
-                    "as": [
-                        "dest_latitude",
-                        "dest_longitude"
-                    ]
-                },
-                {
-                    "type": "geojson",
-                    "fields": [
-                        "origin_longitude",
-                        "origin_latitude"
-                    ],
-                    "signal": "layer_2_geojson_0"
-                },
-                {
-                    "type": "geopoint",
-                    "projection": "projection",
-                    "fields": [
-                        "origin_longitude",
-                        "origin_latitude"
-                    ],
-                    "as": [
-                        "origin_longitude_geo",
-                        "origin_latitude_geo"
-                    ]
-                }
-            ]
         }
     ],
     "projections": [
@@ -158,7 +131,7 @@
                 "signal": "[width, height]"
             },
             "fit": {
-                "signal": "[data('source_0'), layer_1_geojson_0, layer_2_geojson_0]"
+                "signal": "[data('source_1'), layer_1_geojson_0, layer_2_geojson_0]"
             },
             "type": "albersUsa"
         }
@@ -171,12 +144,15 @@
                 "geoshape"
             ],
             "from": {
-                "data": "source_0"
+                "data": "source_1"
             },
             "encode": {
                 "update": {
                     "fill": {
-                        "value": "#A9ACB5"
+                        "value": "#eee"
+                    },
+                    "stroke": {
+                        "value": "white"
                     }
                 }
             },
@@ -194,7 +170,7 @@
                 "circle"
             ],
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -234,7 +210,7 @@
                 ]
             },
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -242,10 +218,10 @@
                         "value": "#4c78a8"
                     },
                     "x": {
-                        "field": "origin_longitude_geo"
+                        "field": "longitude_geo"
                     },
                     "y": {
-                        "field": "origin_latitude_geo"
+                        "field": "latitude_geo"
                     }
                 }
             }

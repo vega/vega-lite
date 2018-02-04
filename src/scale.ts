@@ -2,6 +2,7 @@ import {Channel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, Flag, flagKeys, keys, toSet} from './util';
+import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -71,7 +72,7 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
 }
 
 /**
- * Index for scale predecence -- high score = higher priority for merging.
+ * Index for scale precedence -- high score = higher priority for merging.
  */
 const SCALE_PRECEDENCE_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
@@ -553,14 +554,7 @@ export interface Scale {
    *
    * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
    */
-  interpolate?: Interpolate | InterpolateParams;
-}
-
-export type Interpolate = 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-
-export interface InterpolateParams {
-  type: 'rgb' | 'cubehelix' | 'cubehelix-long';
-  gamma?: number;
+  interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
 
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {

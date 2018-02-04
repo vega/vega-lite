@@ -11,7 +11,7 @@ We will be using the `View` API from the Vega, where we update data via the [`ch
 
 <div id="chart"></div>
 
-To use `view.change`, you have to first specify the name of the data source you are udpating:  `view.change('data', ... )`.  The name needs to be specified in the original spec, as described [here]({{site.baseurl}}/docs/data.html#named).  As the second parameter to the `view.change` method, you should specify what data to add, and what data to remove.  To add data, simply supply the array of data entries matching previous schemas, for the example here, it is:
+To use `view.change`, you have to first specify the name of the data source you are updating:  `view.change('data', ... )`.  The name needs to be specified in the original spec, as described [here]({{site.baseurl}}/docs/data.html#named).  As the second parameter to the `view.change` method, you should specify what data to add, and what data to remove.  To add data, simply supply the array of data entries matching previous schemas, for the example here, it is:
 
 {: .suppress-error}
 ```json
@@ -33,7 +33,7 @@ Putting it together, we have:
 
 The view is given to us by the [embed](https://github.com/vega/vega-embed) method, which helps load Vega/Vega-Lite specs on your webpages. When `embed` completes successfully, `embed` returns a fulfilled [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vega-Lite spec given. When `embed` fails, it returns a rejected [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an error object.
 
-For simplicity, we have generated some data to simulate real time data updates, but the code could easily be swapped with a server data request.  In the example, the "real time" is being simualted by `window.setInterval` that triggers `view.change` periodically.
+For simplicity, we have generated some data to simulate real time data updates, but the code could easily be swapped with a server data request.  In the example, the "real time" is being simulated by `window.setInterval` that triggers `view.change` periodically.
 
 Below is the JavaScript code to run this example.  Make sure your html contains a div with id `'chart'`.
 
