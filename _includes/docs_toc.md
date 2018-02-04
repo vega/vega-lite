@@ -24,7 +24,7 @@
     - [Projection Types]({{site.baseurl}}/docs/projection.html#projection-types)
     - [Projection Configuration]({{site.baseurl}}/docs/projection.html#config)
 - [Transform]({{site.baseurl}}/docs/transform.html)
-    - [Top-level Transform Property]({{site.baseurl}}/docs/transform.html#top-level-transform-property)
+    - [View-level Transform Property]({{site.baseurl}}/docs/transform.html#view-level-transform-property)
     - [Aggregate]({{site.baseurl}}/docs/aggregate.html)
         - [Documentation Overview]({{site.baseurl}}/docs/aggregate.html#documentation-overview)
         - [Aggregate in Encoding Field Definition]({{site.baseurl}}/docs/aggregate.html#encoding)
