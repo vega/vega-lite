@@ -12,10 +12,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 {:#pl}
 ## Tools for Authoring Vega-Lite Visualizations
 
-- <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite.  You can also get an output Vega spec from a given Vega-Lite spec as well. 
-
+- <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite.  You can also get an output Vega spec from a given Vega-Lite spec as well.
 - <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
-
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
 
 ## Plug-ins for Vega-Lite
