@@ -96,7 +96,8 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
-      return getSpecifiedOrDefaultValue(specifiedLegend.title, fieldDefTitle(fieldDef, model.config));
+      const title = getSpecifiedOrDefaultValue(specifiedLegend.title, fieldDefTitle(fieldDef, model.config));
+      return title === null || title === '' ? undefined : title;
     case 'values':
       return properties.values(specifiedLegend);
     case 'type':

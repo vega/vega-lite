@@ -62,6 +62,19 @@ describe('compile/legend', function () {
       assert.equal(def.type, 'gradient');
     });
 
+    it('should produce no legend title when title is null', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "nominal"},
+          color: {field: "a", type: "quantitative", legend: {title: null}}
+        }
+      });
+
+      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      assert.doesNotHaveAnyKeys(def, ['title']);
+    });
+
     [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, function() {
         const spec: UnitSpec = {
