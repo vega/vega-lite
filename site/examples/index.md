@@ -14,7 +14,7 @@ To see example code for embedding visualizations in a webpage, please read the [
 
 {% for group in site.data.examples %}
 ## {{ group[0] }}
-<span class="gallery">{% for spec in group[1] %}{% include preview.html spec=spec.name title=spec.title style=spec.style %}{% endfor %}</span>
+<span class="gallery">{% for spec in group[1] %}{% include preview.html spec=spec.name title=spec.title style=spec.style png=spec.png %}{% endfor %}</span>
 {% endfor %}
 
 ## Community Examples
