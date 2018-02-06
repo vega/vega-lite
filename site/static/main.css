@@ -49,9 +49,6 @@ dt {
 dd {
   margin-bottom: 10px;
 }
-li {
-  margin: 0.1em 0;
-}
 
 /* Table */
 
@@ -624,6 +621,16 @@ footer .edit-page {
 .next-slide:hover {
   background-color: #ebebeb;
   color: #000;
+}
+
+/* Page styles */
+
+.applications ul {
+  list-style: none;
+  padding-left: 0;
+}
+.applications li {
+  margin: 0.2em 0;
 }
 
 /* Dropdown */
