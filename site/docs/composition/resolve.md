@@ -33,7 +33,7 @@ For scales, resolution can be specified for every channel. For axes, resolutions
 
 There are two options to resolve a scale, axis, or legend: `"shared"` and `"independent"`. Independent scales imply independent axes and legends.
 
-The defaults are documented on the [faceting](facet.html#combined-scales-and-guides), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.
+The defaults are documented on the [faceting](facet.html#resolve), [layering](layer.html#resolve), [concatenation](concat.html#resolve), and [repeating](repeat.html#resolve) pages.
 
 ## Example
 
