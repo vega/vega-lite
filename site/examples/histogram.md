@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Histogram
 permalink: /examples/histogram.html
 image: /examples/compiled/histogram.png
-edit_path: examples/specs/histogram.vl.json
 ---
 
 

@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Becker's Barley Trellis Plot
 permalink: /examples/trellis_barley.html
 image: /examples/compiled/trellis_barley.png
-edit_path: examples/specs/trellis_barley.vl.json
 ---
 
 

@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Step Chart
 permalink: /examples/line_step.html
 image: /examples/compiled/line_step.png
-edit_path: examples/specs/line_step.vl.json
 ---
 
 

@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Area Chart
 permalink: /examples/area.html
 image: /examples/compiled/area.png
-edit_path: examples/specs/area.vl.json
 ---
 
 

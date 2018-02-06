@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Line Chart
 permalink: /examples/line.html
 image: /examples/compiled/line.png
-edit_path: examples/specs/line.vl.json
 ---
 
 

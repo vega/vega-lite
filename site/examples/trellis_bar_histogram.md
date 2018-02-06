@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Trellis Histograms
 permalink: /examples/trellis_bar_histogram.html
 image: /examples/compiled/trellis_bar_histogram.png
-edit_path: examples/specs/trellis_bar_histogram.vl.json
 ---
 
 

@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Trellis Bar Chart
 permalink: /examples/trellis_bar.html
 image: /examples/compiled/trellis_bar.png
-edit_path: examples/specs/trellis_bar.vl.json
 ---
 
 

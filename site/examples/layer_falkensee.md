@@ -1,11 +1,9 @@
 ---
-layout: page
-menu: examples
+layout: example
 
 title: Falkensee
 permalink: /examples/layer_falkensee.html
 image: /examples/compiled/layer_falkensee.png
-edit_path: examples/specs/layer_falkensee.vl.json
 ---
 
 
