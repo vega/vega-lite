@@ -3112,8 +3112,8 @@ exports.xml = xml;
 exports.csv = csv;
 exports.tsv = tsv;
 
-},{"d3-collection":8,"d3-dispatch":9,"d3-dsv":10,"xmlhttprequest":478}],13:[function(require,module,exports){
-// https://d3js.org/d3-selection/ Version 1.2.0. Copyright 2017 Mike Bostock.
+},{"d3-collection":8,"d3-dispatch":9,"d3-dsv":10,"xmlhttprequest":361}],13:[function(require,module,exports){
+// https://d3js.org/d3-selection/ Version 1.3.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -3130,11 +3130,11 @@ var namespaces = {
   xmlns: "http://www.w3.org/2000/xmlns/"
 };
 
-var namespace = function(name) {
+function namespace(name) {
   var prefix = name += "", i = prefix.indexOf(":");
   if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
   return namespaces.hasOwnProperty(prefix) ? {space: namespaces[prefix], local: name} : name;
-};
+}
 
 function creatorInherit(name) {
   return function() {
@@ -3152,40 +3152,60 @@ function creatorFixed(fullname) {
   };
 }
 
-var creator = function(name) {
+function creator(name) {
   var fullname = namespace(name);
   return (fullname.local
       ? creatorFixed
       : creatorInherit)(fullname);
-};
-
-var nextId = 0;
-
-function local() {
-  return new Local;
 }
 
-function Local() {
-  this._ = "@" + (++nextId).toString(36);
+function none() {}
+
+function selector(selector) {
+  return selector == null ? none : function() {
+    return this.querySelector(selector);
+  };
 }
 
-Local.prototype = local.prototype = {
-  constructor: Local,
-  get: function(node) {
-    var id = this._;
-    while (!(id in node)) if (!(node = node.parentNode)) return;
-    return node[id];
-  },
-  set: function(node, value) {
-    return node[this._] = value;
-  },
-  remove: function(node) {
-    return this._ in node && delete node[this._];
-  },
-  toString: function() {
-    return this._;
+function selection_select(select) {
+  if (typeof select !== "function") select = selector(select);
+
+  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+      if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+        if ("__data__" in node) subnode.__data__ = node.__data__;
+        subgroup[i] = subnode;
+      }
+    }
   }
-};
+
+  return new Selection(subgroups, this._parents);
+}
+
+function empty() {
+  return [];
+}
+
+function selectorAll(selector) {
+  return selector == null ? empty : function() {
+    return this.querySelectorAll(selector);
+  };
+}
+
+function selection_selectAll(select) {
+  if (typeof select !== "function") select = selectorAll(select);
+
+  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+      if (node = group[i]) {
+        subgroups.push(select.call(node, node.__data__, i, group));
+        parents.push(node);
+      }
+    }
+  }
+
+  return new Selection(subgroups, parents);
+}
 
 var matcher = function(selector) {
   return function() {
@@ -3209,6 +3229,584 @@ if (typeof document !== "undefined") {
 }
 
 var matcher$1 = matcher;
+
+function selection_filter(match) {
+  if (typeof match !== "function") match = matcher$1(match);
+
+  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+        subgroup.push(node);
+      }
+    }
+  }
+
+  return new Selection(subgroups, this._parents);
+}
+
+function sparse(update) {
+  return new Array(update.length);
+}
+
+function selection_enter() {
+  return new Selection(this._enter || this._groups.map(sparse), this._parents);
+}
+
+function EnterNode(parent, datum) {
+  this.ownerDocument = parent.ownerDocument;
+  this.namespaceURI = parent.namespaceURI;
+  this._next = null;
+  this._parent = parent;
+  this.__data__ = datum;
+}
+
+EnterNode.prototype = {
+  constructor: EnterNode,
+  appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+  insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+  querySelector: function(selector) { return this._parent.querySelector(selector); },
+  querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+};
+
+function constant(x) {
+  return function() {
+    return x;
+  };
+}
+
+var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+function bindIndex(parent, group, enter, update, exit, data) {
+  var i = 0,
+      node,
+      groupLength = group.length,
+      dataLength = data.length;
+
+  // Put any non-null nodes that fit into update.
+  // Put any null nodes into enter.
+  // Put any remaining data into enter.
+  for (; i < dataLength; ++i) {
+    if (node = group[i]) {
+      node.__data__ = data[i];
+      update[i] = node;
+    } else {
+      enter[i] = new EnterNode(parent, data[i]);
+    }
+  }
+
+  // Put any non-null nodes that don’t fit into exit.
+  for (; i < groupLength; ++i) {
+    if (node = group[i]) {
+      exit[i] = node;
+    }
+  }
+}
+
+function bindKey(parent, group, enter, update, exit, data, key) {
+  var i,
+      node,
+      nodeByKeyValue = {},
+      groupLength = group.length,
+      dataLength = data.length,
+      keyValues = new Array(groupLength),
+      keyValue;
+
+  // Compute the key for each node.
+  // If multiple nodes have the same key, the duplicates are added to exit.
+  for (i = 0; i < groupLength; ++i) {
+    if (node = group[i]) {
+      keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+      if (keyValue in nodeByKeyValue) {
+        exit[i] = node;
+      } else {
+        nodeByKeyValue[keyValue] = node;
+      }
+    }
+  }
+
+  // Compute the key for each datum.
+  // If there a node associated with this key, join and add it to update.
+  // If there is not (or the key is a duplicate), add it to enter.
+  for (i = 0; i < dataLength; ++i) {
+    keyValue = keyPrefix + key.call(parent, data[i], i, data);
+    if (node = nodeByKeyValue[keyValue]) {
+      update[i] = node;
+      node.__data__ = data[i];
+      nodeByKeyValue[keyValue] = null;
+    } else {
+      enter[i] = new EnterNode(parent, data[i]);
+    }
+  }
+
+  // Add any remaining nodes that were not bound to data to exit.
+  for (i = 0; i < groupLength; ++i) {
+    if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+      exit[i] = node;
+    }
+  }
+}
+
+function selection_data(value, key) {
+  if (!value) {
+    data = new Array(this.size()), j = -1;
+    this.each(function(d) { data[++j] = d; });
+    return data;
+  }
+
+  var bind = key ? bindKey : bindIndex,
+      parents = this._parents,
+      groups = this._groups;
+
+  if (typeof value !== "function") value = constant(value);
+
+  for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+    var parent = parents[j],
+        group = groups[j],
+        groupLength = group.length,
+        data = value.call(parent, parent && parent.__data__, j, parents),
+        dataLength = data.length,
+        enterGroup = enter[j] = new Array(dataLength),
+        updateGroup = update[j] = new Array(dataLength),
+        exitGroup = exit[j] = new Array(groupLength);
+
+    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+    // Now connect the enter nodes to their following update node, such that
+    // appendChild can insert the materialized enter node before this node,
+    // rather than at the end of the parent node.
+    for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+      if (previous = enterGroup[i0]) {
+        if (i0 >= i1) i1 = i0 + 1;
+        while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+        previous._next = next || null;
+      }
+    }
+  }
+
+  update = new Selection(update, parents);
+  update._enter = enter;
+  update._exit = exit;
+  return update;
+}
+
+function selection_exit() {
+  return new Selection(this._exit || this._groups.map(sparse), this._parents);
+}
+
+function selection_merge(selection$$1) {
+
+  for (var groups0 = this._groups, groups1 = selection$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+      if (node = group0[i] || group1[i]) {
+        merge[i] = node;
+      }
+    }
+  }
+
+  for (; j < m0; ++j) {
+    merges[j] = groups0[j];
+  }
+
+  return new Selection(merges, this._parents);
+}
+
+function selection_order() {
+
+  for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+    for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+      if (node = group[i]) {
+        if (next && next !== node.nextSibling) next.parentNode.insertBefore(node, next);
+        next = node;
+      }
+    }
+  }
+
+  return this;
+}
+
+function selection_sort(compare) {
+  if (!compare) compare = ascending;
+
+  function compareNode(a, b) {
+    return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+  }
+
+  for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+    for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+      if (node = group[i]) {
+        sortgroup[i] = node;
+      }
+    }
+    sortgroup.sort(compareNode);
+  }
+
+  return new Selection(sortgroups, this._parents).order();
+}
+
+function ascending(a, b) {
+  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+
+function selection_call() {
+  var callback = arguments[0];
+  arguments[0] = this;
+  callback.apply(null, arguments);
+  return this;
+}
+
+function selection_nodes() {
+  var nodes = new Array(this.size()), i = -1;
+  this.each(function() { nodes[++i] = this; });
+  return nodes;
+}
+
+function selection_node() {
+
+  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+    for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+      var node = group[i];
+      if (node) return node;
+    }
+  }
+
+  return null;
+}
+
+function selection_size() {
+  var size = 0;
+  this.each(function() { ++size; });
+  return size;
+}
+
+function selection_empty() {
+  return !this.node();
+}
+
+function selection_each(callback) {
+
+  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+    for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+      if (node = group[i]) callback.call(node, node.__data__, i, group);
+    }
+  }
+
+  return this;
+}
+
+function attrRemove(name) {
+  return function() {
+    this.removeAttribute(name);
+  };
+}
+
+function attrRemoveNS(fullname) {
+  return function() {
+    this.removeAttributeNS(fullname.space, fullname.local);
+  };
+}
+
+function attrConstant(name, value) {
+  return function() {
+    this.setAttribute(name, value);
+  };
+}
+
+function attrConstantNS(fullname, value) {
+  return function() {
+    this.setAttributeNS(fullname.space, fullname.local, value);
+  };
+}
+
+function attrFunction(name, value) {
+  return function() {
+    var v = value.apply(this, arguments);
+    if (v == null) this.removeAttribute(name);
+    else this.setAttribute(name, v);
+  };
+}
+
+function attrFunctionNS(fullname, value) {
+  return function() {
+    var v = value.apply(this, arguments);
+    if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+    else this.setAttributeNS(fullname.space, fullname.local, v);
+  };
+}
+
+function selection_attr(name, value) {
+  var fullname = namespace(name);
+
+  if (arguments.length < 2) {
+    var node = this.node();
+    return fullname.local
+        ? node.getAttributeNS(fullname.space, fullname.local)
+        : node.getAttribute(fullname);
+  }
+
+  return this.each((value == null
+      ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
+      ? (fullname.local ? attrFunctionNS : attrFunction)
+      : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
+}
+
+function defaultView(node) {
+  return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+      || (node.document && node) // node is a Window
+      || node.defaultView; // node is a Document
+}
+
+function styleRemove(name) {
+  return function() {
+    this.style.removeProperty(name);
+  };
+}
+
+function styleConstant(name, value, priority) {
+  return function() {
+    this.style.setProperty(name, value, priority);
+  };
+}
+
+function styleFunction(name, value, priority) {
+  return function() {
+    var v = value.apply(this, arguments);
+    if (v == null) this.style.removeProperty(name);
+    else this.style.setProperty(name, v, priority);
+  };
+}
+
+function selection_style(name, value, priority) {
+  return arguments.length > 1
+      ? this.each((value == null
+            ? styleRemove : typeof value === "function"
+            ? styleFunction
+            : styleConstant)(name, value, priority == null ? "" : priority))
+      : styleValue(this.node(), name);
+}
+
+function styleValue(node, name) {
+  return node.style.getPropertyValue(name)
+      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+}
+
+function propertyRemove(name) {
+  return function() {
+    delete this[name];
+  };
+}
+
+function propertyConstant(name, value) {
+  return function() {
+    this[name] = value;
+  };
+}
+
+function propertyFunction(name, value) {
+  return function() {
+    var v = value.apply(this, arguments);
+    if (v == null) delete this[name];
+    else this[name] = v;
+  };
+}
+
+function selection_property(name, value) {
+  return arguments.length > 1
+      ? this.each((value == null
+          ? propertyRemove : typeof value === "function"
+          ? propertyFunction
+          : propertyConstant)(name, value))
+      : this.node()[name];
+}
+
+function classArray(string) {
+  return string.trim().split(/^|\s+/);
+}
+
+function classList(node) {
+  return node.classList || new ClassList(node);
+}
+
+function ClassList(node) {
+  this._node = node;
+  this._names = classArray(node.getAttribute("class") || "");
+}
+
+ClassList.prototype = {
+  add: function(name) {
+    var i = this._names.indexOf(name);
+    if (i < 0) {
+      this._names.push(name);
+      this._node.setAttribute("class", this._names.join(" "));
+    }
+  },
+  remove: function(name) {
+    var i = this._names.indexOf(name);
+    if (i >= 0) {
+      this._names.splice(i, 1);
+      this._node.setAttribute("class", this._names.join(" "));
+    }
+  },
+  contains: function(name) {
+    return this._names.indexOf(name) >= 0;
+  }
+};
+
+function classedAdd(node, names) {
+  var list = classList(node), i = -1, n = names.length;
+  while (++i < n) list.add(names[i]);
+}
+
+function classedRemove(node, names) {
+  var list = classList(node), i = -1, n = names.length;
+  while (++i < n) list.remove(names[i]);
+}
+
+function classedTrue(names) {
+  return function() {
+    classedAdd(this, names);
+  };
+}
+
+function classedFalse(names) {
+  return function() {
+    classedRemove(this, names);
+  };
+}
+
+function classedFunction(names, value) {
+  return function() {
+    (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
+  };
+}
+
+function selection_classed(name, value) {
+  var names = classArray(name + "");
+
+  if (arguments.length < 2) {
+    var list = classList(this.node()), i = -1, n = names.length;
+    while (++i < n) if (!list.contains(names[i])) return false;
+    return true;
+  }
+
+  return this.each((typeof value === "function"
+      ? classedFunction : value
+      ? classedTrue
+      : classedFalse)(names, value));
+}
+
+function textRemove() {
+  this.textContent = "";
+}
+
+function textConstant(value) {
+  return function() {
+    this.textContent = value;
+  };
+}
+
+function textFunction(value) {
+  return function() {
+    var v = value.apply(this, arguments);
+    this.textContent = v == null ? "" : v;
+  };
+}
+
+function selection_text(value) {
+  return arguments.length
+      ? this.each(value == null
+          ? textRemove : (typeof value === "function"
+          ? textFunction
+          : textConstant)(value))
+      : this.node().textContent;
+}
+
+function htmlRemove() {
+  this.innerHTML = "";
+}
+
+function htmlConstant(value) {
+  return function() {
+    this.innerHTML = value;
+  };
+}
+
+function htmlFunction(value) {
+  return function() {
+    var v = value.apply(this, arguments);
+    this.innerHTML = v == null ? "" : v;
+  };
+}
+
+function selection_html(value) {
+  return arguments.length
+      ? this.each(value == null
+          ? htmlRemove : (typeof value === "function"
+          ? htmlFunction
+          : htmlConstant)(value))
+      : this.node().innerHTML;
+}
+
+function raise() {
+  if (this.nextSibling) this.parentNode.appendChild(this);
+}
+
+function selection_raise() {
+  return this.each(raise);
+}
+
+function lower() {
+  if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+}
+
+function selection_lower() {
+  return this.each(lower);
+}
+
+function selection_append(name) {
+  var create = typeof name === "function" ? name : creator(name);
+  return this.select(function() {
+    return this.appendChild(create.apply(this, arguments));
+  });
+}
+
+function constantNull() {
+  return null;
+}
+
+function selection_insert(name, before) {
+  var create = typeof name === "function" ? name : creator(name),
+      select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
+  return this.select(function() {
+    return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+  });
+}
+
+function remove() {
+  var parent = this.parentNode;
+  if (parent) parent.removeChild(this);
+}
+
+function selection_remove() {
+  return this.each(remove);
+}
+
+function selection_cloneShallow() {
+  return this.parentNode.insertBefore(this.cloneNode(false), this.nextSibling);
+}
+
+function selection_cloneDeep() {
+  return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
+}
+
+function selection_clone(deep) {
+  return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
+}
+
+function selection_datum(value) {
+  return arguments.length
+      ? this.property("__data__", value)
+      : this.node().__data__;
+}
 
 var filterEvents = {};
 
@@ -3286,7 +3884,7 @@ function onAdd(typename, value, capture) {
   };
 }
 
-var selection_on = function(typename, value, capture) {
+function selection_on(typename, value, capture) {
   var typenames = parseTypenames(typename + ""), i, n = typenames.length, t;
 
   if (arguments.length < 2) {
@@ -3305,7 +3903,7 @@ var selection_on = function(typename, value, capture) {
   if (capture == null) capture = false;
   for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
   return this;
-};
+}
 
 function customEvent(event1, listener, that, args) {
   var event0 = exports.event;
@@ -3317,646 +3915,6 @@ function customEvent(event1, listener, that, args) {
     exports.event = event0;
   }
 }
-
-var sourceEvent = function() {
-  var current = exports.event, source;
-  while (source = current.sourceEvent) current = source;
-  return current;
-};
-
-var point = function(node, event) {
-  var svg = node.ownerSVGElement || node;
-
-  if (svg.createSVGPoint) {
-    var point = svg.createSVGPoint();
-    point.x = event.clientX, point.y = event.clientY;
-    point = point.matrixTransform(node.getScreenCTM().inverse());
-    return [point.x, point.y];
-  }
-
-  var rect = node.getBoundingClientRect();
-  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
-};
-
-var mouse = function(node) {
-  var event = sourceEvent();
-  if (event.changedTouches) event = event.changedTouches[0];
-  return point(node, event);
-};
-
-function none() {}
-
-var selector = function(selector) {
-  return selector == null ? none : function() {
-    return this.querySelector(selector);
-  };
-};
-
-var selection_select = function(select) {
-  if (typeof select !== "function") select = selector(select);
-
-  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
-      if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
-        if ("__data__" in node) subnode.__data__ = node.__data__;
-        subgroup[i] = subnode;
-      }
-    }
-  }
-
-  return new Selection(subgroups, this._parents);
-};
-
-function empty() {
-  return [];
-}
-
-var selectorAll = function(selector) {
-  return selector == null ? empty : function() {
-    return this.querySelectorAll(selector);
-  };
-};
-
-var selection_selectAll = function(select) {
-  if (typeof select !== "function") select = selectorAll(select);
-
-  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
-    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
-      if (node = group[i]) {
-        subgroups.push(select.call(node, node.__data__, i, group));
-        parents.push(node);
-      }
-    }
-  }
-
-  return new Selection(subgroups, parents);
-};
-
-var selection_filter = function(match) {
-  if (typeof match !== "function") match = matcher$1(match);
-
-  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
-      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
-        subgroup.push(node);
-      }
-    }
-  }
-
-  return new Selection(subgroups, this._parents);
-};
-
-var sparse = function(update) {
-  return new Array(update.length);
-};
-
-var selection_enter = function() {
-  return new Selection(this._enter || this._groups.map(sparse), this._parents);
-};
-
-function EnterNode(parent, datum) {
-  this.ownerDocument = parent.ownerDocument;
-  this.namespaceURI = parent.namespaceURI;
-  this._next = null;
-  this._parent = parent;
-  this.__data__ = datum;
-}
-
-EnterNode.prototype = {
-  constructor: EnterNode,
-  appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
-  insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
-  querySelector: function(selector) { return this._parent.querySelector(selector); },
-  querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
-};
-
-var constant = function(x) {
-  return function() {
-    return x;
-  };
-};
-
-var keyPrefix = "$"; // Protect against keys like “__proto__”.
-
-function bindIndex(parent, group, enter, update, exit, data) {
-  var i = 0,
-      node,
-      groupLength = group.length,
-      dataLength = data.length;
-
-  // Put any non-null nodes that fit into update.
-  // Put any null nodes into enter.
-  // Put any remaining data into enter.
-  for (; i < dataLength; ++i) {
-    if (node = group[i]) {
-      node.__data__ = data[i];
-      update[i] = node;
-    } else {
-      enter[i] = new EnterNode(parent, data[i]);
-    }
-  }
-
-  // Put any non-null nodes that don’t fit into exit.
-  for (; i < groupLength; ++i) {
-    if (node = group[i]) {
-      exit[i] = node;
-    }
-  }
-}
-
-function bindKey(parent, group, enter, update, exit, data, key) {
-  var i,
-      node,
-      nodeByKeyValue = {},
-      groupLength = group.length,
-      dataLength = data.length,
-      keyValues = new Array(groupLength),
-      keyValue;
-
-  // Compute the key for each node.
-  // If multiple nodes have the same key, the duplicates are added to exit.
-  for (i = 0; i < groupLength; ++i) {
-    if (node = group[i]) {
-      keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
-      if (keyValue in nodeByKeyValue) {
-        exit[i] = node;
-      } else {
-        nodeByKeyValue[keyValue] = node;
-      }
-    }
-  }
-
-  // Compute the key for each datum.
-  // If there a node associated with this key, join and add it to update.
-  // If there is not (or the key is a duplicate), add it to enter.
-  for (i = 0; i < dataLength; ++i) {
-    keyValue = keyPrefix + key.call(parent, data[i], i, data);
-    if (node = nodeByKeyValue[keyValue]) {
-      update[i] = node;
-      node.__data__ = data[i];
-      nodeByKeyValue[keyValue] = null;
-    } else {
-      enter[i] = new EnterNode(parent, data[i]);
-    }
-  }
-
-  // Add any remaining nodes that were not bound to data to exit.
-  for (i = 0; i < groupLength; ++i) {
-    if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
-      exit[i] = node;
-    }
-  }
-}
-
-var selection_data = function(value, key) {
-  if (!value) {
-    data = new Array(this.size()), j = -1;
-    this.each(function(d) { data[++j] = d; });
-    return data;
-  }
-
-  var bind = key ? bindKey : bindIndex,
-      parents = this._parents,
-      groups = this._groups;
-
-  if (typeof value !== "function") value = constant(value);
-
-  for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
-    var parent = parents[j],
-        group = groups[j],
-        groupLength = group.length,
-        data = value.call(parent, parent && parent.__data__, j, parents),
-        dataLength = data.length,
-        enterGroup = enter[j] = new Array(dataLength),
-        updateGroup = update[j] = new Array(dataLength),
-        exitGroup = exit[j] = new Array(groupLength);
-
-    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
-
-    // Now connect the enter nodes to their following update node, such that
-    // appendChild can insert the materialized enter node before this node,
-    // rather than at the end of the parent node.
-    for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
-      if (previous = enterGroup[i0]) {
-        if (i0 >= i1) i1 = i0 + 1;
-        while (!(next = updateGroup[i1]) && ++i1 < dataLength);
-        previous._next = next || null;
-      }
-    }
-  }
-
-  update = new Selection(update, parents);
-  update._enter = enter;
-  update._exit = exit;
-  return update;
-};
-
-var selection_exit = function() {
-  return new Selection(this._exit || this._groups.map(sparse), this._parents);
-};
-
-var selection_merge = function(selection) {
-
-  for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
-    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
-      if (node = group0[i] || group1[i]) {
-        merge[i] = node;
-      }
-    }
-  }
-
-  for (; j < m0; ++j) {
-    merges[j] = groups0[j];
-  }
-
-  return new Selection(merges, this._parents);
-};
-
-var selection_order = function() {
-
-  for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
-    for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
-      if (node = group[i]) {
-        if (next && next !== node.nextSibling) next.parentNode.insertBefore(node, next);
-        next = node;
-      }
-    }
-  }
-
-  return this;
-};
-
-var selection_sort = function(compare) {
-  if (!compare) compare = ascending;
-
-  function compareNode(a, b) {
-    return a && b ? compare(a.__data__, b.__data__) : !a - !b;
-  }
-
-  for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
-    for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
-      if (node = group[i]) {
-        sortgroup[i] = node;
-      }
-    }
-    sortgroup.sort(compareNode);
-  }
-
-  return new Selection(sortgroups, this._parents).order();
-};
-
-function ascending(a, b) {
-  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-}
-
-var selection_call = function() {
-  var callback = arguments[0];
-  arguments[0] = this;
-  callback.apply(null, arguments);
-  return this;
-};
-
-var selection_nodes = function() {
-  var nodes = new Array(this.size()), i = -1;
-  this.each(function() { nodes[++i] = this; });
-  return nodes;
-};
-
-var selection_node = function() {
-
-  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-    for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
-      var node = group[i];
-      if (node) return node;
-    }
-  }
-
-  return null;
-};
-
-var selection_size = function() {
-  var size = 0;
-  this.each(function() { ++size; });
-  return size;
-};
-
-var selection_empty = function() {
-  return !this.node();
-};
-
-var selection_each = function(callback) {
-
-  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-    for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
-      if (node = group[i]) callback.call(node, node.__data__, i, group);
-    }
-  }
-
-  return this;
-};
-
-function attrRemove(name) {
-  return function() {
-    this.removeAttribute(name);
-  };
-}
-
-function attrRemoveNS(fullname) {
-  return function() {
-    this.removeAttributeNS(fullname.space, fullname.local);
-  };
-}
-
-function attrConstant(name, value) {
-  return function() {
-    this.setAttribute(name, value);
-  };
-}
-
-function attrConstantNS(fullname, value) {
-  return function() {
-    this.setAttributeNS(fullname.space, fullname.local, value);
-  };
-}
-
-function attrFunction(name, value) {
-  return function() {
-    var v = value.apply(this, arguments);
-    if (v == null) this.removeAttribute(name);
-    else this.setAttribute(name, v);
-  };
-}
-
-function attrFunctionNS(fullname, value) {
-  return function() {
-    var v = value.apply(this, arguments);
-    if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
-    else this.setAttributeNS(fullname.space, fullname.local, v);
-  };
-}
-
-var selection_attr = function(name, value) {
-  var fullname = namespace(name);
-
-  if (arguments.length < 2) {
-    var node = this.node();
-    return fullname.local
-        ? node.getAttributeNS(fullname.space, fullname.local)
-        : node.getAttribute(fullname);
-  }
-
-  return this.each((value == null
-      ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
-      ? (fullname.local ? attrFunctionNS : attrFunction)
-      : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
-};
-
-var defaultView = function(node) {
-  return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
-      || (node.document && node) // node is a Window
-      || node.defaultView; // node is a Document
-};
-
-function styleRemove(name) {
-  return function() {
-    this.style.removeProperty(name);
-  };
-}
-
-function styleConstant(name, value, priority) {
-  return function() {
-    this.style.setProperty(name, value, priority);
-  };
-}
-
-function styleFunction(name, value, priority) {
-  return function() {
-    var v = value.apply(this, arguments);
-    if (v == null) this.style.removeProperty(name);
-    else this.style.setProperty(name, v, priority);
-  };
-}
-
-var selection_style = function(name, value, priority) {
-  return arguments.length > 1
-      ? this.each((value == null
-            ? styleRemove : typeof value === "function"
-            ? styleFunction
-            : styleConstant)(name, value, priority == null ? "" : priority))
-      : styleValue(this.node(), name);
-};
-
-function styleValue(node, name) {
-  return node.style.getPropertyValue(name)
-      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-}
-
-function propertyRemove(name) {
-  return function() {
-    delete this[name];
-  };
-}
-
-function propertyConstant(name, value) {
-  return function() {
-    this[name] = value;
-  };
-}
-
-function propertyFunction(name, value) {
-  return function() {
-    var v = value.apply(this, arguments);
-    if (v == null) delete this[name];
-    else this[name] = v;
-  };
-}
-
-var selection_property = function(name, value) {
-  return arguments.length > 1
-      ? this.each((value == null
-          ? propertyRemove : typeof value === "function"
-          ? propertyFunction
-          : propertyConstant)(name, value))
-      : this.node()[name];
-};
-
-function classArray(string) {
-  return string.trim().split(/^|\s+/);
-}
-
-function classList(node) {
-  return node.classList || new ClassList(node);
-}
-
-function ClassList(node) {
-  this._node = node;
-  this._names = classArray(node.getAttribute("class") || "");
-}
-
-ClassList.prototype = {
-  add: function(name) {
-    var i = this._names.indexOf(name);
-    if (i < 0) {
-      this._names.push(name);
-      this._node.setAttribute("class", this._names.join(" "));
-    }
-  },
-  remove: function(name) {
-    var i = this._names.indexOf(name);
-    if (i >= 0) {
-      this._names.splice(i, 1);
-      this._node.setAttribute("class", this._names.join(" "));
-    }
-  },
-  contains: function(name) {
-    return this._names.indexOf(name) >= 0;
-  }
-};
-
-function classedAdd(node, names) {
-  var list = classList(node), i = -1, n = names.length;
-  while (++i < n) list.add(names[i]);
-}
-
-function classedRemove(node, names) {
-  var list = classList(node), i = -1, n = names.length;
-  while (++i < n) list.remove(names[i]);
-}
-
-function classedTrue(names) {
-  return function() {
-    classedAdd(this, names);
-  };
-}
-
-function classedFalse(names) {
-  return function() {
-    classedRemove(this, names);
-  };
-}
-
-function classedFunction(names, value) {
-  return function() {
-    (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
-  };
-}
-
-var selection_classed = function(name, value) {
-  var names = classArray(name + "");
-
-  if (arguments.length < 2) {
-    var list = classList(this.node()), i = -1, n = names.length;
-    while (++i < n) if (!list.contains(names[i])) return false;
-    return true;
-  }
-
-  return this.each((typeof value === "function"
-      ? classedFunction : value
-      ? classedTrue
-      : classedFalse)(names, value));
-};
-
-function textRemove() {
-  this.textContent = "";
-}
-
-function textConstant(value) {
-  return function() {
-    this.textContent = value;
-  };
-}
-
-function textFunction(value) {
-  return function() {
-    var v = value.apply(this, arguments);
-    this.textContent = v == null ? "" : v;
-  };
-}
-
-var selection_text = function(value) {
-  return arguments.length
-      ? this.each(value == null
-          ? textRemove : (typeof value === "function"
-          ? textFunction
-          : textConstant)(value))
-      : this.node().textContent;
-};
-
-function htmlRemove() {
-  this.innerHTML = "";
-}
-
-function htmlConstant(value) {
-  return function() {
-    this.innerHTML = value;
-  };
-}
-
-function htmlFunction(value) {
-  return function() {
-    var v = value.apply(this, arguments);
-    this.innerHTML = v == null ? "" : v;
-  };
-}
-
-var selection_html = function(value) {
-  return arguments.length
-      ? this.each(value == null
-          ? htmlRemove : (typeof value === "function"
-          ? htmlFunction
-          : htmlConstant)(value))
-      : this.node().innerHTML;
-};
-
-function raise() {
-  if (this.nextSibling) this.parentNode.appendChild(this);
-}
-
-var selection_raise = function() {
-  return this.each(raise);
-};
-
-function lower() {
-  if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
-}
-
-var selection_lower = function() {
-  return this.each(lower);
-};
-
-var selection_append = function(name) {
-  var create = typeof name === "function" ? name : creator(name);
-  return this.select(function() {
-    return this.appendChild(create.apply(this, arguments));
-  });
-};
-
-function constantNull() {
-  return null;
-}
-
-var selection_insert = function(name, before) {
-  var create = typeof name === "function" ? name : creator(name),
-      select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
-  return this.select(function() {
-    return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
-  });
-};
-
-function remove() {
-  var parent = this.parentNode;
-  if (parent) parent.removeChild(this);
-}
-
-var selection_remove = function() {
-  return this.each(remove);
-};
-
-var selection_datum = function(value) {
-  return arguments.length
-      ? this.property("__data__", value)
-      : this.node().__data__;
-};
 
 function dispatchEvent(node, type, params) {
   var window = defaultView(node),
@@ -3985,11 +3943,11 @@ function dispatchFunction(type, params) {
   };
 }
 
-var selection_dispatch = function(type, params) {
+function selection_dispatch(type, params) {
   return this.each((typeof params === "function"
       ? dispatchFunction
       : dispatchConstant)(type, params));
-};
+}
 
 var root = [null];
 
@@ -4030,24 +3988,83 @@ Selection.prototype = selection.prototype = {
   append: selection_append,
   insert: selection_insert,
   remove: selection_remove,
+  clone: selection_clone,
   datum: selection_datum,
   on: selection_on,
   dispatch: selection_dispatch
 };
 
-var select = function(selector) {
+function select(selector) {
   return typeof selector === "string"
       ? new Selection([[document.querySelector(selector)]], [document.documentElement])
       : new Selection([[selector]], root);
+}
+
+function create(name) {
+  return select(creator(name).call(document.documentElement));
+}
+
+var nextId = 0;
+
+function local() {
+  return new Local;
+}
+
+function Local() {
+  this._ = "@" + (++nextId).toString(36);
+}
+
+Local.prototype = local.prototype = {
+  constructor: Local,
+  get: function(node) {
+    var id = this._;
+    while (!(id in node)) if (!(node = node.parentNode)) return;
+    return node[id];
+  },
+  set: function(node, value) {
+    return node[this._] = value;
+  },
+  remove: function(node) {
+    return this._ in node && delete node[this._];
+  },
+  toString: function() {
+    return this._;
+  }
 };
 
-var selectAll = function(selector) {
+function sourceEvent() {
+  var current = exports.event, source;
+  while (source = current.sourceEvent) current = source;
+  return current;
+}
+
+function point(node, event) {
+  var svg = node.ownerSVGElement || node;
+
+  if (svg.createSVGPoint) {
+    var point = svg.createSVGPoint();
+    point.x = event.clientX, point.y = event.clientY;
+    point = point.matrixTransform(node.getScreenCTM().inverse());
+    return [point.x, point.y];
+  }
+
+  var rect = node.getBoundingClientRect();
+  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
+}
+
+function mouse(node) {
+  var event = sourceEvent();
+  if (event.changedTouches) event = event.changedTouches[0];
+  return point(node, event);
+}
+
+function selectAll(selector) {
   return typeof selector === "string"
       ? new Selection([document.querySelectorAll(selector)], [document.documentElement])
       : new Selection([selector == null ? [] : selector], root);
-};
+}
 
-var touch = function(node, touches, identifier) {
+function touch(node, touches, identifier) {
   if (arguments.length < 3) identifier = touches, touches = sourceEvent().changedTouches;
 
   for (var i = 0, n = touches ? touches.length : 0, touch; i < n; ++i) {
@@ -4057,9 +4074,9 @@ var touch = function(node, touches, identifier) {
   }
 
   return null;
-};
+}
 
-var touches = function(node, touches) {
+function touches(node, touches) {
   if (touches == null) touches = sourceEvent().touches;
 
   for (var i = 0, n = touches ? touches.length : 0, points = new Array(n); i < n; ++i) {
@@ -4067,8 +4084,9 @@ var touches = function(node, touches) {
   }
 
   return points;
-};
+}
 
+exports.create = create;
 exports.creator = creator;
 exports.local = local;
 exports.matcher = matcher$1;
@@ -26601,7 +26619,7 @@ http.METHODS = [
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/request":223,"./lib/response":224,"builtin-status-codes":5,"url":226,"xtend":479}],222:[function(require,module,exports){
+},{"./lib/request":223,"./lib/response":224,"builtin-status-codes":5,"url":226,"xtend":362}],222:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
@@ -28844,7 +28862,7 @@ function viewSource(source, sourceHeader, sourceFooter) {
     win.document.title = 'Vega JSON Source';
 }
 
-},{"./post":233,"compare-versions":6,"d3-selection":13,"vega":477,"vega-lite":332,"vega-schema-url-parser":352}],233:[function(require,module,exports){
+},{"./post":233,"compare-versions":6,"d3-selection":13,"vega":360,"vega-lite":332,"vega-schema-url-parser":352}],233:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -29102,7 +29120,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -29111,6 +29129,8 @@ module.exports={
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "build/src/index.js",
+  "unpkg": "build/vega-lite.min.js",
+  "jsdelivr": "build/vega-lite.min.js",
   "types": "typings/vega-lite.d.ts",
   "bin": {
     "vl2png": "./bin/vl2png",
@@ -29186,15 +29206,14 @@ module.exports={
     "@types/chai": "^4.1.2",
     "@types/d3": "^4.12.0",
     "@types/highlight.js": "^9.12.2",
-    "@types/json-stable-stringify": "^1.0.32",
     "@types/mkdirp": "^0.5.2",
     "@types/mocha": "^2.2.47",
     "@types/node": "^9.3.0",
     "@types/webdriverio": "^4.8.8",
     "ajv": "^6.0.1",
     "browser-sync": "^2.23.6",
-    "browserify": "^15.2.0",
     "browserify-shim": "^3.8.14",
+    "browserify": "^15.2.0",
     "chai": "^4.1.2",
     "cheerio": "^1.0.0-rc.2",
     "chromedriver": "^2.35.0",
@@ -29211,14 +29230,14 @@ module.exports={
     "ts-json-schema-generator": "^0.18.0",
     "ts-node": "^4.1.0",
     "tsify": "^3.0.4",
-    "tslint": "5.9.1",
     "tslint-eslint-rules": "^4.1.1",
+    "tslint": "5.9.1",
     "typescript": "^2.6.2",
     "uglify-js": "^3.3.8",
-    "vega": "^3.0.10",
     "vega-datasets": "^1.11.0",
-    "vega-embed": "^3.0.0-rc7",
-    "vega-tooltip": "^0.4.4",
+    "vega-embed": "^3.0.0",
+    "vega-tooltip": "^0.5.1",
+    "vega": "^3.0.10",
     "watchify": "^3.9.0",
     "wdio-chromedriver-service": "^0.1.2",
     "wdio-dot-reporter": "0.0.9",
@@ -29228,6 +29247,7 @@ module.exports={
     "yaml-front-matter": "^3.4.0"
   },
   "dependencies": {
+    "@types/json-stable-stringify": "^1.0.32",
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.9.0",
     "vega-event-selector": "^2.0.0",
@@ -32110,7 +32130,7 @@ var LookupNode = /** @class */ (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.LookupNode = LookupNode;
 
-},{"../../log":334,"./dataflow":255,"./source":267,"vega-util":476}],264:[function(require,module,exports){
+},{"../../log":334,"./dataflow":255,"./source":267,"vega-util":359}],264:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var data_1 = require("../../data");
@@ -32644,7 +32664,7 @@ function parseData(model) {
 }
 exports.parseData = parseData;
 
-},{"../../data":326,"../../datetime":327,"../../log":334,"../../predicate":337,"../../transform":347,"../../util":349,"../model":293,"../selection/selection":309,"./aggregate":251,"./bin":253,"./calculate":254,"./dataflow":255,"./facet":256,"./filter":257,"./filterinvalid":258,"./formatparse":259,"./geojson":260,"./geopoint":261,"./indentifier":262,"./lookup":263,"./source":267,"./stack":268,"./timeunit":269,"vega-util":476}],267:[function(require,module,exports){
+},{"../../data":326,"../../datetime":327,"../../log":334,"../../predicate":337,"../../transform":347,"../../util":349,"../model":293,"../selection/selection":309,"./aggregate":251,"./bin":253,"./calculate":254,"./dataflow":255,"./facet":256,"./filter":257,"./filterinvalid":258,"./formatparse":259,"./geojson":260,"./geopoint":261,"./indentifier":262,"./lookup":263,"./source":267,"./stack":268,"./timeunit":269,"vega-util":359}],267:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -32928,7 +32948,7 @@ var StackNode = /** @class */ (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.StackNode = StackNode;
 
-},{"../../fielddef":330,"../../util":349,"../common":248,"./dataflow":255,"vega-util":476}],269:[function(require,module,exports){
+},{"../../fielddef":330,"../../util":349,"../common":248,"./dataflow":255,"vega-util":359}],269:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -33882,7 +33902,7 @@ function getOpacityValue(opacityDef) {
     return undefined;
 }
 
-},{"../../channel":239,"../../fielddef":330,"../../mark":336,"../../scale":339,"../../util":349,"../common":248,"../mark/mixins":286,"vega-util":476}],278:[function(require,module,exports){
+},{"../../channel":239,"../../fielddef":330,"../../mark":336,"../../scale":339,"../../util":349,"../common":248,"../mark/mixins":286,"vega-util":359}],278:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -34213,7 +34233,7 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":239,"../../fielddef":330,"../../log":334,"../../scale":339,"../../vega.schema":351,"./mixins":286,"./valueref":292,"vega-util":476}],282:[function(require,module,exports){
+},{"../../channel":239,"../../fielddef":330,"../../log":334,"../../scale":339,"../../vega.schema":351,"./mixins":286,"./valueref":292,"vega-util":359}],282:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -34586,7 +34606,7 @@ function scaleClip(model) {
         (yScale && yScale.get('domainRaw')) ? true : false;
 }
 
-},{"../../data":326,"../../encoding":328,"../../fielddef":330,"../../mark":336,"../../sort":341,"../../util":349,"../common":248,"./area":280,"./bar":281,"./geoshape":282,"./line":284,"./point":287,"./rect":288,"./rule":289,"./text":290,"./tick":291,"vega-util":476}],286:[function(require,module,exports){
+},{"../../data":326,"../../encoding":328,"../../fielddef":330,"../../mark":336,"../../sort":341,"../../util":349,"../common":248,"./area":280,"./bar":281,"./geoshape":282,"./line":284,"./point":287,"./rect":288,"./rule":289,"./text":290,"./tick":291,"vega-util":359}],286:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -34773,7 +34793,7 @@ function pointPosition2(model, defaultRef, channel) {
 }
 exports.pointPosition2 = pointPosition2;
 
-},{"../../fielddef":330,"../../log":334,"../../predicate":337,"../../util":349,"../../vega.schema":351,"../common":248,"../selection/selection":309,"./valueref":292,"vega-util":476}],287:[function(require,module,exports){
+},{"../../fielddef":330,"../../log":334,"../../predicate":337,"../../util":349,"../../vega.schema":351,"../common":248,"../selection/selection":309,"./valueref":292,"vega-util":359}],287:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -35707,7 +35727,7 @@ var ModelWithField = /** @class */ (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":239,"../encoding":328,"../fielddef":330,"../log":334,"../scale":339,"../spec":342,"../title":345,"../transform":347,"../util":349,"../vega.schema":351,"./axis/assemble":240,"./layout/header":272,"./layoutsize/assemble":273,"./legend/assemble":275,"./legend/parse":278,"./projection/assemble":294,"./projection/parse":296,"./scale/assemble":300,"./scale/domain":302,"./scale/parse":303,"./split":319,"vega-util":476}],294:[function(require,module,exports){
+},{"../channel":239,"../encoding":328,"../fielddef":330,"../log":334,"../scale":339,"../spec":342,"../title":345,"../transform":347,"../util":349,"../vega.schema":351,"./axis/assemble":240,"./layout/header":272,"./layoutsize/assemble":273,"./legend/assemble":275,"./legend/parse":278,"./projection/assemble":294,"./projection/parse":296,"./scale/assemble":300,"./scale/domain":302,"./scale/parse":303,"./split":319,"vega-util":359}],294:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -36244,7 +36264,7 @@ function assembleScaleRange(scaleRange, scaleName, model, channel) {
 }
 exports.assembleScaleRange = assembleScaleRange;
 
-},{"../../util":349,"../../vega.schema":351,"../model":293,"../selection/selection":309,"./domain":302,"vega-util":476}],301:[function(require,module,exports){
+},{"../../util":349,"../../vega.schema":351,"../model":293,"../selection/selection":309,"./domain":302,"vega-util":359}],301:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -37271,7 +37291,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":239,"../../log":334,"../../scale":339,"../../util":349,"../../vega.schema":351,"../model":293,"../split":319,"./properties":304,"vega-util":476}],306:[function(require,module,exports){
+},{"../../channel":239,"../../log":334,"../../scale":339,"../../util":349,"../../vega.schema":351,"../model":293,"../split":319,"./properties":304,"vega-util":359}],306:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -39006,7 +39026,7 @@ function boxParams(spec, orient, kIQRScalar) {
     };
 }
 
-},{"../encoding":328,"./../encoding":328,"./../fielddef":330,"./../log":334,"./common":322,"vega-util":476}],322:[function(require,module,exports){
+},{"../encoding":328,"./../encoding":328,"./../fielddef":330,"./../log":334,"./common":322,"vega-util":359}],322:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function getMarkSpecificConfigMixins(markSpecificConfig, channel) {
@@ -40270,7 +40290,7 @@ var message;
     message.droppedDay = droppedDay;
 })(message = exports.message || (exports.message = {}));
 
-},{"./util":349,"vega-util":476}],335:[function(require,module,exports){
+},{"./util":349,"vega-util":359}],335:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isLogicalOr(op) {
@@ -42013,7 +42033,7 @@ function accessPath(path) {
 }
 exports.accessPath = accessPath;
 
-},{"./logical":335,"json-stable-stringify":199,"vega-util":476}],350:[function(require,module,exports){
+},{"./logical":335,"json-stable-stringify":199,"vega-util":359}],350:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mark_1 = require("./mark");
@@ -42896,7 +42916,7 @@ function isMarkPropFieldDef(fd) {
     return 'legend' in fd;
 }
 
-},{"vega-lite":456,"vega-lite/build/src/type":472}],358:[function(require,module,exports){
+},{"vega-lite":332,"vega-lite/build/src/type":348}],358:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var d3_selection_1 = require("d3-selection");
@@ -43011,376 +43031,6 @@ function clearColorTheme() {
 exports.clearColorTheme = clearColorTheme;
 
 },{"d3-selection":13}],359:[function(require,module,exports){
-module.exports={
-  "name": "vega-lite",
-  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.1.1",
-  "collaborators": [
-    "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
-    "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
-    "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
-  ],
-  "homepage": "https://vega.github.io/vega-lite/",
-  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
-  "main": "build/src/index.js",
-  "types": "typings/vega-lite.d.ts",
-  "bin": {
-    "vl2png": "./bin/vl2png",
-    "vl2svg": "./bin/vl2svg",
-    "vl2vg": "./bin/vl2vg"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "pretsc": "mkdir -p build && rm -rf build/*/** && cp package.json build/",
-    "tsc": "tsc",
-    "prebuild": "mkdir -p build/site build/test-gallery",
-    "build": "npm run build:only",
-    "build:only": "npm run tsc && cp package.json build && browserify src/index.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
-    "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
-    "build:examples": "npm run data && npm run build:only && npm run build:examples-only",
-    "build:examples-only": "npm run build:example && npm run build:examples-normalized",
-    "build:examples-normalized": "rm -f examples/specs/normalized/*.vl.json && scripts/build-normalized-examples",
-    "build:example": "TZ=America/Los_Angeles scripts/build-examples.sh",
-
-    "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
-    "build:site": "browserify site/static/main.ts -p [tsify -p site] -d | exorcist build/site/main.js.map > build/site/main.js",
-    "build:versions": "scripts/update-version.sh",
-    "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
-    "check:examples": "scripts/check-examples.sh",
-    "check:schema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
-    "data": "rsync -r node_modules/vega-datasets/data/* data",
-    "link": "npm link && npm link vega-lite",
-
-    "deploy": "scripts/deploy.sh",
-    "deploy:gh": "scripts/deploy-gh.sh",
-    "deploy:schema": "scripts/deploy-schema.sh",
-
-    "prestart": "npm run data && npm run build && scripts/index-examples",
-    "start": "nodemon -x 'npm run build:test-gallery' & browser-sync start --server --files 'build/test-gallery/main.js' --index 'test-gallery/index.html'",
-    "poststart": "rm examples/all-examples.json",
-
-    "preschema": "npm run prebuild",
-    "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelExtendedSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
-    "renameschema": "scripts/rename-schema.sh",
-    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
-    "site": "bundle exec jekyll serve --incremental",
-
-    "lint": "tslint -p .",
-    "test": "npm run build:only && npm run test:only && npm run test:runtime && npm run lint",
-    "posttest": "npm run schema && npm run data && npm run mocha:examples",
-    "test:nocompile": "npm run test:only && npm run test:runtime && npm run lint && npm run mocha:examples",
-    "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
-    "test:runtime": "TZ=America/Los_Angeles wdio wdio.conf.js",
-    "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
-    "test:debug": "npm run tsc && mocha --recursive --debug-brk --inspect build/test",
-    "test:debug-examples": "npm run tsc && npm run schema && mocha --recursive --debug-brk --inspect build/examples",
-    "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
-    "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
-
-    "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
-    "watch:build": "watchify src/index.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
-    "watch:tsc": "npm run tsc -- -w",
-    "watch:test": "nodemon -x 'npm test'",
-    "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vega/vega-lite.git"
-  },
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/vega/vega-lite/issues"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.1.2",
-    "@types/d3": "^4.12.0",
-    "@types/highlight.js": "^9.12.2",
-    "@types/mkdirp": "^0.5.2",
-    "@types/mocha": "^2.2.47",
-    "@types/node": "^9.3.0",
-    "@types/webdriverio": "^4.8.8",
-    "ajv": "^6.0.1",
-    "browser-sync": "^2.23.6",
-    "browserify-shim": "^3.8.14",
-    "browserify": "^15.2.0",
-    "chai": "^4.1.2",
-    "cheerio": "^1.0.0-rc.2",
-    "chromedriver": "^2.35.0",
-    "codecov": "^3.0.0",
-    "d3": "^4.12.2",
-    "exorcist": "^1.0.0",
-    "highlight.js": "^9.12.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^5.0.0",
-    "nodemon": "^1.14.11",
-    "nyc": "^11.4.1",
-    "source-map-support": "^0.5.3",
-    "svg2png-many": "^0.0.7",
-    "ts-json-schema-generator": "^0.18.0",
-    "ts-node": "^4.1.0",
-    "tsify": "^3.0.4",
-    "tslint-eslint-rules": "^4.1.1",
-    "tslint": "5.9.1",
-    "typescript": "^2.6.2",
-    "uglify-js": "^3.3.8",
-    "vega-datasets": "^1.11.0",
-    "vega-embed": "^3.0.0-rc7",
-    "vega-tooltip": "^0.4.4",
-    "vega": "^3.0.10",
-    "watchify": "^3.9.0",
-    "wdio-chromedriver-service": "^0.1.2",
-    "wdio-dot-reporter": "0.0.9",
-    "wdio-mocha-framework": "^0.5.12",
-    "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "^4.10.1",
-    "yaml-front-matter": "^3.4.0"
-  },
-  "dependencies": {
-    "@types/json-stable-stringify": "^1.0.32",
-    "json-stable-stringify": "^1.0.1",
-    "tslib": "^1.9.0",
-    "vega-event-selector": "^2.0.0",
-    "vega-util": "^1.6.2",
-    "yargs": "^11.0.0"
-  }
-}
-
-},{}],360:[function(require,module,exports){
-arguments[4][236][0].apply(exports,arguments)
-},{"./util":473,"dup":236}],361:[function(require,module,exports){
-arguments[4][237][0].apply(exports,arguments)
-},{"./util":473,"dup":237}],362:[function(require,module,exports){
-arguments[4][238][0].apply(exports,arguments)
-},{"./channel":363,"./util":473,"dup":238}],363:[function(require,module,exports){
-arguments[4][239][0].apply(exports,arguments)
-},{"./util":473,"dup":239}],364:[function(require,module,exports){
-arguments[4][240][0].apply(exports,arguments)
-},{"dup":240}],365:[function(require,module,exports){
-arguments[4][241][0].apply(exports,arguments)
-},{"../split":443,"dup":241}],366:[function(require,module,exports){
-arguments[4][242][0].apply(exports,arguments)
-},{"dup":242}],367:[function(require,module,exports){
-arguments[4][243][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../scale":463,"../../type":472,"../../util":473,"../common":372,"./config":366,"dup":243}],368:[function(require,module,exports){
-arguments[4][244][0].apply(exports,arguments)
-},{"../../axis":361,"../../channel":363,"../../util":473,"../common":372,"../resolve":423,"../split":443,"./component":365,"./config":366,"./encode":367,"./properties":369,"dup":244}],369:[function(require,module,exports){
-arguments[4][245][0].apply(exports,arguments)
-},{"../../bin":362,"../../channel":363,"../../datetime":451,"../../fielddef":454,"../../log":458,"../../scale":463,"../../type":472,"../../util":473,"dup":245}],370:[function(require,module,exports){
-arguments[4][246][0].apply(exports,arguments)
-},{"../util":473,"./data/parse":390,"./layoutsize/assemble":397,"./model":417,"dup":246}],371:[function(require,module,exports){
-arguments[4][247][0].apply(exports,arguments)
-},{"../log":458,"../spec":466,"./concat":374,"./facet":394,"./layer":395,"./repeat":421,"./unit":444,"dup":247}],372:[function(require,module,exports){
-arguments[4][248][0].apply(exports,arguments)
-},{"../channel":363,"../fielddef":454,"../scale":463,"../timeunit":468,"../type":472,"../util":473,"dup":248}],373:[function(require,module,exports){
-arguments[4][249][0].apply(exports,arguments)
-},{"../config":449,"../fielddef":454,"../log":458,"../spec":466,"../toplevelprops":470,"../util":473,"./buildmodel":371,"./data/assemble":376,"./data/optimize":388,"dup":249}],374:[function(require,module,exports){
-arguments[4][250][0].apply(exports,arguments)
-},{"../log":458,"../spec":466,"./baseconcat":370,"./buildmodel":371,"./layoutsize/parse":398,"dup":250}],375:[function(require,module,exports){
-arguments[4][251][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../log":458,"../../util":473,"../common":372,"./dataflow":379,"dup":251}],376:[function(require,module,exports){
-arguments[4][252][0].apply(exports,arguments)
-},{"../../data":450,"../../util":473,"./aggregate":375,"./bin":377,"./calculate":378,"./dataflow":379,"./facet":380,"./filter":381,"./filterinvalid":382,"./formatparse":383,"./geojson":384,"./geopoint":385,"./indentifier":386,"./lookup":387,"./source":391,"./stack":392,"./timeunit":393,"dup":252}],377:[function(require,module,exports){
-arguments[4][253][0].apply(exports,arguments)
-},{"../../bin":362,"../../fielddef":454,"../../util":473,"../common":372,"../model":417,"./dataflow":379,"dup":253}],378:[function(require,module,exports){
-arguments[4][254][0].apply(exports,arguments)
-},{"../../util":473,"./dataflow":379,"dup":254}],379:[function(require,module,exports){
-arguments[4][255][0].apply(exports,arguments)
-},{"dup":255}],380:[function(require,module,exports){
-arguments[4][256][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../scale":463,"../../vega.schema":475,"../scale/domain":426,"./dataflow":379,"dup":256}],381:[function(require,module,exports){
-arguments[4][257][0].apply(exports,arguments)
-},{"../../predicate":461,"../../util":473,"./dataflow":379,"dup":257}],382:[function(require,module,exports){
-arguments[4][258][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../scale":463,"../../util":473,"./dataflow":379,"dup":258}],383:[function(require,module,exports){
-arguments[4][259][0].apply(exports,arguments)
-},{"../../aggregate":360,"../../fielddef":454,"../../log":458,"../../logical":459,"../../predicate":461,"../../transform":471,"../../util":473,"../model":417,"./dataflow":379,"dup":259}],384:[function(require,module,exports){
-arguments[4][260][0].apply(exports,arguments)
-},{"../../channel":363,"../../type":472,"../../util":473,"./dataflow":379,"dup":260}],385:[function(require,module,exports){
-arguments[4][261][0].apply(exports,arguments)
-},{"../../channel":363,"../../type":472,"../../util":473,"./dataflow":379,"dup":261}],386:[function(require,module,exports){
-arguments[4][262][0].apply(exports,arguments)
-},{"../../selection":464,"./dataflow":379,"dup":262}],387:[function(require,module,exports){
-arguments[4][263][0].apply(exports,arguments)
-},{"../../log":458,"./dataflow":379,"./source":391,"dup":263,"vega-util":476}],388:[function(require,module,exports){
-arguments[4][264][0].apply(exports,arguments)
-},{"../../data":450,"../../util":473,"./aggregate":375,"./dataflow":379,"./facet":380,"./filterinvalid":382,"./optimizers":389,"./stack":392,"dup":264}],389:[function(require,module,exports){
-arguments[4][265][0].apply(exports,arguments)
-},{"../../util":473,"./dataflow":379,"./facet":380,"./formatparse":383,"./source":391,"./timeunit":393,"dup":265}],390:[function(require,module,exports){
-arguments[4][266][0].apply(exports,arguments)
-},{"../../data":450,"../../datetime":451,"../../log":458,"../../predicate":461,"../../transform":471,"../../util":473,"../model":417,"../selection/selection":433,"./aggregate":375,"./bin":377,"./calculate":378,"./dataflow":379,"./facet":380,"./filter":381,"./filterinvalid":382,"./formatparse":383,"./geojson":384,"./geopoint":385,"./indentifier":386,"./lookup":387,"./source":391,"./stack":392,"./timeunit":393,"dup":266,"vega-util":476}],391:[function(require,module,exports){
-arguments[4][267][0].apply(exports,arguments)
-},{"../../data":450,"../../util":473,"./dataflow":379,"dup":267}],392:[function(require,module,exports){
-arguments[4][268][0].apply(exports,arguments)
-},{"../../fielddef":454,"../../util":473,"../common":372,"./dataflow":379,"dup":268,"vega-util":476}],393:[function(require,module,exports){
-arguments[4][269][0].apply(exports,arguments)
-},{"../../fielddef":454,"../../timeunit":468,"../../util":473,"./dataflow":379,"dup":269}],394:[function(require,module,exports){
-arguments[4][270][0].apply(exports,arguments)
-},{"../channel":363,"../encoding":452,"../fielddef":454,"../log":458,"../scale":463,"../util":473,"../vega.schema":475,"./buildmodel":371,"./data/assemble":376,"./data/parse":390,"./layout/header":396,"./layoutsize/parse":398,"./model":417,"./repeater":422,"./resolve":423,"./scale/domain":426,"dup":270}],395:[function(require,module,exports){
-arguments[4][271][0].apply(exports,arguments)
-},{"../log":458,"../spec":466,"../util":473,"./axis/parse":368,"./data/parse":390,"./layoutsize/assemble":397,"./layoutsize/parse":398,"./legend/assemble":399,"./model":417,"./selection/selection":433,"./unit":444,"dup":271}],396:[function(require,module,exports){
-arguments[4][272][0].apply(exports,arguments)
-},{"../../fielddef":454,"../../util":473,"../common":372,"dup":272}],397:[function(require,module,exports){
-arguments[4][273][0].apply(exports,arguments)
-},{"../../scale":463,"../../vega.schema":475,"../model":417,"dup":273}],398:[function(require,module,exports){
-arguments[4][274][0].apply(exports,arguments)
-},{"../../scale":463,"../../vega.schema":475,"../split":443,"dup":274}],399:[function(require,module,exports){
-arguments[4][275][0].apply(exports,arguments)
-},{"../../util":473,"./parse":402,"dup":275,"json-stable-stringify":199}],400:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"../split":443,"dup":276}],401:[function(require,module,exports){
-arguments[4][277][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../mark":460,"../../scale":463,"../../util":473,"../common":372,"../mark/mixins":410,"dup":277,"vega-util":476}],402:[function(require,module,exports){
-arguments[4][278][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../legend":457,"../../type":472,"../../util":473,"../common":372,"../model":417,"../resolve":423,"../split":443,"./component":400,"./encode":401,"./properties":403,"dup":278}],403:[function(require,module,exports){
-arguments[4][279][0].apply(exports,arguments)
-},{"../../channel":363,"../../datetime":451,"../../scale":463,"../../util":473,"dup":279}],404:[function(require,module,exports){
-arguments[4][280][0].apply(exports,arguments)
-},{"./mixins":410,"dup":280}],405:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../log":458,"../../scale":463,"../../vega.schema":475,"./mixins":410,"./valueref":416,"dup":281,"vega-util":476}],406:[function(require,module,exports){
-arguments[4][282][0].apply(exports,arguments)
-},{"../../fielddef":454,"../../type":472,"./mixins":410,"dup":282}],407:[function(require,module,exports){
-arguments[4][283][0].apply(exports,arguments)
-},{"../../encoding":452,"../../fielddef":454,"../../log":458,"../../mark":460,"../../type":472,"../../util":473,"../common":372,"dup":283}],408:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"./mixins":410,"./valueref":416,"dup":284}],409:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"../../data":450,"../../encoding":452,"../../fielddef":454,"../../mark":460,"../../sort":465,"../../util":473,"../common":372,"./area":404,"./bar":405,"./geoshape":406,"./line":408,"./point":411,"./rect":412,"./rule":413,"./text":414,"./tick":415,"dup":285,"vega-util":476}],410:[function(require,module,exports){
-arguments[4][286][0].apply(exports,arguments)
-},{"../../fielddef":454,"../../log":458,"../../predicate":461,"../../util":473,"../../vega.schema":475,"../common":372,"../selection/selection":433,"./valueref":416,"dup":286,"vega-util":476}],411:[function(require,module,exports){
-arguments[4][287][0].apply(exports,arguments)
-},{"../common":372,"./mixins":410,"./valueref":416,"dup":287}],412:[function(require,module,exports){
-arguments[4][288][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../log":458,"../../mark":460,"../../scale":463,"./mixins":410,"dup":288}],413:[function(require,module,exports){
-arguments[4][289][0].apply(exports,arguments)
-},{"./mixins":410,"./valueref":416,"dup":289}],414:[function(require,module,exports){
-arguments[4][290][0].apply(exports,arguments)
-},{"../../channel":363,"../../encoding":452,"../../fielddef":454,"../../type":472,"../common":372,"./mixins":410,"./valueref":416,"dup":290}],415:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"../../vega.schema":475,"./mixins":410,"./valueref":416,"dup":291}],416:[function(require,module,exports){
-arguments[4][292][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../scale":463,"../../type":472,"../../util":473,"../common":372,"dup":292}],417:[function(require,module,exports){
-arguments[4][293][0].apply(exports,arguments)
-},{"../channel":363,"../encoding":452,"../fielddef":454,"../log":458,"../scale":463,"../spec":466,"../title":469,"../transform":471,"../util":473,"../vega.schema":475,"./axis/assemble":364,"./layout/header":396,"./layoutsize/assemble":397,"./legend/assemble":399,"./legend/parse":402,"./projection/assemble":418,"./projection/parse":420,"./scale/assemble":424,"./scale/domain":426,"./scale/parse":427,"./split":443,"dup":293,"vega-util":476}],418:[function(require,module,exports){
-arguments[4][294][0].apply(exports,arguments)
-},{"../../util":473,"../../vega.schema":475,"../model":417,"dup":294,"util":231}],419:[function(require,module,exports){
-arguments[4][295][0].apply(exports,arguments)
-},{"../split":443,"dup":295}],420:[function(require,module,exports){
-arguments[4][296][0].apply(exports,arguments)
-},{"../../channel":363,"../../data":450,"../../fielddef":454,"../../mark":460,"../../projection":462,"../../type":472,"../../util":473,"../model":417,"./component":419,"dup":296}],421:[function(require,module,exports){
-arguments[4][297][0].apply(exports,arguments)
-},{"../log":458,"./baseconcat":370,"./buildmodel":371,"./layoutsize/parse":398,"dup":297}],422:[function(require,module,exports){
-arguments[4][298][0].apply(exports,arguments)
-},{"../fielddef":454,"../log":458,"../sort":465,"../util":473,"dup":298}],423:[function(require,module,exports){
-arguments[4][299][0].apply(exports,arguments)
-},{"../channel":363,"../log":458,"../util":473,"./model":417,"dup":299}],424:[function(require,module,exports){
-arguments[4][300][0].apply(exports,arguments)
-},{"../../util":473,"../../vega.schema":475,"../model":417,"../selection/selection":433,"./domain":426,"dup":300,"vega-util":476}],425:[function(require,module,exports){
-arguments[4][301][0].apply(exports,arguments)
-},{"../split":443,"dup":301}],426:[function(require,module,exports){
-arguments[4][302][0].apply(exports,arguments)
-},{"../../aggregate":360,"../../bin":362,"../../channel":363,"../../data":450,"../../datetime":451,"../../log":458,"../../scale":463,"../../sort":465,"../../util":473,"../../vega.schema":475,"../common":372,"../data/optimize":388,"../model":417,"../selection/selection":433,"dup":302}],427:[function(require,module,exports){
-arguments[4][303][0].apply(exports,arguments)
-},{"../../channel":363,"../../fielddef":454,"../../mark":460,"../../scale":463,"../../type":472,"../../util":473,"../model":417,"../resolve":423,"../split":443,"./component":425,"./domain":426,"./properties":428,"./range":429,"./type":430,"dup":303}],428:[function(require,module,exports){
-arguments[4][304][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../scale":463,"../../util":473,"../model":417,"../split":443,"./range":429,"dup":304}],429:[function(require,module,exports){
-arguments[4][305][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../scale":463,"../../util":473,"../../vega.schema":475,"../model":417,"../split":443,"./properties":428,"dup":305,"vega-util":476}],430:[function(require,module,exports){
-arguments[4][306][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../scale":463,"../../type":472,"../../util":473,"dup":306}],431:[function(require,module,exports){
-arguments[4][307][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../scale":463,"../../util":473,"./selection":433,"./transforms/scales":438,"dup":307}],432:[function(require,module,exports){
-arguments[4][308][0].apply(exports,arguments)
-},{"../../util":473,"./selection":433,"./transforms/nearest":436,"dup":308}],433:[function(require,module,exports){
-arguments[4][309][0].apply(exports,arguments)
-},{"../../channel":363,"../../log":458,"../../selection":464,"../../util":473,"../model":417,"./interval":431,"./multi":432,"./single":434,"./transforms/transforms":440,"dup":309,"vega-event-selector":234}],434:[function(require,module,exports){
-arguments[4][310][0].apply(exports,arguments)
-},{"../../util":473,"./multi":432,"./selection":433,"dup":310}],435:[function(require,module,exports){
-arguments[4][311][0].apply(exports,arguments)
-},{"../../../util":473,"../selection":433,"./nearest":436,"dup":311}],436:[function(require,module,exports){
-arguments[4][312][0].apply(exports,arguments)
-},{"../../../log":458,"../selection":433,"dup":312}],437:[function(require,module,exports){
-arguments[4][313][0].apply(exports,arguments)
-},{"../../../log":458,"../../../util":473,"../../data/timeunit":393,"dup":313}],438:[function(require,module,exports){
-arguments[4][314][0].apply(exports,arguments)
-},{"../../../log":458,"../../../scale":463,"../../../util":473,"../selection":433,"dup":314}],439:[function(require,module,exports){
-arguments[4][315][0].apply(exports,arguments)
-},{"../selection":433,"dup":315}],440:[function(require,module,exports){
-arguments[4][316][0].apply(exports,arguments)
-},{"./inputs":435,"./nearest":436,"./project":437,"./scales":438,"./toggle":439,"./translate":441,"./zoom":442,"dup":316}],441:[function(require,module,exports){
-arguments[4][317][0].apply(exports,arguments)
-},{"../../../channel":363,"../interval":431,"../selection":433,"./scales":438,"dup":317,"vega-event-selector":234}],442:[function(require,module,exports){
-arguments[4][318][0].apply(exports,arguments)
-},{"../../../channel":363,"../../../util":473,"../interval":431,"../selection":433,"./scales":438,"dup":318,"vega-event-selector":234}],443:[function(require,module,exports){
-arguments[4][319][0].apply(exports,arguments)
-},{"../log":458,"../util":473,"dup":319}],444:[function(require,module,exports){
-arguments[4][320][0].apply(exports,arguments)
-},{"../channel":363,"../encoding":452,"../fielddef":454,"../mark":460,"../stack":467,"../util":473,"./axis/parse":368,"./data/parse":390,"./layoutsize/assemble":397,"./layoutsize/parse":398,"./mark/init":407,"./mark/mark":409,"./model":417,"./repeater":422,"./selection/selection":433,"dup":320}],445:[function(require,module,exports){
-arguments[4][321][0].apply(exports,arguments)
-},{"../encoding":452,"./../encoding":452,"./../fielddef":454,"./../log":458,"./common":446,"dup":321,"vega-util":476}],446:[function(require,module,exports){
-arguments[4][322][0].apply(exports,arguments)
-},{"dup":322}],447:[function(require,module,exports){
-arguments[4][323][0].apply(exports,arguments)
-},{"dup":323}],448:[function(require,module,exports){
-arguments[4][324][0].apply(exports,arguments)
-},{"./../mark":460,"./boxplot":445,"./errorbar":447,"dup":324}],449:[function(require,module,exports){
-arguments[4][325][0].apply(exports,arguments)
-},{"./compositemark":448,"./compositemark/index":448,"./guide":455,"./legend":457,"./mark":460,"./scale":463,"./selection":464,"./title":469,"./util":473,"dup":325}],450:[function(require,module,exports){
-arguments[4][326][0].apply(exports,arguments)
-},{"dup":326}],451:[function(require,module,exports){
-arguments[4][327][0].apply(exports,arguments)
-},{"./log":458,"./util":473,"dup":327}],452:[function(require,module,exports){
-arguments[4][328][0].apply(exports,arguments)
-},{"./channel":363,"./fielddef":454,"./log":458,"./util":473,"dup":328}],453:[function(require,module,exports){
-arguments[4][329][0].apply(exports,arguments)
-},{"dup":329}],454:[function(require,module,exports){
-arguments[4][330][0].apply(exports,arguments)
-},{"./aggregate":360,"./bin":362,"./channel":363,"./log":458,"./timeunit":468,"./type":472,"./util":473,"dup":330}],455:[function(require,module,exports){
-arguments[4][331][0].apply(exports,arguments)
-},{"dup":331}],456:[function(require,module,exports){
-arguments[4][332][0].apply(exports,arguments)
-},{"../package.json":359,"./aggregate":360,"./axis":361,"./bin":362,"./channel":363,"./compile/compile":373,"./compositemark":448,"./config":449,"./data":450,"./datetime":451,"./encoding":452,"./facet":453,"./fielddef":454,"./legend":457,"./mark":460,"./scale":463,"./sort":465,"./spec":466,"./stack":467,"./timeunit":468,"./transform":471,"./type":472,"./util":473,"./validate":474,"dup":332}],457:[function(require,module,exports){
-arguments[4][333][0].apply(exports,arguments)
-},{"./util":473,"dup":333}],458:[function(require,module,exports){
-arguments[4][334][0].apply(exports,arguments)
-},{"./util":473,"dup":334,"vega-util":476}],459:[function(require,module,exports){
-arguments[4][335][0].apply(exports,arguments)
-},{"dup":335}],460:[function(require,module,exports){
-arguments[4][336][0].apply(exports,arguments)
-},{"./util":473,"dup":336}],461:[function(require,module,exports){
-arguments[4][337][0].apply(exports,arguments)
-},{"./compile/selection/selection":433,"./datetime":451,"./fielddef":454,"./timeunit":468,"./util":473,"dup":337}],462:[function(require,module,exports){
-arguments[4][338][0].apply(exports,arguments)
-},{"dup":338}],463:[function(require,module,exports){
-arguments[4][339][0].apply(exports,arguments)
-},{"./channel":363,"./log":458,"./util":473,"dup":339}],464:[function(require,module,exports){
-arguments[4][340][0].apply(exports,arguments)
-},{"dup":340}],465:[function(require,module,exports){
-arguments[4][341][0].apply(exports,arguments)
-},{"dup":341}],466:[function(require,module,exports){
-arguments[4][342][0].apply(exports,arguments)
-},{"./channel":363,"./compositemark":448,"./encoding":452,"./log":458,"./mark":460,"./stack":467,"./util":473,"dup":342}],467:[function(require,module,exports){
-arguments[4][343][0].apply(exports,arguments)
-},{"./aggregate":360,"./channel":363,"./encoding":452,"./fielddef":454,"./log":458,"./mark":460,"./scale":463,"./util":473,"dup":343}],468:[function(require,module,exports){
-arguments[4][344][0].apply(exports,arguments)
-},{"./datetime":451,"./log":458,"./util":473,"dup":344}],469:[function(require,module,exports){
-arguments[4][345][0].apply(exports,arguments)
-},{"dup":345}],470:[function(require,module,exports){
-arguments[4][346][0].apply(exports,arguments)
-},{"./log":458,"dup":346,"util":231}],471:[function(require,module,exports){
-arguments[4][347][0].apply(exports,arguments)
-},{"./logical":459,"./predicate":461,"dup":347}],472:[function(require,module,exports){
-arguments[4][348][0].apply(exports,arguments)
-},{"dup":348}],473:[function(require,module,exports){
-arguments[4][349][0].apply(exports,arguments)
-},{"./logical":459,"dup":349,"json-stable-stringify":199,"vega-util":476}],474:[function(require,module,exports){
-arguments[4][350][0].apply(exports,arguments)
-},{"./mark":460,"./util":473,"dup":350}],475:[function(require,module,exports){
-arguments[4][351][0].apply(exports,arguments)
-},{"./util":473,"dup":351}],476:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -43949,7 +43599,7 @@ var toString = function(_) {
 };
 
 var toSet = function(_) {
-  for (var s={}, i=0, n=_.length; i<n; ++i) s[_[i]] = 1;
+  for (var s={}, i=0, n=_.length; i<n; ++i) s[_[i]] = true;
   return s;
 };
 
@@ -44036,7 +43686,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],477:[function(require,module,exports){
+},{}],360:[function(require,module,exports){
 (function (Buffer){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -79887,7 +79537,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":2,"canvas":2,"canvas-prebuilt":2,"fs":2}],478:[function(require,module,exports){
+},{"buffer":2,"canvas":2,"canvas-prebuilt":2,"fs":2}],361:[function(require,module,exports){
 (function (process,Buffer){
 /**
  * Wrapper for built-in http.js to emulate the browser XMLHttpRequest object.
@@ -80512,7 +80162,7 @@ exports.XMLHttpRequest = function() {
 
 }).call(this,require('_process'),require("buffer").Buffer)
 
-},{"_process":204,"buffer":4,"child_process":3,"fs":3,"http":221,"https":195,"url":226}],479:[function(require,module,exports){
+},{"_process":204,"buffer":4,"child_process":3,"fs":3,"http":221,"https":195,"url":226}],362:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -80533,7 +80183,7 @@ function extend() {
     return target
 }
 
-},{}],480:[function(require,module,exports){
+},{}],363:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var d3_request_1 = require("d3-request");
@@ -80704,7 +80354,7 @@ if (carousel) {
     });
 }
 
-},{"./streaming":481,"d3-request":12,"d3-selection":13,"highlight.js":18,"vega-embed":232,"vega-tooltip":354}],481:[function(require,module,exports){
+},{"./streaming":364,"d3-request":12,"d3-selection":13,"highlight.js":18,"vega-embed":232,"vega-tooltip":354}],364:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_embed_1 = require("vega-embed");
@@ -80757,5 +80407,5 @@ function runStreamingExample(eleId) {
 }
 exports.runStreamingExample = runStreamingExample;
 
-},{"vega-embed":232}]},{},[480])
+},{"vega-embed":232}]},{},[363])
 //# sourceMappingURL=main.js.map
