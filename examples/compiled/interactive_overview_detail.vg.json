@@ -141,7 +141,6 @@
             ],
             "axes": [
                 {
-                    "title": "",
                     "scale": "concat_0_x",
                     "orient": "bottom",
                     "labelFlush": true,
