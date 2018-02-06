@@ -57,7 +57,7 @@ For example, this specification encodes the field `Origin` with both `color` and
 
 ## Geo Point
 
-With the [types](type.html) `longitude` and `latitude` instead of `x` and `y` and a corresponding [projection](projection.html), we can visualize geographic points. The example below shows major airports in the US.
+With the [types](type.html) `longitude` and `latitude` and a corresponding [projection](projection.html), we can visualize geographic points. The example below shows major airports in the US.
 
 <span class="vl-example" data-name="geo_point"></span>
 

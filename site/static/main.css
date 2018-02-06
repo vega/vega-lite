@@ -623,6 +623,16 @@ footer .edit-page {
   color: #000;
 }
 
+/* Page styles */
+
+.applications ul {
+  list-style: none;
+  padding-left: 0;
+}
+.applications li {
+  margin: 0.2em 0;
+}
+
 /* Dropdown */
 nav .dropdown-content {
   position: absolute;

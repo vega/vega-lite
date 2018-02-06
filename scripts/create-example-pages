@@ -18,6 +18,7 @@ ${example.description ? `description: ${example.description}`: ''}
 title: ${example.title}
 permalink: /examples/${example.name}.html
 image: /examples/compiled/${example.name}.png
+edit_path: examples/specs/${example.name}.vl.json
 ---
 
 ${example.description || ''}
