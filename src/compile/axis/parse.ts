@@ -317,7 +317,7 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
     case 'ticks':
       return properties.ticks('ticks', specifiedAxis, isGridAxis, channel);
     case 'title':
-      return getSpecifiedOrDefaultValue(specifiedAxis.title, properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config));
+      return getSpecifiedOrDefaultValue(specifiedAxis.title, properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config)) || undefined;
     case 'values':
       return properties.values(specifiedAxis, model, fieldDef);
     case 'zindex':

@@ -112,6 +112,22 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'].length, 1);
       assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
     });
+
+    it('should not set title if title  = null', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative",
+            axis: {title: null}
+          }
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.doesNotHaveAnyKeys(axisComponent['x'][0].main.explicit, ['title']);
+    });
   });
 
   describe('parseLayerAxis', () => {

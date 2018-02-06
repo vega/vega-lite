@@ -173,7 +173,6 @@
             },
             "axes": [
                 {
-                    "title": "",
                     "scale": "x",
                     "orient": "bottom",
                     "zindex": 1,

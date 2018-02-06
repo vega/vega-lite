@@ -41,6 +41,7 @@
     },
     {
       "name": "point_invalid_color",
+      "png": true,
       "title": "Scatterplot with Null Values in Grey"
     },
     {
@@ -243,34 +244,42 @@
   "Geographical (Maps)": [
     {
       "name": "geo_choropleth",
+      "png": true,
       "title": "Choropleth of unemployment rate per county"
     },
     {
       "name": "geo_circle",
+      "png": true,
       "title": "One dot per zipcode in the U.S."
     },
     {
       "name": "geo_layer",
+      "png": true,
       "title": "One dot per airport in the US overlayed on geoshape"
     },
     {
       "name": "geo_rule",
+      "png": true,
       "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
     },
     {
       "name": "geo_repeat",
+      "png": true,
       "title": "Three choropleths representing disjoint data from the same table"
     },
     {
       "name": "geo_text",
+      "png": true,
       "title": "U.S. state capitals overlayed on a map of the U.S."
     },
     {
       "name": "geo_line",
+      "png": true,
       "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
     },
     {
       "name": "geo_trellis",
+      "png": true,
       "title": "Income in the U.S. by state, faceted over income brackets"
     }
   ],
@@ -306,6 +315,7 @@
     },
     {
       "name": "interactive_splom",
+      "png": true,
       "title": "Scatterplot Matrix"
     },
     {
