@@ -681,6 +681,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -3754,6 +3770,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -3965,6 +3997,22 @@
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
+        },
+        "x2Offset": {
+          "description": "Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
         }
       },
       "required": [
@@ -5449,6 +5497,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -5647,6 +5711,22 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.",
           "type": "number"
         }
       },

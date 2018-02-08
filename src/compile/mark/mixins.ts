@@ -176,6 +176,7 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
   }
 }
 
+
 /**
  * Return mixins for point (non-band) position channels.
  */
@@ -183,8 +184,11 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
-
+  const offset = ref.getOffset(channel, model.markDef);
+  const valueRef = {
+    ...ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef),
+    ...(offset ? {offset}: {})
+  };
   return {
     [vgChannel || channel]: valueRef
   };
@@ -198,7 +202,10 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
   const baseChannel = channel === 'x2' ? 'x' : 'y';
-
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+  const offset = ref.getOffset(channel, model.markDef);
+  const valueRef = {
+    ...ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef),
+    ...(offset ? {offset}: {})
+  };
   return {[channel]: valueRef};
 }

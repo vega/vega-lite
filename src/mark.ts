@@ -79,6 +79,26 @@ export interface MarkConfig extends VgMarkConfig {
    * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
    */
   color?: string;
+
+  /**
+   * Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.
+   */
+  xOffset?: number;
+
+  /**
+   * Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.
+   */
+  yOffset?: number;
+
+  /**
+   * Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.
+   */
+  x2Offset?: number;
+
+  /**
+   * Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.
+   */
+  y2Offset?: number;
 }
 
 export interface MarkDef extends MarkConfig {
