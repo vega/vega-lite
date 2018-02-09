@@ -60,7 +60,7 @@ export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
 
   const markDefOffsetValue = markDef[offsetChannel];
   if (markDefOffsetValue) {
-    return markDefOffsetValue; // Should this be value or not
+    return markDefOffsetValue;
   }
 
   return undefined;

@@ -81,22 +81,22 @@ export interface MarkConfig extends VgMarkConfig {
   color?: string;
 
   /**
-   * Offset for x channel in pixels. The offset is applied before rotation by the _angle_ property.
+   * Offset for x channel in pixels.
    */
   xOffset?: number;
 
   /**
-   * Offset for y channel in pixels. The offset is applied before rotation by the _angle_ property.
+   * Offset for y channel in pixels.
    */
   yOffset?: number;
 
   /**
-   * Offset for x2 channel in pixels. The offset is applied before rotation by the _angle_ property.
+   * Offset for x2 channel in pixels.
    */
   x2Offset?: number;
 
   /**
-   * Offset for y2 channel in pixels. The offset is applied before rotation by the _angle_ property.
+   * Offset for y2 channel in pixels.
    */
   y2Offset?: number;
 }
