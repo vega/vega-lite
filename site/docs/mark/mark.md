@@ -65,7 +65,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 A mark definition object can contains the following properties and [all properties of the mark config](#config):
 
-{% include table.html props="type,style,clip" source="MarkDef" %}
+{% include table.html props="type,style,clip,xOffset,x2Offset,yOffset,y2Offset" source="MarkDef" %}
 
 ### Example: Filled Points
 

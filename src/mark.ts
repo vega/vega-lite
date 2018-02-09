@@ -81,22 +81,22 @@ export interface MarkConfig extends VgMarkConfig {
   color?: string;
 
   /**
-   * Offset for x channel in pixels.
+   * Offset for x-position.
    */
   xOffset?: number;
 
   /**
-   * Offset for y channel in pixels.
+   * Offset for y-position.
    */
   yOffset?: number;
 
   /**
-   * Offset for x2 channel in pixels.
+   * Offset for x2-position.
    */
   x2Offset?: number;
 
   /**
-   * Offset for y2 channel in pixels.
+   * Offset for y2-position.
    */
   y2Offset?: number;
 }
