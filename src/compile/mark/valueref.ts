@@ -136,9 +136,10 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       }
     } else if (isValueDef(channelDef)) {
       return {value: channelDef.value};
-    } else {
-      return undefined;
     }
+
+    // If channelDef is neither field def or value def, it's a condition-only def.
+    // In such case, we will use default ref.
   }
 
   if (defaultRef === 'zeroOrMin') {
