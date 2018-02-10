@@ -33,3 +33,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Dot-dash plot](https://bl.ocks.org/g3o2/bd4362574137061c243a2994ba648fb8) by @g3o2
 * [Cumulative Wikipedia Donations](https://bl.ocks.org/domoritz/bef687de0e2dba1f522f674c260ac17f) by @domoritz
 * [CO2 Concentration in the Atmosphere](https://bl.ocks.org/domoritz/4e3289f9266fb3ef7e9baa201060361b) by @domoritz
+* [Horizontal Stacked Bar Chart with Labels](https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1) by @pratapvardhan
