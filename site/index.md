@@ -78,7 +78,6 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 * [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v2.json))
 * Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js)
 * Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
-* The website and documentation for Vega-Lite v1 is at [vega.github.io/vega-lite-v1/](https://vega.github.io/vega-lite-v1/).
 
 
 ## Team
