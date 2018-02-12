@@ -369,7 +369,7 @@
                             "value": "center"
                         },
                         "baseline": {
-                            "value": "middle"
+                            "value": "top"
                         }
                     }
                 }

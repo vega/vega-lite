@@ -58,20 +58,20 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
 
 export function labelBaseline(angle: number, orient: AxisOrient) {
   if (orient === 'top' || orient === 'bottom') {
-    if (angle % 90 === 0) {
-      return {value: 'middle'};
-    } else if (angle < 90 || 270 < angle) {
-      return {value: orient === 'bottom' ? 'top' : 'bottom'};
+    if (angle <= 45 || 315 <= angle) {
+      return {value: orient === 'top' ? 'bottom' : 'top'};
+    } else if (135 <= angle && angle <= 225) {
+      return {value: orient === 'top' ? 'top': 'bottom'};
     } else {
-      return {value: orient === 'bottom'? 'bottom' : 'top'};
+      return {value: 'middle'};
     }
   } else {
-    if (angle % 180 === 0) {
+    if ((angle <= 45 || 315 <= angle) || (135 <= angle && angle <= 225)) {
       return {value: 'middle'};
-    } else if (0 < angle && angle < 180) {
+    } else if (45 <= angle && angle <= 135) {
       return {value: orient === 'left' ? 'top' : 'bottom'};
     } else {
-      return {value: orient === 'left'? 'bottom' : 'top'};
+      return {value: orient === 'left' ? 'bottom' : 'top'};
     }
   }
 }
@@ -93,18 +93,18 @@ export function labelAlign(angle: number, orient: AxisOrient): HorizontalAlign {
   if (orient === 'top' || orient === 'bottom') {
     if (angle % 180 === 0) {
       return 'center';
-    } else if (angle > 180) {
-      return orient === 'top' ? 'left' : 'right';
+    } else if (0 < angle && angle < 180) {
+      return orient === 'top' ? 'right' : 'left';
     } else {
-      return orient === 'top' ? 'right': 'left';
+      return orient === 'top' ? 'left' : 'right';
     }
   } else {
-    if (angle === 90 || angle === 270) {  // for 90 and 270
+    if ((angle + 90) % 180 === 0) {
       return 'center';
-    } else if (angle < 90 || 270 < angle) {
-      return orient === 'left' ? 'right': 'left';
-    } else {
+    } else if (90 <= angle && angle < 270) {
       return orient === 'left' ? 'left' : 'right';
+    } else {
+      return orient === 'left' ? 'right' : 'left';
     }
   }
 }
