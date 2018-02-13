@@ -55,6 +55,8 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     vlFieldDef.setTitleFormatter(opt.fieldTitle);
   }
 
+  // do I need to normalize the sort by creating new CalculateNode before parsing?
+
   try {
     // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
     const config = initConfig(mergeDeep({}, opt.config, inputSpec.config));

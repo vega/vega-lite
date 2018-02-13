@@ -7,7 +7,7 @@ import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {isSortField, SortField} from '../../sort';
+import {isSortArray, isSortField, SortField} from '../../sort';
 import {hash} from '../../util';
 import * as util from '../../util';
 import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
@@ -266,6 +266,23 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   }
 
   const sort = model.sort(channel);
+
+  // sort is array
+  // return sort field that we create
+  // if (isArray(sort)) {
+  //   return {
+  //     op: 'min' // ????
+  //     field: ... // your new field
+  //     order: ...
+  //   }
+  // }
+  if (isSortArray(sort)) {
+    return {
+      op: 'min',
+      field: model.vgField(channel),
+      order: 'descending'
+    };
+  }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {

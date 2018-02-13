@@ -70,7 +70,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 
 // Note: This method is used in Voyager.
 export function getDefaultValue(
-  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField<string>,
+  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField<string> | string[],
   scaleType: ScaleType, scalePadding: number, scalePaddingInner: number,
   specifiedDomain: Scale['domain'], markDef: MarkDef, config: Config) {
   const scaleConfig = config.scale;
@@ -206,7 +206,7 @@ export function paddingOuter(paddingValue: number, channel: Channel, scaleType: 
   return undefined;
 }
 
-export function reverse(scaleType: ScaleType, sort: SortOrder | SortField<string>) {
+export function reverse(scaleType: ScaleType, sort: SortOrder | SortField<string> | string[]) {
   if (hasContinuousDomain(scaleType) && sort === 'descending') {
     // For continuous domain scales, Vega does not support domain sort.
     // Thus, we reverse range instead if sort is descending
