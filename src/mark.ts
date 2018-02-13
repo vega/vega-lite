@@ -87,6 +87,26 @@ export interface MarkConfig extends VgMarkConfig {
    * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
    */
   color?: string;
+
+  /**
+   * Offset for x-position.
+   */
+  xOffset?: number;
+
+  /**
+   * Offset for y-position.
+   */
+  yOffset?: number;
+
+  /**
+   * Offset for x2-position.
+   */
+  x2Offset?: number;
+
+  /**
+   * Offset for y2-position.
+   */
+  y2Offset?: number;
 }
 
 export interface BarBinSpacingMixins {

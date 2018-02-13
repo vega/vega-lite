@@ -316,6 +316,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -904,6 +920,22 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -4118,6 +4150,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -4536,6 +4584,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -4782,6 +4846,22 @@
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "required": [
@@ -4998,6 +5078,22 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -6554,6 +6650,22 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -6808,6 +6920,22 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
