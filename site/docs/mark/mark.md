@@ -66,7 +66,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists all standard mark properties.  In addition, some marks may be special mark properties (listed in their documentation page).
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
-
+gi
 
 ### General Mark Properties
 
