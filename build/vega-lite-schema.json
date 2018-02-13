@@ -683,19 +683,19 @@
           "type": "number"
         },
         "x2Offset": {
-          "description": "Offset for x2 channel in pixels.",
+          "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
-          "description": "Offset for x channel in pixels.",
+          "description": "Offset for x-position.",
           "type": "number"
         },
         "y2Offset": {
-          "description": "Offset for y2 channel in pixels.",
+          "description": "Offset for y2-position.",
           "type": "number"
         },
         "yOffset": {
-          "description": "Offset for y channel in pixels.",
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -3772,19 +3772,19 @@
           "type": "number"
         },
         "x2Offset": {
-          "description": "Offset for x2 channel in pixels.",
+          "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
-          "description": "Offset for x channel in pixels.",
+          "description": "Offset for x-position.",
           "type": "number"
         },
         "y2Offset": {
-          "description": "Offset for y2 channel in pixels.",
+          "description": "Offset for y2-position.",
           "type": "number"
         },
         "yOffset": {
-          "description": "Offset for y channel in pixels.",
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -3999,19 +3999,19 @@
           "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
         },
         "x2Offset": {
-          "description": "Offset for x2 channel in pixels.",
+          "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
-          "description": "Offset for x channel in pixels.",
+          "description": "Offset for x-position.",
           "type": "number"
         },
         "y2Offset": {
-          "description": "Offset for y2 channel in pixels.",
+          "description": "Offset for y2-position.",
           "type": "number"
         },
         "yOffset": {
-          "description": "Offset for y channel in pixels.",
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -5499,19 +5499,19 @@
           "type": "number"
         },
         "x2Offset": {
-          "description": "Offset for x2 channel in pixels.",
+          "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
-          "description": "Offset for x channel in pixels.",
+          "description": "Offset for x-position.",
           "type": "number"
         },
         "y2Offset": {
-          "description": "Offset for y2 channel in pixels.",
+          "description": "Offset for y2-position.",
           "type": "number"
         },
         "yOffset": {
-          "description": "Offset for y channel in pixels.",
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
@@ -5714,19 +5714,19 @@
           "type": "number"
         },
         "x2Offset": {
-          "description": "Offset for x2 channel in pixels.",
+          "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
-          "description": "Offset for x channel in pixels.",
+          "description": "Offset for x-position.",
           "type": "number"
         },
         "y2Offset": {
-          "description": "Offset for y2 channel in pixels.",
+          "description": "Offset for y2-position.",
           "type": "number"
         },
         "yOffset": {
-          "description": "Offset for y channel in pixels.",
+          "description": "Offset for y-position.",
           "type": "number"
         }
       },
