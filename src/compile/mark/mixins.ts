@@ -236,6 +236,7 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
   }
 }
 
+
 /**
  * Return mixins for point (non-band) position channels.
  */

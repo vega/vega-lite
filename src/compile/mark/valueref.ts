@@ -13,6 +13,7 @@ import {
   TextFieldDef,
   vgField,
 } from '../../fielddef';
+import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
@@ -49,6 +50,20 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
   return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+}
+
+
+
+export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
+  const offsetChannel = channel + 'Offset';
+  // TODO: in the future read from encoding channel too
+
+  const markDefOffsetValue = markDef[offsetChannel];
+  if (markDefOffsetValue) {
+    return markDefOffsetValue;
+  }
+
+  return undefined;
 }
 
 /**
