@@ -34,3 +34,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Cumulative Wikipedia Donations](https://bl.ocks.org/domoritz/bef687de0e2dba1f522f674c260ac17f) by @domoritz
 * [CO2 Concentration in the Atmosphere](https://bl.ocks.org/domoritz/4e3289f9266fb3ef7e9baa201060361b) by @domoritz
 * [Horizontal Stacked Bar Chart with Labels](https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1) by @pratapvardhan
+* [Interactive stacked time-series](https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea) by @jakevdp
