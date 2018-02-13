@@ -269,6 +269,28 @@ export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMi
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
   clip?: boolean;
+
+  // Offset properties should not be a part of config
+
+  /**
+   * Offset for x-position.
+   */
+  xOffset?: number;
+
+  /**
+   * Offset for y-position.
+   */
+  yOffset?: number;
+
+  /**
+   * Offset for x2-position.
+   */
+  x2Offset?: number;
+
+  /**
+   * Offset for y2-position.
+   */
+  y2Offset?: number;
 }
 
 export const defaultBarConfig: BarConfig = {
