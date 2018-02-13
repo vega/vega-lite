@@ -44,11 +44,11 @@ Vega-Lite supports two types of box plots, defined by the `extent` property in t
   "extent": "min-max"
 }
 ```
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_horizontal"></div>
 
 If `extent` is not specified, this type of box plot will be used. Thus, we can just set the `mark` to `"box-plot"`:
 
-<div class="vl-example" data-name="box_plot_minmax_1D_horizontal"></div>
+<div class="vl-example" data-name="box-plot_minmax_1D_horizontal"></div>
 
 
 2) __Tukey Box Plot__, which is a box plot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant  `k` which is typically `1.5`.
@@ -60,32 +60,32 @@ If `extent` is not specified, this type of box plot will be used. Thus, we can j
 }
 ```
 
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal_IQR"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_horizontal_IQR"></div>
 
 ### Dimension
 There are two `box-plot` dimensions, one dimension (1D) and two dimension (2D).
 
 1D `box-plot` are used to see the distribution of a continuous field.
-<div class="vl-example" data-name="box_plot_minmax_1D_horizontal"></div>
+<div class="vl-example" data-name="box-plot_minmax_1D_horizontal"></div>
 
 2D `box-plot` are used to see the distribution of a continuous field, broken down by categories.
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_horizontal"></div>
 
 ### Orientation
 
 Box plot's orientation is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D box plot by encoding a continuous field on the y axis.
 
-<div class="vl-example" data-name="box_plot_minmax_1D_vertical"></div>
+<div class="vl-example" data-name="box-plot_minmax_1D_vertical"></div>
 
 For 2D box plots with one continuous and one discrete fields,
 the box plot will be horizontal if the continuous field is on the x axis.
 
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_horizontal"></div>
 
 Similarly, if the continuous field is on the y axis, the box plot will be vertical.
 
-<div class="vl-example" data-name="box_plot_minmax_2D_vertical"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_vertical"></div>
 
 ### Customizing Box Plots
 
@@ -94,9 +94,9 @@ Similarly, if the continuous field is on the y axis, the box plot will be vertic
 You can customize the color, size, and opacity of the box in the `box-plot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels).
 
 An example of a `box-plot` where the `size` encoding channel is specified.
-<div class="vl-example" data-name="box_plot_minmax_2D_vertical"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_vertical"></div>
 
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal_color_size"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_horizontal_color_size"></div>
 
 #### Role Config
 
@@ -116,10 +116,10 @@ To customize different parts of the box, we can use roles config to customize di
 
 These are possible because under the hood, the `"box-plot"` mark is a macro that expands into a layered plot.  For example, [a basic 1D boxplot shown above](#box-plot-type) is expanded to:
 
-<div class="vl-example" data-name="normalized/box_plot_minmax_1D_horizontal"></div>
+<div class="vl-example" data-name="normalized/box-plot_minmax_1D_horizontal"></div>
 
 ### `aggregate` Property for Box Plots
 
 Note that `aggregate` property of the continuous field is implicitly `box-plot`.
 For example, [a basic 1D boxplot shown above](#box-plot-type) is equivalent to:
-<div class="vl-example" data-name="box_plot_minmax_2D_vertical_explicit_aggregate"></div>
+<div class="vl-example" data-name="box-plot_minmax_2D_vertical_explicit_aggregate"></div>
