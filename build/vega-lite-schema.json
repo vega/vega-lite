@@ -431,11 +431,8 @@
           "type": "number"
         },
         "titleFontWeight": {
-          "description": "Font weight of the title. (e.g., `\"bold\"`).",
-          "type": [
-            "string",
-            "number"
-          ]
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
           "description": "Maximum allowed pixel width of axis titles.",
@@ -595,15 +592,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -2349,16 +2339,26 @@
       "type": "string"
     },
     "FontWeight": {
-      "enum": [
-        "normal",
-        "bold"
-      ],
-      "type": "string"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FontWeightString"
+        },
+        {
+          "$ref": "#/definitions/FontWeightNumber"
+        }
+      ]
     },
     "FontWeightNumber": {
       "maximum": 900,
       "minimum": 100,
       "type": "number"
+    },
+    "FontWeightString": {
+      "enum": [
+        "normal",
+        "bold"
+      ],
+      "type": "string"
     },
     "FacetSpec": {
       "additionalProperties": false,
@@ -3277,11 +3277,8 @@
           "type": "number"
         },
         "titleFontWeight": {
-          "description": "The font weight of the legend title.",
-          "type": [
-            "string",
-            "number"
-          ]
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
           "description": "Maximum allowed pixel width of axis titles.",
@@ -3649,15 +3646,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -3842,15 +3832,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -5373,15 +5356,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -5571,15 +5547,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -6683,11 +6652,8 @@
           "type": "number"
         },
         "titleFontWeight": {
-          "description": "Font weight of the title. (e.g., `\"bold\"`).",
-          "type": [
-            "string",
-            "number"
-          ]
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
           "description": "Maximum allowed pixel width of axis titles.",
@@ -6857,15 +6823,8 @@
           "description": "The font style (e.g., `\"italic\"`)."
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "The font weight (e.g., `\"bold\"`)."
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -7092,15 +7051,8 @@
           "type": "number"
         },
         "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "$ref": "#/definitions/FontWeightNumber"
-            }
-          ],
-          "description": "Font weight for title text."
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "limit": {
           "description": "The maximum allowed length in pixels of legend labels.",
