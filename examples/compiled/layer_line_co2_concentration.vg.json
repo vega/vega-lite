@@ -1,0 +1,403 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 800,
+    "height": 500,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/co2-concentration.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "Date": "utc:'%Y-%m-%d'"
+                }
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "year(datum.Date)",
+                    "as": "year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "month(datum.Date)",
+                    "as": "month"
+                },
+                {
+                    "type": "formula",
+                    "expr": "floor(datum.year / 10) + 'x'",
+                    "as": "decade"
+                },
+                {
+                    "type": "formula",
+                    "expr": "(datum.year % 10) + (datum.month/12)",
+                    "as": "scaled_date"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"scaled_date\"])",
+                    "as": "scaled_date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"CO2\"])",
+                    "as": "CO2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "decade"
+                    ],
+                    "ops": [
+                        "argmin"
+                    ],
+                    "fields": [
+                        "scaled_date"
+                    ],
+                    "as": [
+                        "aggregated"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.aggregated.scaled_date",
+                    "as": "scaled_date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.aggregated.CO2",
+                    "as": "CO2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "decade"
+                    ],
+                    "ops": [
+                        "argmax"
+                    ],
+                    "fields": [
+                        "scaled_date"
+                    ],
+                    "as": [
+                        "aggregated"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.aggregated.scaled_date",
+                    "as": "scaled_date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.aggregated.CO2",
+                    "as": "CO2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
+                    "groupby": [
+                        "decade",
+                        "decade"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "style": [
+                        "line"
+                    ],
+                    "sort": {
+                        "field": "datum[\"scaled_date\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_0_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "decade"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "scaled_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "CO2"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "align": {
+                        "value": "left"
+                    },
+                    "baseline": {
+                        "value": "top"
+                    },
+                    "dx": {
+                        "value": 3
+                    },
+                    "dy": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "scaled_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "CO2"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "align": {
+                        "value": "left"
+                    },
+                    "baseline": {
+                        "value": "bottom"
+                    },
+                    "dx": {
+                        "value": 3
+                    },
+                    "dy": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "scaled_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "CO2"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "scaled_date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "scaled_date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "scaled_date"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "CO2"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "CO2"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "CO2"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "zero": false,
+            "nice": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "data_0",
+                "field": "decade",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "tickCount": 11,
+            "title": "Year into Decade",
+            "scale": "x",
+            "orient": "bottom",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "zindex": 1
+        },
+        {
+            "tickCount": 11,
+            "scale": "x",
+            "orient": "bottom",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "title": "CO2 concentration in ppm",
+            "scale": "y",
+            "orient": "left",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "offset": 40,
+            "stroke": "color",
+            "title": "decade"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
