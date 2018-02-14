@@ -390,7 +390,7 @@
     ],
     "legends": [
         {
-            "padding": 30,
+            "offset": 40,
             "stroke": "color",
             "title": "decade"
         }

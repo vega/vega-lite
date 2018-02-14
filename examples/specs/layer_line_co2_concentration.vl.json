@@ -56,7 +56,7 @@
           "field": "decade",
           "type": "nominal",
           "legend": {
-            "padding": 30
+            "offset": 40
           }
         }
       }
