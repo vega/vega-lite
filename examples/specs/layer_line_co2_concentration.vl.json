@@ -54,7 +54,10 @@
         },
         "color": {
           "field": "decade",
-          "type": "nominal"
+          "type": "nominal",
+          "legend": {
+            "padding": 30
+          }
         }
       }
     },
