@@ -62,17 +62,22 @@ describe('compile/legend', function () {
       assert.equal(def.type, 'gradient');
     });
 
-    it('should produce no legend title when title is null', function() {
-      const model = parseUnitModelWithScale({
-        mark: "point",
-        encoding: {
-          x: {field: "a", type: "nominal"},
-          color: {field: "a", type: "quantitative", legend: {title: null}}
-        }
-      });
+    it('should produce no legend title when title is null, "", or false', function() {
+      for (const val of [null, '', false]) {
+        const model = parseUnitModelWithScale({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {
+              field: "a", type: "quantitative",
+              legend: {title: val as any} // Need to cast as false is not valid, but we want to fall back gracefully
+            }
+          }
+        });
 
-      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-      assert.doesNotHaveAnyKeys(def, ['title']);
+        const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+        assert.doesNotHaveAnyKeys(def, ['title']);
+      }
     });
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {

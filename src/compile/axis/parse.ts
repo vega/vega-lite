@@ -317,7 +317,12 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
     case 'ticks':
       return properties.ticks('ticks', specifiedAxis, isGridAxis, channel);
     case 'title':
-      return getSpecifiedOrDefaultValue(specifiedAxis.title, properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config)) || undefined;
+      return getSpecifiedOrDefaultValue(
+        // For falsy value, keep undefined so we use default,
+        // but use null for '', null, and false to hide the title
+        specifiedAxis.title || (specifiedAxis.title === undefined ? undefined : null),
+        properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config)
+      ) || undefined; // make falsy value undefined so output Vega spec is shorter
     case 'values':
       return properties.values(specifiedAxis, model, fieldDef);
     case 'zindex':
