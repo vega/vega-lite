@@ -31,32 +31,18 @@ function binKey(bin: BinParams, field: string) {
   return `${binToString(bin)}_${field}`;
 }
 
-function isModelParams(p: {model: Model} | {signal?: string, extentSignal?: string}): p is {model: Model} {
-  return !!p['model'];
-}
-
-function getSignalsFromParams(
-  params: {model: Model} | {signal?: string, extentSignal?: string},
-  key: string
-) {
-  if (isModelParams(params)) {
-    const model = params.model;
-    return {
-      signal: model.getName(`${key}_bins`),
-      extentSignal: model.getName(`${key}_extent`)
-    };
-  }
-  return params;
+function getSignalsFromModel(model: Model, key: string) {
+  return {
+    signal: model.getName(`${key}_bins`),
+    extentSignal: model.getName(`${key}_extent`)
+  };
 }
 
 function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
   return 'as' in t;
 }
 
-function createBinComponent(
-  t: FieldDef<string> | BinTransform,
-  params: {model: Model} | {signal?: string, extentSignal?: string}
-) {
+function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
   let as: [string, string];
 
   if (isBinTransform(t)) {
@@ -67,7 +53,7 @@ function createBinComponent(
 
   const bin = normalizeBin(t.bin, undefined) || {};
   const key = binKey(bin, t.field);
-  const {signal, extentSignal} = getSignalsFromParams(params, key);
+  const {signal, extentSignal} = getSignalsFromModel(model, key);
 
   const binComponent: BinComponent = {
     bin: bin,
@@ -105,7 +91,7 @@ export class BinNode extends DataFlowNode {
   public static makeBinFromEncoding(model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
       if (fieldDef.bin) {
-        const {key, binComponent} = createBinComponent(fieldDef, {model});
+        const {key, binComponent} = createBinComponent(fieldDef, model);
         binComponentIndex[key] = {
           ...binComponent,
           ...binComponentIndex[key],
@@ -126,8 +112,8 @@ export class BinNode extends DataFlowNode {
    * Creates a bin node from BinTransform.
    * The optional parameter should provide
    */
-  public static makeFromTransform(t: BinTransform, params: {model: Model} | {signal?: string, extentSignal?: string}) {
-    const {key, binComponent} = createBinComponent(t, params);
+  public static makeFromTransform(t: BinTransform, model: Model) {
+    const {key, binComponent} = createBinComponent(t, model);
     return new BinNode({
       [key]: binComponent
     });

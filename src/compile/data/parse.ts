@@ -103,7 +103,7 @@ export function parseTransformArray(model: Model) {
 
       node = new FilterNode(model, t.filter);
     } else if (isBin(t)) {
-      node = BinNode.makeFromTransform(t, {model});
+      node = BinNode.makeFromTransform(t, model);
     } else if (isTimeUnit(t)) {
       node = TimeUnitNode.makeFromTransform(t);
     } else if (isAggregate(t)) {
