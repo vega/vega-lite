@@ -236,7 +236,8 @@
     },
     {
       "name": "layer_line_co2_concentration",
-      "title": "Carbon Dioxide in the Atmosphere"
+      "title": "Carbon Dioxide in the Atmosphere",
+      "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flatten using calculate, due to issue about nested field (https://github.com/vega/vega-lite/issues/3361)."
     }
   ],
   "Composition": [
