@@ -10,6 +10,14 @@ import {
   BoxPlotDef,
   normalizeBoxPlot,
 } from './boxplot';
+import {
+  Callout,
+  CALLOUT,
+  CALLOUT_PARTS,
+  CalloutConfigMixins,
+  CalloutDef,
+  normalizeCallout
+} from './callout';
 import {ERRORBAR, ErrorBar, normalizeErrorBar} from './errorbar';
 
 
@@ -34,7 +42,7 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeMark = BoxPlot | ErrorBar;
+export type CompositeMark = BoxPlot | ErrorBar | Callout;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
@@ -47,15 +55,16 @@ export function getCompositeMarkParts(mark: string) {
   throw new Error(`Unregistered composite mark ${mark}`);
 }
 
-export type CompositeMarkDef = BoxPlotDef;
+export type CompositeMarkDef = BoxPlotDef | CalloutDef;
 
 export type CompositeAggregate = BoxPlot;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
+export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, CalloutConfigMixins {}
 
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, [] /*FIXME: chanwutk please fix this*/);
+add(CALLOUT, normalizeCallout, CALLOUT_PARTS);
 
 /**
  * Transform a unit spec with composite mark into a normal layer spec.

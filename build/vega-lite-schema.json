@@ -947,6 +947,47 @@
       ],
       "type": "object"
     },
+    "Callout": {
+      "enum": [
+        "callout"
+      ],
+      "type": "string"
+    },
+    "CalloutDef": {
+      "additionalProperties": false,
+      "properties": {
+        "calloutAngle": {
+          "description": "Angle of callout line.\n__Default value: `\"45\"`",
+          "type": "number"
+        },
+        "calloutLength": {
+          "description": "Length of callout length.\n__Default value: `\"30\"`",
+          "type": "number"
+        },
+        "calloutOffset": {
+          "description": "Offset of callout line.\n__Default value: `\"0\"`",
+          "type": "number"
+        },
+        "label": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "labelOffset": {
+          "description": "Offset of callout label.\n__Default value: `\"0\"`",
+          "type": "number"
+        },
+        "line": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "type": {
+          "$ref": "#/definitions/Callout",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
     "CompositeMark": {
       "anyOf": [
         {
@@ -954,11 +995,21 @@
         },
         {
           "$ref": "#/definitions/ErrorBar"
+        },
+        {
+          "$ref": "#/definitions/Callout"
         }
       ]
     },
     "CompositeMarkDef": {
-      "$ref": "#/definitions/BoxPlotDef"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlotDef"
+        },
+        {
+          "$ref": "#/definitions/CalloutDef"
+        }
+      ]
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -4228,7 +4279,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
