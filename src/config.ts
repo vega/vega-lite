@@ -266,9 +266,6 @@ export const defaultConfig: Config = {
   boxWhisker: {},
   boxMid: {color: 'white'},
 
-  barWhisker: {color: 'black'},
-  barMid: {color: 'black'},
-
   scale: defaultScaleConfig,
   projection: {},
   axis: {},

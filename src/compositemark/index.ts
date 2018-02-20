@@ -1,8 +1,8 @@
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, BoxPlotStyle, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
-import {ERRORBAR, ERRORBAR_STYLES, ErrorBarConfigMixins, ErrorBarDef, ErrorBarStyle, normalizeErrorBar, VL_ONLY_ERRORBAR_CONFIG_PROPERTY_INDEX} from './errorbar';
+import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
+import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
@@ -23,18 +23,17 @@ export function remove(mark: string) {
 
 export type CompositeMark = BOXPLOT | ERRORBAR;
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef;
+export type CompositeMarkDef = BoxPlotDef;
 
-export type CompositeAggregate = BOXPLOT | ERRORBAR;
+export type CompositeAggregate = BOXPLOT;
 
-export const COMPOSITE_MARK_STYLES: CompositeMarkStyle[] = (BOXPLOT_STYLES as CompositeMarkStyle[]).concat(ERRORBAR_STYLES);
-export type CompositeMarkStyle = BoxPlotStyle | ErrorBarStyle;
+export const COMPOSITE_MARK_STYLES = BOXPLOT_STYLES;
+export type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins {}
+export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
 
 export const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX,
-  ...VL_ONLY_ERRORBAR_CONFIG_PROPERTY_INDEX
+  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX
 };
 
 add(BOXPLOT, normalizeBoxPlot);

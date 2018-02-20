@@ -3,8 +3,8 @@ import {contains, Flag, flagKeys, toSet} from './util';
 
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
   | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing'
-  | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stderr' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values'
-  | 'variance' | 'variancep';
+  | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'
+  | 'variancep';
 
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
@@ -20,7 +20,6 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   variancep: 1,
   stdev: 1,
   stdevp: 1,
-  stderr: 1,
   median: 1,
   q1: 1,
   q3: 1,
@@ -29,7 +28,7 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   min: 1,
   max: 1,
   argmin: 1,
-  argmax: 1
+  argmax: 1,
 };
 
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
