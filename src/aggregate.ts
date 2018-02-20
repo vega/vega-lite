@@ -20,6 +20,7 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   variancep: 1,
   stdev: 1,
   stdevp: 1,
+  stderr: 1,
   median: 1,
   q1: 1,
   q3: 1,
@@ -28,8 +29,7 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   min: 1,
   max: 1,
   argmin: 1,
-  argmax: 1,
-  stderr: 1
+  argmax: 1
 };
 
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
