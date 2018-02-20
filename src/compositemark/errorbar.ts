@@ -1,4 +1,5 @@
 import {isNumber} from 'vega-util';
+import {isAggregateOp} from '../aggregate';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -18,7 +19,7 @@ export type ErrorBarStyle = 'barWhisker' | 'barMid';
 
 export interface ErrorBarDef {
   /**
-   * Type of the mark.  For error bar, this should always be `"error-bar"`.
+   * Type of the mark. For error bar, this should always be `"error-bar"`.
    * [errorbar](compositemark.html#errorbar)
    */
   type: ERRORBAR;
@@ -271,7 +272,7 @@ function barParams(spec: GenericUnitSpec<Encoding<string>, ERRORBAR | ErrorBarDe
       return;
     }
     if (isFieldDef(channelDef)) {
-      if (channelDef.aggregate && channelDef.aggregate !== ERRORBAR) {
+      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
         aggregate.push({
           op: channelDef.aggregate,
           field: channelDef.field,
