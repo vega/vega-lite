@@ -2,7 +2,7 @@ import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
-import {ERRORBAR, normalizeErrorBar} from './errorbar';
+import {ERRORBAR, ERRORBAR_STYLES, ErrorBarDef, normalizeErrorBar, VL_ONLY_ERRORBAR_CONFIG_PROPERTY_INDEX} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
@@ -23,17 +23,19 @@ export function remove(mark: string) {
 
 export type CompositeMark = BOXPLOT | ERRORBAR;
 
-export type CompositeMarkDef = BoxPlotDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef;
 
-export type CompositeAggregate = BOXPLOT;
+export type CompositeAggregate = BOXPLOT | ERRORBAR;
 
-export const COMPOSITE_MARK_STYLES = BOXPLOT_STYLES;
+export const COMPOSITE_MARK_STYLES = BOXPLOT_STYLES.concat(ERRORBAR_STYLES);
+// what to do with this!!!!!!!!!!!!!!!!!!!!!??????????????????????????????????
 export type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
 
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
 
 export const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX
+  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX,
+  ...VL_ONLY_ERRORBAR_CONFIG_PROPERTY_INDEX
 };
 
 add(BOXPLOT, normalizeBoxPlot);

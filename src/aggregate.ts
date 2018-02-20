@@ -4,7 +4,7 @@ import {contains, Flag, flagKeys, toSet} from './util';
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
   | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing'
   | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'
-  | 'variancep';
+  | 'variancep' | 'error-bar' | 'box-plot' | 'stderr';
 
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
@@ -28,7 +28,7 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   min: 1,
   max: 1,
   argmin: 1,
-  argmax: 1,
+  argmax: 1
 };
 
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);

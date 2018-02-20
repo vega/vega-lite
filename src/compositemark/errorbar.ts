@@ -34,7 +34,8 @@ export interface ErrorBarDef {
    * - `"stderr": standard error.
    * __Default value:__ `"stdev"`.
    */
-  extent?: 'stdev' | 'stderr'; // 'ci' will be added later
+  extent?: 'stdev' | 'stderr';
+  // 'ci' will be added later !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   /**
    * Center is used to determine the center of the error bar. The options are
@@ -72,7 +73,7 @@ export const VL_ONLY_ERRORBAR_CONFIG_PROPERTY_INDEX: {
 };
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
- // do we need 'size' ?????????????????????????????????????????????????????????????????????????????
+// do we need 'size' ?????????????????????????????????????????????????????????????????????????????
 export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, ERRORBAR | ErrorBarDef>): GenericUnitSpec<Encoding<string>, ERRORBAR | ErrorBarDef> {
   return {
     ...spec,
@@ -91,17 +92,8 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ERRORB
   spec = filterUnsupportedChannels(spec);
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
 
-  let extent: 'stdev' | 'stderr' = undefined;
-  let center: 'mean' | 'median' = undefined;
-  if (isErrorBarDef(mark)) {
-    if (mark.extent) {
-      extent = mark.extent;
-    }
-
-    if (mark.center) {
-      center = mark.center;
-    }
-  }
+  const extent: 'stdev' | 'stderr' = (isErrorBarDef(mark) && mark.extent) ? mark.extent : 'stdev';
+  const center: 'mean' | 'median' = (isErrorBarDef(mark) && mark.center) ? mark.center : 'mean';
 
   const orient: Orient = barOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = barParams(spec, orient, extent, center);
@@ -250,19 +242,12 @@ function barParams(spec: GenericUnitSpec<Encoding<string>, ERRORBAR | ErrorBarDe
     }
   ];
 
-  if (extent === 'stderr') {
-    aggregate.push({
-      op: 'stderr',
-      field: continuousAxisChannelDef.field,
-      as: 'whisker_' + continuousAxisChannelDef.field
-    });
-  } else {
-    aggregate.push({
-      op: 'stdev',
-      field: continuousAxisChannelDef.field,
-      as: 'whisker_' + continuousAxisChannelDef.field
-    });
-  }
+  aggregate.push({
+    op: extent,
+    field: continuousAxisChannelDef.field,
+    as: 'whisker_' + continuousAxisChannelDef.field
+  });
+  // do we combine aggregate extent and center?????????????????????????????????????
 
   const postAggregateCalculates: CalculateTransform[] = [
     {
