@@ -1,4 +1,4 @@
-import {error} from 'util';
+import {error} from 'vega-util';
 import {contains} from '../../util';
 import {isVgSignalRef, VgProjection, VgSignalRef} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
