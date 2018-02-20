@@ -28,11 +28,9 @@ export type CompositeMarkDef = BoxPlotDef | ErrorBarDef;
 export type CompositeAggregate = BOXPLOT | ERRORBAR;
 
 export const COMPOSITE_MARK_STYLES: CompositeMarkStyle[] = (BOXPLOT_STYLES as CompositeMarkStyle[]).concat(ERRORBAR_STYLES);
-// what to do with this!!!!!!!!!!!!!!!!!!!!!??????????????????????????????????
 export type CompositeMarkStyle = BoxPlotStyle | ErrorBarStyle;
 
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins {}
-// what to do with this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!?????????????????
 
 export const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX,
