@@ -3,18 +3,17 @@ import {assert} from 'chai';
 import {inspect} from 'util';
 
 const specSchema = require('../../build/vega-lite-schema.json');
-const metaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
+const metaSchema = require('ajv/lib/refs/json-schema-draft-06.json');
 
 describe('Schema', function() {
   it('should be valid', function() {
     const ajv = new Ajv({
       allErrors: true,
       verbose: true,
-      extendRefs: 'fail',
-      schemaId: 'id'
+      extendRefs: 'fail'
     });
 
-    ajv.addMetaSchema(metaSchema, 'http://json-schema.org/draft-04/schema#');
+    ajv.addMetaSchema(metaSchema);
 
     // now validate our data against the schema
     const valid = ajv.validateSchema(specSchema);
