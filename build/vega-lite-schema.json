@@ -1,6 +1,6 @@
 {
   "$ref": "#/definitions/TopLevelExtendedSpec",
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "definitions": {
     "Aggregate": {
       "$ref": "#/definitions/AggregateOp"

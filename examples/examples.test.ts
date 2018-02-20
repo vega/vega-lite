@@ -1,5 +1,6 @@
 import * as Ajv from 'ajv';
 import {assert} from 'chai';
+
 import {compile} from '../src/compile/compile';
 import {TopLevelExtendedSpec} from '../src/spec';
 
@@ -14,10 +15,11 @@ const ajv = new Ajv({
   validateSchema: true,
   allErrors: true,
   extendRefs: 'fail',
-  schemaId: 'id'
+  schemaId: 'auto'  // for draft 04 and 06 schemas
 });
 
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'), 'http://json-schema.org/draft-04/schema#');
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));  // for Vega
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);

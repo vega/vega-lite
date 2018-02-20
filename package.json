@@ -106,7 +106,7 @@
     "nyc": "^11.4.1",
     "source-map-support": "^0.5.3",
     "svg2png-many": "^0.0.7",
-    "ts-json-schema-generator": "^0.19.0",
+    "ts-json-schema-generator": "^0.20.0",
     "ts-node": "^5.0.0",
     "tsify": "^3.0.4",
     "tslint-eslint-rules": "^5.0.0",
