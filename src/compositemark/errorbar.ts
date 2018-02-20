@@ -31,8 +31,9 @@ export interface ErrorBarDef {
 
   /**
    * Extent is used to determine the length of the whiskers. The options are
-   * - `"stdev": standard deviation.
-   * - `"stderr": standard error.
+   * - `"stdev": Standard deviation.
+   * - `"stderr": Standard error.
+   * _ `"ci": Confidence interval.
    * __Default value:__ `"stdev"`.
    */
   extent?: 'stdev' | 'stderr';
@@ -40,8 +41,8 @@ export interface ErrorBarDef {
 
   /**
    * Center is used to determine the center of the error bar. The options are
-   * _ `"mean": mean.
-   * _ `"median": median.
+   * _ `"mean": Mean.
+   * _ `"median": Median.
    * __Default value:__ `"mean"`.
    */
   center?: 'mean' | 'median';
@@ -159,9 +160,7 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ERRORB
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxMid, 'color'),
-          // ...sizeMixins,
-          // do we need this ????????????????????????????????????????????
+          ...getMarkSpecificConfigMixins(config.boxMid, 'color')
         }
       }
     ]
