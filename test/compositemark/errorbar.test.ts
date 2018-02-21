@@ -3,8 +3,7 @@
 import {assert} from 'chai';
 import {Encoding} from '../../src/encoding';
 import {Field} from '../../src/fielddef';
-import * as log from '../../src/log';
-import {Mark, MarkDef} from '../../src/mark';
+import {MarkDef} from '../../src/mark';
 import {GenericSpec, GenericUnitSpec, normalize} from '../../src/spec';
 import {defaultConfig} from '.././../src/config';
 
