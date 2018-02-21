@@ -47,7 +47,10 @@ export const BOXPLOT_STYLES: BoxPlotStyle[] = ['boxWhisker', 'box', 'boxMid'];
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */
   size?: number;
-  /** Same as BoxPlotDef extent property */
+  /** The default extent, which is used to determine where the whiskers extend to. The options are
+   * - `"min-max": min and max are the lower and upper whiskers respectively.
+   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   */
   extent?: 'min-max' | number;
 }
 
