@@ -1,4 +1,5 @@
-import {isString} from 'util';
+import {isString} from 'vega-util';
+
 import * as log from './log';
 
 /**
