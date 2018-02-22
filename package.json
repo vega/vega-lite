@@ -129,6 +129,7 @@
   },
   "dependencies": {
     "@types/json-stable-stringify": "^1.0.32",
+    "vega-typings": "^0.2.0",
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.9.0",
     "vega-event-selector": "^2.0.0",
