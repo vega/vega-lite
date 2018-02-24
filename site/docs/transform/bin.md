@@ -79,7 +79,7 @@ The `bin` transform in the `transform` array has the following properties:
 
 ### Example: Histogram with Bin Transform
 
-Instead of using the `bin` property of a field definition, you can also a bin transform
+Instead of using the `bin` property of a field definition, you can also use a bin transform
 to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field instead.
 
 <div class="vl-example" data-name="histogram_bin_transform"></div>
