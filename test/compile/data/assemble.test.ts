@@ -23,7 +23,7 @@ describe('compile/data/assemble', () => {
         outputNodeRefCounts,
         ancestorParse: {},
         isFaceted: false
-      });
+      }, {});
 
       assert.equal(data.length, 1);
       assert.equal(data[0].name, "foo");
@@ -48,7 +48,7 @@ describe('compile/data/assemble', () => {
         outputNodeRefCounts,
         ancestorParse: {},
         isFaceted: false
-      });
+      }, {});
 
       assert.deepEqual<VgData[]>(data, [{
         name: 'source_0',
