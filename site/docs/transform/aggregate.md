@@ -118,4 +118,4 @@ The supported **aggregation operations** are:
 | argmin    | An input data object containing the minimum field value.|
 | argmax    | An input data object containing the maximum field value.|
 
-__Note:__ When accessing aggregated argmax/argmin fields, the aggregated fields must be flatten using calculate as done in the [Co2 example plot]({{site.baseurl}}/examples/layer_line_co2_concentration.html) due to the [nested field issue #3361](https://github.com/vega/vega-lite/issues/3361).
+__Note:__ When accessing aggregated argmax/argmin fields, the aggregated fields must be flattened, due to the [nested field issue](https://github.com/vega/vega-lite/issues/3361). The aggregated fields can be flattened with the calculate as done in the [Co2 example plot]({{site.baseurl}}/examples/layer_line_co2_concentration.html).
