@@ -3,7 +3,6 @@ import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {ScaleFieldDef} from './../../fielddef';
 import {CalculateTransform} from './../../transform';
 import {DataFlowNode} from './dataflow';
 

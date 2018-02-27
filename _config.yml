@@ -49,7 +49,7 @@ kramdown:
   syntax_highlighter: rouge
   auto_id_stripping: true
 
-plugins:
+plugins_dir:
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-mentions

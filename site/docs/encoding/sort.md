@@ -55,13 +55,21 @@ If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's 
 
 3) Unsorted – `null` – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
 
-4) Specify custom order by providing custom `scale`'s [`domain`](scale.html#domain).  (In this case, you don't need to use `sort` property.)
+4) Specify custom order by:
+  1) providing `sort` with an array that lists valid input domains
+  2) providing custom `scale`'s [`domain`](scale.html#domain)
 
 #### Example: Sorting Ordinal Scale by Another Field
 
 The following example sorts x by mean of Horsepower.
 
 <div class="vl-example" data-name="histogram_sort_mean"></div>
+
+#### Example: Custom Sort Order On Ordinal Scale
+
+You can specify custom sort order by providing an array of valid domains of data source
+
+<div class="vl-example" data-name="bar_custom_sort"></div>
 
 <!-- TODO
 

@@ -182,7 +182,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
 
   /**
    * Sort order for the encoded field.
-   * Supported `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
+   * Supported `sort` values include `"ascending"`, `"descending"`, `"array of field's domains"` and `null` (no sorting).
    * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
    *
    * __Default value:__ `"ascending"`
