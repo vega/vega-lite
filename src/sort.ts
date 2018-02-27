@@ -1,5 +1,6 @@
 import {AggregateOp} from './aggregate';
 import {SortField} from './sort';
+import {isArray, isString} from './util';
 
 export type SortOrder = 'ascending' | 'descending' | null;
 
@@ -30,5 +31,5 @@ export function isSortField<F>(sort: string[] | SortOrder | SortField<F>): sort 
 }
 
 export function isSortArray<F>(sort: string[] | SortOrder | SortField<F>): sort is string[] {
-  return !!sort && sort instanceof Array && sort.every(s => typeof s === 'string');
+  return !!sort && isArray(sort) && sort.every(s => isString(s));
 }
