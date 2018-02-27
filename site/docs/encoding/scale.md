@@ -80,6 +80,20 @@ By default, a scale in Vega-Lite draws domain values directly from a channel's e
 
 {% include table.html props="domain" source="Scale" %}
 
+A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect. For example, consider the line plot specification below in which the `x` domain is restricted to the range `[300, 450]`.
+
+<div class="vl-example" data-name="line_outside_domain"></div>
+
+There are two approaches to keep the mark from being plotted outside the desired `x` range of values.
+
+- The first one is to set `clip: true` in mark definition.
+<div class="vl-example" data-name="line_inside_domain_using_clip"></div>
+
+- The second approach is to use `transform`. Note that these two approaches have slightly different behaviors. Using `transform` removes unwanted data points, yet setting `clip` to `true` clips the mark to be the enclosing group's width and height.
+
+<div class="vl-example" data-name="line_inside_domain_using_transform"></div>
+
+
 <!--
 #### Example: Custom Domain
 TODO: Custom Domain for quantitative / discrete scales
