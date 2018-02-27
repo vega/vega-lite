@@ -9,8 +9,6 @@ import {binRequiresRange} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
-// add generated calculate node in the groupby key
-
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
     dims[vgField(fieldDef, {})] = true;

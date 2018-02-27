@@ -202,7 +202,7 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
   const roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
-  roots.forEach(debug);
+  // roots.forEach(debug);
 
   const walkTree = makeWalkTree(data);
 

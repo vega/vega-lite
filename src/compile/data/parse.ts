@@ -226,8 +226,6 @@ export function parseData(model: Model): DataComponent {
       head = tu;
     }
 
-    // TODO add calculate node for sort array
-    // SortArrayFormulaNode? or just re-use CalculateNode
     for (const calculate of CalculateNode.makeAllFromSort(model)) {
       calculate.parent = head;
       head = calculate;
