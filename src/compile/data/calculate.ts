@@ -25,7 +25,7 @@ export class CalculateNode extends DataFlowNode {
       if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
         const transform: CalculateTransform = {
           calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
-          as: 'todo'
+          as: `${fieldDef.field}_sort_index`
         };
          acc.push(new CalculateNode(transform));
       }
@@ -38,7 +38,7 @@ export class CalculateNode extends DataFlowNode {
     let expression = '';
     let count = 0;
     for (const sortField of sortFields) {
-      expression += `datum.${field} === ${sortField} ? ${count} : `;
+      expression += `datum.${field} === '${sortField}' ? ${count} : `;
       count++;
     }
     expression += count;
