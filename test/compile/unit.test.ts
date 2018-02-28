@@ -19,6 +19,16 @@ describe('UnitModel', function() {
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
       }));
 
+    it('should drop invalid channel and throws warning', log.wrap((localLogger) => {
+        const _model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            _y: {type: 'quantitative'}
+          }
+        } as any); // To make parseUnitModel accept the model with invalid encoding channel
+        assert.equal(localLogger.warns[0], log.message.invalidEncodingChannel('_y'));
+      }));
+
     it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
         const model = parseUnitModel({
           mark: 'bar',
