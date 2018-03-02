@@ -1,4 +1,5 @@
-import {accessPath, stringValue, varName} from '../../../util';
+import {stringValue} from 'vega-util';
+import {accessPath, varName} from '../../../util';
 import {TUPLE} from '../selection';
 import nearest from './nearest';
 import {TransformCompiler} from './transforms';

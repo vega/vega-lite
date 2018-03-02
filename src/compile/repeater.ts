@@ -1,10 +1,10 @@
+import {isArray} from 'vega-util';
 import {Encoding} from '../encoding';
 import {FacetMapping} from '../facet';
 import {Field, hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
 import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
-import {isArray} from '../util';
 
 export type RepeaterValue = {
   row?: string,

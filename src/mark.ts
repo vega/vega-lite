@@ -1,5 +1,6 @@
+import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {flagKeys, toSet} from './util';
+import {flagKeys} from './util';
 import {VgMarkConfig} from './vega.schema';
 
 export namespace Mark {

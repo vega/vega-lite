@@ -1,3 +1,4 @@
+import {truncate} from 'vega-util';
 import {Axis} from '../../axis';
 import {binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
@@ -7,7 +8,7 @@ import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {QUANTITATIVE} from '../../type';
-import {contains, truncate} from '../../util';
+import {contains} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 

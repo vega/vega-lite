@@ -1,4 +1,5 @@
 
+import {isArray} from 'vega-util';
 import {Channel, CHANNELS, supportMark} from './channel';
 import {FacetMapping} from './facet';
 import {
@@ -22,7 +23,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {isArray, keys, some} from './util';
+import {keys, some} from './util';
 
 export interface Encoding<F> {
   /**

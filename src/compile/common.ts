@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
 import {FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
@@ -6,7 +7,7 @@ import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, isArray} from '../util';
+import {contains} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {Explicit} from './split';
 import {UnitModel} from './unit';

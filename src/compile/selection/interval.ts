@@ -1,7 +1,8 @@
+import {stringValue} from 'vega-util';
 import {X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain, isBinScale} from '../../scale';
-import {keys, stringValue} from '../../util';
+import {keys} from '../../util';
 import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {

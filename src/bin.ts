@@ -1,5 +1,6 @@
+import {isBoolean} from 'vega-util';
 import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE} from './channel';
-import {isBoolean, keys, varName} from './util';
+import {keys, varName} from './util';
 
 
 export interface BaseBin {
