@@ -54,7 +54,6 @@ function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, to
   const view = new vega.View(vega.parse(vgSpec), {loader: loader})
     .renderer('svg')
     .initialize($target)
-    .hover()
     .run();
 
   const div = select($target)
