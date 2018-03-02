@@ -1,9 +1,10 @@
 import {selector as parseSelector} from 'vega-event-selector';
+import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {accessPath, Dict, isString, logicalExpr, stringValue, varName} from '../../util';
+import {accessPath, Dict, logicalExpr, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';

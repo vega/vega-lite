@@ -1,7 +1,7 @@
+import {stringValue} from 'vega-util';
 import {Channel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
-import {stringValue} from '../../../util';
 import {UnitModel} from '../../unit';
 import {channelSignalName} from '../selection';
 import {TransformCompiler} from './transforms';

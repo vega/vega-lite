@@ -1,4 +1,5 @@
-import {contains, Flag, flagKeys, toSet} from './util';
+import {toSet} from 'vega-util';
+import {contains, Flag, flagKeys} from './util';
 
 
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'

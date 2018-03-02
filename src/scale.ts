@@ -1,7 +1,8 @@
+import {toSet} from 'vega-util';
 import {Channel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
-import {contains, Flag, flagKeys, keys, toSet} from './util';
+import {contains, Flag, flagKeys, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {

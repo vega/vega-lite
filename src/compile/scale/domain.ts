@@ -1,3 +1,4 @@
+import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -418,12 +419,12 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
  *
  */
 export function getFieldFromDomain(domain: VgDomain): string {
-  if (isDataRefDomain(domain) && util.isString(domain.field)) {
+  if (isDataRefDomain(domain) && isString(domain.field)) {
     return domain.field;
   } else if (isDataRefUnionedDomain(domain)) {
     let field;
     for (const nonUnionDomain of domain.fields) {
-      if (isDataRefDomain(nonUnionDomain) && util.isString(nonUnionDomain.field)) {
+      if (isDataRefDomain(nonUnionDomain) && isString(nonUnionDomain.field)) {
         if (!field) {
           field = nonUnionDomain.field;
         } else if (field !== nonUnionDomain.field) {
@@ -437,7 +438,7 @@ export function getFieldFromDomain(domain: VgDomain): string {
   } else if (isFieldRefUnionDomain(domain)) {
     log.warn('Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.');
     const field = domain.fields[0];
-    return util.isString(field) ? field : undefined;
+    return isString(field) ? field : undefined;
   }
 
   return undefined;

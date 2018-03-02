@@ -3,8 +3,6 @@ import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-ut
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 
-export {isArray, isObject, isNumber, isString, truncate, toSet, stringValue, splitAccessPath} from 'vega-util';
-
 /**
  * Creates an object composed of the picked object properties.
  *

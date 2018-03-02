@@ -1,3 +1,4 @@
+import {isArray, isString} from 'vega-util';
 import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
 import {selectionPredicate} from './compile/selection/selection';
@@ -5,7 +6,7 @@ import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {vgField} from './fielddef';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
-import {isArray, isString, logicalExpr} from './util';
+import {logicalExpr} from './util';
 
 export type Predicate =
   // a) FieldPrecidate (but we don't type FieldFilter here so the schema has no nesting

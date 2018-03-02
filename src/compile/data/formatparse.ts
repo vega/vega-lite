@@ -1,10 +1,11 @@
+import {toSet} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPath, Dict, duplicate, keys, StringSet, toSet} from '../../util';
+import {accessPath, Dict, duplicate, keys, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';

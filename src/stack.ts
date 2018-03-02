@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
 import {channelHasField, Encoding} from './encoding';
@@ -5,7 +6,7 @@ import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFiel
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag, isArray} from './util';
+import {contains, Flag} from './util';
 
 
 export type StackOffset = 'zero' | 'center' | 'normalize';
