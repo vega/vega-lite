@@ -23,7 +23,7 @@ By default, all time units represent date time using local time.  To use UTC tim
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

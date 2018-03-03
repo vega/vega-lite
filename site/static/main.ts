@@ -1,8 +1,11 @@
 import {text} from 'd3-request';
-import {select, selectAll, Selection} from 'd3-selection';
+import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
-import embed, {vega} from 'vega-embed';
+import * as vega from 'vega';
+import {post} from 'vega-embed/build/post';
 import {vegaLite} from 'vega-tooltip';
+
+import {compile} from '../../src';
 import {TopLevelExtendedSpec} from '../../src/spec';
 import {runStreamingExample} from './streaming';
 
@@ -14,6 +17,8 @@ declare const BASEURL: string;
 const loader = vega.loader({
   baseURL: BASEURL
 });
+
+const editorURL = 'https://vega.github.io/editor/';
 
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
@@ -46,19 +51,29 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 }
 
 function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, tooltip=false) {
-  embed($target as HTMLBaseElement, spec, {
-    mode: 'vega-lite',
-    renderer: 'svg',
-    actions: actions ? {
-      source: false,
-      export: false
-    } : false,
-    loader: loader
-  }).then(result => {
-    if (tooltip) {
-      vegaLite(result.view, spec as any);
-    }
-  }).catch(console.error);
+  const vgSpec = compile(spec).spec;
+  const view = new vega.View(vega.parse(vgSpec), {loader: loader})
+    .renderer('svg')
+    .initialize($target)
+    .run();
+
+  const div = select($target)
+    .append('div')
+    .attr('class', 'vega-actions')
+    .append('a')
+    .text('Open in Vega Editor')
+    .attr('href', '#')
+    .on('click', function () {
+      post(window, editorURL, {
+        mode: 'vega-lite',
+        spec: JSON.stringify(spec, null, 2),
+    });
+    event.preventDefault();
+  });
+
+  if (tooltip) {
+    vegaLite(view, spec);
+  }
 }
 
 function getSpec(el: d3.BaseType) {

@@ -21,7 +21,7 @@ permalink: /docs/area.html
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

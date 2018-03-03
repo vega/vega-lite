@@ -101,7 +101,8 @@ export class AggregateNode extends DataFlowNode {
   public static makeFromTransform(t: AggregateTransform): AggregateNode {
     const dims = {};
     const meas = {};
-    for(const s of t.aggregate) {
+
+    for (const s of t.aggregate) {
       if (s.op) {
         if (s.op === 'count') {
           meas['*'] = meas['*'] || {};
@@ -113,7 +114,7 @@ export class AggregateNode extends DataFlowNode {
       }
     }
 
-    for(const s of t.groupby) {
+    for (const s of t.groupby || []) {
       dims[s] = true;
     }
 

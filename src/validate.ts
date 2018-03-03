@@ -1,7 +1,7 @@
+import {toSet} from 'vega-util';
 import {isMarkDef} from './mark';
 import {BAR} from './mark';
 import {FacetedCompositeUnitSpec} from './spec';
-import {toSet} from './util';
 
 
 

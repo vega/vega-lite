@@ -1,12 +1,12 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
+import {toSet} from 'vega-util';
 import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
-import {toSet, without} from '../../../src/util';
+import {without} from '../../../src/util';
 import {parseModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
 
 describe('src/compile', function() {

@@ -12,7 +12,7 @@ If you concatenate similar views where the only difference is the field that is 
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Horizontal Concatenation

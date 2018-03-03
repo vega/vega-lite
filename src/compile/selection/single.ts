@@ -1,4 +1,4 @@
-import {stringValue} from '../../util';
+import {stringValue} from 'vega-util';
 import multi from './multi';
 import {SelectionCompiler, STORE, TUPLE, unitName} from './selection';
 

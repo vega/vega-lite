@@ -1,4 +1,3 @@
-import {error} from 'vega-util';
 import {contains} from '../../util';
 import {isVgSignalRef, VgProjection, VgSignalRef} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
@@ -40,7 +39,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   }, []);
 
   if (fit.length <= 0) {
-    error("Projection's fit didn't find any data sources");
+    throw new Error("Projection's fit didn't find any data sources");
   }
 
   return [{

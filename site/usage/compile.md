@@ -22,9 +22,9 @@ var vgSpec = vl.compile(vlSpec, options).spec;
 
 If provided, the `options` argument should be an object with one or more of the following properties:
 
-* [`config`](#config) sets a default config
-* [`logger`](#logging) sets a logger
-* ['fieldTitle`](#field-title) sets a field title formatter
+- [`config`](#config) sets a default config
+- [`logger`](#logging) sets a logger
+- ['fieldTitle`](#field-title) sets a field title formatter
 
 {:#config}
 ### Customized Configuration

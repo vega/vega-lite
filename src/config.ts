@@ -1,3 +1,4 @@
+import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {COMPOSITE_MARK_STYLES} from './compositemark';
 import {CompositeMarkConfigMixins, CompositeMarkStyle, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
@@ -11,7 +12,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {StackOffset} from './stack';
 import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
-import {duplicate, isObject, keys, mergeDeep} from './util';
+import {duplicate, keys, mergeDeep} from './util';
 import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
 
 
@@ -262,7 +263,7 @@ export const defaultConfig: Config = {
   text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
 
-  box: {size: 14},
+  box: {size: 14, extent: 1.5},
   boxWhisker: {},
   boxMid: {color: 'white'},
 

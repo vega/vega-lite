@@ -11,7 +11,7 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 ## Tutorial Overview
 
-* TOC
+- TOC
 {:toc}
 
 ## The Data
@@ -203,8 +203,8 @@ If viewed in a browser, this page displays our bar chart like on our [demo page]
 
 Now you can create a website that embeds a Vega-Lite specification. If you want to learn more about Vega-Lite, please feel free to:
 
-* Read the [next tutorial]({{site.baseurl}}/tutorials/explore.html).
-* See the [examples gallery]({{site.baseurl}}/examples/).
-* Build your own visualizations in the [online editor](https://vega.github.io/editor/#/custom/vega-lite).
-* Browse through the [documentation]({{site.baseurl}}/docs/).
-* See the [list of applications](https://vega.github.io/vega-lite/applications.html) that you can use Vega-Lite with.
+- Read the [next tutorial]({{site.baseurl}}/tutorials/explore.html).
+- See the [examples gallery]({{site.baseurl}}/examples/).
+- Build your own visualizations in the [online editor](https://vega.github.io/editor/#/custom/vega-lite).
+- Browse through the [documentation]({{site.baseurl}}/docs/).
+- See the [list of applications](https://vega.github.io/vega-lite/applications.html) that you can use Vega-Lite with.

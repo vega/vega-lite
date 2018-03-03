@@ -1,9 +1,10 @@
+import {isArray} from 'vega-util';
 import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {Flag, flagKeys, isArray} from './util';
+import {Flag, flagKeys} from './util';
 
 export interface VgData {
   name: string;

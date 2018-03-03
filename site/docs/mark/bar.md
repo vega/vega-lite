@@ -21,7 +21,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 
