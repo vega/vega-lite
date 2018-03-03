@@ -36,3 +36,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Horizontal Stacked Bar Chart with Labels](https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1) by @pratapvardhan
 * [Interactive stacked time-series](https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea) by @jakevdp
 * [Bicycle Count Time-series with Dynamic Scale](https://bl.ocks.org/jakevdp/b511d09ed4e2797234bd6236d7b428f7) by @jakevdp
+* [Multi-Line Tooltip](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9) by @jakevdp
