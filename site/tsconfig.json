@@ -1,11 +1,10 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": false
+    "moduleResolution": "node"
   },
   "include": [
     "../typings/*.d.ts",

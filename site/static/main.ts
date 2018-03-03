@@ -4,7 +4,8 @@ import * as hljs from 'highlight.js';
 import * as vega from 'vega';
 import {post} from 'vega-embed/build/post';
 import {vegaLite} from 'vega-tooltip';
-import {compile} from '../../src/compile/compile';
+
+import {compile} from '../../src';
 import {TopLevelExtendedSpec} from '../../src/spec';
 import {runStreamingExample} from './streaming';
 
