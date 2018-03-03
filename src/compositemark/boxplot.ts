@@ -1,4 +1,4 @@
-import {isNumber} from 'vega-util';
+import {isNumber} from 'util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -32,8 +32,8 @@ export interface BoxPlotDef {
   /**
    * Extent is used to determine where the whiskers extend to. The options are
    * - `"min-max": min and max are the lower and upper whiskers respectively.
-   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
-   * __Default value:__ `"min-max"`.
+   * -  A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   * __Default value:__ `"1.5"`.
    */
   extent?: 'min-max' | number;
 }
@@ -47,6 +47,11 @@ export const BOXPLOT_STYLES: BoxPlotStyle[] = ['boxWhisker', 'box', 'boxMid'];
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */
   size?: number;
+  /** The default extent, which is used to determine where the whiskers extend to. The options are
+   * - `"min-max": min and max are the lower and upper whiskers respectively.
+   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   */
+  extent?: 'min-max' | number;
 }
 
 export interface BoxPlotConfigMixins {
@@ -70,7 +75,7 @@ export interface BoxPlotConfigMixins {
 export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
   [k in keyof BoxPlotConfigMixins]?: (keyof BoxPlotConfigMixins[k])[]
 } = {
-  box: ['size', 'color'],
+  box: ['size', 'color', 'extent'],
   boxWhisker: ['color'],
   boxMid: ['color']
 };
@@ -96,10 +101,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
+  if (isNumber(config.box.extent)) {
+    kIQRScalar = config.box.extent;
+  }
+
   if (isBoxPlotDef(mark)) {
     if (mark.extent) {
-      if(isNumber(mark.extent)) {
-        kIQRScalar = mark.extent;
+      if(mark.extent === 'min-max') {
+        kIQRScalar = undefined;
       }
     }
   }
