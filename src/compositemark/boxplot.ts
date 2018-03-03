@@ -1,4 +1,4 @@
-import {isNumber} from 'util';
+import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
