@@ -238,6 +238,10 @@
       "name": "layer_line_co2_concentration",
       "title": "Carbon Dioxide in the Atmosphere",
       "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
+    },
+    {
+      "name": "layer_line_multi_value_tooltip",
+      "title": "Multi-Value Tooltip",
     }
   ],
   "Composition": [
