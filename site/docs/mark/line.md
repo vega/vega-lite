@@ -20,7 +20,7 @@ The `line` mark represents the data points stored in a field with a line connect
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

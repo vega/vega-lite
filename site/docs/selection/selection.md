@@ -23,7 +23,7 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 {:#type}
@@ -71,19 +71,19 @@ _Note:_ the two intervals do not have any effect on the visualization yet (we'll
 
 Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include:
 
-* For `single` selections:
-  * [`bind`](bind.html) to input elements (also known as dynamic query widgets).
-  * [`nearest`](nearest.html) to accelerate selecting values.
-  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-* For `multi` selections:
-  * [`toggle`](toggle.html) to insert or remove data values based on their membership within the selection.
-  * [`nearest`](nearest.html) to accelerate selecting values.
-  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-* For `interval` selections:
-  * [`bind`](bind.html) to scale functions to enable panning &amp; zooming.
-  * project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-  * [`translate`](translate.html) to move the selection back-and-forth.
-  * [`zoom`](zoom.html) to resize the selection.
+- For `single` selections:
+  - [`bind`](bind.html) to input elements (also known as dynamic query widgets).
+  - [`nearest`](nearest.html) to accelerate selecting values.
+  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+- For `multi` selections:
+  - [`toggle`](toggle.html) to insert or remove data values based on their membership within the selection.
+  - [`nearest`](nearest.html) to accelerate selecting values.
+  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+- For `interval` selections:
+  - [`bind`](bind.html) to scale functions to enable panning &amp; zooming.
+  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
+  - [`translate`](translate.html) to move the selection back-and-forth.
+  - [`zoom`](zoom.html) to resize the selection.
 
 ## Using Selections
 
@@ -128,8 +128,8 @@ However, setting the scale domains (rather than filtering data out) yields super
 
 If the selection is [projected](project.html) over _multiple_ fields or encodings, one must be given as part of the scale domain definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
 
-  * `"scale": {"domain": {"selection": "brush", "encoding": "x"}}` or
-  * `"scale": {"domain": {"selection": "brush", "field": "date"}}`
+  - `"scale": {"domain": {"selection": "brush", "encoding": "x"}}` or
+  - `"scale": {"domain": {"selection": "brush", "field": "date"}}`
 
 _Note:_ For a selection to manipulate the scales of its own view, use the [bind](bind.html#scale-binding) operator instead.
 
@@ -147,8 +147,8 @@ For example, we had previously seen how we could setup two interval selections f
 
 With these operators, selections can be combined in arbitrary ways:
 
-  * `"selection": {"not": {"and": ["alex", "morgan"]}}`
-  * `"selection": {"or": ["alex", {"not": "morgan"}]}`
+  - `"selection": {"not": {"and": ["alex", "morgan"]}}`
+  - `"selection": {"or": ["alex", {"not": "morgan"}]}`
 
 When using selections with filter operators, logical composition can be used to mix selections with other filter operators. For example, as shown below, the `Displacement x Acceleration` scatterplot now visualizes points that lie within the brushed region **and** have a `Weight_in_lbs > 3000`.
 
@@ -163,11 +163,11 @@ When a selection is defined within a data-driven view (i.e., a view that is part
 
 The aptly named `resolve` property addresses this ambiguity, and can be set to one of the following values (click to apply it to the SPLOM example, and drag out an interval in different cells):
 
-  * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_global')">`global`</a> (**default**) -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.
+  - <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_global')">`global`</a> (**default**) -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.
 
-  * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_union')">`union`</a> -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.
+  - <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_union')">`union`</a> -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.
 
-  * <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect')">`intersect`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
+  - <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect')">`intersect`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
 
 <div id="selection_resolution" class="vl-example" data-name="selection_resolution_global"></div>
 

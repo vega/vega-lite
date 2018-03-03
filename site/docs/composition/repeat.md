@@ -10,7 +10,7 @@ The `repeat` operator is part of Vega-Lite's [view composition](composition.html
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Repeat Operator

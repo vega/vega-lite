@@ -9,7 +9,7 @@ To aggregate data in Vega-Lite, users can either use use an `aggregate` property
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

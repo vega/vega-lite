@@ -20,7 +20,7 @@ permalink: /docs/point.html
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Dot Plot

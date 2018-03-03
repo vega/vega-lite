@@ -21,7 +21,7 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Width/Height-Spanning Rules

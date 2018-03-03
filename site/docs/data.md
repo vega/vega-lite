@@ -12,7 +12,7 @@ Vega-Lite's `data` property describes the visualization's data source as part of
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Types of Data Sources

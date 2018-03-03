@@ -43,7 +43,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Mark Definition Object
