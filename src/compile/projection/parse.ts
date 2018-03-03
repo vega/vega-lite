@@ -16,7 +16,7 @@ export function parseProjection(model: Model) {
     model.component.projection = parseUnitProjection(model);
   } else {
     // because parse happens from leaves up (unit specs before layer spec),
-    // we can be sure that the above if statement has already occured
+    // we can be sure that the above if statement has already occurred
     // and therefore we have access to child.component.projection
     // for each of model's children
     model.component.projection = parseNonUnitProjections(model);
