@@ -16,7 +16,7 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

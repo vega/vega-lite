@@ -10,7 +10,7 @@ Tooltip can provide details of a particular data point on demand. There are two 
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Using Tooltip channel

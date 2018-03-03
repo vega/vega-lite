@@ -30,7 +30,7 @@ determines type of stacking offset if the field should be stacked.
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

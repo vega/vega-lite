@@ -21,7 +21,7 @@ The `rect` mark represents an arbitrary rectangle.
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ### Heatmap

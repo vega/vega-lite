@@ -11,7 +11,7 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 

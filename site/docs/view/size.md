@@ -11,7 +11,7 @@ This page describe how to adjust width and height of visualizations in Vega-lite
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Width and Height of Single and Layered Plots
@@ -72,8 +72,8 @@ The total size of a Vega-Lite visualization may be determined by multiple factor
 
 In order to `fit` a chart into specified dimensions, it has to satisfy two requirements:
 
-* The view must be either a [single](spec.html#single) view or a [layered](layer.html) view. Fit does not work with other kinds of composed views (`facet`/`hconcat`/`vconcat`/`repeat`).
-* The width and height of the chart cannot depend on an explicitly specified `rangeStep` of a discrete scale. Any specified `rangeStep` will be ignored.
+- The view must be either a [single](spec.html#single) view or a [layered](layer.html) view. Fit does not work with other kinds of composed views (`facet`/`hconcat`/`vconcat`/`repeat`).
+- The width and height of the chart cannot depend on an explicitly specified `rangeStep` of a discrete scale. Any specified `rangeStep` will be ignored.
 
 #### Example
 

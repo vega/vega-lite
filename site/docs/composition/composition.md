@@ -14,7 +14,7 @@ Vega-Lite's compiler infers how input data should be reused across constituent v
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Faceting

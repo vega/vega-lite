@@ -22,7 +22,7 @@ permalink: /docs/text.html
 ## Documentation Overview
 {:.no_toc}
 
-* TOC
+- TOC
 {:toc}
 
 ## Text Table Heatmap
