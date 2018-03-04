@@ -231,7 +231,7 @@
             "type": "rect",
             "style": [
                 "tick",
-                "boxplot-mid"
+                "boxplot-center"
             ],
             "from": {
                 "data": "data_3"

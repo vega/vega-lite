@@ -785,6 +785,9 @@
         "box": {
           "$ref": "#/definitions/MarkConfig"
         },
+        "center": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "extent": {
           "anyOf": [
             {
@@ -799,11 +802,8 @@
           ],
           "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- `\"number\": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `\"1.5\"`."
         },
-        "mid": {
-          "$ref": "#/definitions/MarkConfig"
-        },
         "size": {
-          "description": "Size of the box and mid tick of a box plot ",
+          "description": "Size of the box and center tick of a box plot ",
           "type": "number"
         },
         "whisker": {
@@ -818,6 +818,9 @@
         "box": {
           "$ref": "#/definitions/MarkConfig"
         },
+        "center": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "extent": {
           "anyOf": [
             {
@@ -832,15 +835,12 @@
           ],
           "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- `\"number\": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `\"1.5\"`."
         },
-        "mid": {
-          "$ref": "#/definitions/MarkConfig"
-        },
         "orient": {
           "$ref": "#/definitions/Orient",
           "description": "Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
         },
         "size": {
-          "description": "Size of the box and mid tick of a box plot ",
+          "description": "Size of the box and center tick of a box plot ",
           "type": "number"
         },
         "type": {

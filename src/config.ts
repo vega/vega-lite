@@ -266,7 +266,7 @@ export const defaultConfig: Config = {
     size: 14,
     extent: 1.5,
     box: {},
-    mid: {color: 'white'},
+    center: {color: 'white'},
     whisker: {}
   },
 
