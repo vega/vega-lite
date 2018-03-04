@@ -96,22 +96,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const markDef = isMarkDef(mark) ? mark : {type: mark};
 
-  let kIQRScalar: number = undefined;
-  if (isNumber(config.boxplot.extent)) {
-    kIQRScalar = config.boxplot.extent;
-  }
-
-  if (isMarkDef(mark)) {
-    if (mark.extent) {
-      if(mark.extent === 'min-max') {
-        kIQRScalar = undefined;
-      }
-    }
-  }
+  const extent = markDef.extent || config.boxplot.extent;
 
   const orient: Orient = boxOrient(spec);
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, kIQRScalar);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -266,12 +256,12 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxP
   };
 }
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient, kIQRScalar: 'min-max' | number) {
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
 
   const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
   const encoding = spec.encoding;
 
-  const isMinMax = kIQRScalar === undefined;
+  const isMinMax = !isNumber(extent);
   const aggregate: AggregatedFieldDef[] = [
     {
       op: 'q1',
@@ -309,11 +299,11 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         as: 'iqr_' + continuousAxisChannelDef.field
       },
       {
-        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.max_${continuousAxisChannelDef.field})`,
+        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
         as: 'upper_whisker_' + continuousAxisChannelDef.field
       },
       {
-        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.min_${continuousAxisChannelDef.field})`,
+        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
         as: 'lower_whisker_' + continuousAxisChannelDef.field
       }
     ];
