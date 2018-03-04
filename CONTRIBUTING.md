@@ -206,7 +206,7 @@ We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLin
 
 To manually test your changes locally, you should have a local instance of
 [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor
-(See [Vega Editor's README](https://github.com/vega/vega-editor#local-testing--debugging)
+(See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging)
 for instructions).
 
 ## Developing Vega-Lite and Vega-Util
