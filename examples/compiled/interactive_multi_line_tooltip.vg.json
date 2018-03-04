@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Credits to @jakevdp. The example is forked/modified from his block (https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9).",
     "autosize": "pad",
     "padding": 5,
     "width": 800,
@@ -46,8 +47,13 @@
                     "as": "date"
                 },
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -61,13 +67,12 @@
                     "as": "date"
                 },
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
+                    "type": "filter",
+                    "expr": "(vlSingle(\"tooltip_store\", datum))"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 }
             ]
         },
@@ -87,26 +92,11 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_4",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "filter",
                     "expr": "(vlSingle(\"tooltip_store\", datum))"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         }
@@ -225,11 +215,18 @@
             },
             "encode": {
                 "update": {
-                    "opacity": {
-                        "value": 0
-                    },
+                    "opacity": [
+                        {
+                            "test": "(vlSingle(\"tooltip_store\", datum))",
+                            "value": 1
+                        },
+                        {
+                            "value": 0
+                        }
+                    ],
                     "stroke": {
-                        "value": "#4c78a8"
+                        "scale": "color",
+                        "field": "symbol"
                     },
                     "fill": {
                         "value": "transparent"
@@ -239,8 +236,8 @@
                         "field": "date"
                     },
                     "y": {
-                        "signal": "height",
-                        "mult": 0.5
+                        "scale": "y",
+                        "field": "price"
                     }
                 }
             }
@@ -287,50 +284,12 @@
         },
         {
             "name": "layer_2_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "opacity": [
-                        {
-                            "test": "(vlSingle(\"tooltip_store\", datum))",
-                            "value": 1
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "stroke": {
-                        "scale": "color",
-                        "field": "symbol"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "price"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_3_marks",
             "type": "rule",
             "style": [
                 "rule"
             ],
             "from": {
-                "data": "data_4"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -353,7 +312,7 @@
             }
         },
         {
-            "name": "layer_4_marks",
+            "name": "layer_3_marks",
             "type": "text",
             "style": [
                 "text"
@@ -384,15 +343,9 @@
                         "scale": "y",
                         "field": "price"
                     },
-                    "text": [
-                        {
-                            "test": "(vlSingle(\"tooltip_store\", datum))",
-                            "signal": "format(datum[\"price\"], \"\")"
-                        },
-                        {
-                            "value": " "
-                        }
-                    ]
+                    "text": {
+                        "signal": "format(datum[\"price\"], \"\")"
+                    }
                 }
             }
         }
@@ -413,10 +366,6 @@
                     },
                     {
                         "data": "data_2",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_4",
                         "field": "date"
                     },
                     {
@@ -442,7 +391,7 @@
                         "field": "price"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "price"
                     },
                     {
@@ -470,7 +419,7 @@
                         "field": "symbol"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "symbol"
                     },
                     {
