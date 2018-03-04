@@ -34,9 +34,11 @@ export function color(model: UnitModel) {
   return e;
 }
 
-export function baseEncodeEntry(model: UnitModel, ignoreOrient: boolean) {
+export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
+
+export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   return {
-    ...markDefProperties(model.markDef, ignoreOrient),
+    ...markDefProperties(model.markDef, ignore),
     ...color(model),
     ...nonPosition('opacity', model),
     ...text(model, 'tooltip'),
@@ -44,9 +46,9 @@ export function baseEncodeEntry(model: UnitModel, ignoreOrient: boolean) {
   };
 }
 
-function markDefProperties(mark: MarkDef, ignoreOrient?: boolean) {
+function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] && (!ignoreOrient || prop !== 'orient')) {
+    if (mark[prop] && ignore[prop] !== 'ignore') {
       m[prop] = {value: mark[prop]};
     }
     return m;

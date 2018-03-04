@@ -11,7 +11,7 @@ export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, true),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...x(model),
       ...y(model),
     };

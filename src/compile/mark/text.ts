@@ -20,7 +20,7 @@ export const text: MarkCompiler = {
     const textDef = encoding.text;
 
     return {
-      ...mixins.baseEncodeEntry(model, true),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),

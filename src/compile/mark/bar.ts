@@ -19,7 +19,7 @@ export const bar: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
     return {
-      ...mixins.baseEncodeEntry(model, true),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...x(model, stack),
       ...y(model, stack),
     };
