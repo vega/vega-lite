@@ -82,14 +82,17 @@ export interface MarkConfig extends VgMarkConfig {
   color?: string;
 }
 
-export interface MarkDef extends MarkConfig {
+export interface GenericMarkDef<M> {
   /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+   * The mark type. This could a primitive mark type
+   * (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`)
+   * or a composite mark type (e.g., "boxplot").
    */
-  type: Mark;
+  type: M;
+}
 
+export interface MarkDef extends MarkConfig, GenericMarkDef<Mark> {
   /**
    *
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.

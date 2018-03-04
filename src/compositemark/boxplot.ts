@@ -2,6 +2,7 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
+import {GenericMarkDef} from '../mark';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
@@ -16,13 +17,7 @@ import {getMarkSpecificConfigMixins} from './common';
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BOXPLOT = typeof BOXPLOT;
 
-export interface BoxPlotDef {
-  /**
-   * Type of the mark.  For box plots, this should always be `"boxplot"`.
-   * [boxplot](compositemark.html#boxplot)
-   */
-  type: BOXPLOT;
-
+export interface BoxPlotDef extends GenericMarkDef<BOXPLOT> {
   /**
    * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
    */
