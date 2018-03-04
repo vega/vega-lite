@@ -2,71 +2,55 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {GenericMarkDef, isMarkDef} from '../mark';
+import {GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
-import {MarkConfig} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {getMarkSpecificConfigMixins} from './common';
+import {getMarkDefMixins} from './common';
 
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BOXPLOT = typeof BOXPLOT;
 
-export interface BoxPlotDef extends GenericMarkDef<BOXPLOT> {
-  /**
-   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
-   */
-  orient?: Orient;
+export type BoxPlotPart = 'box' | 'mid' | 'whisker';
 
-  /**
-   * Extent is used to determine where the whiskers extend to. The options are
-   * - `"min-max": min and max are the lower and upper whiskers respectively.
-   * -  A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
-   * __Default value:__ `"1.5"`.
-   */
-  extent?: 'min-max' | number;
-}
-
-export interface BoxPlotPartsMixins {
-  /**
-   * Mark properties for the rect mark that represents the box in a boxplot.
-   */
-  box?: MarkConfig;
-
-  /**
-   * Mark properties for the tick mark that represents the median value in a boxplot.
-   */
-  mid?: MarkConfig;
-
-  /**
-   * Mark properties for the rule marks that represent the whiskers in a boxplot.
-   */
-  whisker?: MarkConfig;
-}
-
-export interface BoxPlotConfig extends BoxPlotPartsMixins {
-  /** Size of the box and mid tick of a box plot */
-  size?: number;
-
-  /** The default extent, which is used to determine where the whiskers extend to. The options are
-   * - `"min-max": min and max are the lower and upper whiskers respectively.
-   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
-   */
-  extent?: 'min-max' | number;
-}
-
-const BOXPLOT_PART_INDEX: Flag<keyof BoxPlotPartsMixins> = {
+const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
   mid: 1,
   whisker: 1
 };
 
 export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
+
+// TODO: Currently can't use `PartsMixins<BoxPlotPart>`
+// as the schema generator will fail
+export type BoxPlotPartsMixins = {
+  [part in BoxPlotPart]?: MarkConfig
+};
+
+export interface BoxPlotConfig extends BoxPlotPartsMixins {
+  /** Size of the box and mid tick of a box plot */
+  size?: number;
+
+  /**
+   * The extent of the whiskers. Available options include:
+   * - `"min-max": min and max are the lower and upper whiskers respectively.
+   * - `"number": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   *
+   * __Default value:__ `"1.5"`.
+   */
+  extent?: 'min-max' | number;
+}
+export interface BoxPlotDef extends GenericMarkDef<BOXPLOT>, BoxPlotConfig {
+  /**
+   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+   */
+  orient?: Orient;
+}
 
 export interface BoxPlotConfigMixins {
   /**
@@ -99,14 +83,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const markDef = isMarkDef(mark) ? mark : {type: mark};
 
   const extent = markDef.extent || config.boxplot.extent;
+  const sizeValue = markDef.size || config.boxplot.size;
 
   const orient: Orient = boxOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
-
-  // Size encoding or the default config.box.size is applied to box and boxMid
-  const sizeMixins = size ? {size} : getMarkSpecificConfigMixins(config.boxplot, 'size');
 
   const continuousAxisScaleAndAxis = {};
   if (continuousAxisChannelDef.scale) {
@@ -123,7 +105,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       { // lower whisker
         mark: {
           type: 'rule',
-          style: 'boxWhisker'
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -135,13 +117,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'lower_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
-          ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxplot.whisker, 'color')
+          ...encodingWithoutSizeColorAndContinuousAxis
         }
       }, { // upper whisker
         mark: {
           type: 'rule',
-          style: 'boxWhisker'
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -152,14 +133,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'upper_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
-          ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxplot.whisker, 'color')
+          ...encodingWithoutSizeColorAndContinuousAxis
         }
       }, { // box (q1 to q3)
         ...(selection ? {selection} : {}),
         mark: {
           type: 'bar',
-          style: 'box'
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'box', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -171,13 +152,13 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutContinuousAxis,
-          ...(encodingWithoutContinuousAxis.color ? {} : getMarkSpecificConfigMixins(config.boxplot.box, 'color')),
-          ...sizeMixins
+          ...(size ? {size} : {})
         }
       }, { // mid tick
         mark: {
           type: 'tick',
-          style: 'boxMid'
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'mid', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -185,8 +166,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxplot.mid, 'color'),
-          ...sizeMixins
+          ...(size ? {size} : {})
         }
       }
     ]
