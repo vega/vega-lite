@@ -1460,11 +1460,11 @@ describe("normalizeBoxIQR", () => {
            as: 'iqr_people'
          },
          {
-           "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.box.extent}, datum.max_people)`,
+           "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.max_people)`,
            "as": "upper_whisker_people"
          },
          {
-           "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.box.extent}, datum.min_people)`,
+           "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.min_people)`,
            "as": "lower_whisker_people"
          }
        ],

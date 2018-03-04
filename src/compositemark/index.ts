@@ -1,7 +1,8 @@
+import {keys} from '../util';
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
+import {BOXPLOT, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
 
@@ -11,33 +12,43 @@ export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=>
 /**
  * Registry index for all composite mark's normalizer
  */
-const normalizerRegistry: {[mark: string]: UnitNormalizer} = {};
+const compositeMarkRegistry: {
+  [mark: string]: {
+    normalizer: UnitNormalizer,
+    parts: string[]
+  }
+} = {};
 
-export function add(mark: string, normalizer: UnitNormalizer) {
-  normalizerRegistry[mark] = normalizer;
+export function add(mark: string, normalizer: UnitNormalizer, parts: string[]) {
+  compositeMarkRegistry[mark] = {normalizer, parts};
 }
 
 export function remove(mark: string) {
-  delete normalizerRegistry[mark];
+  delete compositeMarkRegistry[mark];
 }
 
 export type CompositeMark = BOXPLOT | ERRORBAR;
+
+export function getAllCompositeMarks() {
+  return keys(compositeMarkRegistry);
+}
+
+export function getCompositeMarkParts(mark: string) {
+  if (mark in compositeMarkRegistry) {
+    return compositeMarkRegistry[mark].parts;
+  }
+  throw new Error(`Unregistered composite mark ${mark}`);
+}
 
 export type CompositeMarkDef = BoxPlotDef;
 
 export type CompositeAggregate = BOXPLOT;
 
-export const COMPOSITE_MARK_STYLES = BOXPLOT_STYLES;
-export type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
-
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
 
-export const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX
-};
 
-add(BOXPLOT, normalizeBoxPlot);
-add(ERRORBAR, normalizeErrorBar);
+add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
+add(ERRORBAR, normalizeErrorBar, [] /*FIXME: chanwutk please fix this*/);
 
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
@@ -49,8 +60,8 @@ export function normalize(
   ): LayerSpec {
 
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-  const normalizer = normalizerRegistry[mark];
-  if (normalizer) {
+  if (mark in compositeMarkRegistry) {
+    const {normalizer} = compositeMarkRegistry[mark];
     return normalizer(spec, config);
   }
 
