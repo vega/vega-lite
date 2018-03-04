@@ -12,14 +12,14 @@ import {Orient} from './../vega.schema';
 import {getMarkSpecificConfigMixins} from './common';
 
 
-export const BOXPLOT: 'box-plot' = 'box-plot';
+export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BOXPLOT = typeof BOXPLOT;
 export type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 
 
 export interface BoxPlotDef {
   /**
-   * Type of the mark.  For box plots, this should always be `"box-plot"`.
+   * Type of the mark.  For box plots, this should always be `"boxplot"`.
    * [boxplot](compositemark.html#boxplot)
    */
   type: BOXPLOT;

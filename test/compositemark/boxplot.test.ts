@@ -15,13 +15,13 @@ describe("normalizeBoxMinMax", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
-          "x": {"aggregate": "box-plot", "field": "people","type": "quantitative"},
+          "x": {"aggregate": "boxplot", "field": "people","type": "quantitative"},
           "y": {
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "field": "people",
             "type": "quantitative",
             "axis": {"title": "population"}
@@ -38,7 +38,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -166,7 +166,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -182,7 +182,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -206,7 +206,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        mark: "box-plot",
+        mark: "boxplot",
         encoding: {
           "x": {"field": "age", "type": "ordinal"}
         }
@@ -220,7 +220,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -243,7 +243,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -264,7 +264,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        mark: "box-plot",
+        mark: "boxplot",
         encoding: {
           "x": {"field": "age","type": "ordinal"},
           "size": {"value": 5},
@@ -279,7 +279,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           orient: "vertical",
           extent: "min-max"
         },
@@ -407,7 +407,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           orient: "horizontal",
           extent: "min-max"
         },
@@ -535,7 +535,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -543,7 +543,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "y": {
             "field": "people",
             "type": "quantitative",
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "axis": {"title": "population"}
           },
           "size": {"value": 5},
@@ -663,7 +663,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -671,7 +671,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "x": {
             "field": "people",
             "type": "quantitative",
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "axis": {"title": "population"}
           },
           "size": {"value": 5},
@@ -791,7 +791,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -918,7 +918,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1045,7 +1045,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1169,7 +1169,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1288,7 +1288,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1410,7 +1410,7 @@ describe("normalizeBoxIQR", () => {
     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
        "data": {"url": "data/population.json"},
-       mark: "box-plot",
+       mark: "boxplot",
        encoding: {
          "x": {"field": "age","type": "quantitative"},
          "y": {
@@ -1547,7 +1547,7 @@ describe("normalizeBoxIQR", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          "type": "box-plot",
+          "type": "boxplot",
           "extent": 1.5
         },
         encoding: {
@@ -1686,7 +1686,7 @@ describe("normalizeBoxIQR", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          "type": "box-plot",
+          "type": "boxplot",
           "extent": 1.5
         },
         encoding: {
