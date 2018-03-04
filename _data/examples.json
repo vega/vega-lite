@@ -331,6 +331,11 @@
     {
       "name": "interactive_concat_layer",
       "title": "Interactive Dashboard with Cross Highlight"
+    },
+    {
+      "name": "interactive_multi_line_tooltip",
+      "title": "Multi Series Line Chart with Tooltips",
+      "description": "The plot displays tooltips for all stock prices of the hovered time."
     }
   ]
 }
