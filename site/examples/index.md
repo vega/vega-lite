@@ -23,6 +23,7 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 
 * Many visualizations in the book [Making Data Visual](https://makingdatavisual.github.io/figurelist.html) by Danyel Fisher and Miriah Meyer are made with Vega-Lite
 * [Grouped Bar Chart](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364) by @churtado
+* [Bar Chart with Negative Values](https://bl.ocks.org/digi0ps/3691287ab4033509e988d67c932fca47) by @digi0ps
 * [Multi Line Highlight](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701) by @amitkaps
 * [Slope graph](https://bl.ocks.org/g3o2/a6c539eacfb0b99eaf01e4f20b9f2897) by @g3o2
 * [Scatter Nearest Rule](https://bl.ocks.org/amitkaps/abfa7157d4366cc43cbbba55353d35d8) by @amitkaps
