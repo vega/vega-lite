@@ -334,8 +334,8 @@
     },
     {
       "name": "interactive_multi_line_tooltip",
-      "title": "Multi-Line Tooltip",
-      "description": "The plot displays a tooltip on all vertically concurrent points on each line graph."
+      "title": "Multi Series Line Chart with Tooltips",
+      "description": "The plot displays tooltips for all stock prices of the hovered time."
     }
   ]
 }
