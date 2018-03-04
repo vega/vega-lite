@@ -138,7 +138,7 @@
             "type": "rule",
             "style": [
                 "rule",
-                "boxWhisker"
+                "boxplot-whisker"
             ],
             "from": {
                 "data": "data_0"
@@ -168,7 +168,7 @@
             "type": "rule",
             "style": [
                 "rule",
-                "boxWhisker"
+                "boxplot-whisker"
             ],
             "from": {
                 "data": "data_1"
@@ -198,7 +198,7 @@
             "type": "rect",
             "style": [
                 "bar",
-                "box"
+                "boxplot-box"
             ],
             "from": {
                 "data": "data_2"
@@ -231,7 +231,7 @@
             "type": "rect",
             "style": [
                 "tick",
-                "boxMid"
+                "boxplot-mid"
             ],
             "from": {
                 "data": "data_3"

@@ -54,7 +54,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "y": {
@@ -77,7 +77,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "y": {
@@ -97,7 +97,8 @@
     {
       "mark": {
         "type": "bar",
-        "style": "box"
+        "size": 14,
+        "style": "boxplot-box"
       },
       "encoding": {
         "y": {
@@ -120,7 +121,9 @@
     {
       "mark": {
         "type": "tick",
-        "style": "boxMid"
+        "size": 14,
+        "style": "boxplot-mid",
+        "color": "white"
       },
       "encoding": {
         "y": {
@@ -130,9 +133,6 @@
         "x": {
           "field": "age",
           "type": "ordinal"
-        },
-        "color": {
-          "value": "white"
         },
         "size": {
           "value": 5

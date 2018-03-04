@@ -15,7 +15,7 @@
     }
   },
   "config": {
-    "boxMid": {"color": "orange"}
+    "boxplot": {"mid": {"color": "orange"}}
   }
 }
 

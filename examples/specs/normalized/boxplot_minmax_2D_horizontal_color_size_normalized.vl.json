@@ -42,7 +42,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "x": {
@@ -65,7 +65,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "x": {
@@ -85,7 +85,8 @@
     {
       "mark": {
         "type": "bar",
-        "style": "box"
+        "size": 14,
+        "style": "boxplot-box"
       },
       "encoding": {
         "x": {
@@ -111,7 +112,9 @@
     {
       "mark": {
         "type": "tick",
-        "style": "boxMid"
+        "size": 14,
+        "style": "boxplot-mid",
+        "color": "white"
       },
       "encoding": {
         "x": {
@@ -121,9 +124,6 @@
         "y": {
           "field": "age",
           "type": "ordinal"
-        },
-        "color": {
-          "value": "white"
         },
         "size": {
           "value": 5

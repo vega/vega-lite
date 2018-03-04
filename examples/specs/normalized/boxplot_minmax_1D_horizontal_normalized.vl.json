@@ -52,7 +52,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "x": {
@@ -71,7 +71,7 @@
     {
       "mark": {
         "type": "rule",
-        "style": "boxWhisker"
+        "style": "boxplot-whisker"
       },
       "encoding": {
         "x": {
@@ -87,7 +87,8 @@
     {
       "mark": {
         "type": "bar",
-        "style": "box"
+        "size": 14,
+        "style": "boxplot-box"
       },
       "encoding": {
         "x": {
@@ -97,27 +98,20 @@
         "x2": {
           "field": "upper_box_people",
           "type": "quantitative"
-        },
-        "size": {
-          "value": 14
         }
       }
     },
     {
       "mark": {
         "type": "tick",
-        "style": "boxMid"
+        "size": 14,
+        "style": "boxplot-mid",
+        "color": "white"
       },
       "encoding": {
         "x": {
           "field": "mid_box_people",
           "type": "quantitative"
-        },
-        "color": {
-          "value": "white"
-        },
-        "size": {
-          "value": 14
         }
       }
     }
