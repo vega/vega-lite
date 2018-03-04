@@ -131,7 +131,7 @@ describe('Mark: Tick', function() {
     });
   });
 
-  describe('width should be mapped to size', function() {
+  describe('vertical ticks', function () {
     const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'config': {'mark': {'orient': 'vertical'}},
@@ -144,12 +144,28 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
-    it('width should change with size field', function() {
+    it('maps size to height', function () {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 
-  describe('height should be mapped to size', function() {
+  describe('vertical ticks with size in mark def', function () {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      'mark': {'type': 'tick', 'size': 5},
+      'encoding':
+        {
+          'x': {'field': 'Horsepower', 'type': 'quantitative'},
+          'y': {'field': 'Cylinders', 'type': 'ordinal'}
+        },
+      'data': {'url': 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+    it('maps size to height in Vega', function () {
+      assert.deepEqual(props.height, {value: 5});
+    });
+  });
+
+  describe('vertical ticks (implicit)', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
       'mark': 'tick',
       'encoding':
@@ -161,7 +177,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
-    it('height should change with size field', function() {
+    it('maps size to height in Vega', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });

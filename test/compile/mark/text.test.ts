@@ -93,7 +93,7 @@ describe('Mark: Text', function() {
     });
   });
 
-  describe('with x, y, text (ordinal)', function() {
+  describe('with x, y, text (ordinal)', function () {
     const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
@@ -122,7 +122,23 @@ describe('Mark: Text', function() {
     });
   });
 
-  describe('with row, column, text, and color', function() {
+  describe('with size in mark def', function () {
+    const spec: UnitSpec = {
+      "mark": {type: "text", size: 5},
+      "encoding": {
+        "text": {"field": "Origin", "type": "ordinal"},
+      },
+      "data": {"url": "data/cars.json"}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize(spec);
+    const props = text.encodeEntry(model);
+
+    it('should map size to fontSize', function () {
+      assert.deepEqual(props.fontSize, {value: 5});
+    });
+  });
+
+  describe('with row, column, text, color, and size', function() {
     const spec: FacetedCompositeUnitSpec = {
         "mark": "text",
         "encoding": {

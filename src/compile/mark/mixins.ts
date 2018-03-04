@@ -123,7 +123,7 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
-  if (model.encoding.size) {
+  if (model.encoding.size || model.markDef.size !== undefined) {
     const orient = model.markDef.orient;
     if (orient) {
       const centeredBandPositionMixins = {
@@ -143,6 +143,11 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})
+        };
+      } else if (model.markDef.size !== undefined) {
+        return {
+          ...centeredBandPositionMixins,
+          [sizeChannel]: {value: model.markDef.size}
         };
       }
     } else {
