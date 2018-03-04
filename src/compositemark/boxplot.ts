@@ -2,7 +2,7 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {GenericMarkDef} from '../mark';
+import {GenericMarkDef, isMarkDef} from '../mark';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
@@ -30,10 +30,6 @@ export interface BoxPlotDef extends GenericMarkDef<BOXPLOT> {
    * __Default value:__ `"1.5"`.
    */
   extent?: 'min-max' | number;
-}
-
-function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef {
-  return !!mark['type'];
 }
 
 export interface BoxPlotPartsMixins {
@@ -106,7 +102,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
     kIQRScalar = config.boxplot.extent;
   }
 
-  if (isBoxPlotDef(mark)) {
+  if (isMarkDef(mark)) {
     if (mark.extent) {
       if(mark.extent === 'min-max') {
         kIQRScalar = undefined;
@@ -221,7 +217,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
       } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (isBoxPlotDef(mark) && mark.orient) {
+        if (isMarkDef(mark) && mark.orient) {
           return mark.orient;
         }
 
