@@ -88,6 +88,12 @@
     "AnyMark": {
       "anyOf": [
         {
+          "$ref": "#/definitions/CompositeMark"
+        },
+        {
+          "$ref": "#/definitions/CompositeMarkDef"
+        },
+        {
           "$ref": "#/definitions/Mark"
         },
         {
@@ -478,6 +484,12 @@
       },
       "type": "object"
     },
+    "BOXPLOT": {
+      "enum": [
+        "boxplot"
+      ],
+      "type": "string"
+    },
     "BarConfig": {
       "additionalProperties": false,
       "properties": {
@@ -767,6 +779,83 @@
       ],
       "type": "object"
     },
+    "BoxPlotConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- `\"number\": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `\"1.5\"`."
+        },
+        "mid": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "size": {
+          "description": "Size of the box and mid tick of a box plot ",
+          "type": "number"
+        },
+        "whisker": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
+      "type": "object"
+    },
+    "BoxPlotDef": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- `\"number\": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `\"1.5\"`."
+        },
+        "mid": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "size": {
+          "description": "Size of the box and mid tick of a box plot ",
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/BOXPLOT",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        },
+        "whisker": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
@@ -821,6 +910,19 @@
         "as"
       ],
       "type": "object"
+    },
+    "CompositeMark": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BOXPLOT"
+        },
+        {
+          "$ref": "#/definitions/ERRORBAR"
+        }
+      ]
+    },
+    "CompositeMarkDef": {
+      "$ref": "#/definitions/BoxPlotDef"
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -1318,6 +1420,10 @@
           "$ref": "#/definitions/BarConfig",
           "description": "Bar-Specific Config "
         },
+        "boxplot": {
+          "$ref": "#/definitions/BoxPlotConfig",
+          "description": "Box Config"
+        },
         "circle": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Circle-Specific Config "
@@ -1564,6 +1670,12 @@
       "maximum": 7,
       "minimum": 1,
       "type": "number"
+    },
+    "ERRORBAR": {
+      "enum": [
+        "error-bar"
+      ],
+      "type": "string"
     },
     "Encoding": {
       "additionalProperties": false,

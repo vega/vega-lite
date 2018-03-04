@@ -108,11 +108,8 @@ export interface MarkDef extends MarkConfig, GenericMarkDef<Mark> {
   clip?: boolean;
 }
 
-/** @hide */
-export type HiddenComposite = CompositeMark | CompositeMarkDef;
-
 export type AnyMark =
-  HiddenComposite |
+  CompositeMark | CompositeMarkDef |
   Mark |
   MarkDef;
 

@@ -55,7 +55,6 @@ export interface BoxPlotDef extends GenericMarkDef<BOXPLOT>, BoxPlotConfig {
 export interface BoxPlotConfigMixins {
   /**
    * Box Config
-   * @hide
    */
   boxplot?: BoxPlotConfig;
 }
