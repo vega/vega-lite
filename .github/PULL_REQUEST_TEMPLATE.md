@@ -7,7 +7,7 @@ Please:
 - [ ] Provide a concise title so that we can just copy it to our release note.
   - Use imperative mood and present tense.
   - Mention relevant issues. (e.g., `#1`)
-- [ ] Make a pass over the whole diff changes as if you're a reviewer yourself. This will help us focus on helping catching issues that you might not notice yourself.  (If you're still reviewing your PR, you can add "[WIP]" prefix to the PR's title and remove it when it's ready for a review and comment that the PR is ready.) 
+- [ ] Make a pass over the whole changeset as if you're a reviewer yourself. This will help us focus catching issues that you might not notice yourself.  (If you're still working on your PR, you can add "[WIP]" prefix to the PR's title and remove it when it's ready for a review. When you do that, add a comment to notify us.) 
 
 Pro-Tip: https://medium.com/@greenberg/writing-pull-requests-your-coworkers-might-enjoy-reading-9d0307e93da3 is a nice article about writing a nice pull request.
 
