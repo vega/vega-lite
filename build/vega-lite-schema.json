@@ -484,12 +484,6 @@
       },
       "type": "object"
     },
-    "BOXPLOT": {
-      "enum": [
-        "boxplot"
-      ],
-      "type": "string"
-    },
     "BarConfig": {
       "additionalProperties": false,
       "properties": {
@@ -779,6 +773,12 @@
       ],
       "type": "object"
     },
+    "BoxPlot": {
+      "enum": [
+        "boxplot"
+      ],
+      "type": "string"
+    },
     "BoxPlotConfig": {
       "additionalProperties": false,
       "properties": {
@@ -844,7 +844,7 @@
           "type": "number"
         },
         "type": {
-          "$ref": "#/definitions/BOXPLOT",
+          "$ref": "#/definitions/BoxPlot",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
         },
         "whisker": {
@@ -914,10 +914,10 @@
     "CompositeMark": {
       "anyOf": [
         {
-          "$ref": "#/definitions/BOXPLOT"
+          "$ref": "#/definitions/BoxPlot"
         },
         {
-          "$ref": "#/definitions/ERRORBAR"
+          "$ref": "#/definitions/ErrorBar"
         }
       ]
     },
@@ -1671,12 +1671,6 @@
       "minimum": 1,
       "type": "number"
     },
-    "ERRORBAR": {
-      "enum": [
-        "error-bar"
-      ],
-      "type": "string"
-    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
@@ -1994,6 +1988,12 @@
         }
       },
       "type": "object"
+    },
+    "ErrorBar": {
+      "enum": [
+        "error-bar"
+      ],
+      "type": "string"
     },
     "FacetFieldDef": {
       "additionalProperties": false,

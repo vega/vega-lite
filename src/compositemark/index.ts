@@ -2,8 +2,8 @@ import {keys} from '../util';
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
-import {ERRORBAR, normalizeErrorBar} from './errorbar';
+import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {ERRORBAR, ErrorBar, normalizeErrorBar} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
@@ -27,7 +27,7 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeMark = BOXPLOT | ERRORBAR;
+export type CompositeMark = BoxPlot | ErrorBar;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
@@ -42,7 +42,7 @@ export function getCompositeMarkParts(mark: string) {
 
 export type CompositeMarkDef = BoxPlotDef;
 
-export type CompositeAggregate = BOXPLOT;
+export type CompositeAggregate = BoxPlot;
 
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
 

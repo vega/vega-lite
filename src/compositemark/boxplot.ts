@@ -14,7 +14,7 @@ import {getMarkDefMixins} from './common';
 
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
-export type BOXPLOT = typeof BOXPLOT;
+export type BoxPlot = typeof BOXPLOT;
 
 export type BoxPlotPart = 'box' | 'mid' | 'whisker';
 
@@ -45,7 +45,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
    */
   extent?: 'min-max' | number;
 }
-export interface BoxPlotDef extends GenericMarkDef<BOXPLOT>, BoxPlotConfig {
+export interface BoxPlotDef extends GenericMarkDef<BoxPlot>, BoxPlotConfig {
   /**
    * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
    */
@@ -61,7 +61,7 @@ export interface BoxPlotConfigMixins {
 
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
-export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef> {
+export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>): GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef> {
   return {
     ...spec,
     encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
@@ -75,7 +75,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
   };
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
@@ -172,7 +172,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   };
 }
 
-function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
+function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BoxPlot | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
@@ -207,7 +207,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 }
 
 
-function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
@@ -235,7 +235,7 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxP
   };
 }
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
 
   const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
   const encoding = spec.encoding;
