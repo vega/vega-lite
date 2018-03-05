@@ -115,7 +115,7 @@ export function labelAlign(angle: number) {
 export function labelBaseline(angle: number) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
-  if (80 <= angle && angle <= 135) {
+  if (45 <= angle && angle <= 135) {
     return {baseline: {value: 'top'}};
   }
   return {};
