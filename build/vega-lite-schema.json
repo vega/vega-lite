@@ -1011,7 +1011,14 @@
       "additionalProperties": false,
       "properties": {
         "box": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "extent": {
           "anyOf": [
@@ -1028,20 +1035,48 @@
           "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
         },
         "median": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "outliers": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "rule": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
         },
         "ticks": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         }
       },
       "type": "object"
@@ -1050,7 +1085,14 @@
       "additionalProperties": false,
       "properties": {
         "box": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "color": {
           "description": "Color of the marks.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -1071,7 +1113,14 @@
           "description": "The extent of the whiskers. Available options include:\n- `\"min-max\": min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
         },
         "median": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "opacity": {
           "description": "Opacity of the marks.",
@@ -1082,17 +1131,38 @@
           "description": "Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.\n\n__Default value:__ `\"vertical\"`."
         },
         "outliers": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "rule": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
         },
         "ticks": {
-          "$ref": "#/definitions/MarkConfig"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
         },
         "type": {
           "$ref": "#/definitions/BoxPlot",
@@ -5304,6 +5374,118 @@
             "type": "string"
           }
         ]
+      },
+      "type": "object"
+    },
+    "PartsMixins<BoxPlotPart>": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PartsMixins<ErrorBarPart>": {
+      "additionalProperties": false,
+      "properties": {
+        "bar": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "line": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "point": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
       },
       "type": "object"
     },
