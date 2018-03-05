@@ -66,5 +66,27 @@ describe('compile/data/assemble', () => {
         }]}
       ]);
     });
+
+    it('should assemble named datasets with datastore', () => {
+      const src = new SourceNode({name: 'foo'});
+      const outputNodeRefCounts = {};
+      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
+      main.parent = src;
+
+      const data = assembleRootData({
+        sources: {named: src},
+        outputNodes: {out: main},
+        outputNodeRefCounts,
+        ancestorParse: {},
+        isFaceted: false
+      }, {
+        foo: [1,2,3]
+      });
+
+      assert.deepEqual<VgData[]>(data, [{
+        name: 'foo',
+        values: [1,2,3]
+      }]);
+    });
   });
 });

@@ -9,6 +9,8 @@ import {Dict} from './util';
  */
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
 
+export type Datasets = Dict<InlineDataset>;
+
 export interface TopLevelProperties {
   /**
    * CSS color property to use as the background of visualization.
@@ -38,7 +40,7 @@ export interface TopLevelProperties {
    * A global data store for named datasets. This is a mapping from names to inline datasets.
    * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
    */
-  datasets?: Dict<InlineDataset>;
+  datasets?: Datasets;
 }
 
 export type AutosizeType = 'pad' | 'fit' | 'none';

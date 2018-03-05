@@ -1327,7 +1327,7 @@
           "type": "string"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "fieldTitle": {
@@ -1490,6 +1490,9 @@
           "$ref": "#/definitions/TopoDataFormat"
         }
       ]
+    },
+    "Datasets": {
+      "$ref": "#/definitions/Dict<InlineDataset>"
     },
     "DateTime": {
       "additionalProperties": false,
@@ -5761,7 +5764,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
@@ -5859,7 +5862,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
@@ -5950,7 +5953,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
@@ -6032,7 +6035,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
@@ -6129,7 +6132,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
@@ -6212,7 +6215,7 @@
           "description": "An object describing the data source"
         },
         "datasets": {
-          "$ref": "#/definitions/Dict<InlineDataset>",
+          "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
