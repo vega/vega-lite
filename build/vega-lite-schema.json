@@ -953,26 +953,54 @@
       ],
       "type": "string"
     },
-    "CalloutDef": {
+    "CalloutConfig": {
       "additionalProperties": false,
       "properties": {
         "calloutAngle": {
-          "description": "Angle of callout line.\n__Default value: `\"45\"`",
+          "description": "Angle of callout line.\n__Default value: `45`",
           "type": "number"
         },
         "calloutLength": {
-          "description": "Length of callout length.\n__Default value: `\"30\"`",
+          "description": "Length of callout.\n__Default value: `30`",
           "type": "number"
         },
         "calloutOffset": {
-          "description": "Offset of callout line.\n__Default value: `\"0\"`",
+          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
           "type": "number"
         },
         "label": {
           "$ref": "#/definitions/MarkConfig"
         },
         "labelOffset": {
-          "description": "Offset of callout label.\n__Default value: `\"0\"`",
+          "description": "Offset distance between callout line and label\n__Default value: `0`",
+          "type": "number"
+        },
+        "line": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
+      "type": "object"
+    },
+    "CalloutDef": {
+      "additionalProperties": false,
+      "properties": {
+        "calloutAngle": {
+          "description": "Angle of callout line.\n__Default value: `45`",
+          "type": "number"
+        },
+        "calloutLength": {
+          "description": "Length of callout.\n__Default value: `30`",
+          "type": "number"
+        },
+        "calloutOffset": {
+          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
+          "type": "number"
+        },
+        "label": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "labelOffset": {
+          "description": "Offset distance between callout line and label\n__Default value: `0`",
           "type": "number"
         },
         "line": {
@@ -1524,6 +1552,10 @@
         "boxplot": {
           "$ref": "#/definitions/BoxPlotConfig",
           "description": "Box Config"
+        },
+        "callout": {
+          "$ref": "#/definitions/CalloutConfig",
+          "description": "Callout Rule Config"
         },
         "circle": {
           "$ref": "#/definitions/MarkConfig",

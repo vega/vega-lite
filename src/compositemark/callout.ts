@@ -27,22 +27,22 @@ export type CalloutPartsMinxins = {
 export interface CalloutConfig extends CalloutPartsMinxins {
   /**
    * Angle of callout line.
-   * __Default value: `"45"`
+   * __Default value: `45`
    */
   calloutAngle?: number;
   /**
-   * Offset of callout line.
-   * __Default value: `"0"`
+   * Offset distance between the data point and the callout line.
+   * __Default value: `0`
    */
   calloutOffset?: number;
   /**
-   * Length of callout length.
-   * __Default value: `"30"`
+   * Length of callout.
+   * __Default value: `30`
    */
   calloutLength?: number;
   /**
-   * Offset of callout label.
-   * __Default value: `"0"`
+   * Offset distance between callout line and label
+   * __Default value: `0`
    */
   labelOffset?: number;
 }
@@ -52,7 +52,6 @@ export interface CalloutDef extends GenericMarkDef<Callout>, CalloutConfig {}
 export interface CalloutConfigMixins {
   /**
    * Callout Rule Config
-   * @hide
    */
   callout?: CalloutConfig;
 }
@@ -61,34 +60,25 @@ export interface CalloutConfigMixins {
 export function normalizeCallout(spec: GenericUnitSpec<Encoding<string>, Callout | CalloutDef>, config: Config): LayerSpec {
   // TODO:  determine what's the general rule for applying selection for composite marks
   const {mark, selection: _sel, projection: _p, encoding, ...outerSpec} = spec;
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+  const markDef = {
+    ...config.callout,
+    ...isMarkDef(mark) ? mark : {type: mark}
+};
 
-  const calloutAngle: number = markDef.calloutAngle || config.callout.calloutAngle;
-  const calloutOffset: number = markDef.calloutOffset || config.callout.calloutOffset;
-  const calloutLength: number = markDef.calloutLength || config.callout.calloutLength;
-  const labelOffset: number = markDef.labelOffset || config.callout.labelOffset;
+  const {calloutAngle, calloutOffset, calloutLength, labelOffset} = markDef;
+  const calloutOffsetCoor1 = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset);
+  const calloutOffsetCoor2 = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength);
+  const labelTotalOffsetCoor = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength + labelOffset);
 
-  const calloutOffsetCoor1: {x: number, y: number} = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset);
-  const calloutOffsetCoor2: {x: number, y: number} = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength);
-  const labelTotalOffsetCoor: {x: number, y: number} = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength + labelOffset);
-
-  const {text: textEncoding, size: sizeEncoding, ...encodingWithoutTextAndSize} = encoding;
-  if (!textEncoding) {
+  const {text, size, ...encodingWithoutTextAndSize} = encoding;
+  if (!text) {
     log.warn('callout mark should have text encoding');
   }
 
-  const returnedSpec: LayerSpec = {
+  return {
     ...outerSpec,
     layer: [
-      { // label
-        mark: {
-          type: 'text',
-          xOffset: labelTotalOffsetCoor.x,
-          yOffset: labelTotalOffsetCoor.y,
-          ...getMarkDefMixins<CalloutPartsMinxins>(markDef, 'label', config.callout)
-        },
-        encoding
-      }, { // callout
+      { // callout
         mark: {
           type: 'rule',
           xOffset: calloutOffsetCoor1.x,
@@ -102,10 +92,17 @@ export function normalizeCallout(spec: GenericUnitSpec<Encoding<string>, Callout
           y2: encoding.y,
           ...encodingWithoutTextAndSize
         }
+      }, { // label
+        mark: {
+          type: 'text',
+          xOffset: labelTotalOffsetCoor.x,
+          yOffset: labelTotalOffsetCoor.y,
+          ...getMarkDefMixins<CalloutPartsMinxins>(markDef, 'label', config.callout)
+        },
+        encoding
       }
     ]
   };
-  return returnedSpec;
 }
 
 function getCoordinateFromAngleAndLength(angle: number, length: number): {x: number, y: number} {
