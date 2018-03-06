@@ -345,7 +345,7 @@
     {
       "name": "interactive_multi_line_tooltip",
       "title": "Multi Series Line Chart with Tooltips",
-      "description": "The plot displays tooltips for all stock prices of the hovered time."
+      "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)."
     }
   ]
 }

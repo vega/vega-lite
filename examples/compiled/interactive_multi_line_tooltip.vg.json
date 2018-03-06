@@ -1,6 +1,5 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Credits to @jakevdp. The example is forked/modified from his block (https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9).",
     "autosize": "pad",
     "padding": 5,
     "width": 800,
