@@ -253,7 +253,7 @@
     {
       "name": "repeat_histogram",
       "title": "Horizontally repeated charts",
-      "description": "Horizontally repeated charts that show the histograms of different parameter of cars in different countries."
+      "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries."
     }
   ],
   "Geographical (Maps)": [

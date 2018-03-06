@@ -60,7 +60,7 @@ Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows
 
 <span class="vl-example" data-name="repeat_splom_iris"></span>
 
-You can also check the [interactive version](https://vega.github.io/vega-lite/examples/interactive_splom.html) of this example.
+You can also check the [interactive SPLOM example](https://vega.github.io/vega-lite/examples/interactive_splom.html).
 
 ## Resolve
 
