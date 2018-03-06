@@ -1,36 +1,30 @@
+import {AggregateOp} from 'vega';
 import {toSet} from 'vega-util';
 import {contains, Flag, flagKeys} from './util';
 
-
-export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
-  | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing'
-  | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stderr' | 'stdev' | 'stdevp' | 'sum' | 'valid'
-  | 'values' | 'variance' | 'variancep';
-
-
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
-  values: 1,
-  count: 1,
-  valid: 1,
-  missing: 1,
-  distinct: 1,
-  sum: 1,
-  mean: 1,
+  argmax: 1,
+  argmin: 1,
   average: 1,
-  variance: 1,
-  variancep: 1,
-  stderr: 1,
-  stdev: 1,
-  stdevp: 1,
+  count: 1,
+  distinct: 1,
+  max: 1,
+  mean: 1,
   median: 1,
+  min: 1,
+  missing: 1,
   q1: 1,
   q3: 1,
   ci0: 1,
   ci1: 1,
-  min: 1,
-  max: 1,
-  argmin: 1,
-  argmax: 1,
+  stderr: 1,
+  stdev: 1,
+  stdevp: 1,
+  sum: 1,
+  valid: 1,
+  values: 1,
+  variance: 1,
+  variancep: 1,
 };
 
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
