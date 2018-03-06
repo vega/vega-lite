@@ -2,8 +2,8 @@
  * Vega-Lite's singleton logger utility.
  */
 
+import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import {AggregateOp} from './aggregate';
 import {Channel} from './channel';
 import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';

@@ -1,5 +1,5 @@
+import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';

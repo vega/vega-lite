@@ -1,4 +1,4 @@
-import {AggregateOp} from '../aggregate';
+import {AggregateOp} from 'vega';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
