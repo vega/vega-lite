@@ -267,11 +267,11 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
 
   const sort = model.sort(channel);
 
-  // if the sort is specified with array, use the created data
+  // if the sort is specified with array, use the derived sort index field
   if (isSortArray(sort)) {
     return {
       op: 'min',
-      field: `${model.vgField(channel)}_sort_index`,
+      field: `${channel}_${model.vgField(channel)}_sort_index`,
       order: 'ascending'
     };
   }

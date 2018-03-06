@@ -3,6 +3,7 @@ import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
+import {Channel} from './../../channel';
 import {CalculateTransform} from './../../transform';
 import {DataFlowNode} from './dataflow';
 
@@ -18,13 +19,13 @@ export class CalculateNode extends DataFlowNode {
     super(parent);
   }
 
-  public static makeAllFromSort(model: ModelWithField): CalculateNode[] {
+  public static makeAllForSortIndex(model: ModelWithField): CalculateNode[] {
     // get all the encoding with sort fields from model
-    const nodes = model.reduceFieldDef((acc: CalculateNode[], fieldDef: ChannelDef<any>) => {
+    const nodes = model.reduceFieldDef((acc: CalculateNode[], fieldDef: ChannelDef<any>, channel: Channel) => {
       if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
         const transform: CalculateTransform = {
           calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
-          as: `${fieldDef.field}_sort_index`
+          as: `${channel}_${fieldDef.field}_sort_index`
         };
          acc.push(new CalculateNode(transform));
       }
@@ -35,12 +36,11 @@ export class CalculateNode extends DataFlowNode {
 
   public static calculateExpressionFromSortField(field: string, sortFields: string[]): string {
     let expression = '';
-    let count = 0;
-    for (const sortField of sortFields) {
-      expression += `datum.${field} === '${sortField}' ? ${count} : `;
-      count++;
+    let i: number;
+    for (i = 0; i < sortFields.length; i++) {
+      expression += `datum.${field} === '${sortFields[i]}' ? ${i} : `;
     }
-    expression += count;
+    expression += i;
     return expression;
   }
 

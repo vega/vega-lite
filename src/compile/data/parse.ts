@@ -126,6 +126,9 @@ Description of the dataflow (http://asciiflow.com/):
       Timeunit
          |
          v
+Formula From Sort Array
+         |
+         v
       +--+--+
       | Raw |
       +-----+
@@ -226,7 +229,7 @@ export function parseData(model: Model): DataComponent {
       head = tu;
     }
 
-    for (const calculate of CalculateNode.makeAllFromSort(model)) {
+    for (const calculate of CalculateNode.makeAllForSortIndex(model)) {
       calculate.parent = head;
       head = calculate;
     }
