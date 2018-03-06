@@ -79,10 +79,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+  const markDef = {
+   ...config.boxplot,
+   ...isMarkDef(mark) ? mark : {type: mark}
+  };
 
-  const extent = markDef.extent || config.boxplot.extent;
-  const sizeValue = markDef.size || config.boxplot.size;
+  const {extent, size: sizeValue} = markDef;
 
   const orient: Orient = boxOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
