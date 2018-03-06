@@ -1,4 +1,4 @@
-import {AggregateOp} from '../../aggregate';
+import {AggregateOp} from 'vega';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';

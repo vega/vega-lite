@@ -124,8 +124,10 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   const data = [].concat(
     model.assembleSelectionData([]),
     // only assemble data in the root
-    assembleRootData(model.component.data)
+    assembleRootData(model.component.data, topLevelProperties.datasets || {})
   );
+
+  delete topLevelProperties.datasets;
 
   const projections = model.assembleProjections();
   const title = model.assembleTitle();

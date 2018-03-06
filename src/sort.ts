@@ -1,4 +1,4 @@
-import {AggregateOp} from './aggregate';
+import {AggregateOp} from 'vega';
 
 
 export type SortOrder = 'ascending' | 'descending' | null;

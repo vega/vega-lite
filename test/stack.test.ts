@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import * as log from '../src/log';
 
-import {AggregateOp} from '../src/aggregate';
+import {AggregateOp} from 'vega';
 import {DETAIL, X, Y} from '../src/channel';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';

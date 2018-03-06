@@ -25,6 +25,14 @@ For production deployments you will likely want to serve your own files or use a
 <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
 ```
 
+If you want to automatically use the latest versions of Vega-Lite, Vega, and Vega-Embed, you can specify only the major version.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vega@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+```
+
 ### NPM
 
 If you prefer to host the dependencies yourself, we suggest that you use npm to install the libraries([Vega](https://www.npmjs.com/package/vega), [Vega-Lite](https://www.npmjs.com/package/vega-lite), and [Vega-Embed](https://www.npmjs.com/package/vega-embed)) to get the latest stable version. To install with npm, simply install it as you would any other npm module.
