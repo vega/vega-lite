@@ -40,7 +40,6 @@
     "check:schema": "scripts/check-schema.sh",
     "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
-    "link": "npm link && npm link vega-lite",
 
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
