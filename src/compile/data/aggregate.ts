@@ -1,4 +1,4 @@
-import {AggregateOp} from '../../aggregate';
+import {AggregateOp} from 'vega';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
