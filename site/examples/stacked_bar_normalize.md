@@ -1,9 +1,11 @@
 ---
-layout: example
+layout: page
 
 title: Normalized Stacked Bar Chart
+menu: examples
 permalink: /examples/stacked_bar_normalize.html
 image: /examples/compiled/stacked_bar_normalize.png
+edit_path: _data/examples.json
 ---
 
 
