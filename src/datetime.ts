@@ -1,7 +1,8 @@
 // DateTime definition object
 
+import {isNumber} from 'vega-util';
 import * as log from './log';
-import {duplicate, isNumber, keys} from './util';
+import {duplicate, keys} from './util';
 
 
 /*

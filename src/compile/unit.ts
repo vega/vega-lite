@@ -141,7 +141,7 @@ export class UnitModel extends ModelWithField {
 
         const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
-        // We no longer support false in the schema, but we keep false here for backward compatability.
+        // We no longer support false in the schema, but we keep false here for backward compatibility.
         if (axisSpec !== null && axisSpec !== false) {
           _axis[channel] = {
             ...axisSpec

@@ -1,9 +1,10 @@
+import {isArray} from 'vega-util';
 import {AggregateOp} from './aggregate';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {Flag, flagKeys, isArray} from './util';
+import {Flag, flagKeys} from './util';
 
 export interface VgData {
   name: string;
@@ -718,9 +719,10 @@ export interface VgAxisConfig extends VgAxisBase {
   titleFontSize?: number;
 
   /**
-   * Font weight of the title. (e.g., `"bold"`).
+   * Font weight of the title.
+   * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  titleFontWeight?: string | number;
+  titleFontWeight?: FontWeight;
 
   /**
    * Maximum allowed pixel width of axis titles.
@@ -923,8 +925,9 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The font weight of the legend title.
+   * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  titleFontWeight?: string | number;
+  titleFontWeight?: FontWeight;
 
   /**
    * Maximum allowed pixel width of axis titles.
@@ -938,13 +941,15 @@ export interface VgLegendConfig extends VgLegendBase {
 }
 
 export type FontStyle = 'normal' | 'italic';
-export type FontWeight = 'normal' | 'bold';
+
+export type FontWeightString = 'normal' | 'bold';
 /**
  * @TJS-type integer
  * @minimum 100
  * @maximum 900
  */
 export type FontWeightNumber = number;
+export type FontWeight = FontWeightString | FontWeightNumber;
 export type HorizontalAlign = 'left' | 'right' | 'center';
 export type Interpolate = 'linear' | 'linear-closed' |
   'step' | 'step-before' | 'step-after' |
@@ -1143,9 +1148,10 @@ export interface VgMarkConfig {
    */
   fontStyle?: FontStyle;
   /**
-   * The font weight (e.g., `"bold"`).
+   * The font weight.
+   * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  fontWeight?: FontWeight | FontWeightNumber;
+  fontWeight?: FontWeight;
 
   /**
    * Placeholder text if the `text` channel is not specified
@@ -1275,8 +1281,9 @@ export interface VgTitleConfig {
   fontSize?:	number;
   /**
    * Font weight for title text.
+   * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  fontWeight?: FontWeight | FontWeightNumber;
+  fontWeight?: FontWeight;
   /**
    * The maximum allowed length in pixels of legend labels.
    *

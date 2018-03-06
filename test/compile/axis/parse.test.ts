@@ -113,20 +113,22 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
     });
 
-    it('should not set title if title  = null', function() {
-      const model = parseUnitModelWithScale({
-        mark: "point",
-        encoding: {
-          x: {
-            field: "a",
-            type: "quantitative",
-            axis: {title: null}
+    it('should not set title if title  = null, "", or false', function () {
+      for (const val of [null, '', false]) {
+        const model = parseUnitModelWithScale({
+          mark: "point",
+          encoding: {
+            x: {
+              field: "a",
+              type: "quantitative",
+              axis: {title: val as any} // Need to cast as false is not valid, but we want to fall back gracefully
+            }
           }
-        }
-      });
-      const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.doesNotHaveAnyKeys(axisComponent['x'][0].main.explicit, ['title']);
+        });
+        const axisComponent = parseUnitAxis(model);
+        assert.equal(axisComponent['x'].length, 1);
+        assert.doesNotHaveAnyKeys(axisComponent['x'][0].main.explicit, ['title']);
+      }
     });
   });
 

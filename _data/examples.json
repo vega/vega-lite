@@ -233,12 +233,27 @@
     {
       "name": "layer_connected_scatterplot",
       "title": "Connected Scatterplot (Lines with Custom Paths)"
+    },
+    {
+      "name": "layer_line_co2_concentration",
+      "title": "Carbon Dioxide in the Atmosphere",
+      "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
     }
   ],
   "Composition": [
     {
       "name": "repeat_layer",
       "title": "Repeat and layer to show different weather measures"
+    },
+    {
+      "name": "vconcat_weather",
+      "title": "Vertically concatenated charts that show precipitation in Seattle",
+      "description": "Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature."
+    },
+    {
+      "name": "repeat_histogram",
+      "title": "Horizontally repeated charts",
+      "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries."
     }
   ],
   "Geographical (Maps)": [
@@ -281,6 +296,11 @@
       "name": "geo_trellis",
       "png": true,
       "title": "Income in the U.S. by state, faceted over income brackets"
+    },
+    {
+      "name": "geo_layer_line_london",
+      "title": "London Tube Lines",
+      "description": "This example was created by Jo Wood."
     }
   ],
   "Interactive": [
@@ -321,6 +341,11 @@
     {
       "name": "interactive_concat_layer",
       "title": "Interactive Dashboard with Cross Highlight"
+    },
+    {
+      "name": "interactive_multi_line_tooltip",
+      "title": "Multi Series Line Chart with Tooltips",
+      "description": "The plot displays tooltips for all stock prices of the hovered time."
     }
   ]
 }

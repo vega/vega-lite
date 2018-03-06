@@ -1,4 +1,5 @@
 // Declaration and utility for variants of a field definition object
+import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -14,7 +15,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {accessPath, isArray, isBoolean, isNumber, isString, titlecase} from './util';
+import {accessPath, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.

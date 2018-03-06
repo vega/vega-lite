@@ -68,7 +68,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('simple horizontal with size value', function() {
+  describe('simple horizontal with size value', function () {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
@@ -80,7 +80,24 @@ describe('Mark: Bar', function() {
     });
     const props = bar.encodeEntry(model);
 
-    it('should set height to 5 and center y', function() {
+    it('should set height to 5 and center y', function () {
+      assert.deepEqual(props.height, {value: 5});
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
+    });
+  });
+
+  describe('simple horizontal with size value in mark def', function () {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": {"type": "bar", "size": 5},
+      "encoding": {
+        "y": {"field": "Origin", "type": "nominal"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should set height to 5 and center y', function () {
       assert.deepEqual(props.height, {value: 5});
       assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
     });

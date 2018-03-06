@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import * as encode from '../../../src/compile/axis/encode';
-import {labelAlign} from '../../../src/compile/axis/encode';
+import {labelAlign, labelBaseline} from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';
 
 
@@ -58,24 +58,98 @@ describe('compile/axis', () => {
   });
 
   describe('labelAlign', () => {
-    it('is left for bottom axis with positive angle', () => {
-      assert.equal(labelAlign(90, 'bottom'), 'left');
-      assert.equal(labelAlign(45, 'bottom'), 'left');
+    describe('horizontal orients', () => {
+      it('360 degree check for horizonatal orients return to see if they orient properly', () => {
+        assert.equal(labelAlign(0, 'top'), 'center');
+        assert.equal(labelAlign(15, 'top'), 'right');
+        assert.equal(labelAlign(30, 'top'), 'right');
+        assert.equal(labelAlign(45, 'top'), 'right');
+        assert.equal(labelAlign(60, 'top'), 'right');
+        assert.equal(labelAlign(75, 'top'), 'right');
+        assert.equal(labelAlign(90, 'top'), 'right');
+        assert.equal(labelAlign(105, 'top'), 'right');
+        assert.equal(labelAlign(120, 'top'), 'right');
+        assert.equal(labelAlign(135, 'top'), 'right');
+        assert.equal(labelAlign(150, 'top'), 'right');
+        assert.equal(labelAlign(165, 'top'), 'right');
+        assert.equal(labelAlign(180, 'top'), 'center');
+        assert.equal(labelAlign(195, 'bottom'), 'right');
+        assert.equal(labelAlign(210, 'bottom'), 'right');
+        assert.equal(labelAlign(225, 'bottom'), 'right');
+        assert.equal(labelAlign(240, 'bottom'), 'right');
+        assert.equal(labelAlign(255, 'bottom'), 'right');
+        assert.equal(labelAlign(270, 'bottom'), 'right');
+        assert.equal(labelAlign(285, 'bottom'), 'right');
+        assert.equal(labelAlign(300, 'bottom'), 'right');
+        assert.equal(labelAlign(315, 'bottom'), 'right');
+        assert.equal(labelAlign(330, 'bottom'), 'right');
+        assert.equal(labelAlign(345, 'bottom'), 'right');
+      });
+      it('360 degree check for vertical orients return to see if they orient properly', () => {
+        assert.equal(labelAlign(0, 'left'), 'right');
+        assert.equal(labelAlign(15, 'left'), 'right');
+        assert.equal(labelAlign(30, 'left'), 'right');
+        assert.equal(labelAlign(45, 'left'), 'right');
+        assert.equal(labelAlign(60, 'left'), 'right');
+        assert.equal(labelAlign(75, 'left'), 'right');
+        assert.equal(labelAlign(90, 'left'), 'center');
+        assert.equal(labelAlign(105, 'left'), 'left');
+        assert.equal(labelAlign(120, 'left'), 'left');
+        assert.equal(labelAlign(135, 'left'), 'left');
+        assert.equal(labelAlign(150, 'left'), 'left');
+        assert.equal(labelAlign(165, 'left'), 'left');
+        assert.equal(labelAlign(180, 'left'), 'left');
+        assert.equal(labelAlign(195, 'right'), 'right');
+        assert.equal(labelAlign(210, 'right'), 'right');
+        assert.equal(labelAlign(225, 'right'), 'right');
+        assert.equal(labelAlign(240, 'right'), 'right');
+        assert.equal(labelAlign(255, 'right'), 'right');
+        assert.equal(labelAlign(270, 'right'), 'center');
+        assert.equal(labelAlign(285, 'right'), 'left');
+        assert.equal(labelAlign(300, 'right'), 'left');
+        assert.equal(labelAlign(315, 'right'), 'left');
+        assert.equal(labelAlign(330, 'right'), 'left');
+        assert.equal(labelAlign(345, 'right'), 'left');
+      });
+    });
+  });
+
+  describe('labelBaseline', () => {
+    it('is middle for perpendiculars horizontal orients', () => {
+      assert.deepEqual(labelBaseline(90, 'top'), {value: 'middle'});
+      assert.deepEqual(labelBaseline(270, 'bottom'), {value: 'middle'});
     });
 
-    it('is right for bottom axis with negative angle', () => {
-      assert.equal(labelAlign(-90, 'bottom'), 'right');
-      assert.equal(labelAlign(-45, 'bottom'), 'right');
+
+    it('is top for bottom orients for 1st and 4th quadrants', () => {
+      assert.deepEqual(labelBaseline(45, 'bottom'), {value: 'top'});
+      assert.deepEqual(labelBaseline(180, 'top'), {value: 'top'});
     });
 
-    it('is left for top axis with positive angle', () => {
-      assert.equal(labelAlign(90, 'top'), 'right');
-      assert.equal(labelAlign(45, 'top'), 'right');
+    it('is bottom for bottom orients for 2nd and 3rd quadrants', () => {
+      assert.deepEqual(labelBaseline(100, 'bottom'), {value: 'middle'});
+      assert.deepEqual(labelBaseline(260, 'bottom'), {value: 'middle'});
     });
 
-    it('is left for top axis with negative angle', () => {
-      assert.equal(labelAlign(-90, 'top'), 'left');
-      assert.equal(labelAlign(-45, 'top'), 'left');
+    it('is middle for 0 and 180 horizontal orients', () => {
+      assert.deepEqual(labelBaseline(0, 'left'), {value: 'middle'});
+      assert.deepEqual(labelBaseline(180, 'right'), {value: 'middle'});
+    });
+
+
+    it('is top for bottom orients for 1st and 2nd quadrants', () => {
+      assert.deepEqual(labelBaseline(80, 'left'), {value: 'top'});
+      assert.deepEqual(labelBaseline(100, 'left'), {value: 'top'});
+    });
+
+    it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
+      assert.deepEqual(labelBaseline(280, 'left'), {value: 'bottom'});
+      assert.deepEqual(labelBaseline(260, 'left'), {value: 'bottom'});
+    });
+
+    it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
+      assert.deepEqual(labelBaseline(280, 'left'), {value: 'bottom'});
+      assert.deepEqual(labelBaseline(260, 'left'), {value: 'bottom'});
     });
   });
 });

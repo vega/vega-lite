@@ -211,7 +211,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 {:#href}
 ## Hyperlink Channel
 
-By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a muse click. The [`cursor` mark property](mark.html#hyperlink) can be set to `pointer` to serve as affordance for hyperlinks.
+By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. The [`cursor` mark property](mark.html#hyperlink) can be set to `pointer` to serve as affordance for hyperlinks.
 
 {% include table.html props="href" source="Encoding" %}
 

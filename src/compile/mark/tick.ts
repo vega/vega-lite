@@ -16,7 +16,7 @@ export const tick: MarkCompiler = {
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.baseEncodeEntry(model, true),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
 
       ...mixins.pointPosition('x', model, ref.mid(width), 'xc'),
       ...mixins.pointPosition('y', model, ref.mid(height), 'yc'),
@@ -32,11 +32,13 @@ export const tick: MarkCompiler = {
 };
 
 function defaultSize(model: UnitModel): number {
-  const {config} = model;
-  const orient = model.markDef.orient;
+  const {config, markDef} = model;
+  const orient = markDef.orient;
   const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
 
-  if (config.tick.bandSize !== undefined) {
+  if (markDef.size !== undefined) {
+    return markDef.size;
+  } else if (config.tick.bandSize !== undefined) {
     return config.tick.bandSize;
   } else {
     const scaleRange = scale ? scale.get('range') : undefined;

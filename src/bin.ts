@@ -1,5 +1,6 @@
+import {isBoolean} from 'vega-util';
 import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE} from './channel';
-import {isBoolean, keys} from './util';
+import {keys, varName} from './util';
 
 
 export interface BaseBin {
@@ -64,7 +65,7 @@ export function binToString(bin: BinParams | boolean) {
   if (isBoolean(bin)) {
     return 'bin';
   }
-  return 'bin' + keys(bin).map(p => `_${p}_${bin[p]}`.replace(',', '_')).join('');
+  return 'bin' + keys(bin).map(p => varName(`_${p}_${bin[p]}`)).join('');
 }
 
 export function autoMaxBins(channel: Channel): number {

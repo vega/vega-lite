@@ -1,5 +1,6 @@
 
-import {Channel, CHANNELS, supportMark} from './channel';
+import {isArray} from 'vega-util';
+import {Channel, CHANNELS, isChannel, supportMark} from './channel';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
@@ -22,7 +23,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {isArray, keys, some} from './util';
+import {keys, some} from './util';
 
 export interface Encoding<F> {
   /**
@@ -144,7 +145,13 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
 }
 
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
+    if (!isChannel(channel)) {
+      // Drop invalid channel
+      log.warn(log.message.invalidEncodingChannel(channel));
+      return normalizedEncoding;
+    }
+
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 

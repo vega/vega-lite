@@ -19,4 +19,4 @@ The `nearest` transform also respects any [position encoding projections](projec
 
 ## Current Limitations
 
-* The `nearest` transform is not supported for continuous mark types (i.e., `line` and `area`). For these mark types, consider layering a discrete mark type (e.g., `point`) with a 0-value `opacity` as in the last example above.
+- The `nearest` transform is not supported for continuous mark types (i.e., `line` and `area`). For these mark types, consider layering a discrete mark type (e.g., `point`) with a 0-value `opacity` as in the last example above.

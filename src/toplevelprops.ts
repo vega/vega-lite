@@ -1,10 +1,15 @@
-import {isString} from 'util';
+import {isString} from 'vega-util';
+
+import {InlineDataset} from './data';
 import * as log from './log';
+import {Dict} from './util';
 
 /**
  * @minimum 0
  */
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
+
+export type Datasets = Dict<InlineDataset>;
 
 export interface TopLevelProperties {
   /**
@@ -30,6 +35,12 @@ export interface TopLevelProperties {
    * __Default value__: `pad`
    */
   autosize?: AutosizeType | AutoSizeParams;
+
+  /**
+   * A global data store for named datasets. This is a mapping from names to inline datasets.
+   * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+   */
+  datasets?: Datasets;
 }
 
 export type AutosizeType = 'pad' | 'fit' | 'none';
@@ -79,7 +90,7 @@ export function normalizeAutoSize(topLevelAutosize: AutosizeType | AutoSizeParam
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
-  'background', 'padding'
+  'background', 'padding', 'datasets'
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 

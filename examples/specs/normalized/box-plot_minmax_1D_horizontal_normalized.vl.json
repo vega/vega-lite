@@ -25,15 +25,27 @@
         {
           "op": "min",
           "field": "people",
-          "as": "lower_whisker_people"
+          "as": "min_people"
         },
         {
           "op": "max",
           "field": "people",
-          "as": "upper_whisker_people"
+          "as": "max_people"
         }
       ],
       "groupby": []
+    },
+    {
+      "calculate": "datum.upper_box_people - datum.lower_box_people",
+      "as": "iqr_people"
+    },
+    {
+      "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+      "as": "upper_whisker_people"
+    },
+    {
+      "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+      "as": "lower_whisker_people"
     }
   ],
   "layer": [

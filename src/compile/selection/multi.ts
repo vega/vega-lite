@@ -1,4 +1,5 @@
-import {accessPath, stringValue} from '../../util';
+import {stringValue} from 'vega-util';
+import {accessPath} from '../../util';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
 
@@ -25,7 +26,7 @@ const multi:SelectionCompiler = {
     }).join(', ');
 
     // Only add a discrete selection to the store if a datum is present _and_
-    // the interaction isn't occuring on a group mark. This guards against
+    // the interaction isn't occurring on a group mark. This guards against
     // polluting interactive state with invalid values in faceted displays
     // as the group marks are also data-driven. We force the update to account
     // for constant null states but varying toggles (e.g., shift-click in

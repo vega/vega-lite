@@ -175,6 +175,10 @@ export namespace message {
     return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
   }
 
+  export function invalidEncodingChannel(channel: string) {
+    return `${channel}-encoding is dropped as ${channel} is not a valid encoding channel.`;
+  }
+
   export function facetChannelShouldBeDiscrete(channel: string) {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }

@@ -171,13 +171,13 @@ describe('Mark: Point', function() {
 
     it('should have one condition for color with scale for "yield"', function () {
       assert.isArray(props.stroke);
-      assert.equal(props.stroke['length'], 1);
+      assert.equal(props.stroke['length'], 2);
       assert.equal(props.stroke[0].scale, COLOR);
       assert.equal(props.stroke[0].field, 'yield');
     });
   });
 
-  describe('with x, y, and predicate condition color', function () {
+  describe('with x, y, and condition-only color', function () {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
         "color": {"condition": {"test": "true", "field": "yield", "type": "quantitative"}}
@@ -188,8 +188,9 @@ describe('Mark: Point', function() {
 
     it('should have one condition for color with scale for "yield"', function () {
       assert.isArray(props.stroke);
-      assert.equal(props.stroke['length'], 1);
+      assert.equal(props.stroke['length'], 2);
       assert.equal(props.stroke[0].test, "true");
+      assert.equal(props.stroke[1].value, "#4c78a8");
     });
   });
 

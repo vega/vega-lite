@@ -7,8 +7,8 @@ permalink: /docs/project.html
 
 A [selection's type](selection.html#selection-types) determines which data values fall within it by default:
 
-  * For `single` and `multi` selections, only values that have been directly interacted with (i.e., those that have been clicked on) are considered to be "selected."
-  * For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
+  - For `single` and `multi` selections, only values that have been directly interacted with (i.e., those that have been clicked on) are considered to be "selected."
+  - For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
 
 These default inclusion criteria can be modified with the **project** selection transformation, which offers the following two properties:
 
@@ -26,9 +26,9 @@ With interval selections, the project transformation can be used to restrict the
 
 ## Current Limitations
 
-* Selections projected over aggregated `fields`/`encodings` can only be used within the same view they are defined in.
-* Interval selections can only be projected using `encodings`.
-* Interval selections projected over binned or `timeUnit` fields remain continuous selections. Thus, if the visual encoding discretizes them, conditional encodings will no longer work. Instead, use a layered view as shown in the example below. The bar mark discretizes the binned `Acceleration` field. As a result, to highlight selected bars, we use a second layered view rather than a conditional color encoding within the same view.
+- Selections projected over aggregated `fields`/`encodings` can only be used within the same view they are defined in.
+- Interval selections can only be projected using `encodings`.
+- Interval selections projected over binned or `timeUnit` fields remain continuous selections. Thus, if the visual encoding discretizes them, conditional encodings will no longer work. Instead, use a layered view as shown in the example below. The bar mark discretizes the binned `Acceleration` field. As a result, to highlight selected bars, we use a second layered view rather than a conditional color encoding within the same view.
 
 <div class="vl-example" data-name="selection_project_binned_interval"></div>
 

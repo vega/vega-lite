@@ -68,6 +68,8 @@ export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export type Data = UrlData | InlineData | NamedData;
 
+export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
+
 export interface UrlData {
   /**
    * An object that specifies the format for parsing the data file.
@@ -90,7 +92,7 @@ export interface InlineData {
    * The full data set, included inline. This can be an array of objects or primitive values or a string.
    * Arrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type.
    */
-  values: number[] | string[] | boolean[] | object[] | string | object;
+  values: InlineDataset;
 }
 
 export interface NamedData {

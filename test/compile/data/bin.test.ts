@@ -13,7 +13,7 @@ function assembleFromEncoding(model: ModelWithField) {
 }
 
 function assembleFromTransform(model: Model, t: BinTransform) {
-  return BinNode.makeFromTransform(t, {model}).assemble();
+  return BinNode.makeFromTransform(t, model).assemble();
 }
 
 describe('compile/data/bin', function() {

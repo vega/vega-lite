@@ -37,9 +37,9 @@ To run the script, you need to install [gnu parallel](https://www.gnu.org/softwa
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
-you can run `yarn run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+you can run `yarn site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
-Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You will have to run `yarn run build:site` to recompile the JavaScript so that interactive examples work.
+Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You will have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
 ### Documentation Guide
 
@@ -77,7 +77,7 @@ To name the example file:
 - For interactive example, begin with either `interactive_` or `selection_`.
 - For examples that are only for regression test, begin with `test_`.
 
-After adding a new example, make sure to run `yarn run build:example <examplename>` (e.g., `yarn run build:example bar_1d`) or `yarn run build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
+After adding a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 
 # Development Guide
 
@@ -206,7 +206,7 @@ We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLin
 
 To manually test your changes locally, you should have a local instance of
 [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor
-(See [Vega Editor's README](https://github.com/vega/vega-editor#local-testing--debugging)
+(See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging)
 for instructions).
 
 ## Developing Vega-Lite and Vega-Util
