@@ -7,7 +7,7 @@ permalink: /docs/data.html
 
 Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
-Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data).
+Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [datasets](#datasets).
 
 ## Documentation Overview
 {:.no_toc}
@@ -96,3 +96,18 @@ Load a tab-separated values (TSV) file. This format type does not support any ad
 Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The input file must contain valid TopoJSON data. The TopoJSON input is then converted into a GeoJSON format. There are two mutually exclusive properties that can be used to specify the conversion process:
 
 {% include table.html props="feature,mesh" source="TopoDataFormat" %}
+
+## Datasets
+
+Vega-Lite supports a top-level `datasets` property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the [named](#named) datasource in the rest of the spec. `datasets` is a mapping from name to an [inline](#inline) dataset.
+
+{: .suppress-error}
+```json
+```
+    "datasets": {
+      "somedata": [1,2,3]
+    },
+    "data": {
+      "name": "somedata"
+    }
+```

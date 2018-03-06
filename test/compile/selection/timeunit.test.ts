@@ -11,7 +11,7 @@ import {parseModel, parseUnitModel} from '../../util';
 
 function getData(model: Model) {
   optimizeDataflow(model.component.data);
-  return assembleRootData(model.component.data);
+  return assembleRootData(model.component.data, {});
 }
 
 function getModel(unit2: UnitSpec) {

@@ -23,7 +23,7 @@ describe('compile/data/assemble', () => {
         outputNodeRefCounts,
         ancestorParse: {},
         isFaceted: false
-      });
+      }, {});
 
       assert.equal(data.length, 1);
       assert.equal(data[0].name, "foo");
@@ -48,7 +48,7 @@ describe('compile/data/assemble', () => {
         outputNodeRefCounts,
         ancestorParse: {},
         isFaceted: false
-      });
+      }, {});
 
       assert.deepEqual<VgData[]>(data, [{
         name: 'source_0',
@@ -65,6 +65,28 @@ describe('compile/data/assemble', () => {
           as: ['count_*']
         }]}
       ]);
+    });
+
+    it('should assemble named datasets with datastore', () => {
+      const src = new SourceNode({name: 'foo'});
+      const outputNodeRefCounts = {};
+      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
+      main.parent = src;
+
+      const data = assembleRootData({
+        sources: {named: src},
+        outputNodes: {out: main},
+        outputNodeRefCounts,
+        ancestorParse: {},
+        isFaceted: false
+      }, {
+        foo: [1,2,3]
+      });
+
+      assert.deepEqual<VgData[]>(data, [{
+        name: 'foo',
+        values: [1,2,3]
+      }]);
     });
   });
 });
