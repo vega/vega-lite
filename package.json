@@ -8,7 +8,7 @@
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
   "homepage": "https://vega.github.io/vega-lite/",
-  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
+  "description": "Vega-Lite is a concise high-level language for interactive visualization.",
   "main": "build/src/index.js",
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
