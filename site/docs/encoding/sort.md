@@ -55,15 +55,17 @@ If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's 
 
 3) Unsorted – `null` – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
 
-4) Specify custom order by providing custom `scale`'s [`domain`](scale.html#domain). (In this case, you don't need to use `sort` property.)
+{:#sort-array}
 
-5) Sorting by preferred order of values by providing `sort` with array specifying preferred order of the values. Unspecified values will assume their original orders in the data source, preceded by the orders in the sort array.
-__Note__: This sorting approach is more preferable to specifying custom `scale`'s `domain` because it only requires the array of preferred order of values, while `scale`'s `domain` requires array containing full domain.
+4) Sorting by preferred order of values by providing `sort` an array of values that specify the order. Unspecified values will assume their original orders in the data source, preceded by the orders in the sort array.
+__Note__: It is also possible to sort by providing custom `scale`'s [`domain`](scale.html#domain). However, it is not preferable compared to using `sort` array since `domain` requires every possible value to be present in the array.
 
 In the case that sort array contains every field value, the sort order will follow the specified values in the array.
+
 <div class="vl-example" data-name="bar_custom_sort_full"></div>
 
 Sort order will precede by the specified values in the array, even though some value is ignored. Note how `D`, `E` and `F` still follows their original order, while `B`, `A` and `C` follows the order in sort array.
+
 <div class="vl-example" data-name="bar_custom_sort_partial"></div>
 
 #### Example: Sorting Ordinal Scale by Another Field
