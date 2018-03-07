@@ -13,20 +13,20 @@ import {
   normalize,
   RepeatSpec,
   TopLevel,
-  TopLevelExtendedSpec,
+  TopLevelSpec,
   UnitSpec,
 } from '../src/spec';
 import {isLayerSpec, isUnitSpec} from '../src/spec';
 import {normalizeAutoSize} from '../src/toplevelprops';
 
-export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
+export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
   const spec = normalize(inputSpec, config);
   const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
   return buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 }
 
-export function parseModelWithScale(inputSpec: TopLevelExtendedSpec): Model {
+export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
   const model = parseModel(inputSpec);
   model.parseScale();
   return model;
