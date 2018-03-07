@@ -204,20 +204,6 @@ export function parseData(model: Model): DataComponent {
       head = BinNode.makeFromEncoding(head, model) || head;
     }
 
-<<<<<<< 4fccae71f7ba4b48158615939dd425fa708fbf0f
-    head = TimeUnitNode.makeFromEncoding(head, model) || head;
-||||||| merged common ancestors
-    for (const geopoint of GeoPointNode.makeAll(model)) {
-      geopoint.parent = head;
-      head = geopoint;
-    }
-
-    const tu = TimeUnitNode.makeFromEncoding(model);
-    if (tu) {
-      tu.parent = head;
-      head = tu;
-    }
-=======
     for (const geopoint of GeoPointNode.makeAll(model)) {
       geopoint.parent = head;
       head = geopoint;
@@ -233,7 +219,6 @@ export function parseData(model: Model): DataComponent {
       calculate.parent = head;
       head = calculate;
     }
->>>>>>> reuse calculate node to generate new sort field
   }
 
   // add an output node pre aggregation

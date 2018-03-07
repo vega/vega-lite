@@ -1,6 +1,6 @@
-import {AggregateOp} from './aggregate';
+import {AggregateOp} from 'vega';
+import {isArray, isString} from 'vega-util';
 import {SortField} from './sort';
-import {isArray, isString} from './util';
 
 export type SortOrder = 'ascending' | 'descending' | null;
 
