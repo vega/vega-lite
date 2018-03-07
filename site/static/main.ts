@@ -72,7 +72,7 @@ function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, to
   });
 
   if (tooltip) {
-    vegaLite(view, spec);
+    vegaLite(view, spec as any);
   }
 }
 
