@@ -1,11 +1,12 @@
 /* tslint:disable quotemark */
-
 import {assert} from 'chai';
+
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
-import {FacetedCompositeUnitSpec, UnitSpec} from '../../../src/spec';
+import {TopLevelExtendedSpec, UnitSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+
 
 describe('Mark: Text', function() {
   describe('with stacked x', function() {
@@ -139,7 +140,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, color, and size', function() {
-    const spec: FacetedCompositeUnitSpec = {
+    const spec: TopLevelExtendedSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},

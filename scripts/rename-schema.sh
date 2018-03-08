@@ -25,3 +25,6 @@ perl -pi -e s,'LogicalOperand<string>','SelectionOperand',g build/vega-lite-sche
 perl -pi -e s,'LogicalAnd<string>','SelectionAnd',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalOr<string>','SelectionOr',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalNot<string>','SelectionNot',g build/vega-lite-schema.json
+
+perl -pi -e s,'TopLevelFacetedUnitSpec','TopLevel<FacetedUnitSpec>',g build/vega-lite-schema.json
+perl -pi -e s,'TopLevelFacetSpec','TopLevel<FacetSpec>',g build/vega-lite-schema.json

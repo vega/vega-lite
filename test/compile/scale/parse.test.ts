@@ -454,6 +454,7 @@ describe('src/compile', function() {
           facet: {
             row: {field: "symbol", type: "nominal"}
           },
+          data: {url: "foo.csv"},
           spec: {
             mark: 'point',
             encoding: {
@@ -473,6 +474,7 @@ describe('src/compile', function() {
           facet: {
             row: {field: "symbol", type: "nominal"}
           },
+          data: {url: "foo.csv"},
           spec: {
             data: {url: 'foo'},
             mark: 'point',
@@ -493,6 +495,7 @@ describe('src/compile', function() {
           facet: {
             row: {field: "symbol", type: "nominal"}
           },
+          data: {url: "foo.csv"},
           spec: {
             mark: 'point',
             encoding: {

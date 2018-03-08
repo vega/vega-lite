@@ -59,6 +59,14 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
+export type DataRequired = {
+  /**
+   * An object describing the data source
+   */
+  data: Data;
+};
+
+
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
 export interface LayoutSizeMixins {
   /**
@@ -211,7 +219,12 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerS
 
 export type NormalizedSpec = GenericSpec<UnitSpec>;
 
-export type TopLevelSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec>>;
+export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataRequired;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec>> & DataRequired;
+
+export type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec>>;
+
+export type UnnormalizedSpec = FacetedCompositeUnitSpec | GenericFacetSpec<CompositeUnitSpec> | GenericLayerSpec<CompositeUnitSpec> | GenericRepeatSpec<CompositeUnitSpec> | GenericVConcatSpec<CompositeUnitSpec> | GenericHConcatSpec<CompositeUnitSpec>;
 
 /* Custom type guards */
 
@@ -248,7 +261,7 @@ export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<Generi
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: TopLevelSpec, config: Config): NormalizedSpec {
+export function normalize(spec: UnnormalizedSpec | TopLevelSpec, config: Config): NormalizedSpec {
   if (isFacetSpec(spec)) {
     return normalizeFacet(spec, config);
   }
