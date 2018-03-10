@@ -224,16 +224,7 @@ export function parseData(model: Model): DataComponent {
     head = parse;
   }
 
-  if (isUnitModel(model) || isFacetModel(model)) {
-
-    if (!parentIsLayer) {
-      const bin = BinNode.makeBinFromEncoding(model);
-      if (bin) {
-        bin.parent = head;
-        head = bin;
-      }
-    }
-
+  if (isUnitModel(model)) {
     for (const geojson of GeoJSONNode.makeAll(model)) {
       geojson.parent = head;
       head = geojson;
@@ -242,6 +233,17 @@ export function parseData(model: Model): DataComponent {
     for (const geopoint of GeoPointNode.makeAll(model)) {
       geopoint.parent = head;
       head = geopoint;
+    }
+  }
+
+  if (isUnitModel(model) || isFacetModel(model)) {
+
+    if (!parentIsLayer) {
+      const bin = BinNode.makeBinFromEncoding(model);
+      if (bin) {
+        bin.parent = head;
+        head = bin;
+      }
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

@@ -2,7 +2,7 @@ import {SHAPE, X, X2, Y, Y2} from '../../channel';
 import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
 import {contains, Dict, duplicate} from '../../util';
 import {VgGeoJSONTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 export class GeoJSONNode extends DataFlowNode {
@@ -10,7 +10,7 @@ export class GeoJSONNode extends DataFlowNode {
     return new GeoJSONNode(duplicate(this.fields), this.geojson, this.signal);
   }
 
-  public static makeAll(model: ModelWithField): GeoJSONNode[] {
+  public static makeAll(model: UnitModel): GeoJSONNode[] {
     const nodes: GeoJSONNode[] = [];
 
     for (const coordinates of [[X, Y], [X2, Y2]]) {
