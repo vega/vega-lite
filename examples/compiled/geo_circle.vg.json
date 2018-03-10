@@ -38,8 +38,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "x",
+                        "y"
                     ]
                 }
             ]
@@ -77,10 +77,10 @@
                         "field": "digit"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "y"
                     },
                     "size": {
                         "value": 1

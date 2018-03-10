@@ -54,8 +54,8 @@
                         "cy"
                     ],
                     "as": [
-                        "cx_geo",
-                        "cy_geo"
+                        "layer_1_x",
+                        "layer_1_y"
                     ]
                 }
             ]
@@ -120,10 +120,10 @@
                         "value": 0.6
                     },
                     "x": {
-                        "field": "cx_geo"
+                        "field": "layer_1_x"
                     },
                     "y": {
-                        "field": "cy_geo"
+                        "field": "layer_1_y"
                     },
                     "text": {
                         "signal": "''+datum[\"bLabel\"]"

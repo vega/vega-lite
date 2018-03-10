@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
-import {GeoPositionChannel, NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef, vgField} from '../../fielddef';
+import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
+import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
@@ -198,11 +198,9 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
 
   const channelDef = encoding[channel];
 
-  const geoChannel: GeoPositionChannel = channel === 'x' ? 'longitude' : channel === 'y' ? 'latitude' : undefined;
-
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
-    {field: vgField(encoding[geoChannel], {suffix: 'geo'})} : // FIXME
+    {field: model.getName(channel)} :
     ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
@@ -221,11 +219,9 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
 
-  const geoChannel: GeoPositionChannel = channel === 'x2' ? 'longitude2' : channel === 'y2' ? 'latitude2' : undefined;
-
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
-    {field: vgField(encoding[geoChannel], {suffix: 'geo'})}: // FIXME
+    {field: model.getName(channel)}:
     ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

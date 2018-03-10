@@ -1,5 +1,5 @@
-import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, X, X2, Y, Y2} from '../../channel';
-import {contains, Dict, duplicate} from '../../util';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
+import {duplicate} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -24,12 +24,14 @@ export class GeoPointNode extends DataFlowNode {
         channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
       );
 
+      const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
+
       if (pair[0] || pair[1]) {
         parent = new GeoPointNode(
           parent,
           model.projectionName(),
           pair,
-          pair.map(x => x + '_geo')
+          [model.getName('x' + suffix), model.getName('y' + suffix)]
         );
       }
     });

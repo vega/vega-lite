@@ -1,9 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {GeoPositionChannel, X, Y} from '../../../src/channel';
+import {X, Y} from '../../../src/channel';
 import {color, pointPosition} from '../../../src/compile/mark/mixins';
-import {vgField} from '../../../src/fielddef';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/mixins', () => {
@@ -76,9 +75,7 @@ describe('compile/mark/mixins', () => {
 
       [X, Y].forEach((channel) => {
         const mixins = pointPosition(channel, model, 'zeroOrMin');
-          const geoChannel: GeoPositionChannel = channel === 'x' ? 'longitude' : channel === 'y' ? 'latitude' : undefined;
-
-          assert.equal(mixins[channel].field, vgField(model.encoding[geoChannel], {suffix: 'geo'}));
+          assert.equal(mixins[channel].field, model.getName(channel));
       });
     });
   });
