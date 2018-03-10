@@ -1637,6 +1637,10 @@
           ],
           "description": "A URL to load upon mouse click."
         },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1795,6 +1799,10 @@
             }
           ],
           "description": "A URL to load upon mouse click."
+        },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "opacity": {
           "anyOf": [
@@ -5109,7 +5117,8 @@
         "opacity",
         "text",
         "tooltip",
-        "href"
+        "href",
+        "key"
       ],
       "type": "string"
     },

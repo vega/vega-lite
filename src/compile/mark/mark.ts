@@ -114,8 +114,10 @@ function getMarkGroups(model: UnitModel, opt: {
 } = {fromPrefix: ''}) {
   const mark = model.mark();
 
+  const clip = model.markDef.clip !== undefined ?
+    !!model.markDef.clip : scaleClip(model);
   const style = getStyles(model.markDef);
-  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
+  const key = model.encoding.key;
   const sort = getSort(model);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
@@ -125,6 +127,7 @@ function getMarkGroups(model: UnitModel, opt: {
     type: markCompiler[mark].vgMark,
     ...(clip ? {clip: true} : {}),
     ...(style ? {style} : {}),
+    ...(key ? {key: {field: key.field}} : {}),
     ...(sort ? {sort} : {}),
     from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
     encode: {
@@ -160,6 +163,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
         return details;
 
       case 'detail':
+      case 'key':
         const channelDef = encoding[channel];
         if (channelDef) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
