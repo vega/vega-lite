@@ -546,6 +546,8 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'x':
     case 'y':
     case 'color':
+    case 'fill':
+    case 'stroke':
     case 'text':
     case 'detail':
     case 'key':

@@ -22,6 +22,11 @@ export namespace Channel {
 
   // Mark property with scale
   export const COLOR: 'color' = 'color';
+
+  export const FILL: 'fill' = 'fill';
+
+  export const STROKE: 'stroke' = 'stroke';
+
   export const SHAPE: 'shape' = 'shape';
   export const SIZE: 'size' = 'size';
   export const OPACITY: 'opacity' = 'opacity';
@@ -47,6 +52,9 @@ export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
 export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
+
+export const FILL = Channel.FILL;
+export const STROKE = Channel.STROKE;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const KEY = Channel.KEY;
@@ -56,21 +64,36 @@ export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
+  // position
   x: 1,
   y: 1,
   x2: 1,
   y2: 1,
+
+  // color
+  color: 1,
+  fill: 1,
+  stroke: 1,
+
+  // other non-position with scale
+  opacity: 1,
   size: 1,
   shape: 1,
-  color: 1,
+
+  // channels without scales
   order: 1,
-  opacity: 1,
   text: 1,
   detail: 1,
   key: 1,
   tooltip: 1,
   href: 1,
 };
+
+export type ColorChannel = 'color' | 'fill' | 'stroke';
+
+export function isColorChannel(channel: Channel): channel is ColorChannel {
+  return channel === 'color' || channel === 'fill' || channel === 'stroke';
+}
 
 const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
   row: 1,
@@ -99,9 +122,11 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
-
-
+export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' |
+  'row' | 'column' |
+  'color' | 'fill' | 'stroke' |
+  'size' | 'shape' | 'opacity' |
+  'text' | 'tooltip' | 'href' | 'key';
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
@@ -187,6 +212,9 @@ export function supportMark(channel: Channel, mark: Mark) {
 export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case COLOR:
+    case FILL:
+    case STROKE:
+
     case DETAIL:
     case KEY:
     case TOOLTIP:
@@ -244,6 +272,8 @@ export function rangeType(channel: Channel): RangeType {
 
     // Color can be either continuous or discrete, depending on scale type.
     case COLOR:
+    case FILL:
+    case STROKE:
       return 'flexible';
 
     // No scale, no range type.
@@ -253,5 +283,5 @@ export function rangeType(channel: Channel): RangeType {
       return undefined;
   }
   /* istanbul ignore next: should never reach here. */
-  throw new Error('getSupportedRole not implemented for ' + channel);
+  throw new Error('rangeType not implemented for ' + channel);
 }

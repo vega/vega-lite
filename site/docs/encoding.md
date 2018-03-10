@@ -163,7 +163,7 @@ In addition, definitions of mark property channels can include the `condition` p
 
 Here are the list of mark property channels:
 
-{% include table.html props="color,opacity,shape,size" source="Encoding" %}
+{% include table.html props="color,fill,stroke,opacity,shape,size" source="Encoding" %}
 
 {:#mark-prop-field-def}
 ### Mark Property Field Definition

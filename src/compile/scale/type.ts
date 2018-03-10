@@ -1,4 +1,4 @@
-import {Channel, isScaleChannel, rangeType} from '../../channel';
+import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -56,7 +56,7 @@ function defaultType(
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
-      if (channel === 'color' || rangeType(channel) === 'discrete') {
+      if (isColorChannel(channel)|| rangeType(channel) === 'discrete') {
         if (channel === 'shape' && fieldDef.type === 'ordinal') {
           log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         }
@@ -77,7 +77,7 @@ function defaultType(
       return 'point';
 
     case 'temporal':
-      if (channel === 'color') {
+      if (isColorChannel(channel)) {
         return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
@@ -87,7 +87,7 @@ function defaultType(
       return 'time';
 
     case 'quantitative':
-      if (channel === 'color') {
+      if (isColorChannel(channel)) {
         if (fieldDef.bin) {
           return 'bin-ordinal';
         }

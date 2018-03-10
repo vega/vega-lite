@@ -1,5 +1,5 @@
 import {toSet} from 'vega-util';
-import {Channel} from './channel';
+import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, Flag, flagKeys, keys} from './util';
@@ -636,7 +636,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   switch (propName) {
     case 'interpolate':
     case 'scheme':
-      if (channel !== 'color') {
+      if (!isColorChannel(channel)) {
         return log.message.cannotUseScalePropertyWithNonColor(channel);
       }
       return undefined;
@@ -669,8 +669,12 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+
     case Channel.COLOR:
+    case Channel.FILL:
+    case Channel.STROKE:
       return scaleType !== 'band';    // band does not make sense with color
+
     case Channel.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }

@@ -174,6 +174,8 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
         }
         return details;
       case 'color':
+      case 'fill':
+      case 'stroke':
       case 'size':
       case 'opacity':
       // TODO strokeDashOffset:
