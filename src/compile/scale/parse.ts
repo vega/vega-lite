@@ -8,7 +8,7 @@ import {
   ScaleType,
   scaleTypePrecedence,
 } from '../../scale';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
+import {GEOJSON} from '../../type';
 import {contains, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';

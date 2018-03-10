@@ -107,8 +107,6 @@ function defaultType(
       }
       return 'linear';
 
-    case 'latitude':
-    case 'longitude':
     case 'geojson':
       return undefined;
   }
