@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
-import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} from '../../fielddef';
+import {GeoPositionChannel, NONPOSITION_SCALE_CHANNELS} from '../../channel';
+import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
@@ -195,7 +195,14 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+
+  const channelDef = encoding[channel];
+
+  const geoChannel: GeoPositionChannel = channel === 'x' ? 'longitude' : channel === 'y' ? 'latitude' : undefined;
+
+  const valueRef = (encoding.latitude || encoding.longitude) ?
+    {field: vgField(encoding[geoChannel], {suffix: 'geo'})} : // FIXME
+    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
     [vgChannel || channel]: valueRef
@@ -210,7 +217,10 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
   const baseChannel = channel === 'x2' ? 'x' : 'y';
+  const geoChannel: GeoPositionChannel = channel === 'x2' ? 'longitude2' : channel === 'y2' ? 'latitude2' : undefined;
 
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+  const valueRef = (encoding.latitude || encoding.longitude) ?
+    {field: vgField(encoding[geoChannel], {suffix: 'geo'})}: // FIXME
+    ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

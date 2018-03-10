@@ -26,6 +26,16 @@
             "source": "source_1",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"longitude\"])",
+                    "as": "longitude"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"latitude\"])",
+                    "as": "latitude"
+                },
+                {
                     "type": "geojson",
                     "fields": [
                         "longitude",
@@ -53,7 +63,11 @@
             "format": {
                 "type": "csv",
                 "parse": {
-                    "origin": "string"
+                    "origin": "string",
+                    "origin_longitude": "number",
+                    "origin_latitude": "number",
+                    "dest_longitude": "number",
+                    "dest_latitude": "number"
                 }
             },
             "transform": [

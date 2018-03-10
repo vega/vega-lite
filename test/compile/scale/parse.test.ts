@@ -155,13 +155,13 @@ describe('src/compile', function() {
         },
         "mark": "point",
         "encoding": {
-          "x": {
+          "longitude": {
             "field": "longitude",
-            "type": "longitude"
+            "type": "quantitative"
           },
-          "y": {
+          "latitude": {
             "field": "latitude",
-            "type": "latitude"
+            "type": "quantitative"
           }
         }
       });

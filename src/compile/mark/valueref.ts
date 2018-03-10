@@ -15,7 +15,7 @@ import {
 } from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {LATITUDE, LONGITUDE, QUANTITATIVE} from '../../type';
+import {QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
 import {VgSignalRef, VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
@@ -109,9 +109,6 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)) {
-        return {field: vgField(channelDef, {suffix: 'geo'})};
-      }
       if (channelDef.bin) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.

@@ -1,5 +1,4 @@
-import {X, X2, Y, Y2} from '../../channel';
-import {LATITUDE, LONGITUDE} from '../../type';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, X, X2, Y, Y2} from '../../channel';
 import {contains, Dict, duplicate} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -20,26 +19,20 @@ export class GeoPointNode extends DataFlowNode {
       return parent;
     }
 
-    for (const coordinates of [[X, Y], [X2, Y2]]) {
-      const pair: Dict<string> = {};
-      for (const channel of coordinates) {
-        if (model.channelHasField(channel)) {
-          const fieldDef = model.fieldDef(channel);
-          if (contains([LATITUDE, LONGITUDE], fieldDef.type)) {
-            pair[fieldDef.type] = fieldDef.field;
-          }
-        }
-      }
+    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
+      const pair = coordinates.map(
+        channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+      );
 
-      if (LONGITUDE in pair || LATITUDE in pair) {
+      if (pair[0] || pair[1]) {
         parent = new GeoPointNode(
           parent,
           model.projectionName(),
-          [pair[LONGITUDE], pair[LATITUDE]],
-          [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']
+          pair,
+          pair.map(x => x + '_geo')
         );
       }
-    }
+    });
 
     return parent;
   }

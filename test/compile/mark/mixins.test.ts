@@ -1,7 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {color} from '../../../src/compile/mark/mixins';
+import {GeoPositionChannel, X, Y} from '../../../src/channel';
+import {color, pointPosition} from '../../../src/compile/mark/mixins';
+import {vgField} from '../../../src/fielddef';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/mixins', () => {
@@ -47,6 +49,37 @@ describe('compile/mark/mixins', () => {
       const colorMixins = color(model);
       assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "color"});
       assert.propertyVal(colorMixins.fill, 'value', "transparent");
+    });
+  });
+
+  describe('midPoint()', function () {
+    it('should return correctly for lat/lng', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "data": {
+          "url": "data/zipcodes.csv",
+          "format": {
+            "type": "csv"
+          }
+        },
+        "mark": "point",
+        "encoding": {
+          "longitude": {
+            "field": "longitude",
+            "type": "quantitative"
+          },
+          "latitude": {
+            "field": "latitude",
+            "type": "quantitative"
+          }
+        }
+      });
+
+      [X, Y].forEach((channel) => {
+        const mixins = pointPosition(channel, model, 'zeroOrMin');
+          const geoChannel: GeoPositionChannel = channel === 'x' ? 'longitude' : channel === 'y' ? 'latitude' : undefined;
+
+          assert.equal(mixins[channel].field, vgField(model.encoding[geoChannel], {suffix: 'geo'}));
+      });
     });
   });
 });

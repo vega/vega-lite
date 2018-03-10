@@ -17,13 +17,13 @@ describe('compile/data/geopoint', () => {
         },
         'mark': 'circle',
         'encoding': {
-          'x': {
+          'longitude': {
             'field': 'longitude',
-            'type': 'longitude'
+            'type': 'quantitative'
           },
-          'y': {
+          'latitude': {
             'field': 'latitude',
-            'type': 'latitude'
+            'type': 'quantitative'
           }
         }
       });

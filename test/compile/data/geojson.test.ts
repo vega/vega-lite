@@ -16,13 +16,13 @@ describe('compile/data/geojson', () => {
       },
       "mark": "circle",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "latitude",
-          "type": "latitude"
+          "type": "quantitative"
         }
       }
     });

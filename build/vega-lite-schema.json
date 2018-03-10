@@ -1666,6 +1666,22 @@
           "$ref": "#/definitions/FieldDef",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
+        "latitude": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1766,7 +1782,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -1788,7 +1804,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -1850,6 +1866,22 @@
         "key": {
           "$ref": "#/definitions/FieldDef",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
+        "latitude": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "opacity": {
           "anyOf": [
@@ -1955,7 +1987,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "y": {
           "anyOf": [
@@ -1977,7 +2009,7 @@
               "$ref": "#/definitions/ValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged  `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
       "type": "object"
@@ -2906,8 +2938,6 @@
     },
     "GeoType": {
       "enum": [
-        "latitude",
-        "longitude",
         "geojson"
       ],
       "type": "string"
@@ -5202,6 +5232,10 @@
         "y",
         "x2",
         "y2",
+        "longitude",
+        "latitude",
+        "longitude2",
+        "latitude2",
         "row",
         "column",
         "color",

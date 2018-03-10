@@ -64,13 +64,13 @@ describe('Axis', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
-          x: {
+          longitude: {
             field: "a",
-            type: "longitude"
+            type: "quantitative"
           },
-          y: {
+          latitude: {
             field: "b",
-            type: "latitude"
+            type: "quantitative"
           }
         }
       });

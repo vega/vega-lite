@@ -147,7 +147,7 @@ function getMarkGroups(model: UnitModel, opt: {
 export function pathGroupingFields(encoding: Encoding<string>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
-      // x, y, x2, y2, order, tooltip, href, cursor should not cause lines to group
+      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
       case 'x':
       case 'y':
       case 'order':
@@ -155,6 +155,11 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       case 'href':
       case 'x2':
       case 'y2':
+
+      case 'latitude':
+      case 'longitude':
+      case 'latitude2':
+      case 'longitude2':
       // TODO: case 'cursor':
 
       // text, shape, shouldn't be a part of line/area

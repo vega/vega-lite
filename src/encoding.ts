@@ -37,16 +37,37 @@ export interface Encoding<F> {
   y?: PositionFieldDef<F> | ValueDef;
 
   /**
-   * X2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   x2?: FieldDef<F> | ValueDef;
 
   /**
-   * Y2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   y2?: FieldDef<F> | ValueDef;
+
+
+  /**
+   * Longitude position of geographically projected marks.
+   */
+  longitude?: FieldDef<F>;
+
+  /**
+   * Latitude position of geographically projected marks.
+   */
+  latitude?: FieldDef<F>;
+
+  /**
+   * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  longitude2?: FieldDef<F>;
+
+  /**
+   * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  latitude2?: FieldDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
