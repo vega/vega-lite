@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
-import {getPathSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
+import {getSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
 import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -209,9 +209,9 @@ describe('Mark', function() {
     });
   });
 
-  describe('getPathSort', () => {
+  describe('getSort', () => {
     describe('compileUnit', function() {
-      it('should order by order field for line with order (connected scatterplot)', function () {
+      it('should order by order field', function () {
         const model = parseUnitModel({
           "data": {"url": "data/driving.json"},
           "mark": "line",
@@ -221,7 +221,7 @@ describe('Mark', function() {
             "order": {"field": "year","type": "temporal"}
           }
         });
-        assert.deepEqual(getPathSort(model), {
+        assert.deepEqual(getSort(model), {
           field: ['datum[\"year\"]'],
           order: ['ascending']
         });
@@ -247,7 +247,7 @@ describe('Mark', function() {
             }
           }
         });
-        assert.deepEqual(getPathSort(model), {
+        assert.deepEqual(getSort(model), {
           field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
           order: 'descending'
         });
@@ -268,7 +268,7 @@ describe('Mark', function() {
             }
           }
         });
-        assert.deepEqual(getPathSort(model), undefined);
+        assert.deepEqual(getSort(model), undefined);
       });
     });
   });

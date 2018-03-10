@@ -1641,7 +1641,7 @@
               "type": "array"
             }
           ],
-          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
           "anyOf": [
@@ -1800,7 +1800,7 @@
               "type": "array"
             }
           ],
-          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
