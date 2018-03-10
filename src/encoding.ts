@@ -107,7 +107,10 @@ export interface Encoding<F> {
   href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
 
   /**
-   * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
+   * Order of the marks.
+   * - For stacked marks, this `order` channel encodes stack order.
+   * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
