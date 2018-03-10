@@ -4,7 +4,7 @@ import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} f
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
-import * as util from '../../util';
+import {contains} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
@@ -14,24 +14,31 @@ import * as ref from './valueref';
 
 export function color(model: UnitModel) {
   const config = model.config;
-  const filled = model.markDef.filled;
+  const {filled, type: markType} = model.markDef;
   const vgChannel = filled ? 'fill' : 'stroke';
-  const e = nonPosition('color', model, {
-    vgChannel,
-    // Mark definition has higher precedence than config;
-    // fill/stroke has higher precedence than color.
-    defaultValue: model.markDef[vgChannel] ||
-      model.markDef.color ||
-      getMarkConfig(vgChannel, model.markDef, config) ||
-      getMarkConfig('color', model.markDef, config)
-  });
 
-  // If there is no fill, always fill symbols
-  // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square', 'geoshape'], model.mark())) {
-    e.fill = {value: 'transparent'};
-  }
-  return e;
+  return {
+    // If there is no fill, always fill symbols, bar, geoshape
+    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    ...(
+      contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ?
+      {fill: {value: 'transparent'}}:
+      {}
+    ),
+
+    ...nonPosition('color', model, {
+      vgChannel,
+      // Mark definition has higher precedence than config;
+      // fill/stroke has higher precedence than color.
+      defaultValue: model.markDef[vgChannel] ||
+        model.markDef.color ||
+        getMarkConfig(vgChannel, model.markDef, config) ||
+        getMarkConfig('color', model.markDef, config)
+    }),
+    // fill / stroke encodings have higher precedence than color encoding
+    ...nonPosition('fill', model),
+    ...nonPosition('stroke', model)
+  };
 }
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;

@@ -49,15 +49,35 @@ export interface Encoding<F> {
   y2?: FieldDef<F> | ValueDef;
 
   /**
-   * Color of the marks – either fill or stroke color based on mark type.
+   * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
    * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
    * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
+   * _Note:_
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.
+   * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
   color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+  /**
+   * Fill color of the marks.
+   * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ The `fill` channel has higher precedence than `color` and will override color value.
+   */
+  fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+
+  /**
+   * Stroke color of the marks.
+   * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ The `stroke` channel has higher precedence than `color` and will override color value.
+   */
+  stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
 
   /**
    * Opacity of the marks – either can be a value or a range.

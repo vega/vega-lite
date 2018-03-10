@@ -1624,7 +1624,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -1639,6 +1639,17 @@
             }
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `fill` channel has higher precedence than `color` and will override color value."
         },
         "href": {
           "anyOf": [
@@ -1701,6 +1712,17 @@
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` channel has higher precedence than `color` and will override color value."
         },
         "text": {
           "anyOf": [
@@ -1783,7 +1805,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on mark type.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1802,6 +1824,17 @@
             }
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `fill` channel has higher precedence than `color` and will override color value."
         },
         "href": {
           "anyOf": [
@@ -1868,6 +1901,17 @@
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` channel has higher precedence than `color` and will override color value."
         },
         "text": {
           "anyOf": [
@@ -3374,6 +3418,9 @@
         "color": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fill": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -3381,6 +3428,9 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "size": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "stroke": {
           "$ref": "#/definitions/ResolveMode"
         }
       },
@@ -4986,6 +5036,9 @@
         "color": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fill": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -4993,6 +5046,9 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "size": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "stroke": {
           "$ref": "#/definitions/ResolveMode"
         },
         "x": {
@@ -5139,9 +5195,11 @@
         "y2",
         "row",
         "column",
+        "color",
+        "fill",
+        "stroke",
         "size",
         "shape",
-        "color",
         "opacity",
         "text",
         "tooltip",
