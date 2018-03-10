@@ -74,7 +74,7 @@ For the list of all supported `interpolate` properties, please see the [mark def
 
 ## Geo Line
 
-With the [types](type.html) `longitude` and `latitude` and a corresponding [projection](projection.html), we can draw lines through geographic points.
+By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can draw lines through geographic points.
 
 <span class="vl-example" data-name="geo_line"></span>
 

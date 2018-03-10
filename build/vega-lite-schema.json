@@ -2783,7 +2783,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
         },
         "selection": {
           "additionalProperties": {
@@ -2849,7 +2849,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
         },
         "selection": {
           "additionalProperties": {
@@ -6395,7 +6395,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have a channel (one or more of `\"X\"`, `\"X2\"`, `\"Y\"`, `\"Y2\"`) with type `\"latitude\"`, or `\"longitude\"`."
+          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
         },
         "selection": {
           "additionalProperties": {
