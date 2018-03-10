@@ -5,7 +5,6 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-import {StackProperties} from '../../stack';
 import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 import {VgValueRef} from '../../vega.schema';
 import {ScaleComponent} from '../scale/component';
@@ -18,16 +17,15 @@ import * as ref from './valueref';
 export const bar: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
-    const stack = model.stack;
     return {
       ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
-      ...x(model, stack),
-      ...y(model, stack),
+      ...x(model),
+      ...y(model),
     };
   }
 };
 
-function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
+function x(model: UnitModel): VgEncodeEntry {
   const {config, encoding, markDef, width} = model;
   const orient = markDef.orient;
   const sizeDef = encoding.size;
@@ -63,7 +61,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
   }
 }
 
-function y(model: UnitModel, stack: StackProperties) {
+function y(model: UnitModel) {
   const {config, encoding, height, markDef} = model;
   const orient = markDef.orient;
   const sizeDef = encoding.size;
