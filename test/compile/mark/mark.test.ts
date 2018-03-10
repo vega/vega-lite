@@ -59,7 +59,7 @@ describe('Mark', function() {
           "y": {"field": "price", "type": "quantitative"}
         }
       });
-      it('should have a facet directive and a nested mark group', () => {
+      it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'marks');
         assert.equal(markGroup.type, 'line');
@@ -70,9 +70,31 @@ describe('Mark', function() {
         const markGroup = parseMarkGroup(model);
         assert.isUndefined(markGroup[0].transform);
       });
+
+      // NON-PATH
+    });
+    describe('Points with key', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+          "y": {"field": "price", "type": "quantitative"},
+          "key": {"field": "k", "type": "quantitative"}
+        }
+      });
+      it('should have mark group with proper data and key', () => {
+        const markGroup = parseMarkGroup(model)[0];
+        assert.equal(markGroup.type, 'symbol');
+        assert.equal(markGroup.key.field, 'k');
+        assert.equal(markGroup.from.data, 'main');
+      });
+
+      it('should not have post encoding transform', () => {
+        const markGroup = parseMarkGroup(model);
+        assert.isUndefined(markGroup[0].transform);
+      });
     });
 
-    // NON-PATH
     it('Geoshape should have post encoding transform', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "geoshape",

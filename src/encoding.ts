@@ -92,6 +92,11 @@ export interface Encoding<F> {
   detail?: FieldDef<F> | FieldDef<F>[];
 
   /**
+   * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
+   */
+  key?: FieldDef<F>;
+
+  /**
    * Text of the `text` mark.
    */
   text?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
