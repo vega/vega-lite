@@ -200,7 +200,8 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
 
   const geoChannel: GeoPositionChannel = channel === 'x' ? 'longitude' : channel === 'y' ? 'latitude' : undefined;
 
-  const valueRef = (encoding.latitude || encoding.longitude) ?
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: vgField(encoding[geoChannel], {suffix: 'geo'})} : // FIXME
     ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
@@ -216,11 +217,15 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
+
   const baseChannel = channel === 'x2' ? 'x' : 'y';
+  const channelDef = encoding[baseChannel];
+
   const geoChannel: GeoPositionChannel = channel === 'x2' ? 'longitude2' : channel === 'y2' ? 'latitude2' : undefined;
 
-  const valueRef = (encoding.latitude || encoding.longitude) ?
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: vgField(encoding[geoChannel], {suffix: 'geo'})}: // FIXME
-    ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

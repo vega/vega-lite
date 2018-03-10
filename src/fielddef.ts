@@ -338,6 +338,8 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
       return true;
     case 'quantitative':
       return !!fieldDef.bin;
+    case 'latitude':
+    case 'longitude':
     case 'temporal':
       return false;
   }

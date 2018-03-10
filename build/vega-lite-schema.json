@@ -2938,6 +2938,8 @@
     },
     "GeoType": {
       "enum": [
+        "latitude",
+        "longitude",
         "geojson"
       ],
       "type": "string"

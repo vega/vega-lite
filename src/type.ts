@@ -13,7 +13,7 @@ export namespace Type {
   export const GEOJSON: 'geojson' = 'geojson';
 }
 export type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
-export type GeoType = typeof Type.GEOJSON;
+export type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
 
 export type Type = BasicType | GeoType;
 
@@ -22,6 +22,8 @@ const TYPE_INDEX: Flag<Type> = {
   ordinal: 1,
   temporal: 1,
   nominal: 1,
+  latitude: 1,
+  longitude: 1,
   geojson: 1
 };
 
@@ -33,6 +35,7 @@ export const QUANTITATIVE = Type.QUANTITATIVE;
 export const ORDINAL = Type.ORDINAL;
 export const TEMPORAL = Type.TEMPORAL;
 export const NOMINAL = Type.NOMINAL;
+
 export const GEOJSON = Type.GEOJSON;
 
 /**
@@ -56,6 +59,10 @@ export function getFullName(type: Type|string): Type {
       case 'n':
       case NOMINAL:
         return 'nominal';
+      case Type.LATITUDE:
+        return 'latitude';
+      case Type.LONGITUDE:
+        return 'longitude';
       case GEOJSON:
         return 'geojson';
     }
