@@ -10,9 +10,9 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 {:#boxplot}
 ## Box Plot
 
-`boxplot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents the first and third quartile respectively. The ends of the whiskers can represent several possible alternative values, depending on the [`extent`](#boxplot-types) property.
+`boxplot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The median tick in the box represents the median. The lower and upper part of the box represents the first and third quartile respectively. The ends of the whiskers can represent several possible alternative values, depending on the [`extent`](#boxplot-types) property.
 
-`boxplot` is important because it effectively and quickly shows a summary of data with a five-number summary (lower and upper parts of the box, center tick in the box, and the lower and upper whiskers). It is a great visualization choice to indicate whether the distribution is skewed.
+`boxplot` is important because it effectively and quickly shows a summary of data with a five-number summary (lower and upper parts of the box, median tick in the box, and the lower and upper whiskers). It is a great visualization choice to indicate whether the distribution is skewed.
 <!-- TODO: Ideally we should have an annotated figure for this, but let's not do it for now-->
 
 To create a box plot, you can set `mark` to `"boxplot"`:
@@ -30,7 +30,7 @@ Alternatively, you can use box plot's mark definition object, which supports the
 
 {% include table.html props="type,extent,orient,size" source="BoxPlotDef" %}
 
-Besides the properties listed above, `box`, `center`, `whisker` can be used to specifying the underlying mark properties for different parts of the box plots as well.
+Besides the properties listed above, `box`, `median`, `whisker` can be used to specifying the underlying mark properties for different parts of the box plots as well.
 
 ### Basic Usage
 {:#boxplot-types}

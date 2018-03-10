@@ -230,7 +230,7 @@
             "type": "rect",
             "style": [
                 "tick",
-                "boxplot-center"
+                "boxplot-median"
             ],
             "from": {
                 "data": "data_3"

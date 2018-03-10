@@ -122,7 +122,7 @@
       "mark": {
         "type": "tick",
         "size": 14,
-        "style": "boxplot-center",
+        "style": "boxplot-median",
         "color": "white"
       },
       "encoding": {

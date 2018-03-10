@@ -16,11 +16,11 @@ import {getMarkDefMixins} from './common';
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'center' | 'whisker';
+export type BoxPlotPart = 'box' | 'median' | 'whisker';
 
 const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
-  center: 1,
+  median: 1,
   whisker: 1
 };
 
@@ -33,7 +33,7 @@ export type BoxPlotPartsMixins = {
 };
 
 export interface BoxPlotConfig extends BoxPlotPartsMixins {
-  /** Size of the box and center tick of a box plot */
+  /** Size of the box and median tick of a box plot */
   size?: number;
 
   /**
@@ -153,11 +153,11 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
           ...encodingWithoutContinuousAxis,
           ...(size ? {size} : {})
         }
-      }, { // center tick
+      }, { // median tick
         mark: {
           type: 'tick',
           ...(sizeValue ? {size: sizeValue} : {}),
-          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'center', config.boxplot)
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'median', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
