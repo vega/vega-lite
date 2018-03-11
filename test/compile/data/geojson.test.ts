@@ -28,7 +28,7 @@ describe('compile/data/geojson', () => {
     });
 
     const root = new DataFlowNode(null);
-    GeoJSONNode.makeAll(root, model);
+    GeoJSONNode.parseAll(root, model);
 
     let node = root.children[0];
 

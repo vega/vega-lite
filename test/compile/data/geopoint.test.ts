@@ -30,7 +30,7 @@ describe('compile/data/geopoint', () => {
       model.parse();
 
       const root = new DataFlowNode(null);
-      GeoPointNode.makeAll(root, model);
+      GeoPointNode.parseAll(root, model);
 
       let node = root.children[0];
 

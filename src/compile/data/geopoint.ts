@@ -15,7 +15,7 @@ export class GeoPointNode extends DataFlowNode {
     super(parent);
   }
 
-  public static makeAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
+  public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
     if (!model.projectionName()) {
       return parent;
     }

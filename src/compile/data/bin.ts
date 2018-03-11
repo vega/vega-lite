@@ -88,7 +88,7 @@ export class BinNode extends DataFlowNode {
     super(parent);
   }
 
-  public static makeBinFromEncoding(parent: DataFlowNode, model: ModelWithField) {
+  public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
       if (fieldDef.bin) {
         const {key, binComponent} = createBinComponent(fieldDef, model);
