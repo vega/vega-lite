@@ -15,14 +15,14 @@ export interface TimeUnitComponent {
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
-    return new TimeUnitNode(duplicate(this.formula));
+    return new TimeUnitNode(null, duplicate(this.formula));
   }
 
-  constructor(private formula: Dict<TimeUnitComponent>) {
-    super();
+  constructor(parent: DataFlowNode, private formula: Dict<TimeUnitComponent>) {
+    super(parent);
   }
 
-  public static makeFromEncoding(model: ModelWithField) {
+  public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
       if (fieldDef.timeUnit) {
         const f = vgField(fieldDef);
@@ -39,11 +39,11 @@ export class TimeUnitNode extends DataFlowNode {
       return null;
     }
 
-    return new TimeUnitNode(formula);
+    return new TimeUnitNode(parent, formula);
   }
 
-  public static makeFromTransform(t: TimeUnitTransform) {
-    return new TimeUnitNode({
+  public static makeFromTransform(parent: DataFlowNode, t: TimeUnitTransform) {
+    return new TimeUnitNode(parent, {
       [t.field]: {
         as: t.as,
         timeUnit: t.timeUnit,

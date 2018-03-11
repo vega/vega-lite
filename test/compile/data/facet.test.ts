@@ -33,7 +33,7 @@ describe('compile/data/facet', function() {
         'config': {'view': {'fill': 'yellow'}}
       });
 
-      const node = new FacetNode(model, 'facetName', 'dataName');
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
       assert.deepEqual(data[0], {
@@ -76,7 +76,7 @@ describe('compile/data/facet', function() {
         }
       });
 
-      const node = new FacetNode(model, 'facetName', 'dataName');
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
       // crossed data

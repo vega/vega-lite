@@ -36,7 +36,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model).parse, {
+      assert.deepEqual(ParseNode.make(null, model).parse, {
         a: 'number',
         b: 'date',
         date: 'date'
@@ -52,7 +52,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model).parse, {
+      assert.deepEqual(ParseNode.make(null, model).parse, {
         a: 'number'
       });
     });
@@ -69,7 +69,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model).parse, {
+      assert.deepEqual(ParseNode.make(null, model).parse, {
         a: 'number',
         b: 'date',
         c: 'number',
@@ -89,7 +89,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model).parse, {
+      assert.deepEqual(ParseNode.make(null, model).parse, {
         'a': 'date',
         'b': 'number'
       });
@@ -105,7 +105,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model), null);
+      assert.deepEqual(ParseNode.make(null, model), null);
     });
 
     it('should not parse the same field twice', function() {
@@ -130,7 +130,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.make(model).parse, {
+      assert.deepEqual(ParseNode.make(null, model).parse, {
         'a': 'number'
       });
       model.parseScale();
@@ -143,7 +143,7 @@ describe('compile/data/formatparse', () => {
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = {a: 'number'};
-      assert.deepEqual(ParseNode.make(model.child as ModelWithField).parse, {
+      assert.deepEqual(ParseNode.make(null, model.child as ModelWithField).parse, {
         'b': 'date'
       });
     });
@@ -151,7 +151,7 @@ describe('compile/data/formatparse', () => {
 
   describe('assembleTransforms', function() {
     it('should assemble correct parse expressions', function() {
-      const p = new ParseNode({
+      const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',
         s: 'string',
@@ -171,7 +171,7 @@ describe('compile/data/formatparse', () => {
     });
 
     it('should show warning for unrecognized types', log.wrap((localLogger) => {
-      const p = new ParseNode({
+      const p = new ParseNode(null, {
         x: 'foo',
       });
 

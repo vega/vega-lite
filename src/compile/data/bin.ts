@@ -81,14 +81,14 @@ export interface BinComponent {
 
 export class BinNode extends DataFlowNode {
   public clone() {
-    return new BinNode(duplicate(this.bins));
+    return new BinNode(null, duplicate(this.bins));
   }
 
-  constructor(private bins: Dict<BinComponent>) {
-    super();
+  constructor(parent: DataFlowNode, private bins: Dict<BinComponent>) {
+    super(parent);
   }
 
-  public static makeBinFromEncoding(model: ModelWithField) {
+  public static makeBinFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
       if (fieldDef.bin) {
         const {key, binComponent} = createBinComponent(fieldDef, model);
@@ -105,16 +105,16 @@ export class BinNode extends DataFlowNode {
       return null;
     }
 
-    return new BinNode(bins);
+    return new BinNode(parent, bins);
   }
 
   /**
    * Creates a bin node from BinTransform.
    * The optional parameter should provide
    */
-  public static makeFromTransform(t: BinTransform, model: Model) {
+  public static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model) {
     const {key, binComponent} = createBinComponent(t, model);
-    return new BinNode({
+    return new BinNode(parent, {
       [key]: binComponent
     });
   }
