@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
+
 import {Encoding} from '../src/encoding';
 import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
@@ -545,7 +545,7 @@ describe('normalizeRangedUnitSpec', () => {
   });
 
   it('should do nothing if there is no missing x or y', function() {
-    const spec: TopLevelSpec = {
+    const spec: NormalizedSpec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -555,7 +555,7 @@ describe('normalizeRangedUnitSpec', () => {
       }
     };
 
-    assert.deepEqual<TopLevelSpec>(normalize(spec, defaultConfig), spec);
+    assert.deepEqual(normalize(spec, defaultConfig), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {

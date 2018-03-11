@@ -78,6 +78,7 @@ describe('compile/compile', function() {
       "autosize": {
         "resize": true
       },
+      "data": {"url": "foo.csv"},
       "mark": "point",
       "encoding": {}
     }).spec;
@@ -91,6 +92,7 @@ describe('compile/compile', function() {
         "type": "fit",
         "contains": "content"
       },
+      "data": {"url": "foo.csv"},
       "mark": "point",
       "encoding": {}
     }).spec;
@@ -101,6 +103,7 @@ describe('compile/compile', function() {
   it('should set autosize to fit if requested', () => {
     const spec = compile({
       "autosize": "fit",
+      "data": {"url": "foo.csv"},
       "mark": "point",
       "encoding": {}
     }).spec;
@@ -233,6 +236,7 @@ describe('compile/compile', function() {
   it('should use provided config.', () => {
     const spec = compile({
       mark: "point",
+      data: {url: "foo.csv"},
       encoding: {}
     }, {config: {
       background: "blue"
@@ -243,6 +247,7 @@ describe('compile/compile', function() {
   it('should merge spec and provided config.', () => {
     const spec = compile({
       mark: "point",
+      data: {url: "foo.csv"},
       encoding: {},
       config: {
         background: "red"
