@@ -749,17 +749,17 @@
                 {
                     "scale": "child_distance_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_distance_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_distance_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -1157,17 +1157,17 @@
                 {
                     "scale": "child_delay_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_delay_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_delay_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -1565,17 +1565,17 @@
                 {
                     "scale": "child_time_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_time_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_time_x"
+                    "zindex": 0
                 }
             ]
         }

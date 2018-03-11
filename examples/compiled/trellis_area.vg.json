@@ -175,7 +175,6 @@
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
                     },
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -184,7 +183,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 }
             ]
         },

@@ -175,7 +175,6 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -190,7 +189,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 }
             ]
         },

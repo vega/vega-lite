@@ -748,17 +748,17 @@
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Horsepower_Miles_per_Gallon_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Miles_per_Gallon_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_y",
@@ -773,17 +773,17 @@
                 {
                     "scale": "child_Horsepower_Miles_per_Gallon_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Horsepower_Miles_per_Gallon_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Miles_per_Gallon_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -1319,17 +1319,17 @@
                 {
                     "scale": "child_Horsepower_Acceleration_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Horsepower_Acceleration_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Acceleration_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Horsepower_Acceleration_y",
@@ -1344,17 +1344,17 @@
                 {
                     "scale": "child_Horsepower_Acceleration_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Horsepower_Acceleration_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Acceleration_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -1802,17 +1802,17 @@
                 {
                     "scale": "child_Horsepower_Horsepower_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Horsepower_Horsepower_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Horsepower_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Horsepower_Horsepower_y",
@@ -1827,17 +1827,17 @@
                 {
                     "scale": "child_Horsepower_Horsepower_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Horsepower_Horsepower_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Horsepower_Horsepower_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -2373,17 +2373,17 @@
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Acceleration_Miles_per_Gallon_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Miles_per_Gallon_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_y",
@@ -2398,17 +2398,17 @@
                 {
                     "scale": "child_Acceleration_Miles_per_Gallon_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Acceleration_Miles_per_Gallon_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Miles_per_Gallon_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -2856,17 +2856,17 @@
                 {
                     "scale": "child_Acceleration_Acceleration_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Acceleration_Acceleration_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Acceleration_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Acceleration_Acceleration_y",
@@ -2881,17 +2881,17 @@
                 {
                     "scale": "child_Acceleration_Acceleration_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Acceleration_Acceleration_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Acceleration_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -3427,17 +3427,17 @@
                 {
                     "scale": "child_Acceleration_Horsepower_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Acceleration_Horsepower_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Horsepower_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Acceleration_Horsepower_y",
@@ -3452,17 +3452,17 @@
                 {
                     "scale": "child_Acceleration_Horsepower_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Acceleration_Horsepower_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Acceleration_Horsepower_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -3910,17 +3910,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
@@ -3935,17 +3935,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -4481,17 +4481,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Acceleration_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Acceleration_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Acceleration_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Acceleration_y",
@@ -4506,17 +4506,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Acceleration_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Acceleration_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Acceleration_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -5052,17 +5052,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Horsepower_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Horsepower_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_y",
@@ -5077,17 +5077,17 @@
                 {
                     "scale": "child_Miles_per_Gallon_Horsepower_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_Miles_per_Gallon_Horsepower_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_Miles_per_Gallon_Horsepower_x"
+                    "zindex": 0
                 }
             ]
         }

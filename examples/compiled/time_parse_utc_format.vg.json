@@ -101,7 +101,6 @@
             "scale": "y",
             "orient": "left",
             "labelOverlap": true,
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -110,7 +109,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         }
     ],
     "config": {
