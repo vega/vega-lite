@@ -73,8 +73,6 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
 export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
-  // TODO: refactor how we refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-
   const {defaultValue, vgChannel} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
