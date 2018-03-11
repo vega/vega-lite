@@ -10,7 +10,7 @@ export class GeoJSONNode extends DataFlowNode {
     return new GeoJSONNode(null, duplicate(this.fields), this.geojson, this.signal);
   }
 
-  public static makeAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
+  public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
     let geoJsonCounter = 0;
 
     for (const coordinates of [[X, Y], [X2, Y2]]) {

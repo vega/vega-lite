@@ -60,7 +60,7 @@ export class StackNode extends DataFlowNode {
   }
 
   constructor(parent: DataFlowNode, stack: StackComponent) {
-    super(parent, );
+    super(parent);
 
     this._stack = stack;
   }
