@@ -54,5 +54,5 @@ export function normalize(
     return normalizer(spec, config);
   }
 
-  throw new Error(`Unregistered composite mark ${mark}`);
+  throw new Error(`Invalid mark type "${mark}"`);
 }
