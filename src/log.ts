@@ -9,6 +9,7 @@ import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
+import {Projection} from './projection';
 import {ScaleType} from './scale';
 import {Type} from './type';
 import {stringify} from './util';
@@ -146,6 +147,14 @@ export namespace message {
   export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the the data from the secondary source.';
 
   // ENCODING & FACET
+
+  export function encodingOverridden(channels: Channel[]) {
+    return `Layer's shared ${channels.join(',')} channel ${channels.length === 1 ? 'is' : 'are'} overriden`;
+  }
+  export function projectionOverridden(opt: {parentProjection: Projection, projection: Projection}) {
+    const {parentProjection, projection} = opt;
+    return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(projection)}.`;
+  }
 
   export function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean) {
     return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;

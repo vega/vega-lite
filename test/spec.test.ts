@@ -1,10 +1,10 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {Encoding} from '../src/encoding';
 import {Field, FieldDef} from '../src/fielddef';
-import {MarkDef} from '../src/mark';
-import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, NormalizedSpec, TopLevel, TopLevelSpec} from '../src/spec';
+import {LocalLogger} from '../src/log';
+import * as log from '../src/log';
+import {fieldDefs, normalize, NormalizedSpec, TopLevel, TopLevelSpec} from '../src/spec';
 import {defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
@@ -26,7 +26,7 @@ describe('normalize()', function () {
         }
       };
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
+      assert.deepEqual(normalize(spec, config), {
         "name": "faceted",
         "description": "faceted spec",
         "data": {"url": "data/movies.json"},
@@ -57,7 +57,7 @@ describe('normalize()', function () {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
+      assert.deepEqual(normalize(spec, config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -75,7 +75,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+      assert.deepEqual(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -193,11 +193,117 @@ describe('normalize()', function () {
   });
 
   describe('normalizeLayer', () => {
-    it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
-        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+    it('correctly passes shared projection and encoding to children of layer', () => {
+      const output = normalize({
         "data": {"url": "data/population.json"},
-        "transform": [{"filter": "datum.year == 2000"}],
+        "projection": {"type": "mercator"},
+        "encoding": {
+          "x": {"field": "age", "type": "ordinal"}
+        },
+        "layer": [
+          {"mark": "point"},
+          {
+            "layer": [
+              {"mark": "rule"},
+              {
+                "mark": "text",
+                "encoding": {
+                  "text": {"field": "a", "type": "nominal"}
+                }
+              }
+            ]
+          }
+        ]
+      }, defaultConfig);
+
+      assert.deepEqual(output, {
+        "data": {"url": "data/population.json"},
+        layer: [
+          {
+            "projection": {"type": "mercator"},
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "age", "type": "ordinal"}
+            }
+          },
+          {
+            "layer": [
+              {
+                "projection": {"type": "mercator"},
+                "mark": "rule",
+                "encoding": {
+                  "x": {"field": "age", "type": "ordinal"}
+                }
+              },
+              {
+                "projection": {"type": "mercator"},
+                "mark": "text",
+                "encoding": {
+                  "x": {"field": "age", "type": "ordinal"},
+                  "text": {"field": "a", "type": "nominal"}
+                }
+              }
+            ]
+          }
+        ]
+      });
+    });
+
+
+    it('correctly overrides shared projection and encoding and throws warnings', log.wrap((localLogger: LocalLogger) => {
+      const output = normalize({
+        "data": {"url": "data/population.json"},
+        "projection": {"type": "mercator"},
+        "encoding": {
+          "x": {"field": "age", "type": "ordinal"}
+        },
+        "layer": [
+          {
+            "projection": {"type": "albersUsa"},
+            "mark": "rule"
+          },
+          {
+            "mark": "text",
+            "encoding": {
+              "x": {"field": "a", "type": "nominal"}
+            }
+          }
+        ]
+      }, defaultConfig);
+
+      assert.equal(localLogger.warns.length, 2);
+
+      assert.equal(localLogger.warns[0], log.message.projectionOverridden({
+        parentProjection: {"type": "mercator"},
+        projection: {"type": "albersUsa"}
+      }));
+
+      assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
+
+      assert.deepEqual(output, {
+        "data": {"url": "data/population.json"},
+        layer: [
+          {
+            "projection": {"type": "albersUsa"},
+            "mark": "rule",
+            "encoding": {
+              "x": {"field": "age", "type": "ordinal"}
+            }
+          },
+          {
+            "projection": {"type": "mercator"},
+            "mark": "text",
+            "encoding": {
+              "x": {"field": "a", "type": "nominal"},
+            }
+          }
+        ]
+      });
+    }));
+
+    it('should produce correct layered specs for mean point and vertical error bar', () => {
+      assert.deepEqual(normalize({
+        "data": {"url": "data/population.json"},
         layer: [
           {
             "mark": "point",
@@ -232,9 +338,7 @@ describe('normalize()', function () {
           }
         ]
       }, defaultConfig), {
-        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": [{"filter": "datum.year == 2000"}],
         layer: [
           {
             "mark": "point",

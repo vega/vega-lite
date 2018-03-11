@@ -1,16 +1,14 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
-import {Encoding} from '../../src/encoding';
-import {Field} from '../../src/fielddef';
-import {MarkDef} from '../../src/mark';
-import {GenericSpec, GenericUnitSpec, normalize} from '../../src/spec';
+
+import {normalize} from '../../src/spec';
 import {defaultConfig} from '.././../src/config';
+
 
 describe("normalizeErrorBar", () => {
 
     it("should produce correct layered specs for horizontal error bar", () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+      assert.deepEqual(normalize({
         "data": {"url": "data/population.json"},
         mark: "error-bar",
         encoding: {
