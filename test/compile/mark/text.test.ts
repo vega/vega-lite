@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
-import {TopLevelExtendedSpec, UnitSpec} from '../../../src/spec';
+import {TopLevelSpec, UnitSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 
@@ -140,7 +140,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, color, and size', function() {
-    const spec: TopLevelExtendedSpec = {
+    const spec: TopLevelSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},

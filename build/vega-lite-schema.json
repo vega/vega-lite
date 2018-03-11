@@ -2,13 +2,13 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "anyOf": [
     {
-      "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
+      "$ref": "#/definitions/TopLevelFacetedUnitSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelFacetSpec"
     },
     {
       "$ref": "#/definitions/TopLevel<LayerSpec>"
-    },
-    {
-      "$ref": "#/definitions/TopLevel<FacetSpec>"
     },
     {
       "$ref": "#/definitions/TopLevel<RepeatSpec>"
@@ -6105,29 +6105,7 @@
       ],
       "type": "object"
     },
-    "TopLevelExtendedSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<FacetSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<LayerSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<RepeatSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<VConcatSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<HConcatSpec>"
-        }
-      ]
-    },
-    "TopLevel<FacetSpec>": {
+    "TopLevelFacetSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -6219,7 +6197,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<FacetedUnitSpec>": {
+    "TopLevelFacetedUnitSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
