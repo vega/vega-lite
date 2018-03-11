@@ -13,7 +13,7 @@ export function assembleAxis(
 ): VgAxis {
   const axis = axisCmpt.combine() as VgAxis;
 
-  // Remove properties that's not for this kind of axis
+  // Remove properties that are not valid for this kind of axis
   keys(axis).forEach((key) => {
     const propType = AXIS_PROPERTY_TYPE[key];
     if (propType && propType !== kind && propType !== 'both') {
@@ -28,7 +28,7 @@ export function assembleAxis(
 
     // Remove unnecessary encode block
     if (axis.encode) {
-      // only need to keep encode block for grid
+      // Only need to keep encode block for grid
       const {grid} = axis.encode;
       axis.encode = {
         ...(grid ? {grid} : {})
