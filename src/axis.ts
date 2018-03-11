@@ -73,18 +73,36 @@ export interface Axis extends VgAxisBase, Guide {
   encoding?: AxisEncoding;
 }
 
+
+export type AxisPart = keyof AxisEncoding;
+export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
+
+
+
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
 export const AXIS_PROPERTY_TYPE: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in keyof VgAxis]?: 'main' | 'grid'
+  [k in keyof VgAxis]: 'main' | 'grid' | 'both'
 } = {
   grid: 'grid',
+  gridScale: 'grid',
+
+  domain: 'main',
+  labels: 'main',
+  labelFlush: 'main',
   labelOverlap: 'main',
+  minExtent: 'main',
+  maxExtent: 'main',
   offset: 'main',
-  title: 'main'
+  ticks: 'main',
+  title: 'main',
+  values: 'both',
+
+  scale: 'both',
+  zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
 
 export interface AxisEncoding {
