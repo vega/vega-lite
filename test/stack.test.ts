@@ -1,15 +1,15 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
-
-import * as log from '../src/log';
-
 import {AggregateOp} from 'vega';
+
 import {DETAIL, X, Y} from '../src/channel';
+import * as log from '../src/log';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {isStacked, TopLevel, UnitSpec} from '../src/spec';
 import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
+import {stringify} from '../src/util';
+
 
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
@@ -242,7 +242,7 @@ describe('stack', () => {
         assert.isFalse(isStacked(spec));
         const warns = localLogger.warns;
         assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(X),
-          JSON.stringify({stacked: stacked, mark: mark})
+          stringify({stacked: stacked, mark: mark})
         );
       });
     }
@@ -268,7 +268,7 @@ describe('stack', () => {
         assert.isFalse(isStacked(spec));
         const warns = localLogger.warns;
         assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(Y),
-          JSON.stringify({stacked: stacked, mark: mark})
+          stringify({stacked: stacked, mark: mark})
         );
       });
     }

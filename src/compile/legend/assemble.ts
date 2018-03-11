@@ -1,6 +1,4 @@
-import * as stringify from 'json-stable-stringify';
-
-import {flatten, keys, vals} from '../../util';
+import {flatten, keys, stringify, vals} from '../../util';
 import {VgLegend} from '../../vega.schema';
 import {Model} from '../model';
 import {LegendComponent} from './component';
