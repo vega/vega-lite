@@ -112,7 +112,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "a",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -127,7 +126,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         }
     ],
     "config": {

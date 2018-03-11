@@ -193,7 +193,6 @@
             "orient": "bottom",
             "labelOverlap": true,
             "title": "Cylinders",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -208,7 +207,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "y",

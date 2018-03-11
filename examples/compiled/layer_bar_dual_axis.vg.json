@@ -224,7 +224,6 @@
             "orient": "bottom",
             "labelOverlap": true,
             "title": "date (month)",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -242,7 +241,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "layer_0_y",

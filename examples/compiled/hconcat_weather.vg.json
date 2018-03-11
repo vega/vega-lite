@@ -208,7 +208,6 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -226,7 +225,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "concat_0_y",
@@ -241,17 +241,17 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "concat_0_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
+                    "zindex": 0
                 }
             ]
         },

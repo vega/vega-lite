@@ -122,7 +122,6 @@
                 "signal": "ceil(width/40)"
             },
             "title": "date (year-month)",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -131,22 +130,23 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
@@ -161,17 +161,17 @@
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {
