@@ -74,9 +74,9 @@ describe('compile/scale', () => {
       });
 
       describe('continuous', () => {
-        it('should return point scale for ordinal X,Y for marks others than rect and bar', () => {
+        it('should return point scale for ordinal X,Y for marks others than rect, rule, and bar', () => {
           PRIMITIVE_MARKS.forEach((mark) => {
-            if (util.contains(['bar', 'rect'], mark)) {
+            if (util.contains(['bar', 'rule', 'rect'], mark)) {
               return;
             }
 
@@ -91,13 +91,15 @@ describe('compile/scale', () => {
           });
         });
 
-        it('should return band scale for ordinal X,Y when mark is rect', () => {
+        it('should return band scale for ordinal X,Y when mark is rect, rule, bar', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              assert.equal(
-                scaleType(undefined, channel, {type: t}, 'rect', defaultScaleConfig),
-                ScaleType.BAND
-              );
+              ['bar', 'rule', 'rect'].forEach((mark) => {
+                assert.equal(
+                  scaleType(undefined, channel, {type: t}, 'rect', defaultScaleConfig),
+                  ScaleType.BAND
+                );
+              });
             });
           });
         });
