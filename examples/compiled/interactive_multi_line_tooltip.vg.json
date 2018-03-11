@@ -13,7 +13,10 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "date": "date"
+                }
             }
         },
         {
@@ -61,13 +64,19 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "filter",
+                    "expr": "(vlSingle(\"tooltip_store\", datum))"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_2",
+            "transform": [
+                {
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
-                },
-                {
-                    "type": "filter",
-                    "expr": "(vlSingle(\"tooltip_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -76,8 +85,8 @@
             ]
         },
         {
-            "name": "data_3",
-            "source": "source_0",
+            "name": "data_4",
+            "source": "data_2",
             "transform": [
                 {
                     "type": "formula",
@@ -88,10 +97,6 @@
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
-                },
-                {
-                    "type": "filter",
-                    "expr": "(vlSingle(\"tooltip_store\", datum))"
                 },
                 {
                     "type": "filter",
@@ -282,13 +287,13 @@
             ]
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_2_layer_0_marks",
             "type": "rule",
             "style": [
                 "rule"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -311,13 +316,13 @@
             }
         },
         {
-            "name": "layer_3_marks",
+            "name": "layer_2_layer_1_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -364,11 +369,11 @@
                         "field": "date"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "date"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "date"
                     }
                 ]
@@ -394,7 +399,7 @@
                         "field": "price"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "price"
                     }
                 ]
@@ -422,7 +427,7 @@
                         "field": "symbol"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "symbol"
                     }
                 ],
