@@ -12,7 +12,7 @@ describe('compile/data/assemble', () => {
     it('should assemble named data source', () => {
       const src = new SourceNode({name: 'foo'});
       const outputNodeRefCounts = {};
-      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = src;
 
       assert.equal(main.getSource(), 'mainOut');
@@ -32,11 +32,11 @@ describe('compile/data/assemble', () => {
     it('should assemble raw and main output', () => {
       const src = new SourceNode({url: 'foo.csv'});
       const outputNodeRefCounts = {};
-      const raw = new OutputNode('rawOut', 'raw', outputNodeRefCounts);
+      const raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
       raw.parent = src;
-      const agg = new AggregateNode({a: true}, {b: {count: 'count_*'}});
+      const agg = new AggregateNode(null, {a: true}, {b: {count: 'count_*'}});
       agg.parent = raw;
-      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = agg;
 
       assert.equal(raw.getSource(), 'rawOut');
@@ -70,7 +70,7 @@ describe('compile/data/assemble', () => {
     it('should assemble named datasets with datastore', () => {
       const src = new SourceNode({name: 'foo'});
       const outputNodeRefCounts = {};
-      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = src;
 
       const data = assembleRootData({

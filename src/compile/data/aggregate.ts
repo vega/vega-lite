@@ -44,18 +44,18 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode({...this.dimensions}, duplicate(this.measures));
+    return new AggregateNode(null, {...this.dimensions}, duplicate(this.measures));
   }
 
   /**
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict of aggregation functions and names to use
    */
-  constructor(private dimensions: StringSet, private measures: Dict<{[key in AggregateOp]?: string}>) {
-    super();
+  constructor(parent: DataFlowNode, private dimensions: StringSet, private measures: Dict<{[key in AggregateOp]?: string}>) {
+    super(parent);
   }
 
-  public static makeFromEncoding(model: UnitModel): AggregateNode {
+  public static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode {
     let isAggregate = false;
     model.forEachFieldDef(fd => {
       if (fd.aggregate) {
@@ -95,10 +95,10 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    return new AggregateNode(dims, meas);
+    return new AggregateNode(parent, dims, meas);
   }
 
-  public static makeFromTransform(t: AggregateTransform): AggregateNode {
+  public static makeFromTransform(parent: DataFlowNode, t: AggregateTransform): AggregateNode {
     const dims = {};
     const meas = {};
 
@@ -122,7 +122,7 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    return new AggregateNode(dims, meas);
+    return new AggregateNode(parent, dims, meas);
   }
 
   public merge(other: AggregateNode) {

@@ -8,11 +8,11 @@ import {DataFlowNode} from './dataflow';
 export class FilterNode extends DataFlowNode {
   private expr: string;
   public clone() {
-    return new FilterNode(this.model, duplicate(this.filter));
+    return new FilterNode(null, this.model, duplicate(this.filter));
   }
 
-  constructor(private readonly model: Model, private filter: LogicalOperand<Predicate>) {
-    super();
+  constructor(parent: DataFlowNode, private readonly model: Model, private filter: LogicalOperand<Predicate>) {
+    super(parent);
     this.expr = expression(this.model, this.filter, this);
   }
 

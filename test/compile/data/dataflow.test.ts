@@ -7,15 +7,12 @@ describe('compile/data/dataflow', function() {
   describe('DataFlowNode', function() {
     describe('swap', () => {
       it('should correctly swap two nodes in a simple chain', function() {
-        const a = new DataFlowNode('a');
-        const b = new DataFlowNode('b');
-        b.parent = a;
+        const a = new DataFlowNode(null, 'a');
+        const b = new DataFlowNode(a, 'b');
 
-        const c = new DataFlowNode('c');
-        c.parent = b;
+        const c = new DataFlowNode(b, 'c');
 
-        const d = new DataFlowNode('d');
-        d.parent = c;
+        const d = new DataFlowNode(c, 'd');
 
         c.swapWithParent();
 
@@ -32,24 +29,16 @@ describe('compile/data/dataflow', function() {
       });
 
       it('should correctly swap two nodes', function() {
-        const root = new DataFlowNode('root');
-        const parent = new DataFlowNode('parent');
-        parent.parent = root;
+        const root = new DataFlowNode(null, 'root');
+        const parent = new DataFlowNode(root, 'parent');
 
-        const node = new DataFlowNode('node');
-        node.parent = parent;
+        const node = new DataFlowNode(parent, 'node');
 
-        const child1 = new DataFlowNode('child1');
-        child1.parent = node;
+        const child1 = new DataFlowNode(node, 'child1');
+        const child2 = new DataFlowNode(node, 'child2');
 
-        const child2 = new DataFlowNode('child2');
-        child2.parent = node;
-
-        const parentChild1 = new DataFlowNode('parentChild1');
-        parentChild1.parent = parent;
-
-        const parentChild2 = new DataFlowNode('parentChild2');
-        parentChild2.parent = parent;
+        const parentChild1 = new DataFlowNode(parent, 'parentChild1');
+        const parentChild2 = new DataFlowNode(parent, 'parentChild2');
 
         node.swapWithParent();
 
@@ -66,17 +55,20 @@ describe('compile/data/dataflow', function() {
           assert.equal(c.numChildren(), 0);
           assert.equal(c.parent.debugName, 'parent');
         });
+
+        assert.equal(child1.debugName, 'child1');
+        assert.equal(child2.debugName, 'child2');
+        assert.equal(parentChild1.debugName, 'parentChild1');
+        assert.equal(parentChild2.debugName, 'parentChild2');
       });
     });
 
     describe('remove', function() {
       it('should remove node from dataflow', function() {
-        const a = new DataFlowNode('a');
-        const b = new DataFlowNode('b');
-        b.parent = a;
+        const a = new DataFlowNode(null, 'a');
+        const b = new DataFlowNode(a, 'b');
 
-        const c = new DataFlowNode('c');
-        c.parent = b;
+        const c = new DataFlowNode(b, 'c');
 
         assert.deepEqual(a.children, [b]);
         assert.equal(b.parent, a);
@@ -91,13 +83,10 @@ describe('compile/data/dataflow', function() {
 
     describe('insertAsParentOf', function() {
       it('should insert node into dataflow', function() {
-        const a = new DataFlowNode('a');
-        const anotherChild = new DataFlowNode('a');
-        const b = new DataFlowNode('b');
-        const c = new DataFlowNode('c');
-
-        anotherChild.parent = a;
-        c.parent = a;
+        const a = new DataFlowNode(null, 'a');
+        const anotherChild = new DataFlowNode(a, 'a');
+        const b = new DataFlowNode(null, 'b');
+        const c = new DataFlowNode(a, 'c');
 
         b.insertAsParentOf(c);
 

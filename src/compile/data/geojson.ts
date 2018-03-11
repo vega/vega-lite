@@ -7,11 +7,11 @@ import {DataFlowNode} from './dataflow';
 
 export class GeoJSONNode extends DataFlowNode {
   public clone() {
-    return new GeoJSONNode(duplicate(this.fields), this.geojson, this.signal);
+    return new GeoJSONNode(null, duplicate(this.fields), this.geojson, this.signal);
   }
 
-  public static makeAll(model: UnitModel): GeoJSONNode[] {
-    const nodes: GeoJSONNode[] = [];
+  public static makeAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
+    let geoJsonCounter = 0;
 
     for (const coordinates of [[X, Y], [X2, Y2]]) {
       const pair: Dict<string> = {};
@@ -25,22 +25,22 @@ export class GeoJSONNode extends DataFlowNode {
       }
 
       if (LONGITUDE in pair || LATITUDE in pair) {
-        nodes.push(new GeoJSONNode([pair[LONGITUDE], pair[LATITUDE]], null, model.getName(`geojson_${nodes.length}`)));
+        parent = new GeoJSONNode(parent, [pair[LONGITUDE], pair[LATITUDE]], null, model.getName(`geojson_${geoJsonCounter++}`));
       }
     }
 
     if (model.channelHasField(SHAPE)) {
       const fieldDef = model.fieldDef(SHAPE);
       if (fieldDef.type === GEOJSON) {
-        nodes.push(new GeoJSONNode(null, fieldDef.field, model.getName(`geojson_${nodes.length}`)));
+        parent = new GeoJSONNode(null, null, fieldDef.field, model.getName(`geojson_${geoJsonCounter++}`));
       }
     }
 
-    return nodes;
+    return parent;
   }
 
-  constructor(private fields?: string[], private geojson?: string, private signal?: string) {
-    super();
+  constructor(parent: DataFlowNode, private fields?: string[], private geojson?: string, private signal?: string) {
+    super(parent);
   }
 
   public assemble(): VgGeoJSONTransform {

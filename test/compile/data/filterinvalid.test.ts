@@ -11,7 +11,7 @@ import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: ModelWithField) {
-  return FilterInvalidNode.make(model);
+  return FilterInvalidNode.make(null, model);
 }
 
 describe('compile/data/nullfilter', function() {

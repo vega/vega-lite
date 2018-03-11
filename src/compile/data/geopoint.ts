@@ -8,18 +8,16 @@ import {DataFlowNode} from './dataflow';
 
 export class GeoPointNode extends DataFlowNode {
   public clone() {
-    return new GeoPointNode(this.projection, duplicate(this.fields), duplicate(this.as));
+    return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
   }
 
-  constructor(private projection: string, private fields: string[], private as: string[]) {
-    super();
+  constructor(parent: DataFlowNode, private projection: string, private fields: string[], private as: string[]) {
+    super(parent);
   }
 
-  public static makeAll(model: UnitModel): GeoPointNode[] {
-    const nodes: GeoPointNode[] = [];
-
+  public static makeAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
     if (!model.projectionName()) {
-      return nodes;
+      return parent;
     }
 
     for (const coordinates of [[X, Y], [X2, Y2]]) {
@@ -34,17 +32,16 @@ export class GeoPointNode extends DataFlowNode {
       }
 
       if (LONGITUDE in pair || LATITUDE in pair) {
-        nodes.push(
-          new GeoPointNode(
-            model.projectionName(),
-            [pair[LONGITUDE], pair[LATITUDE]],
-            [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']
-          )
+        parent = new GeoPointNode(
+          parent,
+          model.projectionName(),
+          [pair[LONGITUDE], pair[LATITUDE]],
+          [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']
         );
       }
     }
 
-    return nodes;
+    return parent;
   }
 
   public assemble(): VgGeoPointTransform {

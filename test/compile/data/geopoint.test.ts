@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoPointNode} from '../../../src/compile/data/geopoint';
 import {contains, every} from '../../../src/util';
 import {VgGeoPointTransform} from '../../../src/vega.schema';
@@ -27,19 +28,23 @@ describe('compile/data/geopoint', () => {
         }
       });
       model.parse();
-      const nodes: GeoPointNode[] = GeoPointNode.makeAll(model);
-      assert.isNotNull(nodes);
-      assert.isNotEmpty(nodes);
-      nodes.forEach((node) => {
-        assert.isNotNull(node);
-        if (node) {
-          const transform: VgGeoPointTransform = node.assemble();
-          assert.equal(transform.type, 'geopoint');
-          assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
-          assert.isTrue(every(['longitude_geo', 'latitude_geo'], (a) => contains(transform.as, a)));
-          assert.isDefined(transform.projection);
-        }
-      });
+
+      const root = new DataFlowNode(null);
+      GeoPointNode.makeAll(root, model);
+
+      let node = root.children[0];
+
+      while (node != null) {
+        assert.instanceOf(node, GeoPointNode);
+
+        const transform: VgGeoPointTransform = (<GeoPointNode>node).assemble();
+        assert.equal(transform.type, 'geopoint');
+        assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
+        assert.isTrue(every(['longitude_geo', 'latitude_geo'], (a) => contains(transform.as, a)));
+        assert.isDefined(transform.projection);
+        assert.isAtMost(node.children.length, 1);
+        node = node.children[0];
+      }
     });
   });
 });

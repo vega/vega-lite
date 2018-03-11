@@ -37,16 +37,16 @@ export class ParseNode extends DataFlowNode {
   private _parse: Dict<string> = {};
 
   public clone() {
-    return new ParseNode(duplicate(this.parse));
+    return new ParseNode(null, duplicate(this.parse));
   }
 
-  constructor(parse: Dict<string>) {
-    super();
+  constructor(parent: DataFlowNode, parse: Dict<string>) {
+    super(parent);
 
     this._parse = parse;
   }
 
-  public static make(model: Model) {
+  public static make(parent: DataFlowNode, model: Model) {
     const parse = {};
     const calcFieldMap = {};
 
@@ -101,7 +101,7 @@ export class ParseNode extends DataFlowNode {
       return null;
     }
 
-    return new ParseNode(parse);
+    return new ParseNode(parent, parse);
   }
 
   public get parse() {
