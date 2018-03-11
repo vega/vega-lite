@@ -22,7 +22,7 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
   });
   model.parse();
   optimizeDataflow(model.component.data);
-  return assembleRootData(model.component.data);
+  return assembleRootData(model.component.data, {});
 }
 
 describe('Identifier transform', function() {

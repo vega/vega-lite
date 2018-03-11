@@ -471,6 +471,9 @@
                                 },
                                 "align": {
                                     "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "top"
                                 }
                             }
                         }
@@ -493,17 +496,17 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_1_height/40)"
                     },
+                    "gridScale": "concat_1_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_x"
+                    "zindex": 0
                 }
             ]
         }

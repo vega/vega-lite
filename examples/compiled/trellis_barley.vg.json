@@ -251,17 +251,17 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },
+                    "gridScale": "trellis_barley_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "trellis_barley_y"
+                    "zindex": 0
                 }
             ]
         }

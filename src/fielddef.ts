@@ -1,6 +1,7 @@
 // Declaration and utility for variants of a field definition object
+import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
+import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -547,6 +548,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'color':
     case 'text':
     case 'detail':
+    case 'key':
     case 'tooltip':
     case 'href':
       return COMPATIBLE;

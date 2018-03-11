@@ -38,36 +38,19 @@ export function parseMarkGroup(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return parsePathMark(model);
   } else {
-    return parseNonPathMark(model);
+    return getMarkGroups(model);
   }
 }
 
 const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
-  const mark = model.mark();
   const details = pathGroupingFields(model.encoding);
 
-  const postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
-
-  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
-  const style = getStyles(model.markDef);
-  const sort = getPathSort(model);
-
-  const pathMarks: any = [
-    {
-      name: model.getName('marks'),
-      type: markCompiler[mark].vgMark,
-      ...(clip ? {clip: true} : {}),
-      ...(style? {style} : {}),
-      ...(sort? {sort} : {}),
-      // If has subfacet for line/area group, need to use faceted data from below.
-      // FIXME: support sorting path order (in connected scatterplot)
-      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
-      encode: {update: markCompiler[mark].encodeEntry(model)},
-      ...postEncodingTransform ? {transform: postEncodingTransform} : {}
-    }
-  ];
+  const pathMarks = getMarkGroups(model, {
+    // If has subfacet for line/area group, need to use faceted data from below.
+    fromPrefix: (details.length > 0 ? FACETED_PATH_PREFIX : '')
+  });
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
     // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
@@ -95,11 +78,11 @@ function parsePathMark(model: UnitModel) {
   }
 }
 
-export function getPathSort(model: UnitModel) {
-  if (model.mark() === 'line' && model.channelHasField('order')) {
-    // For only line, sort by the order field if it is specified.
+export function getSort(model: UnitModel) {
+  if (model.channelHasField('order') && !model.stack) {
+    // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)
     return sortParams(model.encoding.order, {expr: 'datum'});
-  } else {
+  } else if (contains(['line', 'area'], model.mark())) {
     // For both line and area, we sort values based on dimension by default
     const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
     const s = model.sort(dimensionChannel);
@@ -123,31 +106,38 @@ export function getPathSort(model: UnitModel) {
       } :
       undefined;
   }
+  return undefined;
 }
 
-function parseNonPathMark(model: UnitModel) {
+function getMarkGroups(model: UnitModel, opt: {
+  fromPrefix: string
+} = {fromPrefix: ''}) {
   const mark = model.mark();
 
+  const clip = model.markDef.clip !== undefined ?
+    !!model.markDef.clip : scaleClip(model);
   const style = getStyles(model.markDef);
-  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
+  const key = model.encoding.key;
+  const sort = getSort(model);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
 
-  const marks: any[] = []; // TODO: vgMarks
-
-  // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
-
-  marks.push({
+  return [{
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(clip ? {clip: true} : {}),
-    ...(style? {style} : {}),
-    from: {data: model.requestDataName(MAIN)},
-    encode: {update: markCompiler[mark].encodeEntry(model)},
-    ...(postEncodingTransform ? {transform: postEncodingTransform} : {})
-  });
+    ...(style ? {style} : {}),
+    ...(key ? {key: {field: key.field}} : {}),
+    ...(sort ? {sort} : {}),
+    from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
+    encode: {
+      update: markCompiler[mark].encodeEntry(model)
+    },
+    ...(postEncodingTransform ? {
+      transform: postEncodingTransform
+    } : {})
+  }];
 
-  return marks;
 }
 
 /**
@@ -173,6 +163,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
         return details;
 
       case 'detail':
+      case 'key':
         const channelDef = encoding[channel];
         if (channelDef) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {

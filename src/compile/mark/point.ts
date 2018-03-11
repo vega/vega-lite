@@ -11,7 +11,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;
 
   return {
-    ...mixins.baseEncodeEntry(model, true),
+    ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore'}),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
     ...mixins.nonPosition('size', model),

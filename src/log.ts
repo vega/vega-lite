@@ -2,8 +2,8 @@
  * Vega-Lite's singleton logger utility.
  */
 
+import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import {AggregateOp} from './aggregate';
 import {Channel} from './channel';
 import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
@@ -173,6 +173,10 @@ export namespace message {
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
     return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
+  }
+
+  export function invalidEncodingChannel(channel: string) {
+    return `${channel}-encoding is dropped as ${channel} is not a valid encoding channel.`;
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {

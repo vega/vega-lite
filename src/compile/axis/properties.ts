@@ -13,16 +13,6 @@ import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 
-export function domainAndTicks(property: 'domain' | 'ticks', specifiedAxis: Axis, isGridAxis: boolean, channel: PositionScaleChannel) {
-  if (isGridAxis) {
-    return false;
-  }
-  return specifiedAxis[property];
-}
-
-export const domain = domainAndTicks;
-export const ticks = domainAndTicks;
-
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
@@ -32,21 +22,15 @@ export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
   return !hasDiscreteDomain(scaleType) && !fieldDef.bin;
 }
 
-export function gridScale(model: UnitModel, channel: PositionScaleChannel, isGridAxis: boolean) {
-  if (isGridAxis) {
-    const gridChannel: PositionScaleChannel = channel === 'x' ? 'y' : 'x';
-    if (model.getScaleComponent(gridChannel)) {
-      return model.scaleName(gridChannel);
-    }
+export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
+  const gridChannel: PositionScaleChannel = channel === 'x' ? 'y' : 'x';
+  if (model.getScaleComponent(gridChannel)) {
+    return model.scaleName(gridChannel);
   }
   return undefined;
 }
 
-export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis, isGridAxis: boolean) {
-  if (isGridAxis) {
-    return undefined;
-  }
-
+export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis) {
   if (specifiedAxis.labelFlush !== undefined) {
     return specifiedAxis.labelFlush;
   }
@@ -70,16 +54,6 @@ export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, ch
   }
 
   return undefined;
-}
-
-export function minMaxExtent(specifiedExtent: number, isGridAxis: boolean) {
-  if (isGridAxis) {
-    // Always return 0 to make sure that `config.axis*.minExtent` and `config.axis*.maxExtent`
-    // would not affect gridAxis
-    return 0;
-  } else {
-    return specifiedExtent;
-  }
 }
 
 export function orient(channel: PositionScaleChannel) {
@@ -127,12 +101,4 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
   }
 
   return vals;
-}
-
-export function zindex(isGridAxis: boolean) {
-  if (isGridAxis) {
-    // if grid is true, need to put layer on the back so that grid is behind marks
-    return 0;
-  }
-  return 1; // otherwise return undefined and use Vega's default.
 }

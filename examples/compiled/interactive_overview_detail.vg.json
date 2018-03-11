@@ -148,7 +148,6 @@
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -157,22 +156,23 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "concat_0_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_0_y",
@@ -187,17 +187,17 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_0_height/40)"
                     },
+                    "gridScale": "concat_0_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -545,7 +545,6 @@
                         "signal": "ceil(width/40)"
                     },
                     "title": "date",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -554,22 +553,23 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "concat_1_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_y"
+                    "zindex": 0
                 },
                 {
                     "tickCount": 3,

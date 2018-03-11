@@ -1,5 +1,5 @@
-import {isUrlData} from '../../data';
-import {vals} from '../../util';
+import {InlineDataset, isUrlData} from '../../data';
+import {Dict, vals} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
@@ -198,7 +198,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleRootData(dataComponent: DataComponent): VgData[] {
+export function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[] {
   const roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
@@ -235,6 +235,13 @@ export function assembleRootData(dataComponent: DataComponent): VgData[] {
       if (t.type === 'lookup') {
         t.from = dataComponent.outputNodes[t.from].getSource();
       }
+    }
+  }
+
+  // inline values for datasets that are in the datastore
+  for (const d of data) {
+    if (d.name in datasets) {
+      d.values = datasets[d.name];
     }
   }
 

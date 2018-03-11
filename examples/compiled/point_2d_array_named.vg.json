@@ -143,7 +143,6 @@
             "scale": "plotname_x",
             "orient": "bottom",
             "title": "a",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -158,7 +157,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "plotname_y",
@@ -173,17 +173,17 @@
         {
             "scale": "plotname_y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "plotname_x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "plotname_x"
+            "zindex": 0
         }
     ],
     "config": {

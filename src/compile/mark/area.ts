@@ -7,7 +7,7 @@ export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, false),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'include'}),
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
       ...mixins.pointPosition('y', model, 'zeroOrMin'),
       ...mixins.pointPosition2(model, 'zeroOrMin'),

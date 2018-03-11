@@ -434,7 +434,6 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -452,7 +451,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_temp_max_y",
@@ -467,17 +467,17 @@
                 {
                     "scale": "child_temp_max_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_temp_max_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_temp_max_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -625,7 +625,6 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -643,7 +642,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_precipitation_y",
@@ -658,17 +658,17 @@
                 {
                     "scale": "child_precipitation_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_precipitation_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_precipitation_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -816,7 +816,6 @@
                     "orient": "bottom",
                     "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -834,7 +833,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_wind_y",
@@ -849,17 +849,17 @@
                 {
                     "scale": "child_wind_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "child_wind_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_wind_x"
+                    "zindex": 0
                 }
             ]
         }

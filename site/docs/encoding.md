@@ -211,7 +211,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 {:#href}
 ## Hyperlink Channel
 
-By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a muse click. The [`cursor` mark property](mark.html#hyperlink) can be set to `pointer` to serve as affordance for hyperlinks.
+By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. The [`cursor` mark property](mark.html#hyperlink) can be set to `pointer` to serve as affordance for hyperlinks.
 
 {% include table.html props="href" source="Encoding" %}
 
@@ -262,6 +262,14 @@ from one year to another within a country (as opposed to jumping between countri
 <div class="vl-example" data-name="layer_ranged_dot"></div>
 
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
+
+{:#key}
+
+## Key Channel
+
+The key channel can enable object constancy for transitions over dynamic data. When a visualization’s data is updated (via [Vega's View API](https://vega.github.io/vega/docs/api/view/#data)), the key value will be used to match data elements to existing mark instances.
+
+{% include table.html props="key" source="Encoding" %}
 
 {:#order}
 ## Order Channel

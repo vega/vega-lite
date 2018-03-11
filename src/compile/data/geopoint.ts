@@ -2,7 +2,7 @@ import {X, X2, Y, Y2} from '../../channel';
 import {LATITUDE, LONGITUDE} from '../../type';
 import {contains, Dict, duplicate} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 
@@ -15,7 +15,7 @@ export class GeoPointNode extends DataFlowNode {
     super();
   }
 
-  public static makeAll(model: ModelWithField): GeoPointNode[] {
+  public static makeAll(model: UnitModel): GeoPointNode[] {
     const nodes: GeoPointNode[] = [];
 
     if (!model.projectionName()) {
@@ -35,7 +35,7 @@ export class GeoPointNode extends DataFlowNode {
 
       if (LONGITUDE in pair || LATITUDE in pair) {
         nodes.push(
-            new GeoPointNode(
+          new GeoPointNode(
             model.projectionName(),
             [pair[LONGITUDE], pair[LATITUDE]],
             [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']

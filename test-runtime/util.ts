@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
-import {LayerSpec, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
+import {LayerSpec, TopLevelSpec, UnitSpec} from '../src/spec';
 
 export const generate = process.env.VL_GENERATE_TESTS;
 export const output = 'test-runtime/resources';
@@ -100,7 +100,7 @@ function base(iter: number, sel: any, opts: any = {}): UnitSpec | LayerSpec {
   };
 }
 
-export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelExtendedSpec {
+export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
   const {data, ...specification} = base(iter, sel, opts);
   const resolve = opts.resolve;
   switch (compose) {
@@ -146,7 +146,7 @@ export function pt(key: string, idx: number, parent?: string) {
 }
 
 export function embedFn(browser: WebdriverIO.Client<void>) {
-  return function(specification: TopLevelExtendedSpec) {
+  return function(specification: TopLevelSpec) {
     browser.execute((_) => window['embed'](_), specification);
   };
 }

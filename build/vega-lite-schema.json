@@ -1,6 +1,25 @@
 {
-  "$ref": "#/definitions/TopLevelExtendedSpec",
   "$schema": "http://json-schema.org/draft-06/schema#",
+  "anyOf": [
+    {
+      "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
+    },
+    {
+      "$ref": "#/definitions/TopLevel<LayerSpec>"
+    },
+    {
+      "$ref": "#/definitions/TopLevel<FacetSpec>"
+    },
+    {
+      "$ref": "#/definitions/TopLevel<RepeatSpec>"
+    },
+    {
+      "$ref": "#/definitions/TopLevel<VConcatSpec>"
+    },
+    {
+      "$ref": "#/definitions/TopLevel<HConcatSpec>"
+    }
+  ],
   "definitions": {
     "Aggregate": {
       "$ref": "#/definitions/AggregateOp"
@@ -21,6 +40,7 @@
         "q3",
         "ci0",
         "ci1",
+        "stderr",
         "stdev",
         "stdevp",
         "sum",
@@ -1326,6 +1346,10 @@
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "fieldTitle": {
           "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
           "enum": [
@@ -1487,6 +1511,9 @@
         }
       ]
     },
+    "Datasets": {
+      "$ref": "#/definitions/Dict<InlineDataset>"
+    },
     "DateTime": {
       "additionalProperties": false,
       "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
@@ -1565,6 +1592,12 @@
       "minimum": 1,
       "type": "number"
     },
+    "Dict<InlineDataset>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/InlineDataset"
+      },
+      "type": "object"
+    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
@@ -1604,6 +1637,10 @@
           ],
           "description": "A URL to load upon mouse click."
         },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1627,7 +1664,7 @@
               "type": "array"
             }
           ],
-          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
           "anyOf": [
@@ -1763,6 +1800,10 @@
           ],
           "description": "A URL to load upon mouse click."
         },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
         "opacity": {
           "anyOf": [
             {
@@ -1786,7 +1827,7 @@
               "type": "array"
             }
           ],
-          "description": "Stack order for stacked marks or order of data points in line marks for connected scatter plots.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -2837,38 +2878,7 @@
           "description": "An object that specifies the format for parsing the data values."
         },
         "values": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "boolean"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "object"
-              },
-              "type": "array"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "object"
-            }
-          ],
+          "$ref": "#/definitions/InlineDataset",
           "description": "The full data set, included inline. This can be an array of objects or primitive values or a string.\nArrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type."
         }
       },
@@ -2876,6 +2886,40 @@
         "values"
       ],
       "type": "object"
+    },
+    "InlineDataset": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "boolean"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "object"
+        }
+      ]
     },
     "Interpolate": {
       "enum": [
@@ -5073,7 +5117,8 @@
         "opacity",
         "text",
         "tooltip",
-        "href"
+        "href",
+        "key"
       ],
       "type": "string"
     },
@@ -5747,6 +5792,10 @@
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "description": {
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
@@ -5841,6 +5890,10 @@
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "description": {
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
@@ -5928,6 +5981,10 @@
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "description": {
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
@@ -6005,6 +6062,10 @@
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
+        },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -6099,6 +6160,10 @@
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "description": {
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
@@ -6178,6 +6243,10 @@
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
         },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
         "description": {
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
@@ -6224,28 +6293,6 @@
         "vconcat"
       ],
       "type": "object"
-    },
-    "TopLevelExtendedSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<LayerSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<FacetSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<RepeatSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<VConcatSpec>"
-        },
-        {
-          "$ref": "#/definitions/TopLevel<HConcatSpec>"
-        }
-      ]
     },
     "TopoDataFormat": {
       "additionalProperties": false,

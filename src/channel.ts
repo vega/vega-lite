@@ -30,6 +30,8 @@ export namespace Channel {
   export const TEXT: 'text' = 'text';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
+  export const KEY: 'key' = 'key';
+
   export const TOOLTIP: 'tooltip' = 'tooltip';
   export const HREF: 'href' = 'href';
 }
@@ -47,6 +49,7 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
+export const KEY = Channel.KEY;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 export const TOOLTIP = Channel.TOOLTIP;
@@ -64,6 +67,7 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   opacity: 1,
   text: 1,
   detail: 1,
+  key: 1,
   tooltip: 1,
   href: 1,
 };
@@ -95,7 +99,7 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip' | 'href';
+export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
 
 
 
@@ -131,7 +135,7 @@ const {
   // href has neither format, nor scale
   text: _t, tooltip: _tt, href: _hr,
   // detail and order have no scale
-  detail: _dd, order: _oo,
+  detail: _dd, key: _k, order: _oo,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
 export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
@@ -184,6 +188,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case COLOR:
     case DETAIL:
+    case KEY:
     case TOOLTIP:
     case HREF:
     case ORDER:    // TODO: revise (order might not support rect, which is not stackable?)
@@ -243,6 +248,7 @@ export function rangeType(channel: Channel): RangeType {
 
     // No scale, no range type.
     case DETAIL:
+    case KEY:
     case ORDER:
       return undefined;
   }

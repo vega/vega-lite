@@ -1,0 +1,517 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 800,
+    "height": 400,
+    "style": "cell",
+    "data": [
+        {
+            "name": "tooltip_store"
+        },
+        {
+            "name": "source_0",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "filter",
+                    "expr": "(vlSingle(\"tooltip_store\", datum))"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "filter",
+                    "expr": "(vlSingle(\"tooltip_store\", datum))"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "isTuple(group()) ? group() : unit"
+                }
+            ]
+        },
+        {
+            "name": "tooltip",
+            "update": "data(\"tooltip_store\").length && {date: data(\"tooltip_store\")[0].values[0]}"
+        },
+        {
+            "name": "tooltip_tuple",
+            "value": {},
+            "on": [
+                {
+                    "events": [
+                        {
+                            "source": "scope",
+                            "type": "mouseover"
+                        }
+                    ],
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+                    "force": true
+                }
+            ]
+        },
+        {
+            "name": "tooltip_modify",
+            "on": [
+                {
+                    "events": {
+                        "signal": "tooltip_tuple"
+                    },
+                    "update": "modify(\"tooltip_store\", tooltip_tuple, true)"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
+                    "groupby": [
+                        "symbol"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "style": [
+                        "line"
+                    ],
+                    "sort": {
+                        "field": "datum[\"date\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_layer_0_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": [
+                        {
+                            "test": "(vlSingle(\"tooltip_store\", datum))",
+                            "value": 1
+                        },
+                        {
+                            "value": 0
+                        }
+                    ],
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_voronoi",
+            "type": "path",
+            "from": {
+                "data": "layer_1_marks"
+            },
+            "encode": {
+                "enter": {
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "strokeWidth": {
+                        "value": 0.35
+                    },
+                    "stroke": {
+                        "value": "transparent"
+                    },
+                    "isVoronoi": {
+                        "value": true
+                    }
+                }
+            },
+            "transform": [
+                {
+                    "type": "voronoi",
+                    "x": "datum.x",
+                    "y": {
+                        "expr": "0"
+                    },
+                    "size": [
+                        {
+                            "signal": "width"
+                        },
+                        {
+                            "signal": "height"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "gray"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "field": {
+                            "group": "height"
+                        }
+                    },
+                    "y2": {
+                        "value": 0
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "align": {
+                        "value": "left"
+                    },
+                    "dx": {
+                        "value": 5
+                    },
+                    "dy": {
+                        "value": -5
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "text": {
+                        "signal": "format(datum[\"price\"], \"\")"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "date"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "price"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "symbol"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "title": "date",
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "title": "price",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "symbol",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "opacity": {
+                            "value": 1
+                        }
+                    }
+                }
+            },
+            "fill": "color"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

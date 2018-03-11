@@ -1,7 +1,7 @@
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
-import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelSpec} from '../spec';
 import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
@@ -43,7 +43,7 @@ export interface CompileOptions {
  *     v
  * Vega spec
  */
-export function compile(inputSpec: TopLevelExtendedSpec, opt: CompileOptions = {}) {
+export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   // 0. Augment opt with default opts
   if (opt.logger) {
     // set the singleton logger to the provided logger
@@ -124,8 +124,10 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   const data = [].concat(
     model.assembleSelectionData([]),
     // only assemble data in the root
-    assembleRootData(model.component.data)
+    assembleRootData(model.component.data, topLevelProperties.datasets || {})
   );
+
+  delete topLevelProperties.datasets;
 
   const projections = model.assembleProjections();
   const title = model.assembleTitle();

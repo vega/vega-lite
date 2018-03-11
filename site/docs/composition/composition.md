@@ -5,9 +5,9 @@ title: Composing Layered & Multi-view Plots
 permalink: /docs/composition.html
 ---
 
-With Vega-Lite, you can not only create single view visualizations, but also [facet](facet.html), [layer](layer.html), [concatenate](concat.html), and [repeat](repeat.html) these views into larger, more complex multiview displays.
+With Vega-Lite, you can not only create single view visualizations, but also [facet](facet.html), [layer](layer.html), [concatenate](concat.html), and [repeat](repeat.html) these views into layered or multiview displays.
 
-A view that is composed of multiple views can itself be composed with other views. Through this **hierarchical composition**, you can create a whole dashboard as a single specification.
+A layered or multi-view display can also be composed with other views. Through this **hierarchical composition**, you can create a whole dashboard as a single specification.
 
 Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
 

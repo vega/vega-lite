@@ -1,30 +1,92 @@
+import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
+import {keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 
-const mainAxisReducer = getAxisReducer('main');
-const gridAxisReducer = getAxisReducer('grid');
+export function assembleAxis(
+  axisCmpt: AxisComponent,
+  kind: 'main' | 'grid',
+  opt: {
+    header: boolean // whether this is called via a header
+  } = {header: false}
+): VgAxis {
+  const axis = axisCmpt.combine() as VgAxis;
 
-function getAxisReducer(axisType: 'main' | 'grid') {
-  return (axes: VgAxis[], axis: AxisComponent) => {
-    if (axis[axisType]) {
-      // Need to cast here so it's not longer partial type.
-      axes.push(axis[axisType].combine() as VgAxis);
+  // Remove properties that are not valid for this kind of axis
+  keys(axis).forEach((key) => {
+    const propType = AXIS_PROPERTY_TYPE[key];
+    if (propType && propType !== kind && propType !== 'both') {
+      delete axis[key];
     }
-    return axes;
-  };
+  });
+
+  if (kind === 'grid') {
+    if (!axis.grid) {
+      return undefined;
+    }
+
+    // Remove unnecessary encode block
+    if (axis.encode) {
+      // Only need to keep encode block for grid
+      const {grid} = axis.encode;
+      axis.encode = {
+        ...(grid ? {grid} : {})
+      };
+
+      if (keys(axis.encode).length === 0) {
+        delete axis.encode;
+      }
+    }
+
+    return {
+      ...axis,
+      domain: false,
+      labels: false,
+
+      // Always set min/maxExtent to 0 to ensure that `config.axis*.minExtent` and `config.axis*.maxExtent`
+      // would not affect gridAxis
+      maxExtent: 0,
+      minExtent: 0,
+      ticks: false,
+
+      zindex: 0 // put grid behind marks
+    };
+  } else { // kind === 'main'
+
+    if (!opt.header && axisCmpt.mainExtracted) {
+      // if mainExtracted has been extracted to a separate facet
+      return undefined;
+    }
+
+    // Remove unnecessary encode block
+    if (axis.encode) {
+      for (const part of AXIS_PARTS) {
+        if (
+          !axisCmpt.hasAxisPart(part)
+        ) {
+          delete axis.encode[part];
+        }
+      }
+      if (keys(axis.encode).length === 0) {
+        delete axis.encode;
+      }
+    }
+
+    return {
+      ...axis,
+
+      zindex: 1
+    };
+  }
 }
 
 export function assembleAxes(axisComponents: AxisComponentIndex): VgAxis[] {
-  return [].concat(
-    axisComponents.x ? [].concat(
-      axisComponents.x.reduce(mainAxisReducer, []),
-      axisComponents.x.reduce(gridAxisReducer, [])
-    ) : [],
-    axisComponents.y ? [].concat(
-      axisComponents.y.reduce(mainAxisReducer, []),
-      axisComponents.y.reduce(gridAxisReducer, []),
-    ) : []
-  );
+  const {x=[], y=[]} = axisComponents;
+  return [
+    ...x.map(a => assembleAxis(a, 'main')),
+    ...x.map(a => assembleAxis(a, 'grid')),
+    ...y.map(a => assembleAxis(a, 'main')),
+    ...y.map(a => assembleAxis(a, 'grid'))
+  ].filter(a => a); // filter undefined
 }
-

@@ -16,15 +16,16 @@ export const text: MarkCompiler = {
   vgMark: 'text',
 
   encodeEntry: (model: UnitModel) => {
-    const {config, encoding, height} = model;
+    const {config, encoding, height, markDef} = model;
     const textDef = encoding.text;
 
     return {
-      ...mixins.baseEncodeEntry(model, true),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
       ...mixins.nonPosition('size', model, {
+        ...(markDef.size ? {defaultValue: markDef.size} : {}),
         vgChannel: 'fontSize'  // VL's text size is fontSize
       }),
       ...mixins.valueIfDefined('align', align(model.markDef, encoding, config))

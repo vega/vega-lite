@@ -122,7 +122,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw rectange with x, x2, y, y2', function() {
+    it('should draw rectangle with x, x2, y, y2', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'min_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', field: 'max_Acceleration'});
       assert.deepEqual(props.y, {scale: 'y', field: 'min_Horsepower'});

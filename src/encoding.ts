@@ -1,6 +1,6 @@
 
 import {isArray} from 'vega-util';
-import {Channel, CHANNELS, supportMark} from './channel';
+import {Channel, CHANNELS, isChannel, supportMark} from './channel';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
@@ -92,6 +92,11 @@ export interface Encoding<F> {
   detail?: FieldDef<F> | FieldDef<F>[];
 
   /**
+   * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
+   */
+  key?: FieldDef<F>;
+
+  /**
    * Text of the `text` mark.
    */
   text?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
@@ -107,7 +112,10 @@ export interface Encoding<F> {
   href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
 
   /**
-   * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
+   * Order of the marks.
+   * - For stacked marks, this `order` channel encodes stack order.
+   * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
@@ -145,7 +153,13 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
 }
 
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
+    if (!isChannel(channel)) {
+      // Drop invalid channel
+      log.warn(log.message.invalidEncodingChannel(channel));
+      return normalizedEncoding;
+    }
+
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 

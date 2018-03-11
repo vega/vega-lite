@@ -1,4 +1,4 @@
-import {AggregateOp} from '../aggregate';
+import {AggregateOp} from 'vega';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -9,6 +9,7 @@ import {hasDiscreteDomain} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -142,14 +143,14 @@ export class FacetModel extends ModelWithField {
 
         const layoutHeader = layoutHeaders[headerChannel];
         for (const axisComponent of child.component.axes[channel]) {
-          const mainAxis = axisComponent.main;
-          const headerType = getHeaderType(mainAxis.get('orient'));
+          const headerType = getHeaderType(axisComponent.get('orient'));
           layoutHeader[headerType] = layoutHeader[headerType] ||
-            [this.makeHeaderComponent(headerChannel, false)];
+          [this.makeHeaderComponent(headerChannel, false)];
 
+          const mainAxis = assembleAxis(axisComponent, 'main', {header: true});
           // LayoutHeader no longer keep track of property precedence, thus let's combine.
-          layoutHeader[headerType][0].axes.push(mainAxis.combine() as VgAxis);
-          delete axisComponent.main;
+          layoutHeader[headerType][0].axes.push(mainAxis);
+          axisComponent.mainExtracted = true;
         }
       } else {
         // Otherwise do nothing for independent axes

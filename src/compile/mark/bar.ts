@@ -3,10 +3,10 @@ import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
+import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-import {StackProperties} from '../../stack';
-import {VgValueRef} from '../../vega.schema';
 import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
+import {VgValueRef} from '../../vega.schema';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -17,21 +17,20 @@ import * as ref from './valueref';
 export const bar: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
-    const stack = model.stack;
     return {
-      ...mixins.baseEncodeEntry(model, true),
-      ...x(model, stack),
-      ...y(model, stack),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...x(model),
+      ...y(model),
     };
   }
 };
 
-function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
-  const {config, width} = model;
-  const orient = model.markDef.orient;
-  const sizeDef = model.encoding.size;
+function x(model: UnitModel): VgEncodeEntry {
+  const {config, encoding, markDef, width} = model;
+  const orient = markDef.orient;
+  const sizeDef = encoding.size;
 
-  const xDef = model.encoding.x;
+  const xDef = encoding.x;
   const xScaleName = model.scaleName(X);
   const xScale = model.getScaleComponent(X);
   // x, x2, and width -- we must specify two of these in all conditions
@@ -57,14 +56,14 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
 
     return mixins.centeredBandPosition('x', model,
       {...ref.mid(width)},
-      defaultSizeRef(xScaleName, xScale, config)
+      defaultSizeRef(markDef, xScaleName, xScale, config)
     );
   }
 }
 
-function y(model: UnitModel, stack: StackProperties) {
-  const {config, encoding, height} = model;
-  const orient = model.markDef.orient;
+function y(model: UnitModel) {
+  const {config, encoding, height, markDef} = model;
+  const orient = markDef.orient;
   const sizeDef = encoding.size;
 
   const yDef = encoding.y;
@@ -88,17 +87,17 @@ function y(model: UnitModel, stack: StackProperties) {
       }
     }
     return mixins.centeredBandPosition('y', model, ref.mid(height),
-      defaultSizeRef(yScaleName, yScale, config)
+      defaultSizeRef(markDef, yScaleName, yScale, config)
     );
   }
 }
 
-function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
-  if (config.bar.discreteBandSize) {
+function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
+  if (markDef.size !== undefined) {
+    return {value: markDef.size};
+  } else if (config.bar.discreteBandSize) {
     return {value: config.bar.discreteBandSize};
-  }
-
-  if (scale) {
+  } else if (scale) {
     const scaleType = scale.get('type');
     if (scaleType === ScaleType.POINT) {
       const scaleRange = scale.get('range');
@@ -111,8 +110,7 @@ function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config
     } else { // non-ordinal scale
       return {value: config.bar.continuousBandSize};
     }
-  }
-  if (config.scale.rangeStep && config.scale.rangeStep !== null) {
+  } else if (config.scale.rangeStep && config.scale.rangeStep !== null) {
     return {value: config.scale.rangeStep - 1};
   }
   return {value: 20};

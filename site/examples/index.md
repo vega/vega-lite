@@ -23,6 +23,7 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 
 * Many visualizations in the book [Making Data Visual](https://makingdatavisual.github.io/figurelist.html) by Danyel Fisher and Miriah Meyer are made with Vega-Lite
 * [Grouped Bar Chart](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364) by @churtado
+* [Bar Chart with Negative Values](https://bl.ocks.org/digi0ps/3691287ab4033509e988d67c932fca47) by @digi0ps
 * [Multi Line Highlight](https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701) by @amitkaps
 * [Slope graph](https://bl.ocks.org/g3o2/a6c539eacfb0b99eaf01e4f20b9f2897) by @g3o2
 * [Scatter Nearest Rule](https://bl.ocks.org/amitkaps/abfa7157d4366cc43cbbba55353d35d8) by @amitkaps
@@ -36,5 +37,6 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Horizontal Stacked Bar Chart with Labels](https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1) by @pratapvardhan
 * [Interactive stacked time-series](https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea) by @jakevdp
 * [Bicycle Count Time-series with Dynamic Scale](https://bl.ocks.org/jakevdp/b511d09ed4e2797234bd6236d7b428f7) by @jakevdp
-* [Vega-Lite downloads](https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2) by @kanitw and @domoritz
+* [Vega-Lite downloads](https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2) by @domoritz
 * [Multi-Line Tooltip](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9) by @jakevdp
+* [Interactive Exploration of Seattle Weather](https://bl.ocks.org/jakevdp/5d1915d808d3d91ce86f0bc3ca066d48) by @jakevdp
