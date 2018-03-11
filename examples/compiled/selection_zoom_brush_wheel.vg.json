@@ -464,6 +464,16 @@
             "zero": false
         },
         {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
             "name": "size",
             "type": "linear",
             "domain": {
@@ -476,16 +486,6 @@
             ],
             "nice": false,
             "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
         }
     ],
     "axes": [

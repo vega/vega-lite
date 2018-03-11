@@ -223,12 +223,12 @@
                             "value": 0
                         }
                     ],
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "symbol"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",

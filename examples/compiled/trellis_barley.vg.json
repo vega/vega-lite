@@ -228,12 +228,12 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "trellis_barley_color",
                                 "field": "year"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "trellis_barley_x",

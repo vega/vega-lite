@@ -291,11 +291,11 @@
                     },
                     "encode": {
                         "update": {
-                            "stroke": {
-                                "value": "#666"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#666"
                             },
                             "x": {
                                 "signal": "(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"

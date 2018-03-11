@@ -56,12 +56,12 @@
             },
             "encode": {
                 "update": {
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "yearmonth_date"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",

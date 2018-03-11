@@ -39,12 +39,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "Origin"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",

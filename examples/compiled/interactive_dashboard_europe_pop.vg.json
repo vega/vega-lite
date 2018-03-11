@@ -1489,6 +1489,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
@@ -1498,9 +1501,6 @@
                                     "value": "goldenrod"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "concat_2_x",
                                 "field": "Population_ages_65_and_above_of_total"

@@ -40,12 +40,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "Miles_per_Gallon"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",
@@ -97,6 +97,17 @@
             "zero": true
         },
         {
+            "name": "color",
+            "type": "sequential",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
+            "range": "ramp",
+            "nice": false,
+            "zero": false
+        },
+        {
             "name": "size",
             "type": "linear",
             "domain": {
@@ -109,17 +120,6 @@
             ],
             "nice": false,
             "zero": true
-        },
-        {
-            "name": "color",
-            "type": "sequential",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
         }
     ],
     "axes": [

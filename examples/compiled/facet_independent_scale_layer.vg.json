@@ -357,12 +357,12 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "gender"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_x",

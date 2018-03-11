@@ -93,12 +93,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "child_Origin_color",
                                 "field": "Origin"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Origin_x",
@@ -210,12 +210,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "child_Cylinders_color",
                                 "field": "Cylinders"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Cylinders_x",

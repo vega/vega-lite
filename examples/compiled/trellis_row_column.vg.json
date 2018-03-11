@@ -265,12 +265,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "Cylinders"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "x",
@@ -356,16 +356,6 @@
             "zero": true
         },
         {
-            "name": "shape",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "symbol"
-        },
-        {
             "name": "color",
             "type": "ordinal",
             "domain": {
@@ -374,6 +364,16 @@
                 "sort": true
             },
             "range": "category"
+        },
+        {
+            "name": "shape",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": "symbol"
         }
     ],
     "legends": [

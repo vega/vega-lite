@@ -33,6 +33,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": [
                         {
                             "test": "datum.IMDB_Rating === null || datum.Rotten_Tomatoes_Rating === null",
@@ -42,9 +45,6 @@
                             "value": "#4c78a8"
                         }
                     ],
-                    "fill": {
-                        "value": "transparent"
-                    },
                     "x": {
                         "scale": "x",
                         "field": "IMDB_Rating"

@@ -418,11 +418,11 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             },
                             "x": {
                                 "scale": "concat_0_x",
@@ -710,6 +710,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -719,9 +722,6 @@
                                     "value": "red"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "concat_1_x",
                                 "field": "Displacement"

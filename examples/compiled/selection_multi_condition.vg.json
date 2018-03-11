@@ -396,6 +396,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": [
                         {
                             "test": "!(length(data(\"hoverbrush_store\"))) || (vlMulti(\"hoverbrush_store\", datum))",
@@ -409,9 +412,6 @@
                             "value": "grey"
                         }
                     ],
-                    "fill": {
-                        "value": "transparent"
-                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"

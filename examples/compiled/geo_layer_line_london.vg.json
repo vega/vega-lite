@@ -147,12 +147,12 @@
                     "strokeWidth": {
                         "value": 2
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "id"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     }
                 }
             },

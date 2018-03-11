@@ -281,11 +281,11 @@
                     },
                     "encode": {
                         "update": {
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             },
                             "x": {
                                 "signal": "(scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min\"]) + scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min_end\"]))/2"

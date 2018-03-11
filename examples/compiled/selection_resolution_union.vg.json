@@ -503,6 +503,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -513,9 +516,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Horsepower_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -910,6 +910,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -920,9 +923,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Horsepower_Acceleration_x",
                                 "field": "Acceleration"
@@ -1250,6 +1250,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -1260,9 +1263,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Horsepower_Horsepower_x",
                                 "field": "Horsepower"
@@ -1659,6 +1659,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -1669,9 +1672,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Acceleration_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -1999,6 +1999,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2009,9 +2012,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Acceleration_Acceleration_x",
                                 "field": "Acceleration"
@@ -2408,6 +2408,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2418,9 +2421,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Acceleration_Horsepower_x",
                                 "field": "Horsepower"
@@ -2748,6 +2748,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -2758,9 +2761,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
@@ -3157,6 +3157,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -3167,9 +3170,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Acceleration_x",
                                 "field": "Acceleration"
@@ -3564,6 +3564,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"union\"))",
@@ -3574,9 +3577,6 @@
                                     "value": "grey"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Horsepower_x",
                                 "field": "Horsepower"
