@@ -55,7 +55,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] && ignore[prop] !== 'ignore') {
+    if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
       m[prop] = {value: mark[prop]};
     }
     return m;
