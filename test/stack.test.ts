@@ -6,7 +6,7 @@ import {DETAIL, X, Y} from '../src/channel';
 import * as log from '../src/log';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
-import {isStacked, TopLevel, UnitSpec} from '../src/spec';
+import {isStacked, NormalizedUnitSpec, TopLevel} from '../src/spec';
 import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
 import {stringify} from '../src/util';
 
@@ -17,7 +17,7 @@ describe('stack', () => {
   it('should be disabled for non-stackable marks with at least of of the stack channel', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       NON_STACKABLE_MARKS.forEach((nonStackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": nonStackableMark,
           "encoding": {
@@ -37,7 +37,7 @@ describe('stack', () => {
 
   it('should be allowed for raw plot', () => {
     STACKABLE_MARKS.forEach((mark) => {
-      const spec: TopLevel<UnitSpec> = {
+      const spec: TopLevel<NormalizedUnitSpec> = {
         "data": {"url": "data/barley.json"},
         "mark": mark,
         "encoding": {
@@ -55,7 +55,7 @@ describe('stack', () => {
 
   it('should prioritize axis with stack', () => {
     STACKABLE_MARKS.forEach((mark) => {
-      const spec: TopLevel<UnitSpec> = {
+      const spec: TopLevel<NormalizedUnitSpec> = {
         "data": {"url": "data/barley.json"},
         "mark": mark,
         "encoding": {
@@ -73,7 +73,7 @@ describe('stack', () => {
   it('should always be disabled if there is no stackby channel', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -93,7 +93,7 @@ describe('stack', () => {
   it('should always be disabled if the stackby channel is aggregated', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -114,7 +114,7 @@ describe('stack', () => {
   it('should always be disabled if the stackby channel is identical to y', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -136,7 +136,7 @@ describe('stack', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -161,7 +161,7 @@ describe('stack', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -183,7 +183,7 @@ describe('stack', () => {
   it('should always be disabled if both x and y are aggregate', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -204,7 +204,7 @@ describe('stack', () => {
   it('should always be disabled if neither x nor y is aggregate or stack', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -226,7 +226,7 @@ describe('stack', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "mark": mark,
           "encoding": {
             "x": {"field": "a", "type": "quantitative", "aggregate": "sum"},
@@ -252,7 +252,7 @@ describe('stack', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "mark": mark,
           "encoding": {
             "y": {"field": "a", "type": "quantitative", "aggregate": "sum"},
@@ -279,7 +279,7 @@ describe('stack', () => {
       [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
-          const spec: TopLevel<UnitSpec> = {
+          const spec: TopLevel<NormalizedUnitSpec> = {
             "data": {"url": "data/barley.json"},
             "mark": mark,
             "encoding": {
@@ -305,7 +305,7 @@ describe('stack', () => {
       for (const aggregate of ['average', 'variance', 'q3'] as AggregateOp[]) {
         const marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
-          const spec: TopLevel<UnitSpec> = {
+          const spec: TopLevel<NormalizedUnitSpec> = {
             "data": {"url": "data/barley.json"},
             "mark": mark,
             "encoding": {
@@ -330,7 +330,7 @@ describe('stack', () => {
   describe('stack().groupbyChannel, .fieldChannel', () => {
     it('should be correct for horizontal', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -348,7 +348,7 @@ describe('stack', () => {
 
     it('should be correct for horizontal (single)', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -365,7 +365,7 @@ describe('stack', () => {
 
     it('should be correct for vertical', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -383,7 +383,7 @@ describe('stack', () => {
 
     it('should be correct for vertical (single)', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -402,7 +402,7 @@ describe('stack', () => {
   describe('stack().offset', () => {
     it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec: TopLevel<UnitSpec> = {
+        const spec: TopLevel<NormalizedUnitSpec> = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -419,7 +419,7 @@ describe('stack', () => {
     it('should be the specified stacked for stackable marks with at least one of the stack channel', () => {
       for (const stacked of ['center', 'zero', 'normalize'] as StackOffset[]) {
         [BAR, AREA].forEach((stackableMark) => {
-          const spec: TopLevel<UnitSpec> = {
+          const spec: TopLevel<NormalizedUnitSpec> = {
             "data": {"url": "data/barley.json"},
             "mark": stackableMark,
             "encoding": {

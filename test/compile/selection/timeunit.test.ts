@@ -6,7 +6,7 @@ import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Model} from '../../../src/compile/model';
 import * as selection from '../../../src/compile/selection/selection';
-import {UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
 function getData(model: Model) {
@@ -14,7 +14,7 @@ function getData(model: Model) {
   return assembleRootData(model.component.data, {});
 }
 
-function getModel(unit2: UnitSpec) {
+function getModel(unit2: NormalizedUnitSpec) {
   const model = parseModel({
     "data": {"values": [
       {"date": "Sun, 01 Jan 2012 23:00:01","price": 150},

@@ -7,7 +7,7 @@ import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
 import {MarkConfig} from './../mark';
-import {GenericUnitSpec, LayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {getMarkSpecificConfigMixins} from './common';
 
@@ -95,7 +95,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
   };
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;

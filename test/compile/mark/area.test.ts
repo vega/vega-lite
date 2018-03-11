@@ -4,11 +4,11 @@ import {assert} from 'chai';
 import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
-import {UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Area', function() {
-  function verticalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
+  function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       "mark": "area",
       "encoding":
@@ -133,7 +133,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  function horizontalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
+  function horizontalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       "mark": "area",
       "encoding": {

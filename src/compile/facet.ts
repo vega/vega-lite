@@ -6,7 +6,7 @@ import {FacetMapping} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
-import {FacetSpec} from '../spec';
+import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
@@ -28,7 +28,7 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
 
 

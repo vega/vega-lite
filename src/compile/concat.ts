@@ -1,6 +1,6 @@
 import {Config} from '../config';
 import * as log from '../log';
-import {ConcatSpec, isVConcatSpec} from '../spec';
+import {isVConcatSpec, NormalizedConcatSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -15,7 +15,7 @@ export class ConcatModel extends BaseConcatModel {
 
   public readonly isVConcat: boolean;
 
-  constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+  constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
 
     if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {

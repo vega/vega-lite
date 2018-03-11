@@ -125,7 +125,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   selection?: {[name: string]: SelectionDef};
 }
 
-export type UnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
+export type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
 
 /**
  * Unit spec that can have a composite mark.
@@ -151,7 +151,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
   resolve?: Resolve;
 }
 
-export type LayerSpec = GenericLayerSpec<UnitSpec>;
+export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   /**
@@ -171,7 +171,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
   resolve?: Resolve;
 }
 
-export type FacetSpec = GenericFacetSpec<UnitSpec>;
+export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec>;
 
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   /**
@@ -187,7 +187,7 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
   resolve?: Resolve;
 }
 
-export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
+export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec>;
 
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   /**
@@ -213,11 +213,11 @@ export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends
   resolve?: Resolve;
 }
 
-export type ConcatSpec = GenericVConcatSpec<UnitSpec> | GenericHConcatSpec<UnitSpec>;
+export type NormalizedConcatSpec = GenericVConcatSpec<NormalizedUnitSpec> | GenericHConcatSpec<NormalizedUnitSpec>;
 
 export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericVConcatSpec<U> | GenericHConcatSpec<U>;
 
-export type NormalizedSpec = GenericSpec<UnitSpec>;
+export type NormalizedSpec = GenericSpec<NormalizedUnitSpec>;
 
 export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataRequired;
 export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec>> & DataRequired;
@@ -231,7 +231,7 @@ export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<GenericUni
   return spec['facet'] !== undefined;
 }
 
-export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | UnitSpec {
+export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec {
   return !!spec['mark'];
 }
 
@@ -287,7 +287,7 @@ export function normalize(spec: TopLevelSpec | GenericSpec<CompositeUnitSpec> | 
   throw new Error(log.message.INVALID_SPEC);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Config): FacetSpec {
+function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Config): NormalizedFacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -296,7 +296,7 @@ function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Confi
   };
 }
 
-function normalizeLayer(spec: GenericLayerSpec<CompositeUnitSpec>, config: Config): LayerSpec {
+function normalizeLayer(spec: GenericLayerSpec<CompositeUnitSpec>, config: Config): NormalizedLayerSpec {
   const {layer: layer, ...rest} = spec;
   return {
     ...rest,
@@ -304,7 +304,7 @@ function normalizeLayer(spec: GenericLayerSpec<CompositeUnitSpec>, config: Confi
   };
 }
 
-function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Config): RepeatSpec {
+function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Config): NormalizedRepeatSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -312,7 +312,7 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
   };
 }
 
-function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
+function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec>, config: Config): NormalizedConcatSpec {
   const {vconcat: vconcat, ...rest} = spec;
   return {
     ...rest,
@@ -320,7 +320,7 @@ function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec>, config: C
   };
 }
 
-function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
+function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec>, config: Config): NormalizedConcatSpec {
   const {hconcat: hconcat, ...rest} = spec;
   return {
     ...rest,
@@ -328,7 +328,7 @@ function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec>, config: C
   };
 }
 
-function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): FacetSpec {
+function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): NormalizedFacetSpec {
   // New encoding in the inside spec should not contain row / column
   // as row/column should be moved to facet
   const {row: row, column: column, ...encoding} = spec.encoding;
@@ -384,7 +384,7 @@ function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, AnyMark>, 
   }
 }
 
-function normalizeRangedUnit(spec: UnitSpec) {
+function normalizeRangedUnit(spec: NormalizedUnitSpec) {
   const hasX = channelHasField(spec.encoding, X);
   const hasY = channelHasField(spec.encoding, Y);
   const hasX2 = channelHasField(spec.encoding, X2);
@@ -407,11 +407,11 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 
 // FIXME(#1804): re-design this
-function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
+function normalizeOverlay(spec: NormalizedUnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): NormalizedLayerSpec {
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
   const {mark, selection, projection, encoding, ...outerSpec} = spec;
-  const layer = [{mark, encoding} as UnitSpec];
+  const layer = [{mark, encoding} as NormalizedUnitSpec];
 
   // Need to copy stack config to overlayed layer
   const stackProps = stack(mark, encoding, config ? config.stack : undefined);

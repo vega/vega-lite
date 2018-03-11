@@ -5,12 +5,12 @@ import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
 import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
-import {UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Point', function() {
 
-  function pointXY(moreEncoding: Encoding<string> = {}): UnitSpec {
+  function pointXY(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       "mark": "point",
       "encoding": {

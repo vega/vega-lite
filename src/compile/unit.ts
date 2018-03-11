@@ -10,7 +10,7 @@ import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
-import {LayoutSizeMixins, UnitSpec} from '../spec';
+import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
@@ -55,7 +55,7 @@ export class UnitModel extends ModelWithField {
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
+  constructor(spec: NormalizedUnitSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config, public fit: boolean) {
 
     super(spec, parent, parentGivenName, config, undefined);
