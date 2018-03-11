@@ -128,12 +128,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "Origin"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Displacement_Horsepower_x",
@@ -230,12 +230,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "Origin"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Displacement_Miles_per_Gallon_x",
@@ -332,12 +332,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "Origin"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Horsepower_x",
@@ -434,12 +434,12 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "Origin"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",

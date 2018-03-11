@@ -351,11 +351,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "#333"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#333"
                     },
                     "x": {
                         "scale": "x",

@@ -41,12 +41,12 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "Cylinders"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",
@@ -101,6 +101,16 @@
             "zero": true
         },
         {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
             "name": "size",
             "type": "linear",
             "domain": {
@@ -113,16 +123,6 @@
             ],
             "nice": false,
             "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": "category"
         }
     ],
     "axes": [

@@ -378,6 +378,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -387,9 +390,6 @@
                                     "value": "steelblue"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "seconds_date"
@@ -549,11 +549,11 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "stroke": {
-                                "value": "goldenrod"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "goldenrod"
                             },
                             "x": {
                                 "scale": "concat_1_x",

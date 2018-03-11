@@ -60,11 +60,11 @@
                         "scale": "opacity",
                         "field": "bin_maxbins_6_Acceleration"
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "scale": "x",

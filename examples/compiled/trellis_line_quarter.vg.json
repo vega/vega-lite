@@ -246,12 +246,12 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "symbol"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "x",

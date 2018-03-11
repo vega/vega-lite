@@ -85,6 +85,9 @@
                     "opacity": {
                         "value": 0.7
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": [
                         {
                             "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
@@ -95,9 +98,6 @@
                             "value": "grey"
                         }
                     ],
-                    "fill": {
-                        "value": "transparent"
-                    },
                     "x": {
                         "scale": "x",
                         "field": "Horsepower"
@@ -163,6 +163,18 @@
             "zero": true
         },
         {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": {
+                "scheme": "yelloworangebrown"
+            }
+        },
+        {
             "name": "shape",
             "type": "ordinal",
             "domain": {
@@ -175,18 +187,6 @@
                 "triangle-right",
                 "triangle-up"
             ]
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": {
-                "scheme": "yelloworangebrown"
-            }
         }
     ],
     "axes": [

@@ -39,11 +39,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "#ff9900"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#ff9900"
                     },
                     "x": {
                         "scale": "x",
