@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
-import {LayerSpec, TopLevelSpec, UnitSpec} from '../src/spec';
+import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
 
 export const generate = process.env.VL_GENERATE_TESTS;
 export const output = 'test-runtime/resources';
@@ -66,7 +66,7 @@ export const hits = {
   }
 };
 
-function base(iter: number, sel: any, opts: any = {}): UnitSpec | LayerSpec {
+function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
   const data = {values: opts.values || tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
   const y = {field: 'b',type: 'quantitative', ...opts.y};

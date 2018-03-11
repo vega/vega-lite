@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
-import {TopLevelSpec, UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec, TopLevelSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 
@@ -50,7 +50,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with quantitative and format', function() {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative", "format": "d"}
@@ -65,7 +65,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with binned quantitative', function() {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"bin": true, "field": "foo", "type": "quantitative", "format": "d"}
@@ -80,7 +80,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with temporal', function() {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
@@ -95,7 +95,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with x, y, text (ordinal)', function () {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
@@ -124,7 +124,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with size in mark def', function () {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       "mark": {type: "text", size: 5},
       "encoding": {
         "text": {"field": "Origin", "type": "ordinal"},

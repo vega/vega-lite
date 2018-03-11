@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {TopLevel, UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
 
 import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
 import {ModelWithField} from '../../../src/compile/model';
@@ -16,7 +16,7 @@ function parse(model: ModelWithField) {
 
 describe('compile/data/nullfilter', function() {
   describe('compileUnit', function() {
-    const spec: UnitSpec = {
+    const spec: NormalizedUnitSpec = {
       mark: "point",
       encoding: {
         y: {field: 'qq', type: "quantitative"},
@@ -35,7 +35,7 @@ describe('compile/data/nullfilter', function() {
     });
 
     it('should add filterNull for Q and T when invalidValues is "filter".', function () {
-      const model = parseUnitModelWithScale(mergeDeep<TopLevel<UnitSpec>>(spec, {
+      const model = parseUnitModelWithScale(mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
         config: {
           invalidValues: 'filter'
         }
@@ -47,7 +47,7 @@ describe('compile/data/nullfilter', function() {
     });
 
     it('should add no null filter if when invalidValues is null', function () {
-      const model = parseUnitModelWithScale(mergeDeep<TopLevel<UnitSpec>>(spec, {
+      const model = parseUnitModelWithScale(mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
         config: {
           invalidValues: null
         }
