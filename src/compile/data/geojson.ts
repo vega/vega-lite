@@ -32,7 +32,7 @@ export class GeoJSONNode extends DataFlowNode {
     if (model.channelHasField(SHAPE)) {
       const fieldDef = model.fieldDef(SHAPE);
       if (fieldDef.type === GEOJSON) {
-        parent = new GeoJSONNode(null, null, fieldDef.field, model.getName(`geojson_${geoJsonCounter++}`));
+        parent = new GeoJSONNode(parent, null, fieldDef.field, model.getName(`geojson_${geoJsonCounter++}`));
       }
     }
 
