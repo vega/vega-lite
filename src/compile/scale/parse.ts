@@ -48,7 +48,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     let fieldDef: FieldDef<string>;
-    let specifiedScale: Scale = {};
+    let specifiedScale: Scale | null = undefined;
 
     const channelDef = encoding[channel];
 
@@ -60,17 +60,18 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
-      specifiedScale = channelDef.scale || {};
+      specifiedScale = channelDef.scale;
     } else if (hasConditionalFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition['scale'] || {}; // We use ['scale'] since we know that channel here has scale for sure
+      specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
     } else if (channel === X) {
       fieldDef = getFieldDef(encoding.x2);
     } else if (channel === Y) {
       fieldDef = getFieldDef(encoding.y2);
     }
 
-    if (fieldDef) {
+    if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
+      specifiedScale = specifiedScale || {};
       const specifiedScaleType = specifiedScale.type;
       const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
       scaleComponents[channel] = new ScaleComponent(

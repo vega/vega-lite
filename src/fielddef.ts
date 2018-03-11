@@ -164,9 +164,11 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
+   * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
+   *
    * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
    */
-  scale?: Scale;
+  scale?: Scale | null;
 
   /**
    * Sort order for the encoded field.

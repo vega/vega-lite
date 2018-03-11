@@ -83,6 +83,10 @@
       "style": "background-size: auto"
     },
     {
+      "name": "bar_color_disabled_scale",
+      "title": "A bar chart encoding color names in the data."
+    },
+    {
       "name": "rect_binned_heatmap",
       "title": "Table Binned heatmap"
     },
