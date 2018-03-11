@@ -224,8 +224,6 @@ export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec>> & 
 
 export type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec>>;
 
-export type UnnormalizedSpec = FacetedCompositeUnitSpec | GenericFacetSpec<CompositeUnitSpec> | GenericLayerSpec<CompositeUnitSpec> | GenericRepeatSpec<CompositeUnitSpec> | GenericVConcatSpec<CompositeUnitSpec> | GenericHConcatSpec<CompositeUnitSpec>;
-
 /* Custom type guards */
 
 
@@ -261,7 +259,7 @@ export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<Generi
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: UnnormalizedSpec | TopLevelSpec, config: Config): NormalizedSpec {
+export function normalize(spec: TopLevelSpec | GenericSpec<CompositeUnitSpec> | FacetedCompositeUnitSpec, config: Config): NormalizedSpec {
   if (isFacetSpec(spec)) {
     return normalizeFacet(spec, config);
   }
