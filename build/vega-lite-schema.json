@@ -8,16 +8,16 @@
       "$ref": "#/definitions/TopLevelFacetSpec"
     },
     {
-      "$ref": "#/definitions/TopLevel<LayerSpec>"
+      "$ref": "#/definitions/TopLevelLayerSpec"
     },
     {
-      "$ref": "#/definitions/TopLevel<RepeatSpec>"
+      "$ref": "#/definitions/TopLevelRepeatSpec"
     },
     {
-      "$ref": "#/definitions/TopLevel<VConcatSpec>"
+      "$ref": "#/definitions/TopLevelVConcatSpec"
     },
     {
-      "$ref": "#/definitions/TopLevel<HConcatSpec>"
+      "$ref": "#/definitions/TopLevelHConcatSpec"
     }
   ],
   "definitions": {
@@ -5761,7 +5761,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<HConcatSpec>": {
+    "TopLevelHConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5843,7 +5843,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<LayerSpec>": {
+    "TopLevelLayerSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5940,7 +5940,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<RepeatSpec>": {
+    "TopLevelRepeatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -6023,7 +6023,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<VConcatSpec>": {
+    "TopLevelVConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
