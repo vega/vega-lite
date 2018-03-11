@@ -75,7 +75,7 @@
         },
         {
             "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
@@ -99,7 +99,8 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "variety"
+                        "field": "variety",
+                        "band": 0.5
                     }
                 }
             }
@@ -124,7 +125,8 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "variety"
+                        "field": "variety",
+                        "band": 0.5
                     },
                     "x2": {
                         "scale": "x",
@@ -165,7 +167,7 @@
         },
         {
             "name": "y",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "fields": [
                     {
@@ -184,7 +186,8 @@
                     "signal": "y_step"
                 }
             },
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [
