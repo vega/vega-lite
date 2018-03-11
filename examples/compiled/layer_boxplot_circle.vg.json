@@ -264,7 +264,7 @@
             "type": "rect",
             "style": [
                 "tick",
-                "boxplot-mid"
+                "boxplot-median"
             ],
             "from": {
                 "data": "data_4"

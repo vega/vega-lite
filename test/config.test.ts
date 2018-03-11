@@ -27,7 +27,7 @@ describe('config', () => {
         whisker: {
           fill: 'red'
         },
-        mid: {
+        median: {
           color: 'white'
         }
       }
@@ -60,7 +60,7 @@ describe('config', () => {
       assert.deepEqual(output.style['boxplot-whisker'], {fill: 'red'}, `config.boxplot.whisker should be redirect to config.style['boxplot-whisker]`);
 
       assert.isUndefined(output.boxplot, `Boxplot config should be redirected`);
-      assert.isUndefined(output.style['boxplot-mid'], `Boxplot mid's color config should be stripped`);
+      assert.isUndefined(output.style['boxplot-median'], `Boxplot median tick's color config should be stripped`);
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {

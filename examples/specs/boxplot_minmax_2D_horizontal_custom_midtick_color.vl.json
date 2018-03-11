@@ -15,7 +15,7 @@
     }
   },
   "config": {
-    "boxplot": {"mid": {"color": "orange"}}
+    "boxplot": {"median": {"color": "orange"}}
   }
 }
 

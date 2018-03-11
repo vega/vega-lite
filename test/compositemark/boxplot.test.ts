@@ -143,7 +143,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 5
             },
@@ -380,7 +380,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               size: 14,
               color: 'white'
             },
@@ -507,7 +507,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -634,7 +634,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -761,7 +761,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -887,7 +887,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1013,7 +1013,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1137,7 +1137,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1257,7 +1257,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1376,7 +1376,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1514,7 +1514,7 @@ describe("normalizeBoxIQR", () => {
          {
            mark: {
              type: 'tick',
-             style: 'boxplot-mid',
+             style: 'boxplot-median',
              color: 'white',
              size: 14
            },
@@ -1652,7 +1652,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },
@@ -1802,7 +1802,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'tick',
-              style: 'boxplot-mid',
+              style: 'boxplot-median',
               color: 'white',
               size: 14
             },

@@ -6,7 +6,7 @@
   },
   "config": {
     "boxplot": {
-      "mid": {
+      "median": {
         "color": "orange"
       }
     }
@@ -114,7 +114,7 @@
       "mark": {
         "type": "tick",
         "size": 14,
-        "style": "boxplot-mid",
+        "style": "boxplot-median",
         "color": "orange"
       },
       "encoding": {
