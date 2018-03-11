@@ -3,7 +3,10 @@
   "data": {
     "url": "data/stocks.csv",
     "format": {
-      "type": "csv"
+      "type": "csv",
+      "parse": {
+        "date": "date"
+      }
     }
   },
   "width": 800,
@@ -69,49 +72,43 @@
           }
         }
       ],
-      "mark": {
-       "type": "rule",
-       "color": "gray"
-     },
-     "encoding": {
-       "x": {
-         "type": "temporal",
-         "field": "date"
-       }
-     }
-   },
-   {
-     "transform": [
-      {
-        "filter" : {
-          "selection": "tooltip"
+      "layer": [{
+        "mark": {
+         "type": "rule",
+         "color": "gray"
+        },
+        "encoding": {
+          "x": {
+            "type": "temporal",
+            "field": "date"
+          }
         }
-      }
-     ],
-     "mark": {
-       "type": "text",
-       "align": "left",
-       "dx": 5,
-       "dy": -5
-     },
-     "encoding": {
-       "text": {
-         "type": "quantitative",
-         "field": "price"
-       },
-       "color": {
-         "type": "nominal",
-         "field": "symbol"
-       },
-       "x": {
-         "type": "temporal",
-         "field": "date"
-       },
-       "y": {
-         "type": "quantitative",
-         "field": "price"
-       }
-     }
+      }, {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 5,
+          "dy": -5
+        },
+        "encoding": {
+          "text": {
+            "type": "quantitative",
+            "field": "price"
+          },
+          "color": {
+            "type": "nominal",
+            "field": "symbol"
+          },
+          "x": {
+            "type": "temporal",
+            "field": "date"
+          },
+          "y": {
+            "type": "quantitative",
+            "field": "price"
+          }
+        }
+      }]
    }
  ]
 }
