@@ -1,11 +1,13 @@
 import embed from 'vega-embed';
 
+import {TopLevelSpec} from '../../src';
+
 export function runStreamingExample(eleId: string) {
-  const vlSpec = {
+  const vlSpec: TopLevelSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
     data: {name: 'table'},
     autosize: {
-      update: true
+      resize: true
     },
     width: 400,
     mark: 'line',
