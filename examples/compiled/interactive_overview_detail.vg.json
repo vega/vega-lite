@@ -572,9 +572,9 @@
                     "zindex": 0
                 },
                 {
-                    "tickCount": 3,
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "tickCount": 3,
                     "labelOverlap": true,
                     "title": "price",
                     "zindex": 1

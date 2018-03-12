@@ -192,9 +192,9 @@
     ],
     "axes": [
         {
-            "title": "Barley Yield",
             "scale": "x",
             "orient": "bottom",
+            "title": "Barley Yield",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

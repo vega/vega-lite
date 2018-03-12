@@ -192,10 +192,10 @@
     ],
     "axes": [
         {
-            "domain": false,
-            "tickSize": 0,
             "scale": "x",
             "orient": "bottom",
+            "domain": false,
+            "tickSize": 0,
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -214,9 +214,9 @@
             "zindex": 1
         },
         {
-            "tickSize": 0,
             "scale": "x",
             "orient": "bottom",
+            "tickSize": 0,
             "grid": true,
             "tickCount": {
                 "signal": "ceil(width/40)"

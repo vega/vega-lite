@@ -189,9 +189,9 @@
     ],
     "axes": [
         {
-            "domain": false,
             "scale": "x",
             "orient": "bottom",
+            "domain": false,
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

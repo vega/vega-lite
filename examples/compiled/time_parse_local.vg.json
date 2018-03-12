@@ -96,9 +96,9 @@
     ],
     "axes": [
         {
-            "title": "time",
             "scale": "y",
             "orient": "left",
+            "title": "time",
             "labelOverlap": true,
             "encode": {
                 "labels": {

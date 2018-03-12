@@ -324,9 +324,9 @@
             "zindex": 1
         },
         {
-            "title": "Mean Precipitation",
             "scale": "layer_0_y",
             "orient": "left",
+            "title": "Mean Precipitation",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
@@ -334,9 +334,9 @@
             "zindex": 1
         },
         {
-            "title": "Temperature (min and max)",
             "scale": "layer_1_y",
             "orient": "right",
+            "title": "Temperature (min and max)",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

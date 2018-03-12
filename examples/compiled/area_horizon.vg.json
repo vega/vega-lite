@@ -287,9 +287,9 @@
             "zindex": 0
         },
         {
-            "title": "y",
             "scale": "y",
             "orient": "left",
+            "title": "y",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

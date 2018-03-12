@@ -455,9 +455,9 @@
     ],
     "axes": [
         {
-            "title": "Percentage",
             "scale": "x",
             "orient": "bottom",
+            "title": "Percentage",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -481,13 +481,13 @@
             "zindex": 0
         },
         {
+            "scale": "y",
+            "orient": "left",
             "domain": false,
             "minExtent": 60,
             "offset": 5,
             "ticks": false,
             "title": "Question",
-            "scale": "y",
-            "orient": "left",
             "zindex": 1
         }
     ],

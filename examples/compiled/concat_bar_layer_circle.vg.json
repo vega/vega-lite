@@ -463,6 +463,8 @@
             ],
             "axes": [
                 {
+                    "scale": "concat_1_x",
+                    "orient": "bottom",
                     "encode": {
                         "labels": {
                             "update": {
@@ -478,8 +480,6 @@
                             }
                         }
                     },
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
                     "title": "Major_Genre",
                     "zindex": 1
                 },

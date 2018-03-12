@@ -319,9 +319,9 @@
             "zindex": 0
         },
         {
-            "title": "Miles per Gallon",
             "scale": "y",
             "orient": "left",
+            "title": "Miles per Gallon",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
