@@ -20,6 +20,12 @@ export namespace Channel {
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
 
+  // Geo Position
+  export const LATITUDE: 'latitude' = 'latitude';
+  export const LONGITUDE: 'longitude' = 'longitude';
+  export const LATITUDE2: 'latitude2' = 'latitude2';
+  export const LONGITUDE2: 'longitude2' = 'longitude2';
+
   // Mark property with scale
   export const COLOR: 'color' = 'color';
 
@@ -47,6 +53,12 @@ export const X = Channel.X;
 export const Y = Channel.Y;
 export const X2 = Channel.X2;
 export const Y2 = Channel.Y2;
+
+export const LATITUDE = Channel.LATITUDE;
+export const LATITUDE2 = Channel.LATITUDE2;
+export const LONGITUDE = Channel.LONGITUDE;
+export const LONGITUDE2 = Channel.LONGITUDE2;
+
 export const ROW = Channel.ROW;
 export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
@@ -63,12 +75,25 @@ export const OPACITY = Channel.OPACITY;
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
+export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
+
+export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
+  longitude: 1,
+  longitude2: 1,
+  latitude: 1,
+  latitude2: 1,
+};
+
+export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
+
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   // position
   x: 1,
   y: 1,
   x2: 1,
   y2: 1,
+
+  ...GEOPOSITION_CHANNEL_INDEX,
 
   // color
   color: 1,
@@ -123,6 +148,7 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
 export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' |
+  'longitude' | 'latitude' | 'longitude2' | 'latitude2' |
   'row' | 'column' |
   'color' | 'fill' | 'stroke' |
   'size' | 'shape' | 'opacity' |
@@ -141,6 +167,8 @@ const {
   x: _x, y: _y,
   // x2 and y2 share the same scale as x and y
   x2: _x2, y2: _y2,
+  latitude: _latitude, longitude: _longitude,
+  latitude2: _latitude2, longitude2: _longitude2,
   // The rest of unit channels then have scale
   ...NONPOSITION_CHANNEL_INDEX
 } = UNIT_CHANNEL_INDEX;
@@ -229,12 +257,16 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       };
     case X:
     case Y:
+    case LATITUDE:
+    case LONGITUDE:
       return { // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
         point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, rect: true, line: true, area: true, text: true
       };
     case X2:
     case Y2:
+    case LATITUDE2:
+    case LONGITUDE2:
       return {
         rule: true, bar: true, rect: true, area: true
       };
@@ -277,6 +309,11 @@ export function rangeType(channel: Channel): RangeType {
       return 'flexible';
 
     // No scale, no range type.
+
+    case LATITUDE:
+    case LONGITUDE:
+    case LATITUDE2:
+    case LONGITUDE2:
     case DETAIL:
     case KEY:
     case ORDER:

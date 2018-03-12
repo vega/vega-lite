@@ -29,13 +29,13 @@
       },
       "mark": "text",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "lon",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "lat",
-          "type": "latitude"
+          "type": "quantitative"
         },
         "text": {"field": "city", "type": "nominal"}
       }

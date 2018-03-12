@@ -1,4 +1,4 @@
-import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, X2, Y, Y2} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
 import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {
@@ -8,8 +8,8 @@ import {
   ScaleType,
   scaleTypePrecedence,
 } from '../../scale';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, keys} from '../../util';
+import {GEOJSON} from '../../type';
+import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
@@ -52,9 +52,11 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     const channelDef = encoding[channel];
 
-    // If mark has a projection (potentially implicitly), there is no need to generate a scale.
-    if (isFieldDef(channelDef) && ((mark === GEOSHAPE && isFieldDef(channelDef) && channel === SHAPE && channelDef.type === GEOJSON)
-    || (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)))) {
+    // Don't generate scale for shape of geoshape
+    if (
+      isFieldDef(channelDef) && mark === GEOSHAPE &&
+      channel === SHAPE && channelDef.type === GEOJSON
+    ) {
       return scaleComponents;
     }
 

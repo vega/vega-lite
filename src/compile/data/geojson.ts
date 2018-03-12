@@ -1,6 +1,6 @@
-import {SHAPE, X, X2, Y, Y2} from '../../channel';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, Dict, duplicate} from '../../util';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
+import {GEOJSON} from '../../type';
+import {duplicate} from '../../util';
 import {VgGeoJSONTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -13,21 +13,15 @@ export class GeoJSONNode extends DataFlowNode {
   public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
     let geoJsonCounter = 0;
 
-    for (const coordinates of [[X, Y], [X2, Y2]]) {
-      const pair: Dict<string> = {};
-      for (const channel of coordinates) {
-        if (model.channelHasField(channel)) {
-          const fieldDef = model.fieldDef(channel);
-          if (contains([LATITUDE, LONGITUDE], fieldDef.type)) {
-            pair[fieldDef.type] = fieldDef.field;
-          }
-        }
-      }
+    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
+      const pair = coordinates.map(
+        channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+      );
 
-      if (LONGITUDE in pair || LATITUDE in pair) {
-        parent = new GeoJSONNode(parent, [pair[LONGITUDE], pair[LATITUDE]], null, model.getName(`geojson_${geoJsonCounter++}`));
+      if (pair[0] || pair[1]) {
+        parent = new GeoJSONNode(parent, pair, null, model.getName(`geojson_${geoJsonCounter++}`));
       }
-    }
+    });
 
     if (model.channelHasField(SHAPE)) {
       const fieldDef = model.fieldDef(SHAPE);

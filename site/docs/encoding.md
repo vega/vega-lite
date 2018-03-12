@@ -154,6 +154,15 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 __Note:__ `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 
+
+{:#geo}
+## Geographic Position Channels
+
+`longitude` and `latitude` channels can be used to encode geographic coordinate data via a [projection](projection.html).
+In addition, `longitude2` and `latitude2` can specify the span of geographically projected ranged [`area`](area.html#ranged), [`bar`](bar.html#ranged), [`rect`](rect.html#ranged), and [`rule`](rule.html#ranged).
+
+{% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
+
 {:#mark-prop}
 ## Mark Property Channels
 

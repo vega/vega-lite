@@ -18,7 +18,11 @@
             "name": "source_1",
             "url": "data/us-state-capitals.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "lon": "number",
+                    "lat": "number"
+                }
             },
             "transform": [
                 {
@@ -37,8 +41,8 @@
                         "lat"
                     ],
                     "as": [
-                        "lon_geo",
-                        "lat_geo"
+                        "layer_1_x",
+                        "layer_1_y"
                     ]
                 }
             ]
@@ -98,10 +102,10 @@
                         "value": "black"
                     },
                     "x": {
-                        "field": "lon_geo"
+                        "field": "layer_1_x"
                     },
                     "y": {
-                        "field": "lat_geo"
+                        "field": "layer_1_y"
                     },
                     "text": {
                         "signal": "''+datum[\"city\"]"

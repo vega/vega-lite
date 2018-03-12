@@ -17,13 +17,13 @@ describe('compile/data/geopoint', () => {
         },
         'mark': 'circle',
         'encoding': {
-          'x': {
+          'longitude': {
             'field': 'longitude',
-            'type': 'longitude'
+            'type': 'quantitative'
           },
-          'y': {
+          'latitude': {
             'field': 'latitude',
-            'type': 'latitude'
+            'type': 'quantitative'
           }
         }
       });
@@ -40,7 +40,7 @@ describe('compile/data/geopoint', () => {
         const transform: VgGeoPointTransform = (<GeoPointNode>node).assemble();
         assert.equal(transform.type, 'geopoint');
         assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
-        assert.isTrue(every(['longitude_geo', 'latitude_geo'], (a) => contains(transform.as, a)));
+        assert.isTrue(every([model.getName('x'), model.getName('y')], (a) => contains(transform.as, a)));
         assert.isDefined(transform.projection);
         assert.isAtMost(node.children.length, 1);
         node = node.children[0];

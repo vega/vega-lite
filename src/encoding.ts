@@ -23,7 +23,8 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {keys, some} from './util';
+import {Type} from './type';
+import {contains, keys, some} from './util';
 
 export interface Encoding<F> {
   /**
@@ -37,16 +38,37 @@ export interface Encoding<F> {
   y?: PositionFieldDef<F> | ValueDef;
 
   /**
-   * X2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   x2?: FieldDef<F> | ValueDef;
 
   /**
-   * Y2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   y2?: FieldDef<F> | ValueDef;
+
+
+  /**
+   * Longitude position of geographically projected marks.
+   */
+  longitude?: FieldDef<F>;
+
+  /**
+   * Latitude position of geographically projected marks.
+   */
+  latitude?: FieldDef<F>;
+
+  /**
+   * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  longitude2?: FieldDef<F>;
+
+  /**
+   * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  latitude2?: FieldDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -213,6 +235,24 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     } else {
       // FIXME: remove this casting.  (I don't know why Typescript doesn't infer this correctly here.)
       const channelDef = encoding[channel] as ChannelDef<string>;
+
+      const fieldDef = getFieldDef(encoding[channel]);
+      if (fieldDef && contains([Type.LATITUDE, Type.LONGITUDE], fieldDef.type)) {
+        const {[channel]: _, ...newEncoding} = normalizedEncoding;
+        const newChannel = channel === 'x' ? 'longitude' :
+          channel === 'y' ? 'latitude' :
+          channel === 'x2' ? 'longitude2' :
+          channel === 'y2' ? 'latitude2' : undefined;
+        log.warn(log.message.latLongDeprecated(channel, fieldDef.type, newChannel));
+        return {
+          ...newEncoding,
+          [newChannel]: {
+            ...normalize(fieldDef as any, channel),
+            type: 'quantitative'
+          }
+        };
+      }
+
       if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;

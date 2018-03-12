@@ -112,10 +112,11 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
    */
   encoding?: E;
 
+
   /**
    * An object defining properties of geographic projection.
    *
-   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have a channel (one or more of `"X"`, `"X2"`, `"Y"`, `"Y2"`) with type `"latitude"`, or `"longitude"`.
+   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have `latitude` and `"longitude"` channels.
    */
   projection?: Projection;
 

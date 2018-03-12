@@ -195,7 +195,13 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+
+  const channelDef = encoding[channel];
+
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat/long and there is no point position overriding lat/long.
+    {field: model.getName(channel)} :
+    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
     [vgChannel || channel]: valueRef
@@ -209,8 +215,13 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
-  const baseChannel = channel === 'x2' ? 'x' : 'y';
 
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+  const baseChannel = channel === 'x2' ? 'x' : 'y';
+  const channelDef = encoding[baseChannel];
+
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
+    {field: model.getName(channel)}:
+    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

@@ -4,7 +4,7 @@
 
 import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import {Channel} from './channel';
+import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
@@ -178,6 +178,9 @@ export namespace message {
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
+  }
+  export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
+    return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {

@@ -15,7 +15,7 @@ import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
-import {getFullName, Type} from './type';
+import {getFullName, QUANTITATIVE, Type} from './type';
 import {accessPath, titlecase} from './util';
 
 /**
@@ -555,6 +555,18 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'key':
     case 'tooltip':
     case 'href':
+      return COMPATIBLE;
+
+    case 'longitude':
+    case 'longitude2':
+    case 'latitude':
+    case 'latitude2':
+      if (fieldDef.type !== QUANTITATIVE) {
+        return {
+          compatible: false,
+          warning: `Channel ${channel} should not be used with ${fieldDef.type} field.`
+        };
+      }
       return COMPATIBLE;
 
     case 'opacity':
