@@ -440,7 +440,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "low, open",
+            "title": "low, high, open, close",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

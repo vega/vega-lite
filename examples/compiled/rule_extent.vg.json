@@ -141,7 +141,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "Min of Horsepower",
+            "title": "Min of Horsepower, Max of Horsepower",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

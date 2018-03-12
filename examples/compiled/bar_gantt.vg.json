@@ -133,7 +133,7 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "start",
+            "title": "start, end",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

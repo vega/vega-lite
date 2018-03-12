@@ -439,7 +439,7 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "start (year), year (year), year (year)",
+            "title": "start (year), end (year), year (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
