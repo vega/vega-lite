@@ -205,27 +205,16 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "Mean of IMDB_Rating",
+            "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(width/40)"
+                "signal": "ceil(width/20)"
+            },
+            "values": {
+                "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
             },
             "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
         },
         {
             "scale": "y",

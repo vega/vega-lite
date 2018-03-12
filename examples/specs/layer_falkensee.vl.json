@@ -71,7 +71,8 @@
         "x": {
           "field": "start",
           "type": "temporal",
-          "timeUnit": "year"
+          "timeUnit": "year",
+          "axis": null
         },
         "x2": {
           "field": "end",

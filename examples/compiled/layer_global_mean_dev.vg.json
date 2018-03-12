@@ -280,7 +280,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "Miles_per_Gallon, mean_MPG, lower, upper",
+            "title": "Miles_per_Gallon",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
