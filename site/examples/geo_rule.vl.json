@@ -29,13 +29,13 @@
       },
       "mark": "circle",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "latitude",
-          "type": "latitude"
+          "type": "quantitative"
         },
         "size": {"value": 5},
         "color": {"value": "gray"}
@@ -75,21 +75,21 @@
       },
       "mark": "rule",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "origin_longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "origin_latitude",
-          "type": "latitude"
+          "type": "quantitative"
         },
-        "x2": {
+        "longitude2": {
           "field": "dest_longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y2": {
+        "latitude2": {
           "field": "dest_latitude",
-          "type": "latitude"
+          "type": "quantitative"
         }
       }
     }

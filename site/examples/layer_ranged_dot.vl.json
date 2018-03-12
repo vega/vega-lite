@@ -16,18 +16,30 @@
       }
     }
   ],
+  "encoding": {
+    "x": {
+      "field": "life_expect",
+      "type": "quantitative",
+      "axis": {
+        "title": "Life Expectancy (years)"
+      }
+    },
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "axis": {
+        "title": "Country",
+        "offset": 5,
+        "ticks": false,
+        "minExtent": 70,
+        "domain": false
+      }
+    }
+  },
   "layer": [
     {
       "mark": "line",
       "encoding": {
-        "x": {
-          "field": "life_expect",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "country",
-          "type": "nominal"
-        },
         "detail": {
           "field": "country",
           "type": "nominal"
@@ -41,22 +53,6 @@
         "filled": true
       },
       "encoding": {
-        "x": {
-          "field": "life_expect",
-          "type": "quantitative",
-          "axis": {"title": "Life Expectancy (years)"}
-        },
-        "y": {
-          "field": "country",
-          "type": "nominal",
-          "axis": {
-            "title": "Country",
-            "offset": 5,
-            "ticks": false,
-            "minExtent": 70,
-            "domain": false
-          }
-        },
         "color": {
           "field": "year",
           "type": "ordinal",

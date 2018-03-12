@@ -27,23 +27,15 @@
         "scale": {"zero": false},
         "axis": {"title": "Barley Yield"}
       },
-      "y": {
-        "field": "variety", "type": "ordinal"
-      },
+      "y": {"field": "variety", "type": "ordinal"},
       "color": {"value": "black"}
     }
   }, {
     "mark": "rule",
     "encoding": {
-      "x": {
-        "field": "upper", "type": "quantitative"
-      },
-      "x2": {
-        "field": "lower", "type": "quantitative"
-      },
-      "y": {
-        "field": "variety", "type": "ordinal"
-      }
+      "x": {"field": "upper", "type": "quantitative"},
+      "x2": {"field": "lower", "type": "quantitative"},
+      "y": {"field": "variety", "type": "ordinal"}
     }
   }]
 }

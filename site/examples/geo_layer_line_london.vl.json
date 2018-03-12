@@ -42,13 +42,13 @@
       ],
       "mark": "text",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "cx",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "cy",
-          "type": "latitude"
+          "type": "quantitative"
         },
         "text": {
           "field": "bLabel",

@@ -14,7 +14,7 @@
           "aggregate": "ci0",
           "field": "Miles_per_Gallon",
           "type": "quantitative",
-          "axis": {"title": "Miles/Gallon"}
+          "axis": {"title": "Mean of Miles per Gallon (95% CIs)"}
         },
         "y2": {
           "aggregate": "ci1",
