@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "width": 320,
-  "description":"A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
+  "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
   "data": {
     "values": [
       {
@@ -204,39 +204,97 @@
       }
     ]
   },
-  "encoding": {
-    "x": {
-      "field": "date",
-      "type": "temporal",
-      "timeUnit": "yearmonthdate",
-      "scale": {"domain": [{"month": 5, "date": 31, "year": 2009}, {"month": 7, "date": 1, "year": 2009}]},
-      "axis": {
-        "format": "%m/%d",
-        "title": "Date in 2009"
-      }
-    },
-    "color": {
-      "condition": {
-        "test": "datum.open < datum.close",
-        "value": "#06982d"
-      },
-      "value": "#ae1325"
-    }
-  },
   "layer": [
     {
       "mark": "rule",
       "encoding": {
-        "y": {"field": "low", "type": "quantitative", "scale": {"zero": false}},
-        "y2": {"field": "high", "type": "quantitative"}
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "timeUnit": "yearmonthdate",
+          "scale": {
+            "domain": [
+              {
+                "month": 5,
+                "date": 31,
+                "year": 2009
+              },
+              {
+                "month": 7,
+                "date": 1,
+                "year": 2009
+              }
+            ]
+          },
+          "axis": {
+            "format": "%m/%d",
+            "title": "Date in 2009"
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.open < datum.close",
+            "value": "#06982d"
+          },
+          "value": "#ae1325"
+        },
+        "y": {
+          "field": "low",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y2": {
+          "field": "high",
+          "type": "quantitative"
+        }
       }
     },
     {
       "mark": "bar",
       "encoding": {
-        "y": {"field": "open", "type": "quantitative"},
-        "y2": {"field": "close", "type": "quantitative"},
-        "size": {"value": 5}
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "timeUnit": "yearmonthdate",
+          "scale": {
+            "domain": [
+              {
+                "month": 5,
+                "date": 31,
+                "year": 2009
+              },
+              {
+                "month": 7,
+                "date": 1,
+                "year": 2009
+              }
+            ]
+          },
+          "axis": {
+            "format": "%m/%d",
+            "title": "Date in 2009"
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.open < datum.close",
+            "value": "#06982d"
+          },
+          "value": "#ae1325"
+        },
+        "y": {
+          "field": "open",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "close",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 5
+        }
       }
     }
   ]
