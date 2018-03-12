@@ -136,8 +136,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Cylinders",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {

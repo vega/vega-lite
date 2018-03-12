@@ -405,11 +405,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "price",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "price",
             "zindex": 1
         },
         {

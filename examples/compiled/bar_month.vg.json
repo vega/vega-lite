@@ -122,8 +122,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "date (month)",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -147,11 +147,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of precipitation",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of precipitation",
             "zindex": 1
         },
         {

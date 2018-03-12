@@ -292,12 +292,12 @@
                 {
                     "scale": "child_Horsepower_x",
                     "orient": "bottom",
+                    "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "Horsepower (binned)",
                     "values": {
                         "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
                     },
@@ -306,11 +306,11 @@
                 {
                     "scale": "child_Horsepower_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {
@@ -385,12 +385,12 @@
                 {
                     "scale": "child_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "title": "Miles_per_Gallon (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "Miles_per_Gallon (binned)",
                     "values": {
                         "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
                     },
@@ -399,11 +399,11 @@
                 {
                     "scale": "child_Miles_per_Gallon_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {
@@ -478,12 +478,12 @@
                 {
                     "scale": "child_Acceleration_x",
                     "orient": "bottom",
+                    "title": "Acceleration (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "Acceleration (binned)",
                     "values": {
                         "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
                     },
@@ -492,11 +492,11 @@
                 {
                     "scale": "child_Acceleration_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {

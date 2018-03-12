@@ -189,11 +189,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {

@@ -82,12 +82,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Horsepower",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Horsepower",
             "zindex": 1
         },
         {

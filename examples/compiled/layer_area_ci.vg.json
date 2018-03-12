@@ -223,12 +223,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Year (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year (year)",
             "encode": {
                 "labels": {
                     "update": {

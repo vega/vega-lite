@@ -269,9 +269,9 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "income",
             "labelFlush": true,
             "labelOverlap": "greedy",
-            "title": "income",
             "zindex": 1
         },
         {
@@ -289,11 +289,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "health",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "health",
             "zindex": 1
         },
         {

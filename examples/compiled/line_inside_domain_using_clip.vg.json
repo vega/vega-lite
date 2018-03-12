@@ -122,12 +122,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "wavelength",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "wavelength",
             "zindex": 1
         },
         {
@@ -148,11 +148,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "power",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "power",
             "zindex": 1
         },
         {

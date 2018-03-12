@@ -133,12 +133,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "precipitation (binned)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/20)"
             },
-            "title": "precipitation (binned)",
             "values": {
                 "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
             },
@@ -147,11 +147,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {

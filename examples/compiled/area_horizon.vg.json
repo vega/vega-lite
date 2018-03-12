@@ -263,12 +263,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "x",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "x",
             "zindex": 1
         },
         {

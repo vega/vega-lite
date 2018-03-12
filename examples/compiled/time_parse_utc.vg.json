@@ -114,12 +114,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Year (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year (year)",
             "encode": {
                 "labels": {
                     "update": {
@@ -149,11 +149,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of Horsepower",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {

@@ -93,11 +93,11 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "title": "US_DVD_Sales",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "US_DVD_Sales",
                     "zindex": 1
                 }
             ]
@@ -151,12 +151,12 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "title": "Worldwide_Gross",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
                     },
-                    "title": "Worldwide_Gross",
                     "zindex": 1
                 }
             ]

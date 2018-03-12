@@ -315,12 +315,12 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "title": "IMDB_Rating (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/20)"
                     },
-                    "title": "IMDB_Rating (binned)",
                     "values": {
                         "signal": "sequence(concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
                     },
@@ -329,11 +329,11 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "title": "Rotten_Tomatoes_Rating (binned)",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_height/20)"
                     },
-                    "title": "Rotten_Tomatoes_Rating (binned)",
                     "values": {
                         "signal": "sequence(concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)"
                     },
@@ -449,6 +449,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "Major_Genre",
                     "encode": {
                         "labels": {
                             "update": {
@@ -464,17 +465,16 @@
                             }
                         }
                     },
-                    "title": "Major_Genre",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {

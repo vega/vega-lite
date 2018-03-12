@@ -157,12 +157,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Sum of yield",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Sum of yield",
             "zindex": 1
         },
         {

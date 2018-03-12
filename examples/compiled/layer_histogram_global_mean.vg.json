@@ -205,12 +205,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Mean of IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Mean of IMDB_Rating",
             "zindex": 1
         },
         {
@@ -230,11 +230,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {

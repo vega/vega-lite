@@ -120,8 +120,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Cylinders",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -142,11 +142,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "mean_acc",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "mean_acc",
             "zindex": 1
         },
         {

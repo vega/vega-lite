@@ -254,12 +254,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Horsepower",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Horsepower",
             "zindex": 1
         },
         {
@@ -280,11 +280,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Miles_per_Gallon, mean_MPG, lower",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Miles_per_Gallon, mean_MPG, lower",
             "zindex": 1
         },
         {

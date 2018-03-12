@@ -177,11 +177,11 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_height/40)"
                     },
-                    "title": "price",
                     "zindex": 1
                 },
                 {
@@ -539,12 +539,12 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "date",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
-                    "title": "date",
                     "encode": {
                         "labels": {
                             "update": {
@@ -574,9 +574,9 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "price",
                     "tickCount": 3,
                     "labelOverlap": true,
-                    "title": "price",
                     "zindex": 1
                 }
             ]

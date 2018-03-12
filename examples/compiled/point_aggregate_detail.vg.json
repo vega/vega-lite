@@ -107,12 +107,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Mean of Horsepower",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Mean of Horsepower",
             "zindex": 1
         },
         {
@@ -133,11 +133,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of Displacement",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of Displacement",
             "zindex": 1
         },
         {

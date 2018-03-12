@@ -172,11 +172,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Sum of yield",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Sum of yield",
             "zindex": 1
         },
         {

@@ -159,12 +159,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date (year)",
             "encode": {
                 "labels": {
                     "update": {
@@ -194,11 +194,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of price",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of price",
             "zindex": 1
         },
         {

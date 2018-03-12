@@ -181,11 +181,11 @@
                         {
                             "scale": "y",
                             "orient": "left",
+                            "title": "Acceleration",
                             "labelOverlap": true,
                             "tickCount": {
                                 "signal": "ceil(child_child_height/40)"
                             },
-                            "title": "Acceleration",
                             "zindex": 1
                         }
                     ]
@@ -205,12 +205,12 @@
                         {
                             "scale": "x",
                             "orient": "bottom",
+                            "title": "Horsepower",
                             "labelFlush": true,
                             "labelOverlap": true,
                             "tickCount": {
                                 "signal": "ceil(child_child_width/40)"
                             },
-                            "title": "Horsepower",
                             "zindex": 1
                         }
                     ]

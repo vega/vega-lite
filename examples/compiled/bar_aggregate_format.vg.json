@@ -121,8 +121,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "format": ".2e",
             "title": "population",
+            "format": ".2e",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -149,8 +149,8 @@
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "age",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],

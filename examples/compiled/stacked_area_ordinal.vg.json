@@ -195,12 +195,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Year (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Year (year)",
             "encode": {
                 "labels": {
                     "update": {
@@ -230,11 +230,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Sum of Weight_in_lbs",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Sum of Weight_in_lbs",
             "zindex": 1
         },
         {

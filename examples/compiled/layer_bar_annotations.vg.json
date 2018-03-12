@@ -359,8 +359,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Day",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {

@@ -115,9 +115,9 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date (month)",
             "labelFlush": true,
             "labelOverlap": true,
-            "title": "date (month)",
             "encode": {
                 "labels": {
                     "update": {
@@ -144,11 +144,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of temp_range",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of temp_range",
             "zindex": 1
         },
         {

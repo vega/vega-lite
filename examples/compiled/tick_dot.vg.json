@@ -81,12 +81,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "precipitation",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "precipitation",
             "zindex": 1
         },
         {

@@ -121,11 +121,11 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "title": "Mean of price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "Mean of price",
                     "zindex": 1
                 }
             ]
@@ -179,8 +179,8 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (quarter)",
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {

@@ -133,12 +133,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "start",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "start",
             "zindex": 1
         },
         {
@@ -159,8 +159,8 @@
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "task",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],
