@@ -357,10 +357,6 @@
                     },
                     {
                         "signal": "{data: datetime(2009, 6, 1, 0, 0, 0, 0)}"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "yearmonthdate_date"
                     }
                 ]
             },
