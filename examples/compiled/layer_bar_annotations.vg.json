@@ -376,9 +376,9 @@
             "zindex": 1
         },
         {
-            "title": "PM2.5 Value",
             "scale": "y",
             "orient": "left",
+            "title": "PM2.5 Value",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

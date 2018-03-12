@@ -357,9 +357,9 @@
     ],
     "axes": [
         {
-            "title": "population",
             "scale": "x",
             "orient": "bottom",
+            "title": "population",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

@@ -256,9 +256,9 @@
             "zindex": 0
         },
         {
-            "title": "Miles/Gallon",
             "scale": "y",
             "orient": "left",
+            "title": "Miles/Gallon",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

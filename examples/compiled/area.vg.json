@@ -151,9 +151,9 @@
             "zindex": 0
         },
         {
-            "title": "count",
             "scale": "y",
             "orient": "left",
+            "title": "count",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

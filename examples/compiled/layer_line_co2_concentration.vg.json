@@ -341,18 +341,18 @@
     ],
     "axes": [
         {
-            "tickCount": 11,
-            "title": "Year into Decade",
             "scale": "x",
             "orient": "bottom",
+            "tickCount": 11,
+            "title": "Year into Decade",
             "labelFlush": true,
             "labelOverlap": true,
             "zindex": 1
         },
         {
-            "tickCount": 11,
             "scale": "x",
             "orient": "bottom",
+            "tickCount": 11,
             "grid": true,
             "gridScale": "y",
             "domain": false,
@@ -363,9 +363,9 @@
             "zindex": 0
         },
         {
-            "title": "CO2 concentration in ppm",
             "scale": "y",
             "orient": "left",
+            "title": "CO2 concentration in ppm",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

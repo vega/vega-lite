@@ -18,7 +18,7 @@ export class Split<T extends object> {
     return new Split(duplicate(this.explicit), duplicate(this.implicit));
   }
 
-  public combine(): T {
+  public combine(): Partial<T> {
     // FIXME remove "as any".
     // Add "as any" to avoid an error "Spread types may only be created from object types".
     return {

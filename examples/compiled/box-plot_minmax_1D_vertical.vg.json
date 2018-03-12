@@ -310,9 +310,9 @@
     ],
     "axes": [
         {
-            "title": "population",
             "scale": "y",
             "orient": "left",
+            "title": "population",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

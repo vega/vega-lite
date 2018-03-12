@@ -11,7 +11,7 @@ export function assembleAxis(
     header: boolean // whether this is called via a header
   } = {header: false}
 ): VgAxis {
-  const axis = axisCmpt.combine() as VgAxis;
+  const {orient, scale, ...axis} = axisCmpt.combine();
 
   // Remove properties that are not valid for this kind of axis
   keys(axis).forEach((key) => {
@@ -40,6 +40,8 @@ export function assembleAxis(
     }
 
     return {
+      scale,
+      orient,
       ...axis,
       domain: false,
       labels: false,
@@ -74,6 +76,8 @@ export function assembleAxis(
     }
 
     return {
+      scale,
+      orient,
       ...axis,
 
       zindex: 1

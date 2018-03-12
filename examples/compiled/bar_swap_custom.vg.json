@@ -154,9 +154,9 @@
     ],
     "axes": [
         {
-            "title": "Average of b",
             "scale": "x",
             "orient": "bottom",
+            "title": "Average of b",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

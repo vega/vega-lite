@@ -162,9 +162,9 @@
     ],
     "axes": [
         {
-            "title": "Month of the year",
             "scale": "x",
             "orient": "bottom",
+            "title": "Month of the year",
             "labelOverlap": true,
             "encode": {
                 "labels": {

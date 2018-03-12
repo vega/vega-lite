@@ -403,9 +403,9 @@
     ],
     "axes": [
         {
-            "title": "Date in 2009",
             "scale": "x",
             "orient": "bottom",
+            "title": "Date in 2009",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {

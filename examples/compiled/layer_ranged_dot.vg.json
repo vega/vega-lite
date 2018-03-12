@@ -223,9 +223,9 @@
     ],
     "axes": [
         {
-            "title": "Life Expectancy (years)",
             "scale": "x",
             "orient": "bottom",
+            "title": "Life Expectancy (years)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -249,13 +249,13 @@
             "zindex": 0
         },
         {
+            "scale": "y",
+            "orient": "left",
             "domain": false,
             "minExtent": 70,
             "offset": 5,
             "ticks": false,
             "title": "Country",
-            "scale": "y",
-            "orient": "left",
             "zindex": 1
         }
     ],
