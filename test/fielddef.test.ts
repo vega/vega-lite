@@ -156,7 +156,7 @@ describe('fieldDef', () => {
     });
 
     it('should return correct title for count', () => {
-      assert.equal(title({field: '*', aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(title({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {

@@ -59,7 +59,7 @@ describe('compile/data/nullfilter', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
-          y: {aggregate: 'count', field: '*', type: "quantitative"}
+          y: {aggregate: 'count', type: "quantitative"}
         }
       });
 

@@ -84,7 +84,7 @@ describe('compile/data/formatparse', () => {
         encoding: {
           x: {field: 'a', type: "temporal"},
           y: {field: 'b', type: "quantitative"},
-          color: {field: '*', type: "quantitative", aggregate: 'count'},
+          color: {type: "quantitative", aggregate: 'count'},
           size: {field: 'b2', type: "quantitative"},
         }
       });
