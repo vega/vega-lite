@@ -258,7 +258,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "Miles/Gallon",
+            "title": "Mean of Miles per Gallon (95% CIs)",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
