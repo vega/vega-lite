@@ -24,54 +24,14 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
                     "type": "filter",
                     "expr": "(vlSingle(\"tooltip_store\", datum))"
                 }
             ]
         },
         {
-            "name": "data_3",
-            "source": "data_2",
+            "name": "data_1",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -85,8 +45,8 @@
             ]
         },
         {
-            "name": "data_4",
-            "source": "data_2",
+            "name": "data_2",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -97,6 +57,46 @@
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "filter",
@@ -131,7 +131,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
                     "force": true
                 }
             ]
@@ -150,12 +150,12 @@
     ],
     "marks": [
         {
-            "name": "layer_0_pathgroup",
+            "name": "layer_0_layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_0_main",
-                    "data": "data_0",
+                    "name": "faceted_path_layer_0_layer_0_main",
+                    "data": "data_3",
                     "groupby": [
                         "symbol"
                     ]
@@ -177,7 +177,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "layer_0_layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -187,7 +187,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_0_main"
+                        "data": "faceted_path_layer_0_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -209,13 +209,13 @@
             ]
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -247,10 +247,10 @@
             }
         },
         {
-            "name": "layer_1_voronoi",
+            "name": "layer_0_layer_1_voronoi",
             "type": "path",
             "from": {
-                "data": "layer_1_marks"
+                "data": "layer_0_layer_1_marks"
             },
             "encode": {
                 "enter": {
@@ -287,13 +287,13 @@
             ]
         },
         {
-            "name": "layer_2_layer_0_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "rule",
             "style": [
                 "rule"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -316,13 +316,13 @@
             }
         },
         {
-            "name": "layer_2_layer_1_marks",
+            "name": "layer_1_layer_1_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_4"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -361,7 +361,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_3",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_4",
                         "field": "date"
                     },
                     {
@@ -369,11 +373,7 @@
                         "field": "date"
                     },
                     {
-                        "data": "data_3",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_4",
+                        "data": "data_2",
                         "field": "date"
                     }
                 ]
@@ -391,15 +391,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_1",
+                        "data": "data_3",
                         "field": "price"
                     },
                     {
                         "data": "data_4",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "price"
                     }
                 ]
@@ -419,15 +419,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
-                        "field": "symbol"
-                    },
-                    {
-                        "data": "data_1",
+                        "data": "data_3",
                         "field": "symbol"
                     },
                     {
                         "data": "data_4",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "symbol"
                     }
                 ],

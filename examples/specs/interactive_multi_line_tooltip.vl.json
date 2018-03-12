@@ -13,56 +13,36 @@
   "height": 400,
   "layer": [
     {
-      "mark": "line",
       "encoding": {
-        "color": {
-          "type": "nominal",
-          "field": "symbol"
-        },
-        "x": {
-          "type": "temporal",
-          "field": "date"
-        },
-        "y": {
-          "type": "quantitative",
-          "field": "price"
-        }
-      }
-    },
-    {
-      "mark": "point",
-      "encoding": {
-        "color": {
-          "type": "nominal",
-          "field": "symbol"
-        },
-        "opacity": {
-          "condition": {
-            "selection": "tooltip",
-            "value": 1
-          },
-          "value": 0
-        },
-        "x": {
-          "type": "temporal",
-          "field": "date"
-        },
-        "y": {
-          "type": "quantitative",
-          "field": "price"
-        }
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
       },
-      "selection": {
-        "tooltip": {
-          "type": "single",
-          "nearest": true,
-          "on": "mouseover",
-          "encodings": [
-            "x"
-          ],
-          "empty": "none"
+      "layer": [{
+        "mark": "line"
+      },{
+        "selection": {
+          "tooltip": {
+            "type": "single",
+            "nearest": true,
+            "on": "mouseover",
+            "encodings": [
+              "x"
+            ],
+            "empty": "none"
+          }
+        },
+        "mark": "point",
+        "encoding": {
+          "opacity": {
+            "condition": {
+              "selection": "tooltip",
+              "value": 1
+            },
+            "value": 0
+          }
         }
-      }
+      }]
     },
     {
       "transform": [
