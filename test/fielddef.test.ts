@@ -152,11 +152,11 @@ describe('fieldDef', () => {
 
   describe('title()', () => {
     it('should return correct title for aggregate', () => {
-      assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'Mean of f');
+      assert.equal(title({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
     });
 
     it('should return correct title for count', () => {
-      assert.equal(title({field: '*', type: QUANTITATIVE, aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(title({field: '*', aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {

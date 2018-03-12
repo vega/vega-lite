@@ -354,9 +354,9 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
-export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
+export type FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => string;
 
-export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
   const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
@@ -371,7 +371,7 @@ export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config)
   return field;
 }
 
-export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
@@ -380,7 +380,7 @@ export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Con
   }
 }
 
-export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
+export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => {
   switch (config.fieldTitle) {
     case 'plain':
       return fieldDef.field;
@@ -393,7 +393,7 @@ export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<st
 
 let titleFormatter = defaultTitleFormatter;
 
-export function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string) {
+export function setTitleFormatter(formatter: FieldTitleFormatter) {
   titleFormatter = formatter;
 }
 
@@ -401,7 +401,7 @@ export function resetTitleFormatter() {
   setTitleFormatter(defaultTitleFormatter);
 }
 
-export function title(fieldDef: FieldDef<string>, config: Config) {
+export function title(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
