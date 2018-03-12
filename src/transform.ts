@@ -1,4 +1,4 @@
-import {AggregateOp} from './aggregate';
+import {AggregateOp} from 'vega';
 import {BinParams} from './bin';
 import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';

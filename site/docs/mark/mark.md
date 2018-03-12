@@ -67,6 +67,8 @@ A mark definition object can contains the following properties and [all properti
 
 {% include table.html props="type,style,clip" source="MarkDef" %}
 
+Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
+
 ### Example: Filled Points
 
 By default, `point` marks have filled borders and are transparent inside. Setting `filled` to `true` creates filled points instead.
@@ -115,7 +117,7 @@ You can use [`text`](text.html) marks as labels and set its offset (`dx` or `dy`
 
 The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
 
-Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
+Note: If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
 
 The rest of this section describe groups of properties supported by the `mark` config and all mark-specific configs.  Besides the properties listed below, [`"bar"`](bar.html#config), [`"text"`](text.html#config), and [`"tick"`](tick.html#config) marks contain additional mark-specific config properties:
 

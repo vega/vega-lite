@@ -44,7 +44,7 @@
         },
         {
             "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         }
     ],
     "marks": [
@@ -64,7 +64,8 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "Origin"
+                        "field": "Origin",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -81,7 +82,7 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
@@ -92,7 +93,8 @@
                     "signal": "x_step"
                 }
             },
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
@@ -119,7 +121,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "Origin",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -134,32 +135,33 @@
                         }
                     }
                 }
-            }
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
             },
-            "title": "Min of Horsepower",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
+            "title": "Min of Horsepower, Max of Horsepower",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

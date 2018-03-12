@@ -139,9 +139,9 @@
             },
             "axes": [
                 {
-                    "title": "population",
                     "scale": "y",
                     "orient": "left",
+                    "title": "population",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
@@ -274,9 +274,8 @@
                 {
                     "scale": "child_x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "age",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -291,22 +290,23 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
+                    "gridScale": "child_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_x"
+                    "zindex": 0
                 }
             ]
         }

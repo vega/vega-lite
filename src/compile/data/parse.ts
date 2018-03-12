@@ -47,29 +47,12 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
-export function parseTransformArray(model: Model) {
-  let first: DataFlowNode = null;
-  let node: DataFlowNode;
-  let previous: DataFlowNode;
+export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlowNode {
   let lookupCounter = 0;
-
-  function insert(newNode: DataFlowNode) {
-    if (!first) {
-      // A parent may be inserted during node construction
-      // (e.g., selection FilterNodes may add a TimeUnitNode).
-      first = newNode.parent || newNode;
-    } else if (newNode.parent) {
-      previous.insertAsParentOf(newNode);
-    } else {
-      newNode.parent = previous;
-    }
-
-    previous = newNode;
-  }
 
   model.transforms.forEach(t => {
     if (isCalculate(t)) {
-      node = new CalculateNode(t);
+      parent = new CalculateNode(parent, t);
     } else if (isFilter(t)) {
       // Automatically add a parse node for filters with filter objects
       const parse = {};
@@ -97,35 +80,30 @@ export function parseTransformArray(model: Model) {
       }
 
       if (keys(parse).length > 0) {
-        const parseNode = new ParseNode(parse);
-        insert(parseNode);
+        parent = new ParseNode(parent, parse);
       }
 
-      node = new FilterNode(model, t.filter);
+
+      parent = new FilterNode(parent, model, t.filter);
     } else if (isBin(t)) {
-      node = BinNode.makeFromTransform(t, model);
+      parent = BinNode.makeFromTransform(parent, t, model);
     } else if (isTimeUnit(t)) {
-      node = TimeUnitNode.makeFromTransform(t);
+      parent = TimeUnitNode.makeFromTransform(parent, t);
     } else if (isAggregate(t)) {
-      node = AggregateNode.makeFromTransform(t);
+      parent = AggregateNode.makeFromTransform(parent, t);
 
       if (requiresSelectionId(model)) {
-        insert(node);
-        node = new IdentifierNode();
+        parent = new IdentifierNode(parent);
       }
     } else if (isLookup(t)) {
-      node = LookupNode.make(model, t, lookupCounter++);
+      parent = LookupNode.make(parent, model, t, lookupCounter++);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
     }
-
-    insert(node);
   });
 
-  const last = node;
-
-  return {first, last};
+  return parent;
 }
 
 /*
@@ -179,13 +157,10 @@ Description of the dataflow (http://asciiflow.com/):
 */
 
 export function parseData(model: Model): DataComponent {
-  const root = parseRoot(model, model.component.data.sources);
+  let head = parseRoot(model, model.component.data.sources);
 
   const outputNodes = model.component.data.outputNodes;
   const outputNodeRefCounts = model.component.data.outputNodeRefCounts;
-
-  // the current head of the tree that we are appending to
-  let head = root;
 
   // Default discrete selections require an identifier transform to
   // uniquely identify data points as the _id field is volatile. Add
@@ -194,9 +169,7 @@ export function parseData(model: Model): DataComponent {
   // transforms will be necessary when new tuples are constructed
   // (e.g., post-aggregation).
   if (requiresSelectionId(model) && !model.parent) {
-    const ident = new IdentifierNode();
-    ident.parent = head;
-    head = ident;
+    head = new IdentifierNode(head);
   }
 
   // HACK: This is equivalent for merging bin extent for union scale.
@@ -204,102 +177,68 @@ export function parseData(model: Model): DataComponent {
   const parentIsLayer = model.parent && isLayerModel(model.parent);
   if (isUnitModel(model) || isFacetModel(model)) {
     if (parentIsLayer) {
-      const bin = BinNode.makeBinFromEncoding(model);
-      if (bin) {
-        bin.parent = head;
-        head = bin;
-      }
+      head = BinNode.makeFromEncoding(head, model) || head;
     }
   }
 
   if (model.transforms.length > 0) {
-    const {first, last} = parseTransformArray(model);
-    first.parent = head;
-    head = last;
+    head = parseTransformArray(head, model);
   }
 
-  const parse = ParseNode.make(model);
+  const parse = ParseNode.make(head, model);
   if (parse) {
-    parse.parent = head;
     head = parse;
+  }
+
+  if (isUnitModel(model)) {
+    head = GeoJSONNode.parseAll(head, model);
+    head = GeoPointNode.parseAll(head, model);
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {
 
     if (!parentIsLayer) {
-      const bin = BinNode.makeBinFromEncoding(model);
-      if (bin) {
-        bin.parent = head;
-        head = bin;
-      }
+      head = BinNode.makeFromEncoding(head, model) || head;
     }
 
-    for (const geojson of GeoJSONNode.makeAll(model)) {
-      geojson.parent = head;
-      head = geojson;
-    }
-
-    for (const geopoint of GeoPointNode.makeAll(model)) {
-      geopoint.parent = head;
-      head = geopoint;
-    }
-
-    const tu = TimeUnitNode.makeFromEncoding(model);
-    if (tu) {
-      tu.parent = head;
-      head = tu;
-    }
+    head = TimeUnitNode.makeFromEncoding(head, model) || head;
   }
 
   // add an output node pre aggregation
   const rawName = model.getName(RAW);
-  const raw = new OutputNode(rawName, RAW, outputNodeRefCounts);
+  const raw = new OutputNode(head, rawName, RAW, outputNodeRefCounts);
   outputNodes[rawName] = raw;
-  raw.parent = head;
   head = raw;
 
   if (isUnitModel(model)) {
-    const agg = AggregateNode.makeFromEncoding(model);
+    const agg = AggregateNode.makeFromEncoding(head, model);
     if (agg) {
-      agg.parent = head;
       head = agg;
 
       if (requiresSelectionId(model)) {
-        const ident = new IdentifierNode();
-        ident.parent = head;
-        head = ident;
+        head = new IdentifierNode(head);
       }
     }
 
-    const stack = StackNode.make(model);
-    if (stack) {
-      stack.parent = head;
-      head = stack;
-    }
+    head = StackNode.make(head, model) || head;
   }
 
   if (isUnitModel(model)) {
-    const filter = FilterInvalidNode.make(model);
-    if (filter) {
-      filter.parent = head;
-      head = filter;
-    }
+    head = FilterInvalidNode.make(head, model) || head;
   }
 
   // output node for marks
   const mainName = model.getName(MAIN);
-  const main = new OutputNode(mainName, MAIN, outputNodeRefCounts);
+  const main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
   outputNodes[mainName] = main;
-  main.parent = head;
   head = main;
 
   // add facet marker
   let facetRoot = null;
   if (isFacetModel(model)) {
     const facetName = model.getName('facet');
-    facetRoot = new FacetNode(model, facetName, main.getSource());
+    facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
-    facetRoot.parent = head;
     head = facetRoot;
   }
 

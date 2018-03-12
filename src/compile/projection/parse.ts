@@ -1,11 +1,11 @@
-import {SHAPE, X, X2, Y, Y2} from '../../channel';
+import {GEOPOSITION_CHANNELS, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {Config} from '../../config';
 import {MAIN} from '../../data';
 import {isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {Projection, PROJECTION_PROPERTIES} from '../../projection';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, duplicate, every, stringify} from '../../util';
+import {GEOJSON} from '../../type';
+import {duplicate, every, stringify} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -27,16 +27,14 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
   const {specifiedProjection, markDef, config, encoding} = model;
 
   const isGeoShapeMark = markDef && markDef.type === GEOSHAPE;
-  const isGeoPointOrLineMark = encoding && [X, Y, X2, Y2].some(
-    (channel) => {
-      const def = encoding[channel];
-      return isFieldDef(def) && contains([LATITUDE, LONGITUDE], def.type);
-  });
+  const isGeoPointOrLineMark = encoding && GEOPOSITION_CHANNELS.some(
+    (channel) => isFieldDef(encoding[channel])
+  );
 
   if (isGeoShapeMark || isGeoPointOrLineMark) {
     const data: (VgSignalRef | string)[] = [];
 
-    [[X, Y], [X2, Y2]].forEach((posssiblePair) => {
+    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((posssiblePair) => {
       if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
         data.push({
           signal: model.getName(`geojson_${data.length}`)

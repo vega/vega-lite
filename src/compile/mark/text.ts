@@ -1,4 +1,4 @@
-import {X} from '../../channel';
+import {LONGITUDE, X} from '../../channel';
 import {Config} from '../../config';
 import {channelHasField, Encoding} from '../../encoding';
 import {ChannelDef, isFieldDef} from '../../fielddef';
@@ -44,7 +44,7 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   const a = markDef.align || getMarkConfig('align', markDef, config);
   if (a === undefined) {
-    return channelHasField(encoding, X) ? 'center' : 'right';
+    return channelHasField(encoding, X) || channelHasField(encoding, LONGITUDE) ? 'center' : 'right';
   }
   // If there is a config, Vega-parser will process this already.
   return undefined;

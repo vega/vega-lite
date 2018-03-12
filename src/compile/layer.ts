@@ -1,6 +1,6 @@
 import {Config} from '../config';
 import * as log from '../log';
-import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {flatten, keys} from '../util';
 import {VgData, VgLayout, VgLegend, VgSignal, VgTitle} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
@@ -23,7 +23,7 @@ export class LayerModel extends Model {
 
 
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
+  constructor(spec: NormalizedLayerSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean) {
 
     super(spec, parent, parentGivenName, config, spec.resolve);
@@ -102,7 +102,7 @@ export class LayerModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
   }
 
   public assembleTitle(): VgTitle {

@@ -9,11 +9,11 @@ import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: UnitModel) {
-  return StackNode.make(model).stack;
+  return StackNode.make(null, model).stack;
 }
 
 function assemble(model: UnitModel) {
-  return StackNode.make(model).assemble();
+  return StackNode.make(null, model).assemble();
 }
 
 describe('compile/data/stack', () => {

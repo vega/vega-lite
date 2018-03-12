@@ -44,11 +44,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "signal": "width",
@@ -84,24 +84,24 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "a",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "a",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
             "zindex": 0
         }

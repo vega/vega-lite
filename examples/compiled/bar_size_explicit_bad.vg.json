@@ -107,7 +107,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "Name",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -122,32 +121,33 @@
                         }
                     }
                 }
-            }
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
+            "title": "Number of Records",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

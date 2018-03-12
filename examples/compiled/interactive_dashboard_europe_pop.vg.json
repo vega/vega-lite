@@ -761,34 +761,34 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "title": "Population_ages_15_64_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
-                    "title": "Population_ages_15_64_of_total",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
+                    "gridScale": "concat_0_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "labelOverlap": true,
                     "title": "Country",
+                    "labelOverlap": true,
                     "zindex": 1
                 }
             ]
@@ -1134,34 +1134,34 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "Population_ages_65_and_above_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
-                    "title": "Population_ages_65_and_above_of_total",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
+                    "gridScale": "concat_1_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
-                    "labelOverlap": true,
                     "title": "Country",
+                    "labelOverlap": true,
                     "zindex": 1
                 }
             ]
@@ -1489,6 +1489,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (!(vlInterval(\"brush_store\", datum)))",
@@ -1498,9 +1501,6 @@
                                     "value": "goldenrod"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "concat_2_x",
                                 "field": "Population_ages_65_and_above_of_total"
@@ -1570,53 +1570,53 @@
                 {
                     "scale": "concat_2_x",
                     "orient": "bottom",
+                    "title": "Population_ages_65_and_above_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_2_width/40)"
                     },
-                    "title": "Population_ages_65_and_above_of_total",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_2_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_2_width/40)"
                     },
+                    "gridScale": "concat_2_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_2_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_2_y",
                     "orient": "left",
+                    "title": "Population_ages_15_64_of_total",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_2_height/40)"
                     },
-                    "title": "Population_ages_15_64_of_total",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_2_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_2_height/40)"
                     },
+                    "gridScale": "concat_2_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_2_x"
+                    "zindex": 0
                 }
             ]
         }

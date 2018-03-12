@@ -1,4 +1,4 @@
-import {AggregateOp} from '../../aggregate';
+import {AggregateOp} from 'vega';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
@@ -30,8 +30,8 @@ export class FacetNode extends DataFlowNode {
    * @param name The name that this facet source will have.
    * @param data The source data for this facet data.
    */
-  public constructor(public readonly model: FacetModel, public readonly name: string, public data: string) {
-    super();
+  public constructor(parent: DataFlowNode, public readonly model: FacetModel, public readonly name: string, public data: string) {
+    super(parent);
 
     if (model.facet.column) {
       this.columnFields = [model.vgField(COLUMN)];

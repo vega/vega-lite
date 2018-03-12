@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # script for npm run x-compile
 
 dir=${dir-"examples/compiled"}

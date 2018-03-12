@@ -378,6 +378,9 @@
                             "opacity": {
                                 "value": 0.7
                             },
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": [
                                 {
                                     "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -387,9 +390,6 @@
                                     "value": "steelblue"
                                 }
                             ],
-                            "fill": {
-                                "value": "transparent"
-                            },
                             "x": {
                                 "scale": "concat_0_x",
                                 "field": "seconds_date"
@@ -461,13 +461,12 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "title": "date (seconds)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
-                    "title": "date (seconds)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -476,47 +475,48 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
+                    "gridScale": "concat_0_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "price",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "concat_0_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -549,11 +549,11 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "stroke": {
-                                "value": "goldenrod"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "goldenrod"
                             },
                             "x": {
                                 "scale": "concat_1_x",
@@ -571,13 +571,12 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "date (minutes)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
-                    "title": "date (minutes)",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -586,47 +585,48 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
+                    "gridScale": "concat_1_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "price",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "gridScale": "concat_1_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_x"
+                    "zindex": 0
                 }
             ]
         }

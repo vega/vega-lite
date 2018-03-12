@@ -1,4 +1,4 @@
-import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, X2, Y, Y2} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
 import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {
@@ -8,8 +8,8 @@ import {
   ScaleType,
   scaleTypePrecedence,
 } from '../../scale';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
-import {contains, keys} from '../../util';
+import {GEOJSON} from '../../type';
+import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
@@ -48,29 +48,32 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     let fieldDef: FieldDef<string>;
-    let specifiedScale: Scale = {};
+    let specifiedScale: Scale | null = undefined;
 
     const channelDef = encoding[channel];
 
-    // If mark has a projection (potentially implicitly), there is no need to generate a scale.
-    if (isFieldDef(channelDef) && ((mark === GEOSHAPE && isFieldDef(channelDef) && channel === SHAPE && channelDef.type === GEOJSON)
-    || (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)))) {
+    // Don't generate scale for shape of geoshape
+    if (
+      isFieldDef(channelDef) && mark === GEOSHAPE &&
+      channel === SHAPE && channelDef.type === GEOJSON
+    ) {
       return scaleComponents;
     }
 
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
-      specifiedScale = channelDef.scale || {};
+      specifiedScale = channelDef.scale;
     } else if (hasConditionalFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition['scale'] || {}; // We use ['scale'] since we know that channel here has scale for sure
+      specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
     } else if (channel === X) {
       fieldDef = getFieldDef(encoding.x2);
     } else if (channel === Y) {
       fieldDef = getFieldDef(encoding.y2);
     }
 
-    if (fieldDef) {
+    if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
+      specifiedScale = specifiedScale || {};
       const specifiedScaleType = specifiedScale.type;
       const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
       scaleComponents[channel] = new ScaleComponent(

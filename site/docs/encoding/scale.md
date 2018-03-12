@@ -318,6 +318,16 @@ For example, the following plot has a binned field on the `color` channel.
 
 Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
 
+
+{:#disable}
+## Disabling Scale
+
+To directly encode the data value, the `scale` property can be set to `null`.
+
+For example, the follow bar chart directly encodes color names in the data.
+
+<span class="vl-example" data-name="bar_color_disabled_scale"></span>
+
 {:#config}
 ## Configuration
 

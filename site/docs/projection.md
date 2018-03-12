@@ -5,13 +5,13 @@ title: Projection
 permalink: /docs/projection.html
 ---
 
-A cartographic projection maps longitude and latitude pairs to x, y coordinates. As with Vega, one can use projections in Vega-lite to layout both geographic points (such as locations on a map) represented by longitude and latitude coordinates, or to project geographic regions (such as countries and states) represented using the GeoJSON format. Projection's are specified at the unit specification level, alongside encoding.
+A cartographic projection maps longitude and latitude pairs to x, y coordinates. As with Vega, one can use projections in Vega-lite to layout both geographic points (such as locations on a map) represented by longitude and latitude coordinates, or to project geographic regions (such as countries and states) represented using the GeoJSON format. Projection's are specified at the unit specification level, alongside encoding. Geographic coordinate data can then be mapped to [`longitude` and `latitude` channels](encoding.html#geo) (and `longitude2` and `latitude2` for ranged marks).
 
 For example, this example chart shows all airports in the United States by projecting `latitude`, `longitude` as `x`, `y` coordinates using the albersUsa projection.
 
 <span class="vl-example" data-name="geo_point"></span>
 
-See [the example gallery for more examples with geographic projection](../examples/#geographical-maps). 
+See [the example gallery for more examples with geographic projection](../examples/#geographical-maps).
 
 {:#properties}
 ## Projection Properties
@@ -21,7 +21,7 @@ If you want to explore the various available properties in more depth, Vega's pr
 
 In addition to the shared properties above, the following properties are supported for specific projection types in the [d3-geo-projection](https://github.com/d3/d3-geo-projection) library: [`coefficient`](https://github.com/d3/d3-geo-projection#hammer_coefficient), [`distance`](https://github.com/d3/d3-geo-projection#satellite_distance), [`fraction`](https://github.com/d3/d3-geo-projection#bottomley_fraction), [`lobes`](https://github.com/d3/d3-geo-projection#berghaus_lobes), [`parallel`](https://github.com/d3/d3-geo-projection#armadillo_parallel), [`radius`](https://github.com/d3/d3-geo-projection#gingery_radius), [`ratio`](https://github.com/d3/d3-geo-projection#hill_ratio), [`spacing`](https://github.com/d3/d3-geo-projection#lagrange_spacing), [`tilt`](https://github.com/d3/d3-geo-projection#satellite_tilt).
 
-*Note*: All [properties](#properties) of projections are **optional** with defaults as defined in the [Vega projection properties](https://vega.github.io/vega/docs/projections/#properties). Because of this, marks that don't have explicitly defined projections may implicitly derive a projection. Implicit projections will be added for any [`geoshape`](geoshape.html) mark or any mark that has fields of type [`latitude`](type.html#latitude), [`longitude`](type.html#longitude), or [`geojson`](type.html#geojson)
+*Note*: All [properties](#properties) of projections are **optional** with defaults as defined in the [Vega projection properties](https://vega.github.io/vega/docs/projections/#properties). Because of this, marks that don't have explicitly defined projections may implicitly derive a projection. Implicit projections will be added for any [`geoshape`](geoshape.html) mark, any encoding with field of [`geojson`](type.html#geojson) type, and encoding with [`latitude`](encoding.html#geo) or [`longitude`](encoding.html#geo) channels.
 
 
 {:#projection-types}

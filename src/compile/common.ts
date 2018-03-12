@@ -1,14 +1,15 @@
 import {isArray} from 'vega-util';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
-import {FieldDef, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
+import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains} from '../util';
+import {contains, stringify} from '../util';
 import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
+import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
@@ -162,13 +163,41 @@ export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<strin
   }, {field:[], order: []});
 }
 
-export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
-  return {
-    explicit: v1.explicit, // keep the old explicit
-    value: v1.value === v2.value ?
-      v1.value : // if title is the same just use one of them
-      v1.value + ', ' + v2.value // join title with comma if different
-  };
+export type AxisTitleComponent = AxisComponentProps['title'];
+
+export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
+  const merged = [...f1];
+
+  f2.forEach((fdToMerge) => {
+    for (const fieldDef1 of merged) {
+      // If already exists, no need to append to merged array
+      if (stringify(fieldDef1) === stringify(fdToMerge)) {
+        return;
+      }
+    }
+    merged.push(fdToMerge);
+  });
+  return merged;
+}
+
+export function titleMerger(
+  v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>
+) {
+  if (isArray(v1.value) && isArray(v2.value)) {
+    return {
+      explicit: v1.explicit,
+      value: mergeTitleFieldDefs(v1.value, v2.value)
+    };
+  } else if (!isArray(v1.value) && !isArray(v2.value)) {
+    return {
+      explicit: v1.explicit, // keep the old explicit
+      value: v1.value === v2.value ?
+        v1.value : // if title is the same just use one of them
+        v1.value + ', ' + v2.value // join title with comma if different
+    };
+  }
+  /* istanbul ignore next: Condition should not happen -- only for warning in development. */
+  throw new Error('It should never reach here');
 }
 
 /**

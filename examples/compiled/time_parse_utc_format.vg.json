@@ -60,11 +60,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "signal": "width",
@@ -97,11 +97,10 @@
     ],
     "axes": [
         {
-            "title": "time",
             "scale": "y",
             "orient": "left",
+            "title": "time",
             "labelOverlap": true,
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -110,7 +109,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         }
     ],
     "config": {

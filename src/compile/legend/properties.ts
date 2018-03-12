@@ -1,4 +1,4 @@
-import {Channel, COLOR} from '../../channel';
+import {Channel, isColorChannel} from '../../channel';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {Legend} from '../../legend';
 import {isBinScale, ScaleType} from '../../scale';
@@ -18,7 +18,7 @@ export function values(legend: Legend) {
 
 export function type(t: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
   if (
-      channel === COLOR && (
+      isColorChannel(channel) && (
         (t === 'quantitative' && !isBinScale(scaleType)) ||
         (t === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
       )

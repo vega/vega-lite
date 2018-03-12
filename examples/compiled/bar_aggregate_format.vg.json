@@ -119,10 +119,10 @@
     ],
     "axes": [
         {
-            "format": ".2e",
-            "title": "population",
             "scale": "x",
             "orient": "bottom",
+            "title": "population",
+            "format": ".2e",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -131,26 +131,26 @@
             "zindex": 1
         },
         {
-            "format": ".2e",
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
+            "format": ".2e",
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "age",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],

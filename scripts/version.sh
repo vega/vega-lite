@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ $1 == "vega-lite" ]]; then
   npm list vega-lite | head -n 1 | sed 's/.*@//' | awk '{print $1}'

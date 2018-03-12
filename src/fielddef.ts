@@ -1,6 +1,7 @@
 // Declaration and utility for variants of a field definition object
+import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {AggregateOp, isAggregateOp, isCountingAggregateOp} from './aggregate';
+import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -14,7 +15,7 @@ import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
-import {getFullName, Type} from './type';
+import {getFullName, QUANTITATIVE, Type} from './type';
 import {accessPath, titlecase} from './util';
 
 /**
@@ -146,6 +147,16 @@ export interface FieldDefBase<F> {
   aggregate?: Aggregate;
 }
 
+export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
+  const {field, timeUnit, bin, aggregate} = fieldDef;
+  return {
+    ...(timeUnit ? {timeUnit} : {}),
+    ...(bin ? {bin} : {}),
+    ...(aggregate ? {aggregate} : {}),
+    field
+  };
+}
+
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
@@ -163,9 +174,11 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
+   * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
+   *
    * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
    */
-  scale?: Scale;
+  scale?: Scale | null;
 
   /**
    * Sort order for the encoded field.
@@ -351,9 +364,9 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
-export type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
+export type FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => string;
 
-export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
   const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
@@ -368,7 +381,7 @@ export function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config)
   return field;
 }
 
-export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config) {
+export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
@@ -377,7 +390,7 @@ export function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Con
   }
 }
 
-export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => {
+export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => {
   switch (config.fieldTitle) {
     case 'plain':
       return fieldDef.field;
@@ -390,7 +403,7 @@ export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDef<st
 
 let titleFormatter = defaultTitleFormatter;
 
-export function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string) {
+export function setTitleFormatter(formatter: FieldTitleFormatter) {
   titleFormatter = formatter;
 }
 
@@ -398,7 +411,7 @@ export function resetTitleFormatter() {
   setTitleFormatter(defaultTitleFormatter);
 }
 
-export function title(fieldDef: FieldDef<string>, config: Config) {
+export function title(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
@@ -545,10 +558,25 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'x':
     case 'y':
     case 'color':
+    case 'fill':
+    case 'stroke':
     case 'text':
     case 'detail':
+    case 'key':
     case 'tooltip':
     case 'href':
+      return COMPATIBLE;
+
+    case 'longitude':
+    case 'longitude2':
+    case 'latitude':
+    case 'latitude2':
+      if (fieldDef.type !== QUANTITATIVE) {
+        return {
+          compatible: false,
+          warning: `Channel ${channel} should not be used with ${fieldDef.type} field.`
+        };
+      }
       return COMPATIBLE;
 
     case 'opacity':

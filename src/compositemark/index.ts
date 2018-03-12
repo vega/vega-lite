@@ -1,12 +1,12 @@
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
-import {GenericUnitSpec, LayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
-export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> LayerSpec;
+export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
 
 /**
  * Registry index for all composite mark's normalizer
@@ -46,7 +46,7 @@ export function normalize(
     // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
     spec: GenericUnitSpec<any, AnyMark>,
     config: Config
-  ): LayerSpec {
+  ): NormalizedLayerSpec {
 
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
   const normalizer = normalizerRegistry[mark];
@@ -54,5 +54,5 @@ export function normalize(
     return normalizer(spec, config);
   }
 
-  throw new Error(`Unregistered composite mark ${mark}`);
+  throw new Error(`Invalid mark type "${mark}"`);
 }

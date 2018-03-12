@@ -121,11 +121,11 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "title": "Mean of price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "Mean of price",
                     "zindex": 1
                 }
             ]
@@ -179,9 +179,8 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (quarter)",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -199,7 +198,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 }
             ]
         },
@@ -246,12 +246,12 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "color",
                                 "field": "symbol"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "x",
@@ -269,17 +269,17 @@
                 {
                     "scale": "y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
+                    "gridScale": "x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
+                    "zindex": 0
                 }
             ]
         }

@@ -5,12 +5,12 @@ permalink: /docs/type.html
 ---
 
 If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement).
-The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), [`"latitude"`](#latitude), [`"longitude"`](#longitude), and [`"geojson"`](#geojson).
+The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), and [`"geojson"`](#geojson).
 
 {% include table.html props="type" source="FieldDef" %}
 
 **Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, nominal, latitude, or longitude data.
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
 
 {:#quantitative}
 ## Quantitative
@@ -42,16 +42,6 @@ Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be so
 ## Nominal
 
 Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, and name are nominal data. Numbers maybe used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
-
-{:#latitude}
-## Latitude
-
-Latitude data represents geographic north-south position for use in map projections. This is always numerical data ranging between -90.0 (at the south pole) and 90.0 (at the north pole).
-
-{:#longitude}
-## Longitude
-
-Longitude data represents geographic east-west position for use in map projections. This is always numerical data ranging between -180.0 (in the west) and 180.0 (in the east).
 
 {:#geojson}
 ## GeoJSON

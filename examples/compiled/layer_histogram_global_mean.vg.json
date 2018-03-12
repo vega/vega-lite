@@ -205,52 +205,41 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(width/40)"
+                "signal": "ceil(width/20)"
             },
-            "title": "Mean of IMDB_Rating",
+            "values": {
+                "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
+            },
             "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "ticks": false,
-            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
+            "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

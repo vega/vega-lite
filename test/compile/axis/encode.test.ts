@@ -7,7 +7,7 @@ import {labelAlign, labelBaseline} from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';
 
 
-describe('compile/axis', () => {
+describe('compile/axis/encode', () => {
   describe('encode.labels()', function () {
     it('should not rotate label for temporal field by default', function() {
       const model = parseUnitModelWithScale({

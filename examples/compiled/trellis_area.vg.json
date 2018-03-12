@@ -143,9 +143,9 @@
             },
             "axes": [
                 {
-                    "title": "Price",
                     "scale": "y",
                     "orient": "left",
+                    "title": "Price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
@@ -167,15 +167,14 @@
             },
             "axes": [
                 {
-                    "title": "Time",
                     "scale": "x",
                     "orient": "bottom",
+                    "title": "Time",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
                     },
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -184,7 +183,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 }
             ]
         },

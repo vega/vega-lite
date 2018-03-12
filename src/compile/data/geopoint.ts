@@ -1,50 +1,42 @@
-import {X, X2, Y, Y2} from '../../channel';
-import {LATITUDE, LONGITUDE} from '../../type';
-import {contains, Dict, duplicate} from '../../util';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
+import {duplicate} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 
 export class GeoPointNode extends DataFlowNode {
   public clone() {
-    return new GeoPointNode(this.projection, duplicate(this.fields), duplicate(this.as));
+    return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
   }
 
-  constructor(private projection: string, private fields: string[], private as: string[]) {
-    super();
+  constructor(parent: DataFlowNode, private projection: string, private fields: string[], private as: string[]) {
+    super(parent);
   }
 
-  public static makeAll(model: ModelWithField): GeoPointNode[] {
-    const nodes: GeoPointNode[] = [];
-
+  public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
     if (!model.projectionName()) {
-      return nodes;
+      return parent;
     }
 
-    for (const coordinates of [[X, Y], [X2, Y2]]) {
-      const pair: Dict<string> = {};
-      for (const channel of coordinates) {
-        if (model.channelHasField(channel)) {
-          const fieldDef = model.fieldDef(channel);
-          if (contains([LATITUDE, LONGITUDE], fieldDef.type)) {
-            pair[fieldDef.type] = fieldDef.field;
-          }
-        }
-      }
+    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
+      const pair = coordinates.map(
+        channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+      );
 
-      if (LONGITUDE in pair || LATITUDE in pair) {
-        nodes.push(
-            new GeoPointNode(
-            model.projectionName(),
-            [pair[LONGITUDE], pair[LATITUDE]],
-            [pair[LONGITUDE] + '_geo', pair[LATITUDE] + '_geo']
-          )
+      const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
+
+      if (pair[0] || pair[1]) {
+        parent = new GeoPointNode(
+          parent,
+          model.projectionName(),
+          pair,
+          [model.getName('x' + suffix), model.getName('y' + suffix)]
         );
       }
-    }
+    });
 
-    return nodes;
+    return parent;
   }
 
   public assemble(): VgGeoPointTransform {

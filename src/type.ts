@@ -36,8 +36,6 @@ export const ORDINAL = Type.ORDINAL;
 export const TEMPORAL = Type.TEMPORAL;
 export const NOMINAL = Type.NOMINAL;
 
-export const LATITUDE = Type.LATITUDE;
-export const LONGITUDE = Type.LONGITUDE;
 export const GEOJSON = Type.GEOJSON;
 
 /**
@@ -61,9 +59,9 @@ export function getFullName(type: Type|string): Type {
       case 'n':
       case NOMINAL:
         return 'nominal';
-      case LATITUDE:
+      case Type.LATITUDE:
         return 'latitude';
-      case LONGITUDE:
+      case Type.LONGITUDE:
         return 'longitude';
       case GEOJSON:
         return 'geojson';

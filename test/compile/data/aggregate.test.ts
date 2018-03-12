@@ -11,14 +11,14 @@ import {parseUnitModel} from '../../util';
 describe('compile/data/summary', function () {
   describe('clone', function() {
     it('should have correct type', function() {
-      const agg = new AggregateNode({}, {});
+      const agg = new AggregateNode(null, {}, {});
       assert(agg instanceof AggregateNode);
       const clone = agg.clone();
       assert(clone instanceof AggregateNode);
     });
 
     it('should have make a deep copy', function() {
-      const agg = new AggregateNode({foo: true}, {});
+      const agg = new AggregateNode(null, {foo: true}, {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
       assert.deepEqual<StringSet>(clone.dependentFields(), {'foo': true, 'bar': true});
@@ -40,11 +40,11 @@ describe('compile/data/summary', function () {
             'field': 'Origin',
             'type': "ordinal"
           },
-          color: {field: '*', type: "quantitative", aggregate: 'count'}
+          color: {type: "quantitative", aggregate: 'count'}
         }
       });
 
-      const agg = AggregateNode.makeFromEncoding(model);
+      const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Origin'],
@@ -69,7 +69,7 @@ describe('compile/data/summary', function () {
         }
       });
 
-      const agg = AggregateNode.makeFromEncoding(model);
+      const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Origin', 'Cylinders'],
@@ -91,7 +91,7 @@ describe('compile/data/summary', function () {
         }
       });
 
-      const agg = AggregateNode.makeFromEncoding(model);
+      const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Origin'],
@@ -109,7 +109,7 @@ describe('compile/data/summary', function () {
         }
       });
 
-      const agg = AggregateNode.makeFromEncoding(model);
+      const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: [],
@@ -133,7 +133,7 @@ describe('compile/data/summary', function () {
         }
       });
 
-      const agg = AggregateNode.makeFromEncoding(model);
+      const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: [
@@ -157,7 +157,7 @@ describe('compile/data/summary', function () {
         ],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
-      const agg = AggregateNode.makeFromTransform(t);
+      const agg = AggregateNode.makeFromTransform(null, t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Displacement_mean', 'Acceleration_sum'],
@@ -174,7 +174,7 @@ describe('compile/data/summary', function () {
         {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
-      const agg = AggregateNode.makeFromTransform(t);
+      const agg = AggregateNode.makeFromTransform(null, t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Displacement_mean', 'Acceleration_sum'],

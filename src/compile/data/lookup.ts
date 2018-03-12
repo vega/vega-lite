@@ -8,11 +8,11 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 
 export class LookupNode extends DataFlowNode {
-  constructor(public readonly transform: LookupTransform, public readonly secondary: string) {
-    super();
+  constructor(parent: DataFlowNode, public readonly transform: LookupTransform, public readonly secondary: string) {
+    super(parent);
   }
 
-  public static make(model: Model, transform: LookupTransform, counter: number) {
+  public static make(parent: DataFlowNode, model: Model, transform: LookupTransform, counter: number) {
     const sources = model.component.data.sources;
     const s = new SourceNode(transform.from.data);
     let fromSource = sources[s.hash()];
@@ -22,12 +22,11 @@ export class LookupNode extends DataFlowNode {
     }
 
     const fromOutputName = model.getName(`lookup_${counter}`);
-    const fromOutputNode = new OutputNode(fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
-    fromOutputNode.parent = fromSource;
+    const fromOutputNode = new OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
 
     model.component.data.outputNodes[fromOutputName] = fromOutputNode;
 
-    return new LookupNode(transform, fromOutputNode.getSource());
+    return new LookupNode(parent, transform, fromOutputNode.getSource());
   }
 
   public producedFields(): StringSet {

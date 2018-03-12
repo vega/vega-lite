@@ -17,6 +17,8 @@ permalink: /docs/line.html
 
 The `line` mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for [`area`](area.html)).
 
+__Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks.
+
 ## Documentation Overview
 {:.no_toc}
 
@@ -72,7 +74,7 @@ For the list of all supported `interpolate` properties, please see the [mark def
 
 ## Geo Line
 
-With the [types](type.html) `longitude` and `latitude` and a corresponding [projection](projection.html), we can draw lines through geographic points.
+By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can draw lines through geographic points.
 
 <span class="vl-example" data-name="geo_line"></span>
 

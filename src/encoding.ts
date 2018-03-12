@@ -23,7 +23,8 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {keys, some} from './util';
+import {Type} from './type';
+import {contains, keys, some} from './util';
 
 export interface Encoding<F> {
   /**
@@ -37,27 +38,68 @@ export interface Encoding<F> {
   y?: PositionFieldDef<F> | ValueDef;
 
   /**
-   * X2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   x2?: FieldDef<F> | ValueDef;
 
   /**
-   * Y2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   y2?: FieldDef<F> | ValueDef;
 
+
   /**
-   * Color of the marks – either fill or stroke color based on mark type.
+   * Longitude position of geographically projected marks.
+   */
+  longitude?: FieldDef<F>;
+
+  /**
+   * Latitude position of geographically projected marks.
+   */
+  latitude?: FieldDef<F>;
+
+  /**
+   * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  longitude2?: FieldDef<F>;
+
+  /**
+   * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  latitude2?: FieldDef<F>;
+
+  /**
+   * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
    * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
    * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
+   * _Note:_
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.
+   * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
   color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+  /**
+   * Fill color of the marks.
+   * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ The `fill` channel has higher precedence than `color` and will override color value.
+   */
+  fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+
+  /**
+   * Stroke color of the marks.
+   * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+   *
+   * _Note:_ The `stroke` channel has higher precedence than `color` and will override color value.
+   */
+  stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
 
   /**
    * Opacity of the marks – either can be a value or a range.
@@ -92,6 +134,11 @@ export interface Encoding<F> {
   detail?: FieldDef<F> | FieldDef<F>[];
 
   /**
+   * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
+   */
+  key?: FieldDef<F>;
+
+  /**
    * Text of the `text` mark.
    */
   text?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
@@ -107,7 +154,10 @@ export interface Encoding<F> {
   href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
 
   /**
-   * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
+   * Order of the marks.
+   * - For stacked marks, this `order` channel encodes stack order.
+   * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
@@ -185,6 +235,24 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     } else {
       // FIXME: remove this casting.  (I don't know why Typescript doesn't infer this correctly here.)
       const channelDef = encoding[channel] as ChannelDef<string>;
+
+      const fieldDef = getFieldDef(encoding[channel]);
+      if (fieldDef && contains([Type.LATITUDE, Type.LONGITUDE], fieldDef.type)) {
+        const {[channel]: _, ...newEncoding} = normalizedEncoding;
+        const newChannel = channel === 'x' ? 'longitude' :
+          channel === 'y' ? 'latitude' :
+          channel === 'x2' ? 'longitude2' :
+          channel === 'y2' ? 'latitude2' : undefined;
+        log.warn(log.message.latLongDeprecated(channel, fieldDef.type, newChannel));
+        return {
+          ...newEncoding,
+          [newChannel]: {
+            ...normalize(fieldDef as any, channel),
+            type: 'quantitative'
+          }
+        };
+      }
+
       if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;

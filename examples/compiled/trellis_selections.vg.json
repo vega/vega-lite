@@ -141,11 +141,11 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "title": "Y",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "Y",
                     "zindex": 1
                 }
             ]
@@ -199,12 +199,12 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "title": "X",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
                     },
-                    "title": "X",
                     "zindex": 1
                 }
             ]
@@ -741,32 +741,32 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(child_width/40)"
                     },
+                    "gridScale": "y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
+                    "zindex": 0
                 },
                 {
                     "scale": "y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
+                    "gridScale": "x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
+                    "zindex": 0
                 }
             ]
         }

@@ -183,7 +183,7 @@ describe('Mark: Rule', function() {
     it('should create vertical rule that emulates bar chart', function() {
       assert.equal(model.markDef.orient, 'vertical');
 
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
+      assert.deepEqual(props.x, {scale: X, field: 'a', band: 0.5});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
       assert.deepEqual(props.y2, {scale: Y, value: 0});
     });
@@ -205,7 +205,7 @@ describe('Mark: Rule', function() {
 
       assert.deepEqual(props.x, {scale: X, field: 'b'});
       assert.deepEqual(props.x2, {scale: X, value: 0});
-      assert.deepEqual(props.y, {scale: Y, field: 'a'});
+      assert.deepEqual(props.y, {scale: Y, field: 'a', band: 0.5});
     });
   });
 

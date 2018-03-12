@@ -8,11 +8,11 @@ import {DataFlowNode} from './dataflow';
  */
 export class CalculateNode extends DataFlowNode {
   public clone() {
-    return new CalculateNode(duplicate(this.transform));
+    return new CalculateNode(null, duplicate(this.transform));
   }
 
-  constructor(private transform: CalculateTransform) {
-    super();
+  constructor(parent: DataFlowNode, private transform: CalculateTransform) {
+    super(parent);
   }
 
   public producedFields() {

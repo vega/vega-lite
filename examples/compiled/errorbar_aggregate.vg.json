@@ -134,7 +134,7 @@
         },
         {
             "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         }
     ],
     "marks": [
@@ -154,7 +154,8 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -183,7 +184,8 @@
                     },
                     "xc": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "yc": {
                         "scale": "y",
@@ -214,7 +216,8 @@
                     },
                     "xc": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "yc": {
                         "scale": "y",
@@ -240,15 +243,16 @@
             },
             "encode": {
                 "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
                         "value": "transparent"
                     },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
                     "x": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -264,7 +268,7 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "fields": [
                     {
@@ -291,7 +295,8 @@
                     "signal": "x_step"
                 }
             },
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
@@ -334,9 +339,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "age",
-            "zindex": 1,
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -351,12 +355,13 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
-            "title": "population",
             "scale": "y",
             "orient": "left",
+            "title": "population",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
@@ -366,17 +371,17 @@
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

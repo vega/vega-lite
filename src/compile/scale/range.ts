@@ -1,6 +1,6 @@
 import {isNumber} from 'vega-util';
 
-import {Channel, COLOR, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, X, Y} from '../../channel';
+import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -197,6 +197,8 @@ export function defaultRange(
     case SHAPE:
       return 'symbol';
     case COLOR:
+    case FILL:
+    case STROKE:
       if (scaleType === 'ordinal') {
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';

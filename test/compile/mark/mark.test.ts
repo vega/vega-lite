@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
-import {getPathSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
+import {getSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
 import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -11,15 +11,15 @@ describe('Mark', function() {
   describe('parseMarkGroup', function() {
     // PATH
     describe('Multi-series Line', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "line", "style": "trend"},
+        "encoding": {
+          "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+          "y": {"field": "price", "type": "quantitative"},
+          "color": {"field": "symbol", "type": "nominal"}
+        }
+      });
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": {"type": "line", "style": "trend"},
-          "encoding": {
-            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
-            "y": {"field": "price", "type": "quantitative"},
-            "color": {"field": "symbol", "type": "nominal"}
-          }
-        });
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'pathgroup');
         assert.deepEqual(markGroup.from, {
@@ -37,14 +37,6 @@ describe('Mark', function() {
       });
 
       it('should not have post encoding transform', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": {"type": "line", "style": "trend"},
-          "encoding": {
-            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
-            "y": {"field": "price", "type": "quantitative"},
-            "color": {"field": "symbol", "type": "nominal"}
-          }
-        });
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'pathgroup');
         assert.deepEqual(markGroup.from, {
@@ -60,14 +52,14 @@ describe('Mark', function() {
     });
 
     describe('Single Line', () => {
-      it('should have a facet directive and a nested mark group', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
-            "y": {"field": "price", "type": "quantitative"}
-          }
-        });
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+          "y": {"field": "price", "type": "quantitative"}
+        }
+      });
+      it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'marks');
         assert.equal(markGroup.type, 'line');
@@ -75,84 +67,89 @@ describe('Mark', function() {
       });
 
       it('should not have post encoding transform', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
-            "y": {"field": "price", "type": "quantitative"}
-          }
-        });
+        const markGroup = parseMarkGroup(model);
+        assert.isUndefined(markGroup[0].transform);
+      });
+
+      // NON-PATH
+    });
+    describe('Points with key', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+          "y": {"field": "price", "type": "quantitative"},
+          "key": {"field": "k", "type": "quantitative"}
+        }
+      });
+      it('should have mark group with proper data and key', () => {
+        const markGroup = parseMarkGroup(model)[0];
+        assert.equal(markGroup.type, 'symbol');
+        assert.equal(markGroup.key.field, 'k');
+        assert.equal(markGroup.from.data, 'main');
+      });
+
+      it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model);
         assert.isUndefined(markGroup[0].transform);
       });
     });
 
-    // NON-PATH
-    describe('Geoshape', () => {
-      it('should have post encoding transform', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "geoshape",
-          "projection": {
-            "type": "albersUsa"
-          },
-          "data": {
-            "url": "data/us-10m.json",
-            "format": {
-              "type": "topojson",
-              "feature": "states"
-            }
-          },
-          "encoding": {}
-        });
-        const markGroup = parseMarkGroup(model);
-        assert.isDefined(markGroup[0].transform);
-        assert.equal(markGroup[0].transform[0].type, GEOSHAPE);
+    it('Geoshape should have post encoding transform', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "geoshape",
+        "projection": {
+          "type": "albersUsa"
+        },
+        "data": {
+          "url": "data/us-10m.json",
+          "format": {
+            "type": "topojson",
+            "feature": "states"
+          }
+        },
+        "encoding": {}
       });
+      const markGroup = parseMarkGroup(model);
+      assert.isDefined(markGroup[0].transform);
+      assert.equal(markGroup[0].transform[0].type, GEOSHAPE);
     });
 
     describe('Aggregated Bar with a color with binned x', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+          "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+          "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+        }
+      });
       it('should use main stacked data source', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
-            "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
-          }
-        });
         const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
         assert.equal(markGroup[0].style, 'bar');
       });
       it('should not have post encoding transform', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
-            "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
-          }
-        });
         const markGroup = parseMarkGroup(model);
         assert.isUndefined(markGroup[0].transform);
       });
     });
 
     describe('Faceted aggregated Bar with a color with binned x', () => {
-      it('should use faceted data source', () => {
-        const model = parseFacetModel({
-          facet: {
-            row: {field: 'a', type: 'nominal'}
-          },
-          spec: {
-            "mark": "bar",
-            "encoding": {
-              "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-              "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
-              "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
-            }
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'nominal'}
+        },
+        spec: {
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+            "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
           }
-        });
+        }
+      });
+      it('should use faceted data source', () => {
         model.parseScale();
         model.parseLayoutSize();
 
@@ -161,19 +158,6 @@ describe('Mark', function() {
       });
 
       it('should not have post encoding transform', () => {
-        const model = parseFacetModel({
-          facet: {
-            row: {field: 'a', type: 'nominal'}
-          },
-          spec: {
-            "mark": "bar",
-            "encoding": {
-              "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-              "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
-              "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
-            }
-          }
-        });
         model.parseScale();
         model.parseLayoutSize();
 
@@ -183,97 +167,89 @@ describe('Mark', function() {
     });
 
     describe('Aggregated bar', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+          "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"}
+        }
+      });
+
       it('should use main aggregated data source', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"}
-          }
-        });
         const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
       });
 
       it('should not have post encoding transform', () => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          "mark": "bar",
-          "encoding": {
-            "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-            "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"}
-          }
-        });
         const markGroup = parseMarkGroup(model);
         assert.isUndefined(markGroup[0].transform);
       });
     });
   });
 
-  describe('getPathSort', () => {
-    describe('compileUnit', function() {
-      it('should order by order field for line with order (connected scatterplot)', function () {
-        const model = parseUnitModel({
-          "data": {"url": "data/driving.json"},
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
-            "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
-            "order": {"field": "year","type": "temporal"}
-          }
-        });
-        assert.deepEqual(getPathSort(model), {
-          field: ['datum[\"year\"]'],
-          order: ['ascending']
-        });
+  describe('getSort', () => {
+    it('should order by order field', function () {
+      const model = parseUnitModel({
+        "data": {"url": "data/driving.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
+          "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
+          "order": {"field": "year","type": "temporal"}
+        }
       });
+      assert.deepEqual(getSort(model), {
+        field: ['datum[\"year\"]'],
+        order: ['ascending']
+      });
+    });
 
-      it('should order by x by default if x is the dimension', function () {
-        const model = parseUnitModelWithScale({
-          "data": {"url": "data/movies.json"},
-          "mark": "line",
-          "encoding": {
-            "x": {
-              "bin": {"maxbins": 10},
-              "field": "IMDB_Rating",
-              "type": "quantitative"
-            },
-            "color": {
-              "field": "Source",
-              "type": "nominal"
-            },
-            "y": {
-              "aggregate": "count",
-              "type": "quantitative"
-            }
+    it('should order by x by default if x is the dimension', function () {
+      const model = parseUnitModelWithScale({
+        "data": {"url": "data/movies.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {
+            "bin": {"maxbins": 10},
+            "field": "IMDB_Rating",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative"
           }
-        });
-        assert.deepEqual(getPathSort(model), {
-          field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
-          order: 'descending'
-        });
+        }
       });
+      assert.deepEqual(getSort(model), {
+        field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
+        order: 'descending'
+      });
+    });
 
-      it('should not order by a missing dimension', function () {
-        const model = parseUnitModelWithScale({
-          "data": {"url": "data/movies.json"},
-          "mark": "line",
-          "encoding": {
-            "color": {
-              "field": "Source",
-              "type": "nominal"
-            },
-            "y": {
-              "aggregate": "count",
-              "type": "quantitative"
-            }
+    it('should not order by a missing dimension', function () {
+      const model = parseUnitModelWithScale({
+        "data": {"url": "data/movies.json"},
+        "mark": "line",
+        "encoding": {
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative"
           }
-        });
-        assert.deepEqual(getPathSort(model), undefined);
+        }
       });
+      assert.deepEqual(getSort(model), undefined);
     });
   });
 
-  describe('pathGroupingFields', () => {
+  describe('pathGroupingFields()', () => {
     it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
         assert.deepEqual(

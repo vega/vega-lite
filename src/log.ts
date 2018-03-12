@@ -2,13 +2,14 @@
  * Vega-Lite's singleton logger utility.
  */
 
+import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import {AggregateOp} from './aggregate';
-import {Channel} from './channel';
+import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
+import {Projection} from './projection';
 import {ScaleType} from './scale';
 import {Type} from './type';
 import {stringify} from './util';
@@ -147,6 +148,14 @@ export namespace message {
 
   // ENCODING & FACET
 
+  export function encodingOverridden(channels: Channel[]) {
+    return `Layer's shared ${channels.join(',')} channel ${channels.length === 1 ? 'is' : 'are'} overriden`;
+  }
+  export function projectionOverridden(opt: {parentProjection: Projection, projection: Projection}) {
+    const {parentProjection, projection} = opt;
+    return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(projection)}.`;
+  }
+
   export function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean) {
     return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
   }
@@ -169,6 +178,9 @@ export namespace message {
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
+  }
+  export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
+    return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {

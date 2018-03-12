@@ -72,11 +72,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "scale": "x",
@@ -112,7 +112,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "a",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -127,7 +126,8 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         }
     ],
     "config": {

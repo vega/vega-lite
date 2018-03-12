@@ -1,12 +1,12 @@
 import {Field} from '../fielddef';
 import {Encoding} from './../encoding';
-import {GenericUnitSpec, LayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 
 
 export const ERRORBAR: 'error-bar' = 'error-bar';
 export type ERRORBAR = typeof ERRORBAR;
 
-export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<Field>, ERRORBAR>): LayerSpec {
+export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<Field>, ERRORBAR>): NormalizedLayerSpec {
   // TODO: use selection
   const {mark: _m, selection: _sel, projection: _p, encoding, ...outerSpec} = spec;
   const {size: _s, ...encodingWithoutSize} = encoding;

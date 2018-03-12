@@ -30,13 +30,13 @@
       },
       "mark": "circle",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "latitude",
-          "type": "latitude"
+          "type": "quantitative"
         },
         "size": {
           "value": 5
@@ -79,13 +79,13 @@
       },
       "mark": "line",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "latitude",
-          "type": "latitude"
+          "type": "quantitative"
         },
         "order": {
           "field": "order",

@@ -73,13 +73,13 @@ describe('src/compile/projection/parse', function () {
           "type": "albersUsa"
         },
         "encoding": {
-          "x": {
+          "longitude": {
             "field": "longitude",
-            "type": "longitude"
+            "type": "quantitative"
           },
-          "y": {
+          "latitude": {
             "field": "latitude",
-            "type": "latitude"
+            "type": "quantitative"
           }
         }
       });
@@ -134,13 +134,13 @@ describe('src/compile/projection/parse', function () {
               "type": "albersUsa"
             },
             "encoding": {
-              "x": {
+              "longitude": {
                 "field": "longitude",
-                "type": "longitude"
+                "type": "quantitative"
               },
-              "y": {
+              "latitude": {
                 "field": "latitude",
-                "type": "latitude"
+                "type": "quantitative"
               }
             }
           }
@@ -173,13 +173,13 @@ describe('src/compile/projection/parse', function () {
               "type": "albersUsa"
             },
             "encoding": {
-              "x": {
+              "longitude": {
                 "field": "longitude",
-                "type": "longitude"
+                "type": "quantitative"
               },
-              "y": {
+              "latitude": {
                 "field": "latitude",
-                "type": "latitude"
+                "type": "quantitative"
               }
             }
           }
@@ -209,13 +209,13 @@ describe('src/compile/projection/parse', function () {
               "type": "albersUsa"
             },
             "encoding": {
-              "x": {
+              "longitude": {
                 "field": "longitude",
-                "type": "longitude"
+                "type": "quantitative"
               },
-              "y": {
+              "latitude": {
                 "field": "latitude",
-                "type": "latitude"
+                "type": "quantitative"
               }
             }
           }
@@ -251,13 +251,13 @@ describe('src/compile/projection/parse', function () {
               "type": "albersUsa"
             },
             "encoding": {
-              "x": {
+              "longitude": {
                 "field": "longitude",
-                "type": "longitude"
+                "type": "quantitative"
               },
-              "y": {
+              "latitude": {
                 "field": "latitude",
-                "type": "latitude"
+                "type": "quantitative"
               }
             }
           }
@@ -293,13 +293,13 @@ describe('src/compile/projection/parse', function () {
               "type": "albersUsa"
             },
             "encoding": {
-              "x": {
+              "longitude": {
                 "field": "longitude",
-                "type": "longitude"
+                "type": "quantitative"
               },
-              "y": {
+              "latitude": {
                 "field": "latitude",
-                "type": "latitude"
+                "type": "quantitative"
               }
             }
           }

@@ -61,7 +61,7 @@ export abstract class BaseConcatModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
   }
 
   public assembleMarks(): any[] {

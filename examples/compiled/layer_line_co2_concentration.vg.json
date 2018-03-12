@@ -341,31 +341,31 @@
     ],
     "axes": [
         {
-            "tickCount": 11,
-            "title": "Year into Decade",
             "scale": "x",
             "orient": "bottom",
+            "title": "Year into Decade",
+            "tickCount": 11,
             "labelFlush": true,
             "labelOverlap": true,
             "zindex": 1
         },
         {
-            "tickCount": 11,
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
+            "tickCount": 11,
             "grid": true,
+            "gridScale": "y",
+            "domain": false,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
-            "title": "CO2 concentration in ppm",
             "scale": "y",
             "orient": "left",
+            "title": "CO2 concentration in ppm",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
@@ -375,17 +375,17 @@
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "legends": [

@@ -223,9 +223,9 @@
     ],
     "axes": [
         {
-            "title": "Life Expectancy (years)",
             "scale": "x",
             "orient": "bottom",
+            "title": "Life Expectancy (years)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -236,26 +236,26 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
+            "scale": "y",
+            "orient": "left",
+            "title": "Country",
             "domain": false,
             "minExtent": 70,
             "offset": 5,
             "ticks": false,
-            "title": "Country",
-            "scale": "y",
-            "orient": "left",
             "zindex": 1
         }
     ],

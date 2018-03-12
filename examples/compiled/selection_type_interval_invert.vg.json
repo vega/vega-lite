@@ -497,9 +497,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Cylinders",
-            "zindex": 1,
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -514,13 +513,14 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "Origin",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],
