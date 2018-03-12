@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {assembleAxis} from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
+import {defaultConfig} from '../../../src/config';
 
 
 
@@ -17,7 +18,7 @@ describe('compile/axis/assemble', () => {
           labels: {update: {fill: {value: 'red'}}}
         }
       });
-      const axis = assembleAxis(axisCmpt, 'grid');
+      const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
       assert.isUndefined(axis.encode.labels);
     });
 
@@ -29,8 +30,17 @@ describe('compile/axis/assemble', () => {
           labels: {update: {fill: {value: 'red'}}}
         }
       });
-      const axis = assembleAxis(axisCmpt, 'main');
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       assert.isUndefined(axis.encode.grid);
+    });
+
+    it('correctly assemble title fieldDefs', () => {
+      const axisCmpt = new AxisComponent({
+        orient: 'left',
+        title: [{aggregate: 'max', field: 'a'}, {aggregate: 'min', field: 'b'}]
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      assert.equal(axis.title, 'Max of a, Min of b');
     });
   });
 

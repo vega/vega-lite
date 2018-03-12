@@ -1,5 +1,6 @@
 import {Axis, AxisPart} from '../../axis';
-import {duplicate} from '../../util';
+import {FieldDefBase} from '../../fielddef';
+import {duplicate, Omit} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {Split} from '../split';
 
@@ -8,11 +9,15 @@ function isFalseOrNull(v: boolean | null) {
   return v === false || v === null;
 }
 
+export type AxisComponentProps = Omit<VgAxis, 'title'> & {
 
-export class AxisComponent extends Split<VgAxis> {
+  title: string | FieldDefBase<string>[];
+};
+
+export class AxisComponent extends Split<AxisComponentProps> {
   constructor(
-    public readonly explicit: Partial<VgAxis> = {},
-    public readonly implicit: Partial<VgAxis> = {},
+    public readonly explicit: Partial<AxisComponentProps> = {},
+    public readonly implicit: Partial<AxisComponentProps> = {},
     public mainExtracted = false
   ) {
     super();

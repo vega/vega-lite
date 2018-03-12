@@ -1,13 +1,14 @@
 import {Axis, AXIS_PARTS, AxisEncoding, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
+import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, mergeTitleFieldDefs, numberFormat, titleMerger} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {AxisComponent, AxisComponentIndex} from './component';
+import {AxisComponent, AxisComponentIndex, AxisComponentProps} from './component';
 import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
@@ -204,7 +205,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   return axisComponent;
 }
 
-function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel): VgAxis[K] {
+function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel): AxisComponentProps[K] {
   const fieldDef = model.fieldDef(channel);
   switch (property) {
     case 'scale':
@@ -234,12 +235,20 @@ function getProperty<K extends keyof VgAxis>(property: K, specifiedAxis: Axis, c
       return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size));
     }
     case 'title':
-      return getSpecifiedOrDefaultValue(
-        // For falsy value, keep undefined so we use default,
-        // but use null for '', null, and false to hide the title
-        specifiedAxis.title || (specifiedAxis.title === undefined ? undefined : null),
-        properties.title(specifiedAxis.titleMaxLength, fieldDef, model.config)
-      ) || undefined; // make falsy value undefined so output Vega spec is shorter
+      const channel2 = channel === 'x' ? 'x2' : 'y2';
+      const fieldDef2 = model.fieldDef(channel2);
+
+      return getSpecifiedOrDefaultValue<string | FieldDefBase<string>[]>(
+        // Keep undefined so we use default if title is unspecified.
+        // For other falsy value, keep them so we will hide the title.
+        specifiedAxis.title === undefined ? undefined : specifiedAxis.title,
+
+        // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+        mergeTitleFieldDefs(
+          [toFieldDefBase(fieldDef)],
+          fieldDef2 ? [toFieldDefBase(fieldDef2)] : []
+        )
+      );
     case 'values':
       return properties.values(specifiedAxis, model, fieldDef);
   }

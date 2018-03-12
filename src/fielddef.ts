@@ -147,6 +147,16 @@ export interface FieldDefBase<F> {
   aggregate?: Aggregate;
 }
 
+export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
+  const {field, timeUnit, bin, aggregate} = fieldDef;
+  return {
+    ...(timeUnit ? {timeUnit} : {}),
+    ...(bin ? {bin} : {}),
+    ...(aggregate ? {aggregate} : {}),
+    field
+  };
+}
+
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */

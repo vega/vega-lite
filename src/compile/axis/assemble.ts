@@ -1,12 +1,22 @@
+import {isArray} from 'util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
+import {Config} from '../../config';
+import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
 import {keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './component';
 
+function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
+  if (isArray(title)) {
+    return title.map(fieldDef => fieldDefTitle(fieldDef, config)).join(', ');
+  }
+  return title;
+}
 
 export function assembleAxis(
   axisCmpt: AxisComponent,
   kind: 'main' | 'grid',
+  config: Config,
   opt: {
     header: boolean // whether this is called via a header
   } = {header: false}
@@ -75,22 +85,24 @@ export function assembleAxis(
       }
     }
 
+    const titleString = assembleTitle(title, config);
+
     return {
       scale,
       orient,
-      ...(title ? {title} : {}),
+      ...(titleString ? {title: titleString} : {}),
       ...axis,
       zindex: 1
     };
   }
 }
 
-export function assembleAxes(axisComponents: AxisComponentIndex): VgAxis[] {
+export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {
   const {x=[], y=[]} = axisComponents;
   return [
-    ...x.map(a => assembleAxis(a, 'main')),
-    ...x.map(a => assembleAxis(a, 'grid')),
-    ...y.map(a => assembleAxis(a, 'main')),
-    ...y.map(a => assembleAxis(a, 'grid'))
+    ...x.map(a => assembleAxis(a, 'main', config)),
+    ...x.map(a => assembleAxis(a, 'grid', config)),
+    ...y.map(a => assembleAxis(a, 'main', config)),
+    ...y.map(a => assembleAxis(a, 'grid', config))
   ].filter(a => a); // filter undefined
 }
