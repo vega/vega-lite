@@ -112,7 +112,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.grid, undefined);
     });
 
-    it('should not set title if title = null, "", or false', function () {
+    it('should store the title value if title = null, "", or false', function () {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -126,8 +126,21 @@ describe('Axis', function() {
         });
         const axisComponent = parseUnitAxis(model);
         assert.equal(axisComponent['x'].length, 1);
-        assert.doesNotHaveAnyKeys(axisComponent['x'][0].explicit, ['title']);
+        assert.equal(axisComponent['x'][0].explicit.title, val as any);
       }
+    });
+
+    it('should store both x and x2 for ranged mark', function () {
+      const model = parseUnitModelWithScale({
+        mark: "rule",
+        encoding: {
+          x: {field: "a", type: "quantitative"},
+          x2: {field: "a2", type: "quantitative"}
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.deepEqual(axisComponent['x'][0].get('title'), [{field: "a"}, {field: "a2"}]);
     });
   });
 
@@ -174,7 +187,7 @@ describe('Axis', function() {
 
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.equal(axisComponents.y[0].get('title'), 'Mean of a');
+      assert.deepEqual(axisComponents.y[0].get('title'), [{aggregate: 'mean', field: 'a'}]);
     });
 
     it('correctly combines different title', () => {
@@ -212,7 +225,10 @@ describe('Axis', function() {
       parseLayerAxis(model);
       const axisComponents = model.component.axes;
 
-      assert.equal(axisComponents.y[0].get('title'), 'Max of Horsepower, Min of Horsepower');
+      assert.deepEqual(
+        axisComponents.y[0].get('title'),
+        [{aggregate: 'max', field: 'Horsepower'}, {aggregate: 'min', field: 'Horsepower'}]
+      );
     });
   });
 });

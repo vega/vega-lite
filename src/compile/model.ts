@@ -330,7 +330,7 @@ export abstract class Model {
   public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return assembleAxes(this.component.axes);
+    return assembleAxes(this.component.axes, this.config);
   }
 
   public assembleLegends(): VgLegend[] {

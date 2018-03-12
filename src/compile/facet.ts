@@ -147,7 +147,7 @@ export class FacetModel extends ModelWithField {
           layoutHeader[headerType] = layoutHeader[headerType] ||
           [this.makeHeaderComponent(headerChannel, false)];
 
-          const mainAxis = assembleAxis(axisComponent, 'main', {header: true});
+          const mainAxis = assembleAxis(axisComponent, 'main', this.config, {header: true});
           // LayoutHeader no longer keep track of property precedence, thus let's combine.
           layoutHeader[headerType][0].axes.push(mainAxis);
           axisComponent.mainExtracted = true;
