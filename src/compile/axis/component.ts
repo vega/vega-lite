@@ -9,7 +9,7 @@ function isFalseOrNull(v: boolean | null) {
 }
 
 
-export class AxisComponent extends Split<Partial<VgAxis>> {
+export class AxisComponent extends Split<VgAxis> {
   constructor(
     public readonly explicit: Partial<VgAxis> = {},
     public readonly implicit: Partial<VgAxis> = {},

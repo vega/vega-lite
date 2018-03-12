@@ -9,7 +9,10 @@ import {duplicate, stringify} from '../util';
  * we want to prioritize properties that users explicitly specified.
  */
 export class Split<T extends object> {
-  constructor(public readonly explicit: T = {} as T, public readonly implicit: T = {} as T) {}
+  constructor(
+    public readonly explicit: Partial<T> = {},
+    public readonly implicit: Partial<T> = {}
+  ) {}
 
   public clone() {
     return new Split(duplicate(this.explicit), duplicate(this.implicit));
@@ -59,7 +62,7 @@ export class Split<T extends object> {
       this.set(key, s.implicit[key], false);
     }
   }
-  public copyKeyFromObject<S extends T>(key: keyof T, s: S) {
+  public copyKeyFromObject<S extends Partial<T>>(key: keyof T, s: S) {
     // Explicit has higher precedence
     if (s[key] !== undefined) {
       this.set(key, s[key], true);
