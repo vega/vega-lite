@@ -34,7 +34,7 @@
           {"calculate": "300", "as": "baseline"}
         ],
         "encoding": {
-          "x": {"field": "Day", "type": "ordinal", "axis": {"labelAngle": 0}},
+          "x": {"field": "Day", "type": "ordinal"},
           "y": {"field": "baseline", "type": "quantitative"},
           "y2": {"field": "Value", "type": "quantitative"},
           "color": {"value": "#e45755"}

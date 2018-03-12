@@ -18,8 +18,7 @@
     "mark": "rule",
     "encoding": {
       "x": {
-        "aggregate": "ci0", "field": "yield", "type": "quantitative",
-        "scale": {"zero": false}
+        "aggregate": "ci0", "field": "yield", "type": "quantitative"
       },
       "x2": {
         "aggregate": "ci1", "field": "yield", "type": "quantitative"
