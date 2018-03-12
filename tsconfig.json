@@ -26,8 +26,5 @@
     "test-runtime/**/*.ts",
     "examples/**/*.ts",
     "typings/*.d.ts"
-  ],
-  "exclude": [
-    "typings/vega-lite.d.ts"
   ]
 }
