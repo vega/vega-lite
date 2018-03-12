@@ -40,7 +40,7 @@ describe('compile/data/summary', function () {
             'field': 'Origin',
             'type': "ordinal"
           },
-          color: {field: '*', type: "quantitative", aggregate: 'count'}
+          color: {type: "quantitative", aggregate: 'count'}
         }
       });
 
