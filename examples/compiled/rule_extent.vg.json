@@ -141,11 +141,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Min of Horsepower",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Min of Horsepower",
             "zindex": 1
         },
         {

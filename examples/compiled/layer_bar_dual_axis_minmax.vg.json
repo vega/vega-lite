@@ -301,8 +301,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "date (month)",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {

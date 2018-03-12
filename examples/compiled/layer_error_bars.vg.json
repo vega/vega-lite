@@ -220,8 +220,8 @@
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "variety",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],

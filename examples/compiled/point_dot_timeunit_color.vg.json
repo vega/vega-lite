@@ -108,12 +108,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Mean of temp",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Mean of temp",
             "zindex": 1
         },
         {

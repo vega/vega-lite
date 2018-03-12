@@ -177,11 +177,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Average of b",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Average of b",
             "zindex": 1
         },
         {

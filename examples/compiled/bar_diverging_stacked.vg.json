@@ -483,11 +483,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Question",
             "domain": false,
             "minExtent": 60,
             "offset": 5,
             "ticks": false,
-            "title": "Question",
             "zindex": 1
         }
     ],

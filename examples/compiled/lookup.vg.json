@@ -137,8 +137,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "group",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -159,11 +159,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of age",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of age",
             "zindex": 1
         },
         {

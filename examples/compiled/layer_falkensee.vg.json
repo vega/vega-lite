@@ -439,12 +439,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "start (year), year (year), year (year)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "start (year), year (year), year (year)",
             "encode": {
                 "labels": {
                     "update": {
@@ -474,11 +474,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "population",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "population",
             "zindex": 1
         },
         {

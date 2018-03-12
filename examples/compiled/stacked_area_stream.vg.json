@@ -194,6 +194,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date (year-month)",
             "domain": false,
             "tickSize": 0,
             "labelFlush": true,
@@ -201,7 +202,6 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date (year-month)",
             "encode": {
                 "labels": {
                     "update": {

@@ -353,8 +353,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "age",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {

@@ -118,12 +118,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "month",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "month",
             "encode": {
                 "labels": {
                     "update": {
@@ -153,11 +153,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Max of temp_max",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Max of temp_max",
             "zindex": 1
         },
         {

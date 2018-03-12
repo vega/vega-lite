@@ -191,13 +191,13 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date (year-month)",
             "domain": false,
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date (year-month)",
             "encode": {
                 "labels": {
                     "update": {

@@ -320,8 +320,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Cylinders",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -342,11 +342,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Max of Horsepower, Min of Horsepower",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Max of Horsepower, Min of Horsepower",
             "zindex": 1
         },
         {

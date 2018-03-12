@@ -131,8 +131,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "bin_IMDB_Rating",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -153,11 +153,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Number of Records",
             "zindex": 1
         },
         {

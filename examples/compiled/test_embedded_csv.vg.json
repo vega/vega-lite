@@ -84,11 +84,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "a",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "a",
             "zindex": 1
         },
         {

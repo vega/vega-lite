@@ -226,9 +226,9 @@
                 {
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
+                    "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
-                    "title": "date (month)",
                     "encode": {
                         "labels": {
                             "update": {
@@ -255,11 +255,11 @@
                 {
                     "scale": "child_temp_max_y",
                     "orient": "left",
+                    "title": "Mean of temp_max",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of temp_max",
                     "zindex": 1
                 },
                 {
@@ -358,9 +358,9 @@
                 {
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
+                    "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
-                    "title": "date (month)",
                     "encode": {
                         "labels": {
                             "update": {
@@ -387,11 +387,11 @@
                 {
                     "scale": "child_precipitation_y",
                     "orient": "left",
+                    "title": "Mean of precipitation",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of precipitation",
                     "zindex": 1
                 },
                 {
@@ -490,9 +490,9 @@
                 {
                     "scale": "child_wind_x",
                     "orient": "bottom",
+                    "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
-                    "title": "date (month)",
                     "encode": {
                         "labels": {
                             "update": {
@@ -519,11 +519,11 @@
                 {
                     "scale": "child_wind_y",
                     "orient": "left",
+                    "title": "Mean of wind",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of wind",
                     "zindex": 1
                 },
                 {

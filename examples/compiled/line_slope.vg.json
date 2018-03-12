@@ -153,8 +153,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "year",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -175,11 +175,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Median of yield",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Median of yield",
             "zindex": 1
         },
         {

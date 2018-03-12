@@ -150,12 +150,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "source\\.reco",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "source\\.reco",
             "zindex": 1
         },
         {
@@ -176,11 +176,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "source\\.yes",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "source\\.yes",
             "zindex": 1
         },
         {

@@ -99,8 +99,8 @@
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "Origin",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],

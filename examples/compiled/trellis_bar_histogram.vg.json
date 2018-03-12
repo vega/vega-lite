@@ -143,11 +143,11 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 }
             ]
@@ -167,12 +167,12 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_width/20)"
                     },
-                    "title": "Horsepower (binned)",
                     "values": {
                         "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
                     },

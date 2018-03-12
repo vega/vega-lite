@@ -251,11 +251,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Country",
             "domain": false,
             "minExtent": 70,
             "offset": 5,
             "ticks": false,
-            "title": "Country",
             "zindex": 1
         }
     ],

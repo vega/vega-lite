@@ -133,8 +133,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Year",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {

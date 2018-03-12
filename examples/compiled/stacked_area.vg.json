@@ -195,12 +195,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date (year-month)",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date (year-month)",
             "encode": {
                 "labels": {
                     "update": {
@@ -230,11 +230,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Sum of count",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Sum of count",
             "zindex": 1
         },
         {

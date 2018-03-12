@@ -78,12 +78,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "IMDB_Rating",
             "zindex": 1
         },
         {

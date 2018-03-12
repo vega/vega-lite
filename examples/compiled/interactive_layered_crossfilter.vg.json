@@ -725,12 +725,12 @@
                 {
                     "scale": "child_distance_x",
                     "orient": "bottom",
+                    "title": "distance (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "distance (binned)",
                     "values": {
                         "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
                     },
@@ -739,11 +739,11 @@
                 {
                     "scale": "child_distance_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {
@@ -1133,12 +1133,12 @@
                 {
                     "scale": "child_delay_x",
                     "orient": "bottom",
+                    "title": "delay (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "delay (binned)",
                     "values": {
                         "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
                     },
@@ -1147,11 +1147,11 @@
                 {
                     "scale": "child_delay_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {
@@ -1541,12 +1541,12 @@
                 {
                     "scale": "child_time_x",
                     "orient": "bottom",
+                    "title": "time (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/20)"
                     },
-                    "title": "time (binned)",
                     "values": {
                         "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
                     },
@@ -1555,11 +1555,11 @@
                 {
                     "scale": "child_time_y",
                     "orient": "left",
+                    "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {

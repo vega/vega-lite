@@ -461,12 +461,12 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "title": "date (seconds)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_width/40)"
                     },
-                    "title": "date (seconds)",
                     "encode": {
                         "labels": {
                             "update": {
@@ -496,11 +496,11 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "price",
                     "zindex": 1
                 },
                 {
@@ -571,12 +571,12 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "date (minutes)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/40)"
                     },
-                    "title": "date (minutes)",
                     "encode": {
                         "labels": {
                             "update": {
@@ -606,11 +606,11 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
-                    "title": "price",
                     "zindex": 1
                 },
                 {

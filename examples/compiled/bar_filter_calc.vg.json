@@ -150,8 +150,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "a",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -172,11 +172,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "b2",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "b2",
             "zindex": 1
         },
         {

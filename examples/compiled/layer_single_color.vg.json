@@ -131,12 +131,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date",
             "encode": {
                 "labels": {
                     "update": {
@@ -166,11 +166,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "price",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "price",
             "zindex": 1
         },
         {

@@ -116,8 +116,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "Cylinders",
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -138,11 +138,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Mean of Acceleration",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Mean of Acceleration",
             "zindex": 1
         },
         {

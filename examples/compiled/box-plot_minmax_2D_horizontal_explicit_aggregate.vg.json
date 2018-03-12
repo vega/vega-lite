@@ -385,8 +385,8 @@
         {
             "scale": "y",
             "orient": "left",
-            "labelOverlap": true,
             "title": "age",
+            "labelOverlap": true,
             "zindex": 1
         }
     ],

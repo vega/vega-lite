@@ -156,12 +156,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "Average of b",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "Average of b",
             "zindex": 1
         },
         {

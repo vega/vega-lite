@@ -343,8 +343,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "tickCount": 11,
             "title": "Year into Decade",
+            "tickCount": 11,
             "labelFlush": true,
             "labelOverlap": true,
             "zindex": 1

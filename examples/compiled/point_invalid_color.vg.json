@@ -95,12 +95,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "IMDB_Rating",
             "zindex": 1
         },
         {
@@ -121,11 +121,11 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Rotten_Tomatoes_Rating",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "Rotten_Tomatoes_Rating",
             "zindex": 1
         },
         {
