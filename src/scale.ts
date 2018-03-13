@@ -337,7 +337,7 @@ export interface SchemeParams {
   /**
    * A color scheme name for sequential/ordinal scales (e.g., `"category10"` or `"viridis"`).
    *
-   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+   * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
   name: string;
 
@@ -463,7 +463,7 @@ export interface Scale {
    *
    * Discrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.
    *
-   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+   * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
   scheme?: string | SchemeParams;
 

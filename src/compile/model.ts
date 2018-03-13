@@ -517,7 +517,7 @@ export abstract class Model {
     if (
         // If there is a scale for the channel, there should be a local scale component for it
         (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
-        // in the scale name map (the the scale get merged by its parent)
+        // in the scale name map (the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));
