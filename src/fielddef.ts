@@ -163,7 +163,7 @@ export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
-   * It can also be a geo type (`"latitude"`, `"longitude"`, and `"geojson"`) when a [geographic projection](https://vega.github.io/vega-lite/docs/projection.html) is applied.
+   * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
