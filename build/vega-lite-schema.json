@@ -585,7 +585,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -653,7 +653,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
@@ -3775,7 +3775,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -3843,7 +3843,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
@@ -3961,7 +3961,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -4029,7 +4029,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
@@ -4919,7 +4919,7 @@
               "$ref": "#/definitions/SchemeParams"
             }
           ],
-          "description": "A string indicating a color [scheme](scale.html#scheme) name (e.g., `\"category10\"` or `\"viridis\"`) or a [scheme parameter object](scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
+          "description": "A string indicating a color [scheme](scale.html#scheme) name (e.g., `\"category10\"` or `\"viridis\"`) or a [scheme parameter object](scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
@@ -5129,7 +5129,7 @@
           "type": "array"
         },
         "name": {
-          "description": "A color scheme name for sequential/ordinal scales (e.g., `\"category10\"` or `\"viridis\"`).\n\nFor the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
+          "description": "A color scheme name for sequential/ordinal scales (e.g., `\"category10\"` or `\"viridis\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
           "type": "string"
         }
       },
@@ -5505,7 +5505,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -5577,7 +5577,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
@@ -5696,7 +5696,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -5764,7 +5764,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
@@ -6988,7 +6988,7 @@
           "type": "number"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "fillOpacity": {
@@ -7052,7 +7052,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
         "strokeDash": {
