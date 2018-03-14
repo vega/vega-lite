@@ -2,18 +2,12 @@ import {keys} from '../util';
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {
-  BOXPLOT,
-  BoxPlot,
-  BOXPLOT_PARTS,
-  BoxPlotConfigMixins,
-  BoxPlotDef,
-  normalizeBoxPlot,
-} from './boxplot';
-import {ERRORBAR, ErrorBar, normalizeErrorBar} from './errorbar';
+import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {ERRORBAR, ErrorBar, ERRORBAR_PARTS, ErrorBarConfigMixins, ErrorBarDef, normalizeErrorBar} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
+export {ErrorBarConfig} from './errorbar';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
 
 /**
@@ -47,15 +41,15 @@ export function getCompositeMarkParts(mark: string) {
   throw new Error(`Unregistered composite mark ${mark}`);
 }
 
-export type CompositeMarkDef = BoxPlotDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef;
 
-export type CompositeAggregate = BoxPlot;
+export type CompositeAggregate = BoxPlot | ErrorBar;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
+export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins {}
 
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
-add(ERRORBAR, normalizeErrorBar, [] /*FIXME: chanwutk please fix this*/);
+add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
 
 /**
  * Transform a unit spec with composite mark into a normal layer spec.

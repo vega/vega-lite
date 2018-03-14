@@ -98,7 +98,7 @@ describe('normalize()', function () {
               }
             },
             {
-              mark: 'error-bar',
+              mark: 'errorbar',
               encoding: {
                 "x": {"field": "age","type": "ordinal"},
                 "y": {
@@ -319,7 +319,7 @@ describe('normalize()', function () {
             }
           },
           {
-            mark: 'error-bar',
+            mark: 'errorbar',
             encoding: {
               "x": {"field": "age","type": "ordinal"},
               "y": {

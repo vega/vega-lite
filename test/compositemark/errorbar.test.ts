@@ -10,7 +10,7 @@ describe("normalizeErrorBar", () => {
     it("should produce correct layered specs for horizontal error bar", () => {
       assert.deepEqual(normalize({
         "data": {"url": "data/population.json"},
-        mark: "error-bar",
+        mark: "errorbar",
         encoding: {
           "y": {"field": "age","type": "ordinal"},
           "x": {
@@ -80,7 +80,7 @@ describe("normalizeErrorBar", () => {
       assert.throws(() => {
         normalize({
           "data": {"url": "data/population.json"},
-          mark: "error-bar",
+          mark: "errorbar",
           encoding: {
             "y": {"field": "age","type": "ordinal"},
             "x": {

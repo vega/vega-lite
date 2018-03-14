@@ -923,7 +923,14 @@
       ]
     },
     "CompositeMarkDef": {
-      "$ref": "#/definitions/BoxPlotDef"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlotDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBarDef"
+        }
+      ]
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -1450,6 +1457,10 @@
         "datasets": {
           "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "errorbar": {
+          "$ref": "#/definitions/ErrorBarConfig",
+          "description": "ErrorBar Config"
         },
         "fieldTitle": {
           "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
@@ -2103,9 +2114,70 @@
     },
     "ErrorBar": {
       "enum": [
-        "error-bar"
+        "errorbar"
       ],
       "type": "string"
+    },
+    "ErrorBarConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
+          "enum": [
+            "ci",
+            "stderr",
+            "stdev"
+          ],
+          "type": "string"
+        },
+        "mean": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "size": {
+          "description": "Size of the center point of an error bar ",
+          "type": "number"
+        },
+        "whisker": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBarDef": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
+          "enum": [
+            "ci",
+            "stderr",
+            "stdev"
+          ],
+          "type": "string"
+        },
+        "mean": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "size": {
+          "description": "Size of the center point of an error bar ",
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBar",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        },
+        "whisker": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
     },
     "LayerSpec": {
       "additionalProperties": false,
