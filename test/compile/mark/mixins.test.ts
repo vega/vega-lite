@@ -28,7 +28,7 @@ describe('compile/mark/mixins', () => {
       assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "color"});
     });
 
-    it('color should be mapped to stroke for point', function() {
+    it('color should be mapped to stroke for point', function () {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -48,6 +48,129 @@ describe('compile/mark/mixins', () => {
       const colorMixins = color(model);
       assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "color"});
       assert.propertyVal(colorMixins.fill, 'value', "transparent");
+    });
+
+    it('add transparent fill when stroke is encoded', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {
+            "field": "gender", "type": "nominal",
+            "scale": {"rangeStep": 6},
+            "axis": null
+          },
+          "stroke": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          }
+        },
+        "data": {"url": "data/population.json"}
+      });
+
+      const colorMixins = color(model);
+      assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "stroke"});
+      assert.propertyVal(colorMixins.fill, 'value', "transparent");
+    });
+
+    it('ignores color if fill is specified', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {
+            "field": "gender", "type": "nominal",
+            "scale": {"rangeStep": 6},
+            "axis": null
+          },
+          "fill": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          },
+          "color": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          }
+        },
+        "data": {"url": "data/population.json"}
+      });
+
+      const colorMixins = color(model);
+      assert.isUndefined(colorMixins.stroke);
+      assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "fill"});
+    });
+
+    it('should apply stroke property over color property', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "point", "color": "red", "stroke": "blue"},
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        }
+      });
+      const props = color(model);
+      assert.deepEqual(props.stroke, {value: "blue"});
+    });
+
+    it('should apply ignore color property when fill is specified', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "point", "color": "red", "fill": "blue"},
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        }
+      });
+      const props = color(model);
+      assert.isUndefined(props.stroke);
+    });
+
+    it('should apply color property', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "point", "color": "red"},
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        }
+      });
+      const props = color(model);
+      assert.deepEqual(props.stroke, {value: "red"});
+    });
+
+    it('should apply color from mark-specific config over general mark config', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        },
+        "config": {"mark": {"color": "blue"}, "point": {"color": "red"}}
+      });
+      const props = color(model);
+      assert.deepEqual(props.stroke, {value: "red"});
+    });
+
+    it('should apply stroke mark config over color mark config', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        },
+        "config": {"mark": {"color": "red", "stroke": "blue"}}
+      });
+      const props = color(model);
+      assert.deepEqual(props.stroke, {value: "blue"});
+    });
+
+    it('should apply stroke mark config over color mark config', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower", "type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        },
+        "config": {"point": {"color": "red", "stroke": "blue"}}
+      });
+      const props = color(model);
+      assert.deepEqual(props.stroke, {value: "blue"});
     });
   });
 
