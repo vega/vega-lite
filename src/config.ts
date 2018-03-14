@@ -262,6 +262,18 @@ export const defaultConfig: Config = {
     ticks: null
   },
 
+  errorbar: {
+    center: 'mean',
+    rule: true,
+    point: {
+      opacity: 1,
+      filled: true
+    },
+    line: false,
+    bar: false,
+    ticks: false
+  },
+
   scale: defaultScaleConfig,
   projection: {},
   axis: {},

@@ -1,5 +1,5 @@
 import {isNumber} from 'vega-util';
-
+import {isAggregateOp} from '../aggregate';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -397,7 +397,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
       return;
     }
     if (isFieldDef(channelDef)) {
-      if (channelDef.aggregate && channelDef.aggregate !== BOXPLOT) {
+      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
         aggregate.push({
           op: channelDef.aggregate,
           field: channelDef.field,

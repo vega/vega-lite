@@ -1,97 +1,79 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
+import * as log from '../../src/log';
 import {normalize} from '../../src/spec';
 import {defaultConfig} from '.././../src/config';
 
-
-describe("normalizeErrorBar", () => {
-
-    it("should produce correct layered specs for horizontal error bar", () => {
-      assert.deepEqual(normalize({
-        "data": {"url": "data/population.json"},
-        mark: "error-bar",
-        encoding: {
-          "y": {"field": "age","type": "ordinal"},
-          "x": {
-            "aggregate": "min",
-            "field": "people",
-            "type": "quantitative",
-            "axis": {"title": "population"}
-          },
-          "x2": {
-            "aggregate": "max",
-            "field": "people",
-            "type": "quantitative"
-          },
-          "size": {"value": 5}
-        }
-      }, defaultConfig), {
-        "data": {"url": "data/population.json"},
-        "layer": [
-          {
-            "mark": "rule",
-            "encoding": {
-              "y": {"field": "age","type": "ordinal"},
-              "x": {
-                "aggregate": "min",
-                "field": "people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
-              },
-              "x2": {
-                "aggregate": "max",
-                "field": "people",
-                "type": "quantitative"
-              }
-            }
-          },
-          {
-            "mark": "tick",
-            "encoding": {
-              "y": {"field": "age","type": "ordinal"},
-              "x": {
-                "aggregate": "min",
-                "field": "people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
-              },
-              "size": {"value": 5}
-            }
-          },
-          {
-            "mark": "tick",
-            "encoding": {
-              "y": {"field": "age","type": "ordinal"},
-              "x": {
-                "aggregate": "max",
-                "field": "people",
-                "type": "quantitative",
-                // "axis": {"title": "population"}
-              },
-              "size": {"value": 5}
-            }
+describe('normalizeLayer', () => {
+  it('should produce correct layered specs for mean point and vertical error bar', () => {
+    assert.deepEqual(normalize({
+      "data": {
+        "url": "data/population.json"
+      },
+      mark: "errorbar",
+      encoding: {
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "people",
+          "type": "quantitative",
+          "axis": {
+            "title": "population"
           }
-        ]
-      });
-    });
-
-   it("should throw error when missing x2 and y2", () => {
-      assert.throws(() => {
-        normalize({
-          "data": {"url": "data/population.json"},
-          mark: "error-bar",
-          encoding: {
-            "y": {"field": "age","type": "ordinal"},
-            "x": {
-              "aggregate": "min",
-              "field": "people",
+        }
+      }
+    }, defaultConfig), {
+      "data": {"url": "data/population.json"},
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "stderr", "field": "people", "as": "extent_people"},
+            {"op": "mean", "field": "people", "as": "mean_people"}
+          ],
+          "groupby": ["age"]
+        },
+        {
+          "calculate": "datum.mean_people + datum.extent_people",
+          "as": "upper_rule_people"
+        },
+        {
+          "calculate": "datum.mean_people - datum.extent_people",
+          "as": "lower_rule_people"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {"type": "rule", "style": "errorbar-rule"},
+          "encoding": {
+            "y": {
+              "field": "lower_rule_people",
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "size": {"value": 5}
+            "y2": {"field": "upper_rule_people", "type": "quantitative"},
+            "x": {"field": "age", "type": "ordinal"}
           }
-        }, defaultConfig);
-      }, Error, 'Neither x2 or y2 provided');
+        },
+        {
+          "mark": {
+            "opacity": 1,
+            "filled": true,
+            "type": "point",
+            "style": "errorbar-point"
+          },
+          "encoding": {
+            "y": {
+              "field": "mean_people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
+            "x": {"field": "age", "type": "ordinal"}
+          }
+        }
+      ]
     });
- });
+  });
+});

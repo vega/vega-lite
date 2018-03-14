@@ -4,6 +4,7 @@ _data/vega-lite-schema.json
 data/*
 *.sublime-workspace
 .idea
+.nyc_output
 
 npm-debug.log*
 yarn-debug.log*
