@@ -33,7 +33,7 @@ export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   config?: Config;
 };
 
-export interface BaseSpec {
+export type BaseSpec = Partial<DataMixins> & {
   /**
    * Title for the plot.
    */
@@ -58,9 +58,9 @@ export interface BaseSpec {
    * An array of data transformations such as filter and new field calculation.
    */
   transform?: Transform[];
-}
+};
 
-export type DataRequired = {
+export type DataMixins = {
   /**
    * An object describing the data source
    */
@@ -254,8 +254,8 @@ export type GenericSpec<
 
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataRequired;
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataRequired;
+export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 
 export type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> |
 TopLevel<GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>>;
