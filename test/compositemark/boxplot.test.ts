@@ -1772,6 +1772,11 @@ describe("normalizeBoxIQR", () => {
               {
                 "aggregate": [
                   {
+                    "op": "mean",
+                    "field": "people",
+                    "as": "mean_people"
+                  },
+                  {
                     "op": "q1",
                     "field": "people",
                     "as": "lower_box_people"
@@ -1795,11 +1800,6 @@ describe("normalizeBoxIQR", () => {
                     "op": "max",
                     "field": "people",
                     "as": "max_people"
-                  },
-                  {
-                    "op": "mean",
-                    "field": "people",
-                    "as": "mean_people"
                   }
                 ],
                 "groupby": ["age"]

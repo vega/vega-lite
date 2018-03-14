@@ -3,12 +3,12 @@ import {Config} from '../config';
 import {isMarkDef, MarkConfig} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
-import {Encoding} from './../encoding';
+import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkCombineParams, compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
+import {compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -269,7 +269,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinousAxis(spec, orient, BOXPLOT);
 
   const isMinMax = !isNumber(extent);
-  const aggregate: AggregatedFieldDef[] = [
+  const boxplotSpecificAggregate: AggregatedFieldDef[] = [
     ...boxParamsQuartiles(continuousAxisChannelDef.field),
     {
       op: 'median',
@@ -301,5 +301,23 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
     as: 'lower_whisker_' + continuousAxisChannelDef.field
   }];
 
-  return compositeMarkCombineParams(spec.encoding, continuousAxis, aggregate, postAggregateCalculates, continuousAxisChannelDef);
+  const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+
+  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
+
+  return {
+    transform: [
+      ...bins,
+      ...timeUnits,
+      {
+        aggregate: [...aggregate, ...boxplotSpecificAggregate],
+        groupby
+      },
+      ...postAggregateCalculates
+    ],
+    groupby,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis
+  };
 }

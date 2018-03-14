@@ -3,12 +3,12 @@ import {Config} from '../config';
 import {isMarkDef, Mark, MarkConfig} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
-import {Encoding} from './../encoding';
+import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkCombineParams, compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
+import {compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
@@ -154,11 +154,11 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
 function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, orient: Orient, center: ErrorBarCenter, extent: ErrorBarExtent) {
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinousAxis(spec, orient, ERRORBAR);
   const continuousFieldName: string = continuousAxisChannelDef.field;
-  let aggregate: AggregatedFieldDef[] = [];
+  let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
 
   if (extent === 'stderr' || extent === 'stdev') {
-    aggregate = [{
+    errorbarSpecificAggregate = [{
       op: extent,
       field: continuousFieldName,
       as: 'extent_' + continuousFieldName
@@ -173,7 +173,7 @@ function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | Error
         as: 'lower_rule_' + continuousFieldName
     }];
   } else {
-    aggregate = [
+    errorbarSpecificAggregate = [
       {
         op: (extent === 'ci') ? 'ci0' : 'q1',
         field: continuousFieldName,
@@ -187,11 +187,29 @@ function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | Error
     ];
   }
 
-  aggregate.push({
+  errorbarSpecificAggregate.push({
     op: center,
     field: continuousFieldName,
     as: center + '_' + continuousFieldName
   });
 
-  return compositeMarkCombineParams(spec.encoding, continuousAxis, aggregate, postAggregateCalculates, continuousAxisChannelDef);
+  const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+
+  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
+
+  return {
+    transform: [
+      ...bins,
+      ...timeUnits,
+      {
+        aggregate: [...aggregate, ...errorbarSpecificAggregate],
+        groupby
+      },
+      ...postAggregateCalculates
+    ],
+    groupby,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis
+  };
 }

@@ -1,8 +1,12 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
+import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
-import {normalize} from '../../src/spec';
+import {isMarkDef} from '../../src/mark';
+import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {isAggregate} from '../../src/transform';
+import {some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
 it('should produce correct layered specs for mean point and vertical error bar', () => {
@@ -217,7 +221,7 @@ it("should produce an error if 1D errorbar only axis is discrete", () => {
   }, Error, 'Need a valid continuous axis for errorbars');
 });
 
-it("should produce correct layered specs for vertical errorbar with two quantitative axes and specify orientation with orient", () => {
+it("should aggregate y field for vertical errorbar with two quantitative axes and explicit orient", () => {
   const outputSpec = normalize({
     "data": {"url": "data/population.json"},
     mark: {
@@ -235,11 +239,18 @@ it("should produce correct layered specs for vertical errorbar with two quantita
       }
     }
   }, defaultConfig);
-
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].field, "people");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.field === "people" &&
+        (aggregateFieldDef.op === "mean" || aggregateFieldDef.op === "median");
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
-it("should produce correct layered specs for horizontal errorbar with two quantitative axes and specify orientation with orient", () => {
+it("should aggregate x field for horizontal errorbar with two quantitative axes and explicit orient", () => {
   const outputSpec = normalize({
     "data": {"url": "data/population.json"},
     mark: {
@@ -258,10 +269,18 @@ it("should produce correct layered specs for horizontal errorbar with two quanti
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].field, "age");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.field === "age" &&
+        (aggregateFieldDef.op === "mean" || aggregateFieldDef.op === "median");
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
-it("should produce correct layered specs for vertical errorbar with two quantitative axes and specify orientation with aggregate", () => {
+it("should aggregate y field for vertical errorbar with two quantitative axes and specify orientation with aggregate", () => {
   const outputSpec = normalize({
     "data": {"url": "data/population.json"},
     mark: "errorbar",
@@ -278,10 +297,18 @@ it("should produce correct layered specs for vertical errorbar with two quantita
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].field, "people");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.field === "people" &&
+        (aggregateFieldDef.op === "mean" || aggregateFieldDef.op === "median");
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
-it("should produce correct layered specs for horizontal errorbar with two quantitative axes and specify orientation with aggregate", () => {
+it("should aggregate x field for horizontal errorbar with two quantitative axes and specify orientation with aggregate", () => {
   const outputSpec = normalize({
     "data": {"url": "data/population.json"},
     mark: "errorbar",
@@ -298,7 +325,70 @@ it("should produce correct layered specs for horizontal errorbar with two quanti
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].field, "age");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.field === "age" &&
+        (aggregateFieldDef.op === "mean" || aggregateFieldDef.op === "median");
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
+});
+
+it("should aggregate x field for horizontal errorbar with x as quantitative axis", () => {
+  const outputSpec = normalize({
+    "data": {"url": "data/population.json"},
+    mark: "errorbar",
+    encoding: {
+      "x": {
+        "field": "age",
+        "type": "quantitative"
+      },
+      "y": {
+        "field": "people",
+        "type": "ordinal"
+      }
+    }
+  }, defaultConfig);
+
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.field === "age" &&
+        (aggregateFieldDef.op === "mean" || aggregateFieldDef.op === "median");
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
+});
+
+it("should produce correct layered specs for vertical errorbar with stderr by default", () => {
+  const outputSpec = normalize({
+    "data": {"url": "data/population.json"},
+    mark: {
+      type: "errorbar"
+    },
+    encoding: {
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+       },
+      "y": {
+        "field": "people",
+        "type": "quantitative"
+      }
+    }
+  }, defaultConfig);
+
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "stderr";
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
 it("should produce correct layered specs for vertical errorbar with stderr", () => {
@@ -320,7 +410,14 @@ it("should produce correct layered specs for vertical errorbar with stderr", () 
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].op, "stderr");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "stderr";
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
 it("should produce correct layered specs for vertical errorbar with stdev", () => {
@@ -342,7 +439,14 @@ it("should produce correct layered specs for vertical errorbar with stdev", () =
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].op, "stdev");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "stdev";
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
 it("should produce correct layered specs for vertical errorbar with ci", () => {
@@ -364,7 +468,17 @@ it("should produce correct layered specs for vertical errorbar with ci", () => {
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].op, "ci0");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "ci0";
+    }));
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "ci1";
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
 });
 
 it("should produce correct layered specs for vertical errorbar with iqr", () => {
@@ -387,5 +501,134 @@ it("should produce correct layered specs for vertical errorbar with iqr", () => 
     }
   }, defaultConfig);
 
-  assert.deepEqual(outputSpec.transform[0]["aggregate"][0].op, "q1");
+  const aggregateTransform = outputSpec.transform[0];
+  if (isAggregate(aggregateTransform)) {
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "q1";
+    }));
+    assert.isTrue(some(aggregateTransform.aggregate, (aggregateFieldDef) => {
+      return aggregateFieldDef.op === "q3";
+    }));
+  } else {
+    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+  }
+});
+
+it("should produce correct layered specs for veritcal errorbar without center point", () => {
+  const outputSpec = normalize({
+    "data": {"url": "data/population.json"},
+    mark: {
+      type: "errorbar",
+      point: false
+    },
+    encoding: {
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+       },
+      "y": {
+        "field": "people",
+        "type": "quantitative"
+      }
+    }
+  }, defaultConfig);
+
+  assert.deepEqual(isLayerSpec(outputSpec) && outputSpec.layer.length, 1);
+});
+
+it("should produce correct layered specs for veritcal errorbar without center point", () => {
+  const color = "red";
+  const opacity = 0.5;
+  const size = 10;
+
+  const outputSpec = normalize({
+    "data": {"url": "data/population.json"},
+    mark: {
+      type: "errorbar",
+      line: {
+        color,
+        opacity
+      },
+      bar: {
+        size,
+        color,
+        opacity
+      },
+      ticks: {
+        size,
+        color,
+        opacity
+      }
+    },
+    encoding: {
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+       },
+      "y": {
+        "field": "people",
+        "type": "quantitative"
+      }
+    }
+  }, defaultConfig);
+
+  const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+  if (layer) {
+    assert.isTrue(some(layer, (unitSpec) => {
+      return isUnitSpec(unitSpec) &&
+             isMarkDef(unitSpec.mark) &&
+             unitSpec.mark.type === "line" &&
+             unitSpec.mark.color === color &&
+             unitSpec.mark.opacity === opacity;
+    }));
+    assert.isTrue(some(layer, (unitSpec) => {
+      return isUnitSpec(unitSpec) &&
+             isMarkDef(unitSpec.mark) &&
+             unitSpec.mark.type === "bar" &&
+             unitSpec.mark.size === size &&
+             unitSpec.mark.color === color &&
+             unitSpec.mark.opacity === opacity;
+    }));
+    assert.isTrue(some(layer, (unitSpec) => {
+      return isUnitSpec(unitSpec) &&
+             isMarkDef(unitSpec.mark) &&
+             unitSpec.mark.type === "tick" &&
+             unitSpec.mark.size === size &&
+             unitSpec.mark.color === color &&
+             unitSpec.mark.opacity === opacity;
+    }));
+  } else {
+    assert.fail(!layer, false, 'layer should be a part of the spec');
+  }
+});
+
+it("should produce correct layered specs with customized title", () => {
+  const outputSpec = normalize({
+    "data": {"url": "data/population.json"},
+    mark: {
+      type: "errorbar",
+      point: false
+    },
+    encoding: {
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+       },
+      "y": {
+        "field": "people",
+        "type": "quantitative",
+        "title": "population"
+      }
+    }
+  }, defaultConfig);
+
+  const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+  if (layer) {
+    assert.isTrue(some(layer, (unitSpec) => {
+      return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.y) &&
+             unitSpec.encoding.y.title === "population";
+    }));
+  } else {
+    assert.fail(!layer, false, 'layer should be a part of the spec');
+  }
 });

@@ -1,15 +1,13 @@
 import {isBoolean} from 'vega-util';
 
-import {isAggregateOp} from '../aggregate';
+import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
-import {Encoding, forEach, reduce} from '../encoding';
-import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from '../fielddef';
+import {Encoding, reduce} from '../encoding';
+import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
 import {ColorMixins, GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Orient} from '../vega.schema';
 import * as log from './../log';
-import {CompositeMark, CompositeMarkDef} from './index';
 
 export type PartsMixins<P extends string> = {
   [part in P]?: boolean | MarkConfig
@@ -44,70 +42,6 @@ export function partLayerMixins<P extends PartsMixins<any>>(
     }];
   }
   return [];
-}
-
-export function compositeMarkCombineParams(
-    encoding: Encoding<string>,
-    continuousAxis: 'x' | 'y',
-    aggregate: AggregatedFieldDef[],
-    postAggregateCalculates: CalculateTransform[],
-    continuousAxisChannelDef: PositionFieldDef<string>
-) {
-  const groupby: string[] = [];
-  const bins: BinTransform[] = [];
-  const timeUnits: TimeUnitTransform[] = [];
-
-  const encodingWithoutContinuousAxis: Encoding<string> = {};
-  forEach(encoding, (channelDef, channel) => {
-    if (channel === continuousAxis) {
-      // Skip continuous axis as we already handle it separately
-      return;
-    }
-    if (isFieldDef(channelDef)) {
-      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
-        aggregate.push({
-          op: channelDef.aggregate,
-          field: channelDef.field,
-          as: vgField(channelDef)
-        });
-      } else if (channelDef.aggregate === undefined) {
-        const transformedField = vgField(channelDef);
-
-        // Add bin or timeUnit transform if applicable
-        const bin = channelDef.bin;
-        if (bin) {
-          const {field} = channelDef;
-          bins.push({bin, field, as: transformedField});
-        } else if (channelDef.timeUnit) {
-          const {timeUnit, field} = channelDef;
-          timeUnits.push({timeUnit, field, as: transformedField});
-        }
-
-        groupby.push(transformedField);
-      }
-      // now the field should refer to post-transformed field instead
-      encodingWithoutContinuousAxis[channel] = {
-        field: vgField(channelDef),
-        type: channelDef.type
-      };
-    } else {
-      // For value def, just copy
-      encodingWithoutContinuousAxis[channel] = encoding[channel];
-    }
-  });
-
-  return {
-    transform: [
-      ...bins,
-      ...timeUnits,
-      {aggregate, groupby},
-      ...postAggregateCalculates
-    ],
-    groupby,
-    continuousAxisChannelDef,
-    continuousAxis,
-    encodingWithoutContinuousAxis
-  };
 }
 
 export function compositeMarkContinousAxis<M extends CompositeMark>(
