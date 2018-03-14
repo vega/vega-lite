@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {normalizeEncoding} from '../src/encoding';
 import * as log from '../src/log';
 
-describe('axis', () => {
+describe('encoding', () => {
   describe('normalizeEncoding', () => {
     it('should convert lat and long type to channels', () => {
       const encoding = normalizeEncoding({
