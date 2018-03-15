@@ -1,21 +1,32 @@
 import {isArray} from 'vega-util';
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDefWithCondition} from '../../fielddef';
+import {
+  FieldDef,
+  FieldDefWithCondition,
+  hasConditionalValueDef,
+  isTimeFieldDef,
+  isValueDef,
+  MarkPropFieldDef,
+  ValueDefWithCondition,
+} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {keys, without} from '../../util';
-import {LegendType} from '../../vega.schema';
+import {keys} from '../../util';
+import {LegendType, VgEncodeEntry} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType): VgEncodeEntry {
   if (type === 'gradient') {
     return undefined;
   }
 
-  let out: any = {};
   const mark = model.mark();
+  let out = {
+    ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
+    ...mixins.color(model)
+  };
 
   switch (mark) {
     case BAR:
@@ -37,27 +48,28 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
 
   const filled = model.markDef.filled;
 
-  let config = channel === COLOR ?
-      /* For color's legend, do not set fill (when filled) or stroke (when unfilled) property from config because the legend's `fill` or `stroke` scale should have precedence */
-      without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke', 'strokeDash', 'strokeDashOffset']) :
-      /* For other legend, no need to omit. */
-      FILL_STROKE_CONFIG;
-
-  config = without(config, ['strokeDash', 'strokeDashOffset']);
-
-  applyMarkConfig(out, model, config);
-
-  if (channel !== COLOR) {
-    const colorMixins = mixins.color(model);
-
-    // If there are field for fill or stroke, remove them as we already apply channels.
-    if (colorMixins.fill && (colorMixins.fill['field'] || colorMixins.fill['value'] === 'transparent')) {
-      delete colorMixins.fill;
+  if (out.fill) {
+    // for fill legend, we don't want any fill in symbol
+    if (channel === 'fill' || (filled && channel === COLOR)) {
+      delete out.fill;
+    } else if (out.fill['field']) {
+      // For others, remove fill field
+      delete out.fill;
     }
-    if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
-      delete colorMixins.stroke;
+  }
+
+  if (out.stroke) {
+    if (channel === 'stroke' || (!filled && channel === COLOR)) {
+      delete out.stroke;
+    } else if (out.stroke['field']) {
+      // For others, remove stroke field
+      delete out.stroke;
     }
-    out = {...out, ...colorMixins};
+  }
+
+  if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke) {
+    // for non color channel's legend, we need to override symbol stroke config from Vega config
+    out.stroke = {value: 'transparent'};
   }
 
   if (channel !== SHAPE) {
