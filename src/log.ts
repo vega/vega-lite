@@ -175,6 +175,12 @@ export namespace message {
   export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
     return `Invalid field type "${type}" for channel "${channel}", using "${newType}" instead.`;
   }
+  export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean, stroke?: boolean}) {
+    const {fill, stroke} = opt;
+    return `Dropping color ${type} as the plot also has ` + (
+      fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
+    );
+  }
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
