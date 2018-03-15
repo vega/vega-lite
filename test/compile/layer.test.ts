@@ -97,7 +97,7 @@ describe('Layer', function() {
       model.parseAxisAndHeader();
 
       assert.equal(model.component.axes['x'].length, 2);
-      assert.equal(model.component.axes['x'][1].main.implicit.orient, 'top');
+      assert.equal(model.component.axes['x'][1].implicit.orient, 'top');
     });
   });
 });

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if ! git diff --exit-code HEAD -- ./build/vega-lite-schema.json
 then

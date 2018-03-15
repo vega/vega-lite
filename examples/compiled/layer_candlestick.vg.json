@@ -357,10 +357,6 @@
                     },
                     {
                         "signal": "{data: datetime(2009, 6, 1, 0, 0, 0, 0)}"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "yearmonthdate_date"
                     }
                 ]
             },
@@ -407,15 +403,14 @@
     ],
     "axes": [
         {
-            "title": "Date in 2009",
             "scale": "x",
             "orient": "bottom",
+            "title": "Date in 2009",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -424,47 +419,48 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
+            "title": "low, high, open, close",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "low, open",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

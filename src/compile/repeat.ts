@@ -2,7 +2,7 @@
 import {Config} from '../config';
 import * as log from '../log';
 import {Repeat} from '../repeat';
-import {RepeatSpec} from '../spec';
+import {NormalizedRepeatSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -16,7 +16,7 @@ export class RepeatModel extends BaseConcatModel {
 
   public readonly children: Model[];
 
-  constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
+  constructor(spec: NormalizedRepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config, spec.resolve);
 
     if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
@@ -27,7 +27,7 @@ export class RepeatModel extends BaseConcatModel {
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
   }
 
-  private _initChildren(spec: RepeatSpec, repeat: Repeat, repeater: RepeaterValue, config: Config): Model[] {
+  private _initChildren(spec: NormalizedRepeatSpec, repeat: Repeat, repeater: RepeaterValue, config: Config): Model[] {
     const children: Model[] = [];
     const row = repeat.row || [repeater ? repeater.row : null];
     const column = repeat.column || [repeater ? repeater.column : null];

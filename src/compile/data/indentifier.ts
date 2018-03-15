@@ -5,11 +5,11 @@ import {DataFlowNode} from './dataflow';
 
 export class IdentifierNode extends DataFlowNode {
   public clone() {
-    return new IdentifierNode();
+    return new IdentifierNode(null);
   }
 
-  constructor() {
-    super();
+  constructor(parent: DataFlowNode) {
+    super(parent);
   }
 
   public producedFields(): StringSet {

@@ -26,6 +26,16 @@
             "source": "source_1",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"longitude\"])",
+                    "as": "longitude"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"latitude\"])",
+                    "as": "latitude"
+                },
+                {
                     "type": "geojson",
                     "fields": [
                         "longitude",
@@ -41,8 +51,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "layer_1_x",
+                        "layer_1_y"
                     ]
                 }
             ]
@@ -53,7 +63,11 @@
             "format": {
                 "type": "csv",
                 "parse": {
-                    "origin": "string"
+                    "origin": "string",
+                    "origin_longitude": "number",
+                    "origin_latitude": "number",
+                    "dest_longitude": "number",
+                    "dest_latitude": "number"
                 }
             },
             "transform": [
@@ -117,8 +131,8 @@
                         "origin_latitude"
                     ],
                     "as": [
-                        "origin_longitude_geo",
-                        "origin_latitude_geo"
+                        "layer_2_x",
+                        "layer_2_y"
                     ]
                 },
                 {
@@ -129,8 +143,8 @@
                         "dest_latitude"
                     ],
                     "as": [
-                        "dest_longitude_geo",
-                        "dest_latitude_geo"
+                        "layer_2_x2",
+                        "layer_2_y2"
                     ]
                 }
             ]
@@ -193,10 +207,10 @@
                         "value": "gray"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "layer_1_x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "layer_1_y"
                     },
                     "size": {
                         "value": 5
@@ -222,16 +236,16 @@
                         "value": "black"
                     },
                     "x": {
-                        "field": "origin_longitude_geo"
+                        "field": "layer_2_x"
                     },
                     "y": {
-                        "field": "origin_latitude_geo"
+                        "field": "layer_2_y"
                     },
                     "x2": {
-                        "field": "dest_longitude_geo"
+                        "field": "layer_2_x2"
                     },
                     "y2": {
-                        "field": "dest_latitude_geo"
+                        "field": "layer_2_y2"
                     }
                 }
             }

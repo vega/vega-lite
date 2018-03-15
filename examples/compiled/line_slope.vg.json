@@ -153,9 +153,8 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "labelOverlap": true,
             "title": "year",
-            "zindex": 1,
+            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -170,32 +169,33 @@
                         }
                     }
                 }
-            }
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
             },
-            "title": "Median of yield",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
-            "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
+            "title": "Median of yield",
+            "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "legends": [

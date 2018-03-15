@@ -413,11 +413,11 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             },
                             "x": {
                                 "scale": "concat_0_x",
@@ -488,53 +488,53 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
-                    "title": "Horsepower",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "concat_0_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_0_height/40)"
                     },
-                    "title": "Miles_per_Gallon",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_0_height/40)"
                     },
+                    "gridScale": "concat_0_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -567,11 +567,11 @@
                             "opacity": {
                                 "value": 0.7
                             },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             },
                             "x": {
                                 "scale": "concat_1_x",
@@ -589,53 +589,53 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "Acceleration",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
-                    "title": "Acceleration",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(width/40)"
                     },
+                    "gridScale": "concat_1_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_y"
+                    "zindex": 0
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "Displacement",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_height/40)"
                     },
-                    "title": "Displacement",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(concat_1_height/40)"
                     },
+                    "gridScale": "concat_1_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_x"
+                    "zindex": 0
                 }
             ]
         }

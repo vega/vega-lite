@@ -19,7 +19,7 @@ Sometimes, it's useful to superimpose one chart on top of another. You can accom
 In addition to [common properties of a view specification](spec.html#common),
 a layer specification has the following properties:
 
-{% include table.html props="layer,width,height,resolve" source="LayerSpec" %}
+{% include table.html props="layer,width,height,encoding,projection,resolve" source="LayerSpec" %}
 
 Please note that you can *only layer single or layered views* to guarantee that the combined views have a compatible layout. For instance, it is not clear how a composed view with two views side-by-side could be layered on top of a single view.
 

@@ -7,11 +7,11 @@ import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
 
 function assembleFromEncoding(model: ModelWithField) {
-  return TimeUnitNode.makeFromEncoding(model).assemble();
+  return TimeUnitNode.makeFromEncoding(null, model).assemble();
 }
 
 function assembleFromTransform(t: TimeUnitTransform) {
-  return TimeUnitNode.makeFromTransform(t).assemble();
+  return TimeUnitNode.makeFromTransform(null, t).assemble();
 }
 
 describe('compile/data/timeunit', () => {

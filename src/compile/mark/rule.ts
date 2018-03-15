@@ -9,8 +9,8 @@ export const rule: MarkCompiler = {
     const {config: _config, markDef, width, height} = model;
     const orient = markDef.orient;
 
-    if (!model.encoding.x && !model.encoding.y) {
-      // if we have neither x or y, show nothing
+    if (!model.encoding.x && !model.encoding.y && !model.encoding.latitude && !model.encoding.longitude) {
+      // Show nothing if we have none of x, y, lat, and long.
       return {};
     }
 

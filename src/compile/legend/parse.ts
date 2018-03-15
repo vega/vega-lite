@@ -1,4 +1,4 @@
-import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
+import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from '../../channel';
 import {isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
@@ -25,7 +25,7 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
+  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
     const def = encoding[channel];
     if (model.legend(channel) && model.getScaleComponent(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
@@ -34,20 +34,19 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   }, {});
 }
 
-function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
+function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
   // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR);
       return model.markDef.filled ? {fill: scale} : {stroke: scale};
+    case FILL:
+    case STROKE:
     case SIZE:
-      return {size: model.scaleName(SIZE)};
     case SHAPE:
-      return {shape: model.scaleName(SHAPE)};
     case OPACITY:
-      return {opacity: model.scaleName(OPACITY)};
+      return {[channel]: model.scaleName(channel)};
   }
-  return null;
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {

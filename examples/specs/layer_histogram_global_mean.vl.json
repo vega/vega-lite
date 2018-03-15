@@ -7,8 +7,7 @@
       "x": {
         "bin": true,
         "field": "IMDB_Rating",
-        "type": "quantitative",
-        "axis": null
+        "type": "quantitative"
       },
       "y": {
         "aggregate": "count",

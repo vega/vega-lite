@@ -18,7 +18,11 @@
             "name": "source_1",
             "url": "data/airports.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "longitude": "number",
+                    "latitude": "number"
+                }
             },
             "transform": [
                 {
@@ -37,8 +41,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "layer_1_x",
+                        "layer_1_y"
                     ]
                 }
             ]
@@ -101,10 +105,10 @@
                         "value": "steelblue"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "layer_1_x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "layer_1_y"
                     },
                     "size": {
                         "value": 10

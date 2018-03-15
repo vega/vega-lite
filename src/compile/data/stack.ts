@@ -56,16 +56,16 @@ export class StackNode extends DataFlowNode {
   private _stack: StackComponent;
 
   public clone() {
-    return new StackNode(duplicate(this._stack));
+    return new StackNode(null, duplicate(this._stack));
   }
 
-  constructor(stack: StackComponent) {
-    super();
+  constructor(parent: DataFlowNode, stack: StackComponent) {
+    super(parent);
 
     this._stack = stack;
   }
 
-  public static make(model: UnitModel) {
+  public static make(parent: DataFlowNode, model: UnitModel) {
 
     const stackProperties = model.stack;
 
@@ -94,7 +94,7 @@ export class StackNode extends DataFlowNode {
       }, {field:[], order: []});
     }
 
-    return new StackNode({
+    return new StackNode(parent, {
       dimensionFieldDef,
       field: model.vgField(stackProperties.fieldChannel),
       facetby: [],

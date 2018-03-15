@@ -206,9 +206,8 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -226,32 +225,33 @@
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of precipitation",
                     "zindex": 1
                 },
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
+                    "title": "Mean of precipitation",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "zindex": 1
+                },
+                {
+                    "scale": "concat_0_y",
+                    "orient": "left",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
+                    "gridScale": "concat_0_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -281,11 +281,11 @@
                     },
                     "encode": {
                         "update": {
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             },
                             "x": {
                                 "signal": "(scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min\"]) + scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min_end\"]))/2"
@@ -305,12 +305,12 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "title": "temp_min (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(concat_1_width/20)"
                     },
-                    "title": "temp_min (binned)",
                     "values": {
                         "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
                     },
@@ -319,11 +319,11 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "title": "temp_max (binned)",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/20)"
                     },
-                    "title": "temp_max (binned)",
                     "values": {
                         "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
                     },

@@ -1,12 +1,48 @@
-import {Axis} from '../../axis';
+import {Axis, AxisPart} from '../../axis';
+import {FieldDefBase} from '../../fielddef';
+import {duplicate, Omit} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {Split} from '../split';
 
-export class AxisComponentPart extends Split<Partial<VgAxis>> {}
 
-export interface AxisComponent {
-  main?: AxisComponentPart;
-  grid?: AxisComponentPart;
+function isFalseOrNull(v: boolean | null) {
+  return v === false || v === null;
+}
+
+export type AxisComponentProps = Omit<VgAxis, 'title'> & {
+
+  title: string | FieldDefBase<string>[];
+};
+
+export class AxisComponent extends Split<AxisComponentProps> {
+  constructor(
+    public readonly explicit: Partial<AxisComponentProps> = {},
+    public readonly implicit: Partial<AxisComponentProps> = {},
+    public mainExtracted = false
+  ) {
+    super();
+  }
+
+  public clone() {
+    return new AxisComponent(
+      duplicate(this.explicit),
+      duplicate(this.implicit), this.mainExtracted
+    );
+  }
+
+  public hasAxisPart(part: AxisPart) {
+    // FIXME(https://github.com/vega/vega-lite/issues/2552) this method can be wrong if users use a Vega theme.
+
+    if (part === 'axis') { // always has the axis container part
+      return true;
+    }
+
+    if (part === 'grid' || part === 'title') {
+      return !!this.get(part);
+    }
+    // Other parts are enabled by default, so they should not be false or null.
+    return !isFalseOrNull(this.get(part));
+  }
 }
 
 export interface AxisComponentIndex {

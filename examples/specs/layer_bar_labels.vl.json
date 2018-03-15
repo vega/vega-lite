@@ -8,12 +8,12 @@
       {"a": "C","b": 43}
     ]
   },
+  "encoding": {
+    "y": {"field": "a", "type": "ordinal"},
+    "x": {"field": "b", "type": "quantitative"}
+  },
   "layer": [{
-    "mark": "bar",
-    "encoding": {
-      "y": {"field": "a", "type": "ordinal"},
-      "x": {"field": "b", "type": "quantitative"}
-    }
+    "mark": "bar"
   }, {
     "mark": {
       "type": "text",
@@ -22,8 +22,6 @@
       "dx": 3
     },
     "encoding": {
-      "y": {"field": "a", "type": "ordinal"},
-      "x": {"field": "b", "type": "quantitative"},
       "text": {"field": "b", "type": "quantitative"}
     }
   }]

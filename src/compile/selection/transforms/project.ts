@@ -54,7 +54,7 @@ const project: TransformCompiler = {
     projection.filter((p) => p.channel).forEach((p) => fields[p.channel] = p.field);
 
     if (keys(timeUnits).length) {
-      selCmpt.timeUnit = new TimeUnitNode(timeUnits);
+      selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
     }
   }
 };

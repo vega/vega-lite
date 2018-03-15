@@ -5,14 +5,14 @@ import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {parseLegend} from '../../../src/compile/legend/parse';
 import {isFieldDef} from '../../../src/fielddef';
-import {UnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec} from '../../../src/spec';
 import {GEOJSON} from '../../../src/type';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function () {
   describe('parseUnitLegend()', function () {
     it(`should not produce a Vega legend object on channel 'shape' with type 'geojson'`, function () {
-      const spec: UnitSpec = {
+      const spec: NormalizedUnitSpec = {
         "mark": "geoshape",
         "data": {"url": "data/income.json"},
         "transform": [
@@ -82,7 +82,7 @@ describe('compile/legend', function () {
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, function() {
-        const spec: UnitSpec = {
+        const spec: NormalizedUnitSpec = {
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"}

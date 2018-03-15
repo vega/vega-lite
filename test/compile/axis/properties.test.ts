@@ -23,16 +23,6 @@ describe('compile/axis', ()=> {
     });
   });
 
-  describe('minMaxExtent', () => {
-    it('returns specified extent for a non-grid axis', () => {
-      assert.equal(properties.minMaxExtent(25, false), 25);
-    });
-
-    it('returns 0 for a grid axis', () => {
-      assert.equal(properties.minMaxExtent(0, true), 0);
-    });
-  });
-
   describe('orient()', function () {
     it('should return bottom for x by default', function () {
       const orient = properties.orient('x');
@@ -105,18 +95,6 @@ describe('compile/axis', ()=> {
       const values = properties.values({values: [1,2,3,4]}, null, null);
 
       assert.deepEqual(values, [1,2,3,4]);
-    });
-  });
-
-  describe('zindex()', function () {
-    it('should return undefined by default without grid defined', function () {
-      const zindex = properties.zindex(false);
-      assert.deepEqual(zindex, 1);
-    });
-
-    it('should return back by default with grid defined', function () {
-      const zindex = properties.zindex(true);
-      assert.deepEqual(zindex, 0);
     });
   });
 });

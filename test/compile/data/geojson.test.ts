@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -15,24 +16,31 @@ describe('compile/data/geojson', () => {
       },
       "mark": "circle",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "longitude",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "latitude",
-          "type": "latitude"
+          "type": "quantitative"
         }
       }
     });
-    const nodes: GeoJSONNode[] = GeoJSONNode.makeAll(model);
-    assert.isNotEmpty(nodes);
-    nodes.forEach((node) => {
-      assert.isNotNull(node);
-      const transform = node.assemble();
+
+    const root = new DataFlowNode(null);
+    GeoJSONNode.parseAll(root, model);
+
+    let node = root.children[0];
+
+    while (node != null) {
+      assert.instanceOf(node, GeoJSONNode);
+      const transform = (<GeoJSONNode>node).assemble();
       assert.equal(transform.type, 'geojson');
       assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
       assert.isUndefined(transform.geojson);
-    });
+
+      assert.isAtMost(node.children.length, 1);
+      node = node.children[0];
+    }
   });
 });

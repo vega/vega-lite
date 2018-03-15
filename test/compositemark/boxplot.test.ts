@@ -1,12 +1,10 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
-import {Encoding} from '../../src/encoding';
-import {Field} from '../../src/fielddef';
+
 import * as log from '../../src/log';
-import {Mark, MarkDef} from '../../src/mark';
-import {GenericSpec, GenericUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/spec';
 import {defaultConfig} from '.././../src/config';
+
 
 describe("normalizeBoxMinMax", () => {
   it("should produce an error if both axes have aggregate boxplot", () => {
@@ -33,7 +31,7 @@ describe("normalizeBoxMinMax", () => {
   });
 
 it("should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -270,7 +268,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with orient", () => {
-    assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, Mark | MarkDef>>>(normalize({
+    assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -397,7 +395,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for horizontal boxplot with two quantitative axes and specify orientation with orient", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, Mark | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -524,7 +522,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with aggregate", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -651,7 +649,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for horizontal boxplot with two quantitative axes and specify orientation with aggregate", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -778,7 +776,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for vertical boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -904,7 +902,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for horizontal boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -1030,7 +1028,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for horizontal with no nonpositional encoding properties boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -1154,7 +1152,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for 1D boxplot with only x", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -1273,7 +1271,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for 1D boxplot with only y", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -1396,7 +1394,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
 describe("normalizeBoxIQR", () => {
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers with boxplot mark type", () => {
-    assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+    assert.deepEqual(normalize({
        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
        "data": {"url": "data/population.json"},
        mark: "boxplot",
@@ -1531,7 +1529,7 @@ describe("normalizeBoxIQR", () => {
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
@@ -1669,7 +1667,7 @@ describe("normalizeBoxIQR", () => {
   });
 
   it("should produce correct layered specs for vertical IQR boxplot where color encodes the mean of the people field", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+     assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {

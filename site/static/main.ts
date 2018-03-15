@@ -5,8 +5,7 @@ import * as vega from 'vega';
 import {post} from 'vega-embed/build/post';
 import {vegaLite} from 'vega-tooltip';
 
-import {compile} from '../../src';
-import {TopLevelExtendedSpec} from '../../src/spec';
+import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;
@@ -50,7 +49,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
   embedExample(vis.node(), spec, true, $target.classed('tooltip'));
 }
 
-function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, tooltip=false) {
+function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=false) {
   const vgSpec = compile(spec).spec;
   const view = new vega.View(vega.parse(vgSpec), {loader: loader})
     .renderer('svg')
@@ -72,7 +71,7 @@ function embedExample($target: any, spec: TopLevelExtendedSpec, actions=true, to
   });
 
   if (tooltip) {
-    vegaLite(view, spec);
+    vegaLite(view, spec as any);
   }
 }
 

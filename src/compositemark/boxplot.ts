@@ -8,7 +8,7 @@ import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
-import {GenericUnitSpec, LayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {getMarkDefMixins} from './common';
 
@@ -75,11 +75,12 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
   };
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): LayerSpec {
+
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+  const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
   const extent = markDef.extent || config.boxplot.extent;
   const sizeValue = markDef.size || config.boxplot.size;

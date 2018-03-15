@@ -37,3 +37,5 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Horizontal Stacked Bar Chart with Labels](https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1) by @pratapvardhan
 * [Interactive stacked time-series](https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea) by @jakevdp
 * [Bicycle Count Time-series with Dynamic Scale](https://bl.ocks.org/jakevdp/b511d09ed4e2797234bd6236d7b428f7) by @jakevdp
+* [Vega-Lite downloads](https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2) by @domoritz
+* [Interactive Exploration of Seattle Weather](https://bl.ocks.org/jakevdp/5d1915d808d3d91ce86f0bc3ca066d48) by @jakevdp

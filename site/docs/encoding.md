@@ -154,6 +154,15 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 __Note:__ `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 
+
+{:#geo}
+## Geographic Position Channels
+
+`longitude` and `latitude` channels can be used to encode geographic coordinate data via a [projection](projection.html).
+In addition, `longitude2` and `latitude2` can specify the span of geographically projected ranged [`area`](area.html#ranged), [`bar`](bar.html#ranged), [`rect`](rect.html#ranged), and [`rule`](rule.html#ranged).
+
+{% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
+
 {:#mark-prop}
 ## Mark Property Channels
 
@@ -163,7 +172,7 @@ In addition, definitions of mark property channels can include the `condition` p
 
 Here are the list of mark property channels:
 
-{% include table.html props="color,opacity,shape,size" source="Encoding" %}
+{% include table.html props="color,fill,stroke,opacity,shape,size" source="Encoding" %}
 
 {:#mark-prop-field-def}
 ### Mark Property Field Definition
@@ -262,6 +271,14 @@ from one year to another within a country (as opposed to jumping between countri
 <div class="vl-example" data-name="layer_ranged_dot"></div>
 
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
+
+{:#key}
+
+## Key Channel
+
+The key channel can enable object constancy for transitions over dynamic data. When a visualization’s data is updated (via [Vega's View API](https://vega.github.io/vega/docs/api/view/#data)), the key value will be used to match data elements to existing mark instances.
+
+{% include table.html props="key" source="Encoding" %}
 
 {:#order}
 ## Order Channel

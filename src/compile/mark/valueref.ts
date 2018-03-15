@@ -15,7 +15,7 @@ import {
 } from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {LATITUDE, LONGITUDE, QUANTITATIVE} from '../../type';
+import {QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
 import {VgSignalRef, VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
@@ -63,10 +63,12 @@ export function fieldRef(
     fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption,
     mixins?: {offset?: number | VgValueRef, band?: number|boolean}
   ): VgValueRef {
+
   const ref: VgValueRef = {
-    scale: scaleName,
+    ...(scaleName ? {scale: scaleName} : {}),
     field: vgField(fieldDef, opt),
   };
+
   if (mixins) {
     return {
       ...ref,
@@ -107,9 +109,6 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (contains([X, Y, X2, Y2], channel) && contains([LATITUDE, LONGITUDE], channelDef.type)) {
-        return {field: vgField(channelDef, {suffix: 'geo'})};
-      }
       if (channelDef.bin) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
@@ -124,16 +123,17 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
       }
 
-      const scaleType = scale.get('type');
-      if (hasDiscreteDomain(scaleType)) {
-        if (scaleType === 'band') {
-          // For band, to get mid point, need to offset by half of the band
-          return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5});
+      if (scale) {
+        const scaleType = scale.get('type');
+        if (hasDiscreteDomain(scaleType)) {
+          if (scaleType === 'band') {
+            // For band, to get mid point, need to offset by half of the band
+            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5});
+          }
+          return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
         }
-        return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
-      } else {
-        return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
+      return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
     } else if (isValueDef(channelDef)) {
       return {value: channelDef.value};
     }

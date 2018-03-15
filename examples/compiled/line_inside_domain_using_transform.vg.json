@@ -125,53 +125,53 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "wavelength",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "wavelength",
             "zindex": 1
         },
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
+            "title": "power",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "power",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "config": {

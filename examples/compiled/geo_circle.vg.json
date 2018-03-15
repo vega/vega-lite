@@ -10,7 +10,11 @@
             "name": "source_0",
             "url": "data/zipcodes.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "longitude": "number",
+                    "latitude": "number"
+                }
             },
             "transform": [
                 {
@@ -34,8 +38,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "x",
+                        "y"
                     ]
                 }
             ]
@@ -73,10 +77,10 @@
                         "field": "digit"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "y"
                     },
                     "size": {
                         "value": 1

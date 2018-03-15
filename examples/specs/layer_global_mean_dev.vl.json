@@ -29,12 +29,13 @@
     "layer": [{
       "mark": "rule",
       "encoding": {
-        "y": {"field": "mean_MPG","type": "quantitative"}
+        "y": {"field": "mean_MPG","type": "quantitative", "axis": null}
       }
     },{
       "mark": "rect",
       "encoding": {
-        "y": {"field": "lower","type": "quantitative"},
+        "y": {"field": "lower","type": "quantitative",
+          "axis": null},
         "y2": {"field": "upper","type": "quantitative"},
         "opacity": {"value": 0.2}
       }

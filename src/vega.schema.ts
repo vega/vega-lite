@@ -962,7 +962,7 @@ export type VerticalAlign = 'top' | 'middle' | 'bottom';
 export interface VgMarkConfig {
 
   /**
-   * Default Fill Color.  This has higher precedence than config.color
+   * Default Fill Color.  This has higher precedence than `config.color`
    *
    * __Default value:__ (None)
    *
@@ -970,7 +970,7 @@ export interface VgMarkConfig {
   fill?: string;
 
   /**
-   * Default Stroke Color.  This has higher precedence than config.color
+   * Default Stroke Color.  This has higher precedence than `config.color`
    *
    * __Default value:__ (None)
    *

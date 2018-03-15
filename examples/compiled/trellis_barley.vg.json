@@ -130,8 +130,8 @@
                 {
                     "scale": "trellis_barley_y",
                     "orient": "left",
-                    "labelOverlap": true,
                     "title": "variety",
+                    "labelOverlap": true,
                     "zindex": 1
                 }
             ]
@@ -151,12 +151,12 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
+                    "title": "Median of yield",
                     "labelFlush": true,
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },
-                    "title": "Median of yield",
                     "zindex": 1
                 }
             ]
@@ -228,12 +228,12 @@
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "value": "transparent"
+                            },
                             "stroke": {
                                 "scale": "trellis_barley_color",
                                 "field": "year"
-                            },
-                            "fill": {
-                                "value": "transparent"
                             },
                             "x": {
                                 "scale": "trellis_barley_x",
@@ -251,17 +251,17 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
-                    "domain": false,
                     "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
                     "tickCount": {
                         "signal": "ceil(trellis_barley_child_width/40)"
                     },
+                    "gridScale": "trellis_barley_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "trellis_barley_y"
+                    "zindex": 0
                 }
             ]
         }

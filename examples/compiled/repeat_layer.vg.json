@@ -432,9 +432,8 @@
                 {
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -452,32 +451,33 @@
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "child_temp_max_y",
-                    "orient": "left",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of temp_max",
                     "zindex": 1
                 },
                 {
                     "scale": "child_temp_max_y",
                     "orient": "left",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
+                    "title": "Mean of temp_max",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_temp_max_y",
+                    "orient": "left",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
+                    "gridScale": "child_temp_max_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_temp_max_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -623,9 +623,8 @@
                 {
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -643,32 +642,33 @@
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "child_precipitation_y",
-                    "orient": "left",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of precipitation",
                     "zindex": 1
                 },
                 {
                     "scale": "child_precipitation_y",
                     "orient": "left",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
+                    "title": "Mean of precipitation",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_precipitation_y",
+                    "orient": "left",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
+                    "gridScale": "child_precipitation_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_precipitation_x"
+                    "zindex": 0
                 }
             ]
         },
@@ -814,9 +814,8 @@
                 {
                     "scale": "child_wind_x",
                     "orient": "bottom",
-                    "labelOverlap": true,
                     "title": "date (month)",
-                    "zindex": 1,
+                    "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
@@ -834,32 +833,33 @@
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "child_wind_y",
-                    "orient": "left",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(height/40)"
                     },
-                    "title": "Mean of wind",
                     "zindex": 1
                 },
                 {
                     "scale": "child_wind_y",
                     "orient": "left",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
+                    "title": "Mean of wind",
+                    "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(height/40)"
                     },
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_wind_y",
+                    "orient": "left",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(height/40)"
+                    },
+                    "gridScale": "child_wind_x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "child_wind_x"
+                    "zindex": 0
                 }
             ]
         }

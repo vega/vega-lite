@@ -11,7 +11,11 @@ export class DataFlowNode {
 
   private _parent: DataFlowNode = null;
 
-  constructor(public readonly debugName?: string) { }
+  constructor(parent: DataFlowNode, public readonly debugName?: string) {
+    if (parent) {
+      this.parent = parent;
+    }
+  }
 
   /**
    * Clone this node with a deep copy but don't clone links to children or parents.
@@ -121,8 +125,8 @@ export class OutputNode extends DataFlowNode {
    * @param type The type of the output node.
    * @param refCounts A global ref counter map.
    */
-  constructor(source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
-    super(source);
+  constructor(parent: DataFlowNode, source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
+    super(parent, source);
 
     this._source = this._name = source;
 

@@ -212,12 +212,12 @@
                     "opacity": {
                         "value": 0
                     },
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "symbol"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",
@@ -405,27 +405,27 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "price",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "price",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "legends": [

@@ -8,14 +8,14 @@ import {DataFlowNode} from './dataflow';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {
-    return new FilterInvalidNode({...this.fieldDefs});
+    return new FilterInvalidNode(null, {...this.fieldDefs});
   }
 
-  constructor(private fieldDefs: Dict<FieldDef<string>>) {
-   super();
+  constructor(parent: DataFlowNode, private fieldDefs: Dict<FieldDef<string>>) {
+   super(parent);
   }
 
-  public static make(model: ModelWithField): FilterInvalidNode {
+  public static make(parent: DataFlowNode, model: ModelWithField): FilterInvalidNode {
     if (model.config.invalidValues !== 'filter' ) {
       return null;
     }
@@ -37,7 +37,7 @@ export class FilterInvalidNode extends DataFlowNode {
       return null;
     }
 
-    return new FilterInvalidNode(filter);
+    return new FilterInvalidNode(parent, filter);
   }
 
   get filter() {

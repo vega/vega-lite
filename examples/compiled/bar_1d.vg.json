@@ -90,9 +90,9 @@
     ],
     "axes": [
         {
-            "title": "population",
             "scale": "x",
             "orient": "bottom",
+            "title": "population",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -103,14 +103,14 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
             "zindex": 0
         }

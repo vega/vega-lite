@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 
+import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {Dict} from '../../../src/util';
@@ -22,7 +23,10 @@ describe('compile/data/filter', () => {
     let parse: Dict<string> = {};
 
     // extract the parse from the parse nodes that were generated along with the filter nodes
-    let {first: node} = parseTransformArray(model);
+    const root = new DataFlowNode(null);
+    parseTransformArray(root, model);
+    let node = root.children[0];
+
     while (node.numChildren() > 0) {
       if (node instanceof ParseNode) {
         parse = {...parse, ...node.parse};

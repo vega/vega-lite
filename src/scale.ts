@@ -1,5 +1,5 @@
 import {toSet} from 'vega-util';
-import {Channel} from './channel';
+import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, Flag, flagKeys, keys} from './util';
@@ -337,7 +337,7 @@ export interface SchemeParams {
   /**
    * A color scheme name for sequential/ordinal scales (e.g., `"category10"` or `"viridis"`).
    *
-   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+   * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
   name: string;
 
@@ -463,7 +463,7 @@ export interface Scale {
    *
    * Discrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.
    *
-   * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+   * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
   scheme?: string | SchemeParams;
 
@@ -636,7 +636,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   switch (propName) {
     case 'interpolate':
     case 'scheme':
-      if (channel !== 'color') {
+      if (!isColorChannel(channel)) {
         return log.message.cannotUseScalePropertyWithNonColor(channel);
       }
       return undefined;
@@ -669,8 +669,12 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+
     case Channel.COLOR:
+    case Channel.FILL:
+    case Channel.STROKE:
       return scaleType !== 'band';    // band does not make sense with color
+
     case Channel.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }

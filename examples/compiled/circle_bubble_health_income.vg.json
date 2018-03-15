@@ -269,47 +269,47 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "income",
             "labelFlush": true,
             "labelOverlap": "greedy",
-            "title": "income",
             "zindex": 1
         },
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
+            "gridScale": "y",
+            "domain": false,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
+            "title": "health",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "health",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "legends": [

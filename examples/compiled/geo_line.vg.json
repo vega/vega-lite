@@ -76,6 +76,16 @@
                     ]
                 },
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"longitude\"])",
+                    "as": "longitude"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"latitude\"])",
+                    "as": "latitude"
+                },
+                {
                     "type": "geojson",
                     "fields": [
                         "longitude",
@@ -91,8 +101,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "layer_2_x",
+                        "layer_2_y"
                     ]
                 }
             ]
@@ -101,6 +111,16 @@
             "name": "data_1",
             "source": "source_2",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"longitude\"])",
+                    "as": "longitude"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"latitude\"])",
+                    "as": "latitude"
+                },
                 {
                     "type": "geojson",
                     "fields": [
@@ -117,8 +137,8 @@
                         "latitude"
                     ],
                     "as": [
-                        "longitude_geo",
-                        "latitude_geo"
+                        "layer_1_x",
+                        "layer_1_y"
                     ]
                 }
             ]
@@ -181,10 +201,10 @@
                         "value": "gray"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "layer_1_x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "layer_1_y"
                     },
                     "size": {
                         "value": 5
@@ -218,10 +238,10 @@
                         "value": "#4c78a8"
                     },
                     "x": {
-                        "field": "longitude_geo"
+                        "field": "layer_2_x"
                     },
                     "y": {
-                        "field": "latitude_geo"
+                        "field": "layer_2_y"
                     }
                 }
             }

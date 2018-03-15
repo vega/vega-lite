@@ -22,6 +22,6 @@
     }
   ],
   "resolve": {
-    "scale": {"y": "shared"}
+    "scale": {"x": "shared"}
   }
 }

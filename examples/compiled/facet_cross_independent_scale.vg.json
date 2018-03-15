@@ -339,7 +339,6 @@
                     "scale": "child_x",
                     "orient": "bottom",
                     "title": "a",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -354,7 +353,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 },
                 {
                     "scale": "child_y",

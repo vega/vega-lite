@@ -83,6 +83,10 @@
       "style": "background-size: auto"
     },
     {
+      "name": "bar_color_disabled_scale",
+      "title": "A bar chart encoding color names in the data."
+    },
+    {
       "name": "rect_binned_heatmap",
       "title": "Table Binned heatmap"
     },
@@ -232,7 +236,8 @@
     },
     {
       "name": "layer_connected_scatterplot",
-      "title": "Connected Scatterplot (Lines with Custom Paths)"
+      "title": "Connected Scatterplot (Lines with Custom Paths)",
+      "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
     },
     {
       "name": "layer_line_co2_concentration",

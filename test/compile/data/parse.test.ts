@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';
 import {CalculateNode} from '../../../src/compile/data/calculate';
+import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {FilterNode} from '../../../src/compile/data/filter';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
@@ -21,9 +22,10 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const result = parseTransformArray(model);
-      assert.isTrue(result.first instanceof CalculateNode);
-      assert.isTrue(result.last instanceof FilterNode);
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model);
+      assert.isTrue(root.children[0] instanceof CalculateNode);
+      assert.isTrue(result instanceof FilterNode);
     });
 
     it('should return a BinNode node and a TimeUnitNode', () => {
@@ -36,9 +38,10 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const result = parseTransformArray(model);
-      assert.isTrue(result.first instanceof BinNode);
-      assert.isTrue(result.last instanceof TimeUnitNode);
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model);
+      assert.isTrue(root.children[0] instanceof BinNode);
+      assert.isTrue(result instanceof TimeUnitNode);
     });
 
     it('should return a BinNode and a AggregateNode', () => {
@@ -51,9 +54,10 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const result = parseTransformArray(model);
-      assert.isTrue(result.first instanceof BinNode);
-      assert.isTrue(result.last instanceof AggregateNode);
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model);
+      assert.isTrue(root.children[0] instanceof BinNode);
+      assert.isTrue(result instanceof AggregateNode);
     });
   });
 });

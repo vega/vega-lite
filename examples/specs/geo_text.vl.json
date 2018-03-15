@@ -2,6 +2,9 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.1.json",
   "width": 800,
   "height": 500,
+  "projection": {
+    "type": "albersUsa"
+  },
   "layer": [
     {
       "data": {
@@ -10,9 +13,6 @@
           "type": "topojson",
           "feature": "states"
         }
-      },
-      "projection": {
-        "type": "albersUsa"
       },
       "mark": {
         "type": "geoshape",
@@ -24,21 +24,30 @@
       "data": {
         "url": "data/us-state-capitals.json"
       },
-      "projection": {
-        "type": "albersUsa"
-      },
-      "mark": "text",
       "encoding": {
-        "x": {
+        "longitude": {
           "field": "lon",
-          "type": "longitude"
+          "type": "quantitative"
         },
-        "y": {
+        "latitude": {
           "field": "lat",
-          "type": "latitude"
+          "type": "quantitative"
+        }
+      },
+      "layer": [{
+        "mark": {
+          "type": "circle",
+          "color": "orange"
+        }
+      }, {
+        "mark": {
+          "type": "text",
+          "dy": -6
         },
-        "text": {"field": "city", "type": "nominal"}
-      }
+        "encoding": {
+          "text": {"field": "city", "type": "nominal"}
+        }
+      }]
     }
   ]
 }

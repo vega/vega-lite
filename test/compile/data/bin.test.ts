@@ -9,11 +9,11 @@ import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 function assembleFromEncoding(model: ModelWithField) {
-  return BinNode.makeBinFromEncoding(model).assemble();
+  return BinNode.makeFromEncoding(null, model).assemble();
 }
 
 function assembleFromTransform(model: Model, t: BinTransform) {
-  return BinNode.makeFromTransform(t, model).assemble();
+  return BinNode.makeFromTransform(null, t, model).assemble();
 }
 
 describe('compile/data/bin', function() {

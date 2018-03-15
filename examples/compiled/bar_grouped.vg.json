@@ -115,9 +115,9 @@
             },
             "axes": [
                 {
-                    "title": "population",
                     "scale": "y",
                     "orient": "left",
+                    "title": "population",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
@@ -175,7 +175,6 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
-                    "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
@@ -190,7 +189,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "zindex": 1
                 }
             ]
         },

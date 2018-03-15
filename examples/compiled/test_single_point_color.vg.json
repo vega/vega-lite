@@ -30,11 +30,11 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "stroke": {
-                        "value": "purple"
-                    },
                     "fill": {
                         "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "purple"
                     },
                     "x": {
                         "signal": "width",

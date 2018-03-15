@@ -21,8 +21,8 @@ describe('compile/data/lookup', function() {
       'encoding': {}
     });
 
-    const t = parseTransformArray(model);
-    assert.deepEqual<VgLookupTransform>((t.first as LookupNode).assemble(), {
+    const t = parseTransformArray(null, model);
+    assert.deepEqual<VgLookupTransform>((t as LookupNode).assemble(), {
       type: 'lookup',
       from: 'lookup_0',
       key: 'name',
@@ -32,7 +32,7 @@ describe('compile/data/lookup', function() {
   });
 
   it('should create node for flat lookup', function () {
-    const lookup = new LookupNode({
+    const lookup = new LookupNode(null, {
         'lookup': 'person',
         'from': {
           'data': {'url': 'data/lookup_people.csv'},
@@ -51,7 +51,7 @@ describe('compile/data/lookup', function() {
   });
 
   it('should create node for nested lookup', function () {
-    const lookup = new LookupNode({
+    const lookup = new LookupNode(null, {
         'lookup': 'person',
         'from': {
           'data': {'url': 'data/lookup_people.csv'},
@@ -70,7 +70,7 @@ describe('compile/data/lookup', function() {
   });
 
   it('should warn if fields are not specified and as is missing', log.wrap((localLogger) => {
-    const lookup = new LookupNode({
+    const lookup = new LookupNode(null, {
         'lookup': 'person',
         'from': {
           'data': {'url': 'data/lookup_people.csv'},

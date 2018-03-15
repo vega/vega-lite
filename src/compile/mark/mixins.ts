@@ -4,7 +4,7 @@ import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} f
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
-import * as util from '../../util';
+import {contains} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
@@ -14,24 +14,31 @@ import * as ref from './valueref';
 
 export function color(model: UnitModel) {
   const config = model.config;
-  const filled = model.markDef.filled;
+  const {filled, type: markType} = model.markDef;
   const vgChannel = filled ? 'fill' : 'stroke';
-  const e = nonPosition('color', model, {
-    vgChannel,
-    // Mark definition has higher precedence than config;
-    // fill/stroke has higher precedence than color.
-    defaultValue: model.markDef[vgChannel] ||
-      model.markDef.color ||
-      getMarkConfig(vgChannel, model.markDef, config) ||
-      getMarkConfig('color', model.markDef, config)
-  });
 
-  // If there is no fill, always fill symbols
-  // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square', 'geoshape'], model.mark())) {
-    e.fill = {value: 'transparent'};
-  }
-  return e;
+  return {
+    // If there is no fill, always fill symbols, bar, geoshape
+    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    ...(
+      contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ?
+      {fill: {value: 'transparent'}}:
+      {}
+    ),
+
+    ...nonPosition('color', model, {
+      vgChannel,
+      // Mark definition has higher precedence than config;
+      // fill/stroke has higher precedence than color.
+      defaultValue: model.markDef[vgChannel] ||
+        model.markDef.color ||
+        getMarkConfig(vgChannel, model.markDef, config) ||
+        getMarkConfig('color', model.markDef, config)
+    }),
+    // fill / stroke encodings have higher precedence than color encoding
+    ...nonPosition('fill', model),
+    ...nonPosition('stroke', model)
+  };
 }
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
@@ -48,7 +55,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] && ignore[prop] !== 'ignore') {
+    if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
       m[prop] = {value: mark[prop]};
     }
     return m;
@@ -66,8 +73,6 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
 export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
-  // TODO: refactor how we refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-
   const {defaultValue, vgChannel} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
@@ -190,7 +195,13 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+
+  const channelDef = encoding[channel];
+
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat/long and there is no point position overriding lat/long.
+    {field: model.getName(channel)} :
+    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
     [vgChannel || channel]: valueRef
@@ -204,8 +215,13 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
-  const baseChannel = channel === 'x2' ? 'x' : 'y';
 
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+  const baseChannel = channel === 'x2' ? 'x' : 'y';
+  const channelDef = encoding[baseChannel];
+
+  const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
+    // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
+    {field: model.getName(channel)}:
+    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

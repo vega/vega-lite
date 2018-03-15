@@ -13,7 +13,10 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "date": "date"
+                }
             }
         },
         {
@@ -21,57 +24,43 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "(vlSingle(\"tooltip_store\", datum))"
                 }
             ]
         },
         {
             "name": "data_1",
-            "source": "source_0",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
                 },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
                     "as": "price"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
                 },
                 {
                     "type": "filter",
-                    "expr": "(vlSingle(\"tooltip_store\", datum))"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -81,17 +70,33 @@
             "transform": [
                 {
                     "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
                     "as": "price"
                 },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "formula",
                     "expr": "toDate(datum[\"date\"])",
                     "as": "date"
                 },
                 {
-                    "type": "filter",
-                    "expr": "(vlSingle(\"tooltip_store\", datum))"
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "filter",
@@ -126,7 +131,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
                     "force": true
                 }
             ]
@@ -145,12 +150,12 @@
     ],
     "marks": [
         {
-            "name": "layer_0_pathgroup",
+            "name": "layer_0_layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_0_main",
-                    "data": "data_0",
+                    "name": "faceted_path_layer_0_layer_0_main",
+                    "data": "data_3",
                     "groupby": [
                         "symbol"
                     ]
@@ -172,7 +177,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "layer_0_layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -182,7 +187,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_0_main"
+                        "data": "faceted_path_layer_0_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -204,13 +209,13 @@
             ]
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -223,12 +228,12 @@
                             "value": 0
                         }
                     ],
+                    "fill": {
+                        "value": "transparent"
+                    },
                     "stroke": {
                         "scale": "color",
                         "field": "symbol"
-                    },
-                    "fill": {
-                        "value": "transparent"
                     },
                     "x": {
                         "scale": "x",
@@ -242,10 +247,10 @@
             }
         },
         {
-            "name": "layer_1_voronoi",
+            "name": "layer_0_layer_1_voronoi",
             "type": "path",
             "from": {
-                "data": "layer_1_marks"
+                "data": "layer_0_layer_1_marks"
             },
             "encode": {
                 "enter": {
@@ -282,13 +287,13 @@
             ]
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "rule",
             "style": [
                 "rule"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -311,13 +316,13 @@
             }
         },
         {
-            "name": "layer_3_marks",
+            "name": "layer_1_layer_1_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -356,7 +361,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_3",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_4",
                         "field": "date"
                     },
                     {
@@ -365,10 +374,6 @@
                     },
                     {
                         "data": "data_2",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_3",
                         "field": "date"
                     }
                 ]
@@ -386,15 +391,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "price"
-                    },
-                    {
                         "data": "data_3",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "price"
                     }
                 ]
@@ -414,15 +419,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
-                        "field": "symbol"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "symbol"
-                    },
-                    {
                         "data": "data_3",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "symbol"
                     }
                 ],
@@ -435,13 +440,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "title": "date",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -450,47 +454,48 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
             "scale": "x",
             "orient": "bottom",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "orient": "left",
+            "title": "price",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
-            "title": "price",
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "domain": false,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
+            "zindex": 0
         }
     ],
     "legends": [

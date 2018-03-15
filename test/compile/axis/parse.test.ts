@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {X, Y} from '../../../src/channel';
-import {parseGridAxis, parseLayerAxis, parseMainAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
+import {Y} from '../../../src/channel';
+import {parseLayerAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('Axis', function() {
@@ -28,7 +28,7 @@ describe('Axis', function() {
     });
   });
   describe('parseUnitAxis', function() {
-    it('should produce Vega grid axis objects for both main axis and for grid axis', function() {
+    it('should produce Vega grid', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -41,11 +41,10 @@ describe('Axis', function() {
       });
       const axisComponent = parseUnitAxis(model);
       assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].main.implicit.grid, undefined);
-      assert.equal(axisComponent['x'][0].grid.explicit.grid, true);
+      assert.equal(axisComponent['x'][0].explicit.grid, true);
     });
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled', function() {
+    it('should produce axis component with grid=false', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -58,20 +57,20 @@ describe('Axis', function() {
       });
       const axisComponent = parseUnitAxis(model);
       assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+      assert.equal(axisComponent['x'][0].explicit.grid, false);
     });
 
     it('should ignore null scales', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
-          x: {
+          longitude: {
             field: "a",
-            type: "longitude"
+            type: "quantitative"
           },
-          y: {
+          latitude: {
             field: "b",
-            type: "latitude"
+            type: "quantitative"
           }
         }
       });
@@ -80,7 +79,7 @@ describe('Axis', function() {
       assert.isUndefined(axisComponent['y']);
     });
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axisX', function() {
+    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -93,11 +92,11 @@ describe('Axis', function() {
       });
       const axisComponent = parseUnitAxis(model);
       assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+      assert.equal(axisComponent['x'][0].explicit.grid, undefined);
     });
 
 
-    it('should produce Vega grid axis objects for only main axis if grid is disabled via config.axis', function() {
+    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', function() {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -110,10 +109,10 @@ describe('Axis', function() {
       });
       const axisComponent = parseUnitAxis(model);
       assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].main.explicit.grid, undefined);
+      assert.equal(axisComponent['x'][0].explicit.grid, undefined);
     });
 
-    it('should not set title if title  = null, "", or false', function () {
+    it('should store the title value if title = null, "", or false', function () {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -127,8 +126,21 @@ describe('Axis', function() {
         });
         const axisComponent = parseUnitAxis(model);
         assert.equal(axisComponent['x'].length, 1);
-        assert.doesNotHaveAnyKeys(axisComponent['x'][0].main.explicit, ['title']);
+        assert.equal(axisComponent['x'][0].explicit.title, val as any);
       }
+    });
+
+    it('should store both x and x2 for ranged mark', function () {
+      const model = parseUnitModelWithScale({
+        mark: "rule",
+        encoding: {
+          x: {field: "a", type: "quantitative"},
+          x2: {field: "a2", type: "quantitative"}
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.deepEqual(axisComponent['x'][0].get('title'), [{field: "a"}, {field: "a2"}]);
     });
   });
 
@@ -170,12 +182,12 @@ describe('Axis', function() {
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;
       assert.equal(axisComponents.y.length, 1);
-      assert.equal(axisComponents.y[0].grid.get('gridScale'), 'x');
+      assert.equal(axisComponents.y[0].get('gridScale'), 'x');
     });
 
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.equal(axisComponents.y[0].main.get('title'), 'Mean of a');
+      assert.deepEqual(axisComponents.y[0].get('title'), [{aggregate: 'mean', field: 'a'}]);
     });
 
     it('correctly combines different title', () => {
@@ -213,42 +225,10 @@ describe('Axis', function() {
       parseLayerAxis(model);
       const axisComponents = model.component.axes;
 
-      assert.equal(axisComponents.y[0].main.get('title'), 'Max of Horsepower, Min of Horsepower');
+      assert.deepEqual(
+        axisComponents.y[0].get('title'),
+        [{aggregate: 'max', field: 'Horsepower'}, {aggregate: 'min', field: 'Horsepower'}]
+      );
     });
   });
-
-  describe('parseGridAxis', function() {
-    it('should produce a Vega grid axis object with correct type, scale and grid properties', function() {
-      const model = parseUnitModelWithScale({
-        mark: "point",
-        encoding: {
-          x: {
-            field: "a",
-            type: "quantitative",
-            axis: {grid: true}
-          }
-        }
-      });
-      const def = parseGridAxis(X, model);
-      assert.isObject(def);
-      assert.equal(def.implicit.orient, 'bottom');
-      assert.equal(def.implicit.scale, 'x');
-    });
-  });
-
-  describe('parseMainAxis', function() {
-    it('should produce a Vega axis object with correct type and scale', function() {
-      const model = parseUnitModelWithScale({
-        mark: "point",
-        encoding: {
-          x: {field: "a", type: "quantitative"}
-        }
-      });
-      const def = parseMainAxis(X, model);
-      assert.isObject(def);
-      assert.equal(def.implicit.orient, 'bottom');
-      assert.equal(def.implicit.scale, 'x');
-    });
-  });
-
 });

@@ -192,17 +192,16 @@
     ],
     "axes": [
         {
-            "domain": false,
-            "tickSize": 0,
             "scale": "x",
             "orient": "bottom",
+            "title": "date (year-month)",
+            "domain": false,
+            "tickSize": 0,
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "title": "date (year-month)",
-            "zindex": 1,
             "encode": {
                 "labels": {
                     "update": {
@@ -211,23 +210,24 @@
                         }
                     }
                 }
-            }
+            },
+            "zindex": 1
         },
         {
-            "domain": false,
-            "tickSize": 0,
             "scale": "x",
             "orient": "bottom",
+            "tickSize": 0,
             "grid": true,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         }
     ],
     "legends": [
