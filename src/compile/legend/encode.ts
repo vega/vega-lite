@@ -1,12 +1,15 @@
 import {isArray} from 'vega-util';
+
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
+  Conditional,
   FieldDef,
   FieldDefWithCondition,
   hasConditionalValueDef,
   isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
+  ValueDef,
   ValueDefWithCondition,
 } from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
@@ -46,24 +49,39 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
   }
 
-  const filled = model.markDef.filled;
+  const {markDef, encoding} = model;
+  const filled = markDef.filled;
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
     if (channel === 'fill' || (filled && channel === COLOR)) {
       delete out.fill;
-    } else if (out.fill['field']) {
-      // For others, remove fill field
-      delete out.fill;
+    } else {
+      if (out.fill['field']) {
+        // For others, remove fill field
+        delete out.fill;
+      } else if (isArray(out.fill)) {
+        const fill = getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
+        if (fill) {
+          out.fill = {value: fill};
+        }
+      }
     }
   }
 
   if (out.stroke) {
     if (channel === 'stroke' || (!filled && channel === COLOR)) {
       delete out.stroke;
-    } else if (out.stroke['field']) {
-      // For others, remove stroke field
-      delete out.stroke;
+    } else {
+      if (out.stroke['field']) {
+        // For others, remove stroke field
+        delete out.stroke;
+      } else if (isArray(out.stroke)) {
+        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) || markDef.stroke || (!filled && markDef.color);
+        if (stroke) {
+          out.stroke = {value: stroke};
+        }
+      }
     }
   }
 
@@ -73,14 +91,14 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   }
 
   if (channel !== SHAPE) {
-    const shapeDef = model.encoding.shape;
-    if (isValueDef(shapeDef)) {
-      out.shape = {value: shapeDef.value};
+    const shape = getFirstConditionValue(encoding.shape) || markDef.shape;
+    if (shape) {
+      out.shape = {value: shape};
     }
   }
 
   if (channel !== OPACITY) {
-    const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
+    const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
     }
@@ -95,7 +113,7 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   let out: any = {};
 
   if (type === 'gradient') {
-    const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
+    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
     }
@@ -126,14 +144,28 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(out).length > 0 ? out : undefined;
 }
 
-function getOpacityValue(opacityDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>): number {
-  if (isValueDef(opacityDef)) {
-    if (hasConditionalValueDef(opacityDef)) {
-      const values = isArray(opacityDef.condition) ? opacityDef.condition.map(c => c.value) : [opacityDef.condition.value];
-      return Math.max.apply(null, [opacityDef.value].concat(values));
-    } else {
-      return opacityDef.value as number;
-    }
+function getMaxValue(channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>) {
+  return getConditionValue(channelDef,
+    (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any)
+  );
+}
+
+function getFirstConditionValue(channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>) {
+  return getConditionValue(channelDef,
+    (v: number, conditionalDef) => v !== undefined ? v : conditionalDef.value
+  );
+}
+
+function getConditionValue<T>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
+  reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
+): T {
+
+  if (hasConditionalValueDef(channelDef)) {
+    return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition])
+      .reduce(reducer, channelDef.value as any);
+  } else if (isValueDef(channelDef)) {
+    return channelDef.value as any;
   }
   return undefined;
 }

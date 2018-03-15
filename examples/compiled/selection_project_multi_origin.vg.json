@@ -282,16 +282,9 @@
                         "fill": {
                             "value": "transparent"
                         },
-                        "stroke": [
-                            {
-                                "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
-                                "scale": "color",
-                                "field": "Cylinders"
-                            },
-                            {
-                                "value": "grey"
-                            }
-                        ],
+                        "stroke": {
+                            "value": "grey"
+                        },
                         "opacity": {
                             "value": 0.7
                         }

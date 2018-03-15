@@ -564,16 +564,9 @@
             "encode": {
                 "symbols": {
                     "update": {
-                        "fill": [
-                            {
-                                "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
-                                "scale": "color",
-                                "field": "Origin"
-                            },
-                            {
-                                "value": "grey"
-                            }
-                        ],
+                        "fill": {
+                            "value": "grey"
+                        },
                         "shape": {
                             "value": "circle"
                         },
