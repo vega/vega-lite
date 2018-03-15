@@ -44,6 +44,11 @@ export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: 
 
   if (encoding.fill || encoding.stroke) {
     // ignore encoding.color, markDef.color, config.color
+    if (markDef.color) {
+      // warn for markDef.color  (no need to warn encoding.color as it will be dropped in normalized already)
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+    }
+
     return {
       ...nonPosition('fill', model, {defaultValue: defaultValue.fill || transparentIfNeeded}),
       ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
@@ -60,7 +65,10 @@ export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: 
       })
     };
   } else if (markDef.fill || markDef.stroke) {
-    // ignore encoding.color, markDef.color, config.color
+    // Ignore markDef.color, config.color
+    if (markDef.color) {
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
+    }
     return fillStrokeMarkDefAndConfig;
   } else if (markDef.color) {
     return {

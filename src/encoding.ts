@@ -218,6 +218,12 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       }
     }
 
+    // Drop color if either fill or stroke is specified
+     if (channel === 'color' && ('fill' in encoding || 'stroke' in encoding) ) {
+       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+       return normalizedEncoding;
+    }
+
     if (channel === 'detail' || channel === 'order') {
       const channelDef = encoding[channel];
       if (channelDef) {

@@ -165,6 +165,9 @@
                         "shape": {
                             "value": "circle"
                         },
+                        "stroke": {
+                            "value": "black"
+                        },
                         "opacity": {
                             "value": 0.8
                         }

@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {color, pointPosition} from '../../../src/compile/mark/mixins';
+import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/mixins', () => {
@@ -72,7 +73,7 @@ describe('compile/mark/mixins', () => {
       assert.propertyVal(colorMixins.fill, 'value', "transparent");
     });
 
-    it('ignores color if fill is specified', function () {
+    it('ignores color if fill is specified', log.wrap((logger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -96,9 +97,33 @@ describe('compile/mark/mixins', () => {
       const colorMixins = color(model);
       assert.isUndefined(colorMixins.stroke);
       assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "fill"});
-    });
+      assert.equal(logger.warns[0], log.message.droppingColor('encoding', {fill: true}));
+    }));
 
-    it('should apply stroke property over color property', function () {
+    it('ignores color property if fill is specified', log.wrap((logger) => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "point", "color": "red"},
+        "encoding": {
+          "x": {
+            "field": "gender", "type": "nominal",
+            "scale": {"rangeStep": 6},
+            "axis": null
+          },
+          "fill": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          }
+        },
+        "data": {"url": "data/population.json"}
+      });
+
+      const colorMixins = color(model);
+      assert.isUndefined(colorMixins.stroke);
+      assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "fill"});
+      assert.equal(logger.warns[0], log.message.droppingColor('property', {fill: true}));
+    }));
+
+    it('should apply stroke property over color property', log.wrap((logger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "point", "color": "red", "stroke": "blue"},
         "encoding": {
@@ -108,9 +133,10 @@ describe('compile/mark/mixins', () => {
       });
       const props = color(model);
       assert.deepEqual(props.stroke, {value: "blue"});
-    });
+      assert.equal(logger.warns[0], log.message.droppingColor('property', {stroke: true}));
+    }));
 
-    it('should apply ignore color property when fill is specified', function () {
+    it('should apply ignore color property when fill is specified', log.wrap((logger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "point", "color": "red", "fill": "blue"},
         "encoding": {
@@ -120,7 +146,8 @@ describe('compile/mark/mixins', () => {
       });
       const props = color(model);
       assert.isUndefined(props.stroke);
-    });
+      assert.equal(logger.warns[0], log.message.droppingColor('property', {fill: true}));
+    }));
 
     it('should apply color property', function () {
       const model = parseUnitModelWithScaleAndLayoutSize({
