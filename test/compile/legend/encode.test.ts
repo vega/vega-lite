@@ -18,7 +18,7 @@ describe('compile/legend', function() {
             color: {field: "a", type: "nominal"}
           }
         }), COLOR, 'symbol');
-        assert.isUndefined((symbol||{}).fill);
+        assert.deepEqual(symbol.fill, {value: 'transparent'});
         assert.isUndefined((symbol||{}).strokeDash);
         assert.isUndefined((symbol||{}).strokeDashOffset);
     });
@@ -31,7 +31,7 @@ describe('compile/legend', function() {
             x: {field: "a", type: "nominal"},
             shape: {value: "square"}}
         }), COLOR, 'symbol');
-        assert.deepEqual(symbol.shape.value, 'square');
+        assert.deepEqual(symbol.shape['value'], 'square');
     });
 
     it('should have default opacity', function() {
@@ -41,7 +41,7 @@ describe('compile/legend', function() {
           encoding: {
             x: {field: "a", type: "nominal"}}
         }), COLOR, 'symbol');
-        assert.deepEqual(symbol.opacity.value, 0.7); // default opacity is 0.7.
+      assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
     });
 
     it('should return the maximum value when there is a condition', function() {
@@ -55,7 +55,7 @@ describe('compile/legend', function() {
               value: 0
             }}
         }), COLOR, 'symbol');
-        assert.deepEqual(symbol.opacity.value, 1);
+        assert.deepEqual(symbol.opacity['value'], 1);
     });
   });
 
@@ -67,7 +67,7 @@ describe('compile/legend', function() {
             x: {field: "a", type: "quantitative"}}
         }), COLOR, 'gradient');
 
-      assert.deepEqual(gradient.opacity.value, 0.7); // default opacity is 0.7.
+      assert.deepEqual(gradient.opacity['value'], 0.7); // default opacity is 0.7.
     });
   });
 
