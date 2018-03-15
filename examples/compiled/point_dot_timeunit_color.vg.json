@@ -142,6 +142,13 @@
                             "signal": "timeFormat(datum.value, '%b %Y')"
                         }
                     }
+                },
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        }
+                    }
                 }
             }
         }

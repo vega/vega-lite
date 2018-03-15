@@ -249,6 +249,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "shape": {
                             "value": "circle"
                         },
@@ -265,6 +268,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "stroke": [
                             {
                                 "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",

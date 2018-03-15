@@ -162,11 +162,11 @@
             "encode": {
                 "symbols": {
                     "update": {
-                        "shape": {
-                            "value": "circle"
-                        },
                         "stroke": {
                             "value": "black"
+                        },
+                        "shape": {
+                            "value": "circle"
                         },
                         "opacity": {
                             "value": 0.8

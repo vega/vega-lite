@@ -206,7 +206,16 @@
         {
             "offset": 0,
             "orient": "bottom-right",
-            "stroke": "color"
+            "stroke": "color",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

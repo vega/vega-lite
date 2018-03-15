@@ -564,9 +564,6 @@
             "encode": {
                 "symbols": {
                     "update": {
-                        "shape": {
-                            "value": "circle"
-                        },
                         "fill": [
                             {
                                 "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -577,6 +574,12 @@
                                 "value": "grey"
                             }
                         ],
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "stroke": {
+                            "value": "transparent"
+                        },
                         "opacity": {
                             "value": 0.7
                         }
