@@ -213,11 +213,11 @@
       "style": "background-size: auto 55%; background-position-y: center !important;"
     },
     {
-      "name": "box-plot_minmax_2D_vertical",
+      "name": "boxplot_minmax_2D_vertical",
       "title": "Box Plot with Min/Max Whiskers"
     },
     {
-      "name": "box-plot_tukey_2D_vertical",
+      "name": "boxplot_2D_vertical",
       "title": "Tukey Box Plot (1.5 IQR)"
     },
     {

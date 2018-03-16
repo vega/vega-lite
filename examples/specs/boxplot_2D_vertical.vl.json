@@ -4,7 +4,7 @@
   "data": {"url": "data/population.json"},
   "mark": {
     "type": "boxplot",
-    "extent": "min-max"
+    "extent": 1.5
   },
   "encoding": {
     "x": {"field": "age","type": "ordinal"},
@@ -12,8 +12,7 @@
       "field": "people",
       "type": "quantitative",
       "axis": {"title": "population"}
-    }
+    },
+    "size": {"value": 5}
   }
 }
-
-
