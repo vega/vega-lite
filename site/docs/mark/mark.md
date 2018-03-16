@@ -40,6 +40,9 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 <span class="vl-example" data-name="bar"></span>
 
+### Composite Marks
+Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Composite marks are "macros" because under the hood they expand to become layered graphics. Currently, we include only one composite mark type: [boxplot](boxplot.html).
+
 ## Documentation Overview
 {:.no_toc}
 
