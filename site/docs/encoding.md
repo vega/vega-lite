@@ -20,6 +20,11 @@ The `encoding` property of a single view specification represents the mapping be
     "x2": ...,
     "y2": ...,
 
+    // Geographic Position Channels
+    "longtitude": ...,
+    "latitude": ...,
+    ...
+
     // Mark Properties Channels
     "color": ...,
     "opacity": ...,
@@ -32,6 +37,9 @@ The `encoding` property of a single view specification represents the mapping be
 
     // Hyperlink Channel
     "href": ...,
+
+    // Key Channel
+    "key": ...,
 
     // Order Channel
     "order": ...,
@@ -53,10 +61,12 @@ The `encoding` property of a single view specification represents the mapping be
 The keys in the `encoding` object are encoding channels.  Vega-lite supports the following groups of encoding channels
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`
+- [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `color`, `opacity`, `shape`, `size`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
 - [Level of Detail Channel](#detail): `detail`
+- [Key Channel](#key): `key`
 - [Order Channel](#order): `order`
 - [Facet Channels](#facet): `row`, `column`
 
