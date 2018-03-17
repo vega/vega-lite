@@ -24,7 +24,29 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 - TOC
 {:toc}
 
-## Width/Height-Spanning Rules
+{:#properties}
+## Rule Mark Properties
+
+
+{: .suppress-error}
+```json
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "rule",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+```
+
+A rule mark definition can contain any [standard mark properties](mark.html#mark-def).
+
+## Examples
+
+### Width/Height-Spanning Rules
 
 If the `rule` mark only has `y` encoding, the output view produces horizontal rules that  spans the complete width.  Similarly, if the `rule` mark only has `x` encoding, the output view produces vertical rules that spans the height.
 
@@ -41,7 +63,7 @@ We can also use a rule mark to show global mean value over a histogram.
 <span class="vl-example" data-name="layer_histogram_global_mean"></span>
 
 {:#ranged}
-## Ranged Rules
+### Ranged Rules
 
 To control the spans of horizontal/vertical rules, `x` and `x2`/`y` and `y2` channels can be specified.
 
@@ -75,4 +97,4 @@ Alternatively, we can create error bars showing one standard deviation (`stdev`)
 
 The `rule` property of the top-level [`config`](config.html) object sets the default properties for all rule marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-For the list of all supported properties, please see the [mark config documentation](mark.html#config).
+The rule config can contain any [rule mark properties](#properties) (except `type`, `style`, and `clip`).

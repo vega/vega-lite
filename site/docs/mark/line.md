@@ -25,8 +25,31 @@ __Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, p
 - TOC
 {:toc}
 
+{:#properties}
+## Line Mark Properties
 
-## Line Chart
+{: .suppress-error}
+```json
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "line",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+```
+
+An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation properties:
+
+{% include table.html props="orient,interpolate,tension" source="MarkDef" %}
+
+
+## Examples
+
+### Line Chart
 
 Using `line` with one temporal or ordinal field (typically on `x`) and another quantitative field (typically on `y`) produces a simple line chart with a single line.
 
@@ -34,14 +57,14 @@ Using `line` with one temporal or ordinal field (typically on `x`) and another q
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
 
-### Multi-series Colored Line Chart
+#### Multi-series Colored Line Chart
 
 Adding a field to a [mark property channel](encoding.html#mark-prop) such as `color` groups data points into different series, producing a multi-series colored line chart.
 
 <span class="vl-example" data-name="line_color"></span>
 
 {:#line-detail}
-## Multi-series Line Chart with the Detail Channel
+### Multi-series Line Chart with the Detail Channel
 
 To group lines by a field without mapping the field to any visual properties, we can map the field to the [`detail`](encoding.html#detail) channel to create a multi-series line chart with the same color.
 
@@ -52,7 +75,7 @@ The same method can be used to group lines for a ranged dot plot.
 <span class="vl-example" data-name="layer_ranged_dot"></span>
 
 {:#connected-scatter-plot}
-## Connected Scatter Plot (Line Chart with Custom Path)
+### Connected Scatter Plot (Line Chart with Custom Path)
 
 As shown in previous example, the line's path (order of points in the line) is determined by data values on the temporal/ordinal field by default. However, a field can be mapped to the [`order`](encoding.html#order) channel for determining a custom path.
 
@@ -60,7 +83,7 @@ For example, to show a pattern of data change over time between gasoline price a
 
 <span class="vl-example" data-name="layer_connected_scatterplot"></span>
 
-## Line interpolation
+### Line interpolation
 
 The `interpolate` property of a [mark definition](mark.html#mark-def) can be used to change line interpolation method.  For example, we can set `interpolate` to `"monotone"`.
 
@@ -72,11 +95,12 @@ We can also set `interpolate` to `"step-after"` to create a step-chart.
 
 For the list of all supported `interpolate` properties, please see the [mark definition](mark.html#mark-def) documentation.
 
-## Geo Line
+### Geo Line
 
 By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can draw lines through geographic points.
 
 <span class="vl-example" data-name="geo_line"></span>
+
 
 {:#config}
 ## Line Config
@@ -96,4 +120,4 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 The `line` property of the top-level [`config`](config.html) object sets the default properties for all line marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-For the list of all supported properties, please see the [mark config documentation](mark.html#config).
+The line config can contain any [line mark properties](#properties) (except `type`, `style`, and `clip`).
