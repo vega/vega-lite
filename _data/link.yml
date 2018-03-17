@@ -129,11 +129,18 @@ TextValueDefWithCondition:
   name: TextValueDef
   link: "encoding.html#text-value-def"
 
+FieldDefWithCondition:
+  link: "encoding.html#href-field-def"
+ValueDefWithCondition:
+  link: "encoding.html#href-value-def"
+
 ConditionalMarkPropFieldDef:
   name: ConditionalFieldDef
   link: "condition.html#field"
 ConditionalTextFieldDef:
   name: ConditionFieldDef
+  link: "condition.html#field"
+ConditionalFieldDef:
   link: "condition.html#field"
 ConditionalValueDef:
   link: "condition.html#value"
