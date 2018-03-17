@@ -155,7 +155,7 @@ export interface Encoding<F> {
 
   /**
    * Order of the marks.
-   * - For stacked marks, this `order` channel encodes stack order.
+   * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
    * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
