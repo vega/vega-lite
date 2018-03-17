@@ -1,6 +1,25 @@
 {
-  "$ref": "#/definitions/TopLevelSpec",
   "$schema": "http://json-schema.org/draft-06/schema#",
+  "anyOf": [
+    {
+      "$ref": "#/definitions/TopLevelFacetedUnitSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelFacetSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelLayerSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelRepeatSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelVConcatSpec"
+    },
+    {
+      "$ref": "#/definitions/TopLevelHConcatSpec"
+    }
+  ],
   "definitions": {
     "Aggregate": {
       "$ref": "#/definitions/AggregateOp"
@@ -2121,6 +2140,16 @@
     "ErrorBarConfig": {
       "additionalProperties": false,
       "properties": {
+        "centerMarkType": {
+          "description": "The shape of the mean pint. Available options include:\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`.",
+          "enum": [
+            "point",
+            "circle",
+            "bar",
+            "line"
+          ],
+          "type": "string"
+        },
         "extent": {
           "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
           "enum": [
@@ -2146,6 +2175,16 @@
     "ErrorBarDef": {
       "additionalProperties": false,
       "properties": {
+        "centerMarkType": {
+          "description": "The shape of the mean pint. Available options include:\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`.",
+          "enum": [
+            "point",
+            "circle",
+            "bar",
+            "line"
+          ],
+          "type": "string"
+        },
         "extent": {
           "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
           "enum": [
@@ -6599,28 +6638,6 @@
         "mark"
       ],
       "type": "object"
-    },
-    "TopLevelSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelFacetSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelLayerSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelRepeatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelVConcatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelHConcatSpec"
-        }
-      ]
     },
     "TopoDataFormat": {
       "additionalProperties": false,

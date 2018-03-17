@@ -4,12 +4,12 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
-import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
+import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
-import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
+import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, RepeatRef, vgField} from './../fielddef';
 import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
+import {GenericLayerSpec, GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {getMarkDefMixins} from './common';
 
@@ -45,6 +45,18 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
    * __Default value:__ `"stdev"`.
    */
   extent?: 'ci' | 'stderr' | 'stdev';
+
+  /**
+   * The shape of the mean pint. Available options include:
+   * - `"point": point.
+   * - `"circle": circle.
+   * - `"square": square. // will implement it later.
+   * - `"bar": bar.
+   * - `"line": line.
+   *
+   * __Default value:__ `"point"`.
+   */
+  centerMarkType?: 'point' | 'circle' | 'bar' | 'line';
 }
 export interface ErrorBarDef extends GenericMarkDef<ErrorBar>, ErrorBarConfig {
   /**
@@ -88,12 +100,27 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
 
   const extent = markDef.extent || config.errorbar.extent;
   const sizeValue = markDef.size || config.errorbar.size;
+  const centerMarkType = markDef.centerMarkType || config.errorbar.centerMarkType;
+
+  let transform: Transform[] = []; // fix typing here.
+  let whiskersLayer: NormalizedUnitSpec[] = []; // fix typing here.
+  let meanLayer: NormalizedUnitSpec[] = []; // fix typing here.
+  const centerMarkFill = centerMarkType !== 'circle' && centerMarkType !== 'line';
 
   const pseudoOrient: Orient | 'both' = errorBarOrient(spec);
 
+  const markProperties = {
+    type: centerMarkType,
+    filled: centerMarkFill,
+    opacity: 1,
+    ...(sizeValue ? {size: sizeValue} : {}),
+    ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
+  };
+
   if (isOrient(pseudoOrient)) {
     const orient: Orient = pseudoOrient;
-    const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, orient, extent, []);
+    const {transform: transformTmp, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, orient, extent, []);
+    transform = transformTmp;
 
     const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -105,67 +132,41 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
     }
 
-    return {
-      ...outerSpec,
-      transform,
-      layer: [
-        { // lower whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
-          },
-          encoding: {
-            [continuousAxis]: {
-              field: 'lower_whisker_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type,
-              ...continuousAxisScaleAndAxis
-            },
-            [continuousAxis + '2']: {
-              field: 'mean_point_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndContinuousAxis
-          }
-        }, { // upper whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
-          },
-          encoding: {
-            [continuousAxis]: {
-              field: 'mean_point_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            },
-            [continuousAxis + '2']: {
-              field: 'upper_whisker_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndContinuousAxis
-          }
-        }, { // mean point
-          mark: {
-            type: 'point',
-            filled: true,
-            opacity: 1,
-            ...(sizeValue ? {size: sizeValue} : {}),
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
-          },
-          encoding: {
-            [continuousAxis]: {
-              field: 'mean_point_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            },
-            ...encodingWithoutContinuousAxis,
-            // ...(size ? {size} : {})
-          }
-        }
-      ]
-    };
+    whiskersLayer = [{ // whisker
+      mark: {
+        type: 'rule',
+        ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: 'lower_whisker_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type,
+          ...continuousAxisScaleAndAxis
+        },
+        [continuousAxis + '2']: {
+          field: 'upper_whisker_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis
+      }
+    }];
+
+    meanLayer = [{ // mean point
+      mark: markProperties,
+      encoding: {
+        [continuousAxis]: {
+          field: 'mean_point_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutContinuousAxis,
+        // ...(size ? {size} : {})
+      }
+    }];
   } else {
     const {transform: yTransform, continuousAxisChannelDef: yChannelDef, encodingWithoutContinuousAxis: encodingWithoutY, aggregate, transformWithoutAggregate: yTransformWithoutAggregate} = errorBarParams(spec, 'vertical', extent, []);
     const {transform: xTransform, continuousAxisChannelDef: xChannelDef, encodingWithoutContinuousAxis: encodingWithoutX} = errorBarParams(spec, 'horizontal', extent, aggregate);
 
-    const transform = xTransform.concat(yTransformWithoutAggregate);
+    transform = xTransform.concat(yTransformWithoutAggregate);
 
     const {x, ...encodingWithoutAxes} = encodingWithoutY;
     const {color, size, ...encodingWithoutSizeColorAndAxes} = encodingWithoutAxes;
@@ -186,116 +187,85 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       yScaleAndAxis['axis'] = yChannelDef.axis;
     }
 
-    return {
-      ...outerSpec,
-      transform,
-      layer: [
-        { // horizontal lower whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+    whiskersLayer = [
+      { // horizontal whisker
+        mark: {
+          type: 'rule',
+          ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+        },
+        encoding: {
+          x: {
+            field: 'lower_whisker_' + xChannelDef.field,
+            type: xChannelDef.type,
+            ...xScaleAndAxis
           },
-          encoding: {
-            x: {
-              field: 'lower_whisker_' + xChannelDef.field,
-              type: xChannelDef.type,
-              ...xScaleAndAxis
-            },
-            x2: {
-              field: 'mean_point_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            y: {
-              field: 'mean_point_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndAxes
-          }
-        }, { // horizontal upper whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+          x2: {
+            field: 'upper_whisker_' + xChannelDef.field,
+            type: xChannelDef.type
           },
-          encoding: {
-            x: {
-              field: 'mean_point_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            x2: {
-              field: 'upper_whisker_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            y: {
-              field: 'mean_point_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndAxes
-          }
-        }, { // vertical lower whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+          y: {
+            field: 'mean_point_' + yChannelDef.field,
+            type: yChannelDef.type,
+            // ...yScaleAndAxis
           },
-          encoding: {
-            y: {
-              field: 'lower_whisker_' + yChannelDef.field,
-              type: yChannelDef.type,
-              ...yScaleAndAxis
-            },
-            y2: {
-              field: 'mean_point_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            x: {
-              field: 'mean_point_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndAxes
-          }
-        }, { // vertical upper whisker
-          mark: {
-            type: 'rule',
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
-          },
-          encoding: {
-            y: {
-              field: 'mean_point_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            y2: {
-              field: 'upper_whisker_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            x: {
-              field: 'mean_point_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            ...encodingWithoutSizeColorAndAxes
-          }
-        }, { // mean point
-          mark: {
-            type: 'point',
-            filled: true,
-            opacity: 1,
-            ...(sizeValue ? {size: sizeValue} : {}),
-            ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
-          },
-          encoding: {
-            x: {
-              field: 'mean_point_' + xChannelDef.field,
-              type: xChannelDef.type
-            },
-            y: {
-              field: 'mean_point_' + yChannelDef.field,
-              type: yChannelDef.type
-            },
-            ...encodingWithoutAxes,
-            ...(size ? {size} : {})
-          }
+          ...encodingWithoutSizeColorAndAxes
         }
-      ]
-    };
+      }, { // vertical whisker
+        mark: {
+          type: 'rule',
+          ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'whisker', config.errorbar)
+        },
+        encoding: {
+          y: {
+            field: 'lower_whisker_' + yChannelDef.field,
+            type: yChannelDef.type,
+            ...yScaleAndAxis
+          },
+          y2: {
+            field: 'upper_whisker_' + yChannelDef.field,
+            type: yChannelDef.type
+          },
+          x: {
+            field: 'mean_point_' + xChannelDef.field,
+            type: xChannelDef.type,
+            // ...xScaleAndAxis
+          },
+          ...encodingWithoutSizeColorAndAxes
+        }
+      }
+    ];
+
+    meanLayer = [{ // mean point
+      mark: markProperties,
+      encoding: {
+        x: {
+          field: 'mean_point_' + xChannelDef.field,
+          type: xChannelDef.type,
+          // ...xScaleAndAxis
+        },
+        y: {
+          field: 'mean_point_' + yChannelDef.field,
+          type: yChannelDef.type,
+          // ...yScaleAndAxis
+        },
+        ...encodingWithoutAxes,
+        // ...(size ? {size} : {})
+      }
+    }];
   }
+
+  let layer: NormalizedUnitSpec[] = []; // fix typing here.
+  if (centerMarkType === 'line' || centerMarkType === 'bar') {
+    layer = meanLayer.concat(whiskersLayer);
+  } else {
+    layer = whiskersLayer.concat(meanLayer);
+  }
+
+  return {
+    ...outerSpec,
+    transform,
+    layer
+  };
 }
 
 function errorBarOrient(spec: GenericUnitSpec<Encoding<Field>, ErrorBar | ErrorBarDef>): Orient | 'both' {
@@ -375,6 +345,7 @@ function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | Error
     field: continuousAxisChannelDef.field,
     as: 'mean_point_' + continuousAxisChannelDef.field
   });
+
   let postAggregateCalculates: CalculateTransform[] = [];
 
   if (isCi(extent)) {
