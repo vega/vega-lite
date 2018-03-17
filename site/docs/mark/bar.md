@@ -25,14 +25,38 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 {:toc}
 
 
-## Single Bar Chart
+{:#properties}
+## Bar Mark Properties
+
+{: .suppress-error}
+```json
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "bar",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+```
+
+A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
+
+{% include table.html props="orient" source="MarkDef" %}
+
+
+## Examples
+
+### Single Bar Chart
 
 Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar chart.
 
 <span class="vl-example" data-name="bar_1d"></span>
 
 
-## Bar Chart
+### Bar Chart
 
 If we map a different discrete field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of the discrete field will adjust the [band and point scale's range step](scale.html#band).
 
@@ -47,8 +71,8 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 
 <span class="vl-example" data-name="bar_month"></span>
 
+### Histogram
 
-## Histogram
 If the data is not pre-aggregated (i.e. each record in the data field represents one item),
 mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to `y` produces a histogram.
 
@@ -57,16 +81,15 @@ mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to 
 If you prefer to have histogram without gaps between bars, you can set the [`barBinSpacing` mark config](#histogram-spacing) to `0`.
 
 {:#stack}
-## Stacked Bar Chart
+### Stacked Bar Chart
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default. Here we also customize the color's scale range to make the color a little nicer.
 (See [`stack`](stack.html) for more details about customizing stack.)
 
-
 <span class="vl-example" data-name="stacked_bar_population"></span>
 
 
-## Layered Bar Chart
+### Layered Bar Chart
 
 To disable stacking, you can alternatively set [`stack`](stack.html) to `null`.
 This produces a layered bar chart.
@@ -75,7 +98,7 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 <span class="vl-example" data-name="bar_layered_transparent"></span>
 
 
-## Normalized Stacked Bar Chart
+### Normalized Stacked Bar Chart
 
 <!-- TODO: better explain this -->
 You can also create a normalized stacked bar chart by setting [`stack`](stack.html) to `"normalize"`. Here we can easily see the percentage of male and female population at different ages.
@@ -83,15 +106,16 @@ You can also create a normalized stacked bar chart by setting [`stack`](stack.ht
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
 
-## Grouped Bar Chart
+### Grouped Bar Chart
 
 <!-- TODO: better explain this -->
 [Faceting](facet.html) a bar chart produces a grouped bar chart.
 
 <span class="vl-example" data-name="bar_grouped"></span>
 
+
 {:#ranged}
-## Ranged Bars
+### Ranged Bars
 
 Specifying `x2` or `y2` for the quantitative axis of bar marks creates ranged bars.
 For example, we can use ranged bars to create a gantt chart.
