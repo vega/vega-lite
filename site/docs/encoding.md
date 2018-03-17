@@ -173,6 +173,9 @@ In addition, `longitude2` and `latitude2` can specify the span of geographically
 
 {% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
 
+See [an example that uses `longitude` and `latitude` channels in a map](https://vega.github.io/vega-lite/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map](https://vega.github.io/vega-lite/examples/geo_rule.html).
+
+
 {:#mark-prop}
 ## Mark Property Channels
 
@@ -283,7 +286,6 @@ from one year to another within a country (as opposed to jumping between countri
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
 
 {:#key}
-
 ## Key Channel
 
 The key channel can enable object constancy for transitions over dynamic data. When a visualization’s data is updated (via [Vega's View API](https://vega.github.io/vega/docs/api/view/#data)), the key value will be used to match data elements to existing mark instances.
