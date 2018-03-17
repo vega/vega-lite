@@ -846,7 +846,7 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "Conditional<FieldDef>": {
+    "ConditionalFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<FieldDef>"
@@ -856,7 +856,7 @@
         }
       ]
     },
-    "Conditional<MarkPropFieldDef>": {
+    "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef>"
@@ -866,7 +866,7 @@
         }
       ]
     },
-    "Conditional<TextFieldDef>": {
+    "ConditionalTextFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<TextFieldDef>"
@@ -876,7 +876,7 @@
         }
       ]
     },
-    "Conditional<ValueDef>": {
+    "ConditionalValueDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<ValueDef>"
@@ -2219,11 +2219,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -2277,11 +2277,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -2371,11 +2371,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6577,14 +6577,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<FieldDef>"
+              "$ref": "#/definitions/ConditionalFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6609,14 +6609,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<MarkPropFieldDef>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6641,14 +6641,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<TextFieldDef>"
+              "$ref": "#/definitions/ConditionalTextFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
