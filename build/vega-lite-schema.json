@@ -7314,11 +7314,11 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output name for each field. If none is defined will use the format op_field. For example, count_field for count,\n  and sum_field for sum.",
+          "description": "The output name for each field. If non specified will use the format `window_op_field` for example, `count_field` for count and `sum_field` for sum.",
           "type": "string"
         },
         "field": {
-          "description": "The data fields for which to compute aggregate or window functions. Field can be omitted for operations that do not\noperate over a specific data field, including count, rank, and dense_rank.",
+          "description": "The data field for which to compute the aggregate or window function. This can be null for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
           "type": "string"
         },
         "op": {
@@ -7333,7 +7333,7 @@
           "description": "The operations supported for the window aggregation. See the list of supported operations here:\n   https://vega.github.io/vega-lite/docs/transforms/window.html"
         },
         "param": {
-          "description": "Parameter values for the window functions. Parameter value can be null for operations that do not accept a\nparameter.",
+          "description": "Parameter values for the window functions. Parameter value can be omitted for operations that do not accept a parameter.",
           "type": "number"
         }
       },
@@ -7363,9 +7363,11 @@
       "description": "A compartor for fields within the window transform",
       "properties": {
         "field": {
+          "description": "The name of the field to sort.",
           "type": "string"
         },
         "order": {
+          "description": "Whether to sort the field in ascending or descending order.",
           "enum": [
             "ascending",
             "descending"
@@ -7382,7 +7384,7 @@
       "additionalProperties": false,
       "properties": {
         "frame": {
-          "description": "The frame for the window, if none is set the default is `[null, 0]` everything before the\ncurrent item.",
+          "description": "A two element specification about how large the sliding window is. The first element indicates the start and the second element indicates the end. If `null` is specified for the start, it will include everything before the current point. If `null` is specified for the end, it will include everything after the endpoint. For example a frame of `[-5,5]` says the window should include 5 previous objects and 5 after objects. The default is `[null, 0]`, which means include everything in the window. `[null, null]` would mean include everything in the window.",
           "items": {
             "type": [
               "null",
@@ -7392,7 +7394,7 @@
           "type": "array"
         },
         "groupby": {
-          "description": "The fields to group by.",
+          "description": "The names of the data fields to partioin the objects into seprate windows. If not specified, everything will be in a single group.",
           "items": {
             "type": "string"
           },
@@ -7403,7 +7405,7 @@
           "type": "boolean"
         },
         "sort": {
-          "description": "The definitions of how to sort each of the fields in the window.",
+          "description": "A definition for sorting the objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If left undefined, the order of items in the window is undefined.",
           "items": {
             "$ref": "#/definitions/WindowSortField"
           },

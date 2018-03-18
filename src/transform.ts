@@ -4,8 +4,9 @@ import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
-import {WindowOnlyOp} from './window';
 
+export type WindowOnlyOp = 'row_number' | 'rank' | 'dense_rank' | 'percent_rank' | 'cume_dist'
+| 'ntile' | 'lag' | 'lead' | 'first_value' | 'last_value' | 'nth_value';
 
 export interface FilterTransform {
   /**
@@ -110,20 +111,17 @@ export interface WindowFieldDef {
   op: AggregateOp | WindowOnlyOp;
 
   /**
-   *  Parameter values for the window functions. Parameter value can be null for operations that do not accept a
-   *  parameter.
+   *  Parameter values for the window functions. Parameter value can be omitted for operations that do not accept a parameter.
    */
   param?: number;
 
   /**
-   * The data fields for which to compute aggregate or window functions. Field can be omitted for operations that do not
-   * operate over a specific data field, including count, rank, and dense_rank.
+   * The data field for which to compute the aggregate or window function. This can be null for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
    */
   field?: string;
 
   /**
-   * The output name for each field. If none is defined will use the format op_field. For example, count_field for count,
-   *  and sum_field for sum.
+   *  The output name for each field. If non specified will use the format `window_op_field` for example, `count_field` for count and `sum_field` for sum.
    */
   as?: string;
 }
@@ -135,8 +133,7 @@ export interface WindowTransform {
   window: WindowFieldDef[];
 
   /**
-   * The frame for the window, if none is set the default is `[null, 0]` everything before the
-   * current item.
+   * A two element specification about how large the sliding window is. The first element indicates the start and the second element indicates the end. If `null` is specified for the start, it will include everything before the current point. If `null` is specified for the end, it will include everything after the endpoint. For example a frame of `[-5,5]` says the window should include 5 previous objects and 5 after objects. The default is `[null, 0]`, which means include everything in the window. `[null, null]` would mean include everything in the window.
    */
   frame?: (null | number)[];
 
@@ -146,12 +143,12 @@ export interface WindowTransform {
   ignorePeers?: boolean;
 
   /**
-   * The fields to group by.
+   * The names of the data fields to partioin the objects into seprate windows. If not specified, everything will be in a single group.
    */
   groupby?: string[];
 
   /**
-   * The definitions of how to sort each of the fields in the window.
+   * A definition for sorting the objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If left undefined, the order of items in the window is undefined.
    */
   sort?: WindowSortField[];
 }
@@ -203,8 +200,15 @@ export interface LookupTransform {
  * A compartor for fields within the window transform
  */
 export interface WindowSortField {
+  /**
+   * The name of the field to sort.
+   */
   field: string;
-  order?: ('ascending' | 'descending');
+
+  /**
+   * Whether to sort the field in ascending or descending order.
+   */
+  order?: 'ascending' | 'descending';
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
