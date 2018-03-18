@@ -19,7 +19,7 @@ export class CalculateNode extends DataFlowNode {
     super(parent);
   }
 
-  public static makeAllForSortIndex(model: ModelWithField): CalculateNode[] {
+  public static makeAllForSortIndex(parent: DataFlowNode, model: ModelWithField): CalculateNode[] {
     // get all the encoding with sort fields from model
     const nodes = model.reduceFieldDef((acc: CalculateNode[], fieldDef: ChannelDef<any>, channel: Channel) => {
       if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
@@ -27,7 +27,7 @@ export class CalculateNode extends DataFlowNode {
           calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
           as: `${channel}_${fieldDef.field}_sort_index`
         };
-         acc.push(new CalculateNode(transform));
+         acc.push(new CalculateNode(parent, transform));
       }
       return acc;
     }, [] as CalculateNode[]);

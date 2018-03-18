@@ -68,7 +68,6 @@ export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlo
       } else if (isFieldOneOfPredicate(filter)) {
         val = (filter.oneOf || filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
-
       if (val) {
         if (isDateTime(val)) {
           parse[filter['field']] = 'date';
@@ -204,19 +203,9 @@ export function parseData(model: Model): DataComponent {
       head = BinNode.makeFromEncoding(head, model) || head;
     }
 
-    for (const geopoint of GeoPointNode.makeAll(model)) {
-      geopoint.parent = head;
-      head = geopoint;
-    }
+    head = TimeUnitNode.makeFromEncoding(head, model) || head;
 
-    const tu = TimeUnitNode.makeFromEncoding(model);
-    if (tu) {
-      tu.parent = head;
-      head = tu;
-    }
-
-    for (const calculate of CalculateNode.makeAllForSortIndex(model)) {
-      calculate.parent = head;
+    for (const calculate of CalculateNode.makeAllForSortIndex(head, model)) {
       head = calculate;
     }
   }

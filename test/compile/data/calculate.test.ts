@@ -6,7 +6,7 @@ import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function assembleFromSortArray(model: ModelWithField) {
-  return CalculateNode.makeAllForSortIndex(model).map(n => n.assemble());
+  return CalculateNode.makeAllForSortIndex(null, model).map(n => n.assemble());
 }
 
 describe('compile/data/calculate', function () {
