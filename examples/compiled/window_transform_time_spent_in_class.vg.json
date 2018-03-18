@@ -1,0 +1,268 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A bar graph showing how long each student has been in class until the current class. The purpose of this visualization is to demonstate how the window transform could be used to show more complicated examples. Here is a bar graph of all the classes offered, along with how long each student has been at school till that class.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 300,
+    "height": 50,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "student": "A",
+                    "Class": "CSE 101",
+                    "TimeOfDay": 8,
+                    "Length": 45
+                },
+                {
+                    "student": "A",
+                    "Class": "PHIL 101",
+                    "TimeOfDay": 10,
+                    "Length": 70
+                },
+                {
+                    "student": "A",
+                    "Class": "CHEM 101",
+                    "TimeOfDay": 12,
+                    "Length": 30
+                },
+                {
+                    "student": "A",
+                    "Class": "BIO 101",
+                    "TimeOfDay": 15,
+                    "Length": 45
+                },
+                {
+                    "student": "B",
+                    "Class": "CSE 101",
+                    "TimeOfDay": 8,
+                    "Length": 45
+                },
+                {
+                    "student": "B",
+                    "Class": "CHEM 101",
+                    "TimeOfDay": 12,
+                    "Length": 30
+                },
+                {
+                    "student": "B",
+                    "Class": "BIO 101",
+                    "TimeOfDay": 15,
+                    "Length": 45
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "TimeInClass"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "Length"
+                    ],
+                    "sort": {
+                        "field": [
+                            "TimeOfDay"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "groupby": [
+                        "Student"
+                    ],
+                    "frame": [
+                        null,
+                        -1
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"TimeInClass\"])",
+                    "as": "TimeInClass"
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "Class"
+                    ],
+                    "field": "TimeInClass",
+                    "sort": {
+                        "field": [
+                            "student"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "TimeInClass_start",
+                        "TimeInClass_end"
+                    ],
+                    "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"TimeInClass\"] !== null && !isNaN(datum[\"TimeInClass\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rect",
+            "clip": true,
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "student"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Class"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "TimeInClass_end"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "TimeInClass_start"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "Class",
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "fields": [
+                    "TimeInClass_start",
+                    "TimeInClass_end"
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "data_0",
+                "field": "student",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Time spent in school (min)",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "student",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainWidth": 1
+        },
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
+        }
+    }
+}

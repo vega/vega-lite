@@ -1,0 +1,35 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "Bar graph showing how each movie is different from the average movie rating",
+    "width": 300,
+    "height": 50,
+    "data": { "url": "data/movies.json" },
+    "layer": [{
+        "transform": [{
+                "window": [{
+                    "op": "mean",
+                    "field": "IMDB_Rating",
+                    "as": "AverageRating"
+                }],
+                "frame": [null, null]
+            },
+            {
+                "calculate": "datum.IMDB_Rating - datum.AverageRating",
+                "as": "DifferenceFromMean"
+            }
+        ],
+        "mark": { "type": "bar", "clip": true },
+        "encoding": {
+            "x": {
+                "field": "Title",
+                "type": "ordinal"
+            },
+            "y": {
+                "field": "DifferenceFromMean",
+                "type": "quantitative",
+                "scale": { "domain": [-5, 5] },
+                "axis": { "title": "Rating Delta" }
+            }
+        }
+    }]
+}

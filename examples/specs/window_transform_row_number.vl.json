@@ -1,0 +1,46 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "Bar graph showing the row number for each of the cells",
+    "width": 300,
+    "height": 50,
+    "data": {
+        "values": [
+            { "y": 28 }, { "y": 55 },
+            { "y": 43 }, { "y": 91 },
+            { "y": 81 }, { "y": 53 },
+            { "y": 19 }, { "y": 87 },
+            { "y": 52 }, { "y": 48 },
+            { "y": 24 }, { "y": 49 },
+            { "y": 87 }, { "y": 66 },
+            { "y": 17 }, { "y": 27 },
+            { "y": 68 }, { "y": 16 },
+            { "y": 49 }, { "y": 15 }
+        ]
+    },
+    "layer": [{
+        "transform": [{
+                "calculate": "datum.y - 50",
+                "as": "ny"
+            },
+            {
+                "window": [{
+                    "op": "row_number",
+                    "as": "RowNumber"
+                }]
+            }
+        ],
+        "mark": { "type": "bar", "clip": true },
+        "encoding": {
+            "x": {
+                "field": "RowNumber",
+                "type": "quantitative",
+                "axis": { "title": "Row Number" }
+            },
+            "y": {
+                "field": "y",
+                "type": "quantitative",
+                "axis": { "title": "y" }
+            }
+        }
+    }]
+}
