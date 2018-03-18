@@ -27,22 +27,22 @@ export type CalloutPartsMinxins = {
 export interface CalloutConfig extends CalloutPartsMinxins {
   /**
    * Angle of callout line.
-   * __Default value: `45`
+   * __Default value:__ `45`
    */
   angle?: number;
   /**
    * Offset distance between the data point and the callout line.
-   * __Default value: `0`
+   * __Default value:__ `0`
    */
   lineOffset?: number;
   /**
    * Length of callout line.
-   * __Default value: `30`
+   * __Default value:__ `30`
    */
   lineLength?: number;
   /**
    * Offset distance between callout line and label
-   * __Default value: `2`
+   * __Default value:__ `2`
    */
   labelOffset?: number;
 }

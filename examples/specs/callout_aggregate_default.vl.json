@@ -1,0 +1,37 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+ "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+ "data": {
+   "url": "data/cars.json"
+ },
+ "layer": [{
+   "mark": "point",
+   "encoding": {
+     "x": {
+       "field": "Horsepower",
+       "type": "quantitative"
+     },
+     "y": {
+       "field": "Miles_per_Gallon",
+       "type": "quantitative"
+     },
+     "color": {
+       "condition": {
+         "test": "datum.Horsepower > 150",
+         "value": "red"
+       },
+       "value": "#4c78a8"
+     }
+   }
+ }, {
+   "transform": [{
+     "filter": "datum.Horsepower > 150"
+   }],
+   "mark": "callout",
+   "encoding": {
+     "x": {"field": "Horsepower","type": "quantitative", "aggregate": "mean"},
+     "y": {"field": "Miles_per_Gallon","type": "quantitative", "aggregate": "mean"},
+     "text": {"value": "high horsepower"}
+   }
+}]
+}
