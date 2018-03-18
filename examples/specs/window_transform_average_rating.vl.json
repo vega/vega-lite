@@ -1,0 +1,44 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "Bar graph showing how each film differs from the average rating for that year",
+    "width": 300,
+    "height": 50,
+    "data": {
+        "values": [
+            { "name": "Movie 1", "Rating": 9, "Year": 2016 },
+            { "name": "Movie 2", "Rating": 3, "Year": 2016 },
+            { "name": "Movie 3", "Rating": 5, "Year": 2015 }
+        ]
+    },
+    "layer": [{
+        "transform": [{
+                "window": [{
+                    "op": "mean",
+                    "field": "Rating",
+                    "as": "AverageYearRating"
+                }],
+                "groupby": [
+                    "Year"
+                ],
+                "frame": [null, null]
+            },
+            {
+                "calculate": "datum.Rating - datum.AverageYearRating",
+                "as": "RatingDelta"
+            }
+        ],
+        "mark": { "type": "bar", "clip": true },
+        "encoding": {
+            "x": {
+                "field": "name",
+                "type": "ordinal"
+            },
+            "y": {
+                "field": "RatingDelta",
+                "type": "quantitative",
+                "scale": { "domain": [-10, 10] },
+                "axis": { "title": "Rating Delta" }
+            }
+        }
+    }]
+}

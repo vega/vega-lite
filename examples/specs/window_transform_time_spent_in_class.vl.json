@@ -1,0 +1,53 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "A bar graph showing how long each student has been in class until the current class. The purpose of this visualization is to demonstate how the window transform could be used to show more complicated examples. Here is a bar graph of all the classes offered, along with how long each student has been at school till that class.",
+    "width": 300,
+    "height": 50,
+    "data": {
+        "values": [
+            { "student": "A", "Class": "CSE 101", "TimeOfDay": 8, "Length": 45 },
+            { "student": "A", "Class": "PHIL 101", "TimeOfDay": 10, "Length": 70 },
+            { "student": "A", "Class": "CHEM 101", "TimeOfDay": 12, "Length": 30 },
+            { "student": "A", "Class": "BIO 101", "TimeOfDay": 15, "Length": 45 },
+            { "student": "B", "Class": "CSE 101", "TimeOfDay": 8, "Length": 45 },
+            { "student": "B", "Class": "CHEM 101", "TimeOfDay": 12, "Length": 30 },
+            { "student": "B", "Class": "BIO 101", "TimeOfDay": 15, "Length": 45 }
+        ]
+    },
+    "layer": [{
+        "transform": [{
+            "window": [{
+                "op": "sum",
+                "field": "Length",
+                "as": "TimeInClass"
+            }],
+            "sort": [{ "field": "TimeOfDay", "order": "ascending" }],
+            "groupby": [
+                "Student"
+            ],
+            "frame": [null, -1]
+        }],
+        "mark": { "type": "bar", "clip": true },
+        "encoding": {
+            "x": {
+                "field": "Class",
+                "type": "nominal",
+                "scale": { "rangeStep": 12 },
+                "axis": { "title": "" }
+            },
+            "y": {
+                "field": "TimeInClass",
+                "type": "quantitative",
+                "axis": { "title": "Time spent in school (min)", "grid": false }
+            },
+            "color": {
+                "field": "student",
+                "type": "nominal"
+            }
+        }
+    }],
+    "config": {
+        "view": { "stroke": "transparent" },
+        "axis": { "domainWidth": 1 }
+    }
+}

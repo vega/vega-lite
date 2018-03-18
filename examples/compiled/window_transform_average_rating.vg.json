@@ -1,0 +1,198 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Bar graph showing how each film differs from the average rating for that year",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 300,
+    "height": 50,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "name": "Movie 1",
+                    "Rating": 9,
+                    "Year": 2016
+                },
+                {
+                    "name": "Movie 2",
+                    "Rating": 3,
+                    "Year": 2016
+                },
+                {
+                    "name": "Movie 3",
+                    "Rating": 5,
+                    "Year": 2015
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "AverageYearRating"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Rating"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "Year"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.Rating - datum.AverageYearRating",
+                    "as": "RatingDelta"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rect",
+            "clip": true,
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "name"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "RatingDelta"
+                    },
+                    "y2": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "name",
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": [
+                -10,
+                10
+            ],
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "name",
+            "labelOverlap": true,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Rating Delta",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
