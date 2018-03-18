@@ -4,8 +4,8 @@ import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
+import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
-import {WindowOnlyOp} from './window';
 
 export interface VgData {
   name: string;

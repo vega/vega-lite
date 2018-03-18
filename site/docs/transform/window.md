@@ -35,27 +35,15 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Transform Definition
 
-| Property    | Type | Description  |
-| :----------- | :-------: | :------------|
-| window | WindowFieldDef[] | The definition of the fields in the window, and what calculations to use. |
-| frame | Number[] | A two element specification about how large the sliding window is. The first element indicates the start and the second element indicates the end. If `null` is specified for the start, it will include everything before the current point. If `null` is specified for the end, it will include everything after the endpoint. For example a frame of `[-5,5]` says the window should include 5 previous objects and 5 after objects. The default is `[null, 0]`, which means include everything in the window. `[null, null]` would mean include everything in the window. |
-| ignorePeers | boolean | Will indicate whether to ignore peer values (items with the same rank) in the window. The default value is `False`.|
-| groupBy | String[] | The names of the data fields to partioin the objects into seprate windows. If not specified, everything will be in a single group. |
-| sort | WindowSortField | A definition for sorting the objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If left undefined, the order of items in the window is undefined.|
-
-### Window Transform Field Definition
-| Property    | Type | Description  |
-| :----------- | :-------: | :------------|
-| field | String | The name of the field to sort.  |
-| order | `'ascending' | 'descending'` | Whether to sort the field in ascending or descending order |
+{% include table.html props="window,frame,ignorePeers,groupBy,sort" source="WindowTransform" %}
 
 ### Window Sort Field Definition
-| Property    | Type | Description  |
-| :----------- | :-------: | :------------|
-| op | AggregateOp or WindowOnlyOp | See supported operations in the table below.  |
-| param | number | Parameter values for the window functions. Parameter value can be null for operations that do not accept a parameter. |
-| field | string | The data field for which to compute the aggregate or window function. This can be null for functions that do not operate over a field such as `count`, `rank`, `dense_rank`. |
-| as | string | The output name for each field. If non specified will use the format `window_op_field` for example, `count_field` for count and `sum_field` for sum. |
+
+{% include table.html props="field,order" source="WindowSortField" %}
+
+### Window Transform Field Definition
+
+{% include table.html props="op,param,field,as" source="WindowFieldDef" %}
 
 ## <a name="ops"></a> Window Only Operation Reference
 
@@ -76,6 +64,7 @@ The valid operations include all [valid aggregate operations](../aggregate/#ops)
 | nth_value    | {% include type t="Number" %} | Assigns a value from the nth data object in the current sliding window frame. If no such object exists, assigns `null`. Requires a non-negative integer parameter that indicates the offset from the start of the window frame. This operation must have a corresponding entry in the _fields_ parameter array.|
 
 ## Examples
+
 To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
 
 ### Percent of Total
