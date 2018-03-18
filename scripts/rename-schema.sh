@@ -11,6 +11,8 @@ perl -pi -e s,'Generic(.*)<CompositeUnitSpec\,LayerSpec>','\1',g build/vega-lite
 perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json
 
+perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
+
 perl -pi -e s,'FieldDefWithCondition<FieldDef>','FieldDefWithCondition',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDefWithCondition<FieldDef>','ValueDefWithCondition',g build/vega-lite-schema.json
 

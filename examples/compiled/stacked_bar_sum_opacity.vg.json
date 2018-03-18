@@ -224,11 +224,14 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "#4c78a8"
+                        },
                         "shape": {
                             "value": "square"
                         },
-                        "fill": {
-                            "value": "#4c78a8"
+                        "stroke": {
+                            "value": "transparent"
                         }
                     }
                 }

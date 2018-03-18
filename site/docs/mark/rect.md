@@ -23,6 +23,27 @@ The `rect` mark represents an arbitrary rectangle.
 
 - TOC
 {:toc}
+{:#properties}
+## Rect Mark Properties
+
+
+{: .suppress-error}
+```json
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "rect",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+```
+
+A rect mark definition can contain any [standard mark properties](mark.html#mark-def).
+
+## Examples
 
 ### Heatmap
 
@@ -61,4 +82,4 @@ We can also use `rect` to show a band covering one standard deviation over and b
 
 The `rect` property of the top-level [`config`](config.html) object sets the default properties for all rect marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-For the list of all supported properties, please see the [mark config documentation](mark.html#config).
+The rect config can contain any [rect mark properties](#properties) (except `type`, `style`, and `clip`).

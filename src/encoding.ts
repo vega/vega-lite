@@ -78,7 +78,7 @@ export interface Encoding<F> {
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
    * _Note:_
-   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
    * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
   color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
@@ -87,7 +87,7 @@ export interface Encoding<F> {
    * Fill color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ The `fill` channel has higher precedence than `color` and will override color value.
+   * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
    */
   fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -96,7 +96,7 @@ export interface Encoding<F> {
    * Stroke color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ The `stroke` channel has higher precedence than `color` and will override color value.
+   * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
   stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -155,7 +155,7 @@ export interface Encoding<F> {
 
   /**
    * Order of the marks.
-   * - For stacked marks, this `order` channel encodes stack order.
+   * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
    * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
@@ -216,6 +216,12 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
         log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
         return normalizedEncoding;
       }
+    }
+
+    // Drop color if either fill or stroke is specified
+     if (channel === 'color' && ('fill' in encoding || 'stroke' in encoding) ) {
+       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+       return normalizedEncoding;
     }
 
     if (channel === 'detail' || channel === 'order') {

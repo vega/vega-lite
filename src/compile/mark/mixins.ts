@@ -11,34 +11,82 @@ import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
+export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: false}): VgEncodeEntry {
+  const {markDef, encoding, config} = model;
+  const {filled, type: markType} = markDef;
 
-export function color(model: UnitModel) {
-  const config = model.config;
-  const {filled, type: markType} = model.markDef;
-  const vgChannel = filled ? 'fill' : 'stroke';
+  const configValue = {
+    fill: getMarkConfig('fill', markDef, config),
+    stroke: getMarkConfig('stroke', markDef, config),
+    color: getMarkConfig('color', markDef, config)
+  };
 
-  return {
+  const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ? 'transparent' : undefined;
+
+  const defaultValue = {
+    fill: markDef.fill || configValue.fill ||
     // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
-    ...(
-      contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ?
-      {fill: {value: 'transparent'}}:
-      {}
-    ),
-
-    ...nonPosition('color', model, {
-      vgChannel,
-      // Mark definition has higher precedence than config;
-      // fill/stroke has higher precedence than color.
-      defaultValue: model.markDef[vgChannel] ||
-        model.markDef.color ||
-        getMarkConfig(vgChannel, model.markDef, config) ||
-        getMarkConfig('color', model.markDef, config)
-    }),
-    // fill / stroke encodings have higher precedence than color encoding
-    ...nonPosition('fill', model),
-    ...nonPosition('stroke', model)
+      transparentIfNeeded,
+    stroke: markDef.stroke || configValue.stroke
   };
+
+  const colorVgChannel = filled ? 'fill' : 'stroke';
+
+  const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
+    ...(defaultValue.fill ? {
+      fill: {value: defaultValue.fill}
+    } : {}),
+    ...(defaultValue.stroke ? {
+      stroke: {value: defaultValue.stroke}
+    } : {}),
+  };
+
+  if (encoding.fill || encoding.stroke) {
+    // ignore encoding.color, markDef.color, config.color
+    if (markDef.color) {
+      // warn for markDef.color  (no need to warn encoding.color as it will be dropped in normalized already)
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+    }
+
+    return {
+      ...nonPosition('fill', model, {defaultValue: defaultValue.fill || transparentIfNeeded}),
+      ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
+    };
+  } else if (encoding.color) {
+
+    return {
+      ...fillStrokeMarkDefAndConfig,
+      // override them with encoded color field
+      ...nonPosition('color', model, {
+        vgChannel: colorVgChannel,
+        // apply default fill/stroke first, then color config, then transparent if needed.
+        defaultValue: markDef[colorVgChannel] || markDef.color || configValue[colorVgChannel] || configValue.color || (filled ? transparentIfNeeded : undefined)
+      })
+    };
+  } else if (markDef.fill || markDef.stroke) {
+    // Ignore markDef.color, config.color
+    if (markDef.color) {
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
+    }
+    return fillStrokeMarkDefAndConfig;
+  } else if (markDef.color) {
+    return {
+      ...fillStrokeMarkDefAndConfig, // in this case, fillStrokeMarkDefAndConfig only include config
+
+      // override config with markDef.color
+      [colorVgChannel]: {value: markDef.color}
+    };
+  } else if (configValue.fill || configValue.stroke) {
+    // ignore config.color
+    return fillStrokeMarkDefAndConfig;
+  } else if (configValue.color) {
+    return {
+      ...(transparentIfNeeded ? {fill: {value: 'transparent'}} : {}),
+      [colorVgChannel]: {value: configValue.color}
+    };
+  }
+  return {};
 }
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
