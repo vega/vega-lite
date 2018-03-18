@@ -57,14 +57,15 @@ If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's 
 
 {:#sort-array}
 
-4) Sorting by preferred order of values by providing `sort` an array of values that specify the order. Unspecified values will assume their original orders in the data source, preceded by the orders in the sort array.
-__Note__: It is also possible to sort by providing custom `scale`'s [`domain`](scale.html#domain). However, it is not preferable compared to using `sort` array since `domain` requires every possible value to be present in the array.
+4) Sorting by preferred order of values by providing `sort` as an array of values that specify the order. Unspecified values will assume their original orders in the data source, preceded by the orders in the sort array.
+
+__Note__: It is also possible to sort by providing custom `scale`'s [`domain`](scale.html#domain). However, it is more error-prone compared to using `sort` array since `domain` requires every possible value to be included in the array. Thus, any value omitted from `domain` will not render properly.
 
 In the case that sort array contains every field value, the sort order will follow the specified values in the array.
 
 <div class="vl-example" data-name="bar_custom_sort_full"></div>
 
-Sort order will precede by the specified values in the array, even though some value is ignored. Note how `D`, `E` and `F` still follows their original order, while `B`, `A` and `C` follows the order in sort array.
+If some values are ignored, the sort order will precede by the specified values in the array while unspecified values will follow their original order.  For example, this plots orders `B`, `A` and `C` first, followed by `Z`, `Y`, `X`. 
 
 <div class="vl-example" data-name="bar_custom_sort_partial"></div>
 
