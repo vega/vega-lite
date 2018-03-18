@@ -22,7 +22,7 @@ You can find [tasks with the "Help wanted" label in the issue tracker](https://g
 
 ### Help Create New Examples
 
-To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/gallery.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
+To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/index.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
 
 ## Documentation and Website
 
