@@ -956,27 +956,27 @@
     "CalloutConfig": {
       "additionalProperties": false,
       "properties": {
-        "calloutAngle": {
+        "angle": {
           "description": "Angle of callout line.\n__Default value: `45`",
-          "type": "number"
-        },
-        "calloutLength": {
-          "description": "Length of callout.\n__Default value: `30`",
-          "type": "number"
-        },
-        "calloutOffset": {
-          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
           "type": "number"
         },
         "label": {
           "$ref": "#/definitions/MarkConfig"
         },
         "labelOffset": {
-          "description": "Offset distance between callout line and label\n__Default value: `0`",
+          "description": "Offset distance between callout line and label\n__Default value: `2`",
           "type": "number"
         },
         "line": {
           "$ref": "#/definitions/MarkConfig"
+        },
+        "lineLength": {
+          "description": "Length of callout line.\n__Default value: `30`",
+          "type": "number"
+        },
+        "lineOffset": {
+          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
+          "type": "number"
         }
       },
       "type": "object"
@@ -984,27 +984,27 @@
     "CalloutDef": {
       "additionalProperties": false,
       "properties": {
-        "calloutAngle": {
+        "angle": {
           "description": "Angle of callout line.\n__Default value: `45`",
-          "type": "number"
-        },
-        "calloutLength": {
-          "description": "Length of callout.\n__Default value: `30`",
-          "type": "number"
-        },
-        "calloutOffset": {
-          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
           "type": "number"
         },
         "label": {
           "$ref": "#/definitions/MarkConfig"
         },
         "labelOffset": {
-          "description": "Offset distance between callout line and label\n__Default value: `0`",
+          "description": "Offset distance between callout line and label\n__Default value: `2`",
           "type": "number"
         },
         "line": {
           "$ref": "#/definitions/MarkConfig"
+        },
+        "lineLength": {
+          "description": "Length of callout line.\n__Default value: `30`",
+          "type": "number"
+        },
+        "lineOffset": {
+          "description": "Offset distance between the data point and the callout line.\n__Default value: `0`",
+          "type": "number"
         },
         "type": {
           "$ref": "#/definitions/Callout",

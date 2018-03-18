@@ -29,20 +29,20 @@ export interface CalloutConfig extends CalloutPartsMinxins {
    * Angle of callout line.
    * __Default value: `45`
    */
-  calloutAngle?: number;
+  angle?: number;
   /**
    * Offset distance between the data point and the callout line.
    * __Default value: `0`
    */
-  calloutOffset?: number;
+  lineOffset?: number;
   /**
-   * Length of callout.
+   * Length of callout line.
    * __Default value: `30`
    */
-  calloutLength?: number;
+  lineLength?: number;
   /**
    * Offset distance between callout line and label
-   * __Default value: `0`
+   * __Default value: `2`
    */
   labelOffset?: number;
 }
@@ -65,10 +65,10 @@ export function normalizeCallout(spec: GenericUnitSpec<Encoding<string>, Callout
     ...isMarkDef(mark) ? mark : {type: mark}
 };
 
-  const {calloutAngle, calloutOffset, calloutLength, labelOffset} = markDef;
-  const calloutOffsetCoor1 = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset);
-  const calloutOffsetCoor2 = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength);
-  const labelTotalOffsetCoor = getCoordinateFromAngleAndLength(calloutAngle, calloutOffset + calloutLength + labelOffset);
+  const {angle, lineOffset, lineLength, labelOffset} = markDef;
+  const calloutOffsetCoor1 = getCoordinateFromAngleAndLength(angle, lineOffset);
+  const calloutOffsetCoor2 = getCoordinateFromAngleAndLength(angle, lineOffset + lineLength);
+  const labelTotalOffsetCoor = getCoordinateFromAngleAndLength(angle, lineOffset + lineLength + labelOffset);
 
   const {text, size, ...encodingWithoutTextAndSize} = encoding;
   if (!text) {

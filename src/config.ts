@@ -272,10 +272,10 @@ export const defaultConfig: Config = {
 
 
   callout: {
-    calloutAngle: 45,
-    calloutOffset: 0,
-    calloutLength: 30,
-    labelOffset: 5,
+    angle: 45,
+    lineOffset: 0,
+    lineLength: 30,
+    labelOffset: 2,
     label: {},
     line: {}
   },
