@@ -50,6 +50,8 @@ TimeUnit:
   link: timeunit.html
 LookupData:
   link: "lookup.html#lookup-data"
+Window:
+  link: window.html
 
 # Transform - Time Unit
 Month:

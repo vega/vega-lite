@@ -52,6 +52,8 @@
         - [Time Unit in Encoding Field Definition]({{site.baseurl}}/docs/timeunit.html#encoding)
         - [Time Unit Transform]({{site.baseurl}}/docs/timeunit.html#transform)
         - [UTC time]({{site.baseurl}}/docs/timeunit.html#utc)
+    - [Window]({{site.baseurl}}/docs/window.html)
+        - [Overview]({{site.baseurl}}/docs/window.html)
 - [Mark]({{site.baseurl}}/docs/mark.html)
     - [Documentation Overview]({{site.baseurl}}/docs/mark.html#documentation-overview)
     - [Mark Definition Object]({{site.baseurl}}/docs/mark.html#mark-def)
