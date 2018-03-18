@@ -5,6 +5,7 @@ import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {Flag, flagKeys} from './util';
+import {WindowOnlyOp} from './window';
 
 export interface VgData {
   name: string;
@@ -403,7 +404,7 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -1298,4 +1299,23 @@ export interface VgTitleConfig {
    * Default title orientation ("top", "bottom", "left", or "right")
    */
   orient?: TitleOrient;
+}
+
+export type VgComparatorOrder = 'ascending' | 'descending';
+
+export interface VgComparator {
+  field?: string | string[];
+  order?: VgComparatorOrder | VgComparatorOrder[];
+}
+
+export interface VgWindowTransform {
+  type: 'window';
+  params?: Number[];
+  as?: string[];
+  ops?: (AggregateOp | WindowOnlyOp)[];
+  fields?: string[];
+  frame?: Number[];
+  ignorePeers?: Boolean;
+  groupby?: string[];
+  sort?: VgComparator;
 }

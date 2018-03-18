@@ -6489,6 +6489,9 @@
         },
         {
           "$ref": "#/definitions/AggregateTransform"
+        },
+        {
+          "$ref": "#/definitions/WindowTransform"
         }
       ]
     },
@@ -7305,6 +7308,118 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "WindowFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output name for each field. If none is defined will use the format op_field. For example, count_field for count,\n  and sum_field for sum.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data fields for which to compute aggregate or window functions. Field can be omitted for operations that do not\noperate over a specific data field, including count, rank, and dense_rank.",
+          "type": "string"
+        },
+        "op": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/WindowOnlyOp"
+            }
+          ],
+          "description": "The operations supported for the window aggregation. See the list of supported operations here:\n   https://vega.github.io/vega-lite/docs/transforms/window.html"
+        },
+        "param": {
+          "description": "Parameter values for the window functions. Parameter value can be null for operations that do not accept a\nparameter.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "type": "object"
+    },
+    "WindowOnlyOp": {
+      "enum": [
+        "row_number",
+        "rank",
+        "dense_rank",
+        "percent_rank",
+        "cume_dist",
+        "ntile",
+        "lag",
+        "lead",
+        "first_value",
+        "last_value",
+        "nth_value"
+      ],
+      "type": "string"
+    },
+    "WindowSortField": {
+      "additionalProperties": false,
+      "description": "A compartor for fields within the window transform",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "order": {
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "type": "object"
+    },
+    "WindowTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "The frame for the window, if none is set the default is `[null, 0]` everything before the\ncurrent item.",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The fields to group by.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ignorePeers": {
+          "description": "Will indicate whether to ignore peer values (items with the same rank) in the window. The default value is `False`.",
+          "type": "boolean"
+        },
+        "sort": {
+          "description": "The definitions of how to sort each of the fields in the window.",
+          "items": {
+            "$ref": "#/definitions/WindowSortField"
+          },
+          "type": "array"
+        },
+        "window": {
+          "description": "The definition of the fields in the window, and what calculations to use.",
+          "items": {
+            "$ref": "#/definitions/WindowFieldDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "window"
+      ],
       "type": "object"
     }
   }
