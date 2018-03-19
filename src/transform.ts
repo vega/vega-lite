@@ -5,9 +5,6 @@ import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
 
-export type WindowOnlyOp = 'row_number' | 'rank' | 'dense_rank' | 'percent_rank' | 'cume_dist'
-| 'ntile' | 'lag' | 'lead' | 'first_value' | 'last_value' | 'nth_value';
-
 export interface FilterTransform {
   /**
    * The `filter` property must be one of the predicate definitions:
@@ -103,6 +100,20 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
+
+export type WindowOnlyOp =
+  |'row_number'
+  | 'rank'
+  | 'dense_rank'
+  | 'percent_rank'
+  | 'cume_dist'
+  | 'ntile'
+  | 'lag'
+  | 'lead'
+  | 'first_value'
+  | 'last_value'
+  | 'nth_value';
+
 export interface WindowFieldDef {
   /**
    * The operations supported for the window aggregation. See the list of supported operations here:
@@ -111,19 +122,19 @@ export interface WindowFieldDef {
   op: AggregateOp | WindowOnlyOp;
 
   /**
-   *  Parameter values for the window functions. Parameter value can be omitted for operations that do not accept a parameter.
+   *  Please refer to the operation/parameter table. Parameter values for the window functions. Parameter value can be omitted for operations that do not accept a parameter. The spec will be invalid if any function that requires a parameter is unspecified.
    */
   param?: number;
 
   /**
-   * The data field for which to compute the aggregate or window function. This can be null for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
+   * The data field for which to compute the aggregate or window function. This can be omitted for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
    */
   field?: string;
 
   /**
-   *  The output name for each field. If non specified will use the format `window_op_field` for example, `count_field` for count and `sum_field` for sum.
+   *  The output name for each field.
    */
-  as?: string;
+  as: string;
 }
 
 export interface WindowTransform {
@@ -133,22 +144,26 @@ export interface WindowTransform {
   window: WindowFieldDef[];
 
   /**
-   * A two element specification about how large the sliding window is. The first element indicates the start and the second element indicates the end. If `null` is specified for the start, it will include everything before the current point. If `null` is specified for the end, it will include everything after the endpoint. For example a frame of `[-5,5]` says the window should include 5 previous objects and 5 after objects. The default is `[null, 0]`, which means include everything in the window. `[null, null]` would mean include everything in the window.
+   * A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects.
+   *
+   * __Default value:__:  `[null, 0]` (includes the current object and all preceding objects)
    */
   frame?: (null | number)[];
 
   /**
-   * Will indicate whether to ignore peer values (items with the same rank) in the window. The default value is `False`.
+   * Will indicate whether to ignore peer values (items with the same rank) in the window.
+   *
+   * __Default value:__ `false'
    */
   ignorePeers?: boolean;
 
   /**
-   * The names of the data fields to partioin the objects into seprate windows. If not specified, everything will be in a single group.
+   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.
    */
   groupby?: string[];
 
   /**
-   * A definition for sorting the objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If left undefined, the order of items in the window is undefined.
+   * A definition for sorting the data objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If undefined, the order of items in the window is undefined.
    */
   sort?: WindowSortField[];
 }
