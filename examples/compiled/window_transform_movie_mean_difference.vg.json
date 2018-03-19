@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Bar graph showing how each movie is different from the average movie rating",
+    "description": "Bar graph showing how each of the 'really good' movies is different from the average movie rating. Really good is defined to differ from the average movie rating by more than 2.5 points.",
     "autosize": "pad",
     "padding": 5,
     "width": 300,
@@ -11,7 +11,10 @@
             "name": "source_0",
             "url": "data/movies.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "IMDB_Rating": "number"
+                }
             },
             "transform": [
                 {
@@ -44,7 +47,11 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"DifferenceFromMean\"] !== null && !isNaN(datum[\"DifferenceFromMean\"])"
+                    "expr": "datum.DifferenceFromMean > 2.5"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
                 }
             ]
         }
@@ -75,7 +82,7 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "DifferenceFromMean"
+                        "field": "IMDB_Rating"
                     },
                     "y2": {
                         "field": {
@@ -108,8 +115,8 @@
             "name": "y",
             "type": "linear",
             "domain": [
-                -5,
-                5
+                7,
+                10
             ],
             "range": [
                 {
@@ -147,7 +154,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "Rating Delta",
+            "title": "IMDB rating",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

@@ -1,0 +1,325 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A bar graph showing the scores of the top 5 students. This shows an example of the window transform, for how the top X can be filtered, and also how a rank can be computed for each student.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 300,
+    "height": 50,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "student": "A",
+                    "score": 100
+                },
+                {
+                    "student": "B",
+                    "score": 56
+                },
+                {
+                    "student": "C",
+                    "score": 88
+                },
+                {
+                    "student": "D",
+                    "score": 65
+                },
+                {
+                    "student": "E",
+                    "score": 45
+                },
+                {
+                    "student": "F",
+                    "score": 23
+                },
+                {
+                    "student": "G",
+                    "score": 66
+                },
+                {
+                    "student": "H",
+                    "score": 67
+                },
+                {
+                    "student": "I",
+                    "score": 13
+                },
+                {
+                    "student": "J",
+                    "score": 12
+                },
+                {
+                    "student": "K",
+                    "score": 50
+                },
+                {
+                    "student": "L",
+                    "score": 78
+                },
+                {
+                    "student": "M",
+                    "score": 66
+                },
+                {
+                    "student": "N",
+                    "score": 30
+                },
+                {
+                    "student": "O",
+                    "score": 97
+                },
+                {
+                    "student": "P",
+                    "score": 75
+                },
+                {
+                    "student": "Q",
+                    "score": 24
+                },
+                {
+                    "student": "R",
+                    "score": 42
+                },
+                {
+                    "student": "S",
+                    "score": 76
+                },
+                {
+                    "student": "T",
+                    "score": 78
+                },
+                {
+                    "student": "U",
+                    "score": 21
+                },
+                {
+                    "student": "V",
+                    "score": 46
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Score\"])",
+                    "as": "Score"
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "rank"
+                    ],
+                    "ops": [
+                        "rank"
+                    ],
+                    "fields": [
+                        "score"
+                    ],
+                    "sort": {
+                        "field": [
+                            "score"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "groupby": [
+                        "Student"
+                    ],
+                    "frame": [
+                        null,
+                        0
+                    ]
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "totalStudents"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "score"
+                    ],
+                    "sort": {
+                        "field": [
+                            "score"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "groupby": [
+                        "Student"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.totalStudents - datum.rank > 5"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Score\"] !== null && !isNaN(datum[\"Score\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rect",
+            "clip": true,
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "student"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "student"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Score"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "student",
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Score"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "data_0",
+                "field": "student",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Score",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "student",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axis": {
+            "domainWidth": 1
+        },
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
+        }
+    }
+}
