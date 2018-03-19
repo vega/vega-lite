@@ -24,6 +24,11 @@
                     "name": "Movie 3",
                     "Rating": 5,
                     "Year": 2015
+                },
+                {
+                    "name": "Movie 4",
+                    "Rating": 2,
+                    "Year": 2015
                 }
             ]
         },

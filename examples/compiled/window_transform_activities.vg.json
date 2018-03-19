@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "A bar graph showing how long each student has been in class until the current class. The purpose of this visualization is to demonstate how the window transform could be used to show more complicated examples. Here is a bar graph of all the classes offered, along with how long each student has been at school till that class.",
+    "description": "A bar graph showing what activites consume what percentage of the day.",
     "autosize": "pad",
     "padding": 5,
     "width": 300,
@@ -11,46 +11,24 @@
             "name": "source_0",
             "values": [
                 {
-                    "student": "A",
-                    "Class": "CSE 101",
-                    "TimeOfDay": 8,
-                    "Length": 45
+                    "Activity": "Sleeping",
+                    "Time": 8
                 },
                 {
-                    "student": "A",
-                    "Class": "PHIL 101",
-                    "TimeOfDay": 10,
-                    "Length": 70
+                    "Activity": "Eating",
+                    "Time": 2
                 },
                 {
-                    "student": "A",
-                    "Class": "CHEM 101",
-                    "TimeOfDay": 12,
-                    "Length": 30
+                    "Activity": "TV",
+                    "Time": 4
                 },
                 {
-                    "student": "A",
-                    "Class": "BIO 101",
-                    "TimeOfDay": 15,
-                    "Length": 45
+                    "Activity": "Work",
+                    "Time": 8
                 },
                 {
-                    "student": "B",
-                    "Class": "CSE 101",
-                    "TimeOfDay": 8,
-                    "Length": 45
-                },
-                {
-                    "student": "B",
-                    "Class": "CHEM 101",
-                    "TimeOfDay": 12,
-                    "Length": 30
-                },
-                {
-                    "student": "B",
-                    "Class": "BIO 101",
-                    "TimeOfDay": 15,
-                    "Length": 45
+                    "Activity": "Exercise",
+                    "Time": 2
                 }
             ]
         },
@@ -64,58 +42,31 @@
                         null
                     ],
                     "as": [
-                        "TimeInClass"
+                        "TotalTime"
                     ],
                     "ops": [
                         "sum"
                     ],
                     "fields": [
-                        "Length"
+                        "Time"
                     ],
                     "sort": {
-                        "field": [
-                            "TimeOfDay"
-                        ],
-                        "order": [
-                            "ascending"
-                        ]
+                        "field": [],
+                        "order": []
                     },
-                    "groupby": [
-                        "Student"
-                    ],
                     "frame": [
                         null,
-                        -1
+                        null
                     ]
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"TimeInClass\"])",
-                    "as": "TimeInClass"
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "Class"
-                    ],
-                    "field": "TimeInClass",
-                    "sort": {
-                        "field": [
-                            "student"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "TimeInClass_start",
-                        "TimeInClass_end"
-                    ],
-                    "offset": "zero"
+                    "expr": "datum.Time/datum.TotalTime * 100",
+                    "as": "PercentOfTotal"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"TimeInClass\"] !== null && !isNaN(datum[\"TimeInClass\"])"
+                    "expr": "datum[\"PercentOfTotal\"] !== null && !isNaN(datum[\"PercentOfTotal\"])"
                 }
             ]
         }
@@ -134,12 +85,11 @@
             "encode": {
                 "update": {
                     "fill": {
-                        "scale": "color",
-                        "field": "student"
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "scale": "x",
-                        "field": "Class"
+                        "field": "Activity"
                     },
                     "width": {
                         "scale": "x",
@@ -147,11 +97,11 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "TimeInClass_end"
+                        "field": "PercentOfTotal"
                     },
                     "y2": {
                         "scale": "y",
-                        "field": "TimeInClass_start"
+                        "value": 0
                     }
                 }
             }
@@ -163,7 +113,7 @@
             "type": "band",
             "domain": {
                 "data": "data_0",
-                "field": "Class",
+                "field": "Activity",
                 "sort": true
             },
             "range": [
@@ -180,10 +130,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "fields": [
-                    "TimeInClass_start",
-                    "TimeInClass_end"
-                ]
+                "field": "PercentOfTotal"
             },
             "range": [
                 {
@@ -193,16 +140,6 @@
             ],
             "nice": true,
             "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_0",
-                "field": "student",
-                "sort": true
-            },
-            "range": "category"
         }
     ],
     "axes": [
@@ -229,27 +166,12 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "Time spent in school (min)",
+            "title": "% of total Time",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
             },
             "zindex": 1
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "student",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "shape": {
-                            "value": "square"
-                        }
-                    }
-                }
-            }
         }
     ],
     "config": {

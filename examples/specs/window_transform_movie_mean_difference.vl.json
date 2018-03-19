@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-    "description": "Bar graph showing how each movie is different from the average movie rating",
+    "description": "Bar graph showing how each of the 'really good' movies is different from the average movie rating. Really good is defined to differ from the average movie rating by more than 2.5 points.",
     "width": 300,
     "height": 50,
     "data": { "url": "data/movies.json" },
@@ -16,6 +16,9 @@
             {
                 "calculate": "datum.IMDB_Rating - datum.AverageRating",
                 "as": "DifferenceFromMean"
+            },
+            {
+                "filter": "datum.DifferenceFromMean > 2.5"
             }
         ],
         "mark": { "type": "bar", "clip": true },
@@ -25,10 +28,10 @@
                 "type": "ordinal"
             },
             "y": {
-                "field": "DifferenceFromMean",
+                "field": "IMDB_Rating",
                 "type": "quantitative",
-                "scale": { "domain": [-5, 5] },
-                "axis": { "title": "Rating Delta" }
+                "scale": { "domain": [7, 10] },
+                "axis": { "title": "IMDB rating" }
             }
         }
     }]
