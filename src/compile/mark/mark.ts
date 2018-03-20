@@ -35,7 +35,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
 
 
 export function parseMarkGroup(model: UnitModel): any[] {
-  if (contains([LINE, AREA], model.mark())) {
+  if (contains([LINE, AREA], model.mark)) {
     return parsePathMark(model);
   } else {
     return getMarkGroups(model);
@@ -82,7 +82,7 @@ export function getSort(model: UnitModel) {
   if (model.channelHasField('order') && !model.stack) {
     // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)
     return sortParams(model.encoding.order, {expr: 'datum'});
-  } else if (contains(['line', 'area'], model.mark())) {
+  } else if (contains(['line', 'area'], model.mark)) {
     // For both line and area, we sort values based on dimension by default
     const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
     const s = model.sort(dimensionChannel);
@@ -112,7 +112,7 @@ export function getSort(model: UnitModel) {
 function getMarkGroups(model: UnitModel, opt: {
   fromPrefix: string
 } = {fromPrefix: ''}) {
-  const mark = model.mark();
+  const mark = model.mark;
 
   const clip = model.markDef.clip !== undefined ?
     !!model.markDef.clip : scaleClip(model);
