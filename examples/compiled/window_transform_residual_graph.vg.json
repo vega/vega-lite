@@ -1,20 +1,17 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Bar graph showing how each of the 'really good' movies is different from the average movie rating. Really good is defined to differ from the average movie rating by more than 2.5 points.",
+    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
     "autosize": "pad",
     "padding": 5,
-    "width": 300,
-    "height": 50,
+    "width": 700,
+    "height": 500,
     "style": "cell",
     "data": [
         {
             "name": "source_0",
             "url": "data/movies.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "IMDB_Rating": "number"
-                }
+                "type": "json"
             },
             "transform": [
                 {
@@ -41,17 +38,42 @@
                     ]
                 },
                 {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "rank"
+                    ],
+                    "ops": [
+                        "rank"
+                    ],
+                    "fields": [
+                        null
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"rank\"])",
+                    "as": "rank"
+                },
+                {
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"Release_Date\"],'%d-%b-%y')",
+                    "as": "Release_Date"
+                },
+                {
                     "type": "formula",
                     "expr": "datum.IMDB_Rating - datum.AverageRating",
-                    "as": "DifferenceFromMean"
+                    "as": "RatingDelta"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.DifferenceFromMean > 2.5"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+                    "expr": "datum[\"rank\"] !== null && !isNaN(datum[\"rank\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
                 }
             ]
         }
@@ -59,35 +81,32 @@
     "marks": [
         {
             "name": "marks",
-            "type": "rect",
+            "type": "symbol",
             "clip": true,
             "style": [
-                "bar"
+                "point"
             ],
             "from": {
                 "data": "source_0"
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "fill": {
+                        "value": "transparent"
+                    },
+                    "stroke": {
                         "value": "#4c78a8"
                     },
                     "x": {
                         "scale": "x",
-                        "field": "Title"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
+                        "field": "rank"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "IMDB_Rating"
-                    },
-                    "y2": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "field": "RatingDelta"
                     }
                 }
             }
@@ -96,11 +115,10 @@
     "scales": [
         {
             "name": "x",
-            "type": "band",
+            "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "Title",
-                "sort": true
+                "field": "rank"
             },
             "range": [
                 0,
@@ -108,16 +126,16 @@
                     "signal": "width"
                 }
             ],
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            "nice": true,
+            "zero": true
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": [
-                7,
-                10
-            ],
+            "domain": {
+                "data": "source_0",
+                "field": "RatingDelta"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -125,36 +143,40 @@
                 0
             ],
             "nice": true,
-            "zero": false
+            "zero": true
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "Title",
+            "title": "rank",
+            "labelFlush": true,
             "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+            "tickCount": {
+                "signal": "ceil(width/40)"
             },
             "zindex": 1
         },
         {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
             "scale": "y",
             "orient": "left",
-            "title": "IMDB rating",
+            "title": "Rating Delta",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

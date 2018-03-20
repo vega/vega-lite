@@ -73,7 +73,7 @@
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "marks",
             "type": "rect",
             "clip": true,
             "style": [

@@ -102,21 +102,21 @@ export interface AggregatedFieldDef {
 
 
 export type WindowOnlyOp =
-  |'row_number'
-  | 'rank'
-  | 'dense_rank'
-  | 'percent_rank'
-  | 'cume_dist'
-  | 'ntile'
-  | 'lag'
-  | 'lead'
-  | 'first_value'
-  | 'last_value'
-  | 'nth_value';
+  'row_number' |
+   'rank' |
+   'dense_rank' |
+   'percent_rank' |
+   'cume_dist' |
+   'ntile' |
+   'lag' |
+   'lead' |
+   'first_value' |
+   'last_value' |
+   'nth_value';
 
 export interface WindowFieldDef {
   /**
-   * The operations supported for the window aggregation. See the list of supported operations here:
+   * The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of supported operations here:
    *   https://vega.github.io/vega-lite/docs/transforms/window.html
    */
   op: AggregateOp | WindowOnlyOp;
@@ -151,7 +151,7 @@ export interface WindowTransform {
   frame?: (null | number)[];
 
   /**
-   * Will indicate whether to ignore peer values (items with the same rank) in the window.
+   * Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.
    *
    * __Default value:__ `false'
    */
@@ -163,7 +163,7 @@ export interface WindowTransform {
   groupby?: string[];
 
   /**
-   * A definition for sorting the data objects within the window. Equivalent objects are considered a peer (Look at ignorePeers). If undefined, the order of items in the window is undefined.
+   * A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
    */
   sort?: WindowSortField[];
 }

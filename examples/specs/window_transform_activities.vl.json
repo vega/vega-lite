@@ -10,35 +10,33 @@
             { "Activity": "Exercise", "Time": 2 }
         ]
     },
-    "layer": [{
-        "transform": [{
-                "window": [{
-                    "op": "sum",
-                    "field": "Time",
-                    "as": "TotalTime"
-                }],
-                "frame": [null, null]
-            },
-            {
-                "calculate": "datum.Time/datum.TotalTime * 100",
-                "as": "PercentOfTotal"
-            }
-        ],
-        "mark": { "type": "bar", "clip": true },
-        "encoding": {
-            "x": {
-                "field": "Activity",
-                "type": "nominal",
-                "scale": { "rangeStep": 12 },
-                "axis": { "title": "" }
-            },
-            "y": {
-                "field": "PercentOfTotal",
-                "type": "quantitative",
-                "axis": { "title": "% of total Time", "grid": false }
-            }
+    "transform": [{
+            "window": [{
+                "op": "sum",
+                "field": "Time",
+                "as": "TotalTime"
+            }],
+            "frame": [null, null]
+        },
+        {
+            "calculate": "datum.Time/datum.TotalTime * 100",
+            "as": "PercentOfTotal"
         }
-    }],
+    ],
+    "mark": { "type": "bar", "clip": true },
+    "encoding": {
+        "x": {
+            "field": "Activity",
+            "type": "nominal",
+            "scale": { "rangeStep": 12 },
+            "axis": { "title": "" }
+        },
+        "y": {
+            "field": "PercentOfTotal",
+            "type": "quantitative",
+            "axis": { "title": "% of total Time", "grid": false }
+        }
+    },
     "config": {
         "view": { "stroke": "transparent" },
         "axis": { "domainWidth": 1 }
