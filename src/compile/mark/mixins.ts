@@ -245,11 +245,15 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   const {encoding, stack} = model;
 
   const channelDef = encoding[channel];
+  const scaleName = model.scaleName(channel);
+  const scale = model.getScaleComponent(channel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
-    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+    ref.stackable(channel, encoding[channel], scaleName, scale, stack,
+    ref.getDefaultRef(defaultRef, channel, scaleName, scale)
+  );
 
   return {
     [vgChannel || channel]: valueRef
@@ -266,10 +270,14 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
+  const scaleName = model.scaleName(baseChannel);
+  const scale = model.getScaleComponent(baseChannel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
-    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+    ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
+    ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale)
+  );
   return {[channel]: valueRef};
 }
