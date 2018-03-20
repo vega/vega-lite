@@ -2,7 +2,8 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {isArray} from 'util';
-import {Channel, X, X2, Y, Y2} from '../../channel';
+import {isString} from 'vega-util';
+import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {
   ChannelDef,
@@ -30,7 +31,7 @@ import {ScaleComponent} from '../scale/component';
  * @return Vega ValueRef for stackable x or y
  */
 export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
+    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
@@ -42,7 +43,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
  * @return Vega ValueRef for stackable x2 or y2
  */
 export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
+    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(aFieldDef) && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
       channel.charAt(0) === stack.fieldChannel.charAt(0)
@@ -102,8 +103,7 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties,
-  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
@@ -143,25 +143,6 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     // In such case, we will use default ref.
   }
 
-  if (defaultRef === 'zeroOrMin') {
-    /* istanbul ignore else */
-    if (channel === X || channel === X2) {
-      return zeroOrMinX(scaleName, scale);
-    } else if (channel === Y || channel === Y2) {
-      return zeroOrMinY(scaleName, scale);
-    } else {
-      throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
-    }
-  } else if (defaultRef === 'zeroOrMax') {
-    /* istanbul ignore else */
-    if (channel === X || channel === X2) {
-      return zeroOrMaxX(scaleName, scale);
-    } else if (channel === Y || channel === Y2) {
-      return zeroOrMaxY(scaleName, scale);
-    } else {
-      throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
-    }
-  }
   return defaultRef;
 }
 
@@ -203,60 +184,27 @@ function domainDefinitelyIncludeZero(scale: ScaleComponent) {
   return false;
 }
 
-function zeroOrMinX(scaleName: string, scale: ScaleComponent): VgValueRef {
-  if (scaleName) {
-    // Log / Time / UTC scale do not support zero
-    if (domainDefinitelyIncludeZero(scale)) {
-      return {
-        scale: scaleName,
-        value: 0
-      };
+export function getDefaultRef(
+  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
+  channel: 'x' | 'y',
+  scaleName: string, scale: ScaleComponent
+) {
+  if (isString(defaultRef)) {
+    if (scaleName) {
+      if (domainDefinitelyIncludeZero(scale)) {
+        return {
+          scale: scaleName,
+          value: 0
+        };
+      }
+    }
+
+    if (defaultRef === 'zeroOrMin') {
+      return channel === 'x' ? {value: 0} : {field: {group: 'height'}};
+    } else { // zeroOrMax
+      return channel === 'x' ? {field: {group: 'width'}} : {value: 0};
     }
   }
-  // Put the mark on the x-axis
-  return {value: 0};
+  return defaultRef;
 }
 
-/**
- * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
- */
-function zeroOrMaxX(scaleName: string, scale: ScaleComponent): VgValueRef {
-  if (scaleName) {
-    if (domainDefinitelyIncludeZero(scale)) {
-      return {
-        scale: scaleName,
-        value: 0
-      };
-    }
-  }
-  return {field: {group: 'width'}};
-}
-
-function zeroOrMinY(scaleName: string, scale: ScaleComponent): VgValueRef {
-  if (scaleName) {
-    if (domainDefinitelyIncludeZero(scale)) {
-      return {
-        scale: scaleName,
-        value: 0
-      };
-    }
-  }
-  // Put the mark on the y-axis
-  return {field: {group: 'height'}};
-}
-
-/**
- * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
- */
-function zeroOrMaxY(scaleName: string, scale: ScaleComponent): VgValueRef {
-  if (scaleName) {
-    if (domainDefinitelyIncludeZero(scale)) {
-      return {
-        scale: scaleName,
-        value: 0
-      };
-    }
-  }
-  // Put the mark on the y-axis
-  return {value: 0};
-}
