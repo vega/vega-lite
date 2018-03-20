@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Bar graph showing how each film differs from the average rating for that year",
+    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
     "autosize": "pad",
     "padding": 5,
     "width": 300,
@@ -9,33 +9,19 @@
     "data": [
         {
             "name": "source_0",
-            "values": [
-                {
-                    "name": "Movie 1",
-                    "Rating": 9,
-                    "Year": 2016
-                },
-                {
-                    "name": "Movie 2",
-                    "Rating": 3,
-                    "Year": 2016
-                },
-                {
-                    "name": "Movie 3",
-                    "Rating": 5,
-                    "Year": 2015
-                },
-                {
-                    "name": "Movie 4",
-                    "Rating": 2,
-                    "Year": 2015
+            "url": "data/movies.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Release_Date": "date:'%d-%b-%y'"
                 }
-            ]
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
+            },
             "transform": [
+                {
+                    "type": "formula",
+                    "as": "year",
+                    "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
+                },
                 {
                     "type": "window",
                     "params": [
@@ -48,14 +34,14 @@
                         "mean"
                     ],
                     "fields": [
-                        "Rating"
+                        "IMDB_Rating"
                     ],
                     "sort": {
                         "field": [],
                         "order": []
                     },
                     "groupby": [
-                        "Year"
+                        "year"
                     ],
                     "frame": [
                         null,
@@ -64,8 +50,12 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.Rating - datum.AverageYearRating",
+                    "expr": "datum.IMDB_Rating - datum.AverageYearRating",
                     "as": "RatingDelta"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.RatingDelta > 2.5"
                 },
                 {
                     "type": "filter",
@@ -76,14 +66,14 @@
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "marks",
             "type": "rect",
             "clip": true,
             "style": [
                 "bar"
             ],
             "from": {
-                "data": "data_0"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
@@ -92,7 +82,7 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "name"
+                        "field": "Title"
                     },
                     "width": {
                         "scale": "x",
@@ -103,9 +93,8 @@
                         "field": "RatingDelta"
                     },
                     "y2": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "scale": "y",
+                        "value": 0
                     }
                 }
             }
@@ -116,8 +105,8 @@
             "name": "x",
             "type": "band",
             "domain": {
-                "data": "data_0",
-                "field": "name",
+                "data": "source_0",
+                "field": "Title",
                 "sort": true
             },
             "range": [
@@ -132,10 +121,10 @@
         {
             "name": "y",
             "type": "linear",
-            "domain": [
-                -10,
-                10
-            ],
+            "domain": {
+                "data": "source_0",
+                "field": "RatingDelta"
+            },
             "range": [
                 {
                     "signal": "height"
@@ -143,14 +132,14 @@
                 0
             ],
             "nice": true,
-            "zero": false
+            "zero": true
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "name",
+            "title": "Title",
             "labelOverlap": true,
             "encode": {
                 "labels": {

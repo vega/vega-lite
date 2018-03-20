@@ -166,6 +166,273 @@ To replace any of the examples from total to `mean`, the operation just needs to
 }
 ```
 
+Another example is to show the best movies for the year they were released. Here best is defined by having a score that is 2.5 points higher than the average for the year it was released in.
+
+<div class="vl-example" data-name="window_transform_movie_mean_difference_by_year"></div>
+
+```json
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
+    "width": 300,
+    "height": 50,
+    "data": {
+        "url": "data/movies.json",
+        "format": {
+            "parse": { "Release_Date": "date:'%d-%b-%y'" }
+        }
+    },
+    "transform": [
+        { "timeUnit": "year", "field": "Release_Date", "as": "year" },
+        {
+            "window": [{
+                "op": "mean",
+                "field": "IMDB_Rating",
+                "as": "AverageYearRating"
+            }],
+            "groupby": [
+                "year"
+            ],
+            "frame": [null, null]
+        },
+        {
+            "calculate": "datum.IMDB_Rating - datum.AverageYearRating",
+            "as": "RatingDelta"
+        },
+        {
+            "filter": "datum.RatingDelta > 2.5"
+        }
+    ],
+    "mark": { "type": "bar", "clip": true },
+    "encoding": {
+        "x": {
+            "field": "Title",
+            "type": "ordinal"
+        },
+        "y": {
+            "field": "RatingDelta",
+            "type": "quantitative",
+            "axis": { "title": "Rating Delta" }
+        }
+    }
+}
+```
+
+Rather than filtering the above two examples we can also show a residual graph using the window transform.
+
+<div class="vl-example" data-name="window_transform_residual_graph"></div>
+
+```json
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 700,
+    "height": 500,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "AverageRating"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "IMDB_Rating"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "rank"
+                    ],
+                    "ops": [
+                        "rank"
+                    ],
+                    "fields": [
+                        null
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"rank\"])",
+                    "as": "rank"
+                },
+                {
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"Release_Date\"],'%d-%b-%y')",
+                    "as": "Release_Date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.IMDB_Rating - datum.AverageRating",
+                    "as": "RatingDelta"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"rank\"] !== null && !isNaN(datum[\"rank\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "symbol",
+            "clip": true,
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "rank"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "RatingDelta"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "rank"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "RatingDelta"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "rank",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Rating Delta",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
+```
+
+
 ### Percent Difference from mean
 
 The example above, could be adjusted to be the percent difference instead of the absolute difference, by adjusting the window transform to be in the format below.
@@ -184,56 +451,3 @@ The example above, could be adjusted to be the percent difference instead of the
     "as": "Percent difference from average"
   }
 ```
-
-## Other examples
-
-Here is an example where the window_transform can be used to get the average rating for a film during different years.
-
-<div class="vl-example" data-name="window_transform_movie_mean_difference"></div>
-
-```json
-{
-    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-    "description": "Bar graph showing how each film differs from the average rating for that year",
-    "width": 300,
-    "height": 50,
-    "data": {
-        "values": [
-            { "name": "Movie 1", "Rating": 9, "Year": 2016 },
-            { "name": "Movie 2", "Rating": 3, "Year": 2016 },
-            { "name": "Movie 3", "Rating": 5, "Year": 2015 },
-            { "name": "Movie 4", "Rating": 2, "Year": 2015 }
-        ]
-    },
-    "layer": [{
-        "transform": [{
-                "window": [{
-                    "op": "mean",
-                    "field": "Rating",
-                    "as": "AverageYearRating"
-                }],
-                "groupby": [
-                    "Year"
-                ],
-                "frame": [null, null]
-            },
-            {
-                "calculate": "datum.Rating - datum.AverageYearRating",
-                "as": "RatingDelta"
-            }
-        ],
-        "mark": { "type": "bar", "clip": true },
-        "encoding": {
-            "x": {
-                "field": "name",
-                "type": "ordinal"
-            },
-            "y": {
-                "field": "RatingDelta",
-                "type": "quantitative",
-                "scale": { "domain": [-10, 10] },
-                "axis": { "title": "Rating Delta" }
-            }
-        }
-    }]
-}

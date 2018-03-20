@@ -1,0 +1,44 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
+    "width": 700,
+    "height": 500,
+    "data": {
+        "url": "data/movies.json",
+        "format": {
+            "parse": { "Release_Date": "date:'%d-%b-%y'" }
+        }
+    },
+    "transform": [{
+            "window": [{
+                "op": "mean",
+                "field": "IMDB_Rating",
+                "as": "AverageRating"
+            }],
+            "frame": [null, null]
+        },
+        {
+            "window": [{
+                "op": "rank",
+                "as": "rank"
+            }]
+        },
+        {
+            "calculate": "datum.IMDB_Rating - datum.AverageRating",
+            "as": "RatingDelta"
+        }
+    ],
+    "mark": { "type": "point", "clip": true },
+    "encoding": {
+        "x": {
+            "field": "rank",
+            "type": "quantitative",
+            "sort": { "field": "Release_date", "order": "ascending" }
+        },
+        "y": {
+            "field": "RatingDelta",
+            "type": "quantitative",
+            "axis": { "title": "Rating Delta" }
+        }
+    }
+}
