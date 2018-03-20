@@ -1,6 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
+import {isArray} from 'util';
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {
@@ -16,7 +17,7 @@ import {
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains} from '../../util';
+import {contains, some} from '../../util';
 import {VgSignalRef, VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
@@ -180,12 +181,32 @@ export function mid(sizeRef: VgSignalRef): VgValueRef {
   return {...sizeRef, mult: 0.5};
 }
 
+/**
+ * Whether the scale definitely include zero in the domain
+ */
+function domainDefinitelyIncludeZero(scale: ScaleComponent) {
+  if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type'))) {
+    // Log scales cannot have zero.
+    // Zero in time scale is arbitrary, and does not affect ratio.
+    // (Time is an interval level of measurement, not ratio).
+    // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
+    return false;
+  }
+
+  if (scale.get('zero') !== false) {
+    return true;
+  }
+  const domains = scale.domains;
+  if (isArray(domains)) {
+    return some(domains, (d) => isArray(d) && d.length === 2 && d[0] <=0 && d[1] >= 0);
+  }
+  return false;
+}
+
 function zeroOrMinX(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
-      scale.get('zero') !== false) {
-
+    if (domainDefinitelyIncludeZero(scale)) {
       return {
         scale: scaleName,
         value: 0
@@ -201,10 +222,7 @@ function zeroOrMinX(scaleName: string, scale: ScaleComponent): VgValueRef {
  */
 function zeroOrMaxX(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
-    // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
-      scale.get('zero') !== false) {
-
+    if (domainDefinitelyIncludeZero(scale)) {
       return {
         scale: scaleName,
         value: 0
@@ -216,10 +234,7 @@ function zeroOrMaxX(scaleName: string, scale: ScaleComponent): VgValueRef {
 
 function zeroOrMinY(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
-    // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
-      scale.get('zero') !== false) {
-
+    if (domainDefinitelyIncludeZero(scale)) {
       return {
         scale: scaleName,
         value: 0
@@ -235,10 +250,7 @@ function zeroOrMinY(scaleName: string, scale: ScaleComponent): VgValueRef {
  */
 function zeroOrMaxY(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
-    // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
-      scale.get('zero') !== false) {
-
+    if (domainDefinitelyIncludeZero(scale)) {
       return {
         scale: scaleName,
         value: 0
