@@ -168,11 +168,11 @@ export namespace message {
     mark: 'bar' | 'area', channel: Channel,
     opt: {scaleType?: ScaleType, zeroFalse?: boolean}
   ) {
-    const scaleText = opt.scaleType ? `{scaleType} scale` :
+    const scaleText = opt.scaleType ? `${opt.scaleType} scale` :
       opt.zeroFalse ? 'scale with zero=false' :
       'scale with custom domain that excludes zero';
 
-    return `A ${scaleText} is used with ${mark} mark. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point marks instead.`;
+    return `A ${scaleText} is used with ${mark} mark. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
   }
 
   export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
