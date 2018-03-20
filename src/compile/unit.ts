@@ -253,7 +253,7 @@ export class UnitModel extends ModelWithField {
     return spec;
   }
 
-  public mark(): Mark {
+  public get mark(): Mark {
     return this.markDef.type;
   }
 

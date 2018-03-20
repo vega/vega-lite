@@ -107,7 +107,7 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
     }
   } else {
     // No scale - set default size
-    if (sizeType === 'width' && model.mark() === 'text') {
+    if (sizeType === 'width' && model.mark === 'text') {
       // width for text mark without x-field is a bit wider than typical range step
       return config.scale.textXRangeStep;
     }

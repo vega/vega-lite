@@ -11,7 +11,7 @@ const nearest:TransformCompiler = {
 
   marks: function(model, selCmpt, marks) {
     const {x, y} = positionalProjections(selCmpt);
-    const markType = model.mark();
+    const markType = model.mark;
     if (markType === 'line' || markType === 'area') {
       log.warn(log.message.nearestNotSupportForContinuous(markType));
       return marks;

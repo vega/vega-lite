@@ -70,7 +70,7 @@ function parseUnitScaleRange(model: UnitModel) {
 
     const rangeWithExplicit = parseRangeForChannel(
       channel, scaleType, fieldDef.type, specifiedScale, model.config,
-      localScaleCmpt.get('zero'), model.mark(), sizeSpecified, model.getName(sizeType), xyRangeSteps
+      localScaleCmpt.get('zero'), model.mark, sizeSpecified, model.getName(sizeType), xyRangeSteps
     );
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);

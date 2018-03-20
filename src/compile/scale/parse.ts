@@ -43,8 +43,7 @@ export function parseScaleCore(model: Model) {
  * Parse scales for all channels of a model.
  */
 function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
-  const {encoding, config} = model;
-  const mark = model.mark();
+  const {encoding, config, mark} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     let fieldDef: FieldDef<string>;
