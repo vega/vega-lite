@@ -15,6 +15,8 @@ import {
   TextFieldDef,
   vgField,
 } from '../../fielddef';
+import * as log from '../../log';
+import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
@@ -163,17 +165,9 @@ export function mid(sizeRef: VgSignalRef): VgValueRef {
 }
 
 /**
- * Whether the scale definitely include zero in the domain
+ * Whether the scale definitely includes zero in the domain
  */
 function domainDefinitelyIncludeZero(scale: ScaleComponent) {
-  if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type'))) {
-    // Log scales cannot have zero.
-    // Zero in time scale is arbitrary, and does not affect ratio.
-    // (Time is an interval level of measurement, not ratio).
-    // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-    return false;
-  }
-
   if (scale.get('zero') !== false) {
     return true;
   }
@@ -186,16 +180,31 @@ function domainDefinitelyIncludeZero(scale: ScaleComponent) {
 
 export function getDefaultRef(
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
-  channel: 'x' | 'y',
-  scaleName: string, scale: ScaleComponent
+  channel: 'x' | 'y', scaleName: string, scale: ScaleComponent, mark: Mark
 ) {
   if (isString(defaultRef)) {
     if (scaleName) {
-      if (domainDefinitelyIncludeZero(scale)) {
-        return {
-          scale: scaleName,
-          value: 0
-        };
+      const scaleType = scale.get('type');
+      if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
+        // Log scales cannot have zero.
+        // Zero in time scale is arbitrary, and does not affect ratio.
+        // (Time is an interval level of measurement, not ratio).
+        // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
+        if (mark === 'bar' || mark === 'area') {
+          log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
+        }
+      } else {
+        if (domainDefinitelyIncludeZero(scale)) {
+          return {
+            scale: scaleName,
+            value: 0
+          };
+        }
+        if (mark === 'bar' || mark === 'area') {
+          log.warn(log.message.nonZeroScaleUsedWithLengthMark(
+            mark, channel, {zeroFalse: scale.explicit.zero === false}
+          ));
+        }
       }
     }
 
