@@ -6,7 +6,8 @@ import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function assembleFromSortArray(model: ModelWithField) {
-  return CalculateNode.makeAllForSortIndex(null, model).map(n => n.assemble());
+  const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
+  return node.assemble();
 }
 
 describe('compile/data/calculate', function () {
@@ -24,11 +25,11 @@ describe('compile/data/calculate', function () {
         }
     });
     const nodes = assembleFromSortArray(model);
-    assert.deepEqual(nodes, [{
+    assert.deepEqual(nodes, {
       type: 'formula',
       expr: "datum.a === 'B' ? 0 : datum.a === 'A' ? 1 : datum.a === 'C' ? 2 : 3",
       as: 'x_a_sort_index'
-    }]);
+    });
   });
 
   describe('calculateExpressionFromSortField', function () {

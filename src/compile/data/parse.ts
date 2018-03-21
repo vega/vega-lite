@@ -204,10 +204,7 @@ export function parseData(model: Model): DataComponent {
     }
 
     head = TimeUnitNode.makeFromEncoding(head, model) || head;
-
-    for (const calculate of CalculateNode.makeAllForSortIndex(head, model)) {
-      head = calculate;
-    }
+    head = CalculateNode.parseAllForSortIndex(head, model);
   }
 
   // add an output node pre aggregation

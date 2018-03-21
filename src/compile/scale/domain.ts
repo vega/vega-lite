@@ -21,6 +21,7 @@ import {
   VgUnionSortField,
 } from '../../vega.schema';
 import {binRequiresRange} from '../common';
+import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
@@ -271,7 +272,7 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   if (isSortArray(sort)) {
     return {
       op: 'min',
-      field: `${channel}_${model.vgField(channel)}_sort_index`,
+      field: sortArrayIndexField(model, channel),
       order: 'ascending'
     };
   }
