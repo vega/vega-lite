@@ -134,7 +134,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "Year",
-            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -147,6 +146,7 @@
                     }
                 }
             },
+            "labelOverlap": true,
             "zindex": 1
         },
         {
