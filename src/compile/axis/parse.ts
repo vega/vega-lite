@@ -199,7 +199,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {
-    axisComponent.set('encode', axisEncode, !!axis.encoding || !!axis.labelAngle);
+    axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
   }
 
   return axisComponent;
