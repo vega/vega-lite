@@ -124,7 +124,7 @@ Color schemes provide a set of named color palettes as a scale range for the `co
 
 By default, Vega-Lite assigns different [default color schemes](#range-config) based on the types of the encoded fields:
 
--  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the `"category20"` scheme by default).
+-  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the `"tableau10"` scheme by default).
 
 <div class="vl-example" data-name="point_color"></div>
 
