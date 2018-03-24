@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
+    "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
     "autosize": "pad",
     "padding": 5,
     "width": 700,
@@ -11,9 +11,25 @@
             "name": "source_0",
             "url": "data/movies.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "Release_Date": "date:'%d-%b-%y'"
+                }
             },
             "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.IMDB_Rating != null"
+                },
+                {
+                    "type": "formula",
+                    "as": "year",
+                    "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.year <= 1521881136571"
+                },
                 {
                     "type": "window",
                     "params": [
@@ -38,42 +54,13 @@
                     ]
                 },
                 {
-                    "type": "window",
-                    "params": [
-                        null
-                    ],
-                    "as": [
-                        "rank"
-                    ],
-                    "ops": [
-                        "rank"
-                    ],
-                    "fields": [
-                        null
-                    ],
-                    "sort": {
-                        "field": [],
-                        "order": []
-                    }
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"rank\"])",
-                    "as": "rank"
-                },
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"Release_Date\"],'%d-%b-%y')",
-                    "as": "Release_Date"
-                },
-                {
                     "type": "formula",
                     "expr": "datum.IMDB_Rating - datum.AverageRating",
                     "as": "RatingDelta"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"rank\"] !== null && !isNaN(datum[\"rank\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+                    "expr": "datum[\"Release_Date\"] !== null && !isNaN(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
                 }
             ]
         }
@@ -102,7 +89,7 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "rank"
+                        "field": "Release_Date"
                     },
                     "y": {
                         "scale": "y",
@@ -115,19 +102,17 @@
     "scales": [
         {
             "name": "x",
-            "type": "linear",
+            "type": "time",
             "domain": {
                 "data": "source_0",
-                "field": "rank"
+                "field": "Release_Date"
             },
             "range": [
                 0,
                 {
                     "signal": "width"
                 }
-            ],
-            "nice": true,
-            "zero": true
+            ]
         },
         {
             "name": "y",
@@ -150,11 +135,20 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "rank",
+            "title": "Release_Date",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
+            },
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                        }
+                    }
+                }
             },
             "zindex": 1
         },
