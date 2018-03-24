@@ -89,19 +89,19 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "Activity"
+                        "field": "PercentOfTotal"
                     },
-                    "width": {
+                    "x2": {
                         "scale": "x",
-                        "band": true
+                        "value": 0
                     },
                     "y": {
                         "scale": "y",
-                        "field": "PercentOfTotal"
+                        "field": "Activity"
                     },
-                    "y2": {
+                    "height": {
                         "scale": "y",
-                        "value": 0
+                        "band": true
                     }
                 }
             }
@@ -110,11 +110,10 @@
     "scales": [
         {
             "name": "x",
-            "type": "band",
+            "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "Activity",
-                "sort": true
+                "field": "PercentOfTotal"
             },
             "range": [
                 0,
@@ -122,55 +121,42 @@
                     "signal": "width"
                 }
             ],
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            "nice": true,
+            "zero": true
         },
         {
             "name": "y",
-            "type": "linear",
+            "type": "band",
             "domain": {
                 "data": "data_0",
-                "field": "PercentOfTotal"
+                "field": "Activity"
             },
             "range": [
+                0,
                 {
                     "signal": "height"
-                },
-                0
+                }
             ],
-            "nice": true,
-            "zero": true
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+            "title": "% of total Time",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
             },
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "title": "% of total Time",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
+            "title": "Activity",
             "zindex": 1
         }
     ],

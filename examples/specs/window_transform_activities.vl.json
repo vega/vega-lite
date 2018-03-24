@@ -25,13 +25,14 @@
     ],
     "mark": { "type": "bar", "clip": true },
     "encoding": {
-        "x": {
+        "y": {
             "field": "Activity",
             "type": "nominal",
             "scale": { "rangeStep": 12 },
-            "axis": { "title": "" }
+            "axis": { "title": "Activity" },
+            "sort": { "field": "PercentOfTotal", "order": "ascending" }
         },
-        "y": {
+        "x": {
             "field": "PercentOfTotal",
             "type": "quantitative",
             "axis": { "title": "% of total Time", "grid": false }

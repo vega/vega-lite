@@ -13,20 +13,16 @@
             "frame": [null, null]
         },
         {
-            "calculate": "datum.IMDB_Rating - datum.AverageRating",
-            "as": "DifferenceFromMean"
-        },
-        {
-            "filter": "datum.DifferenceFromMean > 2.5"
+            "filter": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
         }
     ],
     "mark": { "type": "bar", "clip": true },
     "encoding": {
-        "x": {
+        "y": {
             "field": "Title",
             "type": "ordinal"
         },
-        "y": {
+        "x": {
             "field": "IMDB_Rating",
             "type": "quantitative",
             "scale": { "domain": [7, 10] },

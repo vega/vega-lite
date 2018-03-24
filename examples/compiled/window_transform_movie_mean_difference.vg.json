@@ -41,13 +41,8 @@
                     ]
                 },
                 {
-                    "type": "formula",
-                    "expr": "datum.IMDB_Rating - datum.AverageRating",
-                    "as": "DifferenceFromMean"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum.DifferenceFromMean > 2.5"
+                    "expr": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
                 },
                 {
                     "type": "filter",
@@ -74,20 +69,18 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "Title"
+                        "field": "IMDB_Rating"
                     },
-                    "width": {
-                        "scale": "x",
-                        "band": true
+                    "x2": {
+                        "value": 0
                     },
                     "y": {
                         "scale": "y",
-                        "field": "IMDB_Rating"
+                        "field": "Title"
                     },
-                    "y2": {
-                        "field": {
-                            "group": "height"
-                        }
+                    "height": {
+                        "scale": "y",
+                        "band": true
                     }
                 }
             }
@@ -96,6 +89,22 @@
     "scales": [
         {
             "name": "x",
+            "type": "linear",
+            "domain": [
+                7,
+                10
+            ],
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "y",
             "type": "band",
             "domain": {
                 "data": "source_0",
@@ -105,76 +114,46 @@
             "range": [
                 0,
                 {
-                    "signal": "width"
+                    "signal": "height"
                 }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": [
-                7,
-                10
-            ],
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": false
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "Title",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
             "title": "IMDB rating",
+            "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(width/40)"
             },
             "zindex": 1
         },
         {
-            "scale": "y",
-            "orient": "left",
+            "scale": "x",
+            "orient": "bottom",
             "grid": true,
             "tickCount": {
-                "signal": "ceil(height/40)"
+                "signal": "ceil(width/40)"
             },
-            "gridScale": "x",
+            "gridScale": "y",
             "domain": false,
             "labels": false,
             "maxExtent": 0,
             "minExtent": 0,
             "ticks": false,
             "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Title",
+            "labelOverlap": true,
+            "zindex": 1
         }
     ],
     "config": {

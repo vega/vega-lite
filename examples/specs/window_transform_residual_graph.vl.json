@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-    "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year.",
+    "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
     "width": 700,
     "height": 500,
     "data": {
@@ -9,19 +9,16 @@
             "parse": { "Release_Date": "date:'%d-%b-%y'" }
         }
     },
-    "transform": [{
+    "transform": [{ "filter": "datum.IMDB_Rating != null" },
+        { "timeUnit": "year", "field": "Release_Date", "as": "year" },
+        { "filter": "datum.year <= 1521881136571" },
+        {
             "window": [{
                 "op": "mean",
                 "field": "IMDB_Rating",
                 "as": "AverageRating"
             }],
             "frame": [null, null]
-        },
-        {
-            "window": [{
-                "op": "rank",
-                "as": "rank"
-            }]
         },
         {
             "calculate": "datum.IMDB_Rating - datum.AverageRating",
@@ -31,9 +28,9 @@
     "mark": { "type": "point", "clip": true },
     "encoding": {
         "x": {
-            "field": "rank",
-            "type": "quantitative",
-            "sort": { "field": "Release_date", "order": "ascending" }
+            "field": "Release_Date",
+            "type": "temporal",
+            "sort": { "field": "Release_Date", "order": "ascending" }
         },
         "y": {
             "field": "RatingDelta",
