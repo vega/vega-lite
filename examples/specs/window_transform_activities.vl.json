@@ -1,44 +1,42 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-    "description": "A bar graph showing what activites consume what percentage of the day.",
-    "width": 300,
-    "height": 50,
-    "data": {
-        "values": [
-            { "Activity": "Sleeping", "Time": 8 }, { "Activity": "Eating", "Time": 2 },
-            { "Activity": "TV", "Time": 4 }, { "Activity": "Work", "Time": 8 },
-            { "Activity": "Exercise", "Time": 2 }
-        ]
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A bar graph showing what activites consume what percentage of the day.",
+  "data": {
+    "values": [
+      {"Activity": "Sleeping","Time": 8},
+      {"Activity": "Eating","Time": 2},
+      {"Activity": "TV","Time": 4},
+      {"Activity": "Work","Time": 8},
+      {"Activity": "Exercise","Time": 2}
+    ]
+  },
+  "transform": [{
+    "window": [{
+        "op": "sum",
+        "field": "Time",
+        "as": "TotalTime"
+    }],
+    "frame": [null, null]
+  },
+  {
+    "calculate": "datum.Time/datum.TotalTime * 100",
+    "as": "PercentOfTotal"
+  }],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "PercentOfTotal",
+      "type": "quantitative",
+      "axis": {
+        "title": "% of total Time"
+      }
     },
-    "transform": [{
-            "window": [{
-                "op": "sum",
-                "field": "Time",
-                "as": "TotalTime"
-            }],
-            "frame": [null, null]
-        },
-        {
-            "calculate": "datum.Time/datum.TotalTime * 100",
-            "as": "PercentOfTotal"
-        }
-    ],
-    "mark": { "type": "bar", "clip": true },
-    "encoding": {
-        "x": {
-            "field": "PercentOfTotal",
-            "type": "quantitative",
-            "axis": { "title": "% of total Time", "grid": false }
-        },
-        "y": {
-            "field": "Activity",
-            "type": "nominal",
-            "scale": { "rangeStep": 12 },
-            "axis": { "title": "Activity" }
-        }
-    },
-    "config": {
-        "view": { "stroke": "transparent" },
-        "axis": { "domainWidth": 1 }
+    "y": {
+      "field": "Activity",
+      "type": "nominal",
+      "scale": {
+        "rangeStep": 12
+      }
     }
+  }
 }

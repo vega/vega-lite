@@ -3,8 +3,7 @@
     "description": "A bar graph showing what activites consume what percentage of the day.",
     "autosize": "pad",
     "padding": 5,
-    "width": 300,
-    "height": 50,
+    "width": 200,
     "style": "cell",
     "data": [
         {
@@ -71,11 +70,20 @@
             ]
         }
     ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 12
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
     "marks": [
         {
             "name": "marks",
             "type": "rect",
-            "clip": true,
             "style": [
                 "bar"
             ],
@@ -132,12 +140,11 @@
                 "field": "Activity",
                 "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "height"
+            "range": {
+                "step": {
+                    "signal": "y_step"
                 }
-            ],
+            },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         }
@@ -155,6 +162,21 @@
             "zindex": 1
         },
         {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
             "scale": "y",
             "orient": "left",
             "title": "Activity",
@@ -162,16 +184,8 @@
         }
     ],
     "config": {
-        "axis": {
-            "domainWidth": 1
-        },
         "axisY": {
             "minExtent": 30
-        },
-        "style": {
-            "cell": {
-                "stroke": "transparent"
-            }
         }
     }
 }
