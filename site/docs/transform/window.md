@@ -35,17 +35,20 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Transform Definition
 
-{% include table.html props="window,frame,ignorePeers,groupBy,sort" source="WindowTransform" %}
+{% include table.html props="window,frame,ignorePeers,groupby,sort" source="WindowTransform" %}
 
-### Window Sort Field Definition
-
-{% include table.html props="field,order" source="WindowSortField" %}
-
+{:#field-def}
 ### Window Transform Field Definition
 
 {% include table.html props="op,param,field,as" source="WindowFieldDef" %}
 
-## <a name="ops"></a> Window Only Operation Reference
+{:#sort-field-def}
+### Window Sort Field Definition
+
+{% include table.html props="field,order" source="WindowSortField" %}
+
+{:#ops}
+## Window Only Operation Reference
 
 The valid operations include all [valid aggregate operations](../aggregate/#ops) plus the following window operations.
 
