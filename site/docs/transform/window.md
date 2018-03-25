@@ -68,6 +68,8 @@ The valid operations include all [valid aggregate operations](../aggregate/#ops)
 
 ## Examples
 
+Below are some common use cases for the window transform. Shown are the examples along side the Vega Lite spec.
+
 ### Percent of Total
 
 <div class="vl-example" data-name="window_transform_activities"></div>
