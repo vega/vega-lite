@@ -5,7 +5,7 @@ import * as log from '../../log';
 import {BarConfig, MarkDef} from '../../mark';
 import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {SortField, SortOrder} from '../../sort';
-import {keys} from '../../util';
+import {contains, keys} from '../../util';
 import * as util from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
@@ -88,7 +88,7 @@ export function getDefaultValue(
     case 'reverse':
       return reverse(scaleType, sort);
     case 'zero':
-      return zero(channel, fieldDef, specifiedDomain);
+      return zero(channel, fieldDef, specifiedDomain, markDef);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -215,7 +215,7 @@ export function reverse(scaleType: ScaleType, sort: SortOrder | SortField<string
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain) {
+export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain, markDef: MarkDef) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -230,6 +230,16 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
   const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
+    const {orient, type} = markDef;
+    if (contains(['bar', 'area', 'line'], type)) {
+      if (
+        (orient === 'horizontal' && channel === 'y') ||
+        (orient === 'vertical' && channel === 'x')
+      ) {
+        return false;
+      }
+    }
+
     return true;
   }
   return false;
