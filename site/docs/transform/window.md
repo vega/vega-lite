@@ -68,8 +68,6 @@ The valid operations include all [valid aggregate operations](../aggregate/#ops)
 
 ## Examples
 
-To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
-
 ### Percent of Total
 
 <div class="vl-example" data-name="window_transform_activities"></div>
@@ -86,23 +84,6 @@ Rather than filtering the above two examples we can also show a residual graph u
 
 <div class="vl-example" data-name="window_transform_residual_graph"></div>
 
+To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
 
-
-### Percent Difference from mean
-
-The example above, could be adjusted to be the percent difference instead of the absolute difference, by adjusting the window transform to be in the format below.
-
-```json
-  {
-    "window": [{
-        "op": "mean",
-        "field": "x",
-        "as": "average"
-    }],
-    "frame": [null, null]
-  },
-  {
-    "calculate": "(datum.total - datum.x)/dataum.average * 100",
-    "as": "Percent difference from average"
-  }
-```
+To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
