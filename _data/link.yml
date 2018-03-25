@@ -59,6 +59,14 @@ Month:
 Day:
   name: Number
 
+# Transform - Window
+WindowFieldDef:
+  link: window.html#field-def
+WindowSortFieldDef:
+  link: window.html#sort-field-def
+WindowOnlyOp:
+  link: window.html#ops
+
 # Mark
 AnyMark:
   name: Mark
