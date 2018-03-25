@@ -77,7 +77,7 @@ To replace any of the examples from total to `mean`, the operation just needs to
 
 Another example is to show the best movies for the year they were released. Here best is defined by having a score that is 2.5 points higher than the average for the year it was released in.
 
-<div class="vl-example" data-name="window_transform_movie_mean_difference_by_year"></div>
+<div class="vl-example" data-name="window_transform_mean_difference_by_year"></div>
 
 Rather than filtering the above two examples we can also show a residual graph using the window transform.
 
