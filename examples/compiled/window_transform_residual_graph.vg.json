@@ -22,13 +22,8 @@
                     "expr": "datum.IMDB_Rating != null"
                 },
                 {
-                    "type": "formula",
-                    "as": "year",
-                    "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum.year <= 1521881136571"
+                    "expr": "time(datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)) <= time(datetime(2019, 0, 1, 0, 0, 0, 0))"
                 },
                 {
                     "type": "window",

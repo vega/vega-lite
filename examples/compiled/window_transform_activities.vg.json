@@ -129,7 +129,8 @@
             "type": "band",
             "domain": {
                 "data": "data_0",
-                "field": "Activity"
+                "field": "Activity",
+                "sort": true
             },
             "range": [
                 0,

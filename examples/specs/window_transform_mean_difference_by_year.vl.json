@@ -29,29 +29,28 @@
     "layer": [{
             "mark": { "type": "bar", "clip": true },
             "encoding": {
-                "y": {
-                    "field": "Title",
-                    "type": "ordinal",
-                    "sort": { "field": "IMDB_Rating", "order": "ascending" }
-                },
                 "x": {
                     "field": "IMDB_Rating",
                     "type": "quantitative",
                     "axis": { "title": "IMDB Rating" }
+                },
+                "y": {
+                    "field": "Title",
+                    "type": "ordinal",
+                    "sort": { "field": "IMDB_Rating", "order": "ascending" }
                 }
             }
         },
         {
             "mark": { "type": "tick", "clip": true },
             "encoding": {
-                "y": {
-                    "field": "Title",
-                    "type": "ordinal",
-                    "sort": { "field": "IMDB_Rating", "order": "ascending" }
-                },
                 "x": {
                     "field": "AverageYearRating",
                     "type": "quantitative"
+                },
+                "y": {
+                    "field": "Title",
+                    "type": "ordinal"
                 },
                 "color": { "value": "red" }
             }

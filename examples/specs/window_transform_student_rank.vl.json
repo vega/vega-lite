@@ -49,15 +49,15 @@
     "mark": { "type": "bar", "clip": true },
     "encoding": {
         "x": {
+            "field": "Score",
+            "type": "quantitative",
+            "axis": { "title": "Score", "grid": false }
+        },
+        "y": {
             "field": "student",
             "type": "nominal",
             "scale": { "rangeStep": 12 },
             "axis": { "title": "" }
-        },
-        "y": {
-            "field": "Score",
-            "type": "quantitative",
-            "axis": { "title": "Score", "grid": false }
         },
         "color": {
             "field": "student",

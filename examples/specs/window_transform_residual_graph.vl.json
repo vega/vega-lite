@@ -10,8 +10,7 @@
         }
     },
     "transform": [{ "filter": "datum.IMDB_Rating != null" },
-        { "timeUnit": "year", "field": "Release_Date", "as": "year" },
-        { "filter": "datum.year <= 1521881136571" },
+        { "filter": { "timeUnit": "year", "field": "Release_Date", "range": [null, 2019] } },
         {
             "window": [{
                 "op": "mean",
