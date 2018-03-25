@@ -195,7 +195,8 @@
                         "data": "data_1",
                         "field": "Title"
                     }
-                ]
+                ],
+                "sort": true
             },
             "range": [
                 0,

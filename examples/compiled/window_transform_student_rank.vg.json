@@ -199,19 +199,19 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "student"
+                        "field": "Score"
                     },
-                    "width": {
+                    "x2": {
                         "scale": "x",
-                        "band": true
+                        "value": 0
                     },
                     "y": {
                         "scale": "y",
-                        "field": "Score"
+                        "field": "student"
                     },
-                    "y2": {
+                    "height": {
                         "scale": "y",
-                        "value": 0
+                        "band": true
                     }
                 }
             }
@@ -220,6 +220,22 @@
     "scales": [
         {
             "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "Score"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
             "type": "band",
             "domain": {
                 "data": "data_0",
@@ -229,27 +245,11 @@
             "range": [
                 0,
                 {
-                    "signal": "width"
+                    "signal": "height"
                 }
             ],
             "paddingInner": 0.1,
             "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Score"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
         },
         {
             "name": "color",
@@ -266,31 +266,17 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+            "title": "Score",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
             },
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
-            "title": "Score",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
             "zindex": 1
         }
     ],

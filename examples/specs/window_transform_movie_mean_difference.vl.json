@@ -18,15 +18,15 @@
     ],
     "mark": { "type": "bar", "clip": true },
     "encoding": {
-        "y": {
-            "field": "Title",
-            "type": "ordinal"
-        },
         "x": {
             "field": "IMDB_Rating",
             "type": "quantitative",
             "scale": { "domain": [7, 10] },
             "axis": { "title": "IMDB rating" }
+        },
+        "y": {
+            "field": "Title",
+            "type": "ordinal"
         }
     }
 }
