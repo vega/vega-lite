@@ -62,7 +62,7 @@ Day:
 # Transform - Window
 WindowFieldDef:
   link: window.html#field-def
-WindowSortFieldDef:
+WindowSortField:
   link: window.html#sort-field-def
 WindowOnlyOp:
   link: window.html#ops
