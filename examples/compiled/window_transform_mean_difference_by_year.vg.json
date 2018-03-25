@@ -3,8 +3,7 @@
     "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year. The red point shows the average rating for a film in that year, and the bar is the rating that the film recieved.",
     "autosize": "pad",
     "padding": 5,
-    "width": 300,
-    "height": 300,
+    "width": 200,
     "style": "cell",
     "data": [
         {
@@ -83,6 +82,16 @@
                     "expr": "datum[\"AverageYearRating\"] !== null && !isNaN(datum[\"AverageYearRating\"])"
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
@@ -198,12 +207,11 @@
                 ],
                 "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "height"
+            "range": {
+                "step": {
+                    "signal": "y_step"
                 }
-            ],
+            },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         }

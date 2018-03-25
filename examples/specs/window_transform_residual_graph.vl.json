@@ -1,16 +1,15 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
     "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
-    "width": 700,
-    "height": 500,
     "data": {
         "url": "data/movies.json",
         "format": {
             "parse": { "Release_Date": "date:'%d-%b-%y'" }
         }
     },
-    "transform": [{ "filter": "datum.IMDB_Rating != null" },
-        { "filter": { "timeUnit": "year", "field": "Release_Date", "range": [null, 2019] } },
+    "transform": [
+        {"filter": "datum.IMDB_Rating != null" },
+        {"filter": { "timeUnit": "year", "field": "Release_Date", "range": [null, 2019] } },
         {
             "window": [{
                 "op": "mean",
