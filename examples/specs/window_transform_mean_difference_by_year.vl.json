@@ -42,7 +42,7 @@
             }
         },
         {
-            "mark": { "type": "tick", "clip": true },
+            "mark": "tick",
             "encoding": {
                 "x": {
                     "field": "AverageYearRating",

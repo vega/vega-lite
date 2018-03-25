@@ -24,7 +24,7 @@
             "as": "RatingDelta"
         }
     ],
-    "mark": { "type": "point", "clip": true },
+    "mark": "point",
     "encoding": {
         "x": {
             "field": "Release_Date",
