@@ -49,10 +49,12 @@ describe('compile/data/window', () => {
             as: 'ordered_row_number',
           },
           {
-            op: 'count'
+            op: 'count',
+            as: 'count_field'
           },
           {
-            op: 'sum'
+            op: 'sum',
+            as: 'sum_field'
           }
         ],
         ignorePeers: false,
