@@ -1,32 +1,42 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-    "description": "Bar graph showing how each of the 'really good' movies is different from the average movie rating. Really good is defined to differ from the average movie rating by more than 2.5 points.",
-    "width": 300,
-    "height": 50,
-    "data": { "url": "data/movies.json" },
-    "transform": [{
-            "window": [{
-                "op": "mean",
-                "field": "IMDB_Rating",
-                "as": "AverageRating"
-            }],
-            "frame": [null, null]
-        },
-        {
-            "filter": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
-        }
-    ],
-    "mark": { "type": "bar", "clip": true },
-    "encoding": {
+  "width": 300,
+  "data": {
+    "url": "data/movies.json"
+  },
+  "transform": [{
+    "window": [{
+      "op": "mean",
+      "field": "IMDB_Rating",
+      "as": "AverageRating"
+    }],
+    "frame": [
+      null,
+      null
+    ]
+  },
+  {
+    "filter": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
+  }],
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
         "x": {
-            "field": "IMDB_Rating",
-            "type": "quantitative",
-            "scale": { "domain": [7, 10] },
-            "axis": { "title": "IMDB rating" }
+          "field": "IMDB_Rating", "type": "quantitative",
+          "axis": {"title": "IMDB Rating"}
         },
-        "y": {
-            "field": "Title",
-            "type": "ordinal"
+        "y": {"field": "Title", "type": "ordinal"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "color": "red"},
+      "encoding": {
+        "x": {
+          "aggregate": "average",
+          "field": "AverageRating",
+          "type": "quantitative"
         }
+      }
     }
+  ]
 }
