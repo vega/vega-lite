@@ -101,3 +101,16 @@ Rather than filtering the above two examples we can also calculate a residual by
 We can also use `rank` operator to calculate ranks over time.
 
 <div class="vl-example" data-name="window_rank"></div>
+
+### Top K
+
+Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.
+
+<div class="vl-example" data-name="window_top_k"></div>
+
+
+### Running Average
+
+Here we use window transform to visualize how the average movie rating has been changing over the years.
+
+<div class="vl-example" data-name="window_running_average"></div>
