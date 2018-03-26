@@ -54,7 +54,8 @@
         "field": "student",
         "type": "nominal",
         "scale": { "rangeStep": 12 },
-        "axis": { "title": "" }
+        "axis": { "title": "" },
+        "sort": {"field": "score", "op": "average"}
     },
     "color": {
         "field": "student",

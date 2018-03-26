@@ -171,7 +171,13 @@
                 {
                     "type": "filter",
                     "expr": "datum.totalStudents - datum.rank < 5"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"score\"] !== null && !isNaN(datum[\"score\"])"
@@ -197,7 +203,7 @@
                 "bar"
             ],
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -230,7 +236,7 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "data_0",
+                "data": "data_1",
                 "field": "score"
             },
             "range": [
@@ -248,7 +254,10 @@
             "domain": {
                 "data": "data_0",
                 "field": "student",
-                "sort": true
+                "sort": {
+                    "field": "score",
+                    "op": "average"
+                }
             },
             "range": {
                 "step": {
@@ -262,7 +271,7 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "data_0",
+                "data": "data_1",
                 "field": "student",
                 "sort": true
             },
