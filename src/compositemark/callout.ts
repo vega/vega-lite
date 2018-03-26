@@ -2,7 +2,7 @@ import {Config} from '../config';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
-import {GenericUnitSpec, LayerSpec} from '../spec';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
 import {getMarkDefMixins} from './common';
 
@@ -57,7 +57,7 @@ export interface CalloutConfigMixins {
 }
 
 
-export function normalizeCallout(spec: GenericUnitSpec<Encoding<string>, Callout | CalloutDef>, config: Config): LayerSpec {
+export function normalizeCallout(spec: GenericUnitSpec<Encoding<string>, Callout | CalloutDef>, config: Config): NormalizedLayerSpec {
   // TODO:  determine what's the general rule for applying selection for composite marks
   const {mark, selection: _sel, projection: _p, encoding, ...outerSpec} = spec;
   const markDef = {
