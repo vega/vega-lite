@@ -34,7 +34,8 @@
           "aggregate": "average",
           "field": "AverageRating",
           "type": "quantitative"
-        }
+        },
+        "y": {"field": "Title", "type": "ordinal"}
       }
     }
   ]
