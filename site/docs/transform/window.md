@@ -80,7 +80,7 @@ Below are some common use cases for the window transform.
 
 Here we use window transform to derive the global sum so that we can calculate percentage.
 
-<div class="vl-example" data-name="window_activities"></div>
+<div class="vl-example" data-name="window_percent_of_total"></div>
 
 ### Difference from Mean
 
