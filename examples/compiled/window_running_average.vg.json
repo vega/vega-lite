@@ -1,0 +1,200 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A line graph showing how the average rating for a movie has changed over the years.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 500,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "AverageRating"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "IMDB_Rating"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "frame": [
+                        null,
+                        0
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Release_Date\"])",
+                    "as": "Release_Date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"AverageRating\"])",
+                    "as": "AverageRating"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.AverageRating != null"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.AverageRating > 0"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_Release_Date",
+                    "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year_Release_Date\"] !== null && !isNaN(datum[\"year_Release_Date\"]) && datum[\"AverageRating\"] !== null && !isNaN(datum[\"AverageRating\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "line",
+            "style": [
+                "line"
+            ],
+            "sort": {
+                "field": "datum[\"year_Release_Date\"]",
+                "order": "descending"
+            },
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_Release_Date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "AverageRating"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Release_Date"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": [
+                5,
+                8
+            ],
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "Release Date",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%Y')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "AverageRating",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
