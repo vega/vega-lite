@@ -7,6 +7,12 @@ permalink: /docs/window.html
 
 The window transform performs calculations over sorted groups of data objects. These calculations including ranking, lead/lag analysis, and aggregates such as running sums and averages. Calculated values are written back to the input data stream.
 
+## Documentation Overview
+{:.no_toc}
+
+- TOC
+{:toc}
+
 ## Window Field Definition
 
 {: .suppress-error}
@@ -68,24 +74,25 @@ The valid operations include all [valid aggregate operations](../aggregate/#ops)
 
 ## Examples
 
-Below are some common use cases for the window transform. Shown are the examples along side the Vega Lite spec.
+Below are some common use cases for the window transform.
 
 ### Percent of Total
+
+Here we use window transform to derive the global sum so that we can calculate percentage.
 
 <div class="vl-example" data-name="window_activities"></div>
 
 ### Difference from Mean
 
+One example is to show the "exemplar" movies from a movie collection. Here "exemplar" is defined by having a score of 2.5 points higher than the global average.
 
-Another example is to show the best movies for the year they were released. Here best is defined by having a score that is 2.5 points higher than the average for the year it was released in.
-<div class="vl-example" data-name="window__mean_difference"></div>
+<div class="vl-example" data-name="window_mean_difference"></div>
 
-<div class="vl-example" data-name="window__mean_difference_by_year"></div>
+Another example is to show the "exemplar" movies based on the release year average. Here "exemplar" is defined by having a score 2.5 points higher than the annual average for its release year (instead of the global average).
 
-Rather than filtering the above two examples we can also show a residual graph using the window transform.
+<div class="vl-example" data-name="window_mean_difference_by_year"></div>
 
-<div class="vl-example" data-name="window__residual_graph"></div>
+Rather than filtering the above two examples we can also calculate a residual by deriving the mean using the window transform first.
 
-To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
+<div class="vl-example" data-name="window_residual_graph"></div>
 
-To replace any of the examples from total to `mean`, the operation just needs to be changed from `sum` to `mean`.
