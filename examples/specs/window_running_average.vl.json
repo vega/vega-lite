@@ -24,12 +24,14 @@
       "encoding": {
         "x": {
           "timeUnit": "year",
-          "field": "Release_Date", "type": "temporal",
+          "field": "Release_Date",
+          "type": "temporal",
           "axis": {"title": "Release Date"}
         },
         "y": {
           "field": "AverageRating",
           "type": "quantitative",
+          "axis": {"title": "Average Rating"},
           "scale": {"domain":[5, 8]}}
       }
     }

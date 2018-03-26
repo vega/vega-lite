@@ -169,7 +169,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "AverageRating",
+            "title": "Average Rating",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"
