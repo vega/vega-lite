@@ -111,45 +111,19 @@
                 {
                     "type": "window",
                     "params": [
-                        null
-                    ],
-                    "as": [
-                        "rank"
-                    ],
-                    "ops": [
-                        "rank"
-                    ],
-                    "fields": [
-                        "score"
-                    ],
-                    "sort": {
-                        "field": [
-                            "score"
-                        ],
-                        "order": [
-                            "ascending"
-                        ]
-                    },
-                    "groupby": [
-                        "Student"
-                    ],
-                    "frame": [
                         null,
-                        0
-                    ]
-                },
-                {
-                    "type": "window",
-                    "params": [
                         null
                     ],
                     "as": [
-                        "totalStudents"
+                        "totalStudents",
+                        "rank"
                     ],
                     "ops": [
-                        "count"
+                        "count",
+                        "rank"
                     ],
                     "fields": [
+                        "score",
                         "score"
                     ],
                     "sort": {

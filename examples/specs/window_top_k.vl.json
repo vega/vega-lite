@@ -16,23 +16,16 @@
       {"student": "U", "score": 21}, {"student": "V", "score": 46}
     ]
   },
-  "transform": [{
-    "window": [{
-      "op": "rank",
-      "field": "score",
-      "as": "rank"
-    }],
-    "sort": [{ "field": "score", "order": "ascending" }],
-    "groupby": [
-      "Student"
-    ],
-    "frame": [null, 0]
-  },
+  "transform": [
   {
     "window": [{
       "op": "count",
       "field": "score",
       "as": "totalStudents"
+    }, {
+      "op": "rank",
+      "field": "score",
+      "as": "rank"
     }],
     "sort": [{ "field": "score", "order": "ascending" }],
     "groupby": [
