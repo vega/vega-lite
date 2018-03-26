@@ -34,8 +34,7 @@
         },
         "y": {
           "field": "Title",
-          "type": "ordinal",
-          "sort": {"field": "IMDB_Rating", "order": "ascending"}
+          "type": "ordinal"
         }
       }
     },

@@ -132,7 +132,6 @@
         {
             "name": "layer_1_marks",
             "type": "rect",
-            "clip": true,
             "style": [
                 "tick"
             ],

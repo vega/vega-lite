@@ -67,7 +67,9 @@
                 },
                 {
                     "type": "aggregate",
-                    "groupby": [],
+                    "groupby": [
+                        "Title"
+                    ],
                     "ops": [
                         "average"
                     ],
@@ -144,11 +146,12 @@
                         "field": "average_AverageRating"
                     },
                     "y": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "scale": "y",
+                        "field": "Title",
+                        "band": 0.5
                     },
-                    "y2": {
+                    "x2": {
+                        "scale": "x",
                         "value": 0
                     }
                 }
@@ -184,8 +187,16 @@
             "name": "y",
             "type": "band",
             "domain": {
-                "data": "data_0",
-                "field": "Title",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Title"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Title"
+                    }
+                ],
                 "sort": true
             },
             "range": {

@@ -64,7 +64,6 @@
         {
             "name": "marks",
             "type": "symbol",
-            "clip": true,
             "style": [
                 "point"
             ],

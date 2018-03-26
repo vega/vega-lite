@@ -27,8 +27,7 @@
   "encoding": {
     "x": {
       "field": "Release_Date",
-      "type": "temporal",
-      "sort": {"field": "Release_Date", "order": "ascending"}
+      "type": "temporal"
     },
     "y": {
       "field": "RatingDelta",
