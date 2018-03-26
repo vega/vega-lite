@@ -1,0 +1,240 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "AverageRating"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "IMDB_Rating"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"IMDB_Rating\"])",
+                    "as": "IMDB_Rating"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"AverageRating\"])",
+                    "as": "AverageRating"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [],
+                    "ops": [
+                        "average"
+                    ],
+                    "fields": [
+                        "AverageRating"
+                    ],
+                    "as": [
+                        "average_AverageRating"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rect",
+            "style": [
+                "bar"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "IMDB_Rating"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "Title"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rule",
+            "style": [
+                "rule"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "red"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "average_AverageRating"
+                    },
+                    "y": {
+                        "field": {
+                            "group": "height"
+                        }
+                    },
+                    "y2": {
+                        "value": 0
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "IMDB_Rating"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "average_AverageRating"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "Title",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "IMDB Rating",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Title",
+            "labelOverlap": true,
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

@@ -1,8 +1,7 @@
 import {AggregateOp} from 'vega';
-import {WindowFieldDef, WindowTransform} from '../../transform';
+import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
-import {WindowOnlyOp} from '../../window';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -19,15 +18,15 @@ export class WindowTransformNode extends DataFlowNode {
 
   public producedFields() {
     const out = {};
-    this.transform.window.forEach(element => {
-      out[this.getDefaultName(element)] = true;
+    this.transform.window.forEach(windowFieldDef => {
+      out[this.getDefaultName(windowFieldDef)] = true;
     });
 
     return out;
   }
 
-  private getDefaultName(window: WindowFieldDef): string {
-    return window.as === undefined ? String(window.op) + '_field' : window.as;
+  private getDefaultName(windowFieldDef: WindowFieldDef): string {
+    return windowFieldDef.as === undefined ? String(windowFieldDef.op) + '_field' : windowFieldDef.as;
   }
 
   public assemble(): VgWindowTransform {
@@ -47,9 +46,9 @@ export class WindowTransformNode extends DataFlowNode {
     const sortFields: string[] = [];
     const sortOrder: VgComparatorOrder[] = [];
     if (this.transform.sort !== undefined) {
-      for (const compField of this.transform.sort) {
-        sortFields.push(compField.field);
-        sortOrder.push(compField.order === undefined ? null : compField.order as VgComparatorOrder);
+      for (const sortField of this.transform.sort) {
+        sortFields.push(sortField.field);
+        sortOrder.push(sortField.order === undefined ? null : sortField.order as VgComparatorOrder);
       }
     }
     const sort: VgComparator = {
