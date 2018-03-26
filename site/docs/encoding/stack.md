@@ -51,7 +51,7 @@ Similarly, adding a color field to area chart also creates stacked area chart by
 {:#normalized}
 ## Normalized Stacked Bar and Area Charts
 
-You can set `stack` to `"center"` to create normalized (or percentage) stacked bar and area charts.
+You can set `stack` to `"normalize"` to create normalized (or percentage) stacked bar and area charts.
 
 <div class="vl-example" data-name="stacked_bar_normalize"></div>
 
