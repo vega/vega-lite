@@ -134,7 +134,7 @@
       "title": "Diverging Stacked Bar Chart"
     }
   ],
-  "Transforms": [
+  "Advanced Transforms": [
     {
       "name": "window_percent_of_total",
       "title": "Calculate Percentage of Total"
@@ -150,6 +150,10 @@
     {
       "name": "window_residual_graph",
       "title": "Calculate Residuals"
+    },
+    {
+      "name": "window_rank",
+      "title": "Line Charts Showing Ranks Over Time"
     }
   ],
   "Trellis": [
