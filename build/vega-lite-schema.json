@@ -968,6 +968,12 @@
         "sort": {
           "anyOf": [
             {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
               "$ref": "#/definitions/SortOrder"
             },
             {
@@ -977,7 +983,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
@@ -1175,6 +1181,12 @@
         "sort": {
           "anyOf": [
             {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
               "$ref": "#/definitions/SortOrder"
             },
             {
@@ -1184,7 +1196,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2305,6 +2317,12 @@
         "sort": {
           "anyOf": [
             {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
               "$ref": "#/definitions/SortOrder"
             },
             {
@@ -2314,7 +2332,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4354,6 +4372,12 @@
         "sort": {
           "anyOf": [
             {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
               "$ref": "#/definitions/SortOrder"
             },
             {
@@ -4363,7 +4387,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"` and `null` (no sorting).\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\n\n__Default value:__ `\"ascending\"`"
+          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
         },
         "stack": {
           "anyOf": [

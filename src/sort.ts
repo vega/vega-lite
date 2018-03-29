@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
-
+import {isArray, isString} from 'vega-util';
+import {SortField} from './sort';
 
 export type SortOrder = 'ascending' | 'descending' | null;
 
@@ -25,6 +26,10 @@ export interface SortField<F> {
   order?: SortOrder;
 }
 
-export function isSortField<F>(sort: SortOrder | SortField<F>): sort is SortField<F> {
+export function isSortField<F>(sort: string[] | SortOrder | SortField<F>): sort is SortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
+}
+
+export function isSortArray<F>(sort: string[] | SortOrder | SortField<F>): sort is string[] {
+  return !!sort && isArray(sort) && sort.every(s => isString(s));
 }
