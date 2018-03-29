@@ -23,9 +23,6 @@
       "as": "rank"
     }],
     "sort": [{ "field": "score", "order": "descending" }],
-    "groupby": [
-      "Student"
-    ],
     "frame": [null, null]
   },
   {

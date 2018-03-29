@@ -130,9 +130,6 @@
                             "descending"
                         ]
                     },
-                    "groupby": [
-                        "Student"
-                    ],
                     "frame": [
                         null,
                         null
