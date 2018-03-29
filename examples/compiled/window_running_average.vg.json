@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "A line graph showing how the average rating for a movie has changed over the years.",
+    "description": "A line graph showing how the average rating for how the MPG has changed over the years. The red line shows the average, and is layered on top of all the raw data.",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -24,7 +24,7 @@
                         null
                     ],
                     "as": [
-                        "AverageMPG"
+                        "Average_MPG"
                     ],
                     "ops": [
                         "mean"
@@ -82,8 +82,8 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"AverageMPG\"])",
-                    "as": "AverageMPG"
+                    "expr": "toNumber(datum[\"Average_MPG\"])",
+                    "as": "Average_MPG"
                 },
                 {
                     "type": "formula",
@@ -92,7 +92,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"AverageMPG\"] !== null && !isNaN(datum[\"AverageMPG\"])"
+                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Average_MPG\"] !== null && !isNaN(datum[\"Average_MPG\"])"
                 }
             ]
         }
@@ -153,7 +153,7 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "AverageMPG"
+                        "field": "Average_MPG"
                     }
                 }
             }
@@ -191,10 +191,10 @@
                         "data": "data_0",
                         "field": "Miles_per_Gallon"
                     },
-                    [
-                        5,
-                        8
-                    ]
+                    {
+                        "data": "data_1",
+                        "field": "Average_MPG"
+                    }
                 ]
             },
             "range": [

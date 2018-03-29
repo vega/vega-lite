@@ -36,8 +36,8 @@
         "y": {
           "field": "Average_MPG",
           "type": "quantitative",
-          "axis": {"title": ""},
-          "scale": {"domain":[5, 8]}}
+          "axis": {"title": ""}
+        }
       }
     }
   ]
