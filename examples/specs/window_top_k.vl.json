@@ -20,7 +20,6 @@
   {
     "window": [{
       "op": "rank",
-      "field": "score",
       "as": "rank"
     }],
     "sort": [{ "field": "score", "order": "descending" }],

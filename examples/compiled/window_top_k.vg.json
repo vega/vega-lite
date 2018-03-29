@@ -120,7 +120,7 @@
                         "rank"
                     ],
                     "fields": [
-                        "score"
+                        null
                     ],
                     "sort": {
                         "field": [
