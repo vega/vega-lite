@@ -111,19 +111,15 @@
                 {
                     "type": "window",
                     "params": [
-                        null,
                         null
                     ],
                     "as": [
-                        "totalStudents",
                         "rank"
                     ],
                     "ops": [
-                        "count",
                         "rank"
                     ],
                     "fields": [
-                        "score",
                         "score"
                     ],
                     "sort": {
@@ -131,7 +127,7 @@
                             "score"
                         ],
                         "order": [
-                            "ascending"
+                            "descending"
                         ]
                     },
                     "groupby": [
@@ -144,7 +140,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.totalStudents - datum.rank < 5"
+                    "expr": "datum.rank <= 5"
                 }
             ]
         },

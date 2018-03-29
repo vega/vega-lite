@@ -19,22 +19,18 @@
   "transform": [
   {
     "window": [{
-      "op": "count",
-      "field": "score",
-      "as": "totalStudents"
-    }, {
       "op": "rank",
       "field": "score",
       "as": "rank"
     }],
-    "sort": [{ "field": "score", "order": "ascending" }],
+    "sort": [{ "field": "score", "order": "descending" }],
     "groupby": [
       "Student"
     ],
     "frame": [null, null]
   },
   {
-    "filter": "datum.totalStudents - datum.rank < 5"
+    "filter": "datum.rank <= 5"
   }],
   "mark": "bar",
   "encoding": {
