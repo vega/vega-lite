@@ -1277,7 +1277,7 @@ commander@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-1.0.0.tgz#5e6a88e7070ff5908836ead19169548c30f90bcd"
 
-commander@2, commander@^2.12.1, commander@^2.2.0, commander@~2.15.0:
+commander@2, commander@^2.12.1, commander@^2.2.0:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.0.tgz#ad2a23a1c3b036e392469b8012cec6b33b4c1322"
 
@@ -1288,6 +1288,10 @@ commander@2.11.0:
 commander@~2.14.1:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
+
+commander@~2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -5519,11 +5523,11 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-json-schema-generator@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.21.0.tgz#3ea36bb3c6a70b326c1141c3de7c8aff65e2b1c4"
+ts-json-schema-generator@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.23.0.tgz#c42fa98f9cea4a9ebd36c4e2f7f6b6833df1f6b1"
   dependencies:
-    commander "~2.15.0"
+    commander "~2.15.1"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
     ts-node "^5.0.1"
