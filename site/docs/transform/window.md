@@ -111,6 +111,6 @@ Here we use window transform to derive the total number of students along with t
 
 ### Running Average
 
-Here we use window transform to visualize how the average movie rating has been changing over the years.
+Here we use window transform to visualize how the average MPG for vehicles have changed over the years.
 
 <div class="vl-example" data-name="window_running_average"></div>
