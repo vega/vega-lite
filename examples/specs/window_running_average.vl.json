@@ -4,16 +4,14 @@
   "data": {"url": "data/cars.json"},
   "transform": [
     {"filter": "datum.Miles_per_Gallon !== null"},
+    {"timeUnit": "year", "field": "Year", "as": "year"},
     {
       "window": [{
         "op": "mean",
         "field": "Miles_per_Gallon",
         "as": "Average_MPG"
       }],
-      "frame": [
-        null,
-        0
-      ],
+      "frame": [null, null],
       "groupby": ["year"]
     }
   ],
