@@ -96,3 +96,8 @@ Rather than filtering the above two examples we can also calculate a residual by
 
 <div class="vl-example" data-name="window_residual_graph"></div>
 
+### Rank Chart
+
+We can also use `rank` operator to calculate ranks over time.
+
+<div class="vl-example" data-name="window_rank"></div>

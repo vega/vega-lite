@@ -1,0 +1,275 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Ranking of a hypothetical football/soccer league with 4 teams.",
+    "autosize": "pad",
+    "padding": 5,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "team": "Man Utd",
+                    "matchday": 1,
+                    "point": 3
+                },
+                {
+                    "team": "Chelsea",
+                    "matchday": 1,
+                    "point": 1
+                },
+                {
+                    "team": "Man City",
+                    "matchday": 1,
+                    "point": 1
+                },
+                {
+                    "team": "Spurs",
+                    "matchday": 1,
+                    "point": 0
+                },
+                {
+                    "team": "Man Utd",
+                    "matchday": 2,
+                    "point": 6
+                },
+                {
+                    "team": "Chelsea",
+                    "matchday": 2,
+                    "point": 1
+                },
+                {
+                    "team": "Man City",
+                    "matchday": 2,
+                    "point": 0
+                },
+                {
+                    "team": "Spurs",
+                    "matchday": 2,
+                    "point": 3
+                },
+                {
+                    "team": "Man Utd",
+                    "matchday": 3,
+                    "point": 9
+                },
+                {
+                    "team": "Chelsea",
+                    "matchday": 3,
+                    "point": 1
+                },
+                {
+                    "team": "Man City",
+                    "matchday": 3,
+                    "point": 0
+                },
+                {
+                    "team": "Spurs",
+                    "matchday": 3,
+                    "point": 6
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "rank"
+                    ],
+                    "ops": [
+                        "rank"
+                    ],
+                    "fields": [
+                        null
+                    ],
+                    "sort": {
+                        "field": [
+                            "point"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "groupby": [
+                        "matchday"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+        },
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "data_0",
+                    "groupby": [
+                        "team"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "style": [
+                        "line"
+                    ],
+                    "sort": {
+                        "field": "datum[\"matchday\"]",
+                        "order": "descending"
+                    },
+                    "from": {
+                        "data": "faceted_path_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "stroke": {
+                                "scale": "color",
+                                "field": "team"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "matchday"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "rank"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "data_0",
+                "field": "matchday",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "data_0",
+                "field": "rank",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "padding": 0.5
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": [
+                "Man Utd",
+                "Chelsea",
+                "Man City",
+                "Spurs"
+            ],
+            "range": [
+                "#cc2613",
+                "#125dc7",
+                "#8bcdfc",
+                "#d1d1d1"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "matchday",
+            "labelOverlap": true,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "rank",
+            "labelOverlap": true,
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "team"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
