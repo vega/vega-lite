@@ -36,19 +36,12 @@
   "encoding": {
     "x": {
         "field": "score",
-        "type": "quantitative",
-        "axis": { "title": "Score", "grid": false }
+        "type": "quantitative"
     },
     "y": {
         "field": "student",
         "type": "nominal",
-        "scale": { "rangeStep": 12 },
-        "axis": { "title": "" },
-        "sort": {"field": "score", "op": "average"}
-    },
-    "color": {
-        "field": "student",
-        "type": "nominal"
+        "sort": {"field": "score", "op": "average", "order":"descending"}
     }
   }
 }

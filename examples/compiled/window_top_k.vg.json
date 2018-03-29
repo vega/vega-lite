@@ -158,7 +158,7 @@
     "signals": [
         {
             "name": "y_step",
-            "value": 12
+            "value": 21
         },
         {
             "name": "height",
@@ -178,8 +178,7 @@
             "encode": {
                 "update": {
                     "fill": {
-                        "scale": "color",
-                        "field": "student"
+                        "value": "#4c78a8"
                     },
                     "x": {
                         "scale": "x",
@@ -226,7 +225,8 @@
                 "field": "student",
                 "sort": {
                     "field": "score",
-                    "op": "average"
+                    "op": "average",
+                    "order": "descending"
                 }
             },
             "range": {
@@ -236,23 +236,13 @@
             },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_1",
-                "field": "student",
-                "sort": true
-            },
-            "range": "category"
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "Score",
+            "title": "score",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -261,24 +251,25 @@
             "zindex": 1
         },
         {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
             "scale": "y",
             "orient": "left",
-            "zindex": 1
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
             "title": "student",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "shape": {
-                            "value": "square"
-                        }
-                    }
-                }
-            }
+            "zindex": 1
         }
     ],
     "config": {
