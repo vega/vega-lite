@@ -251,6 +251,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "title": "Miles Per Gallon",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

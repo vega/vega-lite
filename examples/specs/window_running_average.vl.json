@@ -34,7 +34,7 @@
         "y": {
           "field": "Average_MPG",
           "type": "quantitative",
-          "axis": {"title": ""}
+          "axis": {"title": "Miles Per Gallon"}
         }
       }
     }
