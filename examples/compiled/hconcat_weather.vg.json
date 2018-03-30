@@ -423,6 +423,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "stroke": {
                             "value": "#4c78a8"
                         }

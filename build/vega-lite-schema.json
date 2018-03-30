@@ -929,7 +929,7 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "Conditional<FieldDef>": {
+    "ConditionalFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<FieldDef>"
@@ -939,7 +939,7 @@
         }
       ]
     },
-    "Conditional<MarkPropFieldDef>": {
+    "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef>"
@@ -949,7 +949,7 @@
         }
       ]
     },
-    "Conditional<TextFieldDef>": {
+    "ConditionalTextFieldDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<TextFieldDef>"
@@ -959,7 +959,7 @@
         }
       ]
     },
-    "Conditional<ValueDef>": {
+    "ConditionalValueDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate<ValueDef>"
@@ -1711,7 +1711,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -1736,7 +1736,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `fill` channel has higher precedence than `color` and will override color value."
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
         },
         "href": {
           "anyOf": [
@@ -1792,7 +1792,7 @@
               "type": "array"
             }
           ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
           "anyOf": [
@@ -1825,7 +1825,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` channel has higher precedence than `color` and will override color value."
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
         },
         "text": {
           "anyOf": [
@@ -1908,7 +1908,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1937,7 +1937,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `fill` channel has higher precedence than `color` and will override color value."
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
         },
         "href": {
           "anyOf": [
@@ -1993,7 +1993,7 @@
               "type": "array"
             }
           ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes stack order.\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -2030,7 +2030,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` channel has higher precedence than `color` and will override color value."
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
         },
         "text": {
           "anyOf": [
@@ -2312,11 +2312,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -2370,11 +2370,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -2464,11 +2464,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6604,6 +6604,9 @@
         },
         {
           "$ref": "#/definitions/AggregateTransform"
+        },
+        {
+          "$ref": "#/definitions/WindowTransform"
         }
       ]
     },
@@ -6692,14 +6695,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<FieldDef>"
+              "$ref": "#/definitions/ConditionalFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6724,14 +6727,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<MarkPropFieldDef>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -6756,14 +6759,14 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional<TextFieldDef>"
+              "$ref": "#/definitions/ConditionalTextFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional<ValueDef>"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional<ValueDef>"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -7420,6 +7423,118 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "WindowFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output name for each field. If none is defined will use the format op_field. For example, count_field for count,\n  and sum_field for sum.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data fields for which to compute aggregate or window functions. Field can be omitted for operations that do not\noperate over a specific data field, including count, rank, and dense_rank.",
+          "type": "string"
+        },
+        "op": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/WindowOnlyOp"
+            }
+          ],
+          "description": "The operations supported for the window aggregation. See the list of supported operations here:\n   https://vega.github.io/vega-lite/docs/transforms/window.html"
+        },
+        "param": {
+          "description": "Parameter values for the window functions. Parameter value can be null for operations that do not accept a\nparameter.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "type": "object"
+    },
+    "WindowOnlyOp": {
+      "enum": [
+        "row_number",
+        "rank",
+        "dense_rank",
+        "percent_rank",
+        "cume_dist",
+        "ntile",
+        "lag",
+        "lead",
+        "first_value",
+        "last_value",
+        "nth_value"
+      ],
+      "type": "string"
+    },
+    "WindowSortField": {
+      "additionalProperties": false,
+      "description": "A compartor for fields within the window transform",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "order": {
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "type": "object"
+    },
+    "WindowTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "The frame for the window, if none is set the default is `[null, 0]` everything before the\ncurrent item.",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The fields to group by.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ignorePeers": {
+          "description": "Will indicate whether to ignore peer values (items with the same rank) in the window. The default value is `False`.",
+          "type": "boolean"
+        },
+        "sort": {
+          "description": "The definitions of how to sort each of the fields in the window.",
+          "items": {
+            "$ref": "#/definitions/WindowSortField"
+          },
+          "type": "array"
+        },
+        "window": {
+          "description": "The definition of the fields in the window, and what calculations to use.",
+          "items": {
+            "$ref": "#/definitions/WindowFieldDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "window"
+      ],
       "type": "object"
     }
   }

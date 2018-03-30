@@ -325,11 +325,14 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "#4c78a8"
+                        },
                         "shape": {
                             "value": "circle"
                         },
-                        "fill": {
-                            "value": "#4c78a8"
+                        "stroke": {
+                            "value": "transparent"
                         },
                         "opacity": {
                             "value": 0.7

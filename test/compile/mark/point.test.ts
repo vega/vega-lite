@@ -219,48 +219,6 @@ describe('Mark: Point', function() {
     });
   });
 
-  describe('with configs', function() {
-    it('should apply color from mark-specific config over general mark config', function() {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        "mark": "point",
-        "encoding": {
-          "x": {"field": "Horsepower","type": "quantitative"},
-          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-        },
-        "config": {"mark": {"color":"blue"}, "point": {"color":"red"}}
-      });
-      const props = point.encodeEntry(model);
-      assert.deepEqual(props.stroke, {value: "red"});
-    });
-
-    it('should apply stroke mark config over color mark config', function() {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        "mark": "point",
-        "encoding": {
-          "x": {"field": "Horsepower","type": "quantitative"},
-          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-        },
-        "config": {"mark": {"color":"red", "stroke": "blue"}}
-      });
-      const props = point.encodeEntry(model);
-      assert.deepEqual(props.stroke, {value: "blue"});
-    });
-
-    it('should apply stroke mark config over color mark config', function() {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        "mark": "point",
-        "encoding": {
-          "x": {"field": "Horsepower","type": "quantitative"},
-          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-        },
-        "config": {"point": {"color":"red", "stroke": "blue"}}
-      });
-      const props = point.encodeEntry(model);
-      assert.deepEqual(props.stroke, {value: "blue"});
-    });
-
-  });
-
   describe('with tooltip', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "point",

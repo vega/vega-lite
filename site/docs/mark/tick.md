@@ -26,13 +26,22 @@ The `tick` mark represents each data point as a short line. This is a useful mar
 {:toc}
 
 
-## Dot Plot
+{:#properties}
+## Tick Mark Properties
+
+A tick mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
+
+{% include table.html props="orient" source="MarkConfig" %}
+
+## Examples
+
+### Dot Plot
 
 For example, the following dot plot uses tick marks to show the distribution of each car's Horsepower.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
-## Strip Plot
+### Strip Plot
 
 <!-- TODO: better explain this -->
 The following strip-plot use `tick` mark to represent its data.

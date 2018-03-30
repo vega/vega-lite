@@ -383,6 +383,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "opacity": {
                             "value": 0.7
                         }
@@ -396,6 +399,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "opacity": {
                             "value": 0.7
                         }

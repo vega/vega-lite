@@ -162,6 +162,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "stroke": {
+                            "value": "black"
+                        },
                         "shape": {
                             "value": "circle"
                         },

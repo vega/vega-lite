@@ -249,6 +249,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "shape": {
                             "value": "circle"
                         },
@@ -265,16 +268,12 @@
             "encode": {
                 "symbols": {
                     "update": {
-                        "stroke": [
-                            {
-                                "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                                "scale": "color",
-                                "field": "Cylinders"
-                            },
-                            {
-                                "value": "grey"
-                            }
-                        ],
+                        "fill": {
+                            "value": "transparent"
+                        },
+                        "stroke": {
+                            "value": "grey"
+                        },
                         "opacity": {
                             "value": 0.7
                         }
