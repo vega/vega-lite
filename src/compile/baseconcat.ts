@@ -6,10 +6,11 @@ import {VgData, VgSignal} from '../vega.schema';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
+import {RepeaterValue} from './repeater';
 
 export abstract class BaseConcatModel extends Model {
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
-    super(spec, parent, parentGivenName, config, resolve);
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve) {
+    super(spec, parent, parentGivenName, config, repeater, resolve);
   }
 
   public parseData() {

@@ -5222,6 +5222,9 @@
                 "data": "data_2",
                 "field": "Horsepower"
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 0,
                 {
@@ -5295,6 +5298,9 @@
                 "data": "data_4",
                 "field": "Acceleration"
             },
+            "domainRaw": {
+                "signal": "grid_Acceleration"
+            },
             "range": [
                 0,
                 {
@@ -5367,6 +5373,9 @@
             "domain": {
                 "data": "data_6",
                 "field": "Miles_per_Gallon"
+            },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
             },
             "range": [
                 0,

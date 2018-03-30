@@ -26,7 +26,7 @@ export class LayerModel extends Model {
   constructor(spec: NormalizedLayerSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean) {
 
-    super(spec, parent, parentGivenName, config, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
 
     const layoutSize = {
       ...parentGivenSize,
