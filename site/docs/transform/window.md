@@ -8,6 +8,7 @@ permalink: /docs/window.html
 The window transform performs calculations over sorted groups of data objects. These calculations including ranking, lead/lag analysis, and aggregates such as running sums and averages. Calculated values are written back to the input data stream.
 
 ## Documentation Overview
+
 {:.no_toc}
 
 - TOC
@@ -48,16 +49,19 @@ The window transform performs calculations over sorted groups of data objects. T
 {% include table.html props="window,frame,ignorePeers,groupby,sort" source="WindowTransform" %}
 
 {:#field-def}
+
 ### Window Transform Field Definition
 
 {% include table.html props="op,param,field,as" source="WindowFieldDef" %}
 
 {:#sort-field-def}
+
 ### Window Sort Field Definition
 
 {% include table.html props="field,order" source="WindowSortField" %}
 
 {:#ops}
+
 ## Window Only Operation Reference
 
 The valid operations include all [valid aggregate operations](../aggregate/#ops) plus the following window operations.
