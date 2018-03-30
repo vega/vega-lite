@@ -28,6 +28,10 @@ The window transform performs calculations over sorted groups of data objects. T
           "field": "...",
           "as": "..."
       }],
+      "sort": [
+        {"field": "...", "order": "..."}
+      ],
+      "ignorePeers": "...",
       "groupby": [
           "..."
       ],
