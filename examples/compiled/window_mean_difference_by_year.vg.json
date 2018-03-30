@@ -17,6 +17,10 @@
             },
             "transform": [
                 {
+                    "type": "filter",
+                    "expr": "datum.IMDB_Rating != null"
+                },
+                {
                     "type": "formula",
                     "as": "year",
                     "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
