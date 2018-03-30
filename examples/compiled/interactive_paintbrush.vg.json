@@ -152,8 +152,12 @@
             "transform": [
                 {
                     "type": "voronoi",
-                    "x": "datum.x",
-                    "y": "datum.y",
+                    "x": {
+                        "expr": "datum.datum.x || 0"
+                    },
+                    "y": {
+                        "expr": "datum.datum.y || 0"
+                    },
                     "size": [
                         {
                             "signal": "width"
