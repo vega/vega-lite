@@ -91,9 +91,8 @@ function parseNonUnitScaleDomain(model: Model) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    // FIXME: Arvind -- Please revise logic for merging selectionDomain / domainRaw
-
     let domains: VgNonUnionDomain[];
+    let domainRaw = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -103,10 +102,20 @@ function parseNonUnitScaleDomain(model: Model) {
         } else {
           domains = domains.concat(childComponent.domains);
         }
+
+        const dr = childComponent.get('domainRaw');
+        if (domainRaw && dr && domainRaw.signal !== dr.signal) {
+          log.warn('The same selection must be used to override scale domains in a layered view.');
+        }
+        domainRaw = dr;
       }
     }
 
     localScaleComponents[channel].domains = domains;
+
+    if (domainRaw) {
+      localScaleComponents[channel].set('domainRaw', domainRaw, true);
+    }
   });
 }
 
