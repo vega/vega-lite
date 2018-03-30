@@ -170,7 +170,7 @@ export function parseData(model: Model): DataComponent {
   // field is available for all subsequent datasets. Additional identifier
   // transforms will be necessary when new tuples are constructed
   // (e.g., post-aggregation).
-  if (requiresSelectionId(model) && !model.parent) {
+  if (requiresSelectionId(model) && (isUnitModel(model) || isLayerModel(model))) {
     head = new IdentifierNode(head);
   }
 
