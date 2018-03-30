@@ -13,6 +13,10 @@
             },
             "transform": [
                 {
+                    "type": "filter",
+                    "expr": "datum.IMDB_Rating != null"
+                },
+                {
                     "type": "window",
                     "params": [
                         null

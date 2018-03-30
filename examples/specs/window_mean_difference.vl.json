@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/movies.json"},
   "transform": [
+    {"filter": "datum.IMDB_Rating != null"},
     {
       "window": [{
         "op": "mean",
