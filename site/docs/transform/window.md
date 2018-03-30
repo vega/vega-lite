@@ -46,6 +46,8 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Transform Definition
 
+Note: First, the tuples are partitioned according to the groupby fields. Each partition is then sorted. Finally, the window calculations are performed over the sorted partitions.
+
 {% include table.html props="window,frame,ignorePeers,groupby,sort" source="WindowTransform" %}
 
 {:#field-def}
