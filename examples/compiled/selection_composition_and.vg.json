@@ -711,9 +711,6 @@
                 "enter": {
                     "fill": {
                         "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "white"
                     }
                 },
                 "update": {
@@ -752,6 +749,15 @@
                         {
                             "value": 0
                         }
+                    ],
+                    "stroke": [
+                        {
+                            "test": "alex_x[0] !== alex_x[1] && alex_y[0] !== alex_y[1]",
+                            "value": "white"
+                        },
+                        {
+                            "value": null
+                        }
                     ]
                 }
             }
@@ -764,9 +770,6 @@
                 "enter": {
                     "fill": {
                         "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "#e34a33"
                     }
                 },
                 "update": {
@@ -804,6 +807,15 @@
                         },
                         {
                             "value": 0
+                        }
+                    ],
+                    "stroke": [
+                        {
+                            "test": "morgan_x[0] !== morgan_x[1] && morgan_y[0] !== morgan_y[1]",
+                            "value": "#e34a33"
+                        },
+                        {
+                            "value": null
                         }
                     ]
                 }
