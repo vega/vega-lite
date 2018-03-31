@@ -711,9 +711,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -728,7 +725,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -1282,9 +1288,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -1299,7 +1302,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -1763,9 +1775,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -1782,7 +1791,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -2336,9 +2354,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -2353,7 +2368,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -2817,9 +2841,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -2836,7 +2857,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -3390,9 +3420,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -3407,7 +3434,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -3871,9 +3907,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -3890,7 +3923,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -4444,9 +4486,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -4461,7 +4500,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
@@ -5015,9 +5063,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -5032,7 +5077,16 @@
                             },
                             "y2": {
                                 "signal": "brush_y[1]"
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }

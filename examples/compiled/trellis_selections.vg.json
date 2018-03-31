@@ -717,9 +717,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -736,7 +733,16 @@
                                 "field": {
                                     "group": "height"
                                 }
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }
