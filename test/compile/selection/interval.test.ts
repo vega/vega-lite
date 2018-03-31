@@ -191,6 +191,28 @@ describe('Interval Selections', function() {
         }
       ]);
     });
+
+    it('namespaces signals when encoding/fields collide', function() {
+      const model2 = parseUnitModel({
+        "mark": "circle",
+        "encoding": {
+          "x": {"field": "x", "type": "quantitative"},
+          "y": {"field": "y", "type": "quantitative"}
+        }
+      });
+
+      const selCmpts2 = model2.component.selection = selection.parseUnitSelection(model2, {
+        "one": {
+          "type": "interval",
+          "encodings": ["x"],
+          "translate": false, "zoom": false
+        }
+      });
+
+      const sg = interval.signals(model, selCmpts2['one']);
+      assert.equal(sg[0].name, 'one_x');
+      assert.equal(sg[1].name, 'one_x_1');
+    });
   });
 
   it('builds modify signals', function() {
