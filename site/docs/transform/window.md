@@ -7,6 +7,8 @@ permalink: /docs/window.html
 
 The window transform performs calculations over sorted groups of data objects. These calculations including ranking, lead/lag analysis, and aggregates such as running sums and averages. Calculated values are written back to the input data stream.
 
+All the calculations are computed by: First, the tuples are partitioned according to the groupby fields. Each partition is then sorted. Finally, the window calculations are performed over the sorted partitions.
+
 ## Documentation Overview
 
 {:.no_toc}
@@ -45,8 +47,6 @@ The window transform performs calculations over sorted groups of data objects. T
 ```
 
 ## Window Transform Definition
-
-Note: First, the tuples are partitioned according to the groupby fields. Each partition is then sorted. Finally, the window calculations are performed over the sorted partitions.
 
 {% include table.html props="window,frame,ignorePeers,groupby,sort" source="WindowTransform" %}
 
