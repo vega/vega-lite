@@ -275,7 +275,7 @@ export const defaultConfig: Config = {
     extent: 'stdev',
     mean: {color: 'black'},
     whisker: {},
-    centerMarkType: 'point'
+    centerMarkType: 'none'
   },
 
   scale: defaultScaleConfig,

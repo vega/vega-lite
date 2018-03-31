@@ -17,6 +17,9 @@ import {getMarkDefMixins} from './common';
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
 
+export type ErrorBarExtent = 'ci' | 'stderr' | 'stdev';
+export type ErrorBarCenterMarkType = 'point' | 'circle' | 'bar' | 'line';
+
 export type ErrorBarPart = 'mean' | 'whisker';
 
 const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
@@ -44,19 +47,20 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
    *
    * __Default value:__ `"stdev"`.
    */
-  extent?: 'ci' | 'stderr' | 'stdev';
+  extent?: ErrorBarExtent;
 
   /**
-   * The shape of the mean pint. Available options include:
+   * The shape of the mean point. Available options include:
+   * - `"none": no center point
    * - `"point": point.
    * - `"circle": circle.
    * - `"square": square. // will implement it later.
    * - `"bar": bar.
    * - `"line": line.
    *
-   * __Default value:__ `"point"`.
+   * __Default value:__ `"none"`.
    */
-  centerMarkType?: 'point' | 'circle' | 'bar' | 'line';
+  centerMarkType?: 'none' | ErrorBarCenterMarkType;
 }
 export interface ErrorBarDef extends GenericMarkDef<ErrorBar>, ErrorBarConfig {
   /**
@@ -92,6 +96,10 @@ function isOrient(orient: Orient | 'both'): orient is Orient {
   return orient !== 'both';
 }
 
+function hasCenterMark(centerMarkType: ErrorBarCenterMarkType | 'none'): centerMarkType is ErrorBarCenterMarkType {
+  return centerMarkType !== 'none';
+}
+
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
@@ -108,14 +116,6 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const centerMarkFill = centerMarkType !== 'circle' && centerMarkType !== 'line';
 
   const pseudoOrient: Orient | 'both' = errorBarOrient(spec);
-
-  const markProperties = {
-    type: centerMarkType,
-    filled: centerMarkFill,
-    opacity: 1,
-    ...(sizeValue ? {size: sizeValue} : {}),
-    ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
-  };
 
   if (isOrient(pseudoOrient)) {
     const orient: Orient = pseudoOrient;
@@ -151,17 +151,25 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       }
     }];
 
-    meanLayer = [{ // mean point
-      mark: markProperties,
-      encoding: {
-        [continuousAxis]: {
-          field: 'mean_point_' + continuousAxisChannelDef.field,
-          type: continuousAxisChannelDef.type
+    if (hasCenterMark(centerMarkType)) {
+      meanLayer = [{ // mean point
+        mark: {
+          type: centerMarkType,
+          filled: centerMarkFill,
+          opacity: 1,
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
         },
-        ...encodingWithoutContinuousAxis,
-        // ...(size ? {size} : {})
-      }
-    }];
+        encoding: {
+          [continuousAxis]: {
+            field: 'mean_point_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type
+          },
+          ...encodingWithoutContinuousAxis,
+          // ...(size ? {size} : {})
+        }
+      }];
+    }
   } else {
     const {transform: yTransform, continuousAxisChannelDef: yChannelDef, encodingWithoutContinuousAxis: encodingWithoutY, aggregate, transformWithoutAggregate: yTransformWithoutAggregate} = errorBarParams(spec, 'vertical', extent, []);
     const {transform: xTransform, continuousAxisChannelDef: xChannelDef, encodingWithoutContinuousAxis: encodingWithoutX} = errorBarParams(spec, 'horizontal', extent, aggregate);
@@ -235,23 +243,31 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       }
     ];
 
-    meanLayer = [{ // mean point
-      mark: markProperties,
-      encoding: {
-        x: {
-          field: 'mean_point_' + xChannelDef.field,
-          type: xChannelDef.type,
-          // ...xScaleAndAxis
+    if (hasCenterMark(centerMarkType)) {
+      meanLayer = [{ // mean point
+        mark: {
+          type: centerMarkType,
+          filled: centerMarkFill,
+          opacity: 1,
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<ErrorBarPartsMixins>(markDef, 'mean', config.errorbar)
         },
-        y: {
-          field: 'mean_point_' + yChannelDef.field,
-          type: yChannelDef.type,
-          // ...yScaleAndAxis
-        },
-        ...encodingWithoutAxes,
-        // ...(size ? {size} : {})
-      }
-    }];
+        encoding: {
+          x: {
+            field: 'mean_point_' + xChannelDef.field,
+            type: xChannelDef.type,
+            // ...xScaleAndAxis
+          },
+          y: {
+            field: 'mean_point_' + yChannelDef.field,
+            type: yChannelDef.type,
+            // ...yScaleAndAxis
+          },
+          ...encodingWithoutAxes,
+          // ...(size ? {size} : {})
+        }
+      }];
+    }
   }
 
   let layer: NormalizedUnitSpec[] = []; // fix typing here.
@@ -331,11 +347,11 @@ function errorBarContinousAxis(spec: GenericUnitSpec<Encoding<string>, ErrorBar 
   };
 }
 
-function isCi(extent: 'stdev' | 'stderr' | 'ci'): extent is 'ci' {
+function isCi(extent: ErrorBarExtent): extent is 'ci' {
   return extent === 'ci';
 }
 
-function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, orient: Orient, extent: 'stdev' | 'stderr' | 'ci', aggregate: AggregatedFieldDef[]) {
+function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, orient: Orient, extent: ErrorBarExtent, aggregate: AggregatedFieldDef[]) {
 
   const {continuousAxisChannelDef, continuousAxis} = errorBarContinousAxis(spec, orient);
   const encoding = spec.encoding;

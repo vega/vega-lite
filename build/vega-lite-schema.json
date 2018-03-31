@@ -2137,27 +2137,35 @@
       ],
       "type": "string"
     },
+    "ErrorBarCenterMarkType": {
+      "enum": [
+        "point",
+        "circle",
+        "bar",
+        "line"
+      ],
+      "type": "string"
+    },
     "ErrorBarConfig": {
       "additionalProperties": false,
       "properties": {
         "centerMarkType": {
-          "description": "The shape of the mean pint. Available options include:\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`.",
-          "enum": [
-            "point",
-            "circle",
-            "bar",
-            "line"
+          "anyOf": [
+            {
+              "enum": [
+                "none"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ErrorBarCenterMarkType"
+            }
           ],
-          "type": "string"
+          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`."
         },
         "extent": {
-          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
-          "enum": [
-            "ci",
-            "stderr",
-            "stdev"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`."
         },
         "mean": {
           "$ref": "#/definitions/MarkConfig"
@@ -2176,23 +2184,22 @@
       "additionalProperties": false,
       "properties": {
         "centerMarkType": {
-          "description": "The shape of the mean pint. Available options include:\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`.",
-          "enum": [
-            "point",
-            "circle",
-            "bar",
-            "line"
+          "anyOf": [
+            {
+              "enum": [
+                "none"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ErrorBarCenterMarkType"
+            }
           ],
-          "type": "string"
+          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`."
         },
         "extent": {
-          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`.",
-          "enum": [
-            "ci",
-            "stderr",
-            "stdev"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the whiskers. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`."
         },
         "mean": {
           "$ref": "#/definitions/MarkConfig"
@@ -2217,6 +2224,14 @@
         "type"
       ],
       "type": "object"
+    },
+    "ErrorBarExtent": {
+      "enum": [
+        "ci",
+        "stderr",
+        "stdev"
+      ],
+      "type": "string"
     },
     "LayerSpec": {
       "additionalProperties": false,
