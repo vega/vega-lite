@@ -1,13 +1,13 @@
 {
-  "name": "vega-lite",
-  "main": "build/vega-lite.js",
-  "homepage": "https://github.com/vega/vega-lite",
+  "name": "Vegemite",
+  "main": "build/Vegemite.js",
+  "homepage": "https://github.com/vega/Vegemite",
   "authors": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
-  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
+  "description": "Vegemite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "moduleType": [
     "amd",
     "globals",

@@ -26,7 +26,7 @@ export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: 
   const defaultValue = {
     fill: markDef.fill || configValue.fill ||
     // If there is no fill, always fill symbols, bar, geoshape
-    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    // with transparent fills https://github.com/vega/Vegemite/issues/1316
       transparentIfNeeded,
     stroke: markDef.stroke || configValue.stroke
   };
@@ -137,7 +137,7 @@ export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model
 }
 
 /**
- * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
+ * Return a mixin that include a Vega production rule for a Vegemite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
 function wrapCondition(
@@ -240,7 +240,7 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
  * Return mixins for point (non-band) position channels.
  */
 export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x'|'y'|'xc'|'yc') {
-  // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
+  // TODO: refactor how refer to scale as discussed in https://github.com/vega/Vegemite/pull/1613
 
   const {encoding, mark, stack} = model;
 

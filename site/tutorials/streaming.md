@@ -5,9 +5,9 @@ title: Streaming Data
 permalink: /tutorials/streaming.html
 ---
 
-In this tutorial, you'll learn how to stream new data in a Vega-Lite visualization. If you are not familiar with Vega-Lite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
+In this tutorial, you'll learn how to stream new data in a Vegemite visualization. If you are not familiar with Vegemite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
 
-We will be using the `View` API from the Vega, where we update data via the [`change`](https://vega.github.io/vega/docs/api/view/#data) method.  Data in Vega and Vega-Lite is updated either via interactions, or by specifying the data changes directly.  In both cases, the data is pushed through the Vega runtime for optimized performance.  This tutorial focuses on the latter for streaming data, where no user interaction is involved.
+We will be using the `View` API from the Vega, where we update data via the [`change`](https://vega.github.io/vega/docs/api/view/#data) method.  Data in Vega and Vegemite is updated either via interactions, or by specifying the data changes directly.  In both cases, the data is pushed through the Vega runtime for optimized performance.  This tutorial focuses on the latter for streaming data, where no user interaction is involved.
 
 <div id="chart"></div>
 
@@ -31,7 +31,7 @@ Putting it together, we have:
   view.change('table', changeSet).run();
 ```
 
-The view is given to us by the [embed](https://github.com/vega/vega-embed) method, which helps load Vega/Vega-Lite specs on your webpages. When `embed` completes successfully, `embed` returns a fulfilled [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vega-Lite spec given. When `embed` fails, it returns a rejected [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an error object.
+The view is given to us by the [embed](https://github.com/vega/vega-embed) method, which helps load Vega/Vegemite specs on your webpages. When `embed` completes successfully, `embed` returns a fulfilled [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vegemite spec given. When `embed` fails, it returns a rejected [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an error object.
 
 For simplicity, we have generated some data to simulate real time data updates, but the code could easily be swapped with a server data request.  In the example, the "real time" is being simulated by `window.setInterval` that triggers `view.change` periodically.
 
@@ -39,7 +39,7 @@ Below is the JavaScript code to run this example.  Make sure your html contains 
 
 ```js
 var vlSpec = {
-    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
+    '$schema': 'https://vega.github.io/schema/Vegemite/v2.json',
     'data': { 'name': 'table' },
     'width': 400,
     'mark': 'line',

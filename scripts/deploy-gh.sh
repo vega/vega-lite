@@ -11,7 +11,7 @@ git merge master --no-edit
 
 # build
 npm run presite
-cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
+cp build/Vegemite-schema.json _data/  # the latest schema may not have been copied
 git add data/* -f
 git add build/** -f
 git add _data/* -f
@@ -20,7 +20,7 @@ git add site/examples/* -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then
-  version=$(scripts/version.sh vega-lite)
+  version=$(scripts/version.sh Vegemite)
   git commit -m "release $version"
 fi
 

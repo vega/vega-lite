@@ -210,7 +210,7 @@ describe('FacetModel', function() {
             }
           }
         }
-        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+        // TODO: remove "any" once we support all facet listed in https://github.com/vega/Vegemite/issues/2760
       } as any);
       model.parseData();
       const group = model.child.assembleGroup([]);
@@ -259,7 +259,7 @@ describe('FacetModel', function() {
             }
           }
         }
-        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+        // TODO: remove "any" once we support all facet listed in https://github.com/vega/Vegemite/issues/2760
       } as any);
       const layout = model.child.assembleLayout();
       assert.deepEqual(layout.columns, undefined);
@@ -267,7 +267,7 @@ describe('FacetModel', function() {
 
     it('returns a layout with header band if child spec is also a facet', () => {
       const model = parseFacetModelWithScale({
-        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+        "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
         "data": {"url": "data/cars.json"},
         "facet": {"row": {"field": "Origin","type": "ordinal"}},
         "spec": {
@@ -280,7 +280,7 @@ describe('FacetModel', function() {
             }
           }
         }
-        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+        // TODO: remove "any" once we support all facet listed in https://github.com/vega/Vegemite/issues/2760
       } as any);
       model.parseLayoutSize();
       model.parseAxisAndHeader();
@@ -365,7 +365,7 @@ describe('FacetModel', function() {
             }
           }
         }
-        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+        // TODO: remove "any" once we support all facet listed in https://github.com/vega/Vegemite/issues/2760
       } as any);
       model.parse();
 

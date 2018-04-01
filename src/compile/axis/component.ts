@@ -31,7 +31,7 @@ export class AxisComponent extends Split<AxisComponentProps> {
   }
 
   public hasAxisPart(part: AxisPart) {
-    // FIXME(https://github.com/vega/vega-lite/issues/2552) this method can be wrong if users use a Vega theme.
+    // FIXME(https://github.com/vega/Vegemite/issues/2552) this method can be wrong if users use a Vega theme.
 
     if (part === 'axis') { // always has the axis container part
       return true;

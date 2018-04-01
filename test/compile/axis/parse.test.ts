@@ -192,7 +192,7 @@ describe('Axis', function() {
 
     it('correctly combines different title', () => {
       const model = parseLayerModel({
-        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+        "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
         "data": {"url": "data/cars.json"},
         "layer": [
           {

@@ -5,7 +5,7 @@ title: View Title
 permalink: /docs/title.html
 ---
 
-The `title` property of a [view specification in Vega-lite](spec.html) adds a descriptive title to a chart.  The title property can be either a string or [an object defining the title parameters](#params).
+The `title` property of a [view specification in Vegemite](spec.html) adds a descriptive title to a chart.  The title property can be either a string or [an object defining the title parameters](#params).
 
 For example, the following bar chart is titled "A Simple Bar Chart".
 

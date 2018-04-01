@@ -5,7 +5,7 @@ title: Scale and Guide Resolution
 permalink: /docs/resolve.html
 ---
 
-Vega-Lite determines whether scale domains should be unioned. If the scale domain is unioned, axes and legends can be merged. Otherwise they have to be independent.
+Vegemite determines whether scale domains should be unioned. If the scale domain is unioned, axes and legends can be merged. Otherwise they have to be independent.
 
 {: .suppress-error}
 ```json
@@ -37,6 +37,6 @@ The defaults are documented on the [faceting](facet.html#resolve), [layering](la
 
 ## Example
 
-In this example, we use two independent color scales for two repeated charts. Note how Vega-Lite automatically creates separate legends for each chart.
+In this example, we use two independent color scales for two repeated charts. Note how Vegemite automatically creates separate legends for each chart.
 
 <span class="vl-example" data-name="repeat_independent_colors"></span>

@@ -2,15 +2,15 @@
 
 set -e
 
-version=$(scripts/version.sh vega-lite)
+version=$(scripts/version.sh Vegemite)
 
-pushd ../schema/vega-lite/
+pushd ../schema/Vegemite/
 
 git checkout master
 git pull
 
 rm -f v$version.json
-cp ../../vega-lite/build/vega-lite-schema.json v$version.json
+cp ../../Vegemite/build/Vegemite-schema.json v$version.json
 echo "Copied schema to v$version.json"
 
 prefix=$version
@@ -23,7 +23,7 @@ done
 
 if [ -n "$(git status --porcelain)" ]; then
     git add *.json
-    git commit -m"Add Vega-Lite $version"
+    git commit -m"Add Vegemite $version"
     git push
 else
   echo "Nothing has changed"

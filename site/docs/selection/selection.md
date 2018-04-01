@@ -18,7 +18,7 @@ permalink: /docs/selection.html
 }
 ```
 
-Selections are the basic building block in Vega-Lite's _grammar of interaction._ They map user input (e.g., mouse moves and clicks, touch presses, etc.) into data queries, which can subsequently be used to drive conditional encoding rules, filter data points, or determine scale domains.
+Selections are the basic building block in Vegemite's _grammar of interaction._ They map user input (e.g., mouse moves and clicks, touch presses, etc.) into data queries, which can subsequently be used to drive conditional encoding rules, filter data points, or determine scale domains.
 
 ## Documentation Overview
 {:.no_toc}
@@ -33,7 +33,7 @@ Selections are defined within single views, and their simplest definition consis
 
 | Property | Type   | Description    |
 | :--------| :----: | :------------- |
-| type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
+| type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vegemite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
 
 For example, try the different types against the example selection (named `pts`) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)">
   <option>single</option>
@@ -69,7 +69,7 @@ _Note:_ the two intervals do not have any effect on the visualization yet (we'll
 
 ## Selection Transformations
 
-Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include:
+Vegemite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include:
 
 - For `single` selections:
   - [`bind`](bind.html) to input elements (also known as dynamic query widgets).
@@ -126,7 +126,7 @@ An alternate way to construct this technique would be to filter out the input da
 
 However, setting the scale domains (rather than filtering data out) yields superior interactive performance. Rather than testing whether each data value falls within the selection or not, the scale domains are changed directly to the brush extents.
 
-If the selection is [projected](project.html) over _multiple_ fields or encodings, one must be given as part of the scale domain definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
+If the selection is [projected](project.html) over _multiple_ fields or encodings, one must be given as part of the scale domain definition. Vegemite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
 
   - `"scale": {"domain": {"selection": "brush", "encoding": "x"}}` or
   - `"scale": {"domain": {"selection": "brush", "field": "date"}}`
@@ -136,7 +136,7 @@ _Note:_ For a selection to manipulate the scales of its own view, use the [bind]
 {:#compose}
 ### Composing Multiple Selections
 
-So far, we have only considered how to use one selection at a time. Vega-Lite also supports combining multiple selections using the `not`, `or`, and `and` logical composition operators.
+So far, we have only considered how to use one selection at a time. Vegemite also supports combining multiple selections using the `not`, `or`, and `and` logical composition operators.
 
 For example, we had previously seen how we could setup two interval selections for our users Alex and Morgan. Now, we color the rectangles when they fall within Alex's <select onchange="changeSpec('selection_composition', 'selection_composition_' + this.value)">
   <option>and</option>

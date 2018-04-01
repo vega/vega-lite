@@ -5,7 +5,7 @@ title: Repeat a View
 permalink: /docs/repeat.html
 ---
 
-The `repeat` operator is part of Vega-Lite's [view composition](composition.html). It provides a shortcut that creates a view for each entry in an array of fields. This operator generates multiple plots like [`facet`](facet.html). However, unlike `facet` it allows full replication of a data set in each view.
+The `repeat` operator is part of Vegemite's [view composition](composition.html). It provides a shortcut that creates a view for each entry in an array of fields. This operator generates multiple plots like [`facet`](facet.html). However, unlike `facet` it allows full replication of a data set in each view.
 
 ## Documentation Overview
 {:.no_toc}
@@ -60,9 +60,9 @@ Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows
 
 <span class="vl-example" data-name="repeat_splom_iris"></span>
 
-You can also check the [interactive SPLOM example](https://vega.github.io/vega-lite/examples/interactive_splom.html).
+You can also check the [interactive SPLOM example](https://vega.github.io/Vegemite/examples/interactive_splom.html).
 
 ## Resolve
 
 The default [resolutions](resolve.html) for repeat are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels.
-Currently, Vega-Lite does not support shared axes for repeated views.
+Currently, Vegemite does not support shared axes for repeated views.

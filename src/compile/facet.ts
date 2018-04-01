@@ -214,7 +214,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
+    // FIXME(https://github.com/vega/Vegemite/issues/1193): this can be incorrect if we have independent scales.
     return this.child.assembleLayoutSignals();
   }
 
@@ -240,7 +240,7 @@ export class FacetModel extends ModelWithField {
         ...(this.channelHasField('column') ? {
           encode: {
             update: {
-              // TODO(https://github.com/vega/vega-lite/issues/2759):
+              // TODO(https://github.com/vega/Vegemite/issues/2759):
               // Correct the signal for facet of concat of facet_column
               columns: {field: vgField(this.facet.column, {prefix: 'distinct'})}
             }

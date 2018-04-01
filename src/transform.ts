@@ -9,14 +9,14 @@ import {TimeUnit} from './timeunit';
 export interface FilterTransform {
   /**
    * The `filter` property must be one of the predicate definitions:
-   * (1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,
+   * (1) an [expression](https://vega.github.io/Vegemite/docs/types.html#expression) string,
    * where `datum` can be used to refer to the current data object;
-   * (2) one of the field predicates: [equal predicate](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate);
-   * [range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);
-   * (3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate);
+   * (2) one of the field predicates: [equal predicate](https://vega.github.io/Vegemite/docs/filter.html#equal-predicate);
+   * [range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/Vegemite/docs/filter.html#one-of-predicate);
+   * (3) a [selection predicate](https://vega.github.io/Vegemite/docs/filter.html#selection-predicate);
    * or (4) a logical operand that combines (1), (2), or (3).
    */
-  // TODO: https://github.com/vega/vega-lite/issues/2901
+  // TODO: https://github.com/vega/Vegemite/issues/2901
   filter: LogicalOperand<Predicate>;
 }
 
@@ -26,7 +26,7 @@ export function isFilter(t: Transform): t is FilterTransform {
 
 export interface CalculateTransform {
   /**
-   * A [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string. Use the variable `datum` to refer to the current data object.
+   * A [expression](https://vega.github.io/Vegemite/docs/types.html#expression) string. Use the variable `datum` to refer to the current data object.
    */
   calculate: string;
 
@@ -85,7 +85,7 @@ export interface AggregateTransform {
 export interface AggregatedFieldDef {
   /**
    * The aggregation operations to apply to the fields, such as sum, average or count.
-   * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
+   * See the [full list of supported aggregation operations](https://vega.github.io/Vegemite/docs/aggregate.html#ops)
    * for more information.
    */
   op: AggregateOp;

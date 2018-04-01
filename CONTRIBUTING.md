@@ -1,7 +1,7 @@
 # Contributing
 
-If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/)
-or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/Vegemite/docs/)
+or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/Vegemite),
 or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
@@ -18,11 +18,11 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "Help wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/Help%20wanted). Please get in touch if you are planning to work on a major task.
+You can find [tasks with the "Help wanted" label in the issue tracker](https://github.com/vega/Vegemite/labels/Help%20wanted). Please get in touch if you are planning to work on a major task.
 
 ### Help Create New Examples
 
-To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/index.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
+To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/Vegemite/edit/master/site/examples/index.md) to it to our [example gallery](https://vega.github.io/Vegemite/examples/).
 
 ## Documentation and Website
 
@@ -37,7 +37,7 @@ To run the script, you need to install [gnu parallel](https://www.gnu.org/softwa
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
-you can run `yarn site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+you can run `yarn site` to serve the github page locally at [http://localhost:4000/Vegemite/](http://localhost:4000/Vegemite/).
 
 Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You will have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
@@ -92,8 +92,8 @@ After adding a new example, make sure to run `yarn build:example <examplename>` 
 2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies. We use [yarn](https://yarnpkg.com/) to have reproducible dependencies:
 
   ```sh
-  git clone https://github.com/vega/vega-lite.git
-  cd vega-lite
+  git clone https://github.com/vega/Vegemite.git
+  cd Vegemite
   yarn
   ```
 
@@ -119,18 +119,18 @@ After adding a new example, make sure to run `yarn build:example <examplename>` 
 ## Directory Structure
 
 - `_layouts/` – Our website and documentation's Jekyll layout files.
-- `bin/` – Scripts for using Vega-Lite with command line.
+- `bin/` – Scripts for using Vegemite with command line.
 - `data/` – Example data.
-- `site/` – Vega-Lite website including documentation.
-- `examples/` – Example Vega-Lite specifications.
-  - `specs` Vega-Lite examples.
-  - `compiled` The generated Vega specifications and SVG files of the Vega-Lite examples.
+- `site/` – Vegemite website including documentation.
+- `examples/` – Example Vegemite specifications.
+  - `specs` Vegemite examples.
+  - `compiled` The generated Vega specifications and SVG files of the Vegemite examples.
 
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery.
 - `src/` - Main source code directory.
-  - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
-    - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
+  - All interfaces for Vegemite syntax should be declared at the top-level of the `src/` folder.
+    - `src/index.ts` is the root file for Vegemite codebase that exports the global `vl` object.
     - Other files under `src/` reflect namespace structure. All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.   For example, `vl.channel.*` methods are in `src/channel.ts` while `vl.compile` is in `src/compile/compile.ts`.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
@@ -139,9 +139,9 @@ For example, `test/compile/` tests files inside `src/compile/`.
   to allow putting JSON specs in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
 
-## Understanding How Vega-Lite Works
+## Understanding How Vegemite Works
 
-- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process.
+- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vegemite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process.
 
 ## Commands
 
@@ -149,7 +149,7 @@ This section lists commands that are commonly used during development. See `pack
 
 ### Build
 
-You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
+You can run `npm run build` to compile Vegemite and regenerate `Vegemite-schema.json`.
 
 ### Basic Lint & Test & Test Coverage
 
@@ -167,10 +167,10 @@ During development, it can be convenient to rebuild automatically or to run test
 
 `npm run start` starts a watcher task that shows the example gallery.
 Whenever any `.ts` file changes, the watcher:
-(1) re-compiles Vega-Lite
+(1) re-compiles Vegemite
 (2) automatically refreshes the gallery with BrowserSync
 (3) lints and runs tests
-(4) regenerates the JSON schema (`vega-lite-schema.json`).
+(4) regenerates the JSON schema (`Vegemite-schema.json`).
 
 If you only want subset of these actions, you can use:
 
@@ -178,7 +178,7 @@ If you only want subset of these actions, you can use:
 
 - `npm run watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
-- `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+- `npm run watch:build` to start a watcher task that **re-compiles Vegemite** when `.ts` files related to VL change.
 
 #### Fast iteration testing
 
@@ -199,31 +199,31 @@ use `npm run deploy:gh`.
 
 We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin.
 - VSCode has nice built-in Typescript support!
-- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
+- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the Vegemite folder with VSCode.
 - Make sure to install [TypeScript Importer](https://marketplace.visualstudio.com/items?itemName=pmneo.tsimporter) and [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint) extensions.
 
 ## Manually Testing with Vega-Editor
 
 To manually test your changes locally, you should have a local instance of
-[Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor
+[Vega Editor](https://github.com/vega/editor) and link Vegemite to the editor
 (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging)
 for instructions).
 
-## Developing Vega-Lite and Vega-Util
+## Developing Vegemite and Vega-Util
 
-Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
-If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears).
+Vegemite depends on [vega-util](https://github.com/vega/vega-util).
+If you plan to make changes to the utils and test Vegemite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears).
 
 ```sh
 # first link vega-util global npm
 cd path/to/vega-util
 npm link
-# then link vega-lite to datalib
-cd path/to/vega-lite
+# then link Vegemite to datalib
+cd path/to/Vegemite
 npm link vega-util
 ```
 
-Now all of the changes you make in vega-util are reflected in your Vega-Lite automatically.
+Now all of the changes you make in vega-util are reflected in your Vegemite automatically.
 
 ## Pull Requests and Travis
 
@@ -231,11 +231,11 @@ All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR
 
 ### Code Coverage
 
-When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
+When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR, or on `https://codecov.io/gh/vega/Vegemite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/Vegemite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
 
 # Note
 
-Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
+Vegemite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
 
 
 - [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)

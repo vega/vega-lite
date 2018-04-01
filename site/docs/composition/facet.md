@@ -7,9 +7,9 @@ permalink: /docs/facet.html
 
 [A Trellis plot (or small multiple)](https://en.wikipedia.org/wiki/Small_multiple) is a series of similar plots that displays different subsets of the same data, facilitating comparison across subsets.
 
-There are **two ways** to facet views in Vega-Lite:
+There are **two ways** to facet views in Vegemite:
 
-First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view composition operators](composition.html). This is the most flexible way to create faceted plots and allows composition with other operators.
+First, the [`facet` operator](#facet-operator) is one of Vegemite's [view composition operators](composition.html). This is the most flexible way to create faceted plots and allows composition with other operators.
 
 Second, as a shortcut you can use the [`column` or `row` encoding channels](#facet-channels).
 
@@ -72,7 +72,7 @@ You can find more examples in the [example gallery]({{site.baseurl}}/examples/#t
 
 Similar to axes of position channels, a header of a facet channel provides guides to convey the data value that each row and column represent.
 
-By default, Vega-Lite automatically creates axes with default properties for `row` and `column` channels of a faceted view.
+By default, Vegemite automatically creates axes with default properties for `row` and `column` channels of a faceted view.
 User can set the `header` property of row- or column-[field definition](#field-def) to an object to customize header properties.
 
 {% include table.html props="format,title" source="Header" %}
@@ -83,7 +83,7 @@ __See also:__ You may also use `guide-title` and `guide-label` [style configs](m
 
 The `row` and `column` encoding channels.
 
-The [facet channels](encoding.html#facet) are encoding channels, which produce a trellis plot that facets a plot into columns or rows respectively. Vega-Lite automatically translates this shortcut to use the facet operator.
+The [facet channels](encoding.html#facet) are encoding channels, which produce a trellis plot that facets a plot into columns or rows respectively. Vegemite automatically translates this shortcut to use the facet operator.
 
 {% include table.html props="row,column" source="EncodingWithFacet" %}
 
@@ -92,7 +92,7 @@ The [facet channels](encoding.html#facet) are encoding channels, which produce a
 
 <span class="vl-example" data-name="trellis_bar_histogram"></span>
 
-Vega-Lite translates this spec to the more flexible [spec with the facet operator above](#example).
+Vegemite translates this spec to the more flexible [spec with the facet operator above](#example).
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
 

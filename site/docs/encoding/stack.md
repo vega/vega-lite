@@ -92,7 +92,7 @@ If you want to define custom sort order, you can derive a new field using the [`
 
 <div class="vl-example" data-name="stacked_bar_h_order_custom"></div>
 
-Note: we plan to have [a better syntax for customized sort order](https://github.com/vega/vega-lite/issues/2915) in the future.
+Note: we plan to have [a better syntax for customized sort order](https://github.com/vega/Vegemite/issues/2915) in the future.
 
 ## Layering Lines on top of Stacked Area Chart
 

@@ -22,7 +22,7 @@ Quantitative data expresses some kind of quantity. Typically this is numerical d
 
 Temporal data supports date-times and times. For example `2015-03-07 12:32:17`, `17:01`, `2015-03-16`.
 
-Note that when a `"temporal"` type is used for a field, Vega-Lite will treat it as a continuous field and thus will use a [`time` scale](scale.html#time) to map its data to visual values. For example, the following bar chart shows the mean precipitation for different months.
+Note that when a `"temporal"` type is used for a field, Vegemite will treat it as a continuous field and thus will use a [`time` scale](scale.html#time) to map its data to visual values. For example, the following bar chart shows the mean precipitation for different months.
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
 

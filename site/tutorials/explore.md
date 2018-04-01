@@ -5,11 +5,11 @@ title: Exploring Data
 permalink: /tutorials/explore.html
 ---
 
-In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
+In this tutorial, you'll learn a few more techniques for creating visualizations in Vegemite. If you are not familiar with Vegemite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
 
 For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset]({{site.baseurl}}/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
 
-To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
+To load the CSV file with Vegemite, we need to provide a URL and set the format type in the data section of the specification.
 
 {: .suppress-error}
 ```json
@@ -24,7 +24,7 @@ It looks as though precipitation is skewed towards lower values; that is, when i
 
 <div class="vl-example" data-name="bar_aggregate_count"></div>
 
-Next, let's look at how precipitation in Seattle changes throughout the year. Vega-Lite natively supports dates and discretization of dates when we set the type to `temporal`. For example, in the following plot, we sum up the precipitation for each month. To discretize the data into months, we set `"timeUnit": "month"`.
+Next, let's look at how precipitation in Seattle changes throughout the year. Vegemite natively supports dates and discretization of dates when we set the type to `temporal`. For example, in the following plot, we sum up the precipitation for each month. To discretize the data into months, we set `"timeUnit": "month"`.
 
 <div class="vl-example" data-name="line_mean_month"></div>
 
@@ -53,7 +53,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 
 <div class="vl-example" data-name="line_calculate"></div>
 
-For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop each other.
+For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vegemite automatically stacks the bars atop each other.
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example" data-name="stacked_bar_count"></div>

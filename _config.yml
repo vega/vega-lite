@@ -1,18 +1,18 @@
-title: Vega-Lite
-description: Vega-Lite - a high-level grammar for statistical graphics.
-  Vega-Lite provides a higher-level grammar for visual analysis,
+title: Vegemite
+description: Vegemite - a high-level grammar for statistical graphics.
+  Vegemite provides a higher-level grammar for visual analysis,
   comparable to ggplot or Tableau, that generates complete Vega specifications.
 
-  Vega-Lite specifications consist of simple mappings of variables
+  Vegemite specifications consist of simple mappings of variables
   in a data set to visual encoding channels such as x, y, color, and size.
   These mappings are then translated into detailed visualization
   specifications in the form of Vega specification language.
-  Vega-Lite produces default values for visualization components
+  Vegemite produces default values for visualization components
   (e.g., scales, axes, and legends) in the output Vega specification
   using a rule-based approach, but users can explicit specify these properties
   to override default values.
 
-baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
+baseurl: "/Vegemite" # the subpath of your site, e.g. /blog/
 url: "http://vega.github.io" # the base hostname & protocol for your site
 twitter:
   username: vega_vis

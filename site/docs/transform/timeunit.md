@@ -4,9 +4,9 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform).
+Time unit is used to discretize times in Vegemite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform).
 
-Vega-Lite supports the following time units:
+Vegemite supports the following time units:
 
 - `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, , `"yearmonthdatehoursseconds"`.
 - `"quarter"`, `"quartermonth"`
@@ -80,7 +80,7 @@ A `timeUnit` transform in the `transform` array has the following properties:
 
 {% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
 
-In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite will automatically format the axis if the `timeUnit` is applied outside `encoding` so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
+In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vegemite will automatically format the axis if the `timeUnit` is applied outside `encoding` so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
 
 <span class="vl-example" data-name="line_timeunit_transform"></span>
 
@@ -105,7 +105,7 @@ To parse data in local time or UTC time, there are three cases:
 
 ### Output
 
-By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
+By default, Vegemite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
 
 1) UTC time unit when input data is in local time.
 
@@ -115,4 +115,4 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
 
-Do **not** use UTC time unit and the UTC scale type at the same time since that will cause Vega-Lite to shift the output time twice.
+Do **not** use UTC time unit and the UTC scale type at the same time since that will cause Vegemite to shift the output time twice.

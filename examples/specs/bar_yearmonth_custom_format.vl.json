@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
   "data": {"url": "data/seattle-temps.csv", "format": {"type": "csv"}},
   "mark": "bar",

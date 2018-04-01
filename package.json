@@ -1,5 +1,5 @@
 {
-  "name": "vega-lite",
+  "name": "Vegemite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
   "version": "2.3.1",
   "collaborators": [
@@ -7,12 +7,12 @@
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
-  "homepage": "https://vega.github.io/vega-lite/",
-  "description": "Vega-Lite is a concise high-level language for interactive visualization.",
+  "homepage": "https://vega.github.io/Vegemite/",
+  "description": "Vegemite is a concise high-level language for interactive visualization.",
   "main": "build/src/index.js",
-  "unpkg": "build/vega-lite.min.js",
-  "jsdelivr": "build/vega-lite.min.js",
-  "types": "typings/vega-lite.d.ts",
+  "unpkg": "build/Vegemite.min.js",
+  "jsdelivr": "build/Vegemite.min.js",
+  "types": "typings/Vegemite.d.ts",
   "bin": {
     "vl2png": "./bin/vl2png",
     "vl2svg": "./bin/vl2svg",
@@ -25,8 +25,8 @@
     "pretsc": "mkdir -p build && rm -rf build/*/** && cp package.json build/",
     "prebuild": "mkdir -p build/site build/test-gallery",
     "build": "npm run build:only",
-    "build:only": "tsc && cp package.json build && browserify src/index.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
-    "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
+    "build:only": "tsc && cp package.json build && browserify src/index.ts -p tsify -d -s vl | exorcist build/Vegemite.js.map > build/Vegemite.js",
+    "postbuild": "node node_modules/uglify-js/bin/uglifyjs build/Vegemite.js -cm --source-map content=build/Vegemite.js.map,filename=build/Vegemite.min.js.map -o build/Vegemite.min.js && npm run schema",
     "build:examples": "npm run data && npm run build:only && npm run build:examples-only",
     "build:examples-only": "npm run build:example && npm run build:examples-normalized",
     "build:examples-normalized": "rm -f examples/specs/normalized/*.vl.json && scripts/build-normalized-examples",
@@ -38,7 +38,7 @@
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "check:examples": "scripts/check-examples.sh",
     "check:schema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
+    "clean": "rm -rf build && rm -f Vegemite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
 
     "deploy": "scripts/deploy.sh",
@@ -50,7 +50,7 @@
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/Vegemite-schema.json && npm run renameschema && cp build/Vegemite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
@@ -68,17 +68,17 @@
     "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
 
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
-    "watch:build": "watchify src/index.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
+    "watch:build": "watchify src/index.ts -p tsify -v -d -s vl -o 'exorcist build/Vegemite.js.map > build/Vegemite.js'",
     "watch:test": "nodemon -x 'npm test'",
     "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vega/vega-lite.git"
+    "url": "https://github.com/vega/Vegemite.git"
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/vega/vega-lite/issues"
+    "url": "https://github.com/vega/Vegemite/issues"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",

@@ -17,7 +17,7 @@ export interface CompileOptions {
 }
 
 /**
- * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
+ * Vegemite's main function, for compiling Vegemite spec into Vega spec.
  *
  * At a high-level, we make the following transformations in different phases:
  *
@@ -118,7 +118,7 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, auto
 function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelProperties & LayoutSizeMixins) {
   // TODO: change type to become VgSpec
 
-  // Config with Vega-Lite only config removed.
+  // Config with Vegemite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
   const data = [].concat(

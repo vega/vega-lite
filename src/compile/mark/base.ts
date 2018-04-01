@@ -2,11 +2,11 @@ import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 /**
- * Abstract interface for compiling a Vega-Lite primitive mark type.
+ * Abstract interface for compiling a Vegemite primitive mark type.
  */
 export interface MarkCompiler {
   /**
-   * Underlying vega Mark type for the Vega-Lite mark.
+   * Underlying vega Mark type for the Vegemite mark.
    */
   vgMark: 'area' | 'line' | 'symbol' | 'rect' | 'rule' | 'text' | 'shape';
 

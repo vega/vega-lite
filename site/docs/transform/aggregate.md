@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-To aggregate data in Vega-Lite, users can either use use an `aggregate` property of an [encoding field definition](#encoding) or an `aggregate` transform inside the [`transform`](#transform) array.
+To aggregate data in Vegemite, users can either use use an `aggregate` property of an [encoding field definition](#encoding) or an `aggregate` transform inside the [`transform`](#transform) array.
 
 ## Documentation Overview
 {:.no_toc}
@@ -118,4 +118,4 @@ The supported **aggregation operations** are:
 | argmin    | An input data object containing the minimum field value.|
 | argmax    | An input data object containing the maximum field value.|
 
-__Note:__ When accessing aggregated argmax/argmin fields, the aggregated fields must be flattened, due to the [nested field issue](https://github.com/vega/vega-lite/issues/3361). The aggregated fields can be flattened with the calculate transform as done in the [CO2 example]({{site.baseurl}}/examples/layer_line_co2_concentration.html).
+__Note:__ When accessing aggregated argmax/argmin fields, the aggregated fields must be flattened, due to the [nested field issue](https://github.com/vega/Vegemite/issues/3361). The aggregated fields can be flattened with the calculate transform as done in the [CO2 example]({{site.baseurl}}/examples/layer_line_co2_concentration.html).

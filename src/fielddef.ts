@@ -42,7 +42,7 @@ export type ConditionalPredicate<T> = {
 
 export type ConditionalSelection<T> = {
   /**
-   * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
+   * A [selection name](https://vega.github.io/Vegemite/docs/selection.html), or a series of [composed selections](https://vega.github.io/Vegemite/docs/selection.html#compose).
    */
   selection: LogicalOperand<string>;
 } & T;
@@ -63,8 +63,8 @@ export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
   /**
    * One or more value definition(s) with a selection predicate.
    *
-   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
-   * since Vega-Lite only allows at most one encoded field per encoding channel.
+   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/Vegemite/docs/encoding.html#value-def)
+   * since Vegemite only allows at most one encoded field per encoding channel.
    */
   condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
 };
@@ -110,11 +110,11 @@ export interface FieldDefBase<F> {
 
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
-   * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
+   * or an object defining iterated values from the [`repeat`](https://vega.github.io/Vegemite/docs/repeat.html) operator.
    *
    * __Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
    * If field names contain dots or brackets but are not nested, you can use `\\` to escape dots and brackets (e.g., `"a\\.b"` and `"a\\[0\\]"`).
-   * See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).
+   * See more details about escaping in the [field documentation](https://vega.github.io/Vegemite/docs/field.html).
    *
    * __Note:__ `field` is not required if `aggregate` is `count`.
    */
@@ -124,15 +124,15 @@ export interface FieldDefBase<F> {
 
   /**
    * Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.
-   * or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).
+   * or [a temporal field that gets casted as ordinal](https://vega.github.io/Vegemite/docs/type.html#cast).
    *
    * __Default value:__ `undefined` (None)
    */
   timeUnit?: TimeUnit;
 
   /**
-   * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).
-   * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/Vegemite/docs/bin.html#params).
+   * If `true`, default [binning parameters](https://vega.github.io/Vegemite/docs/bin.html) will be applied.
    *
    * __Default value:__ `false`
    */
@@ -174,17 +174,17 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
-   * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
+   * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/Vegemite/docs/scale.html#disable).
    *
-   * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
+   * __Default value:__ If undefined, default [scale properties](https://vega.github.io/Vegemite/docs/scale.html) are applied.
    */
   scale?: Scale | null;
 
   /**
    * Sort order for the encoded field.
    * Supported `sort` values include `"ascending"`, `"descending"`, `null` (no sorting), or an array specifying the preferred order of values.
-   * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
-   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
+   * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/Vegemite/docs/sort.html#sort-field).
+   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/Vegemite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
    *
    * __Default value:__ `"ascending"`
    */
@@ -196,7 +196,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
    *
-   * __Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.
+   * __Default value:__ If undefined, default [axis properties](https://vega.github.io/Vegemite/docs/axis.html) are applied.
    */
   axis?: Axis | null;
 
@@ -206,10 +206,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
    *
    * `stack` can be one of the following values:
-   * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).
-   * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>
-   * -`"center"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).
-   * - `null` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.
+   * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/Vegemite/docs/stack.html#bar) and [area](https://vega.github.io/Vegemite/docs/stack.html#area) chart).
+   * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/Vegemite/docs/stack.html#normalized). <br/>
+   * -`"center"` - stacking with center baseline (for [streamgraph](https://vega.github.io/Vegemite/docs/stack.html#streamgraph)).
+   * - `null` - No-stacking. This will produce layered [bar](https://vega.github.io/Vegemite/docs/stack.html#layered-bar-chart) and area chart.
    *
    * __Default value:__ `zero` for plots with all of the following conditions are true:
    * (1) the mark is `bar` or `area`;
@@ -227,7 +227,7 @@ export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
     * An object defining properties of the legend.
     * If `null`, the legend for the encoding channel will be removed.
     *
-    * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
+    * __Default value:__ If undefined, default [legend properties](https://vega.github.io/Vegemite/docs/legend.html) are applied.
     */
   legend?: Legend | null;
 }
@@ -245,7 +245,7 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 
 export interface TextFieldDef<F> extends FieldDef<F> {
   /**
-   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+   * The [formatting pattern](https://vega.github.io/Vegemite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }
@@ -547,7 +547,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'row':
     case 'column':
       if (isContinuous(fieldDef) && !fieldDef.timeUnit) {
-        // TODO:(https://github.com/vega/vega-lite/issues/2011):
+        // TODO:(https://github.com/vega/Vegemite/issues/2011):
         // with timeUnit it's not always strictly continuous
         return {
           compatible: false,

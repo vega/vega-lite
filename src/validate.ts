@@ -41,7 +41,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
 };
 
 // TODO: consider if we should add validate method and
-// requires ZSchema in the main vega-lite repo
+// requires ZSchema in the main Vegemite repo
 
 /**
  * Further check if encoding mapping of a spec is invalid and

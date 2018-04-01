@@ -8,7 +8,7 @@ const inspect = require('util').inspect;
 const fs = require('fs');
 const path = require('path');
 
-const vlSchema = require('../../build/vega-lite-schema.json');
+const vlSchema = require('../../build/Vegemite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
@@ -32,7 +32,7 @@ function validateVL(spec: TopLevelSpec) {
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 
-  assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/vega-lite/v2');
+  assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/Vegemite/v2');
 }
 
 function validateVega(spec: TopLevelSpec) {
@@ -57,7 +57,7 @@ describe('Examples', function() {
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
     describe(example, function() {
-      it('should be valid vega-lite with proper $schema', function() {
+      it('should be valid Vegemite with proper $schema', function() {
         if (
           // Do not validate overlay example until we have redesigned it
           example.indexOf('overlay') >= 0 ||

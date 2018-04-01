@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "repeat": {
     "row": ["Horsepower", "Acceleration", "Miles_per_Gallon"],
     "column": ["Miles_per_Gallon", "Acceleration", "Horsepower"]

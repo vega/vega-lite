@@ -35,7 +35,7 @@ import {
 
 
 /**
- * Internal model of Vega-Lite specification for the compiler.
+ * Internal model of Vegemite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
   public readonly type: 'unit' = 'unit';
@@ -83,7 +83,7 @@ export class UnitModel extends ModelWithField {
   }
 
   /**
-   * Return specified Vega-lite scale domain for a particular channel
+   * Return specified Vegemite scale domain for a particular channel
    * @param channel
    */
   public scaleDomain(channel: ScaleChannel): Domain {

@@ -25,7 +25,7 @@ permalink: /docs/config.html
 }
 ```
 
-Vega-Lite's `config` object lists configuration properties of a visualization for creating a consistent theme. (This `config` object in Vega-Lite is a superset of [Vega config](https://vega.github.io/vega/docs/config/).)
+Vegemite's `config` object lists configuration properties of a visualization for creating a consistent theme. (This `config` object in Vegemite is a superset of [Vega config](https://vega.github.io/vega/docs/config/).)
 
 The rest of this page outlines different types of config properties:
 
@@ -35,7 +35,7 @@ The rest of this page outlines different types of config properties:
 {:#top-level-config}
 ## Top-level Configuration
 
-A Vega-Lite `config` object can have the following top-level properties:
+A Vegemite `config` object can have the following top-level properties:
 
 {:#format}
 

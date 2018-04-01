@@ -188,7 +188,7 @@ export interface MarkConfigMixins {
 
 export interface BarConfig extends MarkConfig {
   /**
-   * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+   * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vegemite Default, D3 example style).
    *
    * __Default value:__ `1`
    *

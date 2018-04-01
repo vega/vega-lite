@@ -21,13 +21,13 @@ import {contains, Dict, duplicate, hash, keys, vals} from './util';
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
-   * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+   * URL to [JSON schema](http://json-schema.org/) for a Vegemite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/Vegemite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
    * @format uri
    */
   $schema?: string;
 
   /**
-   * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
+   * Vegemite configuration object.  This property can only be defined at the top-level of a specification.
    */
   config?: Config;
 };
@@ -67,20 +67,20 @@ export type DataRequired = {
 };
 
 
-// TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
+// TODO(https://github.com/vega/Vegemite/issues/2503): Make this generic so we can support some form of top-down sizing.
 export interface LayoutSizeMixins {
   /**
    * The width of a visualization.
    *
    * __Default value:__ This will be determined by the following rules:
    *
-   * - If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `"fit"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).
-   * - For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).
-   * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
+   * - If a view's [`autosize`](https://vega.github.io/Vegemite/docs/size.html#autosize) type is `"fit"` or its x-channel has a [continuous scale](https://vega.github.io/Vegemite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/Vegemite/docs/spec.html#config).
+   * - For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/Vegemite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/Vegemite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/Vegemite/docs/spec.html#config).
+   * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/Vegemite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
    *
-   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.
+   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/Vegemite/docs/encoding.html#facet), this represents the width of a single view.
    *
-   * __See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.
+   * __See also:__ The documentation for [width and height](https://vega.github.io/Vegemite/docs/size.html) contains more examples.
    */
   width?: number;
 
@@ -88,13 +88,13 @@ export interface LayoutSizeMixins {
    * The height of a visualization.
    *
    * __Default value:__
-   * - If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `"fit"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).
-   * - For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).
+   * - If a view's [`autosize`](https://vega.github.io/Vegemite/docs/size.html#autosize) type is `"fit"` or its y-channel has a [continuous scale](https://vega.github.io/Vegemite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/Vegemite/docs/spec.html#config).
+   * - For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/Vegemite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/Vegemite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/Vegemite/docs/spec.html#config).
    * - If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.
    *
-   * __Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.
+   * __Note__: For plots with [`row` and `column` channels](https://vega.github.io/Vegemite/docs/encoding.html#facet), this represents the height of a single view.
    *
-   * __See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.
+   * __See also:__ The documentation for [width and height](https://vega.github.io/Vegemite/docs/size.html) contains more examples.
    */
   height?: number;
 }
@@ -103,7 +103,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/Vegemite/docs/mark.html#mark-def).
    */
   mark: M;
 
@@ -329,7 +329,7 @@ function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec, ExtendedLayerS
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
-    // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+    // TODO: remove "any" once we support all facet listed in https://github.com/vega/Vegemite/issues/2760
     spec: normalize(subspec, config) as any
   };
 }
@@ -574,7 +574,7 @@ function accumulate(dict: any, defs: FieldDef<Field>[]): any {
 
 /* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
 function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<FieldDef<T>> = {}): Dict<FieldDef<T>> {
-  // FIXME(https://github.com/vega/vega-lite/issues/2207): Support fieldDefIndex for repeat
+  // FIXME(https://github.com/vega/Vegemite/issues/2207): Support fieldDefIndex for repeat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(layer => {
       if (isUnitSpec(layer)) {

@@ -24,7 +24,7 @@ export type Month = number;
 export type Day = number;
 
 /**
- * Object for defining datetime in Vega-Lite Filter.
+ * Object for defining datetime in Vegemite Filter.
  * If both month and quarter are provided, month has higher precedence.
  * `day` cannot be combined with other date.
  * We accept string for month and day names.
