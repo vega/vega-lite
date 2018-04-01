@@ -267,6 +267,7 @@ export const defaultConfig: Config = {
     extent: 1.5,
     box: {},
     median: {color: 'white'},
+    outliers: {},
     whisker: {}
   },
 

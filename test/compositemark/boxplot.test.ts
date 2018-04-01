@@ -1412,7 +1412,7 @@ describe("normalizeBoxIQR", () => {
        "data": {"url": "data/population.json"},
        "transform": [
          {
-           "aggregate": [
+           "window": [
              {
                "op": "q1",
                "field": "people",
@@ -1439,7 +1439,8 @@ describe("normalizeBoxIQR", () => {
                "as": "max_people"
              }
            ],
-           "groupby": ["age"]
+           "groupby": ["age"],
+           "frame": [null, null]
          },
          {
            calculate: 'datum.upper_box_people - datum.lower_box_people',
@@ -1523,6 +1524,22 @@ describe("normalizeBoxIQR", () => {
                "type": "quantitative"
              }
            }
+         },
+         {
+           transform: [{
+             'filter': '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+           }],
+           mark: {
+             type: 'point',
+             style: 'boxplot-outliers'
+           },
+           "encoding": {
+            "x": {"field": "age","type": "quantitative"},
+            "y": {
+              "field": "people",
+              "type": "quantitative"
+            }
+           }
          }
        ]
      });
@@ -1550,7 +1567,7 @@ describe("normalizeBoxIQR", () => {
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "aggregate": [
+            "window": [
               {
                 "op": "q1",
                 "field": "people",
@@ -1577,7 +1594,8 @@ describe("normalizeBoxIQR", () => {
                 "as": "max_people"
               }
             ],
-            "groupby": ["age"]
+            "groupby": ["age"],
+            "frame": [null, null]
           },
           {
             calculate: 'datum.upper_box_people - datum.lower_box_people',
@@ -1661,6 +1679,22 @@ describe("normalizeBoxIQR", () => {
                 "type": "quantitative"
               }
             }
+          },
+          {
+            transform: [{
+              'filter': '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+            }],
+            mark: {
+              type: 'point',
+              style: 'boxplot-outliers'
+            },
+            "encoding": {
+             "x": {"field": "age","type": "quantitative"},
+             "y": {
+               "field": "people",
+               "type": "quantitative"
+             }
+            }
           }
         ]
       });
@@ -1692,7 +1726,7 @@ describe("normalizeBoxIQR", () => {
         "data": {"url": "data/population.json"},
         "transform": [
           {
-            "aggregate": [
+            "window": [
               {
                 "op": "q1",
                 "field": "people",
@@ -1724,7 +1758,8 @@ describe("normalizeBoxIQR", () => {
                 "as": "mean_people"
               }
             ],
-            "groupby": ["age"]
+            "groupby": ["age"],
+            "frame": [null, null]
           },
           {
             calculate: 'datum.upper_box_people - datum.lower_box_people',
@@ -1810,6 +1845,22 @@ describe("normalizeBoxIQR", () => {
                 "field": "mid_box_people",
                 "type": "quantitative"
               }
+            }
+          },
+          {
+            transform: [{
+              'filter': '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+            }],
+            mark: {
+              type: 'point',
+              style: 'boxplot-outliers'
+            },
+            "encoding": {
+             "x": {"field": "age","type": "quantitative"},
+             "y": {
+               "field": "people",
+               "type": "quantitative"
+             }
             }
           }
         ]

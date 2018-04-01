@@ -16,11 +16,12 @@ import {getMarkDefMixins} from './common';
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'median' | 'whisker';
+export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'whisker';
 
 const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
   median: 1,
+  outliers: 1,
   whisker: 1
 };
 
@@ -84,6 +85,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
 
   const extent = markDef.extent || config.boxplot.extent;
   const sizeValue = markDef.size || config.boxplot.size;
+  const isMinMax = !isNumber(extent);
 
   const orient: Orient = boxOrient(spec);
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
@@ -98,7 +100,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
   }
 
-  return {
+  const result: NormalizedLayerSpec = {
     ...outerSpec,
     transform,
     layer: [
@@ -171,6 +173,30 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
       }
     ]
   };
+
+  if (!isMinMax) {
+    // add outliers
+    const upperBoxField: string = 'upper_box_' + continuousAxisChannelDef.field;
+    const lowerBoxField: string = 'lower_box_' + continuousAxisChannelDef.field;
+    result.layer.push({
+      transform: [{
+        filter: `(datum.${continuousAxisChannelDef.field} < datum.${lowerBoxField} - ${extent} * (datum.${upperBoxField} - datum.${lowerBoxField})) || (datum.${continuousAxisChannelDef.field} > datum.${upperBoxField} + ${extent} * (datum.${upperBoxField} - datum.${lowerBoxField}))`
+      }],
+      mark: {
+        type: 'point',
+        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis
+      }
+    });
+  }
+
+  return result;
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BoxPlot | BoxPlotDef>): Orient {
@@ -290,6 +316,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
   }
 
   const groupby: string[] = [];
+  const frame: string[] = [null, null];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
 
@@ -332,11 +359,13 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
     }
   });
 
+  const window: AggregatedFieldDef[] = aggregate;
+
   return {
     transform: [].concat(
       bins,
       timeUnits,
-      [{aggregate, groupby}],
+      [isMinMax ? {aggregate, groupby} : {window, groupby, frame}],
       postAggregateCalculates
     ),
     continuousAxisChannelDef,
