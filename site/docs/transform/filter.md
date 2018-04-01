@@ -19,7 +19,7 @@ The filter transform removes objects from a data stream based on a provided filt
 }
 ```
 
-Vega-Lite filter transforms must have the `filter` property describing the predicate for the filtering condition.
+Vegemite filter transforms must have the `filter` property describing the predicate for the filtering condition.
 
 {% include table.html props="filter" source="FilterTransform" %}
 

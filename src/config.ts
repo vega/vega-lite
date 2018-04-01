@@ -148,14 +148,14 @@ export interface VLOnlyConfig {
   countTitle?: string;
 
   /**
-   * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
+   * Defines how Vegemite should handle invalid values (`null` and `NaN`).
    * - If set to `"filter"` (default), all data items with null values are filtered.
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   invalidValues?: 'filter' | null;
 
   /**
-   * Defines how Vega-Lite generates title for fields.  There are three possible styles:
+   * Defines how Vegemite generates title for fields.  There are three possible styles:
    * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
    * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
    * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
@@ -311,7 +311,7 @@ export function stripAndRedirectConfig(config: Config) {
     delete config[prop];
   }
 
-  // Remove Vega-Lite only axis/legend config
+  // Remove Vegemite only axis/legend config
   if (config.axis) {
     for (const prop of VL_ONLY_GUIDE_CONFIG) {
       delete config.axis[prop];
@@ -323,7 +323,7 @@ export function stripAndRedirectConfig(config: Config) {
     }
   }
 
-  // Remove Vega-Lite only generic mark config
+  // Remove Vegemite only generic mark config
   if (config.mark) {
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
       delete config.mark[prop];
@@ -331,12 +331,12 @@ export function stripAndRedirectConfig(config: Config) {
   }
 
   for (const markType of MARK_STYLES) {
-    // Remove Vega-Lite-only mark config
+    // Remove Vegemite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
       delete config[markType][prop];
     }
 
-    // Remove Vega-Lite only mark-specific config
+    // Remove Vegemite only mark-specific config
     const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {

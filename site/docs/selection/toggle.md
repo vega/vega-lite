@@ -12,7 +12,7 @@ It can take one of the following values:
   - `false` -- disables toggling behaviour; as the user interacts, data values are only inserted into the multi selection and never removed.
   - A [Vega expression](https://vega.github.io/vega/docs/expressions/) which is re-evaluated as the user interacts. If the expression evaluates to `true`, the data value is toggled into or out of the multi selection. If the expression evaluates to `false`, the multi selection is first clear, and the data value is then inserted.
 
-Vega-Lite automatically adds a toggle transformation to all multi selections by default, with the following definition: `"toggle": "event.shiftKey"`. As a result, data values are toggled when the user interacts with the shift-key pressed.
+Vegemite automatically adds a toggle transformation to all multi selections by default, with the following definition: `"toggle": "event.shiftKey"`. As a result, data values are toggled when the user interacts with the shift-key pressed.
 
 ## Examples
 

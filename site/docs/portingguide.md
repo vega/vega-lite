@@ -1,15 +1,15 @@
 ---
 layout: docs
 menu: docs
-title: Porting Guide from Vega-lite 1
+title: Porting Guide from Vegemite 1
 permalink: /docs/porting-guide.html
 ---
 
-This document describes the various changes needed to port Vega-Lite 1.x visualizations to the 2.0 specification. It also introduces a subset of the new features introduced in Vega-Lite 2. While the listing below is intended to cover the most salient differences between these major versions, readers are also encouraged to dive in and study the [example gallery](examples.html).
+This document describes the various changes needed to port Vegemite 1.x visualizations to the 2.0 specification. It also introduces a subset of the new features introduced in Vegemite 2. While the listing below is intended to cover the most salient differences between these major versions, readers are also encouraged to dive in and study the [example gallery](examples.html).
 
 ## Interaction and Composition
 
-The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vega-Lite now generates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations.
+The key new features for Vegemite 2.0 are the [`selection`](selection.html) operator for specifying interactions and [view composition operators](composition.html) for creating multi-view and layered plots. Moreover, Vegemite now generates Vega 3 and uses a number of new features that improve performance, add new features, and produce better visualizations.
 
 ## General
 
@@ -25,7 +25,7 @@ The key new features for Vega-Lite 2.0 are the [`selection`](selection.html) ope
 
 - Formula definitions for `calculate` transforms can use the`as` property to specify output fields name instead of `field`.
 
-For example,  the following transform in Vega-Lite v1
+For example,  the following transform in Vegemite v1
 
 ```
   "transform": {
@@ -75,9 +75,9 @@ would become
 
 - Following D3 4.0 and Vega 3 's design, the `"ordinal"` scale type has now been broken up into three different scale types: `"ordinal"` (for strict lookup tables), `"band"` (for spatial ordinal scales) and `"point"` (spatial ordinal scales with no padding, similar to `{"point": true}` in Vega 2).
 
-- Following Vega 3, Vega-Lite now includes D3 4.0's `"sequential"` scale type and corresponding color scales. Use the [`"scheme"`](scale.html#scheme) property to set the range to a named color scale (e.g., `"viridis"`, `"plasma"`, or `"magma"`).
+- Following Vega 3, Vegemite now includes D3 4.0's `"sequential"` scale type and corresponding color scales. Use the [`"scheme"`](scale.html#scheme) property to set the range to a named color scale (e.g., `"viridis"`, `"plasma"`, or `"magma"`).
 
-- The `"category10"`, `"category20"` and similar color palettes are no longer available as built-in range names. Instead, they are available using the scale `"scheme"` property, which can be specified instead of a scale range for `"ordinal"` and `"sequential"` scales. However,Vega-lite 2 (and the underlying Vega 3) does support a built-in `"category"` short-hand for ordinal scale ranges, which can be re-defined as part of the theme configuration.
+- The `"category10"`, `"category20"` and similar color palettes are no longer available as built-in range names. Instead, they are available using the scale `"scheme"` property, which can be specified instead of a scale range for `"ordinal"` and `"sequential"` scales. However,Vegemite 2 (and the underlying Vega 3) does support a built-in `"category"` short-hand for ordinal scale ranges, which can be re-defined as part of the theme configuration.
 
 - Following Vega 3, a new `"index"` scale type maps an ordinal domain to a quantitative range (e.g., as supported by `"linear"` or `"sequential"` scales). This is particularly useful for creating ordered color ramps for ordinal data.
 
@@ -138,7 +138,7 @@ would become
 
 ## [Configuration](config.html)
 
-The `config` property in Vega-Lite 2 has been updated to be a superset of [Vega Config](https://vega.github.io/vega/docs/config/).
+The `config` property in Vegemite 2 has been updated to be a superset of [Vega Config](https://vega.github.io/vega/docs/config/).
 
 - Change config's `filterInvalid: boolean` to `invalidValues: "filter"`
 - `config.cell` is now `config.view`.

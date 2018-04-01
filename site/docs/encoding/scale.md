@@ -6,9 +6,9 @@ permalink: /docs/scale.html
 ---
 
 Scales are functions that transform a domain of data values (numbers, dates, strings, etc.) to a range of visual values (pixels, colors, sizes).
-Internally, Vega-Lite uses [Vega scales](https://vega.github.io/vega/docs/scales/), which are derived from the [d3-scale](https://github.com/d3/d3-scale) library. For more background about scales, please see ["Introducing d3-scale"](https://medium.com/@mbostock/introducing-d3-scale-61980c51545f) by Mike Bostock.
+Internally, Vegemite uses [Vega scales](https://vega.github.io/vega/docs/scales/), which are derived from the [d3-scale](https://github.com/d3/d3-scale) library. For more background about scales, please see ["Introducing d3-scale"](https://medium.com/@mbostock/introducing-d3-scale-61980c51545f) by Mike Bostock.
 
-Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels.
+Vegemite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels.
 To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
 {: .suppress-error}
@@ -53,7 +53,7 @@ The `type` property can be specified to customize the scale type.
 {% include table.html props="type" source="Scale" %}
 
 
-By default, Vega-Lite use the following scale types for the following [data types](type.html) and [encoding channels](encoding.html#channel):
+By default, Vegemite use the following scale types for the following [data types](type.html) and [encoding channels](encoding.html#channel):
 
 |                      | Nominal / Ordinal               | Quantitative              | Bin-Quantitative<sup>1</sup>    | Temporal                  |
 |---------------------:|:------------------------------:|:-------------------------:|:------------------------:|:-------------------------:|
@@ -76,7 +76,7 @@ bar and rect marks, which use `"band"` scales.
 {:#domain}
 ## Scale Domains
 
-By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
+By default, a scale in Vegemite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
 {% include table.html props="domain" source="Scale" %}
 
@@ -102,7 +102,7 @@ TODO: Custom Domain for quantitative / discrete scales
 {:#range}
 ## Scale Ranges
 
-The range of the scale represents the set of output visual values. Vega-Lite automatically determines the default range for each [encoding channel](encoding.html#channel) using the following rules:
+The range of the scale represents the set of output visual values. Vegemite automatically determines the default range for each [encoding channel](encoding.html#channel) using the following rules:
 
 | Channels    | Default Range  |
 | :---------- | :-----------------  |
@@ -120,9 +120,9 @@ To customize range values, users can directly specify `range`, or the special ra
 {:#scheme}
 ### Color Schemes
 
-Color schemes provide a set of named color palettes as a scale range for the `color` channel. Vega-Lite (via Vega) provides a collection of perceptually-motivated color schemes, many of which are drawn from the [d3-scale](https://github.com/d3/d3-scale), [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic), and [ColorBrewer](http://colorbrewer2.org/) projects.
+Color schemes provide a set of named color palettes as a scale range for the `color` channel. Vegemite (via Vega) provides a collection of perceptually-motivated color schemes, many of which are drawn from the [d3-scale](https://github.com/d3/d3-scale), [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic), and [ColorBrewer](http://colorbrewer2.org/) projects.
 
-By default, Vega-Lite assigns different [default color schemes](#range-config) based on the types of the encoded fields:
+By default, Vegemite assigns different [default color schemes](#range-config) based on the types of the encoded fields:
 
 -  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the [`"tableau10"`](https://vega.github.io/vega/docs/schemes/#tableau10) scheme by default).
 
@@ -165,7 +165,7 @@ The `scheme` property can also be a __scheme parameter object__, which contain t
 
 Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors).  Supported continuous scale types for _quantitative_ fields are [`"linear"`](#linear), [`"log"`](#log), [`"pow"`](#pow), [`"sqrt"`](#sqrt), and [`"sequential"`](#sequential).  Meanwhile, supported continuous scale types for _temporal_ fields are [`"time"`](#time), [`"utc"`](#utc), and [`"sequential"`](#sequential).
 
-By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel) except for `color`, which uses `"sequential"` scales for both quantitative and temporal fields.
+By default, Vegemite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel) except for `color`, which uses `"sequential"` scales for both quantitative and temporal fields.
 
 In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
 
@@ -219,7 +219,7 @@ Time and UTC scales (`"time"` and `"utc"`) are [continuous scales](#quantitative
 {:#sequential}
 ### Sequential Scales
 
-Sequential scales (`"sequential"`) are similar to linear scales, but use a fixed interpolator to determine the output range. By default, Vega-lite uses sequential scales to encode continuous (quantitative and temporal) fields with `color`s.
+Sequential scales (`"sequential"`) are similar to linear scales, but use a fixed interpolator to determine the output range. By default, Vegemite uses sequential scales to encode continuous (quantitative and temporal) fields with `color`s.
 
 To customize the range of a sequential scale, either a [`range`](#range) array listing colors or a color [`scheme`](#scheme) can be specified.
 
@@ -244,7 +244,7 @@ Discrete scales map values from a discrete domain to a discrete or continuous ra
 
 Ordinal scales (`"ordinal"`) have a discrete domain and range. These scales function as a “lookup table” from a domain value to a range value.
 
-By default, Vega-Lite automatically creates ordinal scales for `color` and `shape` channels.  For example, the following plot implicitly has two ordinal scales, which map the values of the field `"Origin"` to a set of `color`s and a set of `shape`s.
+By default, Vegemite automatically creates ordinal scales for `color` and `shape` channels.  For example, the following plot implicitly has two ordinal scales, which map the values of the field `"Origin"` to a set of `color`s and a set of `shape`s.
 
 <div class="vl-example" data-name="point_color_with_shape"></div>
 
@@ -272,8 +272,8 @@ This image from the [d3-scale documentation](https://github.com/d3/d3-scale#band
 <img src="https://raw.githubusercontent.com/d3/d3-scale/master/img/point.png"/>
 
 
-By default, Vega-Lite uses band scales for nominal and ordinal fields on [position channels](encoding.html#position) (`x` and `y`) of [bar](bar.html) or [rect](rect.html) marks.
-For `x` and `y` of other marks and `size` and `opacity`, Vega-Lite uses point scales by default.
+By default, Vegemite uses band scales for nominal and ordinal fields on [position channels](encoding.html#position) (`x` and `y`) of [bar](bar.html) or [rect](rect.html) marks.
+For `x` and `y` of other marks and `size` and `opacity`, Vegemite uses point scales by default.
 
 For example, the following bar chart has uses a band scale for its x-position.
 
@@ -299,7 +299,7 @@ Discretizing scales break up a continuous domain into discrete segments, and the
 ### Bin-Linear Scales
 
 Binned linear scales (`"bin-linear"`) are a special type of linear scale for use with [binned](bin.html) fields to correctly create legend labels.
-Vega-Lite _always_ uses binned linear scales with binned quantitative fields on size and opacity channels.
+Vegemite _always_ uses binned linear scales with binned quantitative fields on size and opacity channels.
 
 For example, the following plot has a binned field on the `size` channel.
 
@@ -310,7 +310,7 @@ For example, the following plot has a binned field on the `size` channel.
 ### Bin-Ordinal Scales
 
 Binned ordinal scales (`"bin-ordinal"`) are a special type of ordinal scale for use with [binned](bin.html) fields to correctly create legend labels.
-Vega-Lite _always_ uses binned ordinal scales with binned quantitative fields on the color channel.
+Vegemite _always_ uses binned ordinal scales with binned quantitative fields on the color channel.
 
 For example, the following plot has a binned field on the `color` channel.
 
@@ -360,7 +360,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 The scale range configuration (`config: {range: {...}}`) defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid [`range`](#range) or, for named color ranges, [Vega scheme definitions](https://vega.github.io/vega/docs/schemes/#scheme-properties).
 
-By default, Vega-Lite (via Vega) includes the following pre-defined named ranges:
+By default, Vegemite (via Vega) includes the following pre-defined named ranges:
 
 {% include table.html props="category,diverging,heatmap,ordinal,ramp,symbol" source="RangeConfig" %}
 

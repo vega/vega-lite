@@ -11,24 +11,24 @@ npm run clean
 npm run build
 
 # Check if all required files are here
-if ! [ -f build/vega-lite.js ]; then
-  echo "${RED} build/vega-lite.js not found ${NC}"
+if ! [ -f build/Vegemite.js ]; then
+  echo "${RED} build/Vegemite.js not found ${NC}"
   exit 1;
 fi
-if ! [ -f build/vega-lite.js.map ]; then
-  echo "${RED} build/vega-lite.js.map not found ${NC}"
+if ! [ -f build/Vegemite.js.map ]; then
+  echo "${RED} build/Vegemite.js.map not found ${NC}"
   exit 1;
 fi
-if ! [ -f build/vega-lite.min.js ]; then
-  echo "${RED} build/vega-lite.min.js not found ${NC}"
+if ! [ -f build/Vegemite.min.js ]; then
+  echo "${RED} build/Vegemite.min.js not found ${NC}"
   exit 1;
 fi
-if ! [ -f build/vega-lite.min.js.map ]; then
-  echo "${RED} build/vega-lite.min.js.map not found ${NC}"
+if ! [ -f build/Vegemite.min.js.map ]; then
+  echo "${RED} build/Vegemite.min.js.map not found ${NC}"
   exit 1;
 fi
-if ! [ -f build/vega-lite-schema.json ]; then
-  echo "${RED} build/vega-lite-schema.json not found${NC}"
+if ! [ -f build/Vegemite-schema.json ]; then
+  echo "${RED} build/Vegemite-schema.json not found${NC}"
   exit 1;
 fi
 if ! [ -f build/src/index.js ]; then
@@ -53,7 +53,7 @@ fi
 
 # read version
 gitsha=$(git rev-parse HEAD)
-version=$(scripts/version.sh vega-lite)
+version=$(scripts/version.sh Vegemite)
 
 git checkout head
 npm run build

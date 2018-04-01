@@ -7,7 +7,7 @@ permalink: /docs/legend.html
 
 Similar to [axes](axis.html), legends visualize scales. However, whereas axes aid interpretation of scales with positional ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
-By default, Vega-Lite automatically creates legends with default properties for `color`, `opacity`, `size`, and `shape` channels when they encode data fields.
+By default, Vegemite automatically creates legends with default properties for `color`, `opacity`, `size`, and `shape` channels when they encode data fields.
 User can set the `legend` property of a [mark property channel's field definition](encoding.html#mark-prop) to an object to customize [legend properties](#legend-properties) or set `legend` to `null` to remove the legend.
 
 Besides `legend` property of a field definition, the configuration object ([`config`](config.html)) also provides [legend config](#config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
@@ -17,7 +17,7 @@ Besides `legend` property of a field definition, the configuration object ([`con
 
 ## Legend Types
 
-By default, Vega-Lite automatically generates gradient legends for color channels with
+By default, Vegemite automatically generates gradient legends for color channels with
 non-binned quantitative fields and temporal fields.
 
 <div class="vl-example" data-name="point_color_quantitative"></div>
@@ -29,7 +29,7 @@ Otherwise, symbol legends are generated.
 
 ## Combined Legend
 
-If multiple channels encode the same fields, Vega-lite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
+If multiple channels encode the same fields, Vegemite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
 
 <div class="vl-example" data-name="point_color_with_shape"></div>
 

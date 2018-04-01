@@ -8,8 +8,8 @@
   </thead>
   <tbody>
     {%
-      assign schema = site.data.vega-lite-schema.definitions[include.source].properties %}{%
-      assign required = site.data.vega-lite-schema.definitions[include.source].required %}{%
+      assign schema = site.data.Vegemite-schema.definitions[include.source].properties %}{%
+      assign required = site.data.Vegemite-schema.definitions[include.source].required %}{%
       assign props = include.props | split: ","  %}{%
       for prop in props %}{%
         assign source = schema[prop] %}{%

@@ -33,7 +33,7 @@ Alternatively, you can use box plot's mark definition object, which supports the
 ### Basic Usage
 {:#box-plot-types}
 
-Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
+Vegemite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
 1) __`min-max` Box Plot__, which is a box plot where lower and upper whiskers are defined as the min and max respectively.
 

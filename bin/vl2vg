@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// Compile a Vega-Lite spec to Vega
+// Compile a Vegemite spec to Vega
 
 'use strict';
 
 var helpText =
-  'Compile a Vega-Lite spec to Vega.\n\n' +
+  'Compile a Vegemite spec to Vega.\n\n' +
   'Usage: vl2vg [vega_lite_json_file]\n\n';
 
 // import required libraries
 var fs = require('fs'),
-    vl = require('../build/vega-lite');
+    vl = require('../build/Vegemite');
 
 // arguments
 var args = require('yargs')

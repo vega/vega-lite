@@ -6,7 +6,7 @@ permalink: /docs/bin.html
 
 Binning discretizes numeric values into a set of bins. A common use case is to [create a histogram](#example).
 
-There are two ways to define binning in Vega-Lite: [the `bin` property in encoding field definitions](#encoding) and [the `bin` transform](#transform).
+There are two ways to define binning in Vegemite: [the `bin` property in encoding field definitions](#encoding) and [the `bin` transform](#transform).
 
 ## Documentation Overview
 {:.no_toc}
@@ -52,7 +52,7 @@ Mapping binned values and its count to a `bar` mark produces a histogram.
 
 ### Example: Binned color
 
-You can use binning to discretize color scales. Vega-Lite automatically creates legends with range labels.
+You can use binning to discretize color scales. Vegemite automatically creates legends with range labels.
 
 <div class="vl-example" data-name="point_binned_color"></div>
 
@@ -85,7 +85,7 @@ to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field instea
 <div class="vl-example" data-name="histogram_bin_transform"></div>
 
 While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional
-calculation before encoding the data. Note that Vega-Lite currently [does not track which fields are binned](https://github.com/vega/vega-lite/issues/2862) and thus cannot optimize how axes and legends are formatted. For this reason we use [set the type to ordinal](#ordinal-bin) in the example above.
+calculation before encoding the data. Note that Vegemite currently [does not track which fields are binned](https://github.com/vega/Vegemite/issues/2862) and thus cannot optimize how axes and legends are formatted. For this reason we use [set the type to ordinal](#ordinal-bin) in the example above.
 
 ## Bin Parameters
 
@@ -101,7 +101,7 @@ Setting the `maxbins` parameter changes the number of output bins.
 
 ## Ordinal Bin
 
-Usually, you should set the type of binned encodings to be quantitative. Vega-Lite automatically creates axes and legends that best represent binned data. However, if you want to sort the bins or skip empty bins, you can set the type to ordinal.
+Usually, you should set the type of binned encodings to be quantitative. Vegemite automatically creates axes and legends that best represent binned data. However, if you want to sort the bins or skip empty bins, you can set the type to ordinal.
 
 For example, this following plot shows binned values sort by count.
 

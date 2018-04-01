@@ -3,7 +3,7 @@
   "ignore": [
     "node_modules/*",
     "data/*",
-    "vega-lite-schema.json",
+    "Vegemite-schema.json",
     "examples/compiled/*",
     "_site/*",
     "build/*"

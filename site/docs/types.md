@@ -5,7 +5,7 @@ title: Parameter Types
 permalink: /docs/types.html
 ---
 
-Reference documentation for common parameter **types** expected by Vega-Lite specification properties.
+Reference documentation for common parameter **types** expected by Vegemite specification properties.
 
 {:#reference}
 ## Parameter Type Reference
@@ -58,7 +58,7 @@ For example `{"year": 2006, "month": "jan", "date": 1}` represents _Jan 1, 2006_
 <br/><a name="expression" href="#expression">#</a>
 **Expression**
 
-To enable custom calculations, Vega-Lite uses Vega's expression language for writing basic formulas. Each datum object can be referred using bound variable `datum`.
+To enable custom calculations, Vegemite uses Vega's expression language for writing basic formulas. Each datum object can be referred using bound variable `datum`.
 
 Please read the [Vega documentation for expressions](https://vega.github.io/vega/docs/expressions/) for details.
 

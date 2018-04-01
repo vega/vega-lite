@@ -5,7 +5,7 @@ title: Concatenating views
 permalink: /docs/concat.html
 ---
 
-To place views side-by-side, Vega-Lite's [view composition](composition.html) provides operators for horizontal (`hconcat`) and vertical (`vconcat`) concatenation.
+To place views side-by-side, Vegemite's [view composition](composition.html) provides operators for horizontal (`hconcat`) and vertical (`vconcat`) concatenation.
 
 If you concatenate similar views where the only difference is the field that is used in an encoding, use the [`repeat` operator](repeat.html).
 
@@ -61,4 +61,4 @@ a vertical concatenation specification has the following properties:
 
 ## Resolve
 
-The default [resolutions](resolve.html) for concatenation are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels. Currently, Vega-Lite does not support shared axes for concatenated views.
+The default [resolutions](resolve.html) for concatenation are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels. Currently, Vegemite does not support shared axes for concatenated views.

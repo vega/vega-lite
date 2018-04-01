@@ -67,8 +67,8 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
     align: {value: 'center'},
     text: {value: title},
     ...(textOrient === 'vertical' ? {angle: {value: 270}}: {}),
-    // TODO*https://github.com/vega/vega-lite/issues/2446): add title* properties (e.g., titleAlign)
-    // also make sure that guide-title config override these Vega-lite default
+    // TODO*https://github.com/vega/Vegemite/issues/2446): add title* properties (e.g., titleAlign)
+    // also make sure that guide-title config override these Vegemite default
   };
 
   return {

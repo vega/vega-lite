@@ -12,7 +12,7 @@ export interface TitleBase {
    * __Default value:__ `"middle"` for [single](spec.html) and [layered](layer.html) views.
    * `"start"` for other composite views.
    *
-   * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
+   * __Note:__ [For now](https://github.com/vega/Vegemite/issues/2875), `anchor` is only customizable only for [single](spec.html) and [layered](layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
   anchor?: Anchor;
 

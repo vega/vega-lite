@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "title": "A Simple Bar Chart",
   "description": "A simple bar chart with embedded data.",
   "data": {

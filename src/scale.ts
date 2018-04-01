@@ -391,7 +391,7 @@ export function isSelectionDomain(domain: Domain): domain is SelectionDomain {
 
 export interface Scale {
   /**
-   * The type of scale.  Vega-Lite supports the following categories of scale types:
+   * The type of scale.  Vegemite supports the following categories of scale types:
    *
    * 1) [**Continuous Scales**](scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc), [`"sequential"`](scale.html#sequential)).
    *
@@ -553,7 +553,7 @@ export interface Scale {
   /**
    * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
    *
-   * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
+   * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vegemite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
    */
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
@@ -597,7 +597,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'scheme':
       return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
     case 'interpolate':
-      // FIXME(https://github.com/vega/vega-lite/issues/2902) how about ordinal?
+      // FIXME(https://github.com/vega/Vegemite/issues/2902) how about ordinal?
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';

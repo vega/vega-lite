@@ -5,7 +5,7 @@ title: Transformation
 permalink: /docs/transform.html
 ---
 
-Data transformations in Vega-Lite are described via either [view-level](spec.html#common) transforms (the `transform` property) or [field transforms inside `encoding`](encoding.html#field-transform) (`aggregate`, `bin`, `timeUnit`, and `sort`).
+Data transformations in Vegemite are described via either [view-level](spec.html#common) transforms (the `transform` property) or [field transforms inside `encoding`](encoding.html#field-transform) (`aggregate`, `bin`, `timeUnit`, and `sort`).
 
 When both types of transforms are specified, the view-level `transform`s are executed first based on the order in the array. Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
 
@@ -25,7 +25,7 @@ When both types of transforms are specified, the view-level `transform`s are exe
 ```
 
 The View-level `transform` object is an array of objects describing transformations. The transformations are executed in the order in which they are specified in the array.
-Vega-Lite's `transform` supports the following types of transformations:
+Vegemite's `transform` supports the following types of transformations:
 
 - [Aggregate](aggregate.html#transform)
 - [Bin](bin.html#transform)

@@ -5,7 +5,7 @@ title: Layering views
 permalink: /docs/layer.html
 ---
 
-Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is one of Vega-Lite's [view composition operators](composition.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
+Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is one of Vegemite's [view composition operators](composition.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
 
 {: .suppress-error}
 ```json
@@ -43,7 +43,7 @@ See [the example gallery](examples.html#layering) for more layering examples.
 
 ### Combined Scales and Guides
 
-When you have different scales in different layers, the scale domains are unioned so that all layers can use the same scale. In the example above, Vega-Lite automatically uses a common y-axis and color legend. We can disable this by setting the `resolve` property.
+When you have different scales in different layers, the scale domains are unioned so that all layers can use the same scale. In the example above, Vegemite automatically uses a common y-axis and color legend. We can disable this by setting the `resolve` property.
 
 The default [resolutions](resolve.html) for layer are shared scales, axes, and legends.
 

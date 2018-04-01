@@ -1,13 +1,13 @@
 ---
 layout: docs
 menu: docs
-title: Vega-Lite View Specification
+title: Vegemite View Specification
 permalink: /docs/spec.html
 ---
 
 {:#spec}
 
-Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
+Vegemite specifications are JSON objects that describe a diverse range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vegemite also provides operators for composing multiple view specifications into a layered or multi-view specification.
 These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
 
 ## Documentation Overview
@@ -20,7 +20,7 @@ These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`]
 {:#common}
 ## Common Properties of Specifications
 
-All view specifications in Vega-Lite can contain the following properties:
+All view specifications in Vegemite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelFacetedUnitSpec" %}
 
@@ -39,7 +39,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
 ```json
 {
   // Properties for top-level specification (e.g., standalone single view specifications)
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "background": ...,
   "padding": ...,
   "autosize": ...,
@@ -69,11 +69,11 @@ In addition to the [common properties](#common), any kind of top-level specifica
 }
 ```
 
-A single view specification describes a graphical [`mark`](mark.html) type (e.g., `point`s or `bar`s) and its [`encoding`](encoding.html), or the mapping between data values and properties of the mark. By simply providing the mark type and the encoding mapping, Vega-Lite automatically produces other visualization components including [axes](axis.html), [legends](legend.html), and [scales](scale.html). Unless explicitly specified, Vega-Lite determines properties of these components based on a set of carefully designed rules. This approach allows Vega-Lite specifications to be succinct and expressive, but also enables customization.
+A single view specification describes a graphical [`mark`](mark.html) type (e.g., `point`s or `bar`s) and its [`encoding`](encoding.html), or the mapping between data values and properties of the mark. By simply providing the mark type and the encoding mapping, Vegemite automatically produces other visualization components including [axes](axis.html), [legends](legend.html), and [scales](scale.html). Unless explicitly specified, Vegemite determines properties of these components based on a set of carefully designed rules. This approach allows Vegemite specifications to be succinct and expressive, but also enables customization.
 
-As it is designed for analysis, Vega-Lite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html).
+As it is designed for analysis, Vegemite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html).
 
-To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
+To summarize, a single-view specification in Vegemite can have the following properties (in addition to [common properties of a specification](#common)):
 
 {% include table.html props="width,height,selection,projection,mark,encoding" source="TopLevelFacetedUnitSpec" %}
 

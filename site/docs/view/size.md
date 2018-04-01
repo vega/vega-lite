@@ -6,7 +6,7 @@ permalink: /docs/size.html
 ---
 
 
-This page describe how to adjust width and height of visualizations in Vega-lite.
+This page describe how to adjust width and height of visualizations in Vegemite.
 
 ## Documentation Overview
 {:.no_toc}
@@ -62,7 +62,7 @@ The autosize property can be a string or an object with the following properties
 
 {% include table.html props="type,resize,contains" source="AutoSizeParams" %}
 
-The total size of a Vega-Lite visualization may be determined by multiple factors: specified _width_, _height_, and _padding_ values, as well as content such as axes, legends, and titles. To support different use cases, there are three different _autosize_ types for determining the final size of a visualization view:
+The total size of a Vegemite visualization may be determined by multiple factors: specified _width_, _height_, and _padding_ values, as well as content such as axes, legends, and titles. To support different use cases, there are three different _autosize_ types for determining the final size of a visualization view:
 
 - `none`: No automatic sizing is performed. The total visualization size is determined solely by the provided width, height and padding values. For example, by default the total width is calculated as `width + padding.left + padding.right`. Any content lying outside this region will be clipped. If _autosize.contains_ is set to `"padding"`, the total width is instead simply _width_.
 - `pad`: Automatically increase the size of the view such that all visualization content is visible. This is the default _autosize_ setting, and ensures that axes, legends and other items outside the normal width and height are included. The total size will often exceed the specified width, height, and padding.

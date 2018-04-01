@@ -5843,7 +5843,7 @@ vega-embed@^3.2.0:
     compare-versions "^3.1.0"
     d3-selection "^1.3.0"
     vega-lib "^3.2.1"
-    vega-lite "^2.3.1"
+    Vegemite "^2.3.1"
     vega-schema-url-parser "^1.0.0"
     vega-typings "^0.2.11"
 
@@ -5922,9 +5922,9 @@ vega-lib@^3.2.1:
     vega-voronoi "2"
     vega-wordcloud "^2.1"
 
-vega-lite@^2.3.1:
+Vegemite@^2.3.1:
   version "2.3.1"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.3.1.tgz#a7abd16ef7d06b3f8ed8c873bca4be5c4a577369"
+  resolved "https://registry.yarnpkg.com/Vegemite/-/Vegemite-2.3.1.tgz#a7abd16ef7d06b3f8ed8c873bca4be5c4a577369"
   dependencies:
     "@types/json-stable-stringify" "^1.0.32"
     json-stable-stringify "^1.0.1"
@@ -6013,7 +6013,7 @@ vega-tooltip@^0.7.0:
     d3-selection "^1.3.0"
     d3-time-format "^2.1.1"
     vega "^3.1.0"
-    vega-lite "^2.3.1"
+    Vegemite "^2.3.1"
     vega-util "^1.7.0"
 
 vega-transforms@^1.2:

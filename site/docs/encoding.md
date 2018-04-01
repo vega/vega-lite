@@ -58,7 +58,7 @@ The `encoding` property of a single view specification represents the mapping be
 {:#channels}
 ## Encoding Channels
 
-The keys in the `encoding` object are encoding channels.  Vega-lite supports the following groups of encoding channels
+The keys in the `encoding` object are encoding channels.  Vegemite supports the following groups of encoding channels
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
@@ -96,7 +96,7 @@ an encoded constant value.
 }
 ```
 
-To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
+To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vegemite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
 
 All field definitions support the following properties:
 
@@ -150,7 +150,7 @@ To map a constant value to an encoding channel, the channel's value definition m
 `x` and `y` position channels determine the position of the marks, or width/height of horizontal/vertical `"area"` and `"bar"`.
 In addition, `x2` and `y2` can specify the span of ranged [`area`](area.html#ranged), [`bar`](bar.html#ranged), [`rect`](rect.html#ranged), and [`rule`](rule.html#ranged).
 
-By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis](axis.html) for each field mapped to a position channel. If unspecified, properties of scales and axes are determined based on a set of rules by the compiler. `scale` and `axis` properties of the field definition can be used to customize their properties.
+By default, Vegemite automatically generates a [scale](scale.html) and an [axis](axis.html) for each field mapped to a position channel. If unspecified, properties of scales and axes are determined based on a set of rules by the compiler. `scale` and `axis` properties of the field definition can be used to customize their properties.
 
 {% include table.html props="x,y,x2,y2" source="Encoding" %}
 
@@ -173,14 +173,14 @@ In addition, `longitude2` and `latitude2` can specify the span of geographically
 
 {% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
 
-See [an example that uses `longitude` and `latitude` channels in a map](https://vega.github.io/vega-lite/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map](https://vega.github.io/vega-lite/examples/geo_rule.html).
+See [an example that uses `longitude` and `latitude` channels in a map](https://vega.github.io/Vegemite/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map](https://vega.github.io/Vegemite/examples/geo_rule.html).
 
 
 {:#mark-prop}
 ## Mark Property Channels
 
 Mark properties channels map data fields to visual properties of the marks.
-By default, Vega-Lite automatically generates a scale and a legend for each field mapped to a mark property channel. If unspecified, properties of scales and legends are determined based on a set of rules by the compiler. `scale` and `legend` properties of the field definition can be used to customize their properties.
+By default, Vegemite automatically generates a scale and a legend for each field mapped to a mark property channel. If unspecified, properties of scales and legends are determined based on a set of rules by the compiler. `scale` and `legend` properties of the field definition can be used to customize their properties.
 In addition, definitions of mark property channels can include the `condition` property to specify conditional logic.
 
 Here are the list of mark property channels:
@@ -209,7 +209,7 @@ See [the `condition`](condition.html) page for examples how to specify condition
 ## Text and Tooltip Channels
 
 Text and tooltip channels directly encode text values of the data fields.
-By default, Vega-Lite automatically determines appropriate format for quantitative and temporal values.  Users can set `format` property to customize text and time format.
+By default, Vegemite automatically determines appropriate format for quantitative and temporal values.  Users can set `format` property to customize text and time format.
 Similar to mark property channels, definitions of text and tooltip channels can include the `condition` property to specify conditional logic.
 
 {% include table.html props="text,tooltip" source="Encoding" %}

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
   "data": {"url": "data/cars.json"},
   "layer": [

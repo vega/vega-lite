@@ -1,5 +1,5 @@
 /**
- * Vega-Lite's singleton logger utility.
+ * Vegemite's singleton logger utility.
  */
 
 import {AggregateOp} from 'vega';
@@ -19,7 +19,7 @@ import {VgSortField} from './vega.schema';
 export {LoggerInterface} from 'vega-util';
 
 /**
- * Main (default) Vega Logger instance for Vega-Lite
+ * Main (default) Vega Logger instance for Vegemite
  */
 const main = logger(Warn);
 let current: LoggerInterface = main;
@@ -89,7 +89,7 @@ export function debug(..._: any[]) {
 }
 
 /**
- * Collection of all Vega-Lite Error Messages
+ * Collection of all Vegemite Error Messages
  */
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';

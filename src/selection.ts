@@ -19,7 +19,7 @@ export interface BaseSelectionDef {
    */
   resolve?: SelectionResolution;
 
-  // TODO(https://github.com/vega/vega-lite/issues/2596).
+  // TODO(https://github.com/vega/Vegemite/issues/2596).
   // predicate?: string;
   // domain?: SelectionDomain;
 

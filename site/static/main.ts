@@ -64,7 +64,7 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=fa
     .attr('href', '#')
     .on('click', function () {
       post(window, editorURL, {
-        mode: 'vega-lite',
+        mode: 'Vegemite',
         spec: JSON.stringify(spec, null, 2),
     });
     event.preventDefault();

@@ -352,7 +352,7 @@ export abstract class Model {
 
     if (title.text) {
       if (!contains(['unit', 'layer'], this.type)) {
-        // As described in https://github.com/vega/vega-lite/issues/2875:
+        // As described in https://github.com/vega/Vegemite/issues/2875:
         // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
 
         if (title.anchor && title.anchor !== 'start') {

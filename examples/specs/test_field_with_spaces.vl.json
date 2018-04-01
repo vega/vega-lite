@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/Vegemite/v2.json",
   "data": {
     "values": [
       {"a b": 0.9228935641885049,"c d": 0.5982771352733822},

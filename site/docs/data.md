@@ -5,9 +5,9 @@ title: Data
 permalink: /docs/data.html
 ---
 
-Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
+Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vegemite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
-Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [datasets](#datasets).
+Vegemite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [datasets](#datasets).
 
 ## Documentation Overview
 {:.no_toc}
@@ -42,7 +42,7 @@ You can also inline a string that will be parsed according to the specified form
 {:#url}
 ### Data from URL
 
-Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vega-Lite will infer the type from the file extension.
+Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vegemite will infer the type from the file extension.
 
 Here is a list of all properties describing a `data` source from URL:
 
@@ -56,7 +56,7 @@ For example, the following specification loads data from a relative `url`: `data
 ### Named Data Sources
 
 Data can also be added at runtime through the [Vega View API](https://vega.github.io/vega/docs/api/view/#data).
-Data sources are referenced by name, which is specified in Vega-Lite with `name`.
+Data sources are referenced by name, which is specified in Vegemite with `name`.
 
 Here is a list of all properties describing a named `data` source:
 
@@ -99,7 +99,7 @@ Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The inp
 
 ## Datasets
 
-Vega-Lite supports a top-level `datasets` property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the [named](#named) datasource in the rest of the spec. `datasets` is a mapping from name to an [inline](#inline) dataset.
+Vegemite supports a top-level `datasets` property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the [named](#named) datasource in the rest of the spec. `datasets` is a mapping from name to an [inline](#inline) dataset.
 
 {: .suppress-error}
 ```json
