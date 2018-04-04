@@ -29,7 +29,7 @@ export class FacetModel extends ModelWithField {
   public readonly children: Model[];
 
   constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
 
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);

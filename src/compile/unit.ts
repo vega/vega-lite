@@ -58,7 +58,7 @@ export class UnitModel extends ModelWithField {
   constructor(spec: NormalizedUnitSpec, parent: Model, parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config, public fit: boolean) {
 
-    super(spec, parent, parentGivenName, config, undefined);
+    super(spec, parent, parentGivenName, config, repeater, undefined);
     this.initSize({
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
@@ -91,7 +91,7 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public sort(channel: Channel): SortField<string> | SortOrder {
+  public sort(channel: Channel): string[] | SortField<string> | SortOrder {
     return (this.getMapping()[channel] || {}).sort;
   }
 

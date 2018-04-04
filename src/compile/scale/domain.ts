@@ -7,7 +7,7 @@ import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {isSortField, SortField} from '../../sort';
+import {isSortArray, isSortField, SortField} from '../../sort';
 import {hash} from '../../util';
 import * as util from '../../util';
 import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
@@ -21,6 +21,7 @@ import {
   VgUnionSortField,
 } from '../../vega.schema';
 import {binRequiresRange} from '../common';
+import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
@@ -90,9 +91,8 @@ function parseNonUnitScaleDomain(model: Model) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    // FIXME: Arvind -- Please revise logic for merging selectionDomain / domainRaw
-
     let domains: VgNonUnionDomain[];
+    let domainRaw = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -102,10 +102,20 @@ function parseNonUnitScaleDomain(model: Model) {
         } else {
           domains = domains.concat(childComponent.domains);
         }
+
+        const dr = childComponent.get('domainRaw');
+        if (domainRaw && dr && domainRaw.signal !== dr.signal) {
+          log.warn('The same selection must be used to override scale domains in a layered view.');
+        }
+        domainRaw = dr;
       }
     }
 
     localScaleComponents[channel].domains = domains;
+
+    if (domainRaw) {
+      localScaleComponents[channel].set('domainRaw', domainRaw, true);
+    }
   });
 }
 
@@ -266,6 +276,15 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   }
 
   const sort = model.sort(channel);
+
+  // if the sort is specified with array, use the derived sort index field
+  if (isSortArray(sort)) {
+    return {
+      op: 'min',
+      field: sortArrayIndexField(model, channel),
+      order: 'ascending'
+    };
+  }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {

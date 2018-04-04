@@ -17,7 +17,7 @@ export class RepeatModel extends BaseConcatModel {
   public readonly children: Model[];
 
   constructor(spec: NormalizedRepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeatValues, spec.resolve);
 
     if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
       log.warn(log.message.REPEAT_CANNOT_SHARE_AXIS);

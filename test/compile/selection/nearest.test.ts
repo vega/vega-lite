@@ -51,8 +51,8 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}) {
       "transform": [
         {
           "type": "voronoi",
-          "x": x || "datum.x",
-          "y": y || "datum.y",
+          "x": x || {"expr": "datum.datum.x || 0"},
+          "y": y || {"expr": "datum.datum.y || 0"},
           "size": [{"signal": "width"},{"signal": "height"}]
         }
       ]
@@ -105,14 +105,14 @@ describe('Nearest Selection Transform', function() {
 
     assert.sameDeepMembers(
       nearest.marks(model, selCmpts['seven'], duplicate(marks)),
-      voronoiMark("datum.x", {"expr": "0"}));
+      voronoiMark(null, {"expr": "0"}));
 
     assert.sameDeepMembers(
       nearest.marks(model, selCmpts['eight'], duplicate(marks)),
-      voronoiMark({"expr": "0"}, "datum.y"));
+      voronoiMark({"expr": "0"}));
 
     assert.sameDeepMembers(
       nearest.marks(model, selCmpts['nine'], duplicate(marks)),
-      voronoiMark("datum.x", "datum.y"));
+      voronoiMark());
   });
 });

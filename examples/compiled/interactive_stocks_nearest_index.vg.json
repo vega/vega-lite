@@ -255,7 +255,9 @@
             "transform": [
                 {
                     "type": "voronoi",
-                    "x": "datum.x",
+                    "x": {
+                        "expr": "datum.datum.x || 0"
+                    },
                     "y": {
                         "expr": "0"
                     },
