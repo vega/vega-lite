@@ -1,5 +1,6 @@
 import {stringValue} from 'vega-util';
-import multi from './multi';
+
+import {signals as multiSignals} from './multi';
 import {SelectionCompiler, STORE, TUPLE, unitName} from './selection';
 
 
@@ -7,7 +8,7 @@ const single:SelectionCompiler = {
   predicate: 'vlSingle',
   scaleDomain: 'vlSingleDomain',
 
-  signals: multi.signals,
+  signals: multiSignals,
 
   topLevelSignals: function(model, selCmpt, signals) {
     const hasSignal = signals.filter((s) => s.name === selCmpt.name);
@@ -27,4 +28,4 @@ const single:SelectionCompiler = {
   }
 };
 
-export {single as default};
+export default single;

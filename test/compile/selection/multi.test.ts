@@ -1,6 +1,6 @@
 /* tslint:disable quotemark */
-
 import {assert} from 'chai';
+
 import multi from '../../../src/compile/selection/multi';
 import * as selection from '../../../src/compile/selection/selection';
 import {parseUnitModelWithScale} from '../../util';

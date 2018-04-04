@@ -57,9 +57,8 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=fa
     .hover()
     .run();
 
-
   if (actions) {
-    const div = select($target)
+    select($target)
       .append('div')
       .attr('class', 'vega-actions')
       .append('a')

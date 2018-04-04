@@ -166,7 +166,7 @@ const interval:SelectionCompiler = {
     });
   }
 };
-export {interval as default};
+export default interval;
 
 /**
  * Returns the visual and data signals for an interval selection.
