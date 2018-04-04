@@ -7,7 +7,7 @@ do
   # compile normalized example if $skipnormalize is not set
   if [ ! -n "$skipnormalize" ]; then
     #build full vl example
-    scripts/build-fullvl-example $name.vl.json
+    scripts/build-normalized-example $name.vl.json
   fi
 
   # compile Vega example

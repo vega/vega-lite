@@ -15,16 +15,15 @@ before_install:
   - sudo mv parallel sem /usr/local/bin
 
 script:
-  - npm run build
-  - npm run test:nocompile # already run schema and tsc in build
-  - npm run data
-  - npm run check:schema
-  - npm run build:examples
-  - npm run check:examples
-  - npm run codecov
+  - yarn data
+  - yarn build
+  - yarn test
+  - yarn check:schema
+  - yarn build:examples
+  - yarn check:examples
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - yarn codecov
 
 cache: yarn
 

@@ -17,16 +17,16 @@
     ]
   },
   "transform": [
-  {
-    "window": [{
-      "op": "rank",
-      "as": "rank"
-    }],
-    "sort": [{ "field": "score", "order": "descending" }]
-  },
-  {
-    "filter": "datum.rank <= 5"
-  }],
+    {
+      "window": [{
+        "op": "rank",
+        "as": "rank"
+      }],
+      "sort": [{ "field": "score", "order": "descending" }]
+    }, {
+      "filter": "datum.rank <= 5"
+    }
+  ],
   "mark": "bar",
   "encoding": {
     "x": {

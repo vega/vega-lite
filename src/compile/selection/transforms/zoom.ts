@@ -61,7 +61,7 @@ const zoom:TransformCompiler = {
   }
 };
 
-export {zoom as default};
+export default zoom;
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
   const name = selCmpt.name;

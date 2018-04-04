@@ -1,11 +1,5 @@
 {
   "extends": "../tsconfig",
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node"
-  },
   "include": [
     "../typings/*.d.ts",
     "static/*.ts"
