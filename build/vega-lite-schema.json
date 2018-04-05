@@ -937,6 +937,9 @@
           "$ref": "#/definitions/BoxPlot"
         },
         {
+          "$ref": "#/definitions/ErrorArea"
+        },
+        {
           "$ref": "#/definitions/ErrorBar"
         }
       ]
@@ -945,6 +948,9 @@
       "anyOf": [
         {
           "$ref": "#/definitions/BoxPlotDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorAreaDef"
         },
         {
           "$ref": "#/definitions/ErrorBarDef"
@@ -1476,6 +1482,10 @@
         "datasets": {
           "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "errorarea": {
+          "$ref": "#/definitions/ErrorAreaConfig",
+          "description": "ErrorArea Config"
         },
         "errorbar": {
           "$ref": "#/definitions/ErrorBarConfig",
@@ -2131,6 +2141,79 @@
       },
       "type": "object"
     },
+    "ErrorArea": {
+      "enum": [
+        "errorarea"
+      ],
+      "type": "string"
+    },
+    "ErrorAreaConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "areaOpacity": {
+          "description": "The opacity of the area.",
+          "type": "number"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorAreaExtent",
+          "description": "The extent of the area. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`."
+        },
+        "mean": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "size": {
+          "description": "Size of the center point of an error area ",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorAreaDef": {
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "areaOpacity": {
+          "description": "The opacity of the area.",
+          "type": "number"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorAreaExtent",
+          "description": "The extent of the area. Available options include:\n- `\"stdev\": Standard deviation.\n- `\"stderr\": Standard error.\n_ `\"ci\": Confidence interval.\n\n__Default value:__ `\"stdev\"`."
+        },
+        "mean": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error area.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "size": {
+          "description": "Size of the center point of an error area ",
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorArea",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ErrorAreaExtent": {
+      "enum": [
+        "ci",
+        "stderr",
+        "stdev"
+      ],
+      "type": "string"
+    },
     "ErrorBar": {
       "enum": [
         "errorbar"
@@ -2161,7 +2244,7 @@
               "$ref": "#/definitions/ErrorBarCenterMarkType"
             }
           ],
-          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`."
+          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"none\"`."
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
@@ -2195,7 +2278,7 @@
               "$ref": "#/definitions/ErrorBarCenterMarkType"
             }
           ],
-          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"point\"`."
+          "description": "The shape of the mean point. Available options include:\n- `\"none\": no center point\n- `\"point\": point.\n- `\"circle\": circle.\n- `\"square\": square. // will implement it later.\n- `\"bar\": bar.\n- `\"line\": line.\n\n__Default value:__ `\"none\"`."
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",

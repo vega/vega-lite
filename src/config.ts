@@ -270,6 +270,13 @@ export const defaultConfig: Config = {
     whisker: {}
   },
 
+  errorarea: {
+    extent: 'stdev',
+    mean: {color: 'black'},
+    area: {},
+    areaOpacity: 0.4
+  },
+
   errorbar: {
     size: 40,
     extent: 'stdev',

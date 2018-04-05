@@ -110,9 +110,9 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const sizeValue = markDef.size || config.errorbar.size;
   const centerMarkType = markDef.centerMarkType || config.errorbar.centerMarkType;
 
-  let transform: Transform[] = []; // fix typing here.
-  let whiskersLayer: NormalizedUnitSpec[] = []; // fix typing here.
-  let meanLayer: NormalizedUnitSpec[] = []; // fix typing here.
+  let transform: Transform[] = [];
+  let whiskersLayer: NormalizedUnitSpec[] = [];
+  let meanLayer: NormalizedUnitSpec[] = [];
   const centerMarkFill = centerMarkType !== 'circle' && centerMarkType !== 'line';
 
   const pseudoOrient: Orient | 'both' = errorBarOrient(spec);
@@ -270,7 +270,7 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     }
   }
 
-  let layer: NormalizedUnitSpec[] = []; // fix typing here.
+  let layer: NormalizedUnitSpec[] = [];
   if (centerMarkType === 'line' || centerMarkType === 'bar') {
     layer = meanLayer.concat(whiskersLayer);
   } else {
