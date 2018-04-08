@@ -44,7 +44,8 @@ function x(model: UnitModel): VgEncodeEntry {
       const xScaleType = xScale.get('type');
       if (xDef.bin && !sizeDef && !hasDiscreteDomain(xScaleType)) {
         return mixins.binnedPosition(
-          xDef, 'x', model.scaleName('x'), config.bar.binSpacing, xScale.get('reverse')
+          xDef, 'x', model.scaleName('x'), markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+          xScale.get('reverse')
         );
       } else {
         if (xScaleType === ScaleType.BAND) {
@@ -80,7 +81,9 @@ function y(model: UnitModel) {
       const yScaleType = yScale.get('type');
       if (yDef.bin && !sizeDef && !hasDiscreteDomain(yScaleType)) {
         return mixins.binnedPosition(
-          yDef, 'y', model.scaleName('y'), config.bar.binSpacing, yScale.get('reverse')
+          yDef, 'y', model.scaleName('y'),
+          markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+          yScale.get('reverse')
         );
       } else if (yScaleType === ScaleType.BAND) {
         return mixins.bandPosition(yDef, 'y', model);
