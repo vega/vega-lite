@@ -8,5 +8,5 @@
     "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"}
   },
-  "config": {"overlay": {"area": "linepoint"}}
+  "config": {"area": {"line": true, "point": true}}
 }

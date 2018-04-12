@@ -414,7 +414,7 @@ describe('normalize()', function () {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
         },
-        "config": {"overlay": {"line": true}}
+        "config": {"line": {"point": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -428,14 +428,14 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
+            "mark": {"type": "point", "filled": true},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           }
         ],
-        "config": {"overlay": {"line": true}}
+        "config": {"line": {"point": {}}}
       });
     });
 
@@ -448,7 +448,7 @@ describe('normalize()', function () {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
         },
-        "config": {"overlay": {"line": true}}
+        "config": {"line": {"point": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -466,7 +466,7 @@ describe('normalize()', function () {
               }
             },
             {
-              "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
+              "mark": {"type": "point", "filled": true},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
@@ -474,7 +474,7 @@ describe('normalize()', function () {
             }
           ],
         },
-        "config": {"overlay": {"line": true}}
+        "config": {"line": {"point": {}}}
       });
     });
 
@@ -486,7 +486,7 @@ describe('normalize()', function () {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
         },
-        "config": {"overlay": {"area": 'linepoint'}}
+        "config": {"area": {"line": {}, "point": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -500,21 +500,21 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "style": "lineOverlay"},
+            "mark": {"type": "line"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           },
           {
-            "mark": {"type": "point", "filled": true, "style": "pointOverlay"},
+            "mark": {"type": "point", "filled": true},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           }
         ],
-        "config": {"overlay": {"area": 'linepoint'}}
+        "config": {"area": {"line": {}, "point": {}}}
       });
     });
 
@@ -526,7 +526,7 @@ describe('normalize()', function () {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
         },
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -540,14 +540,14 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "style": "lineOverlay"},
+            "mark": {"type": "line"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           }
         ],
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       });
     });
 
@@ -560,7 +560,7 @@ describe('normalize()', function () {
           "y": {"aggregate": "sum", "field": "price", "type": "quantitative"},
           "color": {"field": "symbol", "type": "nominal"}
         },
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -575,7 +575,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "style": "lineOverlay"},
+            "mark": {"type": "line"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "zero"},
@@ -583,7 +583,7 @@ describe('normalize()', function () {
             }
           }
         ],
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       });
     });
 
@@ -596,7 +596,7 @@ describe('normalize()', function () {
           "y": {"aggregate": "sum", "field": "price", "type": "quantitative", "stack": "center"},
           "color": {"field": "symbol", "type": "nominal"}
         },
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
       assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
@@ -611,7 +611,7 @@ describe('normalize()', function () {
             }
           },
           {
-            "mark": {"type": "line", "style": "lineOverlay"},
+            "mark": {"type": "line"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
@@ -619,7 +619,7 @@ describe('normalize()', function () {
             }
           }
         ],
-        "config": {"overlay": {"area": 'line'}}
+        "config": {"area": {"line": {}}}
       });
     });
   });

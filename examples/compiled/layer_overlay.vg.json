@@ -173,8 +173,7 @@
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_6"
@@ -228,8 +227,7 @@
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_4"
