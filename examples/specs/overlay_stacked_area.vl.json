@@ -17,5 +17,5 @@
     },
     "opacity": {"value": 0.7}
   },
-  "config": {"overlay": {"area": "line"}}
+  "config": {"area": {"line": true}}
 }

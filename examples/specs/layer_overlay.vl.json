@@ -30,6 +30,6 @@
     }
   ],
   "config": {
-    "overlay": {"line": true}
+    "line": {"point": true}
   }
 }

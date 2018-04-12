@@ -1,13 +1,13 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
-import {Config, OverlayConfig} from './config';
+import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {AnyMark, isMarkDef, isPathMark, isPrimitiveMark, Mark, MarkDef, MarkProperties} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -16,7 +16,7 @@ import {stack} from './stack';
 import {TitleParams} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {contains, Dict, duplicate, hash, keys, vals} from './util';
+import {Dict, duplicate, hash, keys, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -443,6 +443,7 @@ function normalizeNonFacetUnit(
   parentEncoding?: Encoding<string | RepeatRef>, parentProjection?: Projection
 ): NormalizedUnitSpec | NormalizedLayerSpec {
   const {encoding, projection} = spec;
+  const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
   // merge parent encoding / projection first
   if (parentEncoding || parentProjection) {
@@ -461,18 +462,18 @@ function normalizeNonFacetUnit(
       return normalizeRangedUnit(spec);
     }
 
-    // TODO: also handle trail marks
+    if (isPathMark(mark)) {
+      const pointOverlay = config[mark].point;
+      const lineOverlay = mark === 'area' && config[mark].line;
 
-    const overlayConfig: OverlayConfig = config && config.overlay;
-    const overlayWithLine = overlayConfig && spec.mark === AREA &&
-      contains(['linepoint', 'line'], overlayConfig.area);
-    const overlayWithPoint = overlayConfig && (
-      (overlayConfig.line && spec.mark === LINE) ||
-      (overlayConfig.area === 'linepoint' && spec.mark === AREA)
-    );
-    // TODO: consider moving this to become another case of compositeMark
-    if (overlayWithPoint || overlayWithLine) {
-      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine, config);
+      if (pointOverlay || lineOverlay) {
+        return normalizeOverlay(
+          spec,
+          pointOverlay === true ? {} : pointOverlay || null,
+          lineOverlay === true ? {} : lineOverlay || null,
+          config
+        );
+      }
     }
 
     return spec; // Nothing to normalize
@@ -503,12 +504,14 @@ function normalizeRangedUnit(spec: NormalizedUnitSpec) {
 }
 
 
-// FIXME(#1804): re-design this
-function normalizeOverlay(spec: NormalizedUnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): NormalizedLayerSpec {
+function normalizeOverlay(spec: NormalizedUnitSpec, pointOverlay: MarkProperties, lineOverlay: MarkProperties, config: Config): NormalizedLayerSpec {
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
   const {mark, selection, projection, encoding, ...outerSpec} = spec;
-  const layer = [{mark, encoding} as NormalizedUnitSpec];
+  const layer: NormalizedUnitSpec[] = [{mark, encoding}];
+
+  // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
+  // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
   const stackProps = stack(mark, encoding, config ? config.stack : undefined);
@@ -525,24 +528,24 @@ function normalizeOverlay(spec: NormalizedUnitSpec, overlayWithPoint: boolean, o
     };
   }
 
-  if (overlayWithLine) {
+  if (lineOverlay) {
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
-        style: 'lineOverlay'
+        ...lineOverlay
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
-  if (overlayWithPoint) {
+  if (pointOverlay) {
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'point',
         filled: true,
-        style: 'pointOverlay'
+        ...pointOverlay
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding

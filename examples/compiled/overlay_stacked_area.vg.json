@@ -249,8 +249,7 @@
                     "name": "layer_1_marks",
                     "type": "line",
                     "style": [
-                        "line",
-                        "lineOverlay"
+                        "line"
                     ],
                     "sort": {
                         "field": "datum[\"age\"]",

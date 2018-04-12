@@ -122,8 +122,7 @@
             "name": "layer_1_marks",
             "type": "line",
             "style": [
-                "line",
-                "lineOverlay"
+                "line"
             ],
             "sort": {
                 "field": "datum[\"date\"]",
@@ -152,8 +151,7 @@
             "name": "layer_2_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_2"

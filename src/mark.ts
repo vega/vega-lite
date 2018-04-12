@@ -58,7 +58,7 @@ export function isMark(m: string): m is Mark {
   return !!MARK_INDEX[m];
 }
 
-export function isPathMark(m: Mark): m is 'line' | 'area' | 'trail' {
+export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
   return contains(['line', 'area', 'trail'], m);
 }
 
@@ -89,7 +89,6 @@ export interface MarkConfig extends VgMarkConfig {
   color?: string;
 }
 
-
 export interface BarBinSpacingMixins {
   /**
    * Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
@@ -101,14 +100,7 @@ export interface BarBinSpacingMixins {
   binSpacing?: number;
 }
 
-export interface MarkDef extends BarBinSpacingMixins, MarkConfig {
-  /**
-   * The mark type.
-   * One of `"area"`, `"bar"`, `"circle"`, `"geoshape"`, `"line"`,
-   * `"point"`, `"rule"`, `"square"`, `"text"`, `"tick"`, and `"trail"`.
-   */
-  type: Mark;
-
+export interface MarkProperties extends BarBinSpacingMixins, MarkConfig {
   /**
    *
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
@@ -122,6 +114,15 @@ export interface MarkDef extends BarBinSpacingMixins, MarkConfig {
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
   clip?: boolean;
+}
+
+export interface MarkDef extends MarkProperties {
+  /**
+   * The mark type.
+   * One of `"area"`, `"bar"`, `"circle"`, `"geoshape"`, `"line"`,
+   * `"point"`, `"rule"`, `"square"`, `"text"`, `"tick"`, and `"trail"`.
+   */
+  type: Mark;
 }
 
 /** @hide */
@@ -155,7 +156,9 @@ export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', '
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[]
 } = {
+  area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+  line: ['point'],
   text: ['shortTimeLabels'],
   tick: ['bandSize', 'thickness']
 };
@@ -170,7 +173,7 @@ export interface MarkConfigMixins {
 
   // MARK-SPECIFIC CONFIGS
   /** Area-Specific Config */
-  area?: MarkConfig;
+  area?: AreaConfig;
 
   /** Bar-Specific Config */
   bar?: BarConfig;
@@ -179,7 +182,7 @@ export interface MarkConfigMixins {
   circle?: MarkConfig;
 
   /** Line-Specific Config */
-  line?: MarkConfig;
+  line?: LineConfig;
 
   /** Point-Specific Config */
   point?: MarkConfig;
@@ -224,6 +227,34 @@ export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
    * @minimum 0
    */
   discreteBandSize?: number;
+}
+
+export interface PointOverlayMixins {
+  /**
+   * A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.
+   *
+   * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
+   *
+   * - If this property is `false`, no points would be automatically added to line or area marks.
+   *
+   * __Default value:__ `false`.
+   */
+  point?: boolean | MarkProperties;
+}
+
+export interface LineConfig extends MarkConfig, PointOverlayMixins {}
+
+export interface AreaConfig extends MarkConfig, PointOverlayMixins {
+  /**
+   * A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.
+   *
+   * - If this value is an empty object (`{}`) or `true`, lines with default properties will be used.
+   *
+   * - If this value is `false`, no lines would be automatically added to area marks.
+   *
+   * __Default value:__ `false`.
+   */
+  line?: boolean | MarkProperties;
 }
 
 export const defaultBarConfig: BarConfig = {
