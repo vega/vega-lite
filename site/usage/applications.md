@@ -39,7 +39,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
 -   [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 
-## Tools that used Vega-Lite
+## Tools that use Vega-Lite
 
 -   [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 -   <span class="octicon octicon-star"></span> [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
