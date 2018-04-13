@@ -129,11 +129,7 @@
                         "order": [
                             "descending"
                         ]
-                    },
-                    "frame": [
-                        null,
-                        null
-                    ]
+                    }
                 },
                 {
                     "type": "filter",
