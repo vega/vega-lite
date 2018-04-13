@@ -1,5 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
+import {isFieldEqualPredicate, isFieldGTEPredicate, isFieldGTPredicate, isFieldLTEPredicate, isFieldLTPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../../predicate';
 import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
