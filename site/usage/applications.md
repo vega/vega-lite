@@ -49,6 +49,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Vega-Lite for PowerBI](https://github.com/Microsoft/vegalite-for-powerbi/) is an example of a PowerBI custom visual built with Vega-Lite.
 -   [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
 -   [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
+-   [dashcard](https://github.com/scottcame/dashcard) a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and Mondrian via a [REST API](https://github.com/ojbc/mondrian-rest).
 
 
 ## Tools for Embedding Vega-Lite Visualizations
