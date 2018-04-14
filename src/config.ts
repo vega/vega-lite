@@ -232,7 +232,7 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](mark.html#config).  */
   style?: StyleConfigIndex;
 
   /**
