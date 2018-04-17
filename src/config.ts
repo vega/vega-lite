@@ -255,7 +255,9 @@ export const defaultConfig: Config = {
   bar: mark.defaultBarConfig,
   circle: {},
   geoshape: {},
-  line: {},
+  line: {
+    strokeCap: 'square'
+  },
   point: {},
   rect: {},
   rule: {color: 'black'}, // Need this to override default color in mark config

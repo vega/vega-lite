@@ -367,6 +367,9 @@
         "style": {
             "cell": {
                 "fill": "yellow"
+            },
+            "line": {
+                "strokeCap": "square"
             }
         }
     }

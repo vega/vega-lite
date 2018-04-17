@@ -223,6 +223,9 @@
                 "align": "left",
                 "baseline": "middle",
                 "dx": 3
+            },
+            "line": {
+                "strokeCap": "square"
             }
         }
     }

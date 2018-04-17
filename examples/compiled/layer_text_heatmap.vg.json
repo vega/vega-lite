@@ -253,6 +253,9 @@
             "minExtent": 30
         },
         "style": {
+            "line": {
+                "strokeCap": "square"
+            },
             "text": {
                 "baseline": "middle"
             }

@@ -960,7 +960,6 @@ export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
 
 export interface VgMarkConfig {
-
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
@@ -987,7 +986,6 @@ export interface VgMarkConfig {
    * @maximum 1
    */
   opacity?: number;
-
 
   /**
    * The fill opacity (value between [0,1]).
@@ -1016,6 +1014,13 @@ export interface VgMarkConfig {
    * @minimum 0
    */
   strokeWidth?: number;
+
+  /**
+   * The stroke cap for line ending style. One of `"butt"`, `"round"`, or `"square"`.
+   *
+   * __Default value:__ `"square"`
+   */
+  strokeCap?: 'butt' | 'round' | 'square';
 
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
@@ -1177,6 +1182,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fillOpacity: 1,
   stroke: 1,
   strokeWidth: 1,
+  strokeCap: 1,
   strokeOpacity: 1,
   strokeDash: 1,
   strokeDashOffset: 1,
