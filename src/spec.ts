@@ -463,6 +463,15 @@ function normalizeNonFacetUnit(
       return normalizeRangedUnit(spec);
     }
 
+    if (mark === 'line' && (encoding.x2 || encoding.y2)) {
+      log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
+
+      return normalizeNonFacetUnit({
+        mark: 'rule',
+        ...spec
+      }, config, parentEncoding, parentProjection);
+    }
+
     if (isPathMark(mark)) {
       const markDef: MarkDef = isMarkDef(spec.mark) ?
         spec.mark as MarkDef : // must be MarkDef, not CompositeMarkDef
