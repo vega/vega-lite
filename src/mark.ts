@@ -1,6 +1,6 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {flagKeys} from './util';
+import {contains, flagKeys} from './util';
 import {VgMarkConfig} from './vega.schema';
 
 export namespace Mark {
@@ -56,6 +56,10 @@ const MARK_INDEX: {[M in Mark]: 1} = {
 
 export function isMark(m: string): m is Mark {
   return !!MARK_INDEX[m];
+}
+
+export function isPathMark(m: Mark): m is 'line' | 'area' | 'trail' {
+  return contains(['line', 'area', 'trail'], m);
 }
 
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
