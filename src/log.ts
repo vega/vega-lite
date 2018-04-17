@@ -221,6 +221,11 @@ export namespace message {
   // Mark
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
+  export function lineWithRange(hasX2: boolean, hasY2: boolean) {
+    const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
+    return `Line mark is for continuous lines and thus cannot be used with ${channels}. Rule mark (aka line segments) will be used instead.`;
+  }
+
   export function unclearOrientContinuous(mark: Mark) {
     return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;
   }
