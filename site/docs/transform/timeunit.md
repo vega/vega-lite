@@ -8,7 +8,7 @@ Time unit is used to discretize times in Vega-Lite. It can either be used [insid
 
 Vega-Lite supports the following time units:
 
-- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, , `"yearmonthdatehoursseconds"`.
+- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, `"yearmonthdatehoursminutesseconds"`.
 - `"quarter"`, `"quartermonth"`
 - `"month"`, `"monthdate"`
 - `"date"` (Day of month, i.e., 1 - 31)
