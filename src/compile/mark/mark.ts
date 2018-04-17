@@ -19,21 +19,20 @@ import {text} from './text';
 import {tick} from './tick';
 
 
-const markCompiler: {[type: string]: MarkCompiler} = {
-  area: area,
-  bar: bar,
-  line: line,
-  point: point,
-  text: text,
-  tick: tick,
-  trail: trail,
-  rect: rect,
-  rule: rule,
-  circle: circle,
-  square: square,
-  geoshape: geoshape
+const markCompiler: {[m in Mark]: MarkCompiler} = {
+  area,
+  bar,
+  circle,
+  geoshape,
+  line,
+  point,
+  rect,
+  rule,
+  square,
+  text,
+  tick,
+  trail
 };
-
 
 export function parseMarkGroup(model: UnitModel): any[] {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
