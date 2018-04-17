@@ -617,7 +617,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
@@ -1457,6 +1457,10 @@
           "$ref": "#/definitions/VgTitleConfig",
           "description": "Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config)."
         },
+        "trail": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Trail-Specific Config "
+        },
         "view": {
           "$ref": "#/definitions/ViewConfig",
           "description": "Default properties for [single view plots](spec.html#single). "
@@ -1617,7 +1621,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -1631,7 +1635,7 @@
               "type": "array"
             }
           ],
-          "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
         },
         "fill": {
           "anyOf": [
@@ -1698,7 +1702,7 @@
               "type": "array"
             }
           ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "shape": {
           "anyOf": [
@@ -1720,7 +1724,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
         },
         "stroke": {
           "anyOf": [
@@ -1814,7 +1818,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1832,7 +1836,7 @@
               "type": "array"
             }
           ],
-          "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
         },
         "fill": {
           "anyOf": [
@@ -1899,7 +1903,7 @@
               "type": "array"
             }
           ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
@@ -1925,7 +1929,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is currently unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`."
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
         },
         "stroke": {
           "anyOf": [
@@ -2774,7 +2778,7 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2782,7 +2786,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
         },
         "selection": {
           "additionalProperties": {
@@ -2840,7 +2844,7 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -2848,7 +2852,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
         },
         "selection": {
           "additionalProperties": {
@@ -3691,6 +3695,7 @@
         "area",
         "bar",
         "line",
+        "trail",
         "point",
         "text",
         "tick",
@@ -3825,7 +3830,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
@@ -4011,7 +4016,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
@@ -4083,7 +4088,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
+          "description": "The mark type.\nOne of `\"area\"`, `\"bar\"`, `\"circle\"`, `\"geoshape\"`, `\"line\"`,\n`\"point\"`, `\"rule\"`, `\"square\"`, `\"text\"`, `\"tick\"`, and `\"trail\"`."
         }
       },
       "required": [
@@ -4983,7 +4988,7 @@
           "type": "number"
         },
         "maxStrokeWidth": {
-          "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.\n\n__Default value:__ `4`",
+          "description": "Default max strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.\n\n__Default value:__ `4`",
           "minimum": 0,
           "type": "number"
         },
@@ -5009,7 +5014,7 @@
           "type": "number"
         },
         "minStrokeWidth": {
-          "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.\n\n__Default value:__ `1`",
+          "description": "Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },
@@ -5561,7 +5566,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
@@ -5752,7 +5757,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
@@ -6390,7 +6395,7 @@
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n* `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -6402,7 +6407,7 @@
         },
         "projection": {
           "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection.\n\nWorks with `\"geoshape\"` marks and `\"point\"` or `\"line\"` marks that have `latitude` and `\"longitude\"` channels."
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
         },
         "selection": {
           "additionalProperties": {
@@ -7062,7 +7067,7 @@
         },
         "orient": {
           "$ref": "#/definitions/Orient",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",

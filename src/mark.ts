@@ -12,6 +12,7 @@ export namespace Mark {
   export const RULE: 'rule' = 'rule';
   export const TEXT: 'text' = 'text';
   export const TICK: 'tick' = 'tick';
+  export const TRAIL: 'trail' = 'trail';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
   export const GEOSHAPE: 'geoshape' = 'geoshape';
@@ -20,7 +21,7 @@ export namespace Mark {
 /**
  * All types of primitive marks.
  */
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
+export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.TRAIL | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
 
 
 export const AREA = Mark.AREA;
@@ -29,6 +30,7 @@ export const LINE = Mark.LINE;
 export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
 export const TICK = Mark.TICK;
+export const TRAIL = Mark.TRAIL;
 export const RECT = Mark.RECT;
 export const RULE = Mark.RULE;
 export const GEOSHAPE = Mark.GEOSHAPE;
@@ -44,6 +46,7 @@ const MARK_INDEX: {[M in Mark]: 1} = {
   point: 1,
   text: 1,
   tick: 1,
+  trail: 1,
   rect: 1,
   geoshape: 1,
   rule: 1,
@@ -85,8 +88,8 @@ export interface MarkConfig extends VgMarkConfig {
 export interface MarkDef extends MarkConfig {
   /**
    * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+   * One of `"area"`, `"bar"`, `"circle"`, `"geoshape"`, `"line"`,
+   * `"point"`, `"rule"`, `"square"`, `"text"`, `"tick"`, and `"trail"`.
    */
   type: Mark;
 
@@ -181,6 +184,9 @@ export interface MarkConfigMixins {
 
   /** Tick-Specific Config */
   tick?: TickConfig;
+
+  /** Trail-Specific Config */
+  trail?: MarkConfig;
 
   /** Geoshape-Specific Config */
   geoshape?: MarkConfig;

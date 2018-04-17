@@ -262,6 +262,7 @@ export const defaultConfig: Config = {
   square: {},
   text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
+  trail: {},
 
   box: {size: 14, extent: 1.5},
   boxWhisker: {},

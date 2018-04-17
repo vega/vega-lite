@@ -200,6 +200,8 @@ export namespace message {
     return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;
   }
 
+  export const LINE_WITH_VARYING_SIZE = 'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
+
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
     return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
   }

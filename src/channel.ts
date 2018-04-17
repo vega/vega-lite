@@ -208,19 +208,9 @@ export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
 
-export interface SupportedMark {
-  point?: boolean;
-  tick?: boolean;
-  rule?: boolean;
-  circle?: boolean;
-  square?: boolean;
-  bar?: boolean;
-  rect?: boolean;
-  line?: boolean;
-  geoshape?: boolean;
-  area?: boolean;
-  text?: boolean;
-}
+export type SupportedMark = {
+  [mark in Mark]?: boolean
+};
 
 /**
  * Return whether a channel supports a particular mark type.
@@ -253,7 +243,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, rect: true, line: true, area: true, text: true, geoshape: true
+        bar: true, rect: true, line: true, trail: true, area: true, text: true, geoshape: true
       };
     case X:
     case Y:
@@ -261,7 +251,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case LONGITUDE:
       return { // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, rect: true, line: true, area: true, text: true
+        bar: true, rect: true, line: true, trail: true, area: true, text: true
       };
     case X2:
     case Y2:
@@ -273,7 +263,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, text: true, line: true
+        bar: true, text: true, line: true, trail: true
       };
     case SHAPE:
       return {point: true, geoshape: true};

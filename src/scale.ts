@@ -293,7 +293,7 @@ export interface ScaleConfig {
   maxSize?: number;
 
   /**
-   * Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.
+   * Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.
    *
    * __Default value:__ `1`
    *
@@ -302,7 +302,7 @@ export interface ScaleConfig {
   minStrokeWidth?: number;
 
   /**
-   * Default max strokeWidth for strokeWidth  (or rule/line's size) scale.
+   * Default max strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.
    *
    * __Default value:__ `4`
    *
