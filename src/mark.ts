@@ -203,7 +203,7 @@ export interface MarkConfigMixins {
   tick?: TickConfig;
 
   /** Trail-Specific Config */
-  trail?: MarkConfig;
+  trail?: LineConfig;
 
   /** Geoshape-Specific Config */
   geoshape?: MarkConfig;
