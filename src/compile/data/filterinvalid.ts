@@ -4,7 +4,9 @@ import {hasContinuousDomain, ScaleType} from '../../scale';
 import {Dict, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {isPathMark} from '../../mark';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {
@@ -15,8 +17,9 @@ export class FilterInvalidNode extends DataFlowNode {
    super(parent);
   }
 
-  public static make(parent: DataFlowNode, model: ModelWithField): FilterInvalidNode {
-    if (model.config.invalidValues !== 'filter' ) {
+  public static make(parent: DataFlowNode, model: UnitModel): FilterInvalidNode {
+    const {config, mark} = model;
+    if (config.invalidValues !== 'filter' ) {
       return null;
     }
 
@@ -25,8 +28,11 @@ export class FilterInvalidNode extends DataFlowNode {
       if (scaleComponent) {
         const scaleType = scaleComponent.get('type');
 
-        // only automatically filter null for continuous domain since discrete domain scales can handle invalid values.
-        if (hasContinuousDomain(scaleType) && !fieldDef.aggregate) {
+
+        // While discrete domain scales can handle invalid values, continuous scales can't.
+        // Thus, for non-path marks, we have to filter null for scales with continuous domains.
+        // (For path marks, we will use "defined" property and skip these values instead.)
+        if (hasContinuousDomain(scaleType) && !fieldDef.aggregate && !isPathMark(mark)) {
           aggregator[fieldDef.field] = fieldDef;
         }
       }

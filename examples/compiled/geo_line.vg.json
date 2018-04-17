@@ -242,6 +242,9 @@
                     },
                     "y": {
                         "field": "layer_2_y"
+                    },
+                    "defined": {
+                        "signal": ""
                     }
                 }
             }

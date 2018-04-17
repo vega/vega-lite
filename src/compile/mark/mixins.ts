@@ -117,6 +117,23 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
   return undefined;
 }
 
+function validPredicate(vgRef: string) {
+  return `${vgRef} !== null && !isNaN(${vgRef})`;
+}
+
+export function defined(model: UnitModel): VgEncodeEntry {
+  const xField = model.vgField('x', {expr: 'datum'});
+  const yField = model.vgField('y', {expr: 'datum'});
+  const fields = [
+    ...(xField ? [validPredicate(xField)] : []),
+    ...(yField ? [validPredicate(yField)] : [])
+  ];
+
+  return model.config.invalidValues === 'filter' ? {
+    defined: {signal: fields.join(' && ')}
+  } : {};
+}
+
 /**
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */

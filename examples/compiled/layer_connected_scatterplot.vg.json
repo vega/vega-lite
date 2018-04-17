@@ -31,10 +31,6 @@
                     "type": "formula",
                     "expr": "toDate(datum[\"year\"])",
                     "as": "year"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
             ]
         },
@@ -89,6 +85,9 @@
                     "y": {
                         "scale": "y",
                         "field": "gas"
+                    },
+                    "defined": {
+                        "signal": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                     }
                 }
             }

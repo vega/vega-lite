@@ -340,6 +340,9 @@
                                     "y": {
                                         "scale": "y",
                                         "field": "sum_people"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"age\"] !== null && !isNaN(datum[\"age\"]) && datum[\"sum_people\"] !== null && !isNaN(datum[\"sum_people\"])"
                                     }
                                 }
                             }

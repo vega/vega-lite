@@ -6,11 +6,12 @@ import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
 
 import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
 import {ModelWithField} from '../../../src/compile/model';
+import {UnitModel} from '../../../src/compile/unit';
 import {FieldDef} from '../../../src/fielddef';
 import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
 
-function parse(model: ModelWithField) {
+function parse(model: UnitModel) {
   return FilterInvalidNode.make(null, model);
 }
 

@@ -33,10 +33,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
                     "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -87,6 +83,9 @@
                     "y": {
                         "scale": "y",
                         "field": "price"
+                    },
+                    "defined": {
+                        "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                     }
                 }
             }

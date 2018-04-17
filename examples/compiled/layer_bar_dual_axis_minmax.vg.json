@@ -192,6 +192,9 @@
                     "y": {
                         "scale": "layer_1_y",
                         "field": "max_temp_max"
+                    },
+                    "defined": {
+                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"max_temp_max\"] !== null && !isNaN(datum[\"max_temp_max\"])"
                     }
                 }
             }
@@ -222,6 +225,9 @@
                     "y": {
                         "scale": "layer_1_y",
                         "field": "min_temp_min"
+                    },
+                    "defined": {
+                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"min_temp_min\"] !== null && !isNaN(datum[\"min_temp_min\"])"
                     }
                 }
             }

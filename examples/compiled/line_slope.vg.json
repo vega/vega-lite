@@ -99,6 +99,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "median_yield"
+                            },
+                            "defined": {
+                                "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"median_yield\"] !== null && !isNaN(datum[\"median_yield\"])"
                             }
                         }
                     }

@@ -212,6 +212,9 @@
                             "y2": {
                                 "scale": "y",
                                 "field": "sum_people_start"
+                            },
+                            "defined": {
+                                "signal": "datum[\"age\"] !== null && !isNaN(datum[\"age\"]) && datum[\"sum_people\"] !== null && !isNaN(datum[\"sum_people\"])"
                             }
                         }
                     }
@@ -275,6 +278,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "sum_people_end"
+                            },
+                            "defined": {
+                                "signal": "datum[\"age\"] !== null && !isNaN(datum[\"age\"]) && datum[\"sum_people\"] !== null && !isNaN(datum[\"sum_people\"])"
                             }
                         }
                     }

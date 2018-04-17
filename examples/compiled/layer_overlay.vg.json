@@ -165,6 +165,9 @@
                     "y": {
                         "scale": "y",
                         "field": "max_Horsepower"
+                    },
+                    "defined": {
+                        "signal": "datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"]) && datum[\"max_Horsepower\"] !== null && !isNaN(datum[\"max_Horsepower\"])"
                     }
                 }
             }
@@ -220,6 +223,9 @@
                     "y": {
                         "scale": "y",
                         "field": "min_Horsepower"
+                    },
+                    "defined": {
+                        "signal": "datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"]) && datum[\"min_Horsepower\"] !== null && !isNaN(datum[\"min_Horsepower\"])"
                     }
                 }
             }

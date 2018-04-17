@@ -36,10 +36,6 @@
                     "as": [
                         "sum_count"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }
@@ -77,6 +73,9 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
+                    },
+                    "defined": {
+                        "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
                     }
                 }
             }

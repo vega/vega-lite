@@ -35,10 +35,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"life_expect\"])",
                     "as": "life_expect"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
                 }
             ]
         },
@@ -121,6 +117,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "country"
+                            },
+                            "defined": {
+                                "signal": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"]) && datum[\"country\"] !== null && !isNaN(datum[\"country\"])"
                             }
                         }
                     }
