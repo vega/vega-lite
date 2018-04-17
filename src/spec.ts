@@ -103,7 +103,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    */
   mark: M;
 
@@ -114,9 +114,8 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
 
   /**
-   * An object defining properties of geographic projection.
-   *
-   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have `latitude` and `"longitude"` channels.
+   * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
+   * and to `latitude` and `"longitude"` channels for other marks.
    */
   projection?: Projection;
 
@@ -461,6 +460,8 @@ function normalizeNonFacetUnit(
     if (isRanged(encoding)) {
       return normalizeRangedUnit(spec);
     }
+
+    // TODO: also handle trail marks
 
     const overlayConfig: OverlayConfig = config && config.overlay;
     const overlayWithLine = overlayConfig && spec.mark === AREA &&

@@ -221,6 +221,7 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
     case 'tick':
       return config.scale.minBandSize;
     case 'line':
+    case 'trail':
     case 'rule':
       return config.scale.minStrokeWidth;
     case 'text':
@@ -246,6 +247,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
       }
       return minXYRangeStep(xyRangeSteps, config.scale) - 1;
     case 'line':
+    case 'trail':
     case 'rule':
       return config.scale.maxStrokeWidth;
     case 'text':

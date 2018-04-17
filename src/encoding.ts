@@ -73,7 +73,7 @@ export interface Encoding<F> {
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
    * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
-   * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
+   * `"text"`, `"trail"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
@@ -113,7 +113,7 @@ export interface Encoding<F> {
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
    * - For `"text"` – the text's font size.
-   * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
+   * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
   size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -129,7 +129,7 @@ export interface Encoding<F> {
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
-   * in line and area marks without mapping data to a specific visual channel.
+   * in line, trail, and area marks without mapping data to a specific visual channel.
    */
   detail?: FieldDef<F> | FieldDef<F>[];
 
@@ -156,7 +156,7 @@ export interface Encoding<F> {
   /**
    * Order of the marks.
    * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
-   * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
@@ -213,7 +213,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     if (channel === 'size' && mark === 'line') {
       const fieldDef = getFieldDef(encoding[channel]);
       if (fieldDef && fieldDef.aggregate) {
-        log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
+        log.warn(log.message.LINE_WITH_VARYING_SIZE);
         return normalizedEncoding;
       }
     }

@@ -231,7 +231,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
   const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
-    if (contains(['bar', 'area', 'line'], type)) {
+    if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if (
         (orient === 'horizontal' && channel === 'y') ||
         (orient === 'vertical' && channel === 'x')

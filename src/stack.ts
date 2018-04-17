@@ -162,7 +162,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   return {
     groupbyChannel: dimensionDef ? dimensionChannel : undefined,
     fieldChannel,
-    impute: contains(['area', 'line'], mark),
+    impute: contains(['area', 'line', 'trail'], mark),
     stackBy,
     offset
   };

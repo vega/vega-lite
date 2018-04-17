@@ -2,7 +2,7 @@ import {isArray} from 'vega-util';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
 import {getFieldDef, vgField} from '../../fielddef';
-import {AREA, LINE} from '../../mark';
+import {AREA, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, keys} from '../../util';
 import {getStyles, sortParams} from '../common';
@@ -11,7 +11,7 @@ import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
 import {geoshape} from './geoshape';
-import {line} from './line';
+import {line, trail} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
 import {rule} from './rule';
@@ -26,6 +26,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
   point: point,
   text: text,
   tick: tick,
+  trail: trail,
   rect: rect,
   rule: rule,
   circle: circle,
@@ -35,7 +36,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
 
 
 export function parseMarkGroup(model: UnitModel): any[] {
-  if (contains([LINE, AREA], model.mark)) {
+  if (contains([LINE, AREA, TRAIL], model.mark)) {
     return parsePathMark(model);
   } else {
     return getMarkGroups(model);
@@ -45,7 +46,7 @@ export function parseMarkGroup(model: UnitModel): any[] {
 const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
-  const details = pathGroupingFields(model.encoding);
+  const details = pathGroupingFields(model.mark, model.encoding);
 
   const pathMarks = getMarkGroups(model, {
     // If has subfacet for line/area group, need to use faceted data from below.
@@ -144,7 +145,7 @@ function getMarkGroups(model: UnitModel, opt: {
  * Returns list of path grouping fields
  * that the model's spec contains.
  */
-export function pathGroupingFields(encoding: Encoding<string>): string[] {
+export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
@@ -162,7 +163,7 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
       case 'longitude2':
       // TODO: case 'cursor':
 
-      // text, shape, shouldn't be a part of line/area
+      // text, shape, shouldn't be a part of line/trail/area
       case 'text':
       case 'shape':
         return details;
@@ -178,12 +179,24 @@ export function pathGroupingFields(encoding: Encoding<string>): string[] {
           });
         }
         return details;
+
+      case 'size':
+        if (mark === 'trail') {
+          // For trail, size should not group trail lines.
+          return details;
+        }
+        // For line, it should group lines.
+
+      /* tslint:disable */
+      // intentional fall through
+
       case 'color':
       case 'fill':
       case 'stroke':
-      case 'size':
       case 'opacity':
       // TODO strokeDashOffset:
+
+      /* tslint:enable */
         const fieldDef = getFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
           details.push(vgField(fieldDef, {}));

@@ -1,4 +1,5 @@
 import * as log from '../../../log';
+import {contains} from '../../../util';
 import {positionalProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
@@ -12,7 +13,7 @@ const nearest:TransformCompiler = {
   marks: function(model, selCmpt, marks) {
     const {x, y} = positionalProjections(selCmpt);
     const markType = model.mark;
-    if (markType === 'line' || markType === 'area') {
+    if (contains(['line', 'trail', 'area'], markType)) {
       log.warn(log.message.nearestNotSupportForContinuous(markType));
       return marks;
     }
