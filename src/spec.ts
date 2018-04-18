@@ -481,7 +481,7 @@ function normalizeNonFacetUnit(
       if (pointOverlay || lineOverlay) {
         return normalizeOverlay(
           spec,
-          pointOverlay === true ? {} : pointOverlay || null,
+          pointOverlay === 'transparent' ? {opacity: 0} : pointOverlay === true ? {} : pointOverlay || null,
           lineOverlay === true ? {} : lineOverlay || null,
           config
         );
