@@ -10,7 +10,6 @@ The window transform performs calculations over sorted groups of data objects. T
 All the calculations are computed by: First, the tuples are partitioned according to the groupby fields. Each partition is then sorted. Finally, the window calculations are performed over the sorted partitions.
 
 ## Documentation Overview
-
 {:.no_toc}
 
 - TOC
@@ -111,3 +110,16 @@ Rather than filtering the above two examples we can also calculate a residual by
 We can also use `rank` operator to calculate ranks over time.
 
 <div class="vl-example" data-name="window_rank"></div>
+
+### Top K
+
+Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.
+
+<div class="vl-example" data-name="window_top_k"></div>
+
+
+### Cumulative Running Average
+
+Here we use window transform to visualize how the average MPG for vehicles have changed over the years.
+
+<div class="vl-example" data-name="window_cumulative_running_average"></div>
