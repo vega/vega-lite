@@ -116,15 +116,6 @@ export interface MarkProperties extends BarBinSpacingMixins, MarkConfig {
   clip?: boolean;
 }
 
-export interface MarkDef extends MarkProperties {
-  /**
-   * The mark type.
-   * One of `"area"`, `"bar"`, `"circle"`, `"geoshape"`, `"line"`,
-   * `"point"`, `"rule"`, `"square"`, `"text"`, `"tick"`, and `"trail"`.
-   */
-  type: Mark;
-}
-
 /** @hide */
 export type HiddenComposite = CompositeMark | CompositeMarkDef;
 
@@ -244,7 +235,7 @@ export interface PointOverlayMixins {
 
 export interface LineConfig extends MarkConfig, PointOverlayMixins {}
 
-export interface AreaConfig extends MarkConfig, PointOverlayMixins {
+export interface LineOverlayMixins {
   /**
    * A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.
    *
@@ -255,6 +246,19 @@ export interface AreaConfig extends MarkConfig, PointOverlayMixins {
    * __Default value:__ `false`.
    */
   line?: boolean | MarkProperties;
+}
+
+export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {}
+
+
+// Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
+export interface MarkDef extends MarkProperties, PointOverlayMixins, LineOverlayMixins {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+   */
+  type: Mark;
 }
 
 export const defaultBarConfig: BarConfig = {

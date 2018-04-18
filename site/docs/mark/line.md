@@ -42,9 +42,9 @@ __Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, p
 }
 ```
 
-An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation properties:
+An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation and point overlay properties:
 
-{% include table.html props="orient,interpolate,tension" source="MarkDef" %}
+{% include table.html props="orient,interpolate,tension,point" source="MarkDef" %}
 
 
 ## Examples

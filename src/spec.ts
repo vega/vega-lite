@@ -445,6 +445,7 @@ function normalizeNonFacetUnit(
   const {encoding, projection} = spec;
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
+
   // merge parent encoding / projection first
   if (parentEncoding || parentProjection) {
     const mergedProjection = mergeProjection({parentProjection, projection});
@@ -463,8 +464,19 @@ function normalizeNonFacetUnit(
     }
 
     if (isPathMark(mark)) {
-      const pointOverlay = (config[mark] || {}).point || (encoding.shape && {});
-      const lineOverlay = mark === 'area' && config[mark].line;
+      const markDef: MarkDef = isMarkDef(spec.mark) ?
+        spec.mark as MarkDef : // must be MarkDef, not CompositeMarkDef
+        {type: mark};
+
+      const pointOverlay = markDef.point !== undefined ?
+        // use markDef.point if defined
+        markDef.point :
+        // if not, use config[mark].point
+        (config[mark] || {}).point ||
+        // or consider if the mark contains shape
+        (encoding.shape && {});
+
+      const lineOverlay = mark === 'area' && (markDef.line !== undefined ? markDef.line : config[mark].line);
 
       if (pointOverlay || lineOverlay) {
         return normalizeOverlay(
@@ -503,11 +515,20 @@ function normalizeRangedUnit(spec: NormalizedUnitSpec) {
   return spec;
 }
 
+function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
+  const {point: _point, line: _line, ...mark} = markDef;
+
+  return keys(mark).length > 1 ? mark : mark.type;
+}
 
 function normalizeOverlay(spec: NormalizedUnitSpec, pointOverlay: MarkProperties, lineOverlay: MarkProperties, config: Config): NormalizedLayerSpec {
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
-  const {mark, selection, projection, encoding, ...outerSpec} = spec;
+  const {selection, projection, encoding, mark: oldMark, ...outerSpec} = spec;
+
+  // Do not include point / line overlay in the normalize spec
+  const mark = isMarkDef(oldMark) ? dropLineAndPoint(oldMark) : oldMark;
+
   const layer: NormalizedUnitSpec[] = [{mark, encoding}];
 
   // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
