@@ -160,6 +160,11 @@
     "config": {
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "line": {
+                "strokeCap": "square"
+            }
         }
     }
 }

@@ -296,6 +296,9 @@
         "style": {
             "cell": {
                 "stroke": "transparent"
+            },
+            "line": {
+                "strokeCap": "square"
             }
         }
     }

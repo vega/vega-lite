@@ -315,6 +315,9 @@
         "style": {
             "area": {
                 "interpolate": "monotone"
+            },
+            "line": {
+                "strokeCap": "square"
             }
         }
     }

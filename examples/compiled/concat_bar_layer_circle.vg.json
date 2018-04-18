@@ -640,6 +640,11 @@
         "axisY": {
             "minExtent": 30
         },
+        "style": {
+            "line": {
+                "strokeCap": "square"
+            }
+        },
         "range": {
             "heatmap": {
                 "scheme": "greenblue"

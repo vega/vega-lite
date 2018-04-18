@@ -452,6 +452,9 @@
             "minExtent": 30
         },
         "style": {
+            "line": {
+                "strokeCap": "square"
+            },
             "text": {
                 "align": "right",
                 "dx": -5,
