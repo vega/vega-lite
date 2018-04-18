@@ -224,13 +224,15 @@ export interface PointOverlayMixins {
   /**
    * A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.
    *
+   * - If this property is `"transparent"`, transparent points will be used (for enhancing tooltips and selections).
+   *
    * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
    *
    * - If this property is `false`, no points would be automatically added to line or area marks.
    *
    * __Default value:__ `false`.
    */
-  point?: boolean | MarkProperties;
+  point?: boolean | MarkProperties | 'transparent';
 }
 
 export interface LineConfig extends MarkConfig, PointOverlayMixins {}
