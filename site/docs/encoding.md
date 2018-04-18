@@ -100,7 +100,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 All field definitions support the following properties:
 
-{% include table.html props="field,type,bin,timeUnit,aggregate" source="FieldDef" %}
+{% include table.html props="field,type,bin,timeUnit,aggregate,title" source="FieldDef" %}
 
 In addition, field definitions for different encoding channels may support the following properties:
 

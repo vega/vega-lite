@@ -7,6 +7,7 @@ import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
+import {TitleMixins} from './guide';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
@@ -160,7 +161,7 @@ export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface FieldDef<F> extends FieldDefBase<F> {
+export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
