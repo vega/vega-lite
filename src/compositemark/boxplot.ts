@@ -1,87 +1,68 @@
 import {isNumber} from 'vega-util';
+import {isAggregateOp} from '../aggregate';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
+import {GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
 import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
+import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
-import {MarkConfig} from './../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {getMarkSpecificConfigMixins} from './common';
+import {getMarkDefMixins} from './common';
 
 
-export const BOXPLOT: 'box-plot' = 'box-plot';
-export type BOXPLOT = typeof BOXPLOT;
-export type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
+export const BOXPLOT: 'boxplot' = 'boxplot';
+export type BoxPlot = typeof BOXPLOT;
 
+export type BoxPlotPart = 'box' | 'median' | 'whisker';
 
-export interface BoxPlotDef {
+const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
+  box: 1,
+  median: 1,
+  whisker: 1
+};
+
+export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
+
+// TODO: Currently can't use `PartsMixins<BoxPlotPart>`
+// as the schema generator will fail
+export type BoxPlotPartsMixins = {
+  [part in BoxPlotPart]?: MarkConfig
+};
+
+export interface BoxPlotConfig extends BoxPlotPartsMixins {
+  /** Size of the box and median tick of a box plot */
+  size?: number;
+
   /**
-   * Type of the mark.  For box plots, this should always be `"box-plot"`.
-   * [boxplot](compositemark.html#boxplot)
-   */
-  type: BOXPLOT;
-
-  /**
-   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
-   */
-  orient?: Orient;
-
-  /**
-   * Extent is used to determine where the whiskers extend to. The options are
+   * The extent of the whiskers. Available options include:
    * - `"min-max": min and max are the lower and upper whiskers respectively.
-   * -  A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   * - `"number": multiples of the interquartile range (Q3-Q1) A number that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   *
    * __Default value:__ `"1.5"`.
    */
   extent?: 'min-max' | number;
 }
-
-export function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef {
-  return !!mark['type'];
-}
-
-export const BOXPLOT_STYLES: BoxPlotStyle[] = ['boxWhisker', 'box', 'boxMid'];
-
-export interface BoxPlotConfig extends MarkConfig {
-  /** Size of the box and mid tick of a box plot */
-  size?: number;
-  /** The default extent, which is used to determine where the whiskers extend to. The options are
-   * - `"min-max": min and max are the lower and upper whiskers respectively.
-   * - `"number": A scalar (integer or floating point number) that will be multiplied by the IQR and the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+export interface BoxPlotDef extends GenericMarkDef<BoxPlot>, BoxPlotConfig {
+  /**
+   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
    */
-  extent?: 'min-max' | number;
+  orient?: Orient;
 }
 
 export interface BoxPlotConfigMixins {
   /**
    * Box Config
-   * @hide
    */
-  box?: BoxPlotConfig;
-
-  /**
-   * @hide
-   */
-  boxWhisker?: MarkConfig;
-
-  /**
-   * @hide
-   */
-  boxMid?: MarkConfig;
+  boxplot?: BoxPlotConfig;
 }
 
-export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
-  [k in keyof BoxPlotConfigMixins]?: (keyof BoxPlotConfigMixins[k])[]
-} = {
-  box: ['size', 'color', 'extent'],
-  boxWhisker: ['color'],
-  boxMid: ['color']
-};
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
-export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef> {
+export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>): GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef> {
   return {
     ...spec,
     encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
@@ -95,31 +76,20 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
   };
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): NormalizedLayerSpec {
+
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec);
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
-  let kIQRScalar: number = undefined;
-  if (isNumber(config.box.extent)) {
-    kIQRScalar = config.box.extent;
-  }
-
-  if (isBoxPlotDef(mark)) {
-    if (mark.extent) {
-      if(mark.extent === 'min-max') {
-        kIQRScalar = undefined;
-      }
-    }
-  }
+  const extent = markDef.extent || config.boxplot.extent;
+  const sizeValue = markDef.size || config.boxplot.size;
 
   const orient: Orient = boxOrient(spec);
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, kIQRScalar);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
-
-  // Size encoding or the default config.box.size is applied to box and boxMid
-  const sizeMixins = size ? {size} : getMarkSpecificConfigMixins(config.box, 'size');
 
   const continuousAxisScaleAndAxis = {};
   if (continuousAxisChannelDef.scale) {
@@ -136,7 +106,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
       { // lower whisker
         mark: {
           type: 'rule',
-          style: 'boxWhisker'
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -148,13 +118,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'lower_box_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
-          ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxWhisker, 'color')
+          ...encodingWithoutSizeColorAndContinuousAxis
         }
       }, { // upper whisker
         mark: {
           type: 'rule',
-          style: 'boxWhisker'
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -165,14 +134,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'upper_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
-          ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxWhisker, 'color')
+          ...encodingWithoutSizeColorAndContinuousAxis
         }
       }, { // box (q1 to q3)
         ...(selection ? {selection} : {}),
         mark: {
           type: 'bar',
-          style: 'box'
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'box', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -184,13 +153,13 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutContinuousAxis,
-          ...(encodingWithoutContinuousAxis.color ? {} : getMarkSpecificConfigMixins(config.box, 'color')),
-          ...sizeMixins,
+          ...(size ? {size} : {})
         }
-      }, { // mid tick
+      }, { // median tick
         mark: {
           type: 'tick',
-          style: 'boxMid'
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'median', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
@@ -198,15 +167,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis,
-          ...getMarkSpecificConfigMixins(config.boxMid, 'color'),
-          ...sizeMixins,
+          ...(size ? {size} : {})
         }
       }
     ]
   };
 }
 
-function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
+function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BoxPlot | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
@@ -220,7 +188,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
       } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (isBoxPlotDef(mark) && mark.orient) {
+        if (isMarkDef(mark) && mark.orient) {
           return mark.orient;
         }
 
@@ -241,7 +209,7 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 }
 
 
-function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
@@ -269,12 +237,12 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxP
   };
 }
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient, kIQRScalar: 'min-max' | number) {
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
 
   const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
   const encoding = spec.encoding;
 
-  const isMinMax = kIQRScalar === undefined;
+  const isMinMax = !isNumber(extent);
   const aggregate: AggregatedFieldDef[] = [
     {
       op: 'q1',
@@ -312,11 +280,11 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
         as: 'iqr_' + continuousAxisChannelDef.field
       },
       {
-        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.max_${continuousAxisChannelDef.field})`,
+        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
         as: 'upper_whisker_' + continuousAxisChannelDef.field
       },
       {
-        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${kIQRScalar}, datum.min_${continuousAxisChannelDef.field})`,
+        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
         as: 'lower_whisker_' + continuousAxisChannelDef.field
       }
     ];
@@ -333,7 +301,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
       return;
     }
     if (isFieldDef(channelDef)) {
-      if (channelDef.aggregate && channelDef.aggregate !== BOXPLOT) {
+      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
         aggregate.push({
           op: channelDef.aggregate,
           field: channelDef.field,

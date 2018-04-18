@@ -5,33 +5,35 @@ title: Composite Mark
 permalink: /docs/compositemark.html
 ---
 
-Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Composite marks are "macros" because under the hood they expand to become layered graphics. Currently, we include only one composite mark type: `box-plot`.
+Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Composite marks are "macros" because under the hood they expand to become layered graphics. Currently, we include only one composite mark type: `boxplot`.
 
 {:#boxplot}
 ## Box Plot
 
-`box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents the first and third quartile respectively. The ends of the whiskers can represent several possible alternative values, depending on the [`extent`](#box-plot-types) property.
+`boxplot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The median tick in the box represents the median. The lower and upper part of the box represents the first and third quartile respectively. The ends of the whiskers can represent several possible alternative values, depending on the [`extent`](#boxplot-types) property.
 
-`box-plot` is important because it effectively and quickly shows a summary of data with a five-number summary (lower and upper parts of the box, mid tick in the box, and the lower and upper whiskers). It is a great visualization choice to indicate whether the distribution is skewed.
+`boxplot` is important because it effectively and quickly shows a summary of data with a five-number summary (lower and upper parts of the box, median tick in the box, and the lower and upper whiskers). It is a great visualization choice to indicate whether the distribution is skewed.
 <!-- TODO: Ideally we should have an annotated figure for this, but let's not do it for now-->
 
-To create a box plot, you can set `mark` to `"box-plot"`:
+To create a box plot, you can set `mark` to `"boxplot"`:
 
 {: .suppress-error}
 ```json
 {
   ...
-  "mark": "box-plot",
+  "mark": "boxplot",
   ...
 }
 ```
 
 Alternatively, you can use box plot's mark definition object, which supports the following properties:
 
-{% include table.html props="type,extent,orient" source="BoxPlotDef" %}
+{% include table.html props="type,extent,orient,size" source="BoxPlotDef" %}
+
+Besides the properties listed above, `box`, `median`, `whisker` can be used to specifying the underlying mark properties for different parts of the box plots as well.
 
 ### Basic Usage
-{:#box-plot-types}
+{:#boxplot-types}
 
 Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
@@ -40,13 +42,13 @@ Vega-Lite supports two types of box plots, defined by the `extent` property in t
 {: .suppress-error}
 ```json
 "mark": {
-  "type": "box-plot",
+  "type": "boxplot",
   "extent": "min-max"
 }
 ```
 <div class="vl-example" data-name="box-plot_minmax_2D_horizontal"></div>
 
-If `extent` is not specified, this type of box plot will be used. Thus, we can just set the `mark` to `"box-plot"`:
+If `extent` is not specified, this type of box plot will be used. Thus, we can just set the `mark` to `"boxplot"`:
 
 <div class="vl-example" data-name="box-plot_minmax_1D_horizontal"></div>
 
@@ -55,7 +57,7 @@ If `extent` is not specified, this type of box plot will be used. Thus, we can j
 
 ```json
 "mark": {
-  "type": "box-plot",
+  "type": "boxplot",
   "extent": 1.5
 }
 ```
@@ -63,12 +65,12 @@ If `extent` is not specified, this type of box plot will be used. Thus, we can j
 <div class="vl-example" data-name="box-plot_minmax_2D_horizontal_IQR"></div>
 
 ### Dimension
-There are two `box-plot` dimensions, one dimension (1D) and two dimension (2D).
+There are two `boxplot` dimensions, one dimension (1D) and two dimension (2D).
 
-1D `box-plot` are used to see the distribution of a continuous field.
+1D `boxplot` are used to see the distribution of a continuous field.
 <div class="vl-example" data-name="box-plot_minmax_1D_horizontal"></div>
 
-2D `box-plot` are used to see the distribution of a continuous field, broken down by categories.
+2D `boxplot` are used to see the distribution of a continuous field, broken down by categories.
 <div class="vl-example" data-name="box-plot_minmax_2D_horizontal"></div>
 
 ### Orientation
@@ -91,9 +93,9 @@ Similarly, if the continuous field is on the y axis, the box plot will be vertic
 
 #### Color, Size, and Opacity Encoding Channels
 
-You can customize the color, size, and opacity of the box in the `box-plot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels).
+You can customize the color, size, and opacity of the box in the `boxplot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels).
 
-An example of a `box-plot` where the `size` encoding channel is specified.
+An example of a `boxplot` where the `size` encoding channel is specified.
 <div class="vl-example" data-name="box-plot_minmax_2D_vertical"></div>
 
 <div class="vl-example" data-name="box-plot_minmax_2D_horizontal_color_size"></div>
@@ -114,12 +116,12 @@ To customize different parts of the box, we can use roles config to customize di
 ```
 <div class="vl-example" data-name="box_plot_minmax_2D_horizontal_custom_midtick_color"></div>
 
-These are possible because under the hood, the `"box-plot"` mark is a macro that expands into a layered plot.  For example, [a basic 1D boxplot shown above](#box-plot-type) is expanded to:
+These are possible because under the hood, the `"boxplot"` mark is a macro that expands into a layered plot.  For example, [a basic 1D boxplot shown above](#boxplot-type) is expanded to:
 
 <div class="vl-example" data-name="normalized/box-plot_minmax_1D_horizontal"></div>
 
 ### `aggregate` Property for Box Plots
 
-Note that `aggregate` property of the continuous field is implicitly `box-plot`.
-For example, [a basic 1D boxplot shown above](#box-plot-type) is equivalent to:
+Note that `aggregate` property of the continuous field is implicitly `boxplot`.
+For example, [a basic 1D boxplot shown above](#boxplot-type) is equivalent to:
 <div class="vl-example" data-name="box-plot_minmax_2D_vertical_explicit_aggregate"></div>

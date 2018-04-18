@@ -4,6 +4,7 @@ import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
+import {WindowOnlyOp} from './window';
 
 
 export interface FilterTransform {
@@ -101,6 +102,60 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
+export interface WindowFieldDef {
+  /**
+   * The operations supported for the window aggregation. See the list of supported operations here:
+   *   https://vega.github.io/vega-lite/docs/transforms/window.html
+   */
+  op: AggregateOp | WindowOnlyOp;
+
+  /**
+   *  Parameter values for the window functions. Parameter value can be null for operations that do not accept a
+   *  parameter.
+   */
+  param?: number;
+
+  /**
+   * The data fields for which to compute aggregate or window functions. Field can be omitted for operations that do not
+   * operate over a specific data field, including count, rank, and dense_rank.
+   */
+  field?: string;
+
+  /**
+   * The output name for each field. If none is defined will use the format op_field. For example, count_field for count,
+   *  and sum_field for sum.
+   */
+  as?: string;
+}
+
+export interface WindowTransform {
+  /**
+   * The definition of the fields in the window, and what calculations to use.
+   */
+  window: WindowFieldDef[];
+
+  /**
+   * The frame for the window, if none is set the default is `[null, 0]` everything before the
+   * current item.
+   */
+  frame?: (null | number)[];
+
+  /**
+   * Will indicate whether to ignore peer values (items with the same rank) in the window. The default value is `False`.
+   */
+  ignorePeers?: boolean;
+
+  /**
+   * The fields to group by.
+   */
+  groupby?: string[];
+
+  /**
+   * The definitions of how to sort each of the fields in the window.
+   */
+  sort?: WindowSortField[];
+}
+
 export interface LookupData {
   /**
    * Secondary data source to lookup in.
@@ -143,8 +198,21 @@ export interface LookupTransform {
   default?: string;
 }
 
+
+/**
+ * A compartor for fields within the window transform
+ */
+export interface WindowSortField {
+  field: string;
+  order?: ('ascending' | 'descending');
+}
+
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
+}
+
+export function isWindow(t: Transform): t is WindowTransform {
+  return t['window'] !== undefined;
 }
 
 export function isCalculate(t: Transform): t is CalculateTransform {
@@ -163,7 +231,7 @@ export function isAggregate(t: Transform): t is AggregateTransform {
   return t['aggregate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

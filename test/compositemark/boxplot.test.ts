@@ -13,18 +13,17 @@ describe("normalizeBoxMinMax", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
-          "x": {"aggregate": "box-plot", "field": "people","type": "quantitative"},
+          "x": {"aggregate": "boxplot", "field": "people","type": "quantitative"},
           "y": {
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "field": "people",
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
@@ -36,8 +35,9 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
-          extent: "min-max"
+          type: "boxplot",
+          extent: "min-max",
+          size: 5
         },
         encoding: {
           "x": {"field": "age","type": "quantitative"},
@@ -46,7 +46,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -88,7 +87,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -106,7 +105,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -123,7 +122,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 5
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -135,23 +135,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 5
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5}
+              }
             }
           }
         ]
@@ -164,11 +163,10 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
@@ -180,8 +178,9 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
-          extent: "min-max"
+          type: "boxplot",
+          extent: "min-max",
+          size: 14
         },
         encoding: {
           "x": {"field": "age","type": "ordinal"},
@@ -191,7 +190,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
     }, defaultConfig);
@@ -204,7 +202,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        mark: "box-plot",
+        mark: "boxplot",
         encoding: {
           "x": {"field": "age", "type": "ordinal"}
         }
@@ -218,7 +216,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -228,7 +226,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "ordinal",
             "axis": {"title": "age"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
@@ -241,7 +238,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -250,7 +247,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "ordinal",
             "axis": {"title": "age"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
@@ -262,10 +258,9 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        mark: "box-plot",
+        mark: "boxplot",
         encoding: {
           "x": {"field": "age","type": "ordinal"},
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
@@ -277,7 +272,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           orient: "vertical",
           extent: "min-max"
         },
@@ -288,7 +283,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -330,7 +324,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -348,7 +342,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -365,7 +359,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -377,14 +372,15 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              size: 14,
+              color: 'white'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -392,8 +388,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "mid_box_people",
                 "type": "quantitative"
               },
-              "color": {"value": "white"},
-              "size": {"value": 5}
             }
           }
         ]
@@ -405,7 +399,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           orient: "horizontal",
           extent: "min-max"
         },
@@ -416,7 +410,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -458,7 +451,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -476,7 +469,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -493,7 +486,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -505,23 +499,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5},
+              }
             }
           }
         ]
@@ -533,7 +526,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -541,10 +534,9 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "y": {
             "field": "people",
             "type": "quantitative",
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -586,7 +578,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -604,7 +596,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -621,7 +613,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -633,23 +626,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5}
+              }
             }
           }
         ]
@@ -661,7 +653,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -669,10 +661,9 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "x": {
             "field": "people",
             "type": "quantitative",
-            "aggregate": "box-plot",
+            "aggregate": "boxplot",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -714,7 +705,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -732,7 +723,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -749,7 +740,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -761,23 +753,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5},
+              }
             }
           }
         ]
@@ -789,7 +780,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -799,7 +790,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -841,7 +831,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
@@ -859,7 +849,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
@@ -876,7 +866,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
@@ -888,23 +879,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5}
+              }
             }
           }
         ]
@@ -916,7 +906,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -926,7 +916,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -968,7 +957,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -986,7 +975,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1003,7 +992,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1015,23 +1005,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5},
+              }
             }
           }
         ]
@@ -1043,7 +1032,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1093,7 +1082,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1111,7 +1100,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1128,7 +1117,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1139,23 +1129,22 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               "x2": {
                 "field": "upper_box_people",
                 "type": "quantitative"
-              },
-              "size": {"value": 14}
+              }
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 14}
+              }
             }
           }
         ]
@@ -1167,7 +1156,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1216,7 +1205,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {
@@ -1233,7 +1222,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {
@@ -1249,7 +1238,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {
@@ -1259,22 +1249,21 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               "x2": {
                 "field": "upper_box_people",
                 "type": "quantitative"
-              },
-              "size": {"value": 14}
+              }
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 14}
+              }
             }
           }
         ]
@@ -1286,7 +1275,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "box-plot",
+          type: "boxplot",
           extent: "min-max"
         },
         encoding: {
@@ -1335,7 +1324,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {
@@ -1352,7 +1341,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "y": {
@@ -1368,7 +1357,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "y": {
@@ -1378,22 +1368,21 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               "y2": {
                 "field": "upper_box_people",
                 "type": "quantitative"
-              },
-              "size": {"value": 14}
+              }
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 14}
+              }
             }
           }
         ]
@@ -1408,7 +1397,7 @@ describe("normalizeBoxIQR", () => {
     assert.deepEqual(normalize({
        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
        "data": {"url": "data/population.json"},
-       mark: "box-plot",
+       mark: "boxplot",
        encoding: {
          "x": {"field": "age","type": "quantitative"},
          "y": {
@@ -1416,7 +1405,6 @@ describe("normalizeBoxIQR", () => {
            "type": "quantitative",
            "axis": {"title": "population"}
          },
-         "size": {"value": 5},
          "color": {"value" : "skyblue"}
        }
      }, defaultConfig), {
@@ -1458,11 +1446,11 @@ describe("normalizeBoxIQR", () => {
            as: 'iqr_people'
          },
          {
-           "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.box.extent}, datum.max_people)`,
+           "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.max_people)`,
            "as": "upper_whisker_people"
          },
          {
-           "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.box.extent}, datum.min_people)`,
+           "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.min_people)`,
            "as": "lower_whisker_people"
          }
        ],
@@ -1470,7 +1458,7 @@ describe("normalizeBoxIQR", () => {
          {
            mark: {
              type: 'rule',
-             style: 'boxWhisker'
+             style: 'boxplot-whisker'
            },
            "encoding": {
              "x": {"field": "age","type": "quantitative"},
@@ -1488,7 +1476,7 @@ describe("normalizeBoxIQR", () => {
          {
            mark: {
              type: 'rule',
-             style: 'boxWhisker'
+             style: 'boxplot-whisker'
            },
            "encoding": {
              "x": {"field": "age","type": "quantitative"},
@@ -1505,7 +1493,8 @@ describe("normalizeBoxIQR", () => {
          {
            mark: {
              type: 'bar',
-             style: 'box'
+             style: 'boxplot-box',
+             size: 14
            },
            "encoding": {
              "x": {"field": "age","type": "quantitative"},
@@ -1517,23 +1506,22 @@ describe("normalizeBoxIQR", () => {
                "field": "upper_box_people",
                "type": "quantitative"
              },
-             "size": {"value": 5},
              "color": {"value" : "skyblue"}
            }
          },
          {
            mark: {
              type: 'tick',
-             style: 'boxMid'
+             style: 'boxplot-median',
+             color: 'white',
+             size: 14
            },
            "encoding": {
              "x": {"field": "age","type": "quantitative"},
              "y": {
                "field": "mid_box_people",
                "type": "quantitative"
-             },
-             "color": {"value": "white"},
-             "size": {"value": 5}
+             }
            }
          }
        ]
@@ -1545,7 +1533,7 @@ describe("normalizeBoxIQR", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          "type": "box-plot",
+          "type": "boxplot",
           "extent": 1.5
         },
         encoding: {
@@ -1555,7 +1543,6 @@ describe("normalizeBoxIQR", () => {
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig), {
@@ -1609,7 +1596,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1627,7 +1614,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1644,7 +1631,8 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1656,23 +1644,22 @@ describe("normalizeBoxIQR", () => {
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
           },
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5}
+              }
             }
           }
         ]
@@ -1684,7 +1671,7 @@ describe("normalizeBoxIQR", () => {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          "type": "box-plot",
+          "type": "boxplot",
           "extent": 1.5
         },
         encoding: {
@@ -1694,7 +1681,6 @@ describe("normalizeBoxIQR", () => {
             "type": "quantitative",
             "axis": {"title": "population"}
           },
-          "size": {"value": 5},
           "color": {
             "aggregate": "mean",
             "field": "people",
@@ -1757,7 +1743,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1775,7 +1761,7 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'rule',
-              style: 'boxWhisker'
+              style: 'boxplot-whisker'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1792,7 +1778,8 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'bar',
-              style: 'box'
+              style: 'boxplot-box',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -1804,7 +1791,6 @@ describe("normalizeBoxIQR", () => {
                 "field": "upper_box_people",
                 "type": "quantitative"
               },
-              "size": {"value": 5},
               "color": {
                 "field": "mean_people",
                 "type": "quantitative"
@@ -1814,16 +1800,16 @@ describe("normalizeBoxIQR", () => {
           {
             mark: {
               type: 'tick',
-              style: 'boxMid'
+              style: 'boxplot-median',
+              color: 'white',
+              size: 14
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative"
-              },
-              "color": {"value": "white"},
-              "size": {"value": 5}
+              }
             }
           }
         ]

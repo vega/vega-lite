@@ -22,6 +22,14 @@ describe('config', () => {
       title: {
         color: 'red',
         fontWeight: 'bold'
+      },
+      boxplot: {
+        whisker: {
+          fill: 'red'
+        },
+        median: {
+          color: 'white'
+        }
       }
     };
     const copy = duplicate(config);
@@ -46,6 +54,13 @@ describe('config', () => {
       assert.equal(output.style.cell['fill'], '#eee', `config.view should be redirect to config.style.cell`);
 
       assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
+    });
+
+    it('should redirect composite mark parts to style and exclude vl-specific config like color', () => {
+      assert.deepEqual(output.style['boxplot-whisker'], {fill: 'red'}, `config.boxplot.whisker should be redirect to config.style['boxplot-whisker]`);
+
+      assert.isUndefined(output.boxplot, `Boxplot config should be redirected`);
+      assert.isUndefined(output.style['boxplot-median'], `Boxplot median tick's color config should be stripped`);
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {

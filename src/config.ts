@@ -1,7 +1,6 @@
 import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
-import {COMPOSITE_MARK_STYLES} from './compositemark';
-import {CompositeMarkConfigMixins, CompositeMarkStyle, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
+import {CompositeMarkConfigMixins, getAllCompositeMarks, getCompositeMarkParts} from './compositemark/index';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
@@ -263,9 +262,28 @@ export const defaultConfig: Config = {
   text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
 
-  box: {size: 14, extent: 1.5},
-  boxWhisker: {},
-  boxMid: {color: 'white'},
+  boxplot: {
+    size: 14,
+    extent: 1.5,
+    box: {},
+    median: {color: 'white'},
+    whisker: {}
+  },
+
+  errorarea: {
+    extent: 'stdev',
+    mean: {color: 'black'},
+    area: {},
+    areaOpacity: 0.4
+  },
+
+  errorbar: {
+    size: 40,
+    extent: 'stdev',
+    mean: {color: 'black'},
+    whisker: {},
+    centerMarkType: 'none'
+  },
 
   scale: defaultScaleConfig,
   projection: {},
@@ -289,8 +307,7 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as ('view' | Mark | CompositeMarkStyle)[];
-
+const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding', 'numberFormat', 'timeFormat', 'countTitle',
@@ -300,8 +317,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   view: ['width', 'height'],
-  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
-  ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
+  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };
 
 export function stripAndRedirectConfig(config: Config) {
@@ -350,6 +366,22 @@ export function stripAndRedirectConfig(config: Config) {
     redirectConfig(config, markType);
   }
 
+  for (const m of getAllCompositeMarks()) {
+    for (const part of getCompositeMarkParts(m)) {
+      // Remove Vega-Lite-only mark config
+      for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
+        if (config[m] && config[m][part]) {
+          delete config[m][part][prop];
+        }
+      }
+      // Re-direct all composite mark's part configs to config.style
+      // For example, config.boxplot.whisker should become config.style.boxplot-whisker.
+      redirectConfig(config, m, `${m}-${part}`, part);
+    }
+    // Clean up the composite mark config after redirecting all of it
+    delete config[m];
+  }
+
   // Redirect config.title -- so that title config do not
   // affect header labels, which also uses `title` directive to implement.
   redirectConfig(config, 'title', 'group-title');
@@ -364,8 +396,16 @@ export function stripAndRedirectConfig(config: Config) {
   return keys(config).length > 0 ? config : undefined;
 }
 
-function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title' | 'view', toProp?: string) {
-  const propConfig: VgMarkConfig = prop === 'title' ? extractTitleConfig(config.title).mark : config[prop];
+function redirectConfig(
+  config: Config,
+  prop: Mark | 'title' | 'view' | string, // string = composite mark
+  toProp?: string,
+  compositeMarkPart?: string
+) {
+  const propConfig: VgMarkConfig =
+    prop === 'title' ? extractTitleConfig(config.title).mark :
+    compositeMarkPart ? config[prop][compositeMarkPart] :
+    config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -379,5 +419,9 @@ function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title
   if (keys(style).length > 0) {
     config.style[toProp || prop] = style;
   }
-  delete config[prop];
+
+  if (!compositeMarkPart) {
+    // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
+    delete config[prop];
+  }
 }
