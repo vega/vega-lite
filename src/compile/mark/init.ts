@@ -21,7 +21,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   }
 
   // set opacity and filled if not specified in mark config
-  const specifiedOpacity = markDef.opacity || getMarkConfig('opacity', markDef, config);
+  const specifiedOpacity = markDef.opacity !== undefined ? markDef.opacity : getMarkConfig('opacity', markDef, config);
   if (specifiedOpacity === undefined) {
     markDef.opacity = defaultOpacity(markDef.type, encoding);
   }
