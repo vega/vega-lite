@@ -57,6 +57,8 @@ Note that temporal fields use continuous scales by default for all mark types in
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
 
+{:#ordinal}
+
 If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
 
 <span class="vl-example" data-name="bar_month"></span>

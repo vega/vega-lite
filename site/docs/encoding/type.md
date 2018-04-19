@@ -9,8 +9,16 @@ The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](
 
 {% include table.html props="type" source="FieldDef" %}
 
-**Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+**Notes**:
+
+1) Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+
+2) When using with [`aggregate`](aggregate.html), the `type` property refers to the post-aggregation data type.  For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`.  The `"type"` of the aggregate output is `"quantitative"`.
+
+3) When using with [`bin`](bin.html), the `type` property can be either `"quantitative"` (for using a linear bin scale) or [`"ordinal"` (for using an ordinal bin scale)](#cast-bin).
+
+4) When using with [`timeUnit`](timeunit.html), the `type` property can be either `"temporal"` (for using a temporal scale) or [`"ordinal"` (for using an ordinal scale)](#cast-timeunit).
+
 
 {:#quantitative}
 ## Quantitative
@@ -26,17 +34,26 @@ Note that when a `"temporal"` type is used for a field, Vega-Lite will treat it 
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
 
-### Casting a Temporal Field as an Ordinal Field
-
-To treat a date-time field as a discrete field, you can cast it be an `"ordinal"` field.
-This casting strategy can be useful for time units with low cardinality such as `"month"`.
-
-<span class="vl-example" data-name="bar_month"></span>
-
 {:#ordinal}
 ## Ordinal
 
 Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *relative degree of difference* between them. For illustration, a "size" variable might have the following values `small`, `medium`, `large`, `extra-large`. We know that medium is larger than small and same for extra-large larger than large. However, we cannot compare the magnitude of relative difference, for example, between (1) `small` and `medium` and (2) `medium` and `large`. Similarly, we cannot say that `large` is two times as large as `small`.
+
+{:#cast-timeunit}
+### Casting a Temporal Field as an Ordinal Field
+
+To treat a date-time field with `timeUnit` as a discrete field, you can cast it be an `"ordinal"` field.
+This type casting can be useful for time units with low cardinality such as `"month"`.
+
+<span class="vl-example" data-name="bar_month"></span>
+
+{:#cast-bin}
+### Casting a Binned Field as an Ordinal Field
+
+Setting a binned field's `type` to `"ordinal"` produces a histogram with an ordinal scale.
+
+<div class="vl-example" data-name="histogram_ordinal"></div>
+
 
 {:#nominal}
 ## Nominal
