@@ -233,11 +233,15 @@ export const defaultConfig: Config = {
   view: defaultViewConfig,
 
   mark: mark.defaultMarkConfig,
-  area: {},
+  area: {
+    point: 'transparent'
+  },
   bar: mark.defaultBarConfig,
   circle: {},
   geoshape: {},
-  line: {},
+  line: {
+    point: 'transparent'
+  },
   point: {},
   rect: {},
   rule: {color: 'black'}, // Need this to override default color in mark config

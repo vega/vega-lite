@@ -33,7 +33,32 @@
             ]
         },
         {
-            "name": "data_0",
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "formula",
+                    "as": "utcyearmonthdatehoursminutes_date",
+                    "expr": "datetime(utcyear(datum[\"date\"]), utcmonth(datum[\"date\"]), utcdate(datum[\"date\"]), utchours(datum[\"date\"]), utcminutes(datum[\"date\"]), 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"utcyearmonthdatehoursminutes_date\"] !== null && !isNaN(datum[\"utcyearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
             "source": "source_0",
             "transform": [
                 {
@@ -60,7 +85,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -70,11 +95,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "utcyearmonthdatehoursminutes_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -94,8 +147,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "data_0",
-                "field": "utcyearmonthdatehoursminutes_date"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "utcyearmonthdatehoursminutes_date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "utcyearmonthdatehoursminutes_date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -108,8 +169,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "data_0",
-                "field": "price"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "price"
+                    }
+                ]
             },
             "range": [
                 {

@@ -10,15 +10,68 @@
             "name": "source_0",
             "url": "data/seattle-weather.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date"
-                }
+                "type": "csv"
             },
             "transform": [
                 {
                     "type": "formula",
                     "expr": "datum.temp_max - datum.temp_min",
+                    "as": "temp_range"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_range\"])",
+                    "as": "temp_range"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp_range"
+                    ],
+                    "as": [
+                        "mean_temp_range"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_range\"])",
                     "as": "temp_range"
                 },
                 {
@@ -50,7 +103,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -60,11 +113,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_temp_range"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -84,8 +165,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "month_date"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "month_date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -98,8 +187,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "mean_temp_range"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "mean_temp_range"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "mean_temp_range"
+                    }
+                ]
             },
             "range": [
                 {

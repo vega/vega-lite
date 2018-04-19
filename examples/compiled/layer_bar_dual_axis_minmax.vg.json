@@ -96,6 +96,78 @@
                 },
                 {
                     "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "max_temp_max"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_min\"])",
+                    "as": "temp_min"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "min"
+                    ],
+                    "fields": [
+                        "temp_min"
+                    ],
+                    "as": [
+                        "min_temp_min"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
                     "expr": "toNumber(datum[\"temp_min\"])",
                     "as": "temp_min"
                 },
@@ -167,7 +239,7 @@
             }
         },
         {
-            "name": "layer_1_layer_0_marks",
+            "name": "layer_1_layer_0_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -197,7 +269,36 @@
             }
         },
         {
-            "name": "layer_1_layer_1_marks",
+            "name": "layer_1_layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "firebrick"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "layer_1_y",
+                        "field": "max_temp_max"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_1_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -207,11 +308,40 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "firebrick"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "layer_1_y",
+                        "field": "min_temp_min"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_1_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "firebrick"
                     },
                     "x": {
@@ -243,6 +373,14 @@
                     },
                     {
                         "data": "data_2",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_4",
                         "field": "month_date"
                     }
                 ],
@@ -283,6 +421,14 @@
                     },
                     {
                         "data": "data_2",
+                        "field": "max_temp_max"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "min_temp_min"
+                    },
+                    {
+                        "data": "data_4",
                         "field": "min_temp_min"
                     }
                 ]

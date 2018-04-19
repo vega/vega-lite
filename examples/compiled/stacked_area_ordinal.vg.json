@@ -10,13 +10,23 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "Year": "date",
-                    "Weight_in_lbs": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Weight_in_lbs\"])",
+                    "as": "Weight_in_lbs"
+                },
                 {
                     "type": "formula",
                     "as": "year_Year",
@@ -73,16 +83,77 @@
                     "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
                 }
             ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Weight_in_lbs\"])",
+                    "as": "Weight_in_lbs"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_Year",
+                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year_Year",
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "Weight_in_lbs"
+                    ],
+                    "as": [
+                        "sum_Weight_in_lbs"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "year_Year"
+                    ],
+                    "field": "sum_Weight_in_lbs",
+                    "sort": {
+                        "field": [
+                            "Cylinders"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_Weight_in_lbs_start",
+                        "sum_Weight_in_lbs_end"
+                    ],
+                    "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "Cylinders"
                     ]
@@ -104,7 +175,7 @@
             },
             "marks": [
                 {
-                    "name": "marks",
+                    "name": "layer_0_marks",
                     "type": "area",
                     "style": [
                         "area"
@@ -114,7 +185,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -144,6 +215,35 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "Cylinders"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_Year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_Weight_in_lbs_end"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -151,8 +251,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "year_Year"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "year_Year"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "year_Year"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -165,10 +273,23 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
                 "fields": [
-                    "sum_Weight_in_lbs_start",
-                    "sum_Weight_in_lbs_end"
+                    {
+                        "data": "data_0",
+                        "field": "sum_Weight_in_lbs_start"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "sum_Weight_in_lbs_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_Weight_in_lbs_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_Weight_in_lbs_end"
+                    }
                 ]
             },
             "range": [
@@ -184,8 +305,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Cylinders"
+                    }
+                ],
                 "sort": true
             },
             "range": "ordinal"

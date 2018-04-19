@@ -5,27 +5,58 @@
   },
   "layer": [
     {
-      "mark": "line",
-      "encoding": {
-        "x": {
-          "field": "miles",
-          "type": "quantitative",
-          "scale": {
-            "zero": false
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "miles",
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "y": {
+              "field": "gas",
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "order": {
+              "field": "year",
+              "type": "temporal"
+            }
           }
         },
-        "y": {
-          "field": "gas",
-          "type": "quantitative",
-          "scale": {
-            "zero": false
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "encoding": {
+            "x": {
+              "field": "miles",
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "y": {
+              "field": "gas",
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "order": {
+              "field": "year",
+              "type": "temporal"
+            }
           }
-        },
-        "order": {
-          "field": "year",
-          "type": "temporal"
         }
-      }
+      ]
     },
     {
       "mark": {

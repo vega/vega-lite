@@ -10,13 +10,63 @@
             "name": "source_0",
             "url": "data/seattle-weather.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date",
-                    "temp_max": "number"
-                }
-            },
+                "type": "csv"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
                 {
                     "type": "formula",
                     "as": "year_date",
@@ -46,7 +96,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -56,11 +106,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_temp_max"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -80,8 +158,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "year_date"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "year_date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "year_date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -94,8 +180,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "mean_temp_max"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "mean_temp_max"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "mean_temp_max"
+                    }
+                ]
             },
             "range": [
                 {

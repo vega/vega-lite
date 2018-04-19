@@ -12,22 +12,49 @@
     }
   },
   "spec": {
-    "mark": "line",
-    "encoding": {
-      "x": {
-        "timeUnit": "quarter",
-        "field": "date",
-        "type": "ordinal"
+    "layer": [
+      {
+        "mark": "line",
+        "encoding": {
+          "x": {
+            "timeUnit": "quarter",
+            "field": "date",
+            "type": "ordinal"
+          },
+          "y": {
+            "field": "price",
+            "type": "quantitative",
+            "aggregate": "mean"
+          },
+          "color": {
+            "field": "symbol",
+            "type": "nominal"
+          }
+        }
       },
-      "y": {
-        "field": "price",
-        "type": "quantitative",
-        "aggregate": "mean"
-      },
-      "color": {
-        "field": "symbol",
-        "type": "nominal"
+      {
+        "mark": {
+          "type": "point",
+          "filled": true,
+          "opacity": 0
+        },
+        "encoding": {
+          "x": {
+            "timeUnit": "quarter",
+            "field": "date",
+            "type": "ordinal"
+          },
+          "y": {
+            "field": "price",
+            "type": "quantitative",
+            "aggregate": "mean"
+          },
+          "color": {
+            "field": "symbol",
+            "type": "nominal"
+          }
+        }
       }
-    }
+    ]
   }
 }

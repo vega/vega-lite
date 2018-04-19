@@ -136,6 +136,53 @@
                     "offset": "zero"
                 }
             ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
         }
     ],
     "signals": [
@@ -279,6 +326,35 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "gender"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "age"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_people_end"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -293,6 +369,10 @@
                     },
                     {
                         "data": "data_1",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "age"
                     }
                 ],
@@ -325,6 +405,14 @@
                     {
                         "data": "data_1",
                         "field": "sum_people_end"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "sum_people_start"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "sum_people_end"
                     }
                 ]
             },
@@ -348,6 +436,10 @@
                     },
                     {
                         "data": "data_1",
+                        "field": "gender"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "gender"
                     }
                 ],

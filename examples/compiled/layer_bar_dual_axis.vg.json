@@ -83,6 +83,42 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
+                    ]
+                }
+            ]
         }
     ],
     "signals": [
@@ -130,7 +166,7 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -158,6 +194,35 @@
                     }
                 }
             }
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "firebrick"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "layer_1_y",
+                        "field": "mean_temp_max"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -172,6 +237,10 @@
                     },
                     {
                         "data": "data_1",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "month_date"
                     }
                 ],
@@ -205,8 +274,16 @@
             "name": "layer_1_y",
             "type": "linear",
             "domain": {
-                "data": "data_1",
-                "field": "mean_temp_max"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "mean_temp_max"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "mean_temp_max"
+                    }
+                ]
             },
             "range": [
                 {

@@ -43,26 +43,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"scaled_date\"])",
-                    "as": "scaled_date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"CO2\"])",
-                    "as": "CO2"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
                     "type": "aggregate",
                     "groupby": [
                         "decade"
@@ -94,7 +74,7 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_1",
             "source": "source_0",
             "transform": [
                 {
@@ -127,16 +107,56 @@
                     "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
                 }
             ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"scaled_date\"])",
+                    "as": "scaled_date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"CO2\"])",
+                    "as": "CO2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"scaled_date\"])",
+                    "as": "scaled_date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"CO2\"])",
+                    "as": "CO2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "layer_0_pathgroup",
+            "name": "layer_0_layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_0_main",
-                    "data": "data_0",
+                    "name": "faceted_path_layer_0_layer_0_main",
+                    "data": "data_2",
                     "groupby": [
                         "decade",
                         "decade"
@@ -159,7 +179,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "layer_0_layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -169,7 +189,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_0_main"
+                        "data": "faceted_path_layer_0_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -191,13 +211,42 @@
             ]
         },
         {
+            "name": "layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "decade"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "scaled_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "CO2"
+                    }
+                }
+            }
+        },
+        {
             "name": "layer_1_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -237,7 +286,7 @@
                 "text"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -278,15 +327,19 @@
             "domain": {
                 "fields": [
                     {
+                        "data": "data_2",
+                        "field": "scaled_date"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "scaled_date"
+                    },
+                    {
                         "data": "data_0",
                         "field": "scaled_date"
                     },
                     {
                         "data": "data_1",
-                        "field": "scaled_date"
-                    },
-                    {
-                        "data": "data_2",
                         "field": "scaled_date"
                     }
                 ]
@@ -306,15 +359,19 @@
             "domain": {
                 "fields": [
                     {
+                        "data": "data_2",
+                        "field": "CO2"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "CO2"
+                    },
+                    {
                         "data": "data_0",
                         "field": "CO2"
                     },
                     {
                         "data": "data_1",
-                        "field": "CO2"
-                    },
-                    {
-                        "data": "data_2",
                         "field": "CO2"
                     }
                 ]
@@ -332,8 +389,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "data_0",
-                "field": "decade",
+                "fields": [
+                    {
+                        "data": "data_2",
+                        "field": "decade"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "decade"
+                    }
+                ],
                 "sort": true
             },
             "range": "category"
@@ -392,7 +457,8 @@
         {
             "offset": 40,
             "stroke": "color",
-            "title": "decade"
+            "title": "decade",
+            "fill": "color"
         }
     ],
     "config": {

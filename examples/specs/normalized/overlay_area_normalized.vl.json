@@ -10,8 +10,9 @@
     }
   ],
   "config": {
-    "overlay": {
-      "area": "linepoint"
+    "area": {
+      "line": true,
+      "point": true
     }
   },
   "layer": [
@@ -30,8 +31,7 @@
     },
     {
       "mark": {
-        "type": "line",
-        "style": "lineOverlay"
+        "type": "line"
       },
       "encoding": {
         "x": {
@@ -47,8 +47,7 @@
     {
       "mark": {
         "type": "point",
-        "filled": true,
-        "style": "pointOverlay"
+        "filled": true
       },
       "encoding": {
         "x": {

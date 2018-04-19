@@ -93,6 +93,33 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                }
+            ]
         }
     ],
     "signals": [
@@ -274,6 +301,33 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_2",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"people\"])",
+                            "as": "people"
+                        },
+                        {
+                            "type": "aggregate",
+                            "groupby": [
+                                "age",
+                                "gender"
+                            ],
+                            "ops": [
+                                "sum"
+                            ],
+                            "fields": [
+                                "people"
+                            ],
+                            "as": [
+                                "sum_people"
+                            ]
+                        }
+                    ]
                 }
             ],
             "encode": {
@@ -288,12 +342,12 @@
             },
             "marks": [
                 {
-                    "name": "child_layer_0_pathgroup",
+                    "name": "child_layer_0_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_layer_0_main",
-                            "data": "data_0",
+                            "name": "faceted_path_child_layer_0_layer_0_main",
+                            "data": "data_1",
                             "groupby": [
                                 "gender"
                             ]
@@ -315,7 +369,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_layer_0_marks",
+                            "name": "child_layer_0_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -325,7 +379,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_layer_0_main"
+                                "data": "faceted_path_child_layer_0_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -347,13 +401,42 @@
                     ]
                 },
                 {
+                    "name": "child_layer_0_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "age"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people"
+                            }
+                        }
+                    }
+                },
+                {
                     "name": "child_layer_1_marks",
                     "type": "symbol",
                     "style": [
                         "point"
                     ],
                     "from": {
-                        "data": "data_1"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -383,11 +466,15 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "data_0",
+                                "data": "data_1",
                                 "field": "age"
                             },
                             {
-                                "data": "data_1",
+                                "data": "data_2",
+                                "field": "age"
+                            },
+                            {
+                                "data": "data_0",
                                 "field": "age"
                             }
                         ],
@@ -449,11 +536,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "sum_people"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
+                        "field": "sum_people"
+                    },
+                    {
+                        "data": "data_1",
                         "field": "sum_people"
                     }
                 ]
@@ -473,11 +564,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "gender"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
+                        "field": "gender"
+                    },
+                    {
+                        "data": "data_1",
                         "field": "gender"
                     }
                 ],
@@ -493,6 +588,7 @@
         {
             "stroke": "color",
             "title": "gender",
+            "fill": "color",
             "encode": {
                 "symbols": {
                     "update": {

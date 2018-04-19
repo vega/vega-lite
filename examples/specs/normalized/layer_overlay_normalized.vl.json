@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "config": {
-    "overlay": {
-      "line": true
+    "line": {
+      "point": true
     }
   },
   "layer": [
@@ -32,8 +32,7 @@
         {
           "mark": {
             "type": "point",
-            "filled": true,
-            "style": "pointOverlay"
+            "filled": true
           },
           "encoding": {
             "x": {
@@ -76,8 +75,7 @@
         {
           "mark": {
             "type": "point",
-            "filled": true,
-            "style": "pointOverlay"
+            "filled": true
           },
           "encoding": {
             "x": {

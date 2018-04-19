@@ -11,13 +11,63 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "Weight_in_lbs": "number",
-                    "Year": "date"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Weight_in_lbs\"])",
+                    "as": "Weight_in_lbs"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_Year",
+                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year_Year"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "Weight_in_lbs"
+                    ],
+                    "as": [
+                        "sum_Weight_in_lbs"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Weight_in_lbs\"])",
+                    "as": "Weight_in_lbs"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
                 {
                     "type": "formula",
                     "as": "year_Year",
@@ -47,7 +97,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "area",
             "style": [
                 "area"
@@ -57,7 +107,7 @@
                 "order": "descending"
             },
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -84,6 +134,34 @@
                     }
                 }
             }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "sum_Weight_in_lbs"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "year_Year"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -91,8 +169,16 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "sum_Weight_in_lbs"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "sum_Weight_in_lbs"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_Weight_in_lbs"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -107,8 +193,16 @@
             "name": "y",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "year_Year"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "year_Year"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "year_Year"
+                    }
+                ]
             },
             "range": [
                 {

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/seattle-temps.csv"
+  },
+  "config": {
+    "axis": {
+      "shortTimeLabels": true
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {
+          "timeUnit": "month",
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "mean",
+          "field": "temp",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0
+      },
+      "encoding": {
+        "x": {
+          "timeUnit": "month",
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "mean",
+          "field": "temp",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}

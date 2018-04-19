@@ -18,7 +18,48 @@
                     "type": "formula",
                     "as": "month",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"month\"])",
+                    "as": "month"
                 },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "max_temp_max"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"month\"] !== null && !isNaN(datum[\"month\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "formula",
                     "expr": "toDate(datum[\"month\"])",
@@ -53,7 +94,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -63,11 +104,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "month"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "max_temp_max"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -87,8 +156,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "month"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "month"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "month"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -101,8 +178,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "max_temp_max"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "max_temp_max"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "max_temp_max"
+                    }
+                ]
             },
             "range": [
                 {
