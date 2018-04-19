@@ -21,7 +21,7 @@
       },
       {
         "x": 5,
-        "y": 30
+        "y": null
       },
       {
         "x": 6,
@@ -33,7 +33,7 @@
       }
     ]
   },
-  "mark": "line",
+  "mark": {"type": "line", "point": true},
   "encoding": {
     "x": {"field": "x", "type": "quantitative"},
     "y": {"field": "y", "type": "quantitative"}
