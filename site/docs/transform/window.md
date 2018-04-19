@@ -26,18 +26,19 @@ All the calculations are computed by: First, the tuples are partitioned accordin
     {
       // Window Transform
       "window": [{
-          "op": "...",
-          "field": "...",
-          "as": "..."
+          "op": ...,
+          "field": ...,
+          "param": ...
+          "as": ...
       }],
       "sort": [
-        {"field": "...", "order": "..."}
+        {"field": ..., "order": ...}
       ],
-      "ignorePeers": "...",
+      "ignorePeers": ...,
       "groupby": [
-          "..."
+        "..."
       ],
-      "frame": "..."
+      "frame": [...,...]
     }
      ...
   ],
