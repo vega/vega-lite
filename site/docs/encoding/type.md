@@ -11,7 +11,7 @@ The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](
 
 **Notes**:
 
-1) Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+1) Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
 
 2) When using with [`aggregate`](aggregate.html), the `type` property refers to the post-aggregation data type.  For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`.  The `"type"` of the aggregate output is `"quantitative"`.
 
