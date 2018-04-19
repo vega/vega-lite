@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/cars.json"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {
+          "timeUnit": "year",
+          "field": "Year",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "Weight_in_lbs",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Cylinders",
+          "type": "ordinal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0
+      },
+      "encoding": {
+        "x": {
+          "timeUnit": "year",
+          "field": "Year",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "Weight_in_lbs",
+          "type": "quantitative",
+          "stack": "zero"
+        },
+        "color": {
+          "field": "Cylinders",
+          "type": "ordinal"
+        }
+      }
+    }
+  ]
+}

@@ -98,6 +98,57 @@
             "transform": [
                 {
                     "type": "formula",
+                    "expr": "datum.y - 50",
+                    "as": "ny"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ny\"])",
+                    "as": "ny"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ny\"])",
+                    "as": "ny"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
                     "expr": "toNumber(datum[\"x\"])",
                     "as": "x"
                 },
@@ -113,7 +164,7 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_5",
             "source": "source_0",
             "transform": [
                 {
@@ -123,19 +174,19 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.y - 50",
-                    "as": "ny"
+                    "expr": "toNumber(datum[\"y\"])",
+                    "as": "y"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "layer_0_layer_0_marks",
             "type": "area",
             "clip": true,
             "style": [
@@ -146,7 +197,7 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_1"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -175,7 +226,35 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_5"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.6
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "x"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "y"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_0_marks",
             "type": "area",
             "clip": true,
             "style": [
@@ -213,6 +292,34 @@
                     }
                 }
             }
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.3
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "x"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "ny"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -222,11 +329,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_1",
+                        "data": "data_4",
+                        "field": "x"
+                    },
+                    {
+                        "data": "data_5",
                         "field": "x"
                     },
                     {
                         "data": "data_2",
+                        "field": "x"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "x"
                     }
                 ]

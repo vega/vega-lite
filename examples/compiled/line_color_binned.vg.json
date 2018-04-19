@@ -11,18 +11,32 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Year": "date",
-                    "Acceleration": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Acceleration\"])",
+                    "as": "Acceleration"
+                },
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "bin_maxbins_6_Acceleration_extent"
+                    "signal": "layer_0_bin_maxbins_6_Acceleration_extent"
                 },
                 {
                     "type": "bin",
@@ -31,10 +45,70 @@
                         "bin_maxbins_6_Acceleration",
                         "bin_maxbins_6_Acceleration_end"
                     ],
-                    "signal": "bin_maxbins_6_Acceleration_bins",
+                    "signal": "layer_0_bin_maxbins_6_Acceleration_bins",
                     "maxbins": 6,
                     "extent": {
-                        "signal": "bin_maxbins_6_Acceleration_extent"
+                        "signal": "layer_0_bin_maxbins_6_Acceleration_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Year",
+                        "bin_maxbins_6_Acceleration",
+                        "bin_maxbins_6_Acceleration_end"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ],
+                    "as": [
+                        "mean_Horsepower"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Acceleration\"])",
+                    "as": "Acceleration"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "layer_1_bin_maxbins_6_Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_maxbins_6_Acceleration",
+                        "bin_maxbins_6_Acceleration_end"
+                    ],
+                    "signal": "layer_1_bin_maxbins_6_Acceleration_bins",
+                    "maxbins": 6,
+                    "extent": {
+                        "signal": "layer_1_bin_maxbins_6_Acceleration_extent"
                     }
                 },
                 {
@@ -63,12 +137,12 @@
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "bin_maxbins_6_Acceleration"
                     ]
@@ -90,7 +164,7 @@
             },
             "marks": [
                 {
-                    "name": "marks",
+                    "name": "layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -100,7 +174,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -120,6 +194,35 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "bin_maxbins_6_Acceleration"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_Horsepower"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -127,8 +230,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "Year"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Year"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Year"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -141,8 +252,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "mean_Horsepower"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "mean_Horsepower"
+                    }
+                ]
             },
             "range": [
                 {
@@ -157,7 +276,14 @@
             "name": "color",
             "type": "bin-ordinal",
             "domain": {
-                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+                "fields": [
+                    {
+                        "signal": "sequence(layer_0_bin_maxbins_6_Acceleration_bins.start, layer_0_bin_maxbins_6_Acceleration_bins.stop + layer_0_bin_maxbins_6_Acceleration_bins.step, layer_0_bin_maxbins_6_Acceleration_bins.step)"
+                    },
+                    {
+                        "signal": "sequence(layer_1_bin_maxbins_6_Acceleration_bins.start, layer_1_bin_maxbins_6_Acceleration_bins.stop + layer_1_bin_maxbins_6_Acceleration_bins.step, layer_1_bin_maxbins_6_Acceleration_bins.step)"
+                    }
+                ]
             },
             "range": "ramp"
         }
@@ -227,7 +353,8 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "Acceleration (binned)"
+            "title": "Acceleration (binned)",
+            "fill": "color"
         }
     ],
     "config": {

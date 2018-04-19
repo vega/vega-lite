@@ -19,32 +19,68 @@
     }
   },
   "spec": {
-    "mark": "area",
     "width": 300,
     "height": 40,
-    "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal",
-        "axis": {
-          "format": "%Y",
-          "title": "Time",
-          "grid": false
+    "layer": [
+      {
+        "mark": "area",
+        "encoding": {
+          "x": {
+            "field": "date",
+            "type": "temporal",
+            "axis": {
+              "format": "%Y",
+              "title": "Time",
+              "grid": false
+            }
+          },
+          "y": {
+            "field": "price",
+            "type": "quantitative",
+            "axis": {
+              "title": "Price",
+              "grid": false
+            }
+          },
+          "color": {
+            "field": "symbol",
+            "type": "nominal",
+            "legend": null
+          }
         }
       },
-      "y": {
-        "field": "price",
-        "type": "quantitative",
-        "axis": {
-          "title": "Price",
-          "grid": false
+      {
+        "mark": {
+          "type": "point",
+          "filled": true,
+          "opacity": 0
+        },
+        "encoding": {
+          "x": {
+            "field": "date",
+            "type": "temporal",
+            "axis": {
+              "format": "%Y",
+              "title": "Time",
+              "grid": false
+            }
+          },
+          "y": {
+            "field": "price",
+            "type": "quantitative",
+            "axis": {
+              "title": "Price",
+              "grid": false
+            },
+            "stack": "zero"
+          },
+          "color": {
+            "field": "symbol",
+            "type": "nominal",
+            "legend": null
+          }
         }
-      },
-      "color": {
-        "field": "symbol",
-        "type": "nominal",
-        "legend": null
       }
-    }
+    ]
   }
 }

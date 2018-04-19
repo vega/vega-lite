@@ -11,13 +11,23 @@
             "name": "source_0",
             "url": "data/unemployment-across-industries.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "date": "date",
-                    "count": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
+                },
                 {
                     "type": "formula",
                     "as": "yearmonth_date",
@@ -74,16 +84,77 @@
                     "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonth_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "yearmonth_date",
+                        "series"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "count"
+                    ],
+                    "as": [
+                        "sum_count"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "yearmonth_date"
+                    ],
+                    "field": "sum_count",
+                    "sort": {
+                        "field": [
+                            "series"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_count_start",
+                        "sum_count_end"
+                    ],
+                    "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "series"
                     ]
@@ -105,7 +176,7 @@
             },
             "marks": [
                 {
-                    "name": "marks",
+                    "name": "layer_0_marks",
                     "type": "area",
                     "style": [
                         "area"
@@ -115,7 +186,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -142,6 +213,35 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "series"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "yearmonth_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_count_end"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -149,8 +249,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "yearmonth_date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "yearmonth_date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -163,10 +271,23 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
                 "fields": [
-                    "sum_count_start",
-                    "sum_count_end"
+                    {
+                        "data": "data_0",
+                        "field": "sum_count_start"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "sum_count_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_count_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_count_end"
+                    }
                 ]
             },
             "range": [
@@ -182,8 +303,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_0",
-                "field": "series",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "series"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "series"
+                    }
+                ],
                 "sort": true
             },
             "range": {

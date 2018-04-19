@@ -1,0 +1,199 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/co2-concentration.csv",
+    "format": {
+      "parse": {
+        "Date": "utc:'%Y-%m-%d'"
+      }
+    }
+  },
+  "width": 800,
+  "height": 500,
+  "transform": [
+    {
+      "calculate": "year(datum.Date)",
+      "as": "year"
+    },
+    {
+      "calculate": "month(datum.Date)",
+      "as": "month"
+    },
+    {
+      "calculate": "floor(datum.year / 10) + 'x'",
+      "as": "decade"
+    },
+    {
+      "calculate": "(datum.year % 10) + (datum.month/12)",
+      "as": "scaled_date"
+    }
+  ],
+  "layer": [
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "scaled_date",
+              "type": "quantitative",
+              "axis": {
+                "title": "Year into Decade",
+                "tickCount": 11
+              }
+            },
+            "y": {
+              "field": "CO2",
+              "axis": {
+                "title": "CO2 concentration in ppm"
+              },
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "detail": {
+              "field": "decade",
+              "type": "ordinal"
+            },
+            "color": {
+              "field": "decade",
+              "type": "nominal",
+              "legend": {
+                "offset": 40
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "encoding": {
+            "x": {
+              "field": "scaled_date",
+              "type": "quantitative",
+              "axis": {
+                "title": "Year into Decade",
+                "tickCount": 11
+              }
+            },
+            "y": {
+              "field": "CO2",
+              "axis": {
+                "title": "CO2 concentration in ppm"
+              },
+              "type": "quantitative",
+              "scale": {
+                "zero": false
+              }
+            },
+            "detail": {
+              "field": "decade",
+              "type": "ordinal"
+            },
+            "color": {
+              "field": "decade",
+              "type": "nominal",
+              "legend": {
+                "offset": 40
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 3,
+        "dy": 1
+      },
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "argmin",
+              "field": "scaled_date",
+              "as": "aggregated"
+            }
+          ],
+          "groupby": [
+            "decade"
+          ]
+        },
+        {
+          "calculate": "datum.aggregated.scaled_date",
+          "as": "scaled_date"
+        },
+        {
+          "calculate": "datum.aggregated.CO2",
+          "as": "CO2"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "scaled_date",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "CO2",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "aggregated.year",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 3,
+        "dy": 1
+      },
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "argmax",
+              "field": "scaled_date",
+              "as": "aggregated"
+            }
+          ],
+          "groupby": [
+            "decade"
+          ]
+        },
+        {
+          "calculate": "datum.aggregated.scaled_date",
+          "as": "scaled_date"
+        },
+        {
+          "calculate": "datum.aggregated.CO2",
+          "as": "CO2"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "scaled_date",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "CO2",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "aggregated.year",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

@@ -28,11 +28,6 @@
                     "as": "gas"
                 },
                 {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
@@ -53,6 +48,36 @@
                     "as": "gas"
                 },
                 {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"miles\"])",
+                    "as": "miles"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"gas\"])",
+                    "as": "gas"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
+                {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
@@ -61,7 +86,7 @@
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "layer_0_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -75,11 +100,47 @@
                 ]
             },
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "miles"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "gas"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "sort": {
+                "field": [
+                    "datum[\"year\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -100,7 +161,7 @@
                 "point"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -129,11 +190,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "miles"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
+                        "field": "miles"
+                    },
+                    {
+                        "data": "data_0",
                         "field": "miles"
                     }
                 ]
@@ -153,11 +218,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "gas"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
+                        "field": "gas"
+                    },
+                    {
+                        "data": "data_0",
                         "field": "gas"
                     }
                 ]

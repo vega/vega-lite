@@ -1,0 +1,117 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/sp500.csv"
+  },
+  "vconcat": [
+    {
+      "width": 480,
+      "layer": [
+        {
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "scale": {
+                "domain": {
+                  "selection": "brush"
+                }
+              },
+              "axis": {
+                "title": ""
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "encoding": {
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "scale": {
+                "domain": {
+                  "selection": "brush"
+                }
+              },
+              "axis": {
+                "title": ""
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 480,
+      "height": 60,
+      "layer": [
+        {
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "axis": {
+                "format": "%Y"
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative",
+              "axis": {
+                "tickCount": 3,
+                "grid": false
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "selection": {
+            "brush": {
+              "type": "interval",
+              "encodings": [
+                "x"
+              ]
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "axis": {
+                "format": "%Y"
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative",
+              "axis": {
+                "tickCount": 3,
+                "grid": false
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

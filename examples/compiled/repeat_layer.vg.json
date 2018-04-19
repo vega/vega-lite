@@ -75,6 +75,49 @@
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
                 },
                 {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "year_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
                     "type": "aggregate",
                     "groupby": [
                         "month_date",
@@ -93,7 +136,44 @@
             ]
         },
         {
-            "name": "data_2",
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_max\"])",
+                    "as": "temp_max"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_4",
             "source": "source_0",
             "transform": [
                 {
@@ -136,7 +216,50 @@
             ]
         },
         {
-            "name": "data_3",
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"precipitation\"])",
+                    "as": "precipitation"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "year_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_6",
             "source": "source_0",
             "transform": [
                 {
@@ -173,7 +296,44 @@
             ]
         },
         {
-            "name": "data_4",
+            "name": "data_7",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"precipitation\"])",
+                    "as": "precipitation"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_8",
             "source": "source_0",
             "transform": [
                 {
@@ -216,7 +376,87 @@
             ]
         },
         {
-            "name": "data_5",
+            "name": "data_9",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"wind\"])",
+                    "as": "wind"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "year_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "wind"
+                    ],
+                    "as": [
+                        "mean_wind"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_10",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"wind\"])",
+                    "as": "wind"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "location"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "wind"
+                    ],
+                    "as": [
+                        "mean_wind"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_11",
             "source": "source_0",
             "transform": [
                 {
@@ -306,11 +546,11 @@
             },
             "marks": [
                 {
-                    "name": "child_temp_max_layer_0_pathgroup",
+                    "name": "child_temp_max_layer_0_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_temp_max_layer_0_main",
+                            "name": "faceted_path_child_temp_max_layer_0_layer_0_main",
                             "data": "data_0",
                             "groupby": [
                                 "year_date",
@@ -334,7 +574,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_temp_max_layer_0_marks",
+                            "name": "child_temp_max_layer_0_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -344,7 +584,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_temp_max_layer_0_main"
+                                "data": "faceted_path_child_temp_max_layer_0_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -369,12 +609,41 @@
                     ]
                 },
                 {
-                    "name": "child_temp_max_layer_1_pathgroup",
+                    "name": "child_temp_max_layer_0_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0.2
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_temp_max_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_temp_max_y",
+                                "field": "mean_temp_max"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_temp_max_layer_1_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_temp_max_layer_1_main",
-                            "data": "data_1",
+                            "name": "faceted_path_child_temp_max_layer_1_layer_0_main",
+                            "data": "data_2",
                             "groupby": [
                                 "location"
                             ]
@@ -396,7 +665,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_temp_max_layer_1_marks",
+                            "name": "child_temp_max_layer_1_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -406,7 +675,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_temp_max_layer_1_main"
+                                "data": "faceted_path_child_temp_max_layer_1_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -426,6 +695,35 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "child_temp_max_layer_1_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_3"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_temp_max_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_temp_max_y",
+                                "field": "mean_temp_max"
+                            }
+                        }
+                    }
                 }
             ],
             "axes": [
@@ -497,12 +795,12 @@
             },
             "marks": [
                 {
-                    "name": "child_precipitation_layer_0_pathgroup",
+                    "name": "child_precipitation_layer_0_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_precipitation_layer_0_main",
-                            "data": "data_2",
+                            "name": "faceted_path_child_precipitation_layer_0_layer_0_main",
+                            "data": "data_4",
                             "groupby": [
                                 "year_date",
                                 "location"
@@ -525,7 +823,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_precipitation_layer_0_marks",
+                            "name": "child_precipitation_layer_0_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -535,7 +833,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_precipitation_layer_0_main"
+                                "data": "faceted_path_child_precipitation_layer_0_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -560,12 +858,41 @@
                     ]
                 },
                 {
-                    "name": "child_precipitation_layer_1_pathgroup",
+                    "name": "child_precipitation_layer_0_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_5"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0.2
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_precipitation_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_precipitation_y",
+                                "field": "mean_precipitation"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_precipitation_layer_1_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_precipitation_layer_1_main",
-                            "data": "data_3",
+                            "name": "faceted_path_child_precipitation_layer_1_layer_0_main",
+                            "data": "data_6",
                             "groupby": [
                                 "location"
                             ]
@@ -587,7 +914,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_precipitation_layer_1_marks",
+                            "name": "child_precipitation_layer_1_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -597,7 +924,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_precipitation_layer_1_main"
+                                "data": "faceted_path_child_precipitation_layer_1_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -617,6 +944,35 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "child_precipitation_layer_1_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_7"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_precipitation_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_precipitation_y",
+                                "field": "mean_precipitation"
+                            }
+                        }
+                    }
                 }
             ],
             "axes": [
@@ -688,12 +1044,12 @@
             },
             "marks": [
                 {
-                    "name": "child_wind_layer_0_pathgroup",
+                    "name": "child_wind_layer_0_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_wind_layer_0_main",
-                            "data": "data_4",
+                            "name": "faceted_path_child_wind_layer_0_layer_0_main",
+                            "data": "data_8",
                             "groupby": [
                                 "year_date",
                                 "location"
@@ -716,7 +1072,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_wind_layer_0_marks",
+                            "name": "child_wind_layer_0_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -726,7 +1082,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_wind_layer_0_main"
+                                "data": "faceted_path_child_wind_layer_0_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -751,12 +1107,41 @@
                     ]
                 },
                 {
-                    "name": "child_wind_layer_1_pathgroup",
+                    "name": "child_wind_layer_0_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_9"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0.2
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_wind_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_wind_y",
+                                "field": "mean_wind"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_wind_layer_1_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_wind_layer_1_main",
-                            "data": "data_5",
+                            "name": "faceted_path_child_wind_layer_1_layer_0_main",
+                            "data": "data_10",
                             "groupby": [
                                 "location"
                             ]
@@ -778,7 +1163,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_wind_layer_1_marks",
+                            "name": "child_wind_layer_1_layer_0_marks",
                             "type": "line",
                             "style": [
                                 "line"
@@ -788,7 +1173,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_wind_layer_1_main"
+                                "data": "faceted_path_child_wind_layer_1_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -808,6 +1193,35 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "child_wind_layer_1_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_11"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "location"
+                            },
+                            "x": {
+                                "scale": "child_wind_x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "child_wind_y",
+                                "field": "mean_wind"
+                            }
+                        }
+                    }
                 }
             ],
             "axes": [
@@ -893,6 +1307,30 @@
                     {
                         "data": "data_5",
                         "field": "location"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "location"
+                    },
+                    {
+                        "data": "data_7",
+                        "field": "location"
+                    },
+                    {
+                        "data": "data_8",
+                        "field": "location"
+                    },
+                    {
+                        "data": "data_9",
+                        "field": "location"
+                    },
+                    {
+                        "data": "data_10",
+                        "field": "location"
+                    },
+                    {
+                        "data": "data_11",
+                        "field": "location"
                     }
                 ],
                 "sort": true
@@ -910,6 +1348,14 @@
                     },
                     {
                         "data": "data_1",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "month_date"
                     }
                 ],
@@ -934,6 +1380,14 @@
                     {
                         "data": "data_1",
                         "field": "mean_temp_max"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "mean_temp_max"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "mean_temp_max"
                     }
                 ]
             },
@@ -952,11 +1406,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_2",
+                        "data": "data_4",
                         "field": "month_date"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_5",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_7",
                         "field": "month_date"
                     }
                 ],
@@ -975,11 +1437,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_2",
+                        "data": "data_4",
                         "field": "mean_precipitation"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_5",
+                        "field": "mean_precipitation"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "mean_precipitation"
+                    },
+                    {
+                        "data": "data_7",
                         "field": "mean_precipitation"
                     }
                 ]
@@ -999,11 +1469,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_4",
+                        "data": "data_8",
                         "field": "month_date"
                     },
                     {
-                        "data": "data_5",
+                        "data": "data_9",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_10",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_11",
                         "field": "month_date"
                     }
                 ],
@@ -1022,11 +1500,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_4",
+                        "data": "data_8",
                         "field": "mean_wind"
                     },
                     {
-                        "data": "data_5",
+                        "data": "data_9",
+                        "field": "mean_wind"
+                    },
+                    {
+                        "data": "data_10",
+                        "field": "mean_wind"
+                    },
+                    {
+                        "data": "data_11",
                         "field": "mean_wind"
                     }
                 ]
@@ -1053,7 +1539,8 @@
                         }
                     }
                 }
-            }
+            },
+            "fill": "color"
         }
     ],
     "config": {

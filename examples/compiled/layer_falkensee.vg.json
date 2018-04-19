@@ -271,6 +271,31 @@
                     "expr": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
                 }
             ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"population\"])",
+                    "as": "population"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_year",
+                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+                }
+            ]
         }
     ],
     "marks": [
@@ -309,7 +334,7 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -319,11 +344,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#333"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "population"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#333"
                     },
                     "x": {
@@ -344,7 +397,7 @@
                 "point"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -384,11 +437,15 @@
                         "field": "year_end"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "year_year"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
+                        "field": "year_year"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "year_year"
                     }
                 ]
@@ -416,11 +473,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "population"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
+                        "field": "population"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "population"
                     }
                 ]

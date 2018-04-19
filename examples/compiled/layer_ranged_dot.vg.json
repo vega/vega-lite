@@ -56,6 +56,21 @@
                     "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
                 }
             ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"life_expect\"])",
+                    "as": "life_expect"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
+                }
+            ]
         }
     ],
     "signals": [
@@ -70,12 +85,12 @@
     ],
     "marks": [
         {
-            "name": "layer_0_pathgroup",
+            "name": "layer_0_layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_0_main",
-                    "data": "data_0",
+                    "name": "faceted_path_layer_0_layer_0_main",
+                    "data": "data_1",
                     "groupby": [
                         "country"
                     ]
@@ -97,7 +112,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "layer_0_layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -107,7 +122,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_0_main"
+                        "data": "faceted_path_layer_0_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -128,13 +143,41 @@
             ]
         },
         {
+            "name": "layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#db646f"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "life_expect"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "country"
+                    }
+                }
+            }
+        },
+        {
             "name": "layer_1_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -167,11 +210,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "life_expect"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
+                        "field": "life_expect"
+                    },
+                    {
+                        "data": "data_0",
                         "field": "life_expect"
                     }
                 ]
@@ -191,11 +238,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "country"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
+                        "field": "country"
+                    },
+                    {
+                        "data": "data_0",
                         "field": "country"
                     }
                 ],

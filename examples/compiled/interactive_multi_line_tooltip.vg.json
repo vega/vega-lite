@@ -103,6 +103,26 @@
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
         }
     ],
     "signals": [
@@ -150,12 +170,12 @@
     ],
     "marks": [
         {
-            "name": "layer_0_layer_0_pathgroup",
+            "name": "layer_0_layer_0_layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_layer_0_layer_0_main",
-                    "data": "data_3",
+                    "name": "faceted_path_layer_0_layer_0_layer_0_main",
+                    "data": "data_4",
                     "groupby": [
                         "symbol"
                     ]
@@ -177,7 +197,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_layer_0_marks",
+                    "name": "layer_0_layer_0_layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -187,7 +207,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_layer_0_layer_0_main"
+                        "data": "faceted_path_layer_0_layer_0_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -209,13 +229,42 @@
             ]
         },
         {
+            "name": "layer_0_layer_0_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_5"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    }
+                }
+            }
+        },
+        {
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_4"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -363,11 +412,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "date"
                     },
                     {
-                        "data": "data_4",
+                        "data": "data_5",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "date"
                     },
                     {
@@ -393,11 +446,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "price"
                     },
                     {
-                        "data": "data_4",
+                        "data": "data_5",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "price"
                     },
                     {
@@ -421,11 +478,15 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "symbol"
                     },
                     {
-                        "data": "data_4",
+                        "data": "data_5",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "symbol"
                     },
                     {
@@ -504,6 +565,7 @@
         {
             "stroke": "color",
             "title": "symbol",
+            "fill": "color",
             "encode": {
                 "symbols": {
                     "update": {
@@ -515,8 +577,7 @@
                         }
                     }
                 }
-            },
-            "fill": "color"
+            }
         }
     ],
     "config": {

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/seattle-weather.csv"
+  },
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "timeUnit": "yearmonth",
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "max",
+          "field": "temp_max",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0
+      },
+      "encoding": {
+        "x": {
+          "timeUnit": "yearmonth",
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "max",
+          "field": "temp_max",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}

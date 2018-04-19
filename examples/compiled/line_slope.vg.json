@@ -10,12 +10,45 @@
             "name": "source_0",
             "url": "data/barley.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "yield": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year",
+                        "site"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "median_yield"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -47,12 +80,12 @@
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "site"
                     ]
@@ -74,7 +107,7 @@
             },
             "marks": [
                 {
-                    "name": "marks",
+                    "name": "layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -84,7 +117,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -104,6 +137,35 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "site"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "median_yield"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -111,8 +173,16 @@
             "name": "x",
             "type": "point",
             "domain": {
-                "data": "source_0",
-                "field": "year",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "year"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "year"
+                    }
+                ],
                 "sort": true
             },
             "range": {
@@ -126,8 +196,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "median_yield"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "median_yield"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "median_yield"
+                    }
+                ]
             },
             "range": [
                 {
@@ -142,8 +220,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_0",
-                "field": "site",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "site"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "site"
+                    }
+                ],
                 "sort": true
             },
             "range": "category"
@@ -201,7 +287,8 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "site"
+            "title": "site",
+            "fill": "color"
         }
     ],
     "config": {

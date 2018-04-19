@@ -8,16 +8,40 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date",
-                    "price": "number"
-                }
+                "type": "csv"
             },
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum.symbol !== 'GOOG'"
+                }
+            ]
+        },
+        {
+            "name": "row_domain",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "symbol"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "impute",
@@ -57,14 +81,43 @@
             ]
         },
         {
-            "name": "row_domain",
+            "name": "data_2",
             "source": "source_0",
             "transform": [
                 {
-                    "type": "aggregate",
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "stack",
                     "groupby": [
+                        "date",
                         "symbol"
-                    ]
+                    ],
+                    "field": "price",
+                    "sort": {
+                        "field": [
+                            "symbol"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "price_start",
+                        "price_end"
+                    ],
+                    "offset": "zero"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         }
@@ -209,6 +262,98 @@
                     "ascending"
                 ]
             },
+            "data": [
+                {
+                    "source": "facet",
+                    "name": "data_0",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toDate(datum[\"date\"])",
+                            "as": "date"
+                        },
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"price\"])",
+                            "as": "price"
+                        },
+                        {
+                            "type": "impute",
+                            "field": "price",
+                            "groupby": [
+                                "symbol"
+                            ],
+                            "key": "date",
+                            "method": "value",
+                            "value": 0
+                        },
+                        {
+                            "type": "stack",
+                            "groupby": [
+                                "date"
+                            ],
+                            "field": "price",
+                            "sort": {
+                                "field": [
+                                    "symbol"
+                                ],
+                                "order": [
+                                    "descending"
+                                ]
+                            },
+                            "as": [
+                                "price_start",
+                                "price_end"
+                            ],
+                            "offset": "zero"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_1",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toDate(datum[\"date\"])",
+                            "as": "date"
+                        },
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"price\"])",
+                            "as": "price"
+                        },
+                        {
+                            "type": "stack",
+                            "groupby": [
+                                "date"
+                            ],
+                            "field": "price",
+                            "sort": {
+                                "field": [
+                                    "symbol"
+                                ],
+                                "order": [
+                                    "descending"
+                                ]
+                            },
+                            "as": [
+                                "price_start",
+                                "price_end"
+                            ],
+                            "offset": "zero"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                        }
+                    ]
+                }
+            ],
             "encode": {
                 "update": {
                     "width": {
@@ -221,12 +366,12 @@
             },
             "marks": [
                 {
-                    "name": "child_pathgroup",
+                    "name": "child_layer_0_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted_path_child_main",
-                            "data": "facet",
+                            "name": "faceted_path_child_layer_0_main",
+                            "data": "data_0",
                             "groupby": [
                                 "symbol"
                             ]
@@ -248,7 +393,7 @@
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
+                            "name": "child_layer_0_marks",
                             "type": "area",
                             "style": [
                                 "area"
@@ -258,7 +403,7 @@
                                 "order": "descending"
                             },
                             "from": {
-                                "data": "faceted_path_child_main"
+                                "data": "faceted_path_child_layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -285,6 +430,35 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "child_layer_1_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "price_end"
+                            }
+                        }
+                    }
                 }
             ]
         }
@@ -294,8 +468,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "date"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -308,10 +490,23 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
                 "fields": [
-                    "price_start",
-                    "price_end"
+                    {
+                        "data": "data_1",
+                        "field": "price_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price_end"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "price_start"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "price_end"
+                    }
                 ]
             },
             "range": [
@@ -327,8 +522,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_0",
-                "field": "symbol",
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "symbol"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "symbol"
+                    }
+                ],
                 "sort": true
             },
             "range": "category"

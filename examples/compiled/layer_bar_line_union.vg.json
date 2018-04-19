@@ -84,6 +84,21 @@
                     "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
                 }
             ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"c\"])",
+                    "as": "c"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
+                }
+            ]
         }
     ],
     "signals": [
@@ -131,7 +146,7 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -146,6 +161,35 @@
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "red"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "b",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "c"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "red"
                     },
                     "x": {
@@ -174,6 +218,10 @@
                     {
                         "data": "data_2",
                         "field": "b"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "b"
                     }
                 ],
                 "sort": true
@@ -197,6 +245,10 @@
                     },
                     {
                         "data": "data_2",
+                        "field": "c"
+                    },
+                    {
+                        "data": "data_3",
                         "field": "c"
                     }
                 ]

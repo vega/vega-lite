@@ -41,13 +41,44 @@
                     "as": "wavelength"
                 },
                 {
+                    "type": "filter",
+                    "expr": "inrange(datum[\"wavelength\"], [300, 450])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"wavelength\"])",
+                    "as": "wavelength"
+                },
+                {
                     "type": "formula",
                     "expr": "toNumber(datum[\"power\"])",
                     "as": "power"
                 },
                 {
                     "type": "filter",
-                    "expr": "inrange(datum[\"wavelength\"], [300, 450])"
+                    "expr": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"wavelength\"])",
+                    "as": "wavelength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"power\"])",
+                    "as": "power"
                 },
                 {
                     "type": "filter",
@@ -58,7 +89,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "line",
             "style": [
                 "line"
@@ -68,11 +99,39 @@
                 "order": "descending"
             },
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
                     "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "wavelength"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "power"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
                         "value": "#4c78a8"
                     },
                     "x": {
@@ -108,8 +167,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "data_0",
-                "field": "power"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "power"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "power"
+                    }
+                ]
             },
             "range": [
                 {

@@ -29,34 +29,72 @@
   ],
   "layer": [
     {
-      "mark": "line",
-      "encoding": {
-        "x": {
-          "field": "life_expect",
-          "type": "quantitative",
-          "axis": {
-            "title": "Life Expectancy (years)"
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "life_expect",
+              "type": "quantitative",
+              "axis": {
+                "title": "Life Expectancy (years)"
+              }
+            },
+            "y": {
+              "field": "country",
+              "type": "nominal",
+              "axis": {
+                "title": "Country",
+                "offset": 5,
+                "ticks": false,
+                "minExtent": 70,
+                "domain": false
+              }
+            },
+            "detail": {
+              "field": "country",
+              "type": "nominal"
+            },
+            "color": {
+              "value": "#db646f"
+            }
           }
         },
-        "y": {
-          "field": "country",
-          "type": "nominal",
-          "axis": {
-            "title": "Country",
-            "offset": 5,
-            "ticks": false,
-            "minExtent": 70,
-            "domain": false
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "encoding": {
+            "x": {
+              "field": "life_expect",
+              "type": "quantitative",
+              "axis": {
+                "title": "Life Expectancy (years)"
+              }
+            },
+            "y": {
+              "field": "country",
+              "type": "nominal",
+              "axis": {
+                "title": "Country",
+                "offset": 5,
+                "ticks": false,
+                "minExtent": 70,
+                "domain": false
+              }
+            },
+            "detail": {
+              "field": "country",
+              "type": "nominal"
+            },
+            "color": {
+              "value": "#db646f"
+            }
           }
-        },
-        "detail": {
-          "field": "country",
-          "type": "nominal"
-        },
-        "color": {
-          "value": "#db646f"
         }
-      }
+      ]
     },
     {
       "mark": {

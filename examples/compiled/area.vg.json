@@ -10,13 +10,63 @@
             "name": "source_0",
             "url": "data/unemployment-across-industries.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "date": "date",
-                    "count": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonth_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "yearmonth_date"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "count"
+                    ],
+                    "as": [
+                        "sum_count"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
+                },
                 {
                     "type": "formula",
                     "as": "yearmonth_date",
@@ -46,7 +96,7 @@
     ],
     "marks": [
         {
-            "name": "marks",
+            "name": "layer_0_marks",
             "type": "area",
             "style": [
                 "area"
@@ -56,7 +106,7 @@
                 "order": "descending"
             },
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -80,6 +130,34 @@
                     }
                 }
             }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "yearmonth_date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_count"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -87,8 +165,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "yearmonth_date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "yearmonth_date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -101,8 +187,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "sum_count"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "sum_count"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "sum_count"
+                    }
+                ]
             },
             "range": [
                 {

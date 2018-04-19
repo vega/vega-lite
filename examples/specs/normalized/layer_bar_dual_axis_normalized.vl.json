@@ -1,0 +1,87 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/seattle-weather.csv"
+  },
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "timeUnit": "month",
+          "field": "date",
+          "type": "ordinal"
+        },
+        "y": {
+          "aggregate": "mean",
+          "field": "precipitation",
+          "type": "quantitative",
+          "axis": {
+            "grid": false
+          }
+        }
+      }
+    },
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "timeUnit": "month",
+              "field": "date",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "mean",
+              "field": "temp_max",
+              "type": "quantitative",
+              "axis": {
+                "grid": false
+              },
+              "scale": {
+                "zero": false
+              }
+            },
+            "color": {
+              "value": "firebrick"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0
+          },
+          "encoding": {
+            "x": {
+              "timeUnit": "month",
+              "field": "date",
+              "type": "ordinal"
+            },
+            "y": {
+              "aggregate": "mean",
+              "field": "temp_max",
+              "type": "quantitative",
+              "axis": {
+                "grid": false
+              },
+              "scale": {
+                "zero": false
+              }
+            },
+            "color": {
+              "value": "firebrick"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -11,13 +11,43 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date",
-                    "price": "number"
-                }
-            },
+                "type": "csv"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
@@ -27,12 +57,12 @@
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "layer_0_pathgroup",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
+                    "name": "faceted_path_layer_0_main",
+                    "data": "data_0",
                     "groupby": [
                         "symbol"
                     ]
@@ -54,7 +84,7 @@
             },
             "marks": [
                 {
-                    "name": "marks",
+                    "name": "layer_0_marks",
                     "type": "line",
                     "style": [
                         "line"
@@ -64,7 +94,7 @@
                         "order": "descending"
                     },
                     "from": {
-                        "data": "faceted_path_main"
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
@@ -83,6 +113,34 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -90,8 +148,16 @@
             "name": "x",
             "type": "time",
             "domain": {
-                "data": "source_0",
-                "field": "date"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "date"
+                    }
+                ]
             },
             "range": [
                 0,
@@ -104,8 +170,16 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "price"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    }
+                ]
             },
             "range": [
                 {

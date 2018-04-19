@@ -13,8 +13,8 @@
     }
   ],
   "config": {
-    "overlay": {
-      "area": "line"
+    "area": {
+      "line": true
     }
   },
   "layer": [
@@ -47,8 +47,39 @@
     },
     {
       "mark": {
-        "type": "line",
-        "style": "lineOverlay"
+        "type": "line"
+      },
+      "encoding": {
+        "y": {
+          "aggregate": "sum",
+          "field": "people",
+          "type": "quantitative",
+          "stack": "zero"
+        },
+        "x": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "color": {
+          "field": "gender",
+          "type": "nominal",
+          "scale": {
+            "range": [
+              "#EA98D2",
+              "#659CCA"
+            ]
+          }
+        },
+        "opacity": {
+          "value": 0.7
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0
       },
       "encoding": {
         "y": {
