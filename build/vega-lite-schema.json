@@ -63,7 +63,7 @@
           "type": "string"
         },
         "field": {
-          "description": "The data field for which to compute aggregate function.",
+          "description": "The data field for which to compute aggregate function. (This is required for all aggregation operations except `\"count\"`.)",
           "type": "string"
         },
         "op": {
@@ -73,7 +73,6 @@
       },
       "required": [
         "op",
-        "field",
         "as"
       ],
       "type": "object"
