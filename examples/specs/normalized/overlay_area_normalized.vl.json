@@ -17,21 +17,9 @@
   },
   "layer": [
     {
-      "mark": "area",
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
       "mark": {
-        "type": "line"
+        "type": "area",
+        "opacity": 0.7
       },
       "encoding": {
         "x": {
@@ -47,7 +35,8 @@
     {
       "mark": {
         "type": "point",
-        "filled": true
+        "filled": true,
+        "opacity": 1
       },
       "encoding": {
         "x": {
