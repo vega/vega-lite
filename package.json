@@ -31,7 +31,6 @@
     "build:examples-only": "npm run build:example && npm run build:examples-normalized",
     "build:examples-normalized": "rm -f examples/specs/normalized/*.vl.json && scripts/build-normalized-examples",
     "build:example": "TZ=America/Los_Angeles scripts/build-examples.sh",
-
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
     "build:site": "browserify site/static/main.ts -p [tsify -p site] -d | exorcist build/site/main.js.map > build/site/main.js",
     "build:versions": "scripts/update-version.sh",
@@ -40,21 +39,17 @@
     "check:schema": "scripts/check-schema.sh",
     "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -exec rm -f {} +",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
-
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "deploy:schema": "scripts/deploy-schema.sh",
-
     "prestart": "npm run data && npm run build && scripts/index-examples",
     "start": "nodemon -x 'npm run build:test-gallery' & browser-sync start --server --files 'build/test-gallery/main.js' --index 'test-gallery/index.html'",
     "poststart": "rm examples/all-examples.json",
-
     "preschema": "npm run prebuild",
     "schema": "ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
-
     "lint": "tslint -p .",
     "test": "npm run build:only && npm run test:only && npm run test:runtime && npm run lint",
     "posttest": "npm run schema && npm run data && npm run mocha:examples",
@@ -66,7 +61,6 @@
     "test:debug-examples": "tsc && npm run schema && mocha --recursive --debug-brk --inspect build/examples",
     "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
     "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
-
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/index.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
     "watch:test": "nodemon -x 'npm test'",
@@ -90,8 +84,8 @@
     "@types/webdriverio": "^4.10.1",
     "ajv": "^6.4.0",
     "browser-sync": "^2.23.6",
-    "browserify-shim": "^3.8.14",
     "browserify": "^16.2.0",
+    "browserify-shim": "^3.8.14",
     "chai": "^4.1.2",
     "cheerio": "^1.0.0-rc.2",
     "chromedriver": "^2.37.0",
@@ -108,14 +102,14 @@
     "ts-json-schema-generator": "^0.24.6",
     "ts-node": "^5.0.1",
     "tsify": "^4.0.0",
-    "tslint-eslint-rules": "^5.1.0",
     "tslint": "5.9.1",
+    "tslint-eslint-rules": "^5.1.0",
     "typescript": "^2.8.1",
     "uglify-js": "^3.3.21",
+    "vega": "^3.3.0",
     "vega-datasets": "^1.18.0",
     "vega-embed": "^3.5.0",
     "vega-tooltip": "^0.7.0",
-    "vega": "^3.2.1",
     "watchify": "^3.11.0",
     "wdio-chromedriver-service": "^0.1.2",
     "wdio-dot-reporter": "0.0.9",
@@ -126,10 +120,10 @@
   },
   "dependencies": {
     "@types/json-stable-stringify": "^1.0.32",
-    "vega-typings": "^0.2.13",
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.9.0",
     "vega-event-selector": "^2.0.0",
+    "vega-typings": "^0.2.13",
     "vega-util": "^1.7.0",
     "yargs": "^11.0.0"
   }
