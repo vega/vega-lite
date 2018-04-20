@@ -1,6 +1,5 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -9,16 +8,10 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/stocks.csv",
+            "url": "data/driving.json",
             "format": {
-                "type": "csv"
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum.symbol==='GOOG'"
-                }
-            ]
+                "type": "json"
+            }
         },
         {
             "name": "data_0",
@@ -26,17 +19,22 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
+                    "expr": "toNumber(datum[\"miles\"])",
+                    "as": "miles"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
+                    "expr": "toNumber(datum[\"gas\"])",
+                    "as": "gas"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
             ]
         },
@@ -46,17 +44,22 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
+                    "expr": "toNumber(datum[\"miles\"])",
+                    "as": "miles"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
+                    "expr": "toNumber(datum[\"gas\"])",
+                    "as": "gas"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
                 }
             ]
         }
@@ -69,8 +72,12 @@
                 "line"
             ],
             "sort": {
-                "field": "datum[\"date\"]",
-                "order": "descending"
+                "field": [
+                    "datum[\"year\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "from": {
                 "data": "data_0"
@@ -82,11 +89,11 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "date"
+                        "field": "miles"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "price"
+                        "field": "gas"
                     }
                 }
             }
@@ -97,6 +104,14 @@
             "style": [
                 "point"
             ],
+            "sort": {
+                "field": [
+                    "datum[\"year\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
             "from": {
                 "data": "data_1"
             },
@@ -110,11 +125,11 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "date"
+                        "field": "miles"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "price"
+                        "field": "gas"
                     }
                 }
             }
@@ -123,16 +138,16 @@
     "scales": [
         {
             "name": "x",
-            "type": "time",
+            "type": "linear",
             "domain": {
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "date"
+                        "field": "miles"
                     },
                     {
                         "data": "data_1",
-                        "field": "date"
+                        "field": "miles"
                     }
                 ]
             },
@@ -141,7 +156,9 @@
                 {
                     "signal": "width"
                 }
-            ]
+            ],
+            "zero": false,
+            "nice": true
         },
         {
             "name": "y",
@@ -150,11 +167,11 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "price"
+                        "field": "gas"
                     },
                     {
                         "data": "data_1",
-                        "field": "price"
+                        "field": "gas"
                     }
                 ]
             },
@@ -164,28 +181,19 @@
                 },
                 0
             ],
-            "nice": true,
-            "zero": true
+            "zero": false,
+            "nice": true
         }
     ],
     "axes": [
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "date",
+            "title": "miles",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                        }
-                    }
-                }
             },
             "zindex": 1
         },
@@ -207,7 +215,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "price",
+            "title": "gas",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

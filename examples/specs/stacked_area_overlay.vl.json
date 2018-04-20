@@ -5,7 +5,7 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
-  "mark": "area",
+  "mark": {"type": "area", "line": true},
   "encoding": {
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative"
@@ -16,6 +16,5 @@
       "scale": {"range": ["#EA98D2", "#659CCA"]}
     },
     "opacity": {"value": 0.7}
-  },
-  "config": {"area": {"line": true}}
+  }
 }

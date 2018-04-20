@@ -98,4 +98,4 @@ Note: we plan to have [a better syntax for customized sort order](https://github
 
 Since `line` marks are not stacked by default, to layer lines on top of stacked area charts, you have to manually set the `stack` offset for the lines.
 
-<div class="vl-example" data-name="normalized/overlay_stacked_area_normalized"></div>
+<div class="vl-example" data-name="normalized/stacked_area_overlay_normalized"></div>

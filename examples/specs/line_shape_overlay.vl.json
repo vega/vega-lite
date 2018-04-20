@@ -8,6 +8,5 @@
     "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"},
     "shape": {"value": "square"}
-  },
-  "config": {"line": {"point": true}}
+  }
 }
