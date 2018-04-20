@@ -10,8 +10,8 @@
     }
   ],
   "config": {
-    "overlay": {
-      "line": true
+    "line": {
+      "point": true
     }
   },
   "layer": [
@@ -31,8 +31,7 @@
     {
       "mark": {
         "type": "point",
-        "filled": true,
-        "style": "pointOverlay"
+        "filled": true
       },
       "encoding": {
         "x": {

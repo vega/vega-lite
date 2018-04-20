@@ -13,8 +13,8 @@
     }
   ],
   "config": {
-    "overlay": {
-      "area": "line"
+    "area": {
+      "line": true
     }
   },
   "layer": [
@@ -47,8 +47,7 @@
     },
     {
       "mark": {
-        "type": "line",
-        "style": "lineOverlay"
+        "type": "line"
       },
       "encoding": {
         "y": {

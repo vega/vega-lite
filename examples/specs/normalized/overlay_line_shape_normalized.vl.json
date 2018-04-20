@@ -10,14 +10,13 @@
     }
   ],
   "config": {
-    "area": {
-      "line": true,
+    "line": {
       "point": true
     }
   },
   "layer": [
     {
-      "mark": "area",
+      "mark": "line",
       "encoding": {
         "x": {
           "field": "date",
@@ -26,21 +25,9 @@
         "y": {
           "field": "price",
           "type": "quantitative"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "line"
-      },
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
         },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
+        "shape": {
+          "value": "square"
         }
       }
     },
@@ -57,6 +44,9 @@
         "y": {
           "field": "price",
           "type": "quantitative"
+        },
+        "shape": {
+          "value": "square"
         }
       }
     }
