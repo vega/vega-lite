@@ -223,7 +223,7 @@ export namespace message {
 
   export function lineWithRange(hasX2: boolean, hasY2: boolean) {
     const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
-    return `Line mark is for continuous lines and thus cannot be used with ${channels}. Rule mark (aka line segments) will be used instead.`;
+    return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
   }
 
   export function unclearOrientContinuous(mark: Mark) {
