@@ -180,6 +180,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 1
+                    },
                     "fill": {
                         "value": "darkred"
                     },
@@ -234,6 +237,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 1
+                    },
                     "fill": {
                         "value": "#4c78a8"
                     },

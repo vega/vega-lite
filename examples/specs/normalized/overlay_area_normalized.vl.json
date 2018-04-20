@@ -17,10 +17,7 @@
   },
   "layer": [
     {
-      "mark": {
-        "type": "area",
-        "opacity": 0.7
-      },
+      "mark": "area",
       "encoding": {
         "x": {
           "field": "date",

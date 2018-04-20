@@ -1,3 +1,4 @@
+import {isObject} from 'vega-util';
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
@@ -7,7 +8,7 @@ import * as vlEncoding from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, isMarkDef, isPathMark, isPrimitiveMark, Mark, MarkDef, MarkProperties} from './mark';
+import {AnyMark, AreaConfig, isMarkDef, isPathMark, isPrimitiveMark, LineConfig, Mark, MarkDef, MarkProperties} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -437,6 +438,43 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Fiel
     return isPrimitiveMark(spec.mark);
 }
 
+function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Encoding<Field>): MarkProperties {
+  if (markDef.point === 'transparent') {
+    return {opacity: 0};
+  } else if (markDef.point) { // truthy : true or object
+    return {
+      opacity: 1,
+      ...(isObject(markDef.point) ? markDef.point : {})
+    };
+  } else if (markDef.point !== undefined) { // false or null
+    return null;
+  } else { // undefined (not disabled)
+    if (markConfig.point || encoding.shape) {
+      // enable point overlay if config[mark].point is truthy or if encoding.shape is provided
+      return {
+        opacity: 1,
+        ...(isObject(markConfig.point) ? markConfig.point : {})
+      };
+    }
+    // markDef.point is defined as falsy
+    return null;
+  }
+}
+
+function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkProperties {
+  if (markDef.line) {
+    return markDef.line === true ? {} : markDef.line;
+  } else if (markDef.line === undefined) { // false or null
+    return null;
+  } else { // undefined (not disabled)
+    if (markConfig.line) {
+      // enable line overlay if config[mark].line is truthy
+      return markConfig.line === true ? {} : markConfig.line;
+    }
+    // markDef.point is defined as falsy
+    return null;
+  }
+}
 
 function normalizeNonFacetUnit(
   spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config,
@@ -477,23 +515,11 @@ function normalizeNonFacetUnit(
         spec.mark as MarkDef : // must be MarkDef, not CompositeMarkDef
         {type: mark};
 
-      const pointOverlay = markDef.point !== undefined ?
-        // use markDef.point if defined
-        markDef.point :
-        // if not, use config[mark].point
-        (config[mark] || {}).point ||
-        // or consider if the mark contains shape
-        (encoding.shape && {});
-
-      const lineOverlay = mark === 'area' && (markDef.line !== undefined ? markDef.line : config[mark].line);
+      const pointOverlay = getPointOverlay(markDef, config[mark], encoding);
+      const lineOverlay = mark === 'area' && getLineOverlay(markDef, config[mark]);
 
       if (pointOverlay || lineOverlay) {
-        return normalizeOverlay(
-          spec,
-          pointOverlay === 'transparent' ? {opacity: 0} : pointOverlay === true ? {} : pointOverlay || null,
-          lineOverlay === true ? {} : lineOverlay || null,
-          config
-        );
+        return normalizeOverlay(spec, pointOverlay, lineOverlay, config);
       }
     }
 

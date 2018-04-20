@@ -59,26 +59,6 @@
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
         }
     ],
     "marks": [
@@ -120,46 +100,17 @@
         },
         {
             "name": "layer_1_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"date\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "price"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_2_marks",
             "type": "symbol",
             "style": [
                 "point"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
                     "opacity": {
-                        "value": 0.7
+                        "value": 1
                     },
                     "fill": {
                         "value": "#4c78a8"
@@ -189,10 +140,6 @@
                     {
                         "data": "data_1",
                         "field": "date"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "date"
                     }
                 ]
             },
@@ -214,10 +161,6 @@
                     },
                     {
                         "data": "data_1",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_2",
                         "field": "price"
                     }
                 ]
