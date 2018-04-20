@@ -77,6 +77,9 @@
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
                     "orient": {
                         "value": "vertical"
                     },
