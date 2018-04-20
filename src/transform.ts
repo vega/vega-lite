@@ -91,9 +91,9 @@ export interface AggregatedFieldDef {
   op: AggregateOp;
 
   /**
-   * The data field for which to compute aggregate function.
+   * The data field for which to compute aggregate function. (This is required for all aggregation operations except `"count"`.)
    */
-  field: string;
+  field?: string;
 
   /**
    * The output field names to use for each aggregated field.
