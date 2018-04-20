@@ -555,7 +555,7 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": "area",
+            "mark": {"type": "area", "opacity": 0.7},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
@@ -595,7 +595,7 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": "area",
+            "mark": {"type": "area", "opacity": 0.7},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
@@ -679,7 +679,7 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": "area",
+            "mark": {"type": "area", "opacity": 0.7},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative"},
@@ -715,7 +715,7 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": "area",
+            "mark": {"type": "area", "opacity": 0.7},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
