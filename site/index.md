@@ -24,7 +24,7 @@ images:
  - spec: line_month
  - spec: rect_heatmap
  - spec: interactive_layered_crossfilter
- - spec: layer_connected_scatterplot
+ - spec: connected_scatterplot
 
 ---
 

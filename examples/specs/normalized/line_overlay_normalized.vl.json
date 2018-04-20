@@ -9,14 +9,12 @@
       "filter": "datum.symbol==='GOOG'"
     }
   ],
-  "config": {
-    "line": {
-      "point": true
-    }
-  },
   "layer": [
     {
-      "mark": "line",
+      "mark": {
+        "type": "line",
+        "color": "green"
+      },
       "encoding": {
         "x": {
           "field": "date",
@@ -31,8 +29,9 @@
     {
       "mark": {
         "type": "point",
+        "opacity": 1,
         "filled": true,
-        "opacity": 1
+        "color": "red"
       },
       "encoding": {
         "x": {

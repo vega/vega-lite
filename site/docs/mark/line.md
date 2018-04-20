@@ -57,7 +57,7 @@ Using `line` with one temporal or ordinal field (typically on `x`) and another q
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
 
-#### Multi-series Colored Line Chart
+### Multi-series Colored Line Chart
 
 Adding a field to a [mark property channel](encoding.html#mark-prop) such as `color` groups data points into different series, producing a multi-series colored line chart.
 
@@ -74,14 +74,25 @@ The same method can be used to group lines for a ranged dot plot.
 
 <span class="vl-example" data-name="layer_ranged_dot"></span>
 
+
+### Line Chart with Point Markers
+
+By setting the `point` property of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `"red"` and set the line color to `"green"`.
+
+<span class="vl-example" data-name="line_overlay"></span>
+
+This is equilvalent to adding another layer of point marks.
+
+<span class="vl-example" data-name="normalized/line_overlay_normalized"></span>
+
 {:#connected-scatter-plot}
 ### Connected Scatter Plot (Line Chart with Custom Path)
 
 As shown in previous example, the line's path (order of points in the line) is determined by data values on the temporal/ordinal field by default. However, a field can be mapped to the [`order`](encoding.html#order) channel for determining a custom path.
 
-For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also [`layer`](layer.html) point marks over the line marks to highlight each data point.
+For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also use the `point` property to overlay point marks over the line marks to highlight each data point.
 
-<span class="vl-example" data-name="layer_connected_scatterplot"></span>
+<span class="vl-example" data-name="connected_scatterplot"></span>
 
 ### Line interpolation
 

@@ -30,6 +30,7 @@
     {
       "mark": {
         "type": "point",
+        "opacity": 1,
         "filled": true
       },
       "encoding": {
@@ -46,6 +47,10 @@
           "scale": {
             "zero": false
           }
+        },
+        "order": {
+          "field": "year",
+          "type": "temporal"
         }
       }
     }
