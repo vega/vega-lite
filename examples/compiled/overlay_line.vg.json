@@ -103,7 +103,7 @@
             "encode": {
                 "update": {
                     "opacity": {
-                        "value": 0.7
+                        "value": 1
                     },
                     "fill": {
                         "value": "#4c78a8"
