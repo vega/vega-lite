@@ -174,29 +174,43 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ]
   };
 
-  if (!isMinMax) {
-    // add outliers
-    const upperBoxField: string = 'upper_box_' + continuousAxisChannelDef.field;
-    const lowerBoxField: string = 'lower_box_' + continuousAxisChannelDef.field;
-    result.layer.push({
-      transform: [{
-        filter: `(datum.${continuousAxisChannelDef.field} < datum.${lowerBoxField} - ${extent} * (datum.${upperBoxField} - datum.${lowerBoxField})) || (datum.${continuousAxisChannelDef.field} > datum.${upperBoxField} + ${extent} * (datum.${upperBoxField} - datum.${lowerBoxField}))`
-      }],
-      mark: {
-        type: 'point',
-        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot)
-      },
-      encoding: {
-        [continuousAxis]: {
-          field: continuousAxisChannelDef.field,
-          type: continuousAxisChannelDef.type
-        },
-        ...encodingWithoutSizeColorAndContinuousAxis
-      }
-    });
+  if (isMinMax) {
+    return result;
   }
 
-  return result;
+  // tukey plot
+  return {
+    ...outerSpec,
+    layer: [
+      { // boxplot
+        transform,
+        layer: result.layer
+      }, {
+        transform: [
+          {
+            window: transform[0].aggregate.slice(0, 2),
+            frame: [null, null],
+            groupby: transform[0].groupby
+          }, {
+            filter: `(datum.${continuousAxisChannelDef.field} < datum.lower_box_${continuousAxisChannelDef.field} - ${extent} * (datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field})) || (datum.${continuousAxisChannelDef.field} > datum.upper_box_${continuousAxisChannelDef.field} + ${extent} * (datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}))`
+          }
+        ],
+        mark: {
+          type: 'point',
+          ...(sizeValue ? {size: sizeValue} : {}),
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot)
+        },
+        encoding: {
+          [continuousAxis]: {
+            field: continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type
+          },
+          ...encodingWithoutSizeColorAndContinuousAxis,
+          ...(size ? {size} : {})
+        }
+      }
+    ]
+  };
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BoxPlot | BoxPlotDef>): Orient {
@@ -316,7 +330,6 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
   }
 
   const groupby: string[] = [];
-  const frame: string[] = [null, null];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
 
@@ -359,13 +372,11 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
     }
   });
 
-  const window: AggregatedFieldDef[] = aggregate;
-
   return {
     transform: [].concat(
       bins,
       timeUnits,
-      [isMinMax ? {aggregate, groupby} : {window, groupby, frame}],
+      [{aggregate, groupby}],
       postAggregateCalculates
     ),
     continuousAxisChannelDef,

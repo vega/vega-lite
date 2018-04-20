@@ -822,6 +822,9 @@
         "median": {
           "$ref": "#/definitions/MarkConfig"
         },
+        "outliers": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
@@ -858,6 +861,9 @@
         "orient": {
           "$ref": "#/definitions/Orient",
           "description": "Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "outliers": {
+          "$ref": "#/definitions/MarkConfig"
         },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
