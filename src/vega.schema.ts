@@ -267,7 +267,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -1019,6 +1019,13 @@ export interface VgMarkConfig {
   strokeWidth?: number;
 
   /**
+   * The stroke cap for line ending style. One of `"butt"`, `"round"`, or `"square"`.
+   *
+   * __Default value:__ `"square"`
+   */
+  strokeCap?: 'butt' | 'round' | 'square';
+
+  /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
    */
   strokeDash?: number[];
@@ -1177,6 +1184,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fill: 1,
   fillOpacity: 1,
   stroke: 1,
+  strokeCap: 1,
   strokeWidth: 1,
   strokeOpacity: 1,
   strokeDash: 1,
