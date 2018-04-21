@@ -1552,7 +1552,6 @@ describe("normalizeBoxIQR", () => {
           ],
           mark: {
             type: "point",
-            size: 14,
             style: "boxplot-outliers"
           },
           encoding: {
@@ -1729,7 +1728,6 @@ describe("normalizeBoxIQR", () => {
             ],
             mark: {
               type: "point",
-              size: 14,
               style: "boxplot-outliers"
             },
             encoding: {
@@ -1918,7 +1916,6 @@ describe("normalizeBoxIQR", () => {
             ],
             mark: {
               type: "point",
-              size: 14,
               style: "boxplot-outliers"
             },
             encoding: {

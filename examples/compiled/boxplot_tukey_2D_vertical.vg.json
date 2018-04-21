@@ -344,9 +344,6 @@
                     "opacity": {
                         "value": 0.7
                     },
-                    "size": {
-                        "value": 5
-                    },
                     "fill": {
                         "value": "transparent"
                     },

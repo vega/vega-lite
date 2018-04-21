@@ -146,7 +146,6 @@
       ],
       "mark": {
         "type": "point",
-        "size": 14,
         "style": "boxplot-outliers"
       },
       "encoding": {
