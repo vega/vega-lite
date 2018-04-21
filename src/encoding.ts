@@ -146,7 +146,7 @@ export interface Encoding<F> {
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
 
   /**
    * A URL to load upon mouse click.
@@ -224,7 +224,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
        return normalizedEncoding;
     }
 
-    if (channel === 'detail' || channel === 'order') {
+    if (channel === 'detail' || channel === 'order' || (channel === 'tooltip' && isArray(encoding[channel]))) {
       const channelDef = encoding[channel];
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)

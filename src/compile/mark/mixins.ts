@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} from '../../fielddef';
+import {ChannelDef, FieldDef, FieldDefWithCondition, getFieldDef, isConditionalSelection, isValueDef, TextFieldDef, ValueDefWithCondition, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
@@ -96,7 +96,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...markDefProperties(model.markDef, ignore),
     ...color(model),
     ...nonPosition('opacity', model),
-    ...text(model, 'tooltip'),
+    ...tooltip(model),
     ...text(model, 'href')
   };
 }
@@ -167,8 +167,28 @@ function wrapCondition(
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'tooltip' | 'href' = 'text') {
+export function tooltip(model: UnitModel) {
+  const channel = 'tooltip';
   const channelDef = model.encoding[channel];
+  if (isArray(channelDef)) {
+    const keyValues = channelDef.map((fieldDef) => {
+      const key = fieldDef.title !== undefined ? fieldDef.title : vgField(fieldDef, {binSuffix: 'range'});
+      const value = ref.text(fieldDef, model.config).signal;
+      return `"${key}": ${value}`;
+    });
+    return {tooltip: {signal: `{${keyValues.join(', ')}}`}};
+  } else {
+    // if not an array, behave just like text
+    return textCommon(model, channel, channelDef);
+  }
+}
+
+export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
+  const channelDef = model.encoding[channel];
+  return textCommon(model, channel, channelDef);
+}
+
+function textCommon(model: UnitModel, channel: 'text' | 'href' | 'tooltip', channelDef: FieldDefWithCondition<TextFieldDef<string>> | ValueDefWithCondition<TextFieldDef<string>>) {
   return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }
 
