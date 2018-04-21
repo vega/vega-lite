@@ -87,7 +87,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   const isMinMax = !isNumber(extent);
 
   const orient: Orient = boxOrient(spec);
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
+  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -195,7 +195,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
           {
             window: boxParamsQuartiles(continuousAxisChannelDef.field),
             frame: [null, null],
-            groupby: getGroupbyBoxParams(transform)
+            groupby
           }, {
             filter: `(datum.${continuousAxisChannelDef.field} < ${lowerWhiskerStr}) || (datum.${continuousAxisChannelDef.field} > ${upperWhiskerStr})`
           }
@@ -214,17 +214,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
       }
     ]
   };
-}
-
-function getGroupbyBoxParams(transform: Transform[]): string[] {
-  let groupby: string[] = [];
-  transform.forEach((transformElement) => {
-    if (isAggregate(transformElement) && transformElement.groupby) {
-      groupby = transformElement.groupby;
-    }
-  });
-
-  return groupby;
 }
 
 function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BoxPlot | BoxPlotDef>): Orient {
@@ -397,6 +386,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
       [{aggregate, groupby}],
       postAggregateCalculates
     ),
+    groupby,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis
