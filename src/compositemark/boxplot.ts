@@ -177,11 +177,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     };
   }
 
-  const lowerBoxStr: string = 'datum.lower_box_' + continuousAxisChannelDef.field;
-  const upperBoxStr: string = 'datum.upper_box_' + continuousAxisChannelDef.field;
-  const iqrStr = `(${upperBoxStr} - ${lowerBoxStr})`;
-  const lowerWhiskerStr = `${lowerBoxStr} - ${extent} * ${iqrStr}`;
-  const upperWhiskerStr = `${upperBoxStr} + ${extent} * ${iqrStr}`;
+  const lowerBoxExpr: string = 'datum.lower_box_' + continuousAxisChannelDef.field;
+  const upperBoxExpr: string = 'datum.upper_box_' + continuousAxisChannelDef.field;
+  const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
+  const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
+  const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
+  const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
 
   // tukey plot
   return {
@@ -197,7 +198,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
             frame: [null, null],
             groupby
           }, {
-            filter: `(datum.${continuousAxisChannelDef.field} < ${lowerWhiskerStr}) || (datum.${continuousAxisChannelDef.field} > ${upperWhiskerStr})`
+            filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
           }
         ],
         mark: {
