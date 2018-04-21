@@ -201,7 +201,7 @@ describe('compile/mark/mixins', () => {
     });
   });
 
-  describe('tootlip()', () => {
+  describe('tooltip()', () => {
     it('generates tooltip object signal for an array of tooltip fields', function () {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
