@@ -8,7 +8,7 @@ import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {getMarkDefMixins} from './common';
 
@@ -99,7 +99,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
   }
 
-  const boxLayer: any[] = [
+  const boxLayer: NormalizedUnitSpec[] = [
     { // lower whisker
       mark: {
         type: 'rule',
