@@ -8,19 +8,19 @@ import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
 import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {getMarkDefMixins} from './common';
-
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'median' | 'whisker';
+export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'whisker';
 
 const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
   median: 1,
+  outliers: 1,
   whisker: 1
 };
 
@@ -84,9 +84,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
 
   const extent = markDef.extent || config.boxplot.extent;
   const sizeValue = markDef.size || config.boxplot.size;
+  const isMinMax = !isNumber(extent);
 
   const orient: Orient = boxOrient(spec);
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
+  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -98,75 +99,118 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
   }
 
+  const boxLayer: NormalizedUnitSpec[] = [
+    { // lower whisker
+      mark: {
+        type: 'rule',
+        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: 'lower_whisker_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type,
+          ...continuousAxisScaleAndAxis
+        },
+        [continuousAxis + '2']: {
+          field: 'lower_box_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis
+      }
+    }, { // upper whisker
+      mark: {
+        type: 'rule',
+        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: 'upper_box_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        [continuousAxis + '2']: {
+          field: 'upper_whisker_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis
+      }
+    }, { // box (q1 to q3)
+      ...(selection ? {selection} : {}),
+      mark: {
+        type: 'bar',
+        ...(sizeValue ? {size: sizeValue} : {}),
+        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'box', config.boxplot)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: 'lower_box_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        [continuousAxis + '2']: {
+          field: 'upper_box_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutContinuousAxis,
+        ...(size ? {size} : {})
+      }
+    }, { // median tick
+      mark: {
+        type: 'tick',
+        ...(sizeValue ? {size: sizeValue} : {}),
+        ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'median', config.boxplot)
+      },
+      encoding: {
+        [continuousAxis]: {
+          field: 'mid_box_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis,
+        ...(size ? {size} : {})
+      }
+    }
+  ];
+
+  if (isMinMax) {
+    return {
+      ...outerSpec,
+      transform,
+      layer: boxLayer
+    };
+  }
+
+  const lowerBoxExpr: string = 'datum.lower_box_' + continuousAxisChannelDef.field;
+  const upperBoxExpr: string = 'datum.upper_box_' + continuousAxisChannelDef.field;
+  const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
+  const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
+  const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
+  const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
+
+  // tukey plot
   return {
     ...outerSpec,
-    transform,
     layer: [
-      { // lower whisker
+      { // boxplot
+        transform,
+        layer: boxLayer
+      }, {
+        transform: [
+          {
+            window: boxParamsQuartiles(continuousAxisChannelDef.field),
+            frame: [null, null],
+            groupby
+          }, {
+            filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
+          }
+        ],
         mark: {
-          type: 'rule',
-          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
+          type: 'point',
+          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot)
         },
         encoding: {
           [continuousAxis]: {
-            field: 'lower_whisker_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type,
-            ...continuousAxisScaleAndAxis
-          },
-          [continuousAxis + '2']: {
-            field: 'lower_box_' + continuousAxisChannelDef.field,
+            field: continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },
           ...encodingWithoutSizeColorAndContinuousAxis
-        }
-      }, { // upper whisker
-        mark: {
-          type: 'rule',
-          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'whisker', config.boxplot)
-        },
-        encoding: {
-          [continuousAxis]: {
-            field: 'upper_box_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          [continuousAxis + '2']: {
-            field: 'upper_whisker_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          ...encodingWithoutSizeColorAndContinuousAxis
-        }
-      }, { // box (q1 to q3)
-        ...(selection ? {selection} : {}),
-        mark: {
-          type: 'bar',
-          ...(sizeValue ? {size: sizeValue} : {}),
-          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'box', config.boxplot)
-        },
-        encoding: {
-          [continuousAxis]: {
-            field: 'lower_box_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          [continuousAxis + '2']: {
-            field: 'upper_box_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          ...encodingWithoutContinuousAxis,
-          ...(size ? {size} : {})
-        }
-      }, { // median tick
-        mark: {
-          type: 'tick',
-          ...(sizeValue ? {size: sizeValue} : {}),
-          ...getMarkDefMixins<BoxPlotPartsMixins>(markDef, 'median', config.boxplot)
-        },
-        encoding: {
-          [continuousAxis]: {
-            field: 'mid_box_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          ...encodingWithoutSizeColorAndContinuousAxis,
-          ...(size ? {size} : {})
         }
       }
     ]
@@ -236,6 +280,21 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxP
   };
 }
 
+function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
+  return [
+    {
+      op: 'q1',
+      field: continousAxisField,
+      as: 'lower_box_' + continousAxisField
+    },
+    {
+      op: 'q3',
+      field: continousAxisField,
+      as: 'upper_box_' + continousAxisField
+    }
+  ];
+}
+
 function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
 
   const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
@@ -243,51 +302,37 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
 
   const isMinMax = !isNumber(extent);
   const aggregate: AggregatedFieldDef[] = [
-    {
-      op: 'q1',
-      field: continuousAxisChannelDef.field,
-      as: 'lower_box_' + continuousAxisChannelDef.field
-    },
-    {
-      op: 'q3',
-      field: continuousAxisChannelDef.field,
-      as: 'upper_box_' + continuousAxisChannelDef.field
-    },
+    ...boxParamsQuartiles(continuousAxisChannelDef.field),
     {
       op: 'median',
       field: continuousAxisChannelDef.field,
       as: 'mid_box_' + continuousAxisChannelDef.field
+    },
+    {
+      op: 'min',
+      field: continuousAxisChannelDef.field,
+      as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
+    },
+    {
+      op: 'max',
+      field: continuousAxisChannelDef.field,
+      as: (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
     }
   ];
-  let postAggregateCalculates: CalculateTransform[] = [];
 
-  aggregate.push({
-    op: 'min',
-    field: continuousAxisChannelDef.field,
-    as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
-  });
-  aggregate.push({
-    op: 'max',
-    field: continuousAxisChannelDef.field,
-    as:  (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
-  });
+  const postAggregateCalculates: CalculateTransform[] = isMinMax ? [] : [{
+    calculate: `datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}`,
+    as: 'iqr_' + continuousAxisChannelDef.field
+  },
+  {
+    calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
+    as: 'upper_whisker_' + continuousAxisChannelDef.field
+  },
+  {
+    calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
+    as: 'lower_whisker_' + continuousAxisChannelDef.field
+  }];
 
-  if (!isMinMax) {
-    postAggregateCalculates = [
-      {
-        calculate: `datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}`,
-        as: 'iqr_' + continuousAxisChannelDef.field
-      },
-      {
-        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
-        as: 'upper_whisker_' + continuousAxisChannelDef.field
-      },
-      {
-        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
-        as: 'lower_whisker_' + continuousAxisChannelDef.field
-      }
-    ];
-  }
 
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
@@ -339,6 +384,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
       [{aggregate, groupby}],
       postAggregateCalculates
     ),
+    groupby,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis

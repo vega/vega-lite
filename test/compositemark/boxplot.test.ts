@@ -1410,120 +1410,158 @@ describe("normalizeBoxIQR", () => {
      }, defaultConfig), {
        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
        "data": {"url": "data/population.json"},
-       "transform": [
-         {
-           "aggregate": [
-             {
-               "op": "q1",
-               "field": "people",
-               "as": "lower_box_people"
-             },
-             {
-               "op": "q3",
-               "field": "people",
-               "as": "upper_box_people"
-             },
-             {
-               "op": "median",
-               "field": "people",
-               "as": "mid_box_people"
-             },
-             {
-               "op": "min",
-               "field": "people",
-               "as": "min_people"
-             },
-             {
-               "op": "max",
-               "field": "people",
-               "as": "max_people"
-             }
-           ],
-           "groupby": ["age"]
-         },
-         {
-           calculate: 'datum.upper_box_people - datum.lower_box_people',
-           as: 'iqr_people'
-         },
-         {
-           "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.max_people)`,
-           "as": "upper_whisker_people"
-         },
-         {
-           "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.min_people)`,
-           "as": "lower_whisker_people"
-         }
-       ],
        "layer": [
-         {
-           mark: {
-             type: 'rule',
-             style: 'boxplot-whisker'
-           },
-           "encoding": {
-             "x": {"field": "age","type": "quantitative"},
-             "y": {
-               "field": "lower_whisker_people",
-               "type": "quantitative",
-               "axis": {"title": "population"}
-             },
-             "y2": {
-               "field": "lower_box_people",
-               "type": "quantitative"
-             }
-           }
-         },
-         {
-           mark: {
-             type: 'rule',
-             style: 'boxplot-whisker'
-           },
-           "encoding": {
-             "x": {"field": "age","type": "quantitative"},
-             "y": {
-               "field": "upper_box_people",
-               "type": "quantitative"
-             },
-             "y2": {
-               "field": "upper_whisker_people",
-               "type": "quantitative"
-             }
-           }
-         },
-         {
-           mark: {
-             type: 'bar',
-             style: 'boxplot-box',
-             size: 14
-           },
-           "encoding": {
-             "x": {"field": "age","type": "quantitative"},
-             "y": {
-               "field": "lower_box_people",
-               "type": "quantitative"
-             },
-             "y2": {
-               "field": "upper_box_people",
-               "type": "quantitative"
-             },
-             "color": {"value" : "skyblue"}
-           }
-         },
-         {
-           mark: {
-             type: 'tick',
-             style: 'boxplot-median',
-             color: 'white',
-             size: 14
-           },
-           "encoding": {
-             "x": {"field": "age","type": "quantitative"},
-             "y": {
-               "field": "mid_box_people",
-               "type": "quantitative"
-             }
-           }
-         }
+        {
+          "transform": [
+            {
+              "aggregate": [
+                {
+                  "op": "q1",
+                  "field": "people",
+                  "as": "lower_box_people"
+                },
+                {
+                  "op": "q3",
+                  "field": "people",
+                  "as": "upper_box_people"
+                },
+                {
+                  "op": "median",
+                  "field": "people",
+                  "as": "mid_box_people"
+                },
+                {
+                  "op": "min",
+                  "field": "people",
+                  "as": "min_people"
+                },
+                {
+                  "op": "max",
+                  "field": "people",
+                  "as": "max_people"
+                }
+              ],
+              "groupby": ["age"]
+            },
+            {
+              calculate: 'datum.upper_box_people - datum.lower_box_people',
+              as: 'iqr_people'
+            },
+            {
+              "calculate": `min(datum.upper_box_people + datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.max_people)`,
+              "as": "upper_whisker_people"
+            },
+            {
+              "calculate": `max(datum.lower_box_people - datum.iqr_people * ${defaultConfig.boxplot.extent}, datum.min_people)`,
+              "as": "lower_whisker_people"
+            }
+          ],
+          "layer": [
+            {
+              mark: {
+                type: 'rule',
+                style: 'boxplot-whisker'
+              },
+              "encoding": {
+                "x": {"field": "age","type": "quantitative"},
+                "y": {
+                  "field": "lower_whisker_people",
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
+                },
+                "y2": {
+                  "field": "lower_box_people",
+                  "type": "quantitative"
+                }
+              }
+            },
+            {
+              mark: {
+                type: 'rule',
+                style: 'boxplot-whisker'
+              },
+              "encoding": {
+                "x": {"field": "age","type": "quantitative"},
+                "y": {
+                  "field": "upper_box_people",
+                  "type": "quantitative"
+                },
+                "y2": {
+                  "field": "upper_whisker_people",
+                  "type": "quantitative"
+                }
+              }
+            },
+            {
+              mark: {
+                type: 'bar',
+                style: 'boxplot-box',
+                size: 14
+              },
+              "encoding": {
+                "x": {"field": "age","type": "quantitative"},
+                "y": {
+                  "field": "lower_box_people",
+                  "type": "quantitative"
+                },
+                "y2": {
+                  "field": "upper_box_people",
+                  "type": "quantitative"
+                },
+                "color": {"value" : "skyblue"}
+              }
+            },
+            {
+              mark: {
+                type: 'tick',
+                style: 'boxplot-median',
+                color: 'white',
+                size: 14
+              },
+              "encoding": {
+                "x": {"field": "age","type": "quantitative"},
+                "y": {
+                  "field": "mid_box_people",
+                  "type": "quantitative"
+                }
+              }
+            }
+          ]
+        },
+        {
+          transform: [
+            {
+              window: [
+                {
+                  "op": "q1",
+                  "field": "people",
+                  "as": "lower_box_people"
+                },
+                {
+                  "op": "q3",
+                  "field": "people",
+                  "as": "upper_box_people"
+                }
+              ],
+              groupby: ["age"],
+              frame: [null, null]
+            },
+            {
+              "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+            }
+          ],
+          mark: {
+            type: "point",
+            style: "boxplot-outliers"
+          },
+          encoding: {
+            "x": {"field": "age","type": "quantitative"},
+            "y": {
+              "field": "people",
+              "type": "quantitative"
+            }
+          }
+        }
        ]
      });
   });
@@ -1548,116 +1586,154 @@ describe("normalizeBoxIQR", () => {
       }, defaultConfig), {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": [
-          {
-            "aggregate": [
-              {
-                "op": "q1",
-                "field": "people",
-                "as": "lower_box_people"
-              },
-              {
-                "op": "q3",
-                "field": "people",
-                "as": "upper_box_people"
-              },
-              {
-                "op": "median",
-                "field": "people",
-                "as": "mid_box_people"
-              },
-              {
-                "op": "min",
-                "field": "people",
-                "as": "min_people"
-              },
-              {
-                "op": "max",
-                "field": "people",
-                "as": "max_people"
-              }
-            ],
-            "groupby": ["age"]
-          },
-          {
-            calculate: 'datum.upper_box_people - datum.lower_box_people',
-            as: 'iqr_people'
-          },
-          {
-            "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
-            "as": "upper_whisker_people"
-          },
-          {
-            "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
-            "as": "lower_whisker_people"
-          }
-        ],
         "layer": [
           {
-            mark: {
-              type: 'rule',
-              style: 'boxplot-whisker'
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "lower_whisker_people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
+            "transform": [
+              {
+                "aggregate": [
+                  {
+                    "op": "q1",
+                    "field": "people",
+                    "as": "lower_box_people"
+                  },
+                  {
+                    "op": "q3",
+                    "field": "people",
+                    "as": "upper_box_people"
+                  },
+                  {
+                    "op": "median",
+                    "field": "people",
+                    "as": "mid_box_people"
+                  },
+                  {
+                    "op": "min",
+                    "field": "people",
+                    "as": "min_people"
+                  },
+                  {
+                    "op": "max",
+                    "field": "people",
+                    "as": "max_people"
+                  }
+                ],
+                "groupby": ["age"]
               },
-              "y2": {
-                "field": "lower_box_people",
-                "type": "quantitative"
+              {
+                calculate: 'datum.upper_box_people - datum.lower_box_people',
+                as: 'iqr_people'
+              },
+              {
+                "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+                "as": "upper_whisker_people"
+              },
+              {
+                "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+                "as": "lower_whisker_people"
               }
-            }
-          },
-          {
-            mark: {
-              type: 'rule',
-              style: 'boxplot-whisker'
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "upper_box_people",
-                "type": "quantitative"
+            ],
+            "layer": [
+              {
+                mark: {
+                  type: 'rule',
+                  style: 'boxplot-whisker'
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "lower_whisker_people",
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
+                  },
+                  "y2": {
+                    "field": "lower_box_people",
+                    "type": "quantitative"
+                  }
+                }
               },
-              "y2": {
-                "field": "upper_whisker_people",
-                "type": "quantitative"
+              {
+                mark: {
+                  type: 'rule',
+                  style: 'boxplot-whisker'
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "upper_box_people",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "upper_whisker_people",
+                    "type": "quantitative"
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: 'bar',
+                  style: 'boxplot-box',
+                  size: 14
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "lower_box_people",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "upper_box_people",
+                    "type": "quantitative"
+                  },
+                  "color": {"value" : "skyblue"}
+                }
+              },
+              {
+                mark: {
+                  type: 'tick',
+                  style: 'boxplot-median',
+                  color: 'white',
+                  size: 14
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "mid_box_people",
+                    "type": "quantitative"
+                  }
+                }
               }
-            }
+            ]
           },
           {
+            transform: [
+              {
+                window: [
+                  {
+                    "op": "q1",
+                    "field": "people",
+                    "as": "lower_box_people"
+                  },
+                  {
+                    "op": "q3",
+                    "field": "people",
+                    "as": "upper_box_people"
+                  }
+                ],
+                groupby: ["age"],
+                frame: [null, null]
+              },
+              {
+                "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+              }
+            ],
             mark: {
-              type: 'bar',
-              style: 'boxplot-box',
-              size: 14
+              type: "point",
+              style: "boxplot-outliers"
             },
-            "encoding": {
+            encoding: {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lower_box_people",
-                "type": "quantitative"
-              },
-              "y2": {
-                "field": "upper_box_people",
-                "type": "quantitative"
-              },
-              "color": {"value" : "skyblue"}
-            }
-          },
-          {
-            mark: {
-              type: 'tick',
-              style: 'boxplot-median',
-              color: 'white',
-              size: 14
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "mid_box_people",
+                "field": "people",
                 "type": "quantitative"
               }
             }
@@ -1690,124 +1766,162 @@ describe("normalizeBoxIQR", () => {
       }, defaultConfig), {
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": [
-          {
-            "aggregate": [
-              {
-                "op": "q1",
-                "field": "people",
-                "as": "lower_box_people"
-              },
-              {
-                "op": "q3",
-                "field": "people",
-                "as": "upper_box_people"
-              },
-              {
-                "op": "median",
-                "field": "people",
-                "as": "mid_box_people"
-              },
-              {
-                "op": "min",
-                "field": "people",
-                "as": "min_people"
-              },
-              {
-                "op": "max",
-                "field": "people",
-                "as": "max_people"
-              },
-              {
-                "op": "mean",
-                "field": "people",
-                "as": "mean_people"
-              }
-            ],
-            "groupby": ["age"]
-          },
-          {
-            calculate: 'datum.upper_box_people - datum.lower_box_people',
-            as: 'iqr_people'
-          },
-          {
-            "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
-            "as": "upper_whisker_people"
-          },
-          {
-            "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
-            "as": "lower_whisker_people"
-          }
-        ],
         "layer": [
           {
-            mark: {
-              type: 'rule',
-              style: 'boxplot-whisker'
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "lower_whisker_people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
+            "transform": [
+              {
+                "aggregate": [
+                  {
+                    "op": "q1",
+                    "field": "people",
+                    "as": "lower_box_people"
+                  },
+                  {
+                    "op": "q3",
+                    "field": "people",
+                    "as": "upper_box_people"
+                  },
+                  {
+                    "op": "median",
+                    "field": "people",
+                    "as": "mid_box_people"
+                  },
+                  {
+                    "op": "min",
+                    "field": "people",
+                    "as": "min_people"
+                  },
+                  {
+                    "op": "max",
+                    "field": "people",
+                    "as": "max_people"
+                  },
+                  {
+                    "op": "mean",
+                    "field": "people",
+                    "as": "mean_people"
+                  }
+                ],
+                "groupby": ["age"]
               },
-              "y2": {
-                "field": "lower_box_people",
-                "type": "quantitative"
+              {
+                calculate: 'datum.upper_box_people - datum.lower_box_people',
+                as: 'iqr_people'
+              },
+              {
+                "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+                "as": "upper_whisker_people"
+              },
+              {
+                "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+                "as": "lower_whisker_people"
               }
-            }
+            ],
+            "layer": [
+              {
+                mark: {
+                  type: 'rule',
+                  style: 'boxplot-whisker'
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "lower_whisker_people",
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
+                  },
+                  "y2": {
+                    "field": "lower_box_people",
+                    "type": "quantitative"
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: 'rule',
+                  style: 'boxplot-whisker'
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "upper_box_people",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "upper_whisker_people",
+                    "type": "quantitative"
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: 'bar',
+                  style: 'boxplot-box',
+                  size: 14
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "lower_box_people",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "upper_box_people",
+                    "type": "quantitative"
+                  },
+                  "color": {
+                    "field": "mean_people",
+                    "type": "quantitative"
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: 'tick',
+                  style: 'boxplot-median',
+                  color: 'white',
+                  size: 14
+                },
+                "encoding": {
+                  "x": {"field": "age","type": "quantitative"},
+                  "y": {
+                    "field": "mid_box_people",
+                    "type": "quantitative"
+                  }
+                }
+              }
+            ]
           },
           {
-            mark: {
-              type: 'rule',
-              style: 'boxplot-whisker'
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "upper_box_people",
-                "type": "quantitative"
+            transform: [
+              {
+                window: [
+                  {
+                    "op": "q1",
+                    "field": "people",
+                    "as": "lower_box_people"
+                  },
+                  {
+                    "op": "q3",
+                    "field": "people",
+                    "as": "upper_box_people"
+                  }
+                ],
+                groupby: ["age"],
+                frame: [null, null]
               },
-              "y2": {
-                "field": "upper_whisker_people",
-                "type": "quantitative"
+              {
+                "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
               }
-            }
-          },
-          {
+            ],
             mark: {
-              type: 'bar',
-              style: 'boxplot-box',
-              size: 14
+              type: "point",
+              style: "boxplot-outliers"
             },
-            "encoding": {
+            encoding: {
               "x": {"field": "age","type": "quantitative"},
               "y": {
-                "field": "lower_box_people",
-                "type": "quantitative"
-              },
-              "y2": {
-                "field": "upper_box_people",
-                "type": "quantitative"
-              },
-              "color": {
-                "field": "mean_people",
-                "type": "quantitative"
-              }
-            }
-          },
-          {
-            mark: {
-              type: 'tick',
-              style: 'boxplot-median',
-              color: 'white',
-              size: 14
-            },
-            "encoding": {
-              "x": {"field": "age","type": "quantitative"},
-              "y": {
-                "field": "mid_box_people",
+                "field": "people",
                 "type": "quantitative"
               }
             }

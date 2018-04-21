@@ -12,7 +12,11 @@
             "url": "data/population.json",
             "format": {
                 "type": "json"
-            },
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -57,8 +61,8 @@
             ]
         },
         {
-            "name": "data_0",
-            "source": "source_0",
+            "name": "data_1",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -77,8 +81,8 @@
             ]
         },
         {
-            "name": "data_1",
-            "source": "source_0",
+            "name": "data_2",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -97,8 +101,8 @@
             ]
         },
         {
-            "name": "data_2",
-            "source": "source_0",
+            "name": "data_3",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -117,8 +121,8 @@
             ]
         },
         {
-            "name": "data_3",
-            "source": "source_0",
+            "name": "data_4",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -130,18 +134,65 @@
                     "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
                 }
             ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null,
+                        null
+                    ],
+                    "as": [
+                        "lower_box_people",
+                        "upper_box_people"
+                    ],
+                    "ops": [
+                        "q1",
+                        "q3"
+                    ],
+                    "fields": [
+                        "people",
+                        "people"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "layer_0_marks",
+            "name": "layer_0_layer_0_marks",
             "type": "rule",
             "style": [
                 "rule",
                 "boxplot-whisker"
             ],
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -164,14 +215,14 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_0_layer_1_marks",
             "type": "rule",
             "style": [
                 "rule",
                 "boxplot-whisker"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -194,14 +245,14 @@
             }
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_0_layer_2_marks",
             "type": "rect",
             "style": [
                 "bar",
                 "boxplot-box"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -227,14 +278,14 @@
             }
         },
         {
-            "name": "layer_3_marks",
+            "name": "layer_0_layer_3_marks",
             "type": "rect",
             "style": [
                 "tick",
                 "boxplot-median"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -260,6 +311,38 @@
                     }
                 }
             }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "style": [
+                "point",
+                "boxplot-outliers"
+            ],
+            "from": {
+                "data": "data_5"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "signal": "width",
+                        "mult": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "people"
+                    }
+                }
+            }
         }
     ],
     "scales": [
@@ -269,32 +352,36 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "lower_whisker_people"
                     },
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "lower_box_people"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "upper_box_people"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "upper_whisker_people"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "lower_box_people"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_3",
                         "field": "upper_box_people"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_4",
                         "field": "mid_box_people"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "people"
                     }
                 ]
             },
