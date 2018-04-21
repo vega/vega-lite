@@ -1,25 +1,6 @@
 {
+  "$ref": "#/definitions/TopLevelSpec",
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "anyOf": [
-    {
-      "$ref": "#/definitions/TopLevelFacetedUnitSpec"
-    },
-    {
-      "$ref": "#/definitions/TopLevelFacetSpec"
-    },
-    {
-      "$ref": "#/definitions/TopLevelLayerSpec"
-    },
-    {
-      "$ref": "#/definitions/TopLevelRepeatSpec"
-    },
-    {
-      "$ref": "#/definitions/TopLevelVConcatSpec"
-    },
-    {
-      "$ref": "#/definitions/TopLevelHConcatSpec"
-    }
-  ],
   "definitions": {
     "Aggregate": {
       "$ref": "#/definitions/AggregateOp"
@@ -6552,6 +6533,28 @@
         "mark"
       ],
       "type": "object"
+    },
+    "TopLevelSpec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelFacetSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelLayerSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelRepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelVConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelHConcatSpec"
+        }
+      ]
     },
     "TopoDataFormat": {
       "additionalProperties": false,
