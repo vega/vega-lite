@@ -3,7 +3,7 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
-import {AggregatedFieldDef, BinTransform, CalculateTransform, isAggregate, TimeUnitTransform, Transform} from '../transform';
+import {AggregatedFieldDef, BinTransform, CalculateTransform, TimeUnitTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, forEach} from './../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
