@@ -301,41 +301,38 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
   const encoding = spec.encoding;
 
   const isMinMax = !isNumber(extent);
-  const aggregate: AggregatedFieldDef[] = boxParamsQuartiles(continuousAxisChannelDef.field);
-  aggregate.push({
-    op: 'median',
-    field: continuousAxisChannelDef.field,
-    as: 'mid_box_' + continuousAxisChannelDef.field
-  });
-  let postAggregateCalculates: CalculateTransform[] = [];
+  const aggregate: AggregatedFieldDef[] = [
+    ...boxParamsQuartiles(continuousAxisChannelDef.field),
+    {
+      op: 'median',
+      field: continuousAxisChannelDef.field,
+      as: 'mid_box_' + continuousAxisChannelDef.field
+    },
+    {
+      op: 'min',
+      field: continuousAxisChannelDef.field,
+      as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
+    },
+    {
+      op: 'max',
+      field: continuousAxisChannelDef.field,
+      as: (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
+    }
+  ];
 
-  aggregate.push({
-    op: 'min',
-    field: continuousAxisChannelDef.field,
-    as: (isMinMax ? 'lower_whisker_' : 'min_') + continuousAxisChannelDef.field
-  });
-  aggregate.push({
-    op: 'max',
-    field: continuousAxisChannelDef.field,
-    as:  (isMinMax ? 'upper_whisker_' : 'max_') + continuousAxisChannelDef.field
-  });
+  const postAggregateCalculates: CalculateTransform[] = isMinMax ? [] : [{
+    calculate: `datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}`,
+    as: 'iqr_' + continuousAxisChannelDef.field
+  },
+  {
+    calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
+    as: 'upper_whisker_' + continuousAxisChannelDef.field
+  },
+  {
+    calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
+    as: 'lower_whisker_' + continuousAxisChannelDef.field
+  }];
 
-  if (!isMinMax) {
-    postAggregateCalculates = [
-      {
-        calculate: `datum.upper_box_${continuousAxisChannelDef.field} - datum.lower_box_${continuousAxisChannelDef.field}`,
-        as: 'iqr_' + continuousAxisChannelDef.field
-      },
-      {
-        calculate: `min(datum.upper_box_${continuousAxisChannelDef.field} + datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.max_${continuousAxisChannelDef.field})`,
-        as: 'upper_whisker_' + continuousAxisChannelDef.field
-      },
-      {
-        calculate: `max(datum.lower_box_${continuousAxisChannelDef.field} - datum.iqr_${continuousAxisChannelDef.field} * ${extent}, datum.min_${continuousAxisChannelDef.field})`,
-        as: 'lower_whisker_' + continuousAxisChannelDef.field
-      }
-    ];
-  }
 
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
