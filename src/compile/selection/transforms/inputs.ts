@@ -44,7 +44,10 @@ const inputBindings:TransformCompiler = {
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => varName(`${name}_${p.field}`));
 
-    signal.update = `${values.join(' && ')} ? {fields: [${fields}], values: [${values.join(', ')}]} : null`;
+    if (values.length) {
+      signal.update = `${values.join(' && ')} ? {fields: [${fields}], values: [${values.join(', ')}]} : null`;
+    }
+
     delete signal.value;
     delete signal.on;
 

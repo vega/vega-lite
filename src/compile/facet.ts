@@ -29,7 +29,7 @@ export class FacetModel extends ModelWithField {
   public readonly children: Model[];
 
   constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
 
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
@@ -104,7 +104,8 @@ export class FacetModel extends ModelWithField {
     if (this.channelHasField(channel)) {
       const fieldDef = this.facet[channel];
       const header = fieldDef.header || {};
-      let title = header.title !== undefined ? header.title : fieldDefTitle(fieldDef, this.config);
+      let title = fieldDef.title !== undefined ? fieldDef.title :
+        header.title !== undefined ? header.title : fieldDefTitle(fieldDef, this.config);
 
       if (this.child.component.layoutHeaders[channel].title) {
         // merge title with child to produce "Title / Subtitle / Sub-subtitle"

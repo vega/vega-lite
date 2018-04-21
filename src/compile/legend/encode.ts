@@ -25,13 +25,12 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     return undefined;
   }
 
-  const mark = model.mark();
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
     ...mixins.color(model)
   };
 
-  switch (mark) {
+  switch (model.mark) {
     case BAR:
     case TICK:
     case TEXT:
@@ -39,7 +38,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
     case CIRCLE:
     case SQUARE:
-      out.shape = {value: mark};
+      out.shape = {value: model.mark};
       break;
     case POINT:
     case LINE:

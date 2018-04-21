@@ -44,7 +44,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 
 A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="orient" source="MarkDef" %}
+{% include table.html props="orient,binSpacing" source="MarkDef" %}
 
 
 ## Examples
@@ -78,7 +78,10 @@ mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to 
 
 <span class="vl-example" data-name="histogram"></span>
 
-If you prefer to have histogram without gaps between bars, you can set the [`barBinSpacing` mark config](#histogram-spacing) to `0`.
+If you prefer to have histogram without gaps between bars, you can set the [`binSpacing` mark property](#properties) to `0`.
+
+<span class="vl-example" data-name="histogram_no_spacing"></span>
+
 
 {:#stack}
 ### Stacked Bar Chart
@@ -139,11 +142,6 @@ For example, we can use ranged bars to create a gantt chart.
 
 The `bar` property of the top-level [`config`](config.html) object sets the default properties for all bar marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-Besides standard [mark config properties](mark.html#config), bar config can contain the following additional properties:
+Besides standard [mark properties](#properties), bar config can contain the following additional properties:
 
 {% include table.html props="binSpacing,continuousBandSize,discreteBandSize" source="BarConfig" %}
-
-{:#histogram-spacing}
-### Example: Histogram without Spacing between bars
-
-<span class="vl-example" data-name="histogram_no_spacing"></span>

@@ -28,6 +28,78 @@ describe('Mark: Bar', function() {
     });
   });
 
+  it('should draw vertical bar, with y from zero to field value and with band value for x/width when domain that includes zero is specified', function () {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Origin", "type": "nominal"},
+        "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean", "scale": {"domain": [-1, 1]}}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
+    assert.deepEqual(props.width, {scale: 'x', band: true});
+    assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
+    assert.deepEqual(props.y2, {scale: 'y', value: 0});
+    assert.isUndefined(props.height);
+  });
+
+  it('should draw vertical bar, with y from "group: height" to field value when domain that excludes zero is specified', log.wrap((logger) => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Origin", "type": "nominal"},
+        "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean", "scale": {"domain": [1, 2]}}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
+    assert.deepEqual(props.y2, {field: {group: 'height'}});
+    assert.isUndefined(props.height);
+
+    assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: false}));
+  }));
+
+  it('should draw vertical bar, with y from "group: height" to field value when zero=false for y-scale', log.wrap((logger) => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Origin", "type": "nominal"},
+        "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean", "scale": {"zero": false}}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
+    assert.deepEqual(props.y2, {field: {group: 'height'}});
+    assert.isUndefined(props.height);
+
+    assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: true}));
+  }));
+
+  it('should draw vertical bar, with y from "group: height" to field value when y-scale type is log', log.wrap((logger) => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Origin", "type": "nominal"},
+        "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean", "scale": {"type": "log"}}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
+    assert.deepEqual(props.y2, {field: {group: 'height'}});
+    assert.isUndefined(props.height);
+
+    assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {scaleType: 'log'}));
+  }));
+
   describe('simple horizontal', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},

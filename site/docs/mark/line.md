@@ -15,9 +15,9 @@ permalink: /docs/line.html
 }
 ```
 
-The `line` mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for [`area`](area.html)).
+The `line` mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike most other marks that represent one data element per mark, one line mark represents multiple data element as a single line, akin to [`area`](area.html) and [`trail`](trail.html).
 
-__Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks.
+__Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks.  For continuous lines with varying size, please use [`trail`](trail.html) marks.
 
 ## Documentation Overview
 {:.no_toc}
@@ -42,9 +42,9 @@ __Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, p
 }
 ```
 
-An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation properties:
+An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation and point overlay properties:
 
-{% include table.html props="orient,interpolate,tension" source="MarkDef" %}
+{% include table.html props="orient,interpolate,tension,point" source="MarkDef" %}
 
 
 ## Examples

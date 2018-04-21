@@ -1,13 +1,13 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
-import {Config, OverlayConfig} from './config';
+import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {AnyMark, isMarkDef, isPathMark, isPrimitiveMark, Mark, MarkDef, MarkProperties} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -16,7 +16,7 @@ import {stack} from './stack';
 import {TitleParams} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {contains, Dict, duplicate, hash, keys, vals} from './util';
+import {Dict, duplicate, hash, keys, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -103,7 +103,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    */
   mark: M;
 
@@ -114,9 +114,8 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 
 
   /**
-   * An object defining properties of geographic projection.
-   *
-   * Works with `"geoshape"` marks and `"point"` or `"line"` marks that have `latitude` and `"longitude"` channels.
+   * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
+   * and to `latitude` and `"longitude"` channels for other marks.
    */
   projection?: Projection;
 
@@ -444,6 +443,8 @@ function normalizeNonFacetUnit(
   parentEncoding?: Encoding<string | RepeatRef>, parentProjection?: Projection
 ): NormalizedUnitSpec | NormalizedLayerSpec {
   const {encoding, projection} = spec;
+  const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+
 
   // merge parent encoding / projection first
   if (parentEncoding || parentProjection) {
@@ -462,16 +463,38 @@ function normalizeNonFacetUnit(
       return normalizeRangedUnit(spec);
     }
 
-    const overlayConfig: OverlayConfig = config && config.overlay;
-    const overlayWithLine = overlayConfig && spec.mark === AREA &&
-      contains(['linepoint', 'line'], overlayConfig.area);
-    const overlayWithPoint = overlayConfig && (
-      (overlayConfig.line && spec.mark === LINE) ||
-      (overlayConfig.area === 'linepoint' && spec.mark === AREA)
-    );
-    // TODO: consider moving this to become another case of compositeMark
-    if (overlayWithPoint || overlayWithLine) {
-      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine, config);
+    if (mark === 'line' && (encoding.x2 || encoding.y2)) {
+      log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
+
+      return normalizeNonFacetUnit({
+        mark: 'rule',
+        ...spec
+      }, config, parentEncoding, parentProjection);
+    }
+
+    if (isPathMark(mark)) {
+      const markDef: MarkDef = isMarkDef(spec.mark) ?
+        spec.mark as MarkDef : // must be MarkDef, not CompositeMarkDef
+        {type: mark};
+
+      const pointOverlay = markDef.point !== undefined ?
+        // use markDef.point if defined
+        markDef.point :
+        // if not, use config[mark].point
+        (config[mark] || {}).point ||
+        // or consider if the mark contains shape
+        (encoding.shape && {});
+
+      const lineOverlay = mark === 'area' && (markDef.line !== undefined ? markDef.line : config[mark].line);
+
+      if (pointOverlay || lineOverlay) {
+        return normalizeOverlay(
+          spec,
+          pointOverlay === 'transparent' ? {opacity: 0} : pointOverlay === true ? {} : pointOverlay || null,
+          lineOverlay === true ? {} : lineOverlay || null,
+          config
+        );
+      }
     }
 
     return spec; // Nothing to normalize
@@ -501,13 +524,24 @@ function normalizeRangedUnit(spec: NormalizedUnitSpec) {
   return spec;
 }
 
+function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
+  const {point: _point, line: _line, ...mark} = markDef;
 
-// FIXME(#1804): re-design this
-function normalizeOverlay(spec: NormalizedUnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): NormalizedLayerSpec {
+  return keys(mark).length > 1 ? mark : mark.type;
+}
+
+function normalizeOverlay(spec: NormalizedUnitSpec, pointOverlay: MarkProperties, lineOverlay: MarkProperties, config: Config): NormalizedLayerSpec {
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
-  const {mark, selection, projection, encoding, ...outerSpec} = spec;
-  const layer = [{mark, encoding} as NormalizedUnitSpec];
+  const {selection, projection, encoding, mark: oldMark, ...outerSpec} = spec;
+
+  // Do not include point / line overlay in the normalize spec
+  const mark = isMarkDef(oldMark) ? dropLineAndPoint(oldMark) : oldMark;
+
+  const layer: NormalizedUnitSpec[] = [{mark, encoding}];
+
+  // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
+  // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
   const stackProps = stack(mark, encoding, config ? config.stack : undefined);
@@ -524,24 +558,24 @@ function normalizeOverlay(spec: NormalizedUnitSpec, overlayWithPoint: boolean, o
     };
   }
 
-  if (overlayWithLine) {
+  if (lineOverlay) {
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
-        style: 'lineOverlay'
+        ...lineOverlay
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
-  if (overlayWithPoint) {
+  if (pointOverlay) {
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'point',
         filled: true,
-        style: 'pointOverlay'
+        ...pointOverlay
       },
       ...(selection ? {selection} : {}),
       encoding: overlayEncoding

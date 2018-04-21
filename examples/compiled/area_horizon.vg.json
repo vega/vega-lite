@@ -168,9 +168,8 @@
                         "field": "y"
                     },
                     "y2": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "scale": "y",
+                        "value": 0
                     }
                 }
             }
@@ -209,9 +208,8 @@
                         "field": "ny"
                     },
                     "y2": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "scale": "y",
+                        "value": 0
                     }
                 }
             }

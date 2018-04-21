@@ -95,8 +95,7 @@
             "name": "layer_1_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_1"

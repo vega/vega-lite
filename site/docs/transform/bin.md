@@ -50,6 +50,14 @@ Mapping binned values and its count to a `bar` mark produces a histogram.
 
 <div class="vl-example" data-name="histogram"></div>
 
+
+{:#histogram-ordinal}
+### Example: Histogram with Ordinal Scale
+
+Setting the binned field's `type` to `"ordinal"` produces a histogram with an ordinal scale.
+
+<div class="vl-example" data-name="histogram_ordinal"></div>
+
 ### Example: Binned color
 
 You can use binning to discretize color scales. Vega-Lite automatically creates legends with range labels.
@@ -85,7 +93,9 @@ to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field instea
 <div class="vl-example" data-name="histogram_bin_transform"></div>
 
 While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional
-calculation before encoding the data. Note that Vega-Lite currently [does not track which fields are binned](https://github.com/vega/vega-lite/issues/2862) and thus cannot optimize how axes and legends are formatted. For this reason we use [set the type to ordinal](#ordinal-bin) in the example above.
+calculation before encoding the data.
+
+__Note:__  Vega-Lite currently [does not track which fields are binned](https://github.com/vega/vega-lite/issues/2862) and thus cannot optimize how axes and legends are formatted. For this reason we have to [set the type to ordinal](#ordinal-bin) in the example above.
 
 ## Bin Parameters
 

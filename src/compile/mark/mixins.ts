@@ -242,14 +242,18 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
 export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x'|'y'|'xc'|'yc') {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-  const {encoding, stack} = model;
+  const {encoding, mark, stack} = model;
 
   const channelDef = encoding[channel];
+  const scaleName = model.scaleName(channel);
+  const scale = model.getScaleComponent(channel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
-    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+    ref.stackable(channel, encoding[channel], scaleName, scale, stack,
+    ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+  );
 
   return {
     [vgChannel || channel]: valueRef
@@ -261,15 +265,19 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
  * If channel is not specified, return one channel based on orientation.
  */
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
-  const {encoding, markDef, stack} = model;
+  const {encoding, mark, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
+  const scaleName = model.scaleName(baseChannel);
+  const scale = model.getScaleComponent(baseChannel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
-    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+    ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
+    ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+  );
   return {[channel]: valueRef};
 }

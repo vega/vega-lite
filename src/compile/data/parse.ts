@@ -69,7 +69,6 @@ export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlo
       } else if (isFieldOneOfPredicate(filter)) {
         val = (filter.oneOf || filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
-
       if (val) {
         if (isDateTime(val)) {
           parse[filter['field']] = 'date';
@@ -129,6 +128,9 @@ Description of the dataflow (http://asciiflow.com/):
       Timeunit
          |
          v
+Formula From Sort Array
+         |
+         v
       +--+--+
       | Raw |
       +-----+
@@ -171,7 +173,7 @@ export function parseData(model: Model): DataComponent {
   // field is available for all subsequent datasets. Additional identifier
   // transforms will be necessary when new tuples are constructed
   // (e.g., post-aggregation).
-  if (requiresSelectionId(model) && !model.parent) {
+  if (requiresSelectionId(model) && (isUnitModel(model) || isLayerModel(model))) {
     head = new IdentifierNode(head);
   }
 
@@ -205,6 +207,7 @@ export function parseData(model: Model): DataComponent {
     }
 
     head = TimeUnitNode.makeFromEncoding(head, model) || head;
+    head = CalculateNode.parseAllForSortIndex(head, model);
   }
 
   // add an output node pre aggregation

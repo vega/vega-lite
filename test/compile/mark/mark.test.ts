@@ -253,17 +253,25 @@ describe('Mark', function() {
     it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
         assert.deepEqual(
-          pathGroupingFields({[channel]: {field: 'a', type: 'nominal'}}),
+          pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}}),
           ['a']
         );
       }
     });
 
-    it('should not return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
+    it('should not return a field for size of a trail mark.', () => {
+      assert.deepEqual(
+        pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}}),
+        []
+      );
+    });
+
+    it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
         assert.deepEqual(
-          pathGroupingFields({[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}}),
-          []
+          pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}}),
+          [],
+          channel
         );
       }
     });
@@ -271,7 +279,7 @@ describe('Mark', function() {
     it('should return condition detail fields for color, size, shape', () => {
       for (const channel of [COLOR, SIZE, OPACITY]) {
         assert.deepEqual(
-          pathGroupingFields({[channel]: {
+          pathGroupingFields('line', {[channel]: {
             condition: {selection: 'sel', field: 'a', type: 'nominal'}
           }}),
           ['a']
@@ -283,7 +291,7 @@ describe('Mark', function() {
       for (const channel of UNIT_CHANNELS) {
         assert.doesNotThrow(
           () => {
-            pathGroupingFields({
+            pathGroupingFields('line', {
               [channel]: {field: 'a', type: 'nominal'}
             });
           }

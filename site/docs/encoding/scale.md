@@ -124,15 +124,15 @@ Color schemes provide a set of named color palettes as a scale range for the `co
 
 By default, Vega-Lite assigns different [default color schemes](#range-config) based on the types of the encoded fields:
 
--  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the `"category20"` scheme by default).
+-  _Nominal_ fields use the `"categorical"` [pre-defined named range](#range-config) (the [`"tableau10"`](https://vega.github.io/vega/docs/schemes/#tableau10) scheme by default).
 
 <div class="vl-example" data-name="point_color"></div>
 
-- _Ordinal_ fields use the `"ordinal"` [pre-defined named color range](#range-config) (the `"blues"` color scheme by default).
+- _Ordinal_ fields use the `"ordinal"` [pre-defined named color range](#range-config) (the [`"blues"`](https://vega.github.io/vega/docs/schemes/#blues) color scheme by default).
 
 <div class="vl-example" data-name="point_color_ordinal"></div>
 
-- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the `"viridis"` scheme by default) for rect marks and `"ramp"` (the `"blues"` scheme by default) for other marks.
+- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the [`"viridis"`](https://vega.github.io/vega/docs/schemes/#viridis) scheme by default) for rect marks and `"ramp"` (the [`"blues"`](https://vega.github.io/vega/docs/schemes/#blues) scheme by default) for other marks.
 
 <div class="vl-example" data-name="rect_heatmap"></div>
 

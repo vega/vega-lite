@@ -1,9 +1,8 @@
 import {GEOPOSITION_CHANNELS, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
-import {Config} from '../../config';
 import {MAIN} from '../../data';
 import {isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
-import {Projection, PROJECTION_PROPERTIES} from '../../projection';
+import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
 import {duplicate, every, stringify} from '../../util';
 import {VgSignalRef} from '../../vega.schema';

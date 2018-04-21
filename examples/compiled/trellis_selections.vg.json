@@ -692,8 +692,12 @@
                     "transform": [
                         {
                             "type": "voronoi",
-                            "x": "datum.x",
-                            "y": "datum.y",
+                            "x": {
+                                "expr": "datum.datum.x || 0"
+                            },
+                            "y": {
+                                "expr": "datum.datum.y || 0"
+                            },
                             "size": [
                                 {
                                     "signal": "child_width"
@@ -713,9 +717,6 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "white"
                             }
                         },
                         "update": {
@@ -732,7 +733,16 @@
                                 "field": {
                                     "group": "height"
                                 }
-                            }
+                            },
+                            "stroke": [
+                                {
+                                    "test": "brush_x[0] !== brush_x[1]",
+                                    "value": "white"
+                                },
+                                {
+                                    "value": null
+                                }
+                            ]
                         }
                     }
                 }

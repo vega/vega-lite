@@ -95,10 +95,13 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
+      // For falsy value, keep undefined so we use default,
+      // but use null for '', null, and false to hide the title
+      const specifiedTitle = fieldDef.title !== undefined ? fieldDef.title :
+        specifiedLegend.title || (specifiedLegend.title === undefined ? undefined : null);
+
       return getSpecifiedOrDefaultValue(
-        // For falsy value, keep undefined so we use default,
-        // but use null for '', null, and false to hide the title
-        specifiedLegend.title || (specifiedLegend.title === undefined ? undefined : null),
+        specifiedTitle,
         fieldDefTitle(fieldDef, model.config)
       ) || undefined; // make falsy value undefined so output Vega spec is shorter
     case 'values':

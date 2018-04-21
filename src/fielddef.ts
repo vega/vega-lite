@@ -7,6 +7,7 @@ import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
+import {TitleMixins} from './guide';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
@@ -160,7 +161,7 @@ export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface FieldDef<F> extends FieldDefBase<F> {
+export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
@@ -182,12 +183,13 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
 
   /**
    * Sort order for the encoded field.
-   * Supported `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
+   * Supported `sort` values include `"ascending"`, `"descending"`, `null` (no sorting), or an array specifying the preferred order of values.
    * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
+   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
    *
    * __Default value:__ `"ascending"`
    */
-  sort?: SortOrder | SortField<F> | null;
+  sort?: string[] | SortOrder | SortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {

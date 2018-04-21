@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {Domain} from '../../../src/scale';
-import {parseConcatModel} from '../../util';
+import {parseConcatModel, parseRepeatModel} from '../../util';
 
 describe('Selection + Scales', function() {
   it('assembles domainRaw from selection parameter', function() {
@@ -80,5 +80,78 @@ describe('Selection + Scales', function() {
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');
     assert.propertyVal(oscale.domainRaw, 'signal', 'null');
+  });
+
+  it('should bind both scales in diagonal repeated views', function() {
+    const model = parseRepeatModel({
+      repeat: {
+        row: ["Horsepower", "Acceleration"],
+        column: ["Miles_per_Gallon", "Acceleration"]
+      },
+      spec: {
+        data: {url: "data/cars.json"},
+        mark: "point",
+        selection: {
+          grid: {
+            type: "interval",
+            resolve: "global",
+            bind: "scales"
+          }
+        },
+        encoding: {
+          x: {field: {repeat: "column"}, type: "quantitative"},
+          y: {field: {repeat: "row"}, type: "quantitative"},
+          color: {field: "Origin", type: "nominal"}
+        }
+      }
+    });
+
+    model.parseScale();
+    model.parseSelection();
+
+    const scales = assembleScalesForModel(model.children[3]);
+    assert.isTrue(scales.length === 2);
+    assert.property(scales[0], 'domainRaw');
+    assert.property(scales[1], 'domainRaw');
+    assert.propertyVal(scales[0].domainRaw, 'signal', 'grid_Acceleration');
+    assert.propertyVal(scales[1].domainRaw, 'signal', 'grid_Acceleration');
+  });
+
+  it('should merge domainRaw for layered views', function() {
+    const model = parseConcatModel({
+      data: {url: "data/sp500.csv"},
+      vconcat: [
+        {
+          layer: [
+            {
+              mark: "point",
+              encoding: {
+                x: {
+                  field: "date", type: "temporal",
+                  scale: {domain: {selection: "brush"}}
+                },
+                y: {field: "price", type: "quantitative"}
+              }
+            }
+          ]
+        },
+        {
+          mark: "area",
+          selection: {
+            brush: {type: "interval", encodings: ["x"]}
+          },
+          encoding: {
+            x: {field: "date", type: "temporal"},
+            y: {field: "price", type: "quantitative"}
+          }
+        }
+      ]
+    });
+
+    model.parseScale();
+    model.parseSelection();
+    const scales = assembleScalesForModel(model.children[0]);
+    assert.property(scales[0], 'domainRaw');
+    assert.propertyVal(scales[0].domainRaw, 'signal', 'vlIntervalDomain("brush_store", null, "date")');
   });
 });

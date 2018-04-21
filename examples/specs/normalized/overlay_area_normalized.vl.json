@@ -10,28 +10,16 @@
     }
   ],
   "config": {
-    "overlay": {
-      "area": "linepoint"
+    "area": {
+      "line": true,
+      "point": true
     }
   },
   "layer": [
     {
-      "mark": "area",
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
       "mark": {
-        "type": "line",
-        "style": "lineOverlay"
+        "type": "area",
+        "opacity": 0.7
       },
       "encoding": {
         "x": {
@@ -48,7 +36,7 @@
       "mark": {
         "type": "point",
         "filled": true,
-        "style": "pointOverlay"
+        "opacity": 1
       },
       "encoding": {
         "x": {

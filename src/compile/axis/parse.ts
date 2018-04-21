@@ -199,7 +199,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {
-    axisComponent.set('encode', axisEncode, !!axis.encoding || !!axis.labelAngle);
+    axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
   }
 
   return axisComponent;
@@ -237,12 +237,13 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
     case 'title':
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = model.fieldDef(channel2);
+      // Keep undefined so we use default if title is unspecified.
+      // For other falsy value, keep them so we will hide the title.
+      const specifiedTitle = fieldDef.title !== undefined ? fieldDef.title :
+        specifiedAxis.title === undefined ? undefined : specifiedAxis.title;
 
       return getSpecifiedOrDefaultValue<string | FieldDefBase<string>[]>(
-        // Keep undefined so we use default if title is unspecified.
-        // For other falsy value, keep them so we will hide the title.
-        specifiedAxis.title === undefined ? undefined : specifiedAxis.title,
-
+        specifiedTitle,
         // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs(
           [toFieldDefBase(fieldDef)],

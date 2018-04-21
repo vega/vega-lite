@@ -16,7 +16,7 @@ export class ConcatModel extends BaseConcatModel {
   public readonly isVConcat: boolean;
 
   constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
 
     if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
       log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
