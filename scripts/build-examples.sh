@@ -13,6 +13,14 @@ else
   forcesvg=true
 fi
 
+# record vega version and force rebuild SVG if version does not match
+rm -f $dir/vega-version
+echo "vega: `./scripts/version.sh vega`" > $dir/vega_version
+if ( ! git diff --no-patch --exit-code HEAD -- $dir/vega_version )
+then
+  forcesvg=true
+fi
+
 if type parallel >/dev/null 2>&1
 then
   echo "Using parallel to generate vega specs from examples in parallel."
