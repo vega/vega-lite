@@ -1,9 +1,13 @@
 dir=${dir-"examples/compiled"}
 
-
 for name in "$@"
 do
   echo "Compiling $name" # to $dir (nopatch=$nopatch, forcesvg=$forcesvg)"
+
+  # compile normalized example
+  scripts/build-normalized-example $name
+
+  # compile Vega example
   rm -f examples/compiled/$name.vg.json
   bin/vl2vg -p examples/specs/$name.vl.json > examples/compiled/$name.vg.json
 
