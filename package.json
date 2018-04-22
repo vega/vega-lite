@@ -61,10 +61,7 @@
     "test:debug-examples": "tsc && npm run schema && mocha --recursive --debug-brk --inspect build/examples",
     "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
     "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
-    "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
-    "watch:build": "watchify src/index.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
-    "watch:test": "nodemon -x 'npm test'",
-    "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build"
+    "codecov": "nyc report --reporter=json && codecov -f coverage/*.json"
   },
   "repository": {
     "type": "git",
