@@ -1,0 +1,195 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Release_Date": "date:'%d-%b-%y'"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.IMDB_Rating != null"
+                },
+                {
+                    "type": "filter",
+                    "expr": "time(datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)) <= time(datetime(2019, 0, 1, 0, 0, 0, 0))"
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "AverageRating"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "IMDB_Rating"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.IMDB_Rating - datum.AverageRating",
+                    "as": "RatingDelta"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Release_Date\"] !== null && !isNaN(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "symbol",
+            "style": [
+                "point"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "Release_Date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "RatingDelta"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "Release_Date"
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "RatingDelta"
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "Release_Date",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "Rating Delta",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

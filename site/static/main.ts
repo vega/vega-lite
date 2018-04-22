@@ -66,6 +66,8 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=fa
       post(window, editorURL, {
         mode: 'vega-lite',
         spec: JSON.stringify(spec, null, 2),
+        config: vgSpec.config,
+        renderer: 'svg'
     });
     event.preventDefault();
   });

@@ -7324,6 +7324,9 @@
         },
         {
           "$ref": "#/definitions/AggregateTransform"
+        },
+        {
+          "$ref": "#/definitions/WindowTransform"
         }
       ]
     },
@@ -7738,6 +7741,13 @@
       ],
       "type": "object"
     },
+    "VgComparatorOrder": {
+      "enum": [
+        "ascending",
+        "descending"
+      ],
+      "type": "string"
+    },
     "VgEventStream": {
     },
     "VgGenericBinding": {
@@ -8140,6 +8150,117 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "WindowFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output name for the window operation.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
+          "type": "string"
+        },
+        "op": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/WindowOnlyOp"
+            }
+          ],
+          "description": "The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+        },
+        "param": {
+          "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "op",
+        "as"
+      ],
+      "type": "object"
+    },
+    "WindowOnlyOp": {
+      "enum": [
+        "row_number",
+        "rank",
+        "dense_rank",
+        "percent_rank",
+        "cume_dist",
+        "ntile",
+        "lag",
+        "lead",
+        "first_value",
+        "last_value",
+        "nth_value"
+      ],
+      "type": "string"
+    },
+    "WindowSortField": {
+      "additionalProperties": false,
+      "description": "A compartor for fields within the window transform",
+      "properties": {
+        "field": {
+          "description": "The name of the field to sort.",
+          "type": "string"
+        },
+        "order": {
+          "$ref": "#/definitions/VgComparatorOrder",
+          "description": "Whether to sort the field in ascending or descending order."
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "type": "object"
+    },
+    "WindowTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ignorePeers": {
+          "description": "Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "sort": {
+          "description": "A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
+          "items": {
+            "$ref": "#/definitions/WindowSortField"
+          },
+          "type": "array"
+        },
+        "window": {
+          "description": "The definition of the fields in the window, and what calculations to use.",
+          "items": {
+            "$ref": "#/definitions/WindowFieldDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "window"
+      ],
       "type": "object"
     }
   }
