@@ -51,7 +51,7 @@
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
     "lint": "tslint -p .",
-    "test": "npm run build:only && npm run test:only && npm run test:runtime && npm run lint",
+    "test": "tsc && npm run test:only && npm run lint && npm run test:runtime",
     "posttest": "npm run schema && npm run data && npm run mocha:examples",
     "test:nocompile": "npm run test:only && npm run test:runtime && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
