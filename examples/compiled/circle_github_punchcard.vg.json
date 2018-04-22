@@ -135,7 +135,7 @@
                 "field": "sum_count"
             },
             "range": [
-                0,
+                1,
                 361
             ],
             "nice": false,

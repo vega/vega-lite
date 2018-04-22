@@ -214,6 +214,10 @@ export function defaultRange(
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
   if (zero) {
+    if (util.contains(['point', 'square', 'circle'], mark)) {
+      // the smallest size for points should not be zero as the marks become invisible
+      return 1;
+    }
     return 0;
   }
   switch (mark) {
