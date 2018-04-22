@@ -48,10 +48,6 @@
                 {
                     "type": "filter",
                     "expr": "inrange(datum[\"wavelength\"], [300, 450])"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
                 }
             ]
         }
@@ -82,6 +78,9 @@
                     "y": {
                         "scale": "y",
                         "field": "power"
+                    },
+                    "defined": {
+                        "signal": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
                     }
                 }
             }

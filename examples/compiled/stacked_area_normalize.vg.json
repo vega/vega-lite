@@ -67,10 +67,6 @@
                         "sum_count_end"
                     ],
                     "offset": "normalize"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
                 }
             ]
         }
@@ -136,6 +132,9 @@
                             "y2": {
                                 "scale": "y",
                                 "field": "sum_count_start"
+                            },
+                            "defined": {
+                                "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
                             }
                         }
                     }

@@ -11,6 +11,7 @@ export const area: MarkCompiler = {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
       ...mixins.pointPosition('y', model, 'zeroOrMin'),
       ...mixins.pointPosition2(model, 'zeroOrMin'),
+      ...mixins.defined(model)
     };
   }
 };

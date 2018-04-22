@@ -69,10 +69,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"b\"])",
                     "as": "b"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
                 }
             ]
         }
@@ -147,6 +143,9 @@
                     "y": {
                         "scale": "y",
                         "field": "b"
+                    },
+                    "defined": {
+                        "signal": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
                     }
                 }
             }
