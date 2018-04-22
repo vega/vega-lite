@@ -96,10 +96,6 @@
                     "type": "formula",
                     "as": "year_Year",
                     "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Average_MPG\"] !== null && !isNaN(datum[\"Average_MPG\"])"
                 }
             ]
         }
@@ -161,6 +157,9 @@
                     "y": {
                         "scale": "y",
                         "field": "Average_MPG"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Average_MPG\"] !== null && !isNaN(datum[\"Average_MPG\"])"
                     }
                 }
             }
