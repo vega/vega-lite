@@ -139,9 +139,6 @@ Formula From Sort Array
        Stack
          |
          v
-     Path Order
-         |
-         v
   Invalid Filter
          |
          v

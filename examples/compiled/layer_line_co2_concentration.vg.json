@@ -51,10 +51,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"CO2\"])",
                     "as": "CO2"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
                 }
             ]
         },
@@ -184,6 +180,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "CO2"
+                            },
+                            "defined": {
+                                "signal": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
                             }
                         }
                     }

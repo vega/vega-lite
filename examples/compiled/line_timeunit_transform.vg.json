@@ -43,10 +43,6 @@
                     "as": [
                         "max_temp_max"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month\"] !== null && !isNaN(datum[\"month\"])"
                 }
             ]
         }
@@ -77,6 +73,9 @@
                     "y": {
                         "scale": "y",
                         "field": "max_temp_max"
+                    },
+                    "defined": {
+                        "signal": "datum[\"month\"] !== null && !isNaN(datum[\"month\"]) && datum[\"max_temp_max\"] !== null && !isNaN(datum[\"max_temp_max\"])"
                     }
                 }
             }

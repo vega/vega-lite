@@ -46,10 +46,6 @@
                     "as": [
                         "mean_temp_max"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         },
@@ -87,10 +83,6 @@
                     "as": [
                         "mean_precipitation"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         },
@@ -128,10 +120,6 @@
                     "as": [
                         "mean_wind"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         }
@@ -215,6 +203,9 @@
                                     "y": {
                                         "scale": "child_temp_max_y",
                                         "field": "mean_temp_max"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
                                     }
                                 }
                             }
@@ -347,6 +338,9 @@
                                     "y": {
                                         "scale": "child_precipitation_y",
                                         "field": "mean_precipitation"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_precipitation\"] !== null && !isNaN(datum[\"mean_precipitation\"])"
                                     }
                                 }
                             }
@@ -479,6 +473,9 @@
                                     "y": {
                                         "scale": "child_wind_y",
                                         "field": "mean_wind"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_wind\"] !== null && !isNaN(datum[\"mean_wind\"])"
                                     }
                                 }
                             }

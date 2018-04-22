@@ -155,6 +155,9 @@
                     "y": {
                         "scale": "layer_1_y",
                         "field": "mean_temp_max"
+                    },
+                    "defined": {
+                        "signal": "datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
                     }
                 }
             }

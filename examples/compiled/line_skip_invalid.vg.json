@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "A simple bar chart with embedded data.",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -10,24 +11,32 @@
             "name": "source_0",
             "values": [
                 {
-                    "wavelength": 250,
-                    "power": 1
+                    "x": 1,
+                    "y": 10
                 },
                 {
-                    "wavelength": 300,
-                    "power": 2
+                    "x": 2,
+                    "y": 30
                 },
                 {
-                    "wavelength": 420,
-                    "power": 4
+                    "x": 3,
+                    "y": null
                 },
                 {
-                    "wavelength": 450,
-                    "power": 1.8
+                    "x": 4,
+                    "y": 15
                 },
                 {
-                    "wavelength": 500,
-                    "power": 1.1
+                    "x": 5,
+                    "y": null
+                },
+                {
+                    "x": 6,
+                    "y": 40
+                },
+                {
+                    "x": 7,
+                    "y": 20
                 }
             ]
         },
@@ -37,13 +46,13 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"wavelength\"])",
-                    "as": "wavelength"
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"power\"])",
-                    "as": "power"
+                    "expr": "toNumber(datum[\"y\"])",
+                    "as": "y"
                 }
             ]
         }
@@ -56,7 +65,7 @@
                 "line"
             ],
             "sort": {
-                "field": "datum[\"wavelength\"]",
+                "field": "datum[\"x\"]",
                 "order": "descending"
             },
             "from": {
@@ -69,14 +78,14 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "wavelength"
+                        "field": "x"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "power"
+                        "field": "y"
                     },
                     "defined": {
-                        "signal": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
+                        "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                     }
                 }
             }
@@ -86,10 +95,10 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": [
-                300,
-                450
-            ],
+            "domain": {
+                "data": "data_0",
+                "field": "x"
+            },
             "range": [
                 0,
                 {
@@ -104,7 +113,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "power"
+                "field": "y"
             },
             "range": [
                 {
@@ -120,7 +129,7 @@
         {
             "scale": "x",
             "orient": "bottom",
-            "title": "wavelength",
+            "title": "x",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
@@ -146,7 +155,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "power",
+            "title": "y",
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(height/40)"

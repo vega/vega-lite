@@ -1,9 +1,21 @@
 import {isArray} from 'vega-util';
-import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, FieldDefWithCondition, getFieldDef, isConditionalSelection, isValueDef, TextFieldDef, ValueDefWithCondition, vgField} from '../../fielddef';
+
+import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
+import {
+  ChannelDef,
+  FieldDef,
+  FieldDefWithCondition,
+  getFieldDef,
+  isConditionalSelection,
+  isValueDef,
+  TextFieldDef,
+  ValueDefWithCondition,
+  vgField,
+} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
+import {hasContinuousDomain} from '../../scale';
 import {contains} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
@@ -115,6 +127,37 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
     return {[prop]: {value: value}};
   }
   return undefined;
+}
+
+function validPredicate(vgRef: string) {
+  return `${vgRef} !== null && !isNaN(${vgRef})`;
+}
+
+export function defined(model: UnitModel): VgEncodeEntry {
+  if (model.config.invalidValues === 'filter') {
+    const fields = ['x', 'y'].map((channel: PositionScaleChannel) => {
+        const scaleComponent = model.getScaleComponent(channel);
+        if (scaleComponent) {
+          const scaleType = scaleComponent.get('type');
+
+          // Discrete domain scales can handle invalid values, but continuous scales can't.
+          if (hasContinuousDomain(scaleType)) {
+            return model.vgField(channel, {expr: 'datum'});
+          }
+        }
+        return undefined;
+      })
+      .filter(field => !!field)
+      .map(validPredicate);
+
+    if (fields.length > 0) {
+      return {
+        defined: {signal: fields.join(' && ')}
+      };
+    }
+  }
+
+  return {};
 }
 
 /**
@@ -272,8 +315,8 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
     ref.stackable(channel, encoding[channel], scaleName, scale, stack,
-    ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
-  );
+      ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+    );
 
   return {
     [vgChannel || channel]: valueRef
@@ -297,7 +340,8 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
     ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
-    ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
-  );
+      ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+    );
+
   return {[channel]: valueRef};
 }

@@ -36,10 +36,6 @@
                     "as": [
                         "mean_precipitation"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         }
@@ -70,6 +66,9 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_precipitation"
+                    },
+                    "defined": {
+                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_precipitation\"] !== null && !isNaN(datum[\"mean_precipitation\"])"
                     }
                 }
             }

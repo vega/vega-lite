@@ -53,10 +53,6 @@
                     "as": [
                         "mean_Horsepower"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 }
             ]
         }
@@ -115,6 +111,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "mean_Horsepower"
+                            },
+                            "defined": {
+                                "signal": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"mean_Horsepower\"] !== null && !isNaN(datum[\"mean_Horsepower\"])"
                             }
                         }
                     }
