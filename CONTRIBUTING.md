@@ -31,7 +31,7 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation or website, simply submit a pull request that changes
 the corresponding markdown files in `site/`.
 
-The images that are shown on the homepage and in the gallery have to be generated with `npm run build:images`.
+The images that are shown on the homepage and in the gallery have to be generated with `yarn build:images`.
 To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 Since we only publish the Github Pages when we release a new version,
@@ -149,23 +149,23 @@ This section lists commands that are commonly used during development. See `pack
 
 ### Build
 
-You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
+You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
 
 ### Basic Lint & Test & Test Coverage
 
-`npm run lint` and `npm run test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `npm start` and `npm run watch`.
+`yarnn lint` and `yarn test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `yarn start` and `yarn watch`.
 
-`npm run test` includes test coverage and generates a report inside `coverage/index.html`.
+`yarn test` includes test coverage and generates a report inside `coverage/index.html`.
 You can see if specific lines are covered in the unit test by running `open coverage/index.html`
 and browsing through the report.
 
-A lot of linting errors can be fixed automatically by running `npm run lint --fix`.
+A lot of linting errors can be fixed automatically by running `yarn lint --fix`.
 
 ### Watch tasks
 
 During development, it can be convenient to rebuild automatically or to run tests in the background.
 
-`npm run start` starts a watcher task that shows the example gallery.
+`yarn start` starts a watcher task that shows the example gallery.
 Whenever any `.ts` file changes, the watcher:
 (1) re-compiles Vega-Lite
 (2) automatically refreshes the gallery with BrowserSync
@@ -174,26 +174,25 @@ Whenever any `.ts` file changes, the watcher:
 
 If you only want subset of these actions, you can use:
 
-- `npm run watch` to start a watcher task that does all of above except opening and syncing the gallery.
+- `yarn watch` to start a watcher task that does all of above except opening and syncing the gallery.
 
-- `npm run watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
+- `yarn watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
-- `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+- `yarn watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
 
 #### Fast iteration testing
 
-To quickly run tests without long compile times, run `npm run tsc -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
+To quickly run tests without long compile times, run `yarn tsc -w` in a separate terminal session. Then run `yarn mocha:test` to quickly run tests (or `yarn mocha:test --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
 
 ### Website
 
-`npm run site`. See details in [Documentation and Website](#documentation-and-website).
+`yarn site`. See details in [Documentation and Website](#documentation-and-website).
 
 ### Deployment
 
-(For team members only) `npm run deploy` will publish latest code to NPM and Bower
+(For team members only) `yarn deploy` will publish latest code to NPM
 and also update github pages, which contains our webpage and documentation.
-If you want to update only github pages,
-use `npm run deploy:gh`.
+If you want to update only github pages, use `yarn deploy:gh`.
 
 ## Suggested Programming Environment.
 
@@ -212,22 +211,22 @@ for instructions).
 ## Developing Vega-Lite and Vega-Util
 
 Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
-If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears).
+If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`yarn link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears).
 
 ```sh
 # first link vega-util global npm
 cd path/to/vega-util
-npm link
+yarn link
 # then link vega-lite to datalib
 cd path/to/vega-lite
-npm link vega-util
+yarn link vega-util
 ```
 
 Now all of the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
 ## Pull Requests and Travis
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR. Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR. Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
 
 ### Code Coverage
 

@@ -31,7 +31,6 @@ exclude:
   - typings
   - package.json
   - yarn.lock
-  - bower.json
   - tsconfig.json
   - tslint.json
   - nodemon.json
