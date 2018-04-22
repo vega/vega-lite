@@ -6159,7 +6159,7 @@
         },
         "order": {
           "$ref": "#/definitions/SortOrder",
-          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
         }
       },
       "required": [
@@ -6168,14 +6168,13 @@
       "type": "object"
     },
     "SortOrder": {
-      "enum": [
-        "ascending",
-        "descending",
-        null
-      ],
-      "type": [
-        "string",
-        "null"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/VgComparatorOrder"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
     "StackOffset": {
