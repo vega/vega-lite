@@ -32,8 +32,7 @@
         {
           "mark": {
             "type": "point",
-            "filled": true,
-            "opacity": 1
+            "filled": true
           },
           "encoding": {
             "x": {
@@ -76,8 +75,7 @@
         {
           "mark": {
             "type": "point",
-            "filled": true,
-            "opacity": 1
+            "filled": true
           },
           "encoding": {
             "x": {
