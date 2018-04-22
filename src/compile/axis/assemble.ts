@@ -1,4 +1,5 @@
-import {isArray} from 'util';
+import {isArray} from 'vega-util';
+
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
 import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
