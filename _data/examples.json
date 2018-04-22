@@ -134,7 +134,7 @@
       "title": "Diverging Stacked Bar Chart"
     }
   ],
-  "Advanced Transforms": [
+  "Window Transform": [
     {
       "name": "window_percent_of_total",
       "title": "Calculate Percentage of Total"

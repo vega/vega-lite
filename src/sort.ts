@@ -1,7 +1,9 @@
 import {AggregateOp} from 'vega';
 
+import {VgComparatorOrder} from './vega.schema';
 
-export type SortOrder = 'ascending' | 'descending' | null;
+
+export type SortOrder = VgComparatorOrder | null;
 
 export interface SortField<F> {
   /**
@@ -20,7 +22,7 @@ export interface SortField<F> {
   op: AggregateOp;
 
   /**
-   * The sort order. One of `"ascending"` (default) or `"descending"`.
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
   order?: SortOrder;
 }

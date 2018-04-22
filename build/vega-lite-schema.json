@@ -6909,6 +6909,13 @@
       ],
       "type": "object"
     },
+    "VgComparatorOrder": {
+      "enum": [
+        "ascending",
+        "descending"
+      ],
+      "type": "string"
+    },
     "VgEventStream": {
     },
     "VgGenericBinding": {
@@ -7317,11 +7324,11 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output name for each field.",
+          "description": "The output name for the window operation.",
           "type": "string"
         },
         "field": {
-          "description": "The data field for which to compute the aggregate or window function. This can be omitted for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
+          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
           "type": "string"
         },
         "op": {
@@ -7371,12 +7378,8 @@
           "type": "string"
         },
         "order": {
-          "description": "Whether to sort the field in ascending or descending order.",
-          "enum": [
-            "ascending",
-            "descending"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/VgComparatorOrder",
+          "description": "Whether to sort the field in ascending or descending order."
         }
       },
       "required": [

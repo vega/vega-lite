@@ -449,10 +449,10 @@ export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega 
 
 export type VgSort = {
   field: string;
-  order?: 'ascending' | 'descending';
+  order?: VgComparatorOrder;
 } | {
   field: string[];
-  order?: ('ascending' | 'descending')[];
+  order?: (VgComparatorOrder)[];
 };
 
 export interface VgImputeTransform {

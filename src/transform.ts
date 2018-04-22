@@ -1,9 +1,11 @@
 import {AggregateOp} from 'vega';
+
 import {BinParams} from './bin';
 import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
+import {VgComparatorOrder} from './vega.schema';
 
 export interface FilterTransform {
   /**
@@ -121,19 +123,19 @@ export interface WindowFieldDef {
   op: AggregateOp | WindowOnlyOp;
 
   /**
-   *  Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.
+   * Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.
    *
    * See the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).
    */
   param?: number;
 
   /**
-   * The data field for which to compute the aggregate or window function. This can be omitted for functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
+   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
    */
   field?: string;
 
   /**
-   *  The output name for each field.
+   * The output name for the window operation.
    */
   as: string;
 }
@@ -224,7 +226,7 @@ export interface WindowSortField {
   /**
    * Whether to sort the field in ascending or descending order.
    */
-  order?: 'ascending' | 'descending';
+  order?: VgComparatorOrder;
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
