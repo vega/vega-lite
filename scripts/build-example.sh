@@ -4,8 +4,11 @@ for name in "$@"
 do
   echo "Compiling $name" # to $dir (nopatch=$nopatch, forcesvg=$forcesvg)"
 
-  # compile normalized example
-  scripts/build-normalized-example $name
+  # compile normalized example if $skipnormalize is not set
+  if [ ! -n "$skipnormalize" ]; then
+    #build full vl example
+    scripts/build-fullvl-example $name.vl.json
+  fi
 
   # compile Vega example
   rm -f examples/compiled/$name.vg.json
