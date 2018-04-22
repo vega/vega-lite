@@ -3,7 +3,7 @@ import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
 import {post} from 'vega-embed/build/post';
-import {vegaLite} from 'vega-tooltip';
+import vegaTooltip from 'vega-tooltip';
 
 import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
@@ -54,26 +54,30 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=fa
   const view = new vega.View(vega.parse(vgSpec), {loader: loader})
     .renderer('svg')
     .initialize($target)
+    .hover()
     .run();
 
-  const div = select($target)
-    .append('div')
-    .attr('class', 'vega-actions')
-    .append('a')
-    .text('Open in Vega Editor')
-    .attr('href', '#')
-    .on('click', function () {
-      post(window, editorURL, {
-        mode: 'vega-lite',
-        spec: JSON.stringify(spec, null, 2),
-        config: vgSpec.config,
-        renderer: 'svg'
-    });
-    event.preventDefault();
-  });
+
+  if (actions) {
+    const div = select($target)
+      .append('div')
+      .attr('class', 'vega-actions')
+      .append('a')
+      .text('Open in Vega Editor')
+      .attr('href', '#')
+      .on('click', function () {
+        post(window, editorURL, {
+          mode: 'vega-lite',
+          spec: JSON.stringify(spec, null, 2),
+          config: vgSpec.config,
+          renderer: 'svg'
+        });
+        event.preventDefault();
+      });
+  }
 
   if (tooltip) {
-    vegaLite(view, spec as any);
+    vegaTooltip(view);
   }
 }
 
