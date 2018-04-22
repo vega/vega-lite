@@ -258,7 +258,7 @@
                 "field": "Cylinders"
             },
             "range": [
-                0,
+                1,
                 361
             ],
             "nice": false,

@@ -118,7 +118,7 @@
                 "field": "Weight_in_lbs"
             },
             "range": [
-                0,
+                1,
                 361
             ],
             "nice": false,

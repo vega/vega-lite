@@ -115,7 +115,7 @@
                 "field": "Miles_per_Gallon"
             },
             "range": [
-                0,
+                1,
                 361
             ],
             "nice": false,
