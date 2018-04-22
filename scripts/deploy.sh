@@ -51,10 +51,23 @@ fi
 
 # 2. TAG RELEASE
 
-# read version
+gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh vega-lite)
 
-git tag "v$version"
+git checkout head
+npm run build
+# add the compiled files, commit and tag!
+git add build/** -f
+
+# commit, tag and push to gh-pages and swap back to master
+set +e
+git commit -m "Release $version $gitsha"
+set -e
+git tag -am "Release v$version." "v$version"
+
+# swap back to the clean master and push the new tag
+git checkout master
+git push --tags
 
 # 3. SCHEMA
 scripts/deploy-schema.sh
