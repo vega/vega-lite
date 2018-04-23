@@ -55,6 +55,13 @@ Using `area` mark with one temporal or ordinal field (typically on `x`) and one 
 
 <span class="vl-example" data-name="area"></span>
 
+### Area Chart with Overlaying Lines and Point Markers
+
+By setting the `line` and `point` properties of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay line and point markers on top of area.
+
+<span class="vl-example" data-name="area_overlay"></span>
+
+
 ### Stacked Area Chart
 
 Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart by industry.

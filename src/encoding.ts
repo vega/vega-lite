@@ -146,7 +146,7 @@ export interface Encoding<F> {
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
 
   /**
    * A URL to load upon mouse click.
@@ -156,7 +156,7 @@ export interface Encoding<F> {
   /**
    * Order of the marks.
    * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
-   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
@@ -224,7 +224,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
        return normalizedEncoding;
     }
 
-    if (channel === 'detail' || channel === 'order') {
+    if (channel === 'detail' || channel === 'order' || (channel === 'tooltip' && isArray(encoding[channel]))) {
       const channelDef = encoding[channel];
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)

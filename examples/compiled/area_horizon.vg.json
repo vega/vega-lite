@@ -105,10 +105,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"y\"])",
                     "as": "y"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                 }
             ]
         },
@@ -125,10 +121,6 @@
                     "type": "formula",
                     "expr": "datum.y - 50",
                     "as": "ny"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
                 }
             ]
         }
@@ -170,6 +162,9 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
+                    },
+                    "defined": {
+                        "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
                     }
                 }
             }
@@ -210,6 +205,9 @@
                     "y2": {
                         "scale": "y",
                         "value": 0
+                    },
+                    "defined": {
+                        "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
                     }
                 }
             }

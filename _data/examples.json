@@ -62,6 +62,10 @@
       "title": "Line Chart"
     },
     {
+      "name": "line_overlay",
+      "title": "Line Chart with Overlaying Point Markers"
+    },
+    {
       "name": "line_color",
       "title": "Multi Series Line Chart"
     },
@@ -76,6 +80,10 @@
     {
       "name": "area",
       "title": "Area Chart"
+    },
+    {
+      "name": "area_overlay",
+      "title": "Area Chart with Overlaying Lines and Point Markers"
     },
     {
       "name": "rect_heatmap",
@@ -132,6 +140,28 @@
     {
       "name": "bar_diverging_stacked",
       "title": "Diverging Stacked Bar Chart"
+    }
+  ],
+  "Window Transform": [
+    {
+      "name": "window_percent_of_total",
+      "title": "Calculate Percentage of Total"
+    },
+    {
+      "name": "window_mean_difference",
+      "title": "Calculate Difference from Average"
+    },
+    {
+      "name": "window_mean_difference_by_year",
+      "title": "Calculate Difference from Annual Average"
+    },
+    {
+      "name": "window_residual_graph",
+      "title": "Calculate Residuals"
+    },
+    {
+      "name": "window_rank",
+      "title": "Line Charts Showing Ranks Over Time"
     }
   ],
   "Trellis": [

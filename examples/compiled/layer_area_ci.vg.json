@@ -49,10 +49,6 @@
                         "ci0_Miles_per_Gallon",
                         "ci1_Miles_per_Gallon"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
                 }
             ]
         },
@@ -89,10 +85,6 @@
                     "as": [
                         "mean_Miles_per_Gallon"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
                 }
             ]
         }
@@ -133,6 +125,9 @@
                     "y2": {
                         "scale": "y",
                         "field": "ci1_Miles_per_Gallon"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"ci0_Miles_per_Gallon\"] !== null && !isNaN(datum[\"ci0_Miles_per_Gallon\"])"
                     }
                 }
             }
@@ -162,6 +157,9 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_Miles_per_Gallon"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"mean_Miles_per_Gallon\"] !== null && !isNaN(datum[\"mean_Miles_per_Gallon\"])"
                     }
                 }
             }

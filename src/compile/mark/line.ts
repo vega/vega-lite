@@ -14,7 +14,8 @@ export const line: MarkCompiler = {
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.nonPosition('size', model, {
         vgChannel: 'strokeWidth'  // VL's line size is strokeWidth
-      })
+      }),
+      ...mixins.defined(model)
     };
   }
 };
@@ -29,7 +30,8 @@ export const trail: MarkCompiler = {
       ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore'}),
       ...mixins.pointPosition('x', model, ref.mid(width)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
-      ...mixins.nonPosition('size', model)
+      ...mixins.nonPosition('size', model),
+      ...mixins.defined(model)
     };
   }
 };

@@ -1,5 +1,4 @@
 node_modules
-bower_components
 _site
 _data/vega-lite-schema.json
 data/*

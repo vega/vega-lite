@@ -1,3 +1,4 @@
+import {isObject} from 'vega-util';
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
@@ -7,7 +8,7 @@ import * as vlEncoding from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, isMarkDef, isPathMark, isPrimitiveMark, Mark, MarkDef, MarkProperties} from './mark';
+import {AnyMark, AreaConfig, isMarkDef, isPathMark, isPrimitiveMark, LineConfig, Mark, MarkDef, MarkProperties} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -437,6 +438,37 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Fiel
     return isPrimitiveMark(spec.mark);
 }
 
+function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Encoding<Field>): MarkProperties {
+  if (markDef.point === 'transparent') {
+    return {opacity: 0};
+  } else if (markDef.point) { // truthy : true or object
+    return isObject(markDef.point) ? markDef.point : {};
+  } else if (markDef.point !== undefined) { // false or null
+    return null;
+  } else { // undefined (not disabled)
+    if (markConfig.point || encoding.shape) {
+      // enable point overlay if config[mark].point is truthy or if encoding.shape is provided
+      return isObject(markConfig.point) ? markConfig.point : {};
+    }
+    // markDef.point is defined as falsy
+    return null;
+  }
+}
+
+function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkProperties {
+  if (markDef.line) { // true or object
+    return markDef.line === true ? {} : markDef.line;
+  } else if (markDef.line !== undefined) { // false or null
+    return null;
+  } else { // undefined (not disabled)
+    if (markConfig.line) {
+      // enable line overlay if config[mark].line is truthy
+      return markConfig.line === true ? {} : markConfig.line;
+    }
+    // markDef.point is defined as falsy
+    return null;
+  }
+}
 
 function normalizeNonFacetUnit(
   spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config,
@@ -473,28 +505,7 @@ function normalizeNonFacetUnit(
     }
 
     if (isPathMark(mark)) {
-      const markDef: MarkDef = isMarkDef(spec.mark) ?
-        spec.mark as MarkDef : // must be MarkDef, not CompositeMarkDef
-        {type: mark};
-
-      const pointOverlay = markDef.point !== undefined ?
-        // use markDef.point if defined
-        markDef.point :
-        // if not, use config[mark].point
-        (config[mark] || {}).point ||
-        // or consider if the mark contains shape
-        (encoding.shape && {});
-
-      const lineOverlay = mark === 'area' && (markDef.line !== undefined ? markDef.line : config[mark].line);
-
-      if (pointOverlay || lineOverlay) {
-        return normalizeOverlay(
-          spec,
-          pointOverlay === 'transparent' ? {opacity: 0} : pointOverlay === true ? {} : pointOverlay || null,
-          lineOverlay === true ? {} : lineOverlay || null,
-          config
-        );
-      }
+      return normalizePathOverlay(spec, config);
     }
 
     return spec; // Nothing to normalize
@@ -530,21 +541,40 @@ function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
   return keys(mark).length > 1 ? mark : mark.type;
 }
 
-function normalizeOverlay(spec: NormalizedUnitSpec, pointOverlay: MarkProperties, lineOverlay: MarkProperties, config: Config): NormalizedLayerSpec {
+function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): NormalizedLayerSpec | NormalizedUnitSpec {
+
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
-  const {selection, projection, encoding, mark: oldMark, ...outerSpec} = spec;
+  const {selection, projection, encoding, mark, ...outerSpec} = spec;
+  const markDef = isMarkDef(mark) ? mark : {type: mark};
 
-  // Do not include point / line overlay in the normalize spec
-  const mark = isMarkDef(oldMark) ? dropLineAndPoint(oldMark) : oldMark;
+  const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
+  const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
 
-  const layer: NormalizedUnitSpec[] = [{mark, encoding}];
+  if (!pointOverlay && !lineOverlay) {
+    return {
+      ...spec,
+      // Do not include point / line overlay in the normalize spec
+      mark: dropLineAndPoint(markDef)
+    };
+  }
+
+  const layer: NormalizedUnitSpec[] = [{
+    // Do not include point / line overlay in the normalize spec
+    mark: dropLineAndPoint({
+      ...markDef,
+      // make area mark translucent by default
+      // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
+      ...(markDef.type === 'area' ? {opacity: 0.7} : {}),
+    }),
+    encoding
+  }];
 
   // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
   // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
-  const stackProps = stack(mark, encoding, config ? config.stack : undefined);
+  const stackProps = stack(markDef, encoding, config ? config.stack : undefined);
 
   let overlayEncoding = encoding;
   if (stackProps) {
@@ -574,6 +604,7 @@ function normalizeOverlay(spec: NormalizedUnitSpec, pointOverlay: MarkProperties
       ...(projection ? {projection} : {}),
       mark: {
         type: 'point',
+        opacity: 1,
         filled: true,
         ...pointOverlay
       },

@@ -19,7 +19,7 @@ script:
   - npm run test:nocompile # already run schema and tsc in build
   - npm run data
   - npm run check:schema
-  - npm run build:examples-only
+  - npm run build:examples
   - npm run check:examples
   - npm run codecov
 

@@ -80,7 +80,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
     };
   } else if (fieldDef.type === 'quantitative') {
     return {
-      signal: `${formatExpr(vgField(fieldDef, {expr}), format)}`
+      signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
     };
   } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;

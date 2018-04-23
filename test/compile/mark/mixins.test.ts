@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
-import {color, pointPosition} from '../../../src/compile/mark/mixins';
+import {color, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -198,6 +198,22 @@ describe('compile/mark/mixins', () => {
       });
       const props = color(model);
       assert.deepEqual(props.stroke, {value: "blue"});
+    });
+  });
+
+  describe('tooltip()', () => {
+    it('generates tooltip object signal for an array of tooltip fields', function () {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "point",
+        "encoding": {
+          "tooltip": [
+            {"field": "Horsepower", "type": "quantitative"},
+            {"field": "Acceleration", "type": "quantitative"}
+          ]
+        }
+      });
+      const props = tooltip(model);
+      assert.deepEqual(props.tooltip, {signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'});
     });
   });
 

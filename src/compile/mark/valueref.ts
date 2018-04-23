@@ -1,8 +1,8 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-import {isArray} from 'util';
-import {isString} from 'vega-util';
+import {isArray, isString} from 'vega-util';
+
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {

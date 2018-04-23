@@ -16,7 +16,6 @@
 /test-runtime
 
 _config.yml
-bower.json
 build/examples
 build/test
 ChromeDriver.txt

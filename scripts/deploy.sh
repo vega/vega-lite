@@ -49,9 +49,8 @@ if [[ $rc != 0 ]]; then
 	exit $rc;
 fi
 
-# 2. BOWER PUBLISH
+# 2. TAG RELEASE
 
-# read version
 gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh vega-lite)
 
@@ -69,11 +68,9 @@ git tag -am "Release v$version." "v$version"
 # swap back to the clean master and push the new tag
 git checkout master
 git push --tags
-# now the published tag contains build files which work great with bower.
 
 # 3. SCHEMA
 scripts/deploy-schema.sh
 
 # 4. GITHUB PAGES PUBLISH
 scripts/deploy-gh.sh
-
