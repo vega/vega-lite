@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig",
-  "include": [
-    "../typings/*.d.ts",
-    "static/*.ts"
-  ]
+  "compilerOptions": {
+    "outDir": "../build/",
+  },
+  "files": ["static/index.ts"],
 }

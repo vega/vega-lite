@@ -7,8 +7,8 @@ scripts/pre-deploy.sh
 
 # 1. NPM PUBLISH
 
-npm run clean
-npm run build
+yarn clean
+yarn build
 
 # Check if all required files are here
 if ! [ -f build/vega-lite.js ]; then
@@ -40,6 +40,7 @@ if ! [ -f build/src/index.d.ts ]; then
   exit 1;
 fi
 
+yarn tsc -m commonjs
 npm publish
 
 # exit if npm publish failed
@@ -55,7 +56,7 @@ gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh vega-lite)
 
 git checkout head
-npm run build
+yarn build && yarn tsc -m commonjs
 # add the compiled files, commit and tag!
 git add build/** -f
 
