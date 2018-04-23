@@ -18,12 +18,12 @@ script:
   - yarn data
   - yarn build
   - yarn test
+  - yarn codecov
   - yarn check:schema
   - yarn build:examples
   - yarn check:examples
-
 after_success:
-  - yarn codecov
+  - bash <(curl -s https://codecov.io/bash)
 
 cache: yarn
 
