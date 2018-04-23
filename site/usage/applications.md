@@ -30,6 +30,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
 -   [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 -   [Vizard](https://github.com/yieldbot/vizard) provides a tiny REPL client to visualize Clojure data in the browser.
+-   [to-vega](https://github.com/gjmcn/to-vega) is a simple JavaScript library for creating Vega-Lite specifications.
 
 
 ## Programming / Data Science Environment that supports Vega-Lite
