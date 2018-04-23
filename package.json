@@ -128,8 +128,8 @@
     ],
     "testPathIgnorePatterns": [
       "node_modules",
-      "build",
       "test-runtime",
+      "<rootDir>/build",
       "_site",
       "src"
     ],
