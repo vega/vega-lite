@@ -5,12 +5,9 @@ data/*
 *.sublime-workspace
 .idea
 
-vega-lite*.js
-vega-lite*.map
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-instance.json
 coverage
 Gemfile.lock
 

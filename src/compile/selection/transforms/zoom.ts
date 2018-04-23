@@ -1,3 +1,5 @@
+/// <reference path="../../../../typings/vega-event-selector.d.ts" />
+
 import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
 import {ScaleChannel, X, Y} from '../../../channel';
