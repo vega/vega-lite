@@ -256,5 +256,5 @@
     - [Literal Values]({{site.baseurl}}/docs/types.html#literal-values)
 - [Tooltip]({{site.baseurl}}/docs/tooltip.html)
     - [Documentation Overview]({{site.baseurl}}/docs/tooltip.html#documentation-overview)
-    - [Using Tooltip channel]({{site.baseurl}}/docs/tooltip.html#using-tooltip-channel)
-    - [Using Vega-tooltip plugin]({{site.baseurl}}/docs/tooltip.html#using-vega-tooltip-plugin)
+    - [Tooltip channel]({{site.baseurl}}/docs/tooltip.html#tooltip-channel)
+    - [Vega Tooltip plugin]({{site.baseurl}}/docs/tooltip.html#vega-tooltip-plugin)
