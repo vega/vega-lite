@@ -15,7 +15,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite.  You can also get an output Vega spec from a given Vega-Lite spec as well.
 - <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
-- <span class="octicon octicon-star"></span> [data.world Chart Builder](https://data.world/integrations/chart-builder), interactive Vega-Lite chart builder that imports data from queries in data.world and creates simple Vega-Lite specs from quick drop down menus.  The generated specs can then be edited and either saved locally or uploaded back to data.world for preview alongside saved queries and data.  Project is open source and on GitHub [here](https://github.com/datadotworld/chart-builder)
+- [data.world Chart Builder](https://data.world/integrations/chart-builder), interactive Vega-Lite chart builder that imports data from queries in data.world and creates simple Vega-Lite specs from quick drop down menus.  The generated specs can then be edited and either saved locally or uploaded back to data.world for preview alongside saved queries and data.  Project is open source and on GitHub [here](https://github.com/datadotworld/chart-builder)
 
 ## Plug-ins for Vega-Lite
 
@@ -37,9 +37,9 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Programming / Data Science Environment that supports Vega-Lite
 
 -   <span class="octicon octicon-star"></span> [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
--   <span class="octicon octicon-star"></span> [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
+-   [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
 -   <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
--   <span class="octicon octicon-star"></span> [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
+-   [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 
 ## Tools that use Vega-Lite
 
