@@ -77,10 +77,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
                     "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -202,6 +198,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "price"
+                            },
+                            "defined": {
+                                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                             }
                         }
                     }
@@ -271,7 +270,9 @@
             "transform": [
                 {
                     "type": "voronoi",
-                    "x": "datum.x",
+                    "x": {
+                        "expr": "datum.datum.x || 0"
+                    },
                     "y": {
                         "expr": "0"
                     },
@@ -505,6 +506,9 @@
             "encode": {
                 "symbols": {
                     "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
                         "opacity": {
                             "value": 1
                         }

@@ -16,13 +16,7 @@
                     "date": "date",
                     "price": "number"
                 }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
+            }
         }
     ],
     "marks": [
@@ -79,6 +73,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "price"
+                            },
+                            "defined": {
+                                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                             }
                         }
                     }

@@ -402,9 +402,6 @@
                 "enter": {
                     "fill": {
                         "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "white"
                     }
                 },
                 "update": {
@@ -442,6 +439,15 @@
                         },
                         {
                             "value": 0
+                        }
+                    ],
+                    "stroke": [
+                        {
+                            "test": "pts_x[0] !== pts_x[1] && pts_y[0] !== pts_y[1]",
+                            "value": "white"
+                        },
+                        {
+                            "value": null
                         }
                     ]
                 }

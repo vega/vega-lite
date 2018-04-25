@@ -41,6 +41,7 @@ import {assembleProjections} from './projection/assemble';
 import {ProjectionComponent} from './projection/component';
 import {parseProjection} from './projection/parse';
 import {RepeatModel} from './repeat';
+import {RepeaterValue} from './repeater';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
@@ -165,6 +166,7 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected layoutSizeNameMap: NameMapInterface;
 
+  public readonly repeater: RepeaterValue;
 
   public readonly config: Config;
 
@@ -172,9 +174,10 @@ export abstract class Model {
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve) {
     this.parent = parent;
     this.config = config;
+    this.repeater = repeater;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
@@ -517,7 +520,7 @@ export abstract class Model {
     if (
         // If there is a scale for the channel, there should be a local scale component for it
         (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
-        // in the scale name map (the the scale get merged by its parent)
+        // in the scale name map (the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));

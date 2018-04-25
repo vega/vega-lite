@@ -1,3 +1,5 @@
+/// <reference path="../../../typings/vega-event-selector.d.ts" />
+
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
@@ -33,6 +35,8 @@ export interface SelectionComponent {
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
+
+  _signalNames: {};
 
   // Transforms
   project?: ProjectComponent[];
@@ -336,7 +340,20 @@ export function requiresSelectionId(model: Model) {
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
-  return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
+  const sgNames = selCmpt._signalNames || (selCmpt._signalNames = {});
+  if (sgNames[channel] && sgNames[channel][range]) {
+    return sgNames[channel][range];
+  }
+
+  sgNames[channel] = sgNames[channel] || {};
+  const basename = varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
+  let name = basename;
+  let counter = 1;
+  while (sgNames[name]) {
+    name = `${basename}_${counter++}`;
+  }
+
+  return (sgNames[name] = sgNames[channel][range] = name);
 }
 
 export function positionalProjections(selCmpt: SelectionComponent) {

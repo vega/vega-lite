@@ -49,10 +49,6 @@
                         "price_end"
                     ],
                     "offset": "zero"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 }
             ]
         },
@@ -280,6 +276,9 @@
                                     "y2": {
                                         "scale": "y",
                                         "field": "price_start"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                                     }
                                 }
                             }

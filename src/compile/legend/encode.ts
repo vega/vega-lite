@@ -1,23 +1,36 @@
 import {isArray} from 'vega-util';
+
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDefWithCondition} from '../../fielddef';
+import {
+  Conditional,
+  FieldDef,
+  FieldDefWithCondition,
+  hasConditionalValueDef,
+  isTimeFieldDef,
+  isValueDef,
+  MarkPropFieldDef,
+  ValueDef,
+  ValueDefWithCondition,
+} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {keys, without} from '../../util';
-import {LegendType} from '../../vega.schema';
+import {keys} from '../../util';
+import {LegendType, VgEncodeEntry} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType): VgEncodeEntry {
   if (type === 'gradient') {
     return undefined;
   }
 
-  let out: any = {};
-  const mark = model.mark();
+  let out = {
+    ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
+    ...mixins.color(model)
+  };
 
-  switch (mark) {
+  switch (model.mark) {
     case BAR:
     case TICK:
     case TEXT:
@@ -25,7 +38,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
     case CIRCLE:
     case SQUARE:
-      out.shape = {value: mark};
+      out.shape = {value: model.mark};
       break;
     case POINT:
     case LINE:
@@ -35,40 +48,56 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
       break;
   }
 
-  const filled = model.markDef.filled;
+  const {markDef, encoding} = model;
+  const filled = markDef.filled;
 
-  let config = channel === COLOR ?
-      /* For color's legend, do not set fill (when filled) or stroke (when unfilled) property from config because the legend's `fill` or `stroke` scale should have precedence */
-      without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke', 'strokeDash', 'strokeDashOffset']) :
-      /* For other legend, no need to omit. */
-      FILL_STROKE_CONFIG;
-
-  config = without(config, ['strokeDash', 'strokeDashOffset']);
-
-  applyMarkConfig(out, model, config);
-
-  if (channel !== COLOR) {
-    const colorMixins = mixins.color(model);
-
-    // If there are field for fill or stroke, remove them as we already apply channels.
-    if (colorMixins.fill && (colorMixins.fill['field'] || colorMixins.fill['value'] === 'transparent')) {
-      delete colorMixins.fill;
+  if (out.fill) {
+    // for fill legend, we don't want any fill in symbol
+    if (channel === 'fill' || (filled && channel === COLOR)) {
+      delete out.fill;
+    } else {
+      if (out.fill['field']) {
+        // For others, remove fill field
+        delete out.fill;
+      } else if (isArray(out.fill)) {
+        const fill = getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
+        if (fill) {
+          out.fill = {value: fill};
+        }
+      }
     }
-    if (colorMixins.stroke && (colorMixins.stroke['field'] || colorMixins.stroke['value'] === 'transparent')) {
-      delete colorMixins.stroke;
+  }
+
+  if (out.stroke) {
+    if (channel === 'stroke' || (!filled && channel === COLOR)) {
+      delete out.stroke;
+    } else {
+      if (out.stroke['field']) {
+        // For others, remove stroke field
+        delete out.stroke;
+      } else if (isArray(out.stroke)) {
+        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) || markDef.stroke || (!filled && markDef.color);
+        if (stroke) {
+          out.stroke = {value: stroke};
+        }
+      }
     }
-    out = {...out, ...colorMixins};
+  }
+
+  if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke) {
+    // for non color channel's legend, we need to override symbol stroke config from Vega config
+    out.stroke = {value: 'transparent'};
   }
 
   if (channel !== SHAPE) {
-    const shapeDef = model.encoding.shape;
-    if (isValueDef(shapeDef)) {
-      out.shape = {value: shapeDef.value};
+    const shape = getFirstConditionValue(encoding.shape) || markDef.shape;
+    if (shape) {
+      out.shape = {value: shape};
     }
   }
 
   if (channel !== OPACITY) {
-    const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
+    const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
     }
@@ -83,7 +112,7 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   let out: any = {};
 
   if (type === 'gradient') {
-    const opacity = getOpacityValue(model.encoding.opacity) || model.markDef.opacity;
+    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
     }
@@ -114,14 +143,28 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   return keys(out).length > 0 ? out : undefined;
 }
 
-function getOpacityValue(opacityDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>): number {
-  if (isValueDef(opacityDef)) {
-    if (hasConditionalValueDef(opacityDef)) {
-      const values = isArray(opacityDef.condition) ? opacityDef.condition.map(c => c.value) : [opacityDef.condition.value];
-      return Math.max.apply(null, [opacityDef.value].concat(values));
-    } else {
-      return opacityDef.value as number;
-    }
+function getMaxValue(channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>) {
+  return getConditionValue(channelDef,
+    (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any)
+  );
+}
+
+function getFirstConditionValue(channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>) {
+  return getConditionValue(channelDef,
+    (v: number, conditionalDef) => v !== undefined ? v : conditionalDef.value
+  );
+}
+
+function getConditionValue<T>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
+  reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
+): T {
+
+  if (hasConditionalValueDef(channelDef)) {
+    return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition])
+      .reduce(reducer, channelDef.value as any);
+  } else if (isValueDef(channelDef)) {
+    return channelDef.value as any;
   }
   return undefined;
 }

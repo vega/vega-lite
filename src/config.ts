@@ -149,7 +149,7 @@ export interface VLOnlyConfig {
 
   /**
    * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values are filtered.
+   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   invalidValues?: 'filter' | null;
@@ -195,19 +195,6 @@ export interface StyleConfigIndex {
   [style: string]: VgMarkConfig;
 }
 
-export type AreaOverlay = 'line' | 'linepoint' | 'none';
-
-export interface OverlayConfig {
-  /**
-   * Whether to overlay line with point.
-   */
-  line?: boolean;
-
-  /**
-   * Type of overlay for area mark (line or linepoint)
-   */
-  area?: AreaOverlay;
-}
 
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
@@ -232,13 +219,8 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](mark.html#config).  */
   style?: StyleConfigIndex;
-
-  /**
-   * @hide
-   */
-  overlay?: OverlayConfig;
 }
 
 export const defaultConfig: Config = {
@@ -262,6 +244,7 @@ export const defaultConfig: Config = {
   square: {},
   text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
+  trail: {},
 
   box: {size: 14, extent: 1.5},
   boxWhisker: {},

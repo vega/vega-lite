@@ -144,7 +144,7 @@ export namespace message {
     return `Ignoring an invalid transform: ${stringify(transform)}.`;
   }
 
-  export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the the data from the secondary source.';
+  export const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.';
 
   // ENCODING & FACET
 
@@ -164,6 +164,17 @@ export namespace message {
     return `Invalid field type "${type}"`;
   }
 
+  export function nonZeroScaleUsedWithLengthMark(
+    mark: 'bar' | 'area', channel: Channel,
+    opt: {scaleType?: ScaleType, zeroFalse?: boolean}
+  ) {
+    const scaleText = opt.scaleType ? `${opt.scaleType} scale` :
+      opt.zeroFalse ? 'scale with zero=false' :
+      'scale with custom domain that excludes zero';
+
+    return `A ${scaleText} is used with ${mark} mark. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
+  }
+
   export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
     return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
   }
@@ -175,6 +186,12 @@ export namespace message {
   export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
     return `Invalid field type "${type}" for channel "${channel}", using "${newType}" instead.`;
   }
+  export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean, stroke?: boolean}) {
+    const {fill, stroke} = opt;
+    return `Dropping color ${type} as the plot also has ` + (
+      fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
+    );
+  }
 
   export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
@@ -182,6 +199,8 @@ export namespace message {
   export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
     return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;
   }
+
+  export const LINE_WITH_VARYING_SIZE = 'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
     return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
@@ -201,6 +220,11 @@ export namespace message {
 
   // Mark
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
+
+  export function lineWithRange(hasX2: boolean, hasY2: boolean) {
+    const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
+    return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
+  }
 
   export function unclearOrientContinuous(mark: Mark) {
     return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;

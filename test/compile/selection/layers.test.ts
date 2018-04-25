@@ -171,10 +171,16 @@ describe('Layered Selections', function() {
         "clip": true,
         "encode": {
           "enter": {
-            "fill": {"value": "transparent"},
-            "stroke": {"value": "white"}
+            "fill": {"value": "transparent"}
           },
           "update": {
+            "stroke": [
+              {
+                "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                "value": "white"
+              },
+              {"value": null}
+            ],
             "x": [
               {
                 "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",

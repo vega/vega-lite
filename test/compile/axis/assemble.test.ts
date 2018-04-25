@@ -22,6 +22,16 @@ describe('compile/axis/assemble', () => {
       assert.isUndefined(axis.encode.labels);
     });
 
+    it('outputs grid axis with custom zindex', () => {
+      const axisCmpt = new AxisComponent({
+        orient: 'left',
+        grid: true,
+        zindex: 3
+      });
+      const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
+      assert.equal(axis.zindex, 3);
+    });
+
     it('outputs main axis without grid encode blocks', () => {
       const axisCmpt = new AxisComponent({
         orient: 'left',

@@ -316,7 +316,16 @@
     "legends": [
         {
             "stroke": "trellis_barley_color",
-            "title": "year"
+            "title": "year",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

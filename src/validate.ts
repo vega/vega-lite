@@ -16,6 +16,7 @@ export interface RequiredChannelMap {
 export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
   text: ['text'],
   line: ['x', 'y'],
+  trail: ['x', 'y'],
   area: ['x', 'y']
 };
 
@@ -29,8 +30,9 @@ export interface SupportedChannelMap {
  * Supported Encoding Channel for each mark type
  */
 export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
-  bar:      toSet(['row', 'column', 'x', 'y', 'size', 'color', 'fill', 'stroke', 'detail']),
-  line:     toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'color', 'detail']),                    // TODO: add size when Vega supports
+  bar: toSet(['row', 'column', 'x', 'y', 'size', 'color', 'fill', 'stroke', 'detail']),
+  line: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'color', 'detail']),
+  trail: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'color', 'detail', 'size']),
   area: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'detail']),
   tick: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'detail']),
   circle: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'size', 'detail']),

@@ -73,12 +73,12 @@ export interface Encoding<F> {
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
    * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
-   * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
+   * `"text"`, `"trail"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
    * _Note:_
-   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
    * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
    */
   color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
@@ -87,7 +87,7 @@ export interface Encoding<F> {
    * Fill color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ The `fill` channel has higher precedence than `color` and will override color value.
+   * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
    */
   fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -96,7 +96,7 @@ export interface Encoding<F> {
    * Stroke color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
    *
-   * _Note:_ The `stroke` channel has higher precedence than `color` and will override color value.
+   * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
   stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -113,7 +113,7 @@ export interface Encoding<F> {
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
    * - For `"text"` – the text's font size.
-   * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
+   * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
   size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
@@ -129,7 +129,7 @@ export interface Encoding<F> {
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
-   * in line and area marks without mapping data to a specific visual channel.
+   * in line, trail, and area marks without mapping data to a specific visual channel.
    */
   detail?: FieldDef<F> | FieldDef<F>[];
 
@@ -146,7 +146,7 @@ export interface Encoding<F> {
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
 
   /**
    * A URL to load upon mouse click.
@@ -155,8 +155,8 @@ export interface Encoding<F> {
 
   /**
    * Order of the marks.
-   * - For stacked marks, this `order` channel encodes stack order.
-   * - For line marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/layer_connected_scatterplot.html).
+   * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
+   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
@@ -213,12 +213,18 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     if (channel === 'size' && mark === 'line') {
       const fieldDef = getFieldDef(encoding[channel]);
       if (fieldDef && fieldDef.aggregate) {
-        log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
+        log.warn(log.message.LINE_WITH_VARYING_SIZE);
         return normalizedEncoding;
       }
     }
 
-    if (channel === 'detail' || channel === 'order') {
+    // Drop color if either fill or stroke is specified
+     if (channel === 'color' && ('fill' in encoding || 'stroke' in encoding) ) {
+       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+       return normalizedEncoding;
+    }
+
+    if (channel === 'detail' || channel === 'order' || (channel === 'tooltip' && isArray(encoding[channel]))) {
       const channelDef = encoding[channel];
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)

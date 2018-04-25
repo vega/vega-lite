@@ -63,32 +63,31 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 }
 ```
 
-A mark definition object can contains the following properties and [all properties of the mark config](#config):
-
-{% include table.html props="type,style,clip" source="MarkDef" %}
+To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists all standard mark properties.  In addition, some marks may be special mark properties (listed in their documentation page).
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
 
-### Example: Filled Points
 
-By default, `point` marks have filled borders and are transparent inside. Setting `filled` to `true` creates filled points instead.
+### General Mark Properties
 
-<span class="vl-example" data-name="point_filled"></span>
+{% include table.html props="type,style,clip" source="MarkDef" %}
 
-### Example: Interpolate with `monotone`
+{:#color}
+### Color Properties
 
-<span class="vl-example" data-name="line_monotone"></span>
+{% include table.html props="filled,color,fill,stroke,opacity,fillOpacity,strokeOpacity" source="MarkDef" %}
 
-### Example: Interpolate with `line-step` (Step-Chart)
+{:#stroke}
+### Stroke Style Properties
 
-<span class="vl-example" data-name="line_step"></span>
+{% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkDef" %}
 
-### Example: Offsetting Labels
+{:#hyperlink}
+### Hyperlink Properties
 
-You can use [`text`](text.html) marks as labels and set its offset (`dx` or `dy`), `align`, and `baseline` properties of the mark definition.
+Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. A `cursor` property can also be provided to serve as affordance for the links.
 
-<span class="vl-example" data-name="layer_bar_labels"></span>
-
+{% include table.html props="href,cursor" source="MarkDef" %}
 
 {:#config}
 ## Mark Config
@@ -117,54 +116,9 @@ You can use [`text`](text.html) marks as labels and set its offset (`dx` or `dy`
 
 The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
 
+The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`).  For mark-specific config, please see the documentation for each mark type.
+
 Note: If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
-
-The rest of this section describe groups of properties supported by the `mark` config and all mark-specific configs.  Besides the properties listed below, [`"bar"`](bar.html#config), [`"text"`](text.html#config), and [`"tick"`](tick.html#config) marks contain additional mark-specific config properties:
-
-### Color
-
-{% include table.html props="filled,color,fill,stroke" source="MarkConfig" %}
-
-### Opacity
-
-{% include table.html props="opacity,fillOpacity,strokeOpacity" source="MarkConfig" %}
-
-### Stroke Style
-
-{% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkConfig" %}
-
-{:#hyperlink}
-### Hyperlink Properties
-
-Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. A `cursor` property can also be provided to serve as affordance for the links.
-
-{% include table.html props="href,cursor" source="MarkConfig" %}
-
-<!-- one example for custom fill/stroke -->
-
-{:#interpolate}
-### Interpolation (for Line and Area Marks)
-
-{% include table.html props="interpolate,tension" source="MarkConfig" %}
-
-{:#orient}
-### Orientation (for Bar, Tick, Line, and Area Marks)
-
-{% include table.html props="orient" source="MarkConfig" %}
-
-### Shape Config (for Point)
-
-{% include table.html props="shape" source="MarkConfig" %}
-
-
-### Point Size Config (for Point, Circle, and Square Marks)
-
-{% include table.html props="size" source="MarkConfig" %}
-
-
-### Text Config (for Text Marks)
-
-{% include table.html props="angle,align,baseline,dx,dy,font,fontSize,fontStyle,fontWeight,radius,text,theta" source="MarkConfig" %}
 
 
 {:#style-config}

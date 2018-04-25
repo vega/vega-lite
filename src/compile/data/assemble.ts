@@ -17,6 +17,7 @@ import {LookupNode} from './lookup';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
+import {WindowTransformNode} from './window';
 
 /**
  * Print debug information for dataflow tree.
@@ -91,6 +92,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
+      node instanceof WindowTransformNode ||
       node instanceof IdentifierNode) {
       dataSource.transform.push(node.assemble());
     }
@@ -227,7 +229,13 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
   });
 
   // move sources without transforms (the ones that are potentially used in lookups) to the beginning
-  data.sort((a, b) => (a.transform || []).length === 0 ? -1 : ((b.transform || []).length === 0 ? 1 : 0));
+  let whereTo = 0;
+  for (let i = 0; i < data.length; i++) {
+    const d = data[i];
+    if ((d.transform || []).length === 0 && !d.source) {
+      data.splice(whereTo++, 0, data.splice(i, 1)[0]);
+    }
+  }
 
   // now fix the from references in lookup transforms
   for (const d of data) {

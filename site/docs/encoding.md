@@ -20,6 +20,11 @@ The `encoding` property of a single view specification represents the mapping be
     "x2": ...,
     "y2": ...,
 
+    // Geographic Position Channels
+    "longtitude": ...,
+    "latitude": ...,
+    ...
+
     // Mark Properties Channels
     "color": ...,
     "opacity": ...,
@@ -32,6 +37,9 @@ The `encoding` property of a single view specification represents the mapping be
 
     // Hyperlink Channel
     "href": ...,
+
+    // Key Channel
+    "key": ...,
 
     // Order Channel
     "order": ...,
@@ -53,10 +61,12 @@ The `encoding` property of a single view specification represents the mapping be
 The keys in the `encoding` object are encoding channels.  Vega-lite supports the following groups of encoding channels
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`
+- [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `color`, `opacity`, `shape`, `size`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
 - [Level of Detail Channel](#detail): `detail`
+- [Key Channel](#key): `key`
 - [Order Channel](#order): `order`
 - [Facet Channels](#facet): `row`, `column`
 
@@ -90,7 +100,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 All field definitions support the following properties:
 
-{% include table.html props="field,type,bin,timeUnit,aggregate" source="FieldDef" %}
+{% include table.html props="field,type,bin,timeUnit,aggregate,title" source="FieldDef" %}
 
 In addition, field definitions for different encoding channels may support the following properties:
 
@@ -163,6 +173,9 @@ In addition, `longitude2` and `latitude2` can specify the span of geographically
 
 {% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
 
+See [an example that uses `longitude` and `latitude` channels in a map](https://vega.github.io/vega-lite/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map](https://vega.github.io/vega-lite/examples/geo_rule.html).
+
+
 {:#mark-prop}
 ## Mark Property Channels
 
@@ -201,7 +214,6 @@ Similar to mark property channels, definitions of text and tooltip channels can 
 
 {% include table.html props="text,tooltip" source="Encoding" %}
 
-
 {:#text-field-def}
 ### Text and Tooltip Field Definition
 
@@ -216,6 +228,10 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="TextValueDefWithCondition" %}
+
+### Multiple Field Definitions for Tooltips
+
+Similar to [`detail`](#detail), you can use an array of field definitions. Vega-Lite will display a tooltip with multiple fields. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. See the [tooltip](tooltip.html) page for details.
 
 {:#href}
 ## Hyperlink Channel
@@ -273,7 +289,6 @@ from one year to another within a country (as opposed to jumping between countri
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
 
 {:#key}
-
 ## Key Channel
 
 The key channel can enable object constancy for transitions over dynamic data. When a visualization’s data is updated (via [Vega's View API](https://vega.github.io/vega/docs/api/view/#data)), the key value will be used to match data elements to existing mark instances.

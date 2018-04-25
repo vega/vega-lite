@@ -4,6 +4,7 @@ import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
+import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
 export interface VgData {
@@ -266,7 +267,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -403,7 +404,7 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -448,10 +449,10 @@ export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega 
 
 export type VgSort = {
   field: string;
-  order?: 'ascending' | 'descending';
+  order?: VgComparatorOrder;
 } | {
   field: string[];
-  order?: ('ascending' | 'descending')[];
+  order?: (VgComparatorOrder)[];
 };
 
 export interface VgImputeTransform {
@@ -962,7 +963,7 @@ export type VerticalAlign = 'top' | 'middle' | 'bottom';
 export interface VgMarkConfig {
 
   /**
-   * Default Fill Color.  This has higher precedence than config.color
+   * Default Fill Color.  This has higher precedence than `config.color`
    *
    * __Default value:__ (None)
    *
@@ -970,7 +971,7 @@ export interface VgMarkConfig {
   fill?: string;
 
   /**
-   * Default Stroke Color.  This has higher precedence than config.color
+   * Default Stroke Color.  This has higher precedence than `config.color`
    *
    * __Default value:__ (None)
    *
@@ -1018,6 +1019,13 @@ export interface VgMarkConfig {
   strokeWidth?: number;
 
   /**
+   * The stroke cap for line ending style. One of `"butt"`, `"round"`, or `"square"`.
+   *
+   * __Default value:__ `"square"`
+   */
+  strokeCap?: 'butt' | 'round' | 'square';
+
+  /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
    */
   strokeDash?: number[];
@@ -1034,7 +1042,7 @@ export interface VgMarkConfig {
    * - For bar, rule and tick, this determines whether the size of the bar and tick
    * should be applied to x or y dimension.
    * - For area, this property determines the orient property of the Vega output.
-   * - For line, this property determines the sort order of the points in the line
+   * - For line and trail marks, this property determines the sort order of the points in the line
    * if `config.sortLineBy` is not specified.
    * For stacked charts, this is always determined by the orientation of the stack;
    * therefore explicitly specified value will be ignored.
@@ -1176,6 +1184,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fill: 1,
   fillOpacity: 1,
   stroke: 1,
+  strokeCap: 1,
   strokeWidth: 1,
   strokeOpacity: 1,
   strokeDash: 1,
@@ -1298,4 +1307,23 @@ export interface VgTitleConfig {
    * Default title orientation ("top", "bottom", "left", or "right")
    */
   orient?: TitleOrient;
+}
+
+export type VgComparatorOrder = 'ascending' | 'descending';
+
+export interface VgComparator {
+  field?: string | string[];
+  order?: VgComparatorOrder | VgComparatorOrder[];
+}
+
+export interface VgWindowTransform {
+  type: 'window';
+  params?: Number[];
+  as?: string[];
+  ops?: (AggregateOp | WindowOnlyOp)[];
+  fields?: string[];
+  frame?: Number[];
+  ignorePeers?: Boolean;
+  groupby?: string[];
+  sort?: VgComparator;
 }

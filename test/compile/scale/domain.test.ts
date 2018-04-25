@@ -817,5 +817,16 @@ describe('compile/scale', () => {
       });
       assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'min', field: 'a', order: 'descending'});
     });
+
+    it('should return sort spec using derived sort index', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', sort: ['B', 'A', 'C']},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'min', field: 'x_a_sort_index', order: 'ascending'});
+    });
   });
 });

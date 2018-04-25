@@ -44,10 +44,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"power\"])",
                     "as": "power"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
                 }
             ]
         }
@@ -78,6 +74,9 @@
                     "y": {
                         "scale": "y",
                         "field": "power"
+                    },
+                    "defined": {
+                        "signal": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
                     }
                 }
             }

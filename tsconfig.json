@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "./build/src/",
     "target": "es5",
-    "module": "commonjs",
+    "module": "ES2015",
     "moduleResolution": "node",
     "declaration": true,
     "forceConsistentCasingInFileNames": false,
@@ -18,13 +18,8 @@
     "removeComments": false,
     "strictFunctionTypes": false,
     "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "importHelpers": true
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "test-runtime/**/*.ts",
-    "examples/**/*.ts",
-    "typings/*.d.ts"
-  ]
+  "files": ["src/index.ts"]
 }

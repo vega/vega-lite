@@ -352,6 +352,9 @@
                     "encode": {
                         "symbols": {
                             "update": {
+                                "fill": {
+                                    "value": "transparent"
+                                },
                                 "stroke": {
                                     "value": "#666"
                                 }

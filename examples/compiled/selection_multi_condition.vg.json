@@ -448,8 +448,12 @@
             "transform": [
                 {
                     "type": "voronoi",
-                    "x": "datum.x",
-                    "y": "datum.y",
+                    "x": {
+                        "expr": "datum.datum.x || 0"
+                    },
+                    "y": {
+                        "expr": "datum.datum.y || 0"
+                    },
                     "size": [
                         {
                             "signal": "width"
@@ -469,9 +473,6 @@
                 "enter": {
                     "fill": {
                         "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "white"
                     }
                 },
                 "update": {
@@ -509,6 +510,15 @@
                         },
                         {
                             "value": 0
+                        }
+                    ],
+                    "stroke": [
+                        {
+                            "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
+                            "value": "white"
+                        },
+                        {
+                            "value": null
                         }
                     ]
                 }

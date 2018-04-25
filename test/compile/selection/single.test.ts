@@ -1,9 +1,10 @@
 /* tslint:disable quotemark */
-
 import {assert} from 'chai';
+
 import * as selection from '../../../src/compile/selection/selection';
 import single from '../../../src/compile/selection/single';
 import {parseUnitModelWithScale} from '../../util';
+
 
 describe('Single Selection', function() {
   const model = parseUnitModelWithScale({

@@ -1,4 +1,5 @@
 import * as log from '../../../log';
+import {isPathMark} from '../../../mark';
 import {positionalProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
@@ -11,8 +12,8 @@ const nearest:TransformCompiler = {
 
   marks: function(model, selCmpt, marks) {
     const {x, y} = positionalProjections(selCmpt);
-    const markType = model.mark();
-    if (markType === 'line' || markType === 'area') {
+    const markType = model.mark;
+    if (isPathMark(markType)) {
       log.warn(log.message.nearestNotSupportForContinuous(markType));
       return marks;
     }
@@ -31,8 +32,8 @@ const nearest:TransformCompiler = {
       },
       transform: [{
         type: 'voronoi',
-        x: (x || (!x && !y)) ? 'datum.x' : {expr: '0'},
-        y: (y || (!x && !y)) ? 'datum.y' : {expr: '0'},
+        x: {expr: (x || (!x && !y)) ? 'datum.datum.x || 0' : '0'},
+        y: {expr: (y || (!x && !y)) ? 'datum.datum.y || 0' : '0'},
         size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
       }]
     };
@@ -56,4 +57,4 @@ const nearest:TransformCompiler = {
   }
 };
 
-export {nearest as default};
+export default nearest;

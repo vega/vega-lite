@@ -3,7 +3,7 @@ import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../../predicate';
-import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -23,6 +23,7 @@ import {LookupNode} from './lookup';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
+import {WindowTransformNode} from './window';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
@@ -68,7 +69,6 @@ export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlo
       } else if (isFieldOneOfPredicate(filter)) {
         val = (filter.oneOf || filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
-
       if (val) {
         if (isDateTime(val)) {
           parse[filter['field']] = 'date';
@@ -97,6 +97,8 @@ export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlo
       }
     } else if (isLookup(t)) {
       parent = LookupNode.make(parent, model, t, lookupCounter++);
+    } else if (isWindow(t)) {
+      parent = new WindowTransformNode(parent, t);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
@@ -126,6 +128,9 @@ Description of the dataflow (http://asciiflow.com/):
       Timeunit
          |
          v
+Formula From Sort Array
+         |
+         v
       +--+--+
       | Raw |
       +-----+
@@ -135,9 +140,6 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
        Stack
-         |
-         v
-     Path Order
          |
          v
   Invalid Filter
@@ -168,7 +170,7 @@ export function parseData(model: Model): DataComponent {
   // field is available for all subsequent datasets. Additional identifier
   // transforms will be necessary when new tuples are constructed
   // (e.g., post-aggregation).
-  if (requiresSelectionId(model) && !model.parent) {
+  if (requiresSelectionId(model) && (isUnitModel(model) || isLayerModel(model))) {
     head = new IdentifierNode(head);
   }
 
@@ -202,6 +204,7 @@ export function parseData(model: Model): DataComponent {
     }
 
     head = TimeUnitNode.makeFromEncoding(head, model) || head;
+    head = CalculateNode.parseAllForSortIndex(head, model);
   }
 
   // add an output node pre aggregation

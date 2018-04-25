@@ -1,9 +1,21 @@
 import {isArray} from 'vega-util';
-import {NONPOSITION_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, FieldDef, getFieldDef, isConditionalSelection, isValueDef} from '../../fielddef';
+
+import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
+import {
+  ChannelDef,
+  FieldDef,
+  FieldDefWithCondition,
+  getFieldDef,
+  isConditionalSelection,
+  isValueDef,
+  TextFieldDef,
+  ValueDefWithCondition,
+  vgField,
+} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
+import {hasContinuousDomain} from '../../scale';
 import {contains} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
@@ -11,34 +23,82 @@ import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
+export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: false}): VgEncodeEntry {
+  const {markDef, encoding, config} = model;
+  const {filled, type: markType} = markDef;
 
-export function color(model: UnitModel) {
-  const config = model.config;
-  const {filled, type: markType} = model.markDef;
-  const vgChannel = filled ? 'fill' : 'stroke';
+  const configValue = {
+    fill: getMarkConfig('fill', markDef, config),
+    stroke: getMarkConfig('stroke', markDef, config),
+    color: getMarkConfig('color', markDef, config)
+  };
 
-  return {
+  const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ? 'transparent' : undefined;
+
+  const defaultValue = {
+    fill: markDef.fill || configValue.fill ||
     // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
-    ...(
-      contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ?
-      {fill: {value: 'transparent'}}:
-      {}
-    ),
-
-    ...nonPosition('color', model, {
-      vgChannel,
-      // Mark definition has higher precedence than config;
-      // fill/stroke has higher precedence than color.
-      defaultValue: model.markDef[vgChannel] ||
-        model.markDef.color ||
-        getMarkConfig(vgChannel, model.markDef, config) ||
-        getMarkConfig('color', model.markDef, config)
-    }),
-    // fill / stroke encodings have higher precedence than color encoding
-    ...nonPosition('fill', model),
-    ...nonPosition('stroke', model)
+      transparentIfNeeded,
+    stroke: markDef.stroke || configValue.stroke
   };
+
+  const colorVgChannel = filled ? 'fill' : 'stroke';
+
+  const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
+    ...(defaultValue.fill ? {
+      fill: {value: defaultValue.fill}
+    } : {}),
+    ...(defaultValue.stroke ? {
+      stroke: {value: defaultValue.stroke}
+    } : {}),
+  };
+
+  if (encoding.fill || encoding.stroke) {
+    // ignore encoding.color, markDef.color, config.color
+    if (markDef.color) {
+      // warn for markDef.color  (no need to warn encoding.color as it will be dropped in normalized already)
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
+    }
+
+    return {
+      ...nonPosition('fill', model, {defaultValue: defaultValue.fill || transparentIfNeeded}),
+      ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
+    };
+  } else if (encoding.color) {
+
+    return {
+      ...fillStrokeMarkDefAndConfig,
+      // override them with encoded color field
+      ...nonPosition('color', model, {
+        vgChannel: colorVgChannel,
+        // apply default fill/stroke first, then color config, then transparent if needed.
+        defaultValue: markDef[colorVgChannel] || markDef.color || configValue[colorVgChannel] || configValue.color || (filled ? transparentIfNeeded : undefined)
+      })
+    };
+  } else if (markDef.fill || markDef.stroke) {
+    // Ignore markDef.color, config.color
+    if (markDef.color) {
+      log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
+    }
+    return fillStrokeMarkDefAndConfig;
+  } else if (markDef.color) {
+    return {
+      ...fillStrokeMarkDefAndConfig, // in this case, fillStrokeMarkDefAndConfig only include config
+
+      // override config with markDef.color
+      [colorVgChannel]: {value: markDef.color}
+    };
+  } else if (configValue.fill || configValue.stroke) {
+    // ignore config.color
+    return fillStrokeMarkDefAndConfig;
+  } else if (configValue.color) {
+    return {
+      ...(transparentIfNeeded ? {fill: {value: 'transparent'}} : {}),
+      [colorVgChannel]: {value: configValue.color}
+    };
+  }
+  return {};
 }
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
@@ -48,7 +108,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...markDefProperties(model.markDef, ignore),
     ...color(model),
     ...nonPosition('opacity', model),
-    ...text(model, 'tooltip'),
+    ...tooltip(model),
     ...text(model, 'href')
   };
 }
@@ -67,6 +127,37 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
     return {[prop]: {value: value}};
   }
   return undefined;
+}
+
+function validPredicate(vgRef: string) {
+  return `${vgRef} !== null && !isNaN(${vgRef})`;
+}
+
+export function defined(model: UnitModel): VgEncodeEntry {
+  if (model.config.invalidValues === 'filter') {
+    const fields = ['x', 'y'].map((channel: PositionScaleChannel) => {
+        const scaleComponent = model.getScaleComponent(channel);
+        if (scaleComponent) {
+          const scaleType = scaleComponent.get('type');
+
+          // Discrete domain scales can handle invalid values, but continuous scales can't.
+          if (hasContinuousDomain(scaleType)) {
+            return model.vgField(channel, {expr: 'datum'});
+          }
+        }
+        return undefined;
+      })
+      .filter(field => !!field)
+      .map(validPredicate);
+
+    if (fields.length > 0) {
+      return {
+        defined: {signal: fields.join(' && ')}
+      };
+    }
+  }
+
+  return {};
 }
 
 /**
@@ -119,8 +210,28 @@ function wrapCondition(
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'tooltip' | 'href' = 'text') {
+export function tooltip(model: UnitModel) {
+  const channel = 'tooltip';
   const channelDef = model.encoding[channel];
+  if (isArray(channelDef)) {
+    const keyValues = channelDef.map((fieldDef) => {
+      const key = fieldDef.title !== undefined ? fieldDef.title : vgField(fieldDef, {binSuffix: 'range'});
+      const value = ref.text(fieldDef, model.config).signal;
+      return `"${key}": ${value}`;
+    });
+    return {tooltip: {signal: `{${keyValues.join(', ')}}`}};
+  } else {
+    // if not an array, behave just like text
+    return textCommon(model, channel, channelDef);
+  }
+}
+
+export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
+  const channelDef = model.encoding[channel];
+  return textCommon(model, channel, channelDef);
+}
+
+function textCommon(model: UnitModel, channel: 'text' | 'href' | 'tooltip', channelDef: FieldDefWithCondition<TextFieldDef<string>> | ValueDefWithCondition<TextFieldDef<string>>) {
   return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }
 
@@ -194,14 +305,18 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
 export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x'|'y'|'xc'|'yc') {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-  const {encoding, stack} = model;
+  const {encoding, mark, stack} = model;
 
   const channelDef = encoding[channel];
+  const scaleName = model.scaleName(channel);
+  const scale = model.getScaleComponent(channel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
-    ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
+    ref.stackable(channel, encoding[channel], scaleName, scale, stack,
+      ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+    );
 
   return {
     [vgChannel || channel]: valueRef
@@ -213,15 +328,20 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
  * If channel is not specified, return one channel based on orientation.
  */
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
-  const {encoding, markDef, stack} = model;
+  const {encoding, mark, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
+  const scaleName = model.scaleName(baseChannel);
+  const scale = model.getScaleComponent(baseChannel);
 
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
-    ref.stackable2(channel, channelDef, encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
+    ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
+      ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+    );
+
   return {[channel]: valueRef};
 }

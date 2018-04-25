@@ -360,7 +360,6 @@
             "scale": "x",
             "orient": "bottom",
             "title": "Day",
-            "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
@@ -373,6 +372,7 @@
                     }
                 }
             },
+            "labelOverlap": true,
             "zindex": 1
         },
         {

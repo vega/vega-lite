@@ -165,6 +165,9 @@
                     "y": {
                         "scale": "y",
                         "field": "max_Horsepower"
+                    },
+                    "defined": {
+                        "signal": "datum[\"max_Horsepower\"] !== null && !isNaN(datum[\"max_Horsepower\"])"
                     }
                 }
             }
@@ -173,14 +176,16 @@
             "name": "layer_0_layer_1_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_6"
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 1
+                    },
                     "fill": {
                         "value": "darkred"
                     },
@@ -220,6 +225,9 @@
                     "y": {
                         "scale": "y",
                         "field": "min_Horsepower"
+                    },
+                    "defined": {
+                        "signal": "datum[\"min_Horsepower\"] !== null && !isNaN(datum[\"min_Horsepower\"])"
                     }
                 }
             }
@@ -228,14 +236,16 @@
             "name": "layer_1_layer_1_marks",
             "type": "symbol",
             "style": [
-                "point",
-                "pointOverlay"
+                "point"
             ],
             "from": {
                 "data": "data_4"
             },
             "encode": {
                 "update": {
+                    "opacity": {
+                        "value": 1
+                    },
                     "fill": {
                         "value": "#4c78a8"
                     },

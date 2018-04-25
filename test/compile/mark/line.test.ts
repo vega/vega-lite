@@ -2,10 +2,9 @@
 
 import {assert} from 'chai';
 
-import {COLOR, SIZE, X, Y} from '../../../src/channel';
+import {COLOR, X, Y} from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
 import * as log from '../../../src/log';
-import {LINE} from '../../../src/mark';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Line', function() {
@@ -78,7 +77,7 @@ describe('Mark: Line', function() {
 
       // If size field is dropped, then strokeWidth only have value
       assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
-      assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE, 'when the field is aggregated.'));
+      assert.equal(localLogger.warns[0], log.message.LINE_WITH_VARYING_SIZE);
     }));
   });
 

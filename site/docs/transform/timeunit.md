@@ -8,7 +8,7 @@ Time unit is used to discretize times in Vega-Lite. It can either be used [insid
 
 Vega-Lite supports the following time units:
 
-- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, , `"yearmonthdatehoursseconds"`.
+- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, `"yearmonthdatehoursminutesseconds"`.
 - `"quarter"`, `"quartermonth"`
 - `"month"`, `"monthdate"`
 - `"date"` (Day of month, i.e., 1 - 31)
@@ -56,6 +56,8 @@ A field definition can include a `timeUnit` property.  For example, the chart be
 Note that temporal fields use continuous scales by default for all mark types including `"bar"`.
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
+
+{:#ordinal}
 
 If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
 

@@ -12,24 +12,18 @@
 /scripts
 /site
 /test
-/test-gallery
 /test-runtime
 
 _config.yml
-bower.json
 build/examples
 build/test
-ChromeDriver.txt
-codecov.yml
 CONTRIBUTING.md
-gallery.html
 Gemfile
 Gemfile.lock
-nodemon.json
-test-gallery.html
 tsconfig.json
 tslint.json
 vl.sublime-project
 wdio.conf.js
-yarn-error.log
-yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

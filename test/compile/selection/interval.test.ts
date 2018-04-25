@@ -191,6 +191,28 @@ describe('Interval Selections', function() {
         }
       ]);
     });
+
+    it('namespaces signals when encoding/fields collide', function() {
+      const model2 = parseUnitModel({
+        "mark": "circle",
+        "encoding": {
+          "x": {"field": "x", "type": "quantitative"},
+          "y": {"field": "y", "type": "quantitative"}
+        }
+      });
+
+      const selCmpts2 = model2.component.selection = selection.parseUnitSelection(model2, {
+        "one": {
+          "type": "interval",
+          "encodings": ["x"],
+          "translate": false, "zoom": false
+        }
+      });
+
+      const sg = interval.signals(model, selCmpts2['one']);
+      assert.equal(sg[0].name, 'one_x');
+      assert.equal(sg[1].name, 'one_x_1');
+    });
   });
 
   it('builds modify signals', function() {
@@ -296,10 +318,18 @@ describe('Interval Selections', function() {
         "clip": true,
         "encode": {
           "enter": {
-            "fill": {"value": "transparent"},
-            "stroke": {"value": "white"}
+            "fill": {"value": "transparent"}
           },
           "update": {
+            "stroke": [
+              {
+                "test": "one_x[0] !== one_x[1]",
+                "value": "white"
+              },
+              {
+                "value": null
+              }
+            ],
             "x": [
               {
                 "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
@@ -379,14 +409,44 @@ describe('Interval Selections', function() {
         "clip": true,
         "encode": {
           "enter": {
-            "fill": {"value": "transparent"},
-            "stroke": {"value": "black"},
-            "strokeWidth": {"value": 4},
-            "strokeDash": {"value": [10, 5]},
-            "strokeDashOffset": {"value": 3},
-            "strokeOpacity": {"value": 0.25}
+            "fill": {"value": "transparent"}
           },
           "update": {
+            "stroke": [
+              {
+                "test": "thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]",
+                "value": "black"
+              },
+              {"value": null}
+            ],
+            "strokeWidth": [
+              {
+                "test": "thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]",
+                "value": 4
+              },
+              {"value": null}
+            ],
+            "strokeDash": [
+              {
+                "test": "thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]",
+                "value": [10, 5]
+              },
+              {"value": null}
+            ],
+            "strokeDashOffset": [
+              {
+                "test": "thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]",
+                "value": 3
+              },
+              {"value": null}
+            ],
+            "strokeOpacity": [
+              {
+                "test": "thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]",
+                "value": 0.25
+              },
+              {"value": null}
+            ],
             "x": {
               "signal": "thr_ee_x[0]"
             },

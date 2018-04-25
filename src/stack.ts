@@ -4,7 +4,7 @@ import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
 import {channelHasField, Encoding} from './encoding';
 import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFieldDef, vgField} from './fielddef';
 import * as log from './log';
-import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
+import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, Flag} from './util';
 
@@ -162,7 +162,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   return {
     groupbyChannel: dimensionDef ? dimensionChannel : undefined,
     fieldChannel,
-    impute: contains(['area', 'line'], mark),
+    impute: isPathMark(mark),
     stackBy,
     offset
   };

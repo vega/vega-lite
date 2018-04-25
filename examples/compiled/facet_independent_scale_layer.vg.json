@@ -340,6 +340,9 @@
                                     "y": {
                                         "scale": "y",
                                         "field": "sum_people"
+                                    },
+                                    "defined": {
+                                        "signal": "datum[\"sum_people\"] !== null && !isNaN(datum[\"sum_people\"])"
                                     }
                                 }
                             }
@@ -492,7 +495,16 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "gender"
+            "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {

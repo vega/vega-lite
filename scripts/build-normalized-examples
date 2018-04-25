@@ -10,7 +10,7 @@
  */
 
 const fs = require('fs');
-const vl = require('../build/src/index.js');
+const vl = require('../build/vega-lite');
 const stringify = require('json-stable-stringify');
 
 const DIR = __dirname + '/..';

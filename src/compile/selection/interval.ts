@@ -132,7 +132,13 @@ const interval:SelectionCompiler = {
     // be interacted with (e.g., dragging it around).
     const {fill, fillOpacity, ...stroke} = selCmpt.mark;
     const vgStroke = keys(stroke).reduce((def, k) => {
-      def[k] = {value: stroke[k]};
+      def[k] = [{
+        test: [
+          xi !== null && `${name}_x[0] !== ${name}_x[1]`,
+          yi != null && `${name}_y[0] !== ${name}_y[1]`,
+        ].filter(x => x).join(' && '),
+        value: stroke[k]
+      }, {value: null}];
       return def;
     }, {});
 
@@ -153,15 +159,14 @@ const interval:SelectionCompiler = {
       clip: true,
       encode: {
         enter: {
-          fill: {value: 'transparent'},
-          ...vgStroke
+          fill: {value: 'transparent'}
         },
-        update: update
+        update: {...update, ...vgStroke}
       }
     });
   }
 };
-export {interval as default};
+export default interval;
 
 /**
  * Returns the visual and data signals for an interval selection.

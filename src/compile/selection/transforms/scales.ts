@@ -1,5 +1,5 @@
 import {stringValue} from 'vega-util';
-import {Channel} from '../../../channel';
+import {Channel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {UnitModel} from '../../unit';
@@ -28,6 +28,12 @@ const scaleBindings:TransformCompiler = {
 
       scale.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
       bound.push(channel);
+
+      // Bind both x/y for diag plot of repeated views.
+      if (model.repeater && model.repeater.row === model.repeater.column) {
+        const scale2 = model.getScaleComponent(channel === X ? Y : X);
+        scale2.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
+      }
     });
   },
 
@@ -62,7 +68,7 @@ const scaleBindings:TransformCompiler = {
   }
 };
 
-export {scaleBindings as default};
+export default scaleBindings;
 
 export function domain(model: UnitModel, channel: Channel) {
   const scale = stringValue(model.scaleName(channel));

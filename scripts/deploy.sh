@@ -7,8 +7,8 @@ scripts/pre-deploy.sh
 
 # 1. NPM PUBLISH
 
-npm run clean
-npm run build
+yarn clean
+yarn build
 
 # Check if all required files are here
 if ! [ -f build/vega-lite.js ]; then
@@ -40,6 +40,7 @@ if ! [ -f build/src/index.d.ts ]; then
   exit 1;
 fi
 
+yarn tsc -m commonjs
 npm publish
 
 # exit if npm publish failed
@@ -49,14 +50,13 @@ if [[ $rc != 0 ]]; then
 	exit $rc;
 fi
 
-# 2. BOWER PUBLISH
+# 2. TAG RELEASE
 
-# read version
 gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh vega-lite)
 
 git checkout head
-npm run build
+yarn build && yarn tsc -m commonjs
 # add the compiled files, commit and tag!
 git add build/** -f
 
@@ -69,11 +69,9 @@ git tag -am "Release v$version." "v$version"
 # swap back to the clean master and push the new tag
 git checkout master
 git push --tags
-# now the published tag contains build files which work great with bower.
 
 # 3. SCHEMA
 scripts/deploy-schema.sh
 
 # 4. GITHUB PAGES PUBLISH
 scripts/deploy-gh.sh
-

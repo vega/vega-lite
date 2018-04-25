@@ -23,13 +23,38 @@ permalink: /docs/point.html
 - TOC
 {:toc}
 
-## Dot Plot
+{:#properties}
+## Point Mark Properties
+
+
+{: .suppress-error}
+```json
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "point",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+```
+
+A point mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
+
+{% include table.html props="shape,size" source="MarkDef" %}
+
+
+## Examples
+
+### Dot Plot
 
 Mapping a field to either only `x` or only `y` of `point` marks creates a **dot plot**.
 
 <span class="vl-example" data-name="point_1d"></span>
 
-## Scatter Plot
+### Scatter Plot
 
 Mapping fields to both the `x` and `y` channels creates a scatter plot.
 
@@ -40,7 +65,7 @@ By default, `point` marks only have borders and are transparent inside.  You can
 
 <span class="vl-example" data-name="point_filled"></span>
 
-## Bubble Plot
+### Bubble Plot
 
 By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
@@ -48,18 +73,19 @@ By mapping a third field to the `size` channel in the [scatter plot](#scatter), 
 
 {:#color}
 
-## Scatter Plot with Color and/or Shape
+### Scatter Plot with Color and/or Shape
 
 Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
 For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
 <span class="vl-example" data-name="point_color_with_shape"></span>
 
-## Geo Point
+### Geo Point
 
 By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can visualize geographic points. The example below shows major airports in the US.
 
 <span class="vl-example" data-name="geo_point"></span>
+
 
 {:#config}
 ## Point Config
@@ -79,4 +105,5 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 The `point` property of the top-level [`config`](config.html) object sets the default properties for all point marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-For the list of all supported properties, please see the [mark config documentation](mark.html#config).
+The point config can contain any [point mark properties](#properties) (except `type`, `style`, and `clip`).
+

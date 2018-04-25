@@ -30,4 +30,4 @@ const toggle:TransformCompiler = {
   }
 };
 
-export {toggle as default};
+export default toggle;

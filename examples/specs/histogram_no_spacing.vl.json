@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/movies.json"},
-  "mark": "bar",
+  "mark": {"type": "bar", "binSpacing": 0},
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
@@ -11,11 +11,6 @@
     "y": {
       "aggregate": "count",
       "type": "quantitative"
-    }
-  },
-  "config": {
-    "bar": {
-      "binSpacing": 0
     }
   }
 }

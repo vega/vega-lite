@@ -36,10 +36,6 @@
                     "as": [
                         "mean_temp"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
                 }
             ]
         }
@@ -73,6 +69,9 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_temp"
+                    },
+                    "defined": {
+                        "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp\"] !== null && !isNaN(datum[\"mean_temp\"])"
                     }
                 }
             }

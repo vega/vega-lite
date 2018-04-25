@@ -1,4 +1,5 @@
-import {isArray} from 'util';
+import {isArray} from 'vega-util';
+
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
 import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
@@ -21,7 +22,7 @@ export function assembleAxis(
     header: boolean // whether this is called via a header
   } = {header: false}
 ): VgAxis {
-  const {orient, scale, title, ...axis} = axisCmpt.combine();
+  const {orient, scale, title, zindex, ...axis} = axisCmpt.combine();
 
   // Remove properties that are not valid for this kind of axis
   keys(axis).forEach((key) => {
@@ -61,8 +62,7 @@ export function assembleAxis(
       maxExtent: 0,
       minExtent: 0,
       ticks: false,
-
-      zindex: 0 // put grid behind marks
+      zindex: zindex !== undefined ? zindex : 0 // put grid behind marks by default
     };
   } else { // kind === 'main'
 
@@ -92,7 +92,7 @@ export function assembleAxis(
       orient,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
-      zindex: 1
+      zindex: zindex !== undefined ? zindex : 1 // put axis line above marks by default
     };
   }
 }
