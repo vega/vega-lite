@@ -274,7 +274,7 @@ describe('stack', () => {
     }
   }));
 
-  it('should always be disabled if the aggregated axis has non-linear scale', log.wrap((localLogger) => {
+  it('should always be warned if the aggregated axis has non-linear scale', log.wrap((localLogger) => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
@@ -291,8 +291,8 @@ describe('stack', () => {
               "stack": stacked
             }
           };
-          assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-          assert.isFalse(isStacked(spec));
+          assert.isNotNull(stack(spec.mark, spec.encoding, spec.config.stack));
+          assert.isTrue(isStacked(spec));
           const warns = localLogger.warns;
           assert.equal(warns[warns.length-1], log.message.cannotStackNonLinearScale(scaleType));
         });
