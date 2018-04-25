@@ -91,6 +91,7 @@ Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-m
 To customize different parts of the box, we can customize different parts of the box plot [mark definition](#properties) or [config](#config).
 
 For example, we can set the box plot's `"median"` tick color to `"red"` via the mark definition:
+
 <div class="vl-example" data-name="boxplot_2D_vertical_custom_mark"></div>
 
 ## Color, Size, and Opacity Encoding Channels
