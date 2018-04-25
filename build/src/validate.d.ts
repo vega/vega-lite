@@ -23,7 +23,7 @@ export declare const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap;
  * (1) all the required encoding channels for the mark type are specified
  * (2) all the specified encoding channels are supported by the mark type
  * @param  {[type]} spec [description]
- * @param  {RequiredChannelMap  = DefaultRequiredChannelMap}  requiredChannelMap
+ * @param  {RequiredChannelMap = DefaultRequiredChannelMap}  requiredChannelMap
  * @param  {SupportedChannelMap = DefaultSupportedChannelMap} supportedChannelMap
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.

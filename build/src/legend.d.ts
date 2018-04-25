@@ -60,5 +60,5 @@ export declare type LegendEncoding = {
     gradient?: GuideEncodingEntry;
 };
 export declare const defaultLegendConfig: LegendConfig;
-export declare const LEGEND_PROPERTIES: ("title" | "values" | "type" | "padding" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex")[];
-export declare const VG_LEGEND_PROPERTIES: ("title" | "values" | "opacity" | "size" | "shape" | "type" | "padding" | "stroke" | "fill" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex" | "encode")[];
+export declare const LEGEND_PROPERTIES: ("title" | "padding" | "type" | "values" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex")[];
+export declare const VG_LEGEND_PROPERTIES: ("title" | "padding" | "type" | "shape" | "values" | "fill" | "stroke" | "opacity" | "size" | "orient" | "entryPadding" | "format" | "offset" | "tickCount" | "zindex" | "encode")[];

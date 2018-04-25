@@ -5,13 +5,19 @@ export declare namespace Type {
     const ORDINAL: 'ordinal';
     const TEMPORAL: 'temporal';
     const NOMINAL: 'nominal';
+    const LATITUDE: 'latitude';
+    const LONGITUDE: 'longitude';
+    const GEOJSON: 'geojson';
 }
-export declare type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+export declare type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+export declare type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
+export declare type Type = BasicType | GeoType;
 export declare function isType(t: any): t is Type;
 export declare const QUANTITATIVE: "quantitative";
 export declare const ORDINAL: "ordinal";
 export declare const TEMPORAL: "temporal";
 export declare const NOMINAL: "nominal";
+export declare const GEOJSON: "geojson";
 /**
  * Get full, lowercase type name for a given type.
  * @param  type

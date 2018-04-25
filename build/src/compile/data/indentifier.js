@@ -1,24 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var selection_1 = require("../../selection");
-var dataflow_1 = require("./dataflow");
+import * as tslib_1 from "tslib";
+import { SELECTION_ID } from '../../selection';
+import { DataFlowNode } from './dataflow';
 var IdentifierNode = /** @class */ (function (_super) {
     tslib_1.__extends(IdentifierNode, _super);
-    function IdentifierNode() {
-        return _super.call(this) || this;
+    function IdentifierNode(parent) {
+        return _super.call(this, parent) || this;
     }
     IdentifierNode.prototype.clone = function () {
-        return new IdentifierNode();
+        return new IdentifierNode(null);
     };
     IdentifierNode.prototype.producedFields = function () {
-        return _a = {}, _a[selection_1.SELECTION_ID] = true, _a;
+        return _a = {}, _a[SELECTION_ID] = true, _a;
         var _a;
     };
     IdentifierNode.prototype.assemble = function () {
-        return { type: 'identifier', as: selection_1.SELECTION_ID };
+        return { type: 'identifier', as: SELECTION_ID };
     };
     return IdentifierNode;
-}(dataflow_1.DataFlowNode));
-exports.IdentifierNode = IdentifierNode;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZW50aWZpZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvY29tcGlsZS9kYXRhL2luZGVudGlmaWVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLDZDQUE2QztBQUU3Qyx1Q0FBd0M7QUFFeEM7SUFBb0MsMENBQVk7SUFLOUM7ZUFDRSxpQkFBTztJQUNULENBQUM7SUFOTSw4QkFBSyxHQUFaO1FBQ0UsTUFBTSxDQUFDLElBQUksY0FBYyxFQUFFLENBQUM7SUFDOUIsQ0FBQztJQU1NLHVDQUFjLEdBQXJCO1FBQ0UsTUFBTSxVQUFFLEdBQUMsd0JBQVksSUFBRyxJQUFJLEtBQUU7O0lBQ2hDLENBQUM7SUFFTSxpQ0FBUSxHQUFmO1FBQ0UsTUFBTSxDQUFDLEVBQUMsSUFBSSxFQUFFLFlBQVksRUFBRSxFQUFFLEVBQUUsd0JBQVksRUFBQyxDQUFDO0lBQ2hELENBQUM7SUFDSCxxQkFBQztBQUFELENBQUMsQUFoQkQsQ0FBb0MsdUJBQVksR0FnQi9DO0FBaEJZLHdDQUFjIn0=
+}(DataFlowNode));
+export { IdentifierNode };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZW50aWZpZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvY29tcGlsZS9kYXRhL2luZGVudGlmaWVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLEVBQUMsWUFBWSxFQUFDLE1BQU0saUJBQWlCLENBQUM7QUFHN0MsT0FBTyxFQUFDLFlBQVksRUFBQyxNQUFNLFlBQVksQ0FBQztBQUV4QztJQUFvQywwQ0FBWTtJQUs5Qyx3QkFBWSxNQUFvQjtlQUM5QixrQkFBTSxNQUFNLENBQUM7SUFDZixDQUFDO0lBTk0sOEJBQUssR0FBWjtRQUNFLE9BQU8sSUFBSSxjQUFjLENBQUMsSUFBSSxDQUFDLENBQUM7SUFDbEMsQ0FBQztJQU1NLHVDQUFjLEdBQXJCO1FBQ0UsZ0JBQVEsR0FBQyxZQUFZLElBQUcsSUFBSSxLQUFFOztJQUNoQyxDQUFDO0lBRU0saUNBQVEsR0FBZjtRQUNFLE9BQU8sRUFBQyxJQUFJLEVBQUUsWUFBWSxFQUFFLEVBQUUsRUFBRSxZQUFZLEVBQUMsQ0FBQztJQUNoRCxDQUFDO0lBQ0gscUJBQUM7QUFBRCxDQUFDLEFBaEJELENBQW9DLFlBQVksR0FnQi9DIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtTRUxFQ1RJT05fSUR9IGZyb20gJy4uLy4uL3NlbGVjdGlvbic7XG5pbXBvcnQge1N0cmluZ1NldH0gZnJvbSAnLi4vLi4vdXRpbCc7XG5pbXBvcnQge1ZnSWRlbnRpZmllclRyYW5zZm9ybX0gZnJvbSAnLi4vLi4vdmVnYS5zY2hlbWEnO1xuaW1wb3J0IHtEYXRhRmxvd05vZGV9IGZyb20gJy4vZGF0YWZsb3cnO1xuXG5leHBvcnQgY2xhc3MgSWRlbnRpZmllck5vZGUgZXh0ZW5kcyBEYXRhRmxvd05vZGUge1xuICBwdWJsaWMgY2xvbmUoKSB7XG4gICAgcmV0dXJuIG5ldyBJZGVudGlmaWVyTm9kZShudWxsKTtcbiAgfVxuXG4gIGNvbnN0cnVjdG9yKHBhcmVudDogRGF0YUZsb3dOb2RlKSB7XG4gICAgc3VwZXIocGFyZW50KTtcbiAgfVxuXG4gIHB1YmxpYyBwcm9kdWNlZEZpZWxkcygpOiBTdHJpbmdTZXQge1xuICAgIHJldHVybiB7W1NFTEVDVElPTl9JRF06IHRydWV9O1xuICB9XG5cbiAgcHVibGljIGFzc2VtYmxlKCk6IFZnSWRlbnRpZmllclRyYW5zZm9ybSB7XG4gICAgcmV0dXJuIHt0eXBlOiAnaWRlbnRpZmllcicsIGFzOiBTRUxFQ1RJT05fSUR9O1xuICB9XG59XG4iXX0=

@@ -23,6 +23,15 @@ export interface Axis extends VgAxisBase, Guide {
      */
     position?: number;
     /**
+     * The rotation angle of the axis labels.
+     *
+     * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
+     *
+     * @minimum -360
+     * @maximum 360
+     */
+    labelAngle?: number;
+    /**
      * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
      * @minimum 0
      *
@@ -51,12 +60,14 @@ export interface Axis extends VgAxisBase, Guide {
      */
     encoding?: AxisEncoding;
 }
+export declare type AxisPart = keyof AxisEncoding;
+export declare const AXIS_PARTS: AxisPart[];
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
 export declare const AXIS_PROPERTY_TYPE: {
-    [k in keyof VgAxis]?: 'main' | 'grid';
+    [k in keyof VgAxis]: 'main' | 'grid' | 'both';
 };
 export interface AxisEncoding {
     /**
@@ -85,7 +96,8 @@ export interface AxisEncoding {
     title?: GuideEncodingEntry;
 }
 export declare function isAxisProperty(prop: string): prop is keyof Axis;
-export declare const VG_AXIS_PROPERTIES: ("title" | "values" | "scale" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "encode" | "grid" | "gridScale" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding")[];
+export declare const VG_AXIS_PROPERTIES: ("title" | "values" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "encode" | "scale" | "grid" | "gridScale" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding")[];
+export declare const AXIS_PROPERTIES: ("title" | "values" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "grid" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding" | "labelAngle" | "encoding" | "titleMaxLength")[];
 export interface AxisConfigMixins {
     /**
      * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config).

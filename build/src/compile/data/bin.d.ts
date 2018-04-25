@@ -16,18 +16,13 @@ export interface BinComponent {
 export declare class BinNode extends DataFlowNode {
     private bins;
     clone(): BinNode;
-    constructor(bins: Dict<BinComponent>);
-    static makeBinFromEncoding(model: ModelWithField): BinNode;
+    constructor(parent: DataFlowNode, bins: Dict<BinComponent>);
+    static makeFromEncoding(parent: DataFlowNode, model: ModelWithField): BinNode;
     /**
      * Creates a bin node from BinTransform.
      * The optional parameter should provide
      */
-    static makeFromTransform(t: BinTransform, params: {
-        model: Model;
-    } | {
-        signal?: string;
-        extentSignal?: string;
-    }): BinNode;
+    static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model): BinNode;
     merge(other: BinNode): void;
     producedFields(): {};
     dependentFields(): {};

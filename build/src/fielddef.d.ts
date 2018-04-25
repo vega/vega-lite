@@ -1,12 +1,13 @@
-import { AggregateOp } from './aggregate';
+import { AggregateOp } from 'vega';
 import { Axis } from './axis';
 import { BinParams } from './bin';
 import { Channel } from './channel';
 import { CompositeAggregate } from './compositemark';
 import { Config } from './config';
-import { Field } from './fielddef';
+import { TitleMixins } from './guide';
 import { Legend } from './legend';
 import { LogicalOperand } from './logical';
+import { Predicate } from './predicate';
 import { Scale } from './scale';
 import { SortField, SortOrder } from './sort';
 import { StackOffset } from './stack';
@@ -17,7 +18,7 @@ import { Type } from './type';
  */
 export interface ValueDef {
     /**
-     * A constant value in visual domain.
+     * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
      */
     value: number | string | boolean;
 }
@@ -25,13 +26,18 @@ export interface ValueDef {
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type.
  */
-export declare type ConditionalChannelDef<F extends FieldDef<any>> = ConditionalFieldDef<F> | ConditionalValueDef<F>;
-export declare type Condition<T> = {
+export declare type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
+export declare type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
+export declare type ConditionalPredicate<T> = {
+    test: LogicalOperand<Predicate>;
+} & T;
+export declare type ConditionalSelection<T> = {
     /**
-     * A [selection name](selection.html), or a series of [composed selections](selection.html#compose).
+     * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
      */
     selection: LogicalOperand<string>;
 } & T;
+export declare function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T>;
 /**
  * A FieldDef with Condition<ValueDef>
  * {
@@ -40,14 +46,14 @@ export declare type Condition<T> = {
  *   ...
  * }
  */
-export declare type ConditionalFieldDef<F extends FieldDef<any>> = F & {
+export declare type FieldDefWithCondition<F extends FieldDef<any>> = F & {
     /**
-     * A value definition with a selection predicate.
+     * One or more value definition(s) with a selection predicate.
      *
-     * __Note:__ A field definition's `condition` property can only be a [value definition](encoding.html#value)
-     * since Vega-Lite only allows at mosty  one encoded field per encoding channel.
+     * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+     * since Vega-Lite only allows at most one encoded field per encoding channel.
      */
-    condition?: Condition<ValueDef>;
+    condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
 };
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
@@ -56,11 +62,11 @@ export declare type ConditionalFieldDef<F extends FieldDef<any>> = F & {
  *   value: ...,
  * }
  */
-export interface ConditionalValueDef<F extends FieldDef<any>> {
+export interface ValueDefWithCondition<F extends FieldDef<any>> {
     /**
-     * A field definition or a value definition with a selection predicate.
+     * A field definition or one or more value definition(s) with a selection predicate.
      */
-    condition?: Condition<F> | Condition<ValueDef>;
+    condition?: Conditional<F> | Conditional<ValueDef> | Conditional<ValueDef>[];
     /**
      * A constant value in visual domain.
      */
@@ -80,21 +86,25 @@ export declare type Aggregate = AggregateOp | HiddenCompositeAggregate;
 export interface FieldDefBase<F> {
     /**
      * __Required.__ A string defining the name of the field from which to pull a data value
-     * or an object defining iterated values from the [`repeat`](repeat.html) operator.
+     * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
+     *
+     * __Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
+     * If field names contain dots or brackets but are not nested, you can use `\\` to escape dots and brackets (e.g., `"a\\.b"` and `"a\\[0\\]"`).
+     * See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).
      *
      * __Note:__ `field` is not required if `aggregate` is `count`.
      */
     field?: F;
     /**
-     * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+     * Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.
+     * or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).
      *
      * __Default value:__ `undefined` (None)
-     *
      */
     timeUnit?: TimeUnit;
     /**
-     * A flag for binning a `quantitative` field, or [an object defining binning parameters](bin.html#params).
-     * If `true`, default [binning parameters](bin.html) will be applied.
+     * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).
+     * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
      *
      * __Default value:__ `false`
      */
@@ -104,17 +114,17 @@ export interface FieldDefBase<F> {
      * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
      *
      * __Default value:__ `undefined` (None)
-     *
      */
     aggregate?: Aggregate;
 }
+export declare function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>;
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface FieldDef<F> extends FieldDefBase<F> {
+export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
     /**
-     * The encoded field's type of measurement. This can be either a full type
-     * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`).
+     * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
+     * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
      */
     type: Type;
 }
@@ -122,28 +132,27 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
     /**
      * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
      *
-     * __Default value:__ If undefined, default [scale properties](scale.html) are applied.
+     * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
+     *
+     * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
      */
-    scale?: Scale;
+    scale?: Scale | null;
     /**
      * Sort order for the encoded field.
-     * Supported `sort` values include `"ascending"`, `"descending"` and `null` (no sorting).
-     * For fields with discrete domains, `sort` can also be a [sort field definition object](sort.html#sort-field).
+     * Supported `sort` values include `"ascending"`, `"descending"`, `null` (no sorting), or an array specifying the preferred order of values.
+     * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
+     * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
      *
      * __Default value:__ `"ascending"`
-     *
-     * @nullable
      */
-    sort?: SortOrder | SortField<F> | null;
+    sort?: string[] | SortOrder | SortField<F> | null;
 }
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
      * An object defining properties of axis's gridlines, ticks and labels.
      * If `null`, the axis for the encoding channel will be removed.
      *
-     * __Default value:__ If undefined, default [axis properties](axis.html) are applied.
-     *
-     * @nullable
+     * __Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.
      */
     axis?: Axis | null;
     /**
@@ -152,10 +161,10 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
      * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
      *
      * `stack` can be one of the following values:
-     * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](stack.html#bar) and [area](stack.html#area) chart).
-     * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](stack.html#normalized). <br/>
-     * -`"center"` - stacking with center baseline (for [streamgraph](stack.html#streamgraph)).
-     * - `null` - No-stacking. This will produce layered [bar](stack.html#layered-bar-chart) and area chart.
+     * - `"zero"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).
+     * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>
+     * -`"center"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).
+     * - `null` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.
      *
      * __Default value:__ `zero` for plots with all of the following conditions are true:
      * (1) the mark is `bar` or `area`;
@@ -164,14 +173,15 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
      */
     stack?: StackOffset | null;
 }
-export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
+/**
+ * Field definition of a mark property, which can contain a legend.
+ */
+export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
     /**
      * An object defining properties of the legend.
      * If `null`, the legend for the encoding channel will be removed.
      *
-     * __Default value:__ If undefined, default [legend properties](legend.html) are applied.
-     *
-     * @nullable
+     * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
      */
     legend?: Legend | null;
 }
@@ -183,22 +193,22 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 }
 export interface TextFieldDef<F> extends FieldDef<F> {
     /**
-     * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
+     * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
      */
     format?: string;
 }
-export declare type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;
-export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ConditionalChannelDef<FieldDef<F>>;
+export declare type ChannelDef<F> = ChannelDefWithCondition<FieldDef<F>>;
+export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ChannelDefWithCondition<FieldDef<F>>;
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export declare function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
-    condition: Condition<FieldDef<F>>;
+export declare function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
+    condition: Conditional<FieldDef<F>>;
 });
-export declare function hasConditionValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
-    condition: Condition<ValueDef>;
+export declare function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
+    condition: Conditional<ValueDef> | Conditional<ValueDef>[];
 });
-export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
+export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
 export declare function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string>;
 export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef;
 export declare function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any>;
@@ -216,17 +226,17 @@ export interface FieldRefOption {
     /** Overrride which aggregate to use. Needed for unaggregated domain. */
     aggregate?: AggregateOp;
 }
-export declare function field(fieldDef: FieldDefBase<string>, opt?: FieldRefOption): string;
+export declare function vgField(fieldDef: FieldDefBase<string>, opt?: FieldRefOption): string;
 export declare function isDiscrete(fieldDef: FieldDef<Field>): boolean;
 export declare function isContinuous(fieldDef: FieldDef<Field>): boolean;
 export declare function isCount(fieldDef: FieldDefBase<Field>): boolean;
-export declare type FieldTitleFormatter = (fieldDef: FieldDef<string>, config: Config) => string;
-export declare function verbalTitleFormatter(fieldDef: FieldDef<string>, config: Config): string;
-export declare function functionalTitleFormatter(fieldDef: FieldDef<string>, config: Config): string;
+export declare type FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => string;
+export declare function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config): string;
+export declare function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config): string;
 export declare const defaultTitleFormatter: FieldTitleFormatter;
-export declare function setTitleFormatter(formatter: (fieldDef: FieldDef<string>, config: Config) => string): void;
+export declare function setTitleFormatter(formatter: FieldTitleFormatter): void;
 export declare function resetTitleFormatter(): void;
-export declare function title(fieldDef: FieldDef<string>, config: Config): string;
+export declare function title(fieldDef: FieldDefBase<string>, config: Config): string;
 export declare function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type;
 /**
  * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.

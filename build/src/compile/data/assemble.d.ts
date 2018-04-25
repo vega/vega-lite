@@ -1,3 +1,5 @@
+import { InlineDataset } from '../../data';
+import { Dict } from '../../util';
 import { VgData } from '../../vega.schema';
 import { DataComponent } from './';
 import { FacetNode } from './facet';
@@ -12,4 +14,4 @@ export declare function assembleFacetData(root: FacetNode): VgData[];
  * @param  data array
  * @return modified data array
  */
-export declare function assembleRootData(dataComponent: DataComponent): VgData[];
+export declare function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[];

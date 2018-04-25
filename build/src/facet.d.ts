@@ -1,21 +1,19 @@
 import { FieldDef } from './fielddef';
+import { Guide } from './guide';
 import { SortOrder } from './sort';
 /**
  * Headers of row / column channels for faceted plots.
  */
-export interface Header {
+export interface Header extends Guide {
     /**
-     * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.
+     * The rotation angle of the header labels.
      *
-     * __Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.
-     */
-    format?: string;
-    /**
-     * A title for the axis. Shows field name and its function by default.
+     * __Default value:__ `0`.
      *
-     * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
+     * @minimum -360
+     * @maximum 360
      */
-    title?: string;
+    labelAngle?: number;
 }
 export interface FacetFieldDef<F> extends FieldDef<F> {
     /**

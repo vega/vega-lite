@@ -2,7 +2,7 @@ import { Channel } from '../channel';
 import { Config } from '../config';
 import { FacetMapping } from '../facet';
 import { FieldDef } from '../fielddef';
-import { FacetSpec } from '../spec';
+import { NormalizedFacetSpec } from '../spec';
 import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
@@ -11,7 +11,7 @@ export declare class FacetModel extends ModelWithField {
     readonly facet: FacetMapping<string>;
     readonly child: Model;
     readonly children: Model[];
-    constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
+    constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     private initFacet(facet);
     channelHasField(channel: Channel): boolean;
     fieldDef(channel: Channel): FieldDef<string>;

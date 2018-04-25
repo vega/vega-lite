@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var split_1 = require("../split");
+import * as tslib_1 from "tslib";
+import { Split } from '../split';
 var LegendComponent = /** @class */ (function (_super) {
     tslib_1.__extends(LegendComponent, _super);
     function LegendComponent() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return LegendComponent;
-}(split_1.Split));
-exports.LegendComponent = LegendComponent;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2NvbXBpbGUvbGVnZW5kL2NvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFHQSxrQ0FBK0I7QUFHL0I7SUFBcUMsMkNBQXdCO0lBQTdEOztJQUErRCxDQUFDO0lBQUQsc0JBQUM7QUFBRCxDQUFDLEFBQWhFLENBQXFDLGFBQUssR0FBc0I7QUFBbkQsMENBQWUifQ==
+}(Split));
+export { LegendComponent };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2NvbXBpbGUvbGVnZW5kL2NvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBR0EsT0FBTyxFQUFDLEtBQUssRUFBQyxNQUFNLFVBQVUsQ0FBQztBQUcvQjtJQUFxQywyQ0FBZTtJQUFwRDs7SUFBc0QsQ0FBQztJQUFELHNCQUFDO0FBQUQsQ0FBQyxBQUF2RCxDQUFxQyxLQUFLLEdBQWEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge0xlZ2VuZH0gZnJvbSAnLi4vLi4vL2xlZ2VuZCc7XG5pbXBvcnQge05vblBvc2l0aW9uU2NhbGVDaGFubmVsfSBmcm9tICcuLi8uLi9jaGFubmVsJztcbmltcG9ydCB7VmdMZWdlbmR9IGZyb20gJy4uLy4uL3ZlZ2Euc2NoZW1hJztcbmltcG9ydCB7U3BsaXR9IGZyb20gJy4uL3NwbGl0JztcblxuXG5leHBvcnQgY2xhc3MgTGVnZW5kQ29tcG9uZW50IGV4dGVuZHMgU3BsaXQ8VmdMZWdlbmQ+IHt9XG5cbi8vIFVzaW5nIE1hcHBlZCBUeXBlIHRvIGRlY2xhcmUgdHlwZSAoaHR0cHM6Ly93d3cudHlwZXNjcmlwdGxhbmcub3JnL2RvY3MvaGFuZGJvb2svYWR2YW5jZWQtdHlwZXMuaHRtbCNtYXBwZWQtdHlwZXMpXG5leHBvcnQgdHlwZSBMZWdlbmRDb21wb25lbnRJbmRleCA9IHtbUCBpbiBOb25Qb3NpdGlvblNjYWxlQ2hhbm5lbF0/OiBMZWdlbmRDb21wb25lbnR9O1xuXG5leHBvcnQgdHlwZSBMZWdlbmRJbmRleCA9IHtbUCBpbiBOb25Qb3NpdGlvblNjYWxlQ2hhbm5lbF0/OiBMZWdlbmR9O1xuIl19

@@ -1,3 +1,4 @@
+/// <reference path="../../../../typings/vega-event-selector.d.ts" />
 import { Channel, ScaleChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
@@ -23,6 +24,7 @@ export interface SelectionComponent {
     resolve: SelectionResolution;
     empty: 'all' | 'none';
     mark?: BrushConfig;
+    _signalNames: {};
     project?: ProjectComponent[];
     fields?: any;
     timeUnit?: TimeUnitNode;
@@ -50,12 +52,12 @@ export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]
 export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
-export declare function predicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
+export declare function selectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
 export declare function isRawSelectionDomain(domainRaw: VgSignalRef): boolean;
 export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef;
 export declare function unitName(model: Model): string;
 export declare function requiresSelectionId(model: Model): boolean;
-export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;
+export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): any;
 export declare function positionalProjections(selCmpt: SelectionComponent): {
     x: ProjectComponent;
     xi: number;

@@ -2,7 +2,7 @@
  * Utility for generating row / column headers
  */
 import { FacetFieldDef } from '../../facet';
-import { AxisOrient, VgAxis } from '../../vega.schema';
+import { AxisOrient, VgAxis, VgMarkGroup } from '../../vega.schema';
 import { Model } from '../model';
 export declare type HeaderChannel = 'row' | 'column';
 export declare const HEADER_CHANNELS: HeaderChannel[];
@@ -42,12 +42,19 @@ export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
     name: string;
     role: string;
     type: string;
-    marks: {
-        type: string;
-        role: string;
-        style: string;
+    marks: ({
         encode: {
             update: {
+                angle: {
+                    value: number;
+                };
+                align: {
+                    value: string;
+                };
+                text: {
+                    value: string;
+                };
+            } | {
                 align: {
                     value: string;
                 };
@@ -56,10 +63,27 @@ export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
                 };
             };
         };
-    }[];
+        type: string;
+        role: string;
+        style: string;
+    } | {
+        type: string;
+        role: string;
+        style: string;
+    })[];
 };
-export declare function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent): {
-    name: string;
-    type: string;
-    role: string;
+export declare function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[];
+export declare function labelAlign(angle: number): {
+    align?: undefined;
+} | {
+    align: {
+        value: string;
+    };
+};
+export declare function labelBaseline(angle: number): {
+    baseline: {
+        value: string;
+    };
+} | {
+    baseline?: undefined;
 };

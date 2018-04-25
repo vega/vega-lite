@@ -1,4 +1,4 @@
-export declare type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count' | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing' | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance' | 'variancep';
+import { AggregateOp } from 'vega';
 export declare const AGGREGATE_OPS: AggregateOp[];
 export declare function isAggregateOp(a: string): a is AggregateOp;
 export declare const COUNTING_OPS: AggregateOp[];
@@ -10,5 +10,5 @@ export declare const SUM_OPS: AggregateOp[];
  */
 export declare const SHARED_DOMAIN_OPS: AggregateOp[];
 export declare const SHARED_DOMAIN_OP_INDEX: {
-    [T: string]: boolean;
+    [T: string]: true;
 };

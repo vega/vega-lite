@@ -1,12 +1,12 @@
 import { Config } from '../config';
-import { LayerSpec, LayoutSizeMixins } from '../spec';
+import { LayoutSizeMixins, NormalizedLayerSpec } from '../spec';
 import { VgData, VgLayout, VgLegend, VgSignal, VgTitle } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeater';
 export declare class LayerModel extends Model {
     readonly type: 'layer';
     readonly children: Model[];
-    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
+    constructor(spec: NormalizedLayerSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
     parseData(): void;
     parseLayoutSize(): void;
     parseSelection(): void;

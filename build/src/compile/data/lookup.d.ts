@@ -6,8 +6,8 @@ import { DataFlowNode } from './dataflow';
 export declare class LookupNode extends DataFlowNode {
     readonly transform: LookupTransform;
     readonly secondary: string;
-    constructor(transform: LookupTransform, secondary: string);
-    static make(model: Model, transform: LookupTransform, counter: number): LookupNode;
+    constructor(parent: DataFlowNode, transform: LookupTransform, secondary: string);
+    static make(parent: DataFlowNode, model: Model, transform: LookupTransform, counter: number): LookupNode;
     producedFields(): StringSet;
     assemble(): VgLookupTransform;
 }

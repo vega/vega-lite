@@ -12,9 +12,9 @@ export interface TimeUnitComponent {
 export declare class TimeUnitNode extends DataFlowNode {
     private formula;
     clone(): TimeUnitNode;
-    constructor(formula: Dict<TimeUnitComponent>);
-    static makeFromEncoding(model: ModelWithField): TimeUnitNode;
-    static makeFromTransform(t: TimeUnitTransform): TimeUnitNode;
+    constructor(parent: DataFlowNode, formula: Dict<TimeUnitComponent>);
+    static makeFromEncoding(parent: DataFlowNode, model: ModelWithField): TimeUnitNode;
+    static makeFromTransform(parent: DataFlowNode, t: TimeUnitTransform): TimeUnitNode;
     merge(other: TimeUnitNode): void;
     producedFields(): {};
     dependentFields(): {};

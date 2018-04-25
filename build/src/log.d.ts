@@ -1,13 +1,14 @@
 /**
  * Vega-Lite's singleton logger utility.
  */
+import { AggregateOp } from 'vega';
 import { LoggerInterface } from 'vega-util';
-import { AggregateOp } from './aggregate';
-import { Channel } from './channel';
+import { Channel, GeoPositionChannel } from './channel';
 import { CompositeMark } from './compositemark';
 import { DateTime, DateTimeExpr } from './datetime';
 import { FieldDef } from './fielddef';
 import { Mark } from './mark';
+import { Projection } from './projection';
 import { ScaleType } from './scale';
 import { Type } from './type';
 import { VgSortField } from './vega.schema';
@@ -28,7 +29,7 @@ export declare function wrap(f: (logger: LocalLogger) => void): () => void;
 /**
  * Set the singleton logger to be a custom logger
  */
-export declare function set(logger: LoggerInterface): LoggerInterface;
+export declare function set(newLogger: LoggerInterface): LoggerInterface;
 /**
  * Reset the main logger to use the default Vega Logger
  */
@@ -49,21 +50,39 @@ export declare namespace message {
     const SCALE_BINDINGS_CONTINUOUS = "Scale bindings are currently only supported for scales with unbinned, continuous domains.";
     function noSuchRepeatedValue(field: string): string;
     const CONCAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in concatenated views.";
+    const REPEAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in repeated views.";
     function cannotSetTitleAnchor(type: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
     function invalidTransformIgnored(transform: any): string;
-    const NO_FIELDS_NEEDS_AS = "If \"from.fields\" is not specified, \"as\" has to be a string that specifies the key to be used for the the data from the secondary source.";
+    const NO_FIELDS_NEEDS_AS = "If \"from.fields\" is not specified, \"as\" has to be a string that specifies the key to be used for the data from the secondary source.";
+    function encodingOverridden(channels: Channel[]): string;
+    function projectionOverridden(opt: {
+        parentProjection: Projection;
+        projection: Projection;
+    }): string;
     function primitiveChannelDef(channel: Channel, type: 'string' | 'number' | 'boolean', value: string | number | boolean): string;
     function invalidFieldType(type: Type): string;
+    function nonZeroScaleUsedWithLengthMark(mark: 'bar' | 'area', channel: Channel, opt: {
+        scaleType?: ScaleType;
+        zeroFalse?: boolean;
+    }): string;
     function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
+    function droppingColor(type: 'encoding' | 'property', opt: {
+        fill?: boolean;
+        stroke?: boolean;
+    }): string;
     function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;
+    function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel): string;
+    const LINE_WITH_VARYING_SIZE = "Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.";
     function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string): string;
+    function invalidEncodingChannel(channel: string): string;
     function facetChannelShouldBeDiscrete(channel: string): string;
     function discreteChannelCannotEncode(channel: Channel, type: Type): string;
     const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = "Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.";
+    function lineWithRange(hasX2: boolean, hasY2: boolean): string;
     function unclearOrientContinuous(mark: Mark): string;
     function unclearOrientDiscreteOrEmpty(mark: Mark): string;
     function orientOverridden(original: string, actual: string): string;

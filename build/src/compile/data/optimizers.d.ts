@@ -10,8 +10,9 @@ export declare function iterateFromLeaves(f: (node: DataFlowNode) => boolean): (
  */
 export declare function moveParseUp(node: DataFlowNode): boolean;
 /**
- * Repeatedly remove leaf nodes that are not output nodes.
+ * Repeatedly remove leaf nodes that are not output or facet nodes.
  * The reason is that we don't need subtrees that don't have any output nodes.
+ * Facet nodes are needed for the row or column domains.
  */
 export declare function removeUnusedSubtrees(node: DataFlowNode): boolean;
 /**

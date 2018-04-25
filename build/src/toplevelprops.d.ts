@@ -1,3 +1,5 @@
+import { InlineDataset } from './data';
+import { Dict } from './util';
 /**
  * @minimum 0
  */
@@ -7,6 +9,7 @@ export declare type Padding = number | {
     left?: number;
     right?: number;
 };
+export declare type Datasets = Dict<InlineDataset>;
 export interface TopLevelProperties {
     /**
      * CSS color property to use as the background of visualization.
@@ -29,6 +32,11 @@ export interface TopLevelProperties {
      * __Default value__: `pad`
      */
     autosize?: AutosizeType | AutoSizeParams;
+    /**
+     * A global data store for named datasets. This is a mapping from names to inline datasets.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     */
+    datasets?: Datasets;
 }
 export declare type AutosizeType = 'pad' | 'fit' | 'none';
 export interface AutoSizeParams {
@@ -45,7 +53,7 @@ export interface AutoSizeParams {
      */
     resize?: boolean;
     /**
-     * Determines how size calculation should be performed, one of `"content"` or `"padding"`. The default setting (`"content"`) inteprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `"padding"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.
+     * Determines how size calculation should be performed, one of `"content"` or `"padding"`. The default setting (`"content"`) interprets the width and height settings as the data rectangle (plotting) dimensions, to which padding is then added. In contrast, the `"padding"` setting includes the padding within the view size calculations, such that the width and height settings indicate the **total** intended size of the view.
      *
      * __Default value__: `"content"`
      */

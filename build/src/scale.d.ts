@@ -1,5 +1,6 @@
 import { Channel } from './channel';
 import { DateTime } from './datetime';
+import { ScaleInterpolate, ScaleInterpolateParams } from './vega.schema';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
     const BIN_LINEAR: 'bin-linear';
@@ -18,7 +19,7 @@ export declare namespace ScaleType {
     const BAND: 'band';
 }
 export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
-export declare const SCALE_TYPES: ScaleType[];
+export declare const SCALE_TYPES: ("linear" | "time" | "ordinal" | "pow" | "sqrt" | "log" | "utc" | "sequential" | "band" | "point" | "bin-linear" | "bin-ordinal")[];
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -62,7 +63,6 @@ export interface ScaleConfig {
      * __Default value:__ `21`
      *
      * @minimum 0
-     * @nullable
      */
     rangeStep?: number | null;
     /**
@@ -83,6 +83,9 @@ export interface ScaleConfig {
     bandPaddingOuter?: number;
     /**
      * Default padding for continuous scales.
+     *
+     * __Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
+     *
      * @minimum 0
      */
     continuousPadding?: number;
@@ -168,7 +171,7 @@ export interface ScaleConfig {
      */
     maxSize?: number;
     /**
-     * Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.
+     * Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.
      *
      * __Default value:__ `1`
      *
@@ -176,7 +179,7 @@ export interface ScaleConfig {
      */
     minStrokeWidth?: number;
     /**
-     * Default max strokeWidth for strokeWidth  (or rule/line's size) scale.
+     * Default max strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.
      *
      * __Default value:__ `4`
      *
@@ -203,7 +206,7 @@ export interface SchemeParams {
     /**
      * A color scheme name for sequential/ordinal scales (e.g., `"category10"` or `"viridis"`).
      *
-     * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+     * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
      */
     name: string;
     /**
@@ -238,7 +241,7 @@ export declare type SelectionDomain = {
      */
     encoding?: string;
 };
-export declare type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
+export declare type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export declare type Scheme = string | SchemeParams;
 export declare type Range = number[] | string[] | string;
 export declare function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams;
@@ -268,7 +271,7 @@ export interface Scale {
      *
      * The `selection` property can be used to [interactively determine](selection.html#scale-domains) the scale domain.
      */
-    domain?: number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
+    domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
     /**
      * If true, reverses the order of the scale range.
      * __Default value:__ `false`.
@@ -302,7 +305,6 @@ export interface Scale {
      * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
      *
      * @minimum 0
-     * @nullable
      */
     rangeStep?: number | null;
     /**
@@ -310,7 +312,7 @@ export interface Scale {
      *
      * Discrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.
      *
-     * For the full list of supported scheme, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+     * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
      */
     scheme?: string | SchemeParams;
     /**
@@ -391,16 +393,13 @@ export interface Scale {
     zero?: boolean;
     /**
      * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
+     *
+     * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
      */
-    interpolate?: Interpolate | InterpolateParams;
+    interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
-export declare type Interpolate = 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-export interface InterpolateParams {
-    type: 'rgb' | 'cubehelix' | 'cubehelix-long';
-    gamma?: number;
-}
-export declare const SCALE_PROPERTIES: ("base" | "domain" | "type" | "range" | "clamp" | "exponent" | "interpolate" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse" | "round" | "zero" | "rangeStep" | "scheme")[];
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("base" | "clamp" | "exponent" | "interpolate" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse" | "round" | "zero")[];
+export declare const SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "type" | "range" | "zero" | "nice" | "domain" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "zero" | "nice" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**
  * Returns undefined if the input channel supports the input scale property name

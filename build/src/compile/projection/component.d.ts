@@ -1,7 +1,7 @@
 import { Projection } from '../../projection';
 import { VgProjection, VgSignalRef } from '../../vega.schema';
 import { Split } from '../split';
-export declare class ProjectionComponent extends Split<Partial<VgProjection>> {
+export declare class ProjectionComponent extends Split<VgProjection> {
     specifiedProjection: Projection;
     size: VgSignalRef[];
     data: (string | VgSignalRef)[];

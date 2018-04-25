@@ -1,5 +1,5 @@
 import { CompositeMark, CompositeMarkDef } from './compositemark/index';
-import { Interpolate, Orient, VgMarkConfig } from './vega.schema';
+import { VgMarkConfig } from './vega.schema';
 export declare namespace Mark {
     const AREA: 'area';
     const BAR: 'bar';
@@ -9,95 +9,30 @@ export declare namespace Mark {
     const RULE: 'rule';
     const TEXT: 'text';
     const TICK: 'tick';
+    const TRAIL: 'trail';
     const CIRCLE: 'circle';
     const SQUARE: 'square';
+    const GEOSHAPE: 'geoshape';
 }
 /**
  * All types of primitive marks.
  */
-export declare type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE;
+export declare type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.TRAIL | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
 export declare const AREA: "area";
 export declare const BAR: "bar";
 export declare const LINE: "line";
 export declare const POINT: "point";
 export declare const TEXT: "text";
 export declare const TICK: "tick";
+export declare const TRAIL: "trail";
 export declare const RECT: "rect";
 export declare const RULE: "rule";
+export declare const GEOSHAPE: "geoshape";
 export declare const CIRCLE: "circle";
 export declare const SQUARE: "square";
 export declare function isMark(m: string): m is Mark;
+export declare function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail';
 export declare const PRIMITIVE_MARKS: Mark[];
-export interface MarkDef {
-    /**
-     * The mark type.
-     * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-     * `"area"`, `"point"`, `"rule"`, and `"text"`.
-     */
-    type: Mark;
-    /**
-     *
-     * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
-     *
-     * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
-     * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
-     */
-    style?: string | string[];
-    /**
-     * Whether the mark's color should be used as fill color instead of stroke color.
-     *
-     * __Default value:__ All marks except `"point"`, `"line"`, and `"rule"` are filled by default.
-     */
-    filled?: boolean;
-    /**
-     * Orientation of the marks.
-     */
-    orient?: Orient;
-    /**
-     * The line interpolation method to use for line and area marks. One of the following:
-     * - `"linear"`: piecewise linear segments, as in a polyline.
-     * - `"linear-closed"`: close the linear segments to form a polygon.
-     * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
-     * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
-     * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
-     * - `"basis"`: a B-spline, with control point duplication on the ends.
-     * - `"basis-open"`: an open B-spline; may not intersect the start or end.
-     * - `"basis-closed"`: a closed B-spline, as in a loop.
-     * - `"cardinal"`: a Cardinal spline, with control point duplication on the ends.
-     * - `"cardinal-open"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.
-     * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
-     * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
-     * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
-     *
-     * For more information about each interpolation method, please see [Vega's line interpolation docs](https://vega.github.io/vega/docs/marks/line/).
-     */
-    interpolate?: Interpolate;
-    /**
-     * Depending on the interpolation type, sets the tension parameter (for line and area marks).
-     *
-     * TODO: provide the link to D3 docs.
-     *
-     * @minimum 0
-     * @maximum 1
-     */
-    tension?: number;
-    /**
-     * Whether a mark be clipped to the enclosing group’s width and height.
-     */
-    clip?: boolean;
-}
-/** @hide */
-export declare type HiddenComposite = CompositeMark | CompositeMarkDef;
-export declare type AnyMark = HiddenComposite | Mark | MarkDef;
-export declare function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef);
-export declare function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark;
-export declare const STROKE_CONFIG: string[];
-export declare const FILL_CONFIG: string[];
-export declare const FILL_STROKE_CONFIG: any[];
-export declare const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[];
-export declare const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-    [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[];
-};
 export interface MarkConfig extends VgMarkConfig {
     /**
      * Whether the mark's color should be used as fill color instead of stroke color.
@@ -119,18 +54,54 @@ export interface MarkConfig extends VgMarkConfig {
      */
     color?: string;
 }
+export interface BarBinSpacingMixins {
+    /**
+     * Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+     *
+     * __Default value:__ `1`
+     *
+     * @minimum 0
+     */
+    binSpacing?: number;
+}
+export interface MarkProperties extends BarBinSpacingMixins, MarkConfig {
+    /**
+     *
+     * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+     *
+     * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
+     * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
+     */
+    style?: string | string[];
+    /**
+     * Whether a mark be clipped to the enclosing group’s width and height.
+     */
+    clip?: boolean;
+}
+/** @hide */
+export declare type HiddenComposite = CompositeMark | CompositeMarkDef;
+export declare type AnyMark = HiddenComposite | Mark | MarkDef;
+export declare function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef);
+export declare function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark;
+export declare const STROKE_CONFIG: string[];
+export declare const FILL_CONFIG: string[];
+export declare const FILL_STROKE_CONFIG: any[];
+export declare const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[];
+export declare const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
+    [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[];
+};
 export declare const defaultMarkConfig: MarkConfig;
 export interface MarkConfigMixins {
     /** Mark Config */
     mark?: MarkConfig;
     /** Area-Specific Config */
-    area?: MarkConfig;
+    area?: AreaConfig;
     /** Bar-Specific Config */
     bar?: BarConfig;
     /** Circle-Specific Config */
     circle?: MarkConfig;
     /** Line-Specific Config */
-    line?: MarkConfig;
+    line?: LineConfig;
     /** Point-Specific Config */
     point?: MarkConfig;
     /** Rect-Specific Config */
@@ -143,16 +114,12 @@ export interface MarkConfigMixins {
     text?: TextConfig;
     /** Tick-Specific Config */
     tick?: TickConfig;
+    /** Trail-Specific Config */
+    trail?: LineConfig;
+    /** Geoshape-Specific Config */
+    geoshape?: MarkConfig;
 }
-export interface BarConfig extends MarkConfig {
-    /**
-     * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
-     *
-     * __Default value:__ `1`
-     *
-     * @minimum 0
-     */
-    binSpacing?: number;
+export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
     /**
      * The default size of the bars on continuous scales.
      *
@@ -167,6 +134,44 @@ export interface BarConfig extends MarkConfig {
      * @minimum 0
      */
     discreteBandSize?: number;
+}
+export interface PointOverlayMixins {
+    /**
+     * A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.
+     *
+     * - If this property is `"transparent"`, transparent points will be used (for enhancing tooltips and selections).
+     *
+     * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
+     *
+     * - If this property is `false`, no points would be automatically added to line or area marks.
+     *
+     * __Default value:__ `false`.
+     */
+    point?: boolean | MarkProperties | 'transparent';
+}
+export interface LineConfig extends MarkConfig, PointOverlayMixins {
+}
+export interface LineOverlayMixins {
+    /**
+     * A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.
+     *
+     * - If this value is an empty object (`{}`) or `true`, lines with default properties will be used.
+     *
+     * - If this value is `false`, no lines would be automatically added to area marks.
+     *
+     * __Default value:__ `false`.
+     */
+    line?: boolean | MarkProperties;
+}
+export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {
+}
+export interface MarkDef extends MarkProperties, PointOverlayMixins, LineOverlayMixins {
+    /**
+     * The mark type.
+     * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+     * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+     */
+    type: Mark;
 }
 export declare const defaultBarConfig: BarConfig;
 export interface TextConfig extends MarkConfig {

@@ -1,10 +1,9 @@
+import { StringSet } from '../../util';
 import { VgIdentifierTransform } from '../../vega.schema';
 import { DataFlowNode } from './dataflow';
 export declare class IdentifierNode extends DataFlowNode {
     clone(): IdentifierNode;
-    constructor();
-    producedFields(): {
-        [x: string]: boolean;
-    };
+    constructor(parent: DataFlowNode);
+    producedFields(): StringSet;
     assemble(): VgIdentifierTransform;
 }

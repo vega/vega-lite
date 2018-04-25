@@ -29,6 +29,12 @@ export interface DataComponent {
      */
     facetRoot?: FacetNode;
     /**
+     * True if the data for this model is faceted.
+     * A dataset is faceted if a parent model is a facet and no new dataset is
+     * defined (which would make the data unfaceted again).
+     */
+    isFaceted: boolean;
+    /**
      * Parse properties passed down from ancestors.
      */
     ancestorParse: Dict<string>;

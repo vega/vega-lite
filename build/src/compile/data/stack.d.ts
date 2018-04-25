@@ -31,8 +31,8 @@ export interface StackComponent {
 export declare class StackNode extends DataFlowNode {
     private _stack;
     clone(): StackNode;
-    constructor(stack: StackComponent);
-    static make(model: UnitModel): StackNode;
+    constructor(parent: DataFlowNode, stack: StackComponent);
+    static make(parent: DataFlowNode, model: UnitModel): StackNode;
     readonly stack: StackComponent;
     addDimensions(fields: string[]): void;
     dependentFields(): {};

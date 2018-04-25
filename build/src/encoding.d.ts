@@ -1,6 +1,6 @@
 import { Channel } from './channel';
 import { FacetMapping } from './facet';
-import { ConditionalFieldDef, ConditionalValueDef, Field, FieldDef, LegendFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef } from './fielddef';
+import { Field, FieldDef, FieldDefWithCondition, MarkPropFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef, ValueDefWithCondition } from './fielddef';
 import { Mark } from './mark';
 export interface Encoding<F> {
     /**
@@ -12,59 +12,104 @@ export interface Encoding<F> {
      */
     y?: PositionFieldDef<F> | ValueDef;
     /**
-     * X2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
      */
     x2?: FieldDef<F> | ValueDef;
     /**
-     * Y2 coordinates for ranged  `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
      */
     y2?: FieldDef<F> | ValueDef;
     /**
-     * Color of the marks – either fill or stroke color based on mark type.
+     * Longitude position of geographically projected marks.
+     */
+    longitude?: FieldDef<F>;
+    /**
+     * Latitude position of geographically projected marks.
+     */
+    latitude?: FieldDef<F>;
+    /**
+     * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     */
+    longitude2?: FieldDef<F>;
+    /**
+     * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     */
+    latitude2?: FieldDef<F>;
+    /**
+     * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
      * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
-     * `"text"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
+     * `"text"`, `"trail"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
      *
      * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
      *
-     * _Note:_ See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
+     * _Note:_
+     * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
+     * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
      */
-    color?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+    color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+    /**
+     * Fill color of the marks.
+     * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+     *
+     * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
+     */
+    fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+    /**
+     * Stroke color of the marks.
+     * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+     *
+     * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
+     */
+    stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
      * Opacity of the marks – either can be a value or a range.
      *
      * __Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property.
      */
-    opacity?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+    opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
      * Size of the mark.
      * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
      * - For `"bar"` and `"tick"` – the bar and tick's size.
      * - For `"text"` – the text's font size.
-     * - Size is currently unsupported for `"line"`, `"area"`, and `"rect"`.
+     * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
      */
-    size?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+    size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
-     * The symbol's shape (only for `point` marks). The supported values are
+     * For `point` marks the supported values are
      * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
      * or `"triangle-down"`, or else a custom SVG path string.
+     * For `geoshape` marks it should be a field definition of the geojson data
+     *
      * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
      */
-    shape?: ConditionalFieldDef<LegendFieldDef<F>> | ConditionalValueDef<LegendFieldDef<F>>;
+    shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
      * Additional levels of detail for grouping data in aggregate views and
-     * in line and area marks without mapping data to a specific visual channel.
+     * in line, trail, and area marks without mapping data to a specific visual channel.
      */
     detail?: FieldDef<F> | FieldDef<F>[];
     /**
+     * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
+     */
+    key?: FieldDef<F>;
+    /**
      * Text of the `text` mark.
      */
-    text?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
+    text?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>>;
     /**
      * The tooltip text to show upon mouse hover.
      */
-    tooltip?: ConditionalFieldDef<TextFieldDef<F>> | ConditionalValueDef<TextFieldDef<F>>;
+    tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
     /**
-     * Stack order for stacked marks or order of data points in line marks for connected scatter plots.
+     * A URL to load upon mouse click.
+     */
+    href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
+    /**
+     * Order of the marks.
+     * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
+     * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).
+     * - Otherwise, this `order` channel encodes layer order of the marks.
      *
      * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
      */
@@ -78,4 +123,6 @@ export declare function normalizeEncoding(encoding: Encoding<string>, mark: Mark
 export declare function isRanged(encoding: EncodingWithFacet<any>): boolean;
 export declare function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[];
 export declare function forEach(mapping: any, f: (fd: FieldDef<string>, c: Channel) => void, thisArg?: any): void;
-export declare function reduce<T, U>(mapping: U, f: (acc: any, fd: FieldDef<string>, c: Channel) => U, init: T, thisArg?: any): any;
+export declare function reduce<T, U extends {
+    [k in Channel]?: any;
+}>(mapping: U, f: (acc: any, fd: FieldDef<string>, c: Channel) => U, init: T, thisArg?: any): any;

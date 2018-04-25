@@ -8,15 +8,18 @@ import { TitleParams } from '../title';
 import { Transform } from '../transform';
 import { Dict } from '../util';
 import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
+import { VgProjection } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
-import { DataComponent } from './data/index';
+import { DataComponent } from './data';
 import { FacetModel } from './facet';
 import { LayerModel } from './layer';
 import { LayoutHeaderComponent } from './layout/header';
 import { LayoutSizeComponent, LayoutSizeIndex } from './layoutsize/component';
 import { LegendComponentIndex } from './legend/component';
+import { ProjectionComponent } from './projection/component';
 import { RepeatModel } from './repeat';
+import { RepeaterValue } from './repeater';
 import { ScaleComponent, ScaleComponentIndex } from './scale/component';
 import { SelectionComponent } from './selection/selection';
 import { UnitModel } from './unit';
@@ -36,6 +39,7 @@ export interface Component {
     };
     mark: VgMarkGroup[];
     scales: ScaleComponentIndex;
+    projection: ProjectionComponent;
     selection: Dict<SelectionComponent>;
     /** Dictionary mapping channel to VgAxis definition */
     axes: AxisComponentIndex;
@@ -70,12 +74,15 @@ export declare abstract class Model {
     readonly transforms: Transform[];
     /** Name map for scales, which can be renamed by a model's parent. */
     protected scaleNameMap: NameMapInterface;
+    /** Name map for projections, which can be renamed by a model's parent. */
+    protected projectionNameMap: NameMapInterface;
     /** Name map for size, which can be renamed by a model's parent. */
     protected layoutSizeNameMap: NameMapInterface;
+    readonly repeater: RepeaterValue;
     readonly config: Config;
     readonly component: Component;
     readonly abstract children: Model[];
-    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, resolve: Resolve);
+    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve);
     readonly width: VgSignalRef;
     readonly height: VgSignalRef;
     protected initSize(size: LayoutSizeIndex): void;
@@ -83,6 +90,7 @@ export declare abstract class Model {
     abstract parseData(): void;
     abstract parseSelection(): void;
     parseScale(): void;
+    parseProjection(): void;
     abstract parseLayoutSize(): void;
     /**
      * Rename top-level spec's size to be just width / height, ignoring model name.
@@ -90,7 +98,6 @@ export declare abstract class Model {
      * to help us reduce redundant signals declaration.
      */
     private renameTopLevelLayoutSize();
-    parseMarkDef(): void;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
     parseLegend(): void;
@@ -105,6 +112,7 @@ export declare abstract class Model {
     abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];
     assembleLegends(): VgLegend[];
+    assembleProjections(): VgProjection[];
     assembleTitle(): VgTitle;
     /**
      * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
@@ -124,10 +132,15 @@ export declare abstract class Model {
     getSizeName(oldSizeName: string): string;
     renameLayoutSize(oldName: string, newName: string): void;
     renameScale(oldName: string, newName: string): void;
+    renameProjection(oldName: string, newName: string): void;
     /**
      * @return scale name for a given channel after the scale has been parsed and named.
      */
     scaleName(originalScaleName: Channel | string, parse?: boolean): string;
+    /**
+     * @return projection name after the projection has been parsed and named.
+     */
+    projectionName(parse?: boolean): string;
     /**
      * Corrects the data references in marks after assemble.
      */
@@ -139,15 +152,15 @@ export declare abstract class Model {
     /**
      * Traverse a model's hierarchy to get a particular selection component.
      */
-    getSelectionComponent(varName: string, origName: string): SelectionComponent;
+    getSelectionComponent(variableName: string, origName: string): SelectionComponent;
 }
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export declare abstract class ModelWithField extends Model {
     abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
     /** Get "field" reference for vega */
-    field(channel: SingleDefChannel, opt?: FieldRefOption): string;
+    vgField(channel: SingleDefChannel, opt?: FieldRefOption): string;
     protected abstract getMapping(): {
-        [key: string]: any;
+        [key in Channel]?: any;
     };
     reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any): any;
     forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any): void;

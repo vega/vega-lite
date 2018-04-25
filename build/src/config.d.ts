@@ -2,6 +2,7 @@ import { AxisConfigMixins } from './axis';
 import { CompositeMarkConfigMixins } from './compositemark/index';
 import { LegendConfig } from './legend';
 import { MarkConfigMixins } from './mark';
+import { ProjectionConfig } from './projection';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
@@ -80,7 +81,10 @@ export declare const defaultViewConfig: ViewConfig;
 export declare type RangeConfigValue = (number | string)[] | VgScheme | {
     step: number;
 };
-export interface RangeConfig {
+export declare type RangeConfig = RangeConfigProps & {
+    [name: string]: RangeConfigValue;
+};
+export interface RangeConfigProps {
     /**
      * Default range for _nominal_ (categorical) fields.
      */
@@ -105,7 +109,6 @@ export interface RangeConfig {
      * Default range palette for the `shape` channel.
      */
     symbol?: string[];
-    [name: string]: RangeConfigValue;
 }
 export interface VLOnlyConfig {
     /**
@@ -118,10 +121,10 @@ export interface VLOnlyConfig {
     countTitle?: string;
     /**
      * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
-     * - If set to `"filter"` (default), all data items with null values are filtered.
+     * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
      * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
      */
-    invalidValues?: 'filter';
+    invalidValues?: 'filter' | null;
     /**
      * Defines how Vega-Lite generates title for fields.  There are three possible styles:
      * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
@@ -154,17 +157,6 @@ export interface VLOnlyConfig {
 export interface StyleConfigIndex {
     [style: string]: VgMarkConfig;
 }
-export declare type AreaOverlay = 'line' | 'linepoint' | 'none';
-export interface OverlayConfig {
-    /**
-     * Whether to overlay line with point.
-     */
-    line?: boolean;
-    /**
-     * Type of overlay for area mark (line or linepoint)
-     */
-    area?: AreaOverlay;
-}
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
     /**
      * An object hash that defines default range arrays or schemes for using with scales.
@@ -179,12 +171,12 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
      * Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config).
      */
     title?: VgTitleConfig;
-    /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the value are valid [mark configuration objects](mark.html#config).  */
-    style?: StyleConfigIndex;
     /**
-     * @hide
+     * Projection configuration, which determines default properties for all [projections](projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](projection.html#config).
      */
-    overlay?: OverlayConfig;
+    projection?: ProjectionConfig;
+    /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](mark.html#config).  */
+    style?: StyleConfigIndex;
 }
 export declare const defaultConfig: Config;
 export declare function initConfig(config: Config): Config;

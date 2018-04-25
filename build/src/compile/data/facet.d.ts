@@ -18,7 +18,7 @@ export declare class FacetNode extends DataFlowNode {
      * @param name The name that this facet source will have.
      * @param data The source data for this facet data.
      */
-    constructor(model: FacetModel, name: string, data: string);
+    constructor(parent: DataFlowNode, model: FacetModel, name: string, data: string);
     readonly fields: string[];
     /**
      * The name to reference this source is its name.

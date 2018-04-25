@@ -1,5 +1,6 @@
-import { AggregateOp } from './aggregate';
-export declare type SortOrder = 'ascending' | 'descending' | null;
+import { AggregateOp } from 'vega';
+import { VgComparatorOrder } from './vega.schema';
+export declare type SortOrder = VgComparatorOrder | null;
 export interface SortField<F> {
     /**
      * The data [field](field.html) to sort by.
@@ -16,8 +17,9 @@ export interface SortField<F> {
      */
     op: AggregateOp;
     /**
-     * The sort order. One of `"ascending"` (default) or `"descending"`.
+     * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
      */
     order?: SortOrder;
 }
-export declare function isSortField<F>(sort: SortOrder | SortField<F>): sort is SortField<F>;
+export declare function isSortField<F>(sort: string[] | SortOrder | SortField<F>): sort is SortField<F>;
+export declare function isSortArray<F>(sort: string[] | SortOrder | SortField<F>): sort is string[];

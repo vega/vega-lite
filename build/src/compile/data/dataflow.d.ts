@@ -7,7 +7,7 @@ export declare class DataFlowNode {
     readonly debugName: string;
     private _children;
     private _parent;
-    constructor(debugName?: string);
+    constructor(parent: DataFlowNode, debugName?: string);
     /**
      * Clone this node with a deep copy but don't clone links to children or parents.
      */
@@ -46,7 +46,7 @@ export declare class OutputNode extends DataFlowNode {
      * @param type The type of the output node.
      * @param refCounts A global ref counter map.
      */
-    constructor(source: string, type: DataSourceType, refCounts: Dict<number>);
+    constructor(parent: DataFlowNode, source: string, type: DataSourceType, refCounts: Dict<number>);
     /**
      * Request the datasource name and increase the ref counter.
      *

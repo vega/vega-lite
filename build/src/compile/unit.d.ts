@@ -6,10 +6,11 @@ import { Encoding } from '../encoding';
 import { FieldDef } from '../fielddef';
 import { Legend } from '../legend';
 import { Mark, MarkDef } from '../mark';
+import { Projection } from '../projection';
 import { Domain } from '../scale';
 import { SelectionDef } from '../selection';
 import { SortField, SortOrder } from '../sort';
-import { LayoutSizeMixins, UnitSpec } from '../spec';
+import { LayoutSizeMixins, NormalizedUnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
 import { VgData, VgEncodeEntry, VgLayout, VgSignal } from '../vega.schema';
@@ -30,15 +31,16 @@ export declare class UnitModel extends ModelWithField {
     readonly stack: StackProperties;
     protected specifiedAxes: AxisIndex;
     protected specifiedLegends: LegendIndex;
+    specifiedProjection: Projection;
     readonly selection: Dict<SelectionDef>;
     children: Model[];
-    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
+    constructor(spec: NormalizedUnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
     /**
      * Return specified Vega-lite scale domain for a particular channel
      * @param channel
      */
     scaleDomain(channel: ScaleChannel): Domain;
-    sort(channel: Channel): SortField<string> | SortOrder;
+    sort(channel: Channel): string[] | SortField<string> | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
     private initScales(mark, encoding);
@@ -58,7 +60,7 @@ export declare class UnitModel extends ModelWithField {
     assembleLayoutSize(): VgEncodeEntry;
     protected getMapping(): vlEncoding.Encoding<string>;
     toSpec(excludeConfig?: any, excludeData?: any): any;
-    mark(): Mark;
+    readonly mark: Mark;
     channelHasField(channel: Channel): boolean;
     fieldDef(channel: SingleDefChannel): FieldDef<string>;
 }

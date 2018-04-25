@@ -9,12 +9,6 @@ export interface DataFormatBase {
      * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
      */
     parse?: 'auto' | object;
-    /**
-     * Type of input data: `"json"`, `"csv"`, `"tsv"`.
-     * The default format type is determined by the extension of the file URL.
-     * If no extension is detected, `"json"` will be used by default.
-     */
-    type?: DataFormatType;
 }
 export interface CsvDataFormat extends DataFormatBase {
     /**
@@ -63,6 +57,7 @@ export interface TopoDataFormat extends DataFormatBase {
 export declare type DataFormat = CsvDataFormat | JsonDataFormat | TopoDataFormat;
 export declare type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 export declare type Data = UrlData | InlineData | NamedData;
+export declare type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 export interface UrlData {
     /**
      * An object that specifies the format for parsing the data file.
@@ -83,7 +78,7 @@ export interface InlineData {
      * The full data set, included inline. This can be an array of objects or primitive values or a string.
      * Arrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type.
      */
-    values: number[] | string[] | boolean[] | object[] | string;
+    values: InlineDataset;
 }
 export interface NamedData {
     /**
