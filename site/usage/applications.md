@@ -13,9 +13,9 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools for Authoring Vega-Lite Visualizations
 
 - <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite.  You can also get an output Vega spec from a given Vega-Lite spec as well.
-- <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that let you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
+- <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
-- [data.world Chart Builder](https://data.world/integrations/chart-builder), interactive Vega-Lite chart builder that imports data from queries in data.world and creates simple Vega-Lite specs from quick drop down menus.  The generated specs can then be edited and either saved locally or uploaded back to data.world for preview alongside saved queries and data.  Project is open source and on GitHub [here](https://github.com/datadotworld/chart-builder)
+- [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
 
 ## Plug-ins for Vega-Lite
 
