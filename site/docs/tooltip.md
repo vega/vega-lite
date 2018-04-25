@@ -19,16 +19,20 @@ To create a tooltip, Vega-Lite's [`tooltip`]({{site.baseurl}}/docs/encoding.html
 
 <div class="vl-example" data-name="bar_tooltip"></div>
 
-To show more than one field, you can provide an array of field definitions or [calculate](calculate.html) a new field that concatenates multiple fields.
+To show more than one field, you can provide an array of field definitions. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. Here is an examle.
+
+<div class="vl-example" data-name="bar_tooltip_multi"></div>
+
+Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 
 ## Vega Tooltip plugin
 
-You can further customize the tooltip by specifying a custom event handler via [`tooltipHandler`](https://vega.github.io/vega/docs/api/view/#view_tooltipHandler) of the [`Vega View API`](https://vega.github.io/vega/docs/api/view/). Vega invokes the handler every time a tooltip is shown
+You can further customize the tooltip by specifying a custom event handler via [`tooltipHandler`](https://vega.github.io/vega/docs/api/view/#view_tooltipHandler) of the [`Vega View API`](https://vega.github.io/vega/docs/api/view/). Vega invokes the handler every time a tooltip is shown.
 
-We provide [`vega-tooltip`](https://github.com/vega/vega-tooltip/), a tooltip handler that creates a customizable HTML tooltip. Below is an example of Vega-lite visualization with [`vega-tooltip`](https://github.com/vega/vega-tooltip/) plugin.
+We provide [Vega Tooltip](https://github.com/vega/vega-tooltip/), a tooltip handler that creates a customizable HTML tooltip. Below is an example of Vega-lite visualization with [Vega Tooltip](https://github.com/vega/vega-tooltip/) plugin. Vega Tooltip comes with [Vega Embed](https://github.com/vega/vega-embed) so you might already be using it.
 
-<div class="vl-example tooltip" data-name="bar_tooltip"></div>
+<div class="vl-example" data-name="bar_tooltip"></div>
 
 Without the tooltip plugin, Vega-Lite will generate tooltips via native HTML ["title" attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/title). Move your cursor over one of the bars to see it (you might have to wait for a little bit for the tooltip to appear).
 
-<div class="vl-example" data-name="bar_tooltip"></div>
+<div class="vl-example no-tooltip" data-name="bar_tooltip"></div>

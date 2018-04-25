@@ -3,7 +3,7 @@ import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
 import {post} from 'vega-embed/build/post';
-import vegaTooltip from 'vega-tooltip';
+import {Handler} from 'vega-tooltip';
 
 import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
@@ -46,16 +46,22 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   const spec = JSON.parse(specText);
 
-  embedExample(vis.node(), spec, true, $target.classed('tooltip'));
+  embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
 }
 
-function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=false) {
+function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=true) {
   const vgSpec = compile(spec).spec;
+
   const view = new vega.View(vega.parse(vgSpec), {loader: loader})
     .renderer('svg')
-    .initialize($target)
-    .hover()
-    .run();
+    .initialize($target);
+
+  if (tooltip) {
+    const handler = new Handler().call;
+    view.tooltip(handler);
+  }
+
+  view.run();
 
   if (actions) {
     select($target)
@@ -73,10 +79,6 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=fa
         });
         event.preventDefault();
       });
-  }
-
-  if (tooltip) {
-    vegaTooltip(view);
   }
 }
 
