@@ -28,16 +28,17 @@ function getMarkDefMixins<P extends PartsMixins<any>>(
   const mark = markDef.type;
   const partMarkDef: MarkConfig = markDef[part];
 
-  const mixins = {
-    style: `${mark}-${part}`,
-    ...partMarkDef,
-  };
+  const configMixins = {};
 
   for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
     if (compositeMarkConfig && compositeMarkConfig[part] && compositeMarkConfig[part][prop] !== undefined) {
-      mixins[prop] = compositeMarkConfig[part][prop];
+      configMixins[prop] = compositeMarkConfig[part][prop];
     }
   }
 
-  return mixins;
+  return {
+    style: `${mark}-${part}`,
+    ...configMixins,
+    ...partMarkDef,
+  };
 }
