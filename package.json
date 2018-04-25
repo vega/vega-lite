@@ -46,7 +46,7 @@
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
     "lint": "tslint -p .",
-    "test": "npm run lint && jest test/ && npm run schema && jest examples/ && npm run test:runtime",
+    "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
     "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
