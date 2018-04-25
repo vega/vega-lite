@@ -1,17 +1,18 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
+
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
+
 
 function assembleFromSortArray(model: ModelWithField) {
   const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
   return node.assemble();
 }
 
-describe('compile/data/calculate', function () {
-  describe('makeAllForSortIndex', function () {
+describe('compile/data/calculate', () => {
+  it('makeAllForSortIndex', () => {
     const model = parseUnitModel({
       data: {
         values: [
@@ -32,7 +33,7 @@ describe('compile/data/calculate', function () {
     });
   });
 
-  describe('calculateExpressionFromSortField', function () {
+  it('calculateExpressionFromSortField', () => {
     const expression = CalculateNode.calculateExpressionFromSortField('a', ["B", "A", "C"]);
     assert.equal(expression, "datum.a === 'B' ? 0 : datum.a === 'A' ? 1 : datum.a === 'C' ? 2 : 3");
   });

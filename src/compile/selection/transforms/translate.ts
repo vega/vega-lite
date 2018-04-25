@@ -1,3 +1,5 @@
+/// <reference path="../../../../typings/vega-event-selector.d.ts" />
+
 import {selector as parseSelector} from 'vega-event-selector';
 
 import {ScaleChannel, X, Y} from '../../../channel';
@@ -61,7 +63,7 @@ const translate:TransformCompiler = {
   }
 };
 
-export {translate as default};
+export default translate;
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
   const name = selCmpt.name;

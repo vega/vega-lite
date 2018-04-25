@@ -15,8 +15,8 @@ fi
 
 # 0.2 Build toc and versions file to make sure they are up to date
 
-npm run build:toc
-npm run build:versions
+yarn build:toc
+yarn build:versions
 
 # 0.3 Check if all files are committed
 if [ -z "$(git status --porcelain)" ]; then

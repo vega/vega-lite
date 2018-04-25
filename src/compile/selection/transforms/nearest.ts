@@ -57,4 +57,4 @@ const nearest:TransformCompiler = {
   }
 };
 
-export {nearest as default};
+export default nearest;

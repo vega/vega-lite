@@ -55,4 +55,4 @@ const inputBindings:TransformCompiler = {
   }
 };
 
-export {inputBindings as default};
+export default inputBindings;
