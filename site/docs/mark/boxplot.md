@@ -44,11 +44,11 @@ Vega-Lite supports two types of box plots, defined by the `extent` property in t
 
 By default, the extent is `1.5`.
 
-<div class="vl-example" data-name="boxplot_tukey_1D_horizontal"></div>
+<div class="vl-example" data-name="boxplot_1D_horizontal"></div>
 
 Explicitly setting `extent` to `1.5` produces the following identical plot.
 
-<div class="vl-example" data-name="boxplot_tukey_1D_horizontal_explicit"></div>
+<div class="vl-example" data-name="boxplot_1D_horizontal_explicit"></div>
 
 
 2) __`min-max` Box Plot__ is a box plot where the lower and upper whiskers are defined as the min and max respectively. No points will be considered as outliers for this type of box plots.
@@ -58,49 +58,49 @@ Explicitly setting `extent` to `1.5` produces the following identical plot.
 ## Dimension & Orientation
 There are two `boxplot` dimensions:
 
-{:#tukey_1D_horizontal}
+{:#1D_horizontal}
 1) A 1D `boxplot` shows the distribution of a continuous field.
-<div class="vl-example" data-name="boxplot_tukey_1D_horizontal"></div>
+<div class="vl-example" data-name="boxplot_1D_horizontal"></div>
 
 2) A 2D `boxplot` shows the distribution of a continuous field, broken down by categories.
-<div class="vl-example" data-name="boxplot_tukey_2D_horizontal"></div>
+<div class="vl-example" data-name="boxplot_2D_horizontal"></div>
 
 A boxplot's orientation is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D box plot by encoding a continuous field on the y axis.
 
-<div class="vl-example" data-name="boxplot_tukey_1D_vertical"></div>
+<div class="vl-example" data-name="boxplot_1D_vertical"></div>
 
 {:#2d}
 
 For 2D box plots with one continuous field and one discrete field,
 the box plot will be horizontal if the continuous field is on the x axis.
 
-<div class="vl-example" data-name="boxplot_tukey_2D_horizontal"></div>
+<div class="vl-example" data-name="boxplot_2D_horizontal"></div>
 
 Alternatively, if the continuous field is on the y axis, the box plot will be vertical.
 
-<div class="vl-example" data-name="boxplot_tukey_2D_vertical"></div>
+<div class="vl-example" data-name="boxplot_2D_vertical"></div>
 
 ## Color, Size, and Opacity Encoding Channels
 
 You can customize the color, size, and opacity of the box in the `boxplot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels). `color` and `size` are applied to only the box and median tick whereas `opacity` is applied to the whole `boxplot`.
 
 An example of a `boxplot` where the `size` encoding channel is specified.
-<div class="vl-example" data-name="boxplot_tukey_2D_vertical"></div>
+<div class="vl-example" data-name="boxplot_2D_vertical"></div>
 
 <div class="vl-example" data-name="boxplot_minmax_2D_horizontal_color_size"></div>
 
 {:#parts}
 ## The Parts of Box Plots
 
-Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D boxplot shown above](#tukey_1D_horizontal) is expanded to:
+Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D boxplot shown above](#1D_horizontal) is expanded to:
 
-<div class="vl-example" data-name="normalized/boxplot_tukey_1D_horizontal_normalized"></div>
+<div class="vl-example" data-name="normalized/boxplot_1D_horizontal_normalized"></div>
 
 To customize different parts of the box, we can customize different parts of the box plot [mark definition](#properties) or [config](#config).
 
 For example, we can set the box plot's `"median"` tick color to `"red"` via the mark definition:
-<div class="vl-example" data-name="boxplot_tukey_2D_vertical_custom_mark"></div>
+<div class="vl-example" data-name="boxplot_2D_vertical_custom_mark"></div>
 
 {:#config}
 ## Mark Config

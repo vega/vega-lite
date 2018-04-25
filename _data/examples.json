@@ -217,7 +217,7 @@
       "title": "Box Plot with Min/Max Whiskers"
     },
     {
-      "name": "boxplot_tukey_2D_vertical",
+      "name": "boxplot_2D_vertical",
       "title": "Tukey Box Plot (1.5 IQR)"
     },
     {
