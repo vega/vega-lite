@@ -10,7 +10,7 @@ git pull
 git merge master --no-edit
 
 # build
-npm run presite
+yarn presite
 cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
 git add data/* -f
 git add build/** -f
@@ -27,4 +27,4 @@ fi
 # push and return to master!
 git push
 git checkout master
-npm run data
+yarn data

@@ -265,7 +265,7 @@
       "style": "background-size: auto 70%; background-position-y: center;"
     },
     {
-      "name": "layer_connected_scatterplot",
+      "name": "connected_scatterplot",
       "title": "Connected Scatterplot (Lines with Custom Paths)",
       "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
     },

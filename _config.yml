@@ -26,7 +26,6 @@ exclude:
   - node_modules
   - scripts
   - test
-  - test-gallery
   - test-runtime
   - typings
   - package.json

@@ -8,7 +8,7 @@ const inspect = require('util').inspect;
 const fs = require('fs');
 const path = require('path');
 
-const vlSchema = require('../../build/vega-lite-schema.json');
+const vlSchema = require('../build/vega-lite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({

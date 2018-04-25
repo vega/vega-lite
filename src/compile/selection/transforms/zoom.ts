@@ -1,3 +1,5 @@
+/// <reference path="../../../../typings/vega-event-selector.d.ts" />
+
 import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
 import {ScaleChannel, X, Y} from '../../../channel';
@@ -61,7 +63,7 @@ const zoom:TransformCompiler = {
   }
 };
 
-export {zoom as default};
+export default zoom;
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
   const name = selCmpt.name;

@@ -68,7 +68,7 @@ const scaleBindings:TransformCompiler = {
   }
 };
 
-export {scaleBindings as default};
+export default scaleBindings;
 
 export function domain(model: UnitModel, channel: Channel) {
   const scale = stringValue(model.scaleName(channel));
