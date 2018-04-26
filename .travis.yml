@@ -17,14 +17,15 @@ before_install:
 script:
   - yarn data
   - yarn build
-  - yarn jest --collectCoverage=true
+  - yarn jest test/ --collectCoverage=true
+  - yarn codecov
+  - yarn jest examples/
   - yarn test:runtime
   - yarn lint
   - yarn check:schema
   - yarn build:examples
   - yarn check:examples
 after_success:
-  - yarn codecov
   - bash <(curl -s https://codecov.io/bash)
 
 cache: yarn
