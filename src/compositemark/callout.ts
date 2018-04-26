@@ -55,7 +55,10 @@ export const DEFAULT_CALLOUT_CONFIG: CalloutConfig = {
   lineOffset: 0,
   lineLength: 30,
   labelOffset: 2,
-  label: {},
+  label: {
+    align: 'left',
+    baseline: 'middle'
+  },
   line: {}
 };
 
