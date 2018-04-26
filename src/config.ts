@@ -1,9 +1,16 @@
 import {isObject} from 'vega-util';
+
 import {AxisConfigMixins} from './axis';
-import {CompositeMarkConfigMixins, getAllCompositeMarks, getCompositeMarkParts} from './compositemark/index';
+import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
+import {
+  Mark,
+  MarkConfigMixins,
+  PRIMITIVE_MARKS,
+  VL_ONLY_MARK_CONFIG_PROPERTIES,
+  VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
+} from './mark';
 import * as mark from './mark';
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
@@ -336,18 +343,7 @@ export function stripAndRedirectConfig(config: Config) {
   }
 
   for (const m of getAllCompositeMarks()) {
-    for (const part of getCompositeMarkParts(m)) {
-      // Remove Vega-Lite-only mark config
-      for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-        if (config[m] && config[m][part]) {
-          delete config[m][part][prop];
-        }
-      }
-      // Re-direct all composite mark's part configs to config.style
-      // For example, config.boxplot.whisker should become config.style.boxplot-whisker.
-      redirectConfig(config, m, `${m}-${part}`, part);
-    }
-    // Clean up the composite mark config after redirecting all of it
+    // Clean up the composite mark config as we don't need them in the output specs anymore
     delete config[m];
   }
 
