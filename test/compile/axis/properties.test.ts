@@ -4,6 +4,8 @@
 import {assert} from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
+import {UnitModel} from '../../../src/compile/unit';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
@@ -95,6 +97,23 @@ describe('compile/axis', ()=> {
       const values = properties.values({values: [1,2,3,4]}, null, null, "x");
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+
+    it('should simply drop values when domain is specified', () => {
+      const model1 = parseUnitModelWithScale({
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "type": "quantitative",
+            "field": 'US_Gross',
+            "scale": {"domain":[0,1]}
+          }
+        },
+        "data": {"url": "data/movies.json"}
+      });
+      const values = properties.values({}, model1, model1.fieldDef("y"), "y");
+
+      assert.deepEqual(values, undefined);
     });
   });
 });

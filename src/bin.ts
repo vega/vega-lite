@@ -68,7 +68,7 @@ export function binToString(bin: BinParams | boolean) {
   return 'bin' + keys(bin).map(p => varName(`_${p}_${bin[p]}`)).join('');
 }
 
-export function isBinParams(bin: BinParams | boolean) : bin is BinParams {
+export function isBinParams(bin: BinParams | boolean): bin is BinParams {
   return bin && !isBoolean(bin);
 }
 

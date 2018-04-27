@@ -6,7 +6,7 @@ import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {hasDiscreteDomain, ScaleType, isSelectionDomain} from '../../scale';
+import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
