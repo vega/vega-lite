@@ -72,7 +72,7 @@ export interface FieldLTPredicate {
   field: string;
 
   /**
-   * The value that the field should be equal to.
+   * The value that the field should be less than.
    */
   lt: string | number | DateTime;
 
@@ -99,7 +99,7 @@ export interface FieldLTEPredicate {
   field: string;
 
   /**
-   * The value that the field should be equal to.
+   * The value that the field should be less than or equals to.
    */
   lte: string | number | DateTime;
 
@@ -124,15 +124,13 @@ export interface FieldGTPredicate {
   field: string;
 
   /**
-   * The value that the field should be equal to.
+   * The value that the field should be greater than.
    */
   gt: string | number | DateTime;
 
 }
 
 export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
-  // if (predicate && !!predicate.field && predicate.gt !== undefined)
-  //   console.log(predicate)
   return predicate && !!predicate.field && predicate.gt !== undefined;
 }
 
@@ -150,7 +148,7 @@ export interface FieldGTEPredicate {
   field: string;
 
   /**
-   * The value that the field should be equal to.
+   * The value that the field should be greater than or equals to.
    */
   gte: string | number | DateTime;
 
@@ -201,7 +199,7 @@ export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPr
 }
 
 export function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate {
-  return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTPredicate(predicate);
+  return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTEPredicate(predicate);
 }
 
 /**
