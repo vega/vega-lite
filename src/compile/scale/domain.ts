@@ -174,16 +174,12 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-    if (fieldDef.bin) {
-      log.warn(log.message.conflictedDomain(channel));
-    } else {
-      if (isDateTime(domain[0])) {
-        return (domain as DateTime[]).map((dt) => {
-          return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
-        });
-      }
-      return [domain];
+    if (isDateTime(domain[0])) {
+      return (domain as DateTime[]).map((dt) => {
+        return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
+      });
     }
+    return [domain];
   }
 
   const stack = model.stack;

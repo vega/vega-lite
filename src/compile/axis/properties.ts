@@ -6,7 +6,7 @@ import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import * as log from '../../log';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType, isSelectionDomain} from '../../scale';
 import {QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
@@ -86,7 +86,7 @@ export function title(maxLength: number, fieldDef: FieldDef<string>, config: Con
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
-export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>) {
+export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
   const vals = specifiedAxis.values;
   if (specifiedAxis.values && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
@@ -96,6 +96,10 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
   }
 
   if (!vals && fieldDef.bin && fieldDef.type === QUANTITATIVE) {
+    const domain = model.scaleDomain(channel);
+    if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
+      return vals;
+    }
     const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
     return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }

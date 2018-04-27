@@ -83,7 +83,7 @@ describe('compile/axis', ()=> {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, null);
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, null, "x");
 
       assert.deepEqual(values, [
         {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
@@ -92,7 +92,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = properties.values({values: [1,2,3,4]}, null, null);
+      const values = properties.values({values: [1,2,3,4]}, null, null, "x");
 
       assert.deepEqual(values, [1,2,3,4]);
     });
