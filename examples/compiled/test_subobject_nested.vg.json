@@ -94,7 +94,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"source\"][\"reco\"] !== null && !isNaN(datum[\"source\"][\"reco\"]) && datum[\"source\"][\"yes\"] !== null && !isNaN(datum[\"source\"][\"yes\"])"
+                    "expr": "datum[\"source.reco\"] !== null && !isNaN(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && !isNaN(datum[\"source.yes\"])"
                 }
             ]
         }
@@ -122,11 +122,11 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "source.reco"
+                        "field": "source\\.reco"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "source.yes"
+                        "field": "source\\.yes"
                     }
                 }
             }
@@ -138,7 +138,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "source.reco"
+                "field": "source\\.reco"
             },
             "range": [
                 0,
@@ -154,7 +154,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "source.yes"
+                "field": "source\\.yes"
             },
             "range": [
                 {

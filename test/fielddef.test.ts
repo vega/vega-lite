@@ -10,7 +10,7 @@ import {QUANTITATIVE, TEMPORAL} from '../src/type';
 describe('fieldDef', () => {
   describe('field()', () => {
     it ('should construct paths', () => {
-      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo"]["bar.baz"]');
+      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo.bar.baz"]');
     });
   });
 

@@ -17,7 +17,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {accessPath, titlecase} from './util';
+import {accessPath, removePathFromField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -297,12 +297,12 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
-  /** Overrride which aggregate to use. Needed for unaggregated domain. */
+  /** Override which aggregate to use. Needed for unaggregated domain. */
   aggregate?: AggregateOp;
 }
 
 export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
-  let field = fieldDef.field;
+  let field = removePathFromField(fieldDef.field);
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 

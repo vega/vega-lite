@@ -5,12 +5,15 @@ import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPath, Dict, duplicate, keys, StringSet} from '../../util';
+import {accessPath, countAccessPath, Dict, duplicate, keys, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
-
+/**
+ * @param field The field.
+ * @param parse What to parse the field as.
+ */
 function parseExpression(field: string, parse: string): string {
   const f = `datum${accessPath(field)}`;
   if (parse === 'number') {
@@ -21,6 +24,8 @@ function parseExpression(field: string, parse: string): string {
     return `toString(${f})`;
   } else if (parse === 'date') {
     return `toDate(${f})`;
+  } else if (parse === 'flatten') {
+    return f;
   } else if (parse.indexOf('date:') === 0) {
     const specifier = parse.slice(5, parse.length);
     return `timeParse(${f},${specifier})`;
@@ -74,6 +79,11 @@ export class ParseNode extends DataFlowNode {
             return;
           }
           parse[fieldDef.field] = 'number';
+        } else if (countAccessPath(fieldDef.field) > 1) {
+          if (calcFieldMap[fieldDef.field] || isCountingAggregateOp(fieldDef.aggregate)) {
+            return;
+          }
+          parse[fieldDef.field] = 'flatten';
         }
       });
     }
@@ -126,18 +136,32 @@ export class ParseNode extends DataFlowNode {
   }
 
   public assembleTransforms(): VgFormulaTransform[] {
-    return keys(this._parse).map(field => {
-      const expr = parseExpression(field, this._parse[field]);
-      if (!expr) {
-        return null;
-      }
+    return keys(this._parse)
+      .map(field => {
+        const expr = parseExpression(field, this._parse[field]);
+        if (!expr) {
+          return null;
+        }
 
-      const formula: VgFormulaTransform = {
-        type: 'formula',
-        expr,
-        as: field
-      };
-      return formula;
-    }).filter(t => t !== null);
+        const formula: VgFormulaTransform = {
+          type: 'formula',
+          expr,
+          as: field
+        };
+        return formula;
+      }).filter(t => t !== null);
+  }
+
+  public assembeFlattenTransform(): VgFormulaTransform[] {
+    return keys(this._parse)
+      .filter(field => this._parse[field] === 'flatten')
+      .map(field => {
+        const formula: VgFormulaTransform = {
+          type: 'formula',
+          expr: `datum${accessPath(field)}`,
+          as: field
+        };
+        return formula;
+      });
   }
 }

@@ -290,3 +290,21 @@ export function titlecase(s: string) {
 export function accessPath(path: string) {
   return `[${splitAccessPath(path).map(stringValue).join('][')}]`;
 }
+
+/**
+ * Replaces path accesses with access to non-nested field.
+ * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
+ */
+export function removePathFromField(path: string) {
+  if (!path) {
+    return path;
+  }
+  return `${splitAccessPath(path).map(p => p.replace('.', '\\.')).join('\\.')}`;
+}
+
+/**
+ * Count the depth of the path. Returns 1 for fields that are not nested.
+ */
+export function countAccessPath(path: string) {
+  return splitAccessPath(path).length;
+}
