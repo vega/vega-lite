@@ -182,7 +182,7 @@ If you only want subset of these actions, you can use:
 
 #### Fast iteration testing
 
-To quickly run tests without long compile times, run `yarn tsc -w` in a separate terminal session. Then run `yarn mocha:test` to quickly run tests (or `yarn mocha:test --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
+To quickly run tests without long compile times, run `yarn tsc -w` in a separate terminal session. Then run `yarn jest` to quickly run tests (or `yarn test:inspect` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
 
 ### Website
 
