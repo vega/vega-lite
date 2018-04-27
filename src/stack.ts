@@ -142,10 +142,9 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
     return null;
   }
 
-  // If stacked, check scale type if it is linear
+  // warn when stacking non-linear
   if (stackedFieldDef.scale && stackedFieldDef.scale.type && stackedFieldDef.scale.type !== ScaleType.LINEAR) {
     log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
-    return null;
   }
 
   // Check if it is a ranged mark

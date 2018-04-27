@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Ranking of a hypothetical football/soccer league with 4 teams.",
+  "data": {
+    "values": [
+      {"team": "Man Utd", "matchday": 1, "point": 3},
+      {"team": "Chelsea", "matchday": 1, "point": 1},
+      {"team": "Man City", "matchday": 1, "point": 1},
+      {"team": "Spurs", "matchday": 1, "point": 0},
+      {"team": "Man Utd", "matchday": 2, "point": 6},
+      {"team": "Chelsea", "matchday": 2, "point": 1},
+      {"team": "Man City", "matchday": 2, "point": 0},
+      {"team": "Spurs", "matchday": 2, "point": 3},
+      {"team": "Man Utd", "matchday": 3, "point": 9},
+      {"team": "Chelsea", "matchday": 3, "point": 1},
+      {"team": "Man City", "matchday": 3, "point": 0},
+      {"team": "Spurs", "matchday": 3, "point": 6}
+    ]
+  },
+  "transform": [{
+    "sort": [{"field": "point", "order": "descending"}],
+    "window": [{
+      "op": "rank",
+      "as": "rank"
+    }],
+    "groupby": ["matchday"]
+  }],
+  "mark": {"type": "line", "orient": "vertical"},
+  "encoding": {
+    "x": {"field": "matchday", "type": "ordinal"},
+    "y": {"field": "rank", "type": "ordinal"},
+    "color": {
+      "field": "team", "type": "nominal",
+      "scale": {
+        "domain": ["Man Utd", "Chelsea", "Man City", "Spurs"],
+        "range": ["#cc2613", "#125dc7", "#8bcdfc", "#d1d1d1"]
+      }
+    }
+  }
+}

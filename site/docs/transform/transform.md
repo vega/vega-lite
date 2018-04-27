@@ -32,3 +32,4 @@ Vega-Lite's `transform` supports the following types of transformations:
 - [Calculate](calculate.html)
 - [Filter](filter.html)
 - [TimeUnit](timeunit.html#transform)
+- [Window](window.html)

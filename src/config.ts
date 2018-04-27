@@ -149,7 +149,7 @@ export interface VLOnlyConfig {
 
   /**
    * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values are filtered.
+   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   invalidValues?: 'filter' | null;

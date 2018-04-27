@@ -63,7 +63,7 @@
           "type": "string"
         },
         "field": {
-          "description": "The data field for which to compute aggregate function. (This is required for all aggregation operations except `\"count\"`.)",
+          "description": "The data field for which to compute aggregate function. This is required for all aggregation operations except `\"count\"`.",
           "type": "string"
         },
         "op": {
@@ -264,6 +264,15 @@
         },
         "stroke": {
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
           "type": "string"
         },
         "strokeDash": {
@@ -844,6 +853,15 @@
         },
         "stroke": {
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
           "type": "string"
         },
         "strokeDash": {
@@ -1622,7 +1640,7 @@
           "description": "Geoshape-Specific Config "
         },
         "invalidValues": {
-          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
             "filter",
             null
@@ -2006,6 +2024,12 @@
             },
             {
               "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -2211,6 +2235,12 @@
             },
             {
               "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -3926,6 +3956,15 @@
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
+          "type": "string"
+        },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
           "items": {
@@ -4335,6 +4374,15 @@
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
+          "type": "string"
+        },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
           "items": {
@@ -4554,6 +4602,15 @@
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
+          "type": "string"
+        },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
           "items": {
@@ -4764,6 +4821,15 @@
         },
         "stroke": {
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
           "type": "string"
         },
         "strokeDash": {
@@ -6147,7 +6213,7 @@
         },
         "order": {
           "$ref": "#/definitions/SortOrder",
-          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
         }
       },
       "required": [
@@ -6156,14 +6222,13 @@
       "type": "object"
     },
     "SortOrder": {
-      "enum": [
-        "ascending",
-        "descending",
-        null
-      ],
-      "type": [
-        "string",
-        "null"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/VgComparatorOrder"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
     "StackOffset": {
@@ -6327,6 +6392,15 @@
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
           "type": "string"
         },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
+          "type": "string"
+        },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
           "items": {
@@ -6364,6 +6438,60 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "TextFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "title": {
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](config.html) or [`fieldTitle` function via the `compile` function's options](compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](geoshape.html)."
+        }
+      },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "TickConfig": {
@@ -6512,6 +6640,15 @@
         },
         "stroke": {
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
           "type": "string"
         },
         "strokeDash": {
@@ -7258,6 +7395,9 @@
         },
         {
           "$ref": "#/definitions/AggregateTransform"
+        },
+        {
+          "$ref": "#/definitions/WindowTransform"
         }
       ]
     },
@@ -7672,6 +7812,13 @@
       ],
       "type": "object"
     },
+    "VgComparatorOrder": {
+      "enum": [
+        "ascending",
+        "descending"
+      ],
+      "type": "string"
+    },
     "VgEventStream": {
     },
     "VgGenericBinding": {
@@ -7822,6 +7969,15 @@
         },
         "stroke": {
           "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ],
           "type": "string"
         },
         "strokeDash": {
@@ -8074,6 +8230,117 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "WindowFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output name for the window operation.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
+          "type": "string"
+        },
+        "op": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/WindowOnlyOp"
+            }
+          ],
+          "description": "The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+        },
+        "param": {
+          "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "op",
+        "as"
+      ],
+      "type": "object"
+    },
+    "WindowOnlyOp": {
+      "enum": [
+        "row_number",
+        "rank",
+        "dense_rank",
+        "percent_rank",
+        "cume_dist",
+        "ntile",
+        "lag",
+        "lead",
+        "first_value",
+        "last_value",
+        "nth_value"
+      ],
+      "type": "string"
+    },
+    "WindowSortField": {
+      "additionalProperties": false,
+      "description": "A compartor for fields within the window transform",
+      "properties": {
+        "field": {
+          "description": "The name of the field to sort.",
+          "type": "string"
+        },
+        "order": {
+          "$ref": "#/definitions/VgComparatorOrder",
+          "description": "Whether to sort the field in ascending or descending order."
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "type": "object"
+    },
+    "WindowTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ignorePeers": {
+          "description": "Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "sort": {
+          "description": "A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
+          "items": {
+            "$ref": "#/definitions/WindowSortField"
+          },
+          "type": "array"
+        },
+        "window": {
+          "description": "The definition of the fields in the window, and what calculations to use.",
+          "items": {
+            "$ref": "#/definitions/WindowFieldDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "window"
+      ],
       "type": "object"
     }
   }

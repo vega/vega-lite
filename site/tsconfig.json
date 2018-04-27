@@ -1,13 +1,7 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "noImplicitAny": true,
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node"
+    "outDir": "../build/",
   },
-  "include": [
-    "../typings/*.d.ts",
-    "static/*.ts"
-  ]
+  "files": ["static/index.ts"],
 }

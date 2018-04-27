@@ -36,10 +36,6 @@
                     "as": [
                         "mean_temp_max"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"])"
                 }
             ]
         }
@@ -70,6 +66,9 @@
                     "y": {
                         "scale": "y",
                         "field": "mean_temp_max"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
                     }
                 }
             }

@@ -1,7 +1,7 @@
-import {VgData} from './vega.schema';
 /*
  * Constants and utilities for data.
  */
+import {VgData} from './vega.schema';
 
 export interface DataFormatBase {
   /**

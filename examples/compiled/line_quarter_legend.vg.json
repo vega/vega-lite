@@ -43,10 +43,6 @@
                     "as": [
                         "mean_price"
                     ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"quarter_date\"] !== null && !isNaN(datum[\"quarter_date\"])"
                 }
             ]
         }
@@ -105,6 +101,9 @@
                             "y": {
                                 "scale": "y",
                                 "field": "mean_price"
+                            },
+                            "defined": {
+                                "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
                             }
                         }
                     }

@@ -1,10 +1,11 @@
 import {AggregateOp} from 'vega';
+
 import {BinParams} from './bin';
 import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {TimeUnit} from './timeunit';
-
+import {VgComparatorOrder} from './vega.schema';
 
 export interface FilterTransform {
   /**
@@ -91,7 +92,7 @@ export interface AggregatedFieldDef {
   op: AggregateOp;
 
   /**
-   * The data field for which to compute aggregate function. (This is required for all aggregation operations except `"count"`.)
+   * The data field for which to compute aggregate function. This is required for all aggregation operations except `"count"`.
    */
   field?: string;
 
@@ -99,6 +100,75 @@ export interface AggregatedFieldDef {
    * The output field names to use for each aggregated field.
    */
   as: string;
+}
+
+
+export type WindowOnlyOp =
+  'row_number' |
+   'rank' |
+   'dense_rank' |
+   'percent_rank' |
+   'cume_dist' |
+   'ntile' |
+   'lag' |
+   'lead' |
+   'first_value' |
+   'last_value' |
+   'nth_value';
+
+export interface WindowFieldDef {
+  /**
+   * The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+   */
+  op: AggregateOp | WindowOnlyOp;
+
+  /**
+   * Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.
+   *
+   * See the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).
+   */
+  param?: number;
+
+  /**
+   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
+   */
+  field?: string;
+
+  /**
+   * The output name for the window operation.
+   */
+  as: string;
+}
+
+export interface WindowTransform {
+  /**
+   * The definition of the fields in the window, and what calculations to use.
+   */
+  window: WindowFieldDef[];
+
+  /**
+   * A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.
+   *
+   * __Default value:__:  `[null, 0]` (includes the current object and all preceding objects)
+   */
+  frame?: (null | number)[];
+
+  /**
+   * Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.
+   *
+   * __Default value:__ `false`
+   */
+  ignorePeers?: boolean;
+
+  /**
+   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.
+   */
+  groupby?: string[];
+
+  /**
+   * A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
+   */
+  sort?: WindowSortField[];
 }
 
 export interface LookupData {
@@ -143,8 +213,28 @@ export interface LookupTransform {
   default?: string;
 }
 
+
+/**
+ * A compartor for fields within the window transform
+ */
+export interface WindowSortField {
+  /**
+   * The name of the field to sort.
+   */
+  field: string;
+
+  /**
+   * Whether to sort the field in ascending or descending order.
+   */
+  order?: VgComparatorOrder;
+}
+
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
+}
+
+export function isWindow(t: Transform): t is WindowTransform {
+  return t['window'] !== undefined;
 }
 
 export function isCalculate(t: Transform): t is CalculateTransform {
@@ -163,7 +253,7 @@ export function isAggregate(t: Transform): t is AggregateTransform {
   return t['aggregate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

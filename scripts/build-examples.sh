@@ -5,31 +5,40 @@ dir=${dir-"examples/compiled"}
 
 echo "Compiling examples to $dir"
 
-if [ -z "$1" ]
+# Check if param is provided
+if [[ -z "$1" ]];
 then
-  rm -f $dir/*.vg.json
-  rm -f $dir/*.svg
-
-  if type parallel >/dev/null 2>&1
-  then
-    echo "Using parallel to generate vega specs from examples in parallel."
-    ls examples/specs/*.vl.json | parallel --eta --no-notice --plus --halt 1 "bin/vl2vg -p {} > examples/compiled/{/..}.vg.json && node_modules/.bin/vg2svg --seed 123456789 examples/compiled/{/..}.vg.json examples/compiled/{/..}.svg -b ."
-  else
-    echo "Parallel not found! Sequentially generate vega specs from examples."
-    for file in examples/specs/*.vl.json; do
-      filename=$(basename "$file")
-      name="${filename%.vl.json}"
-      bin/vl2vg -p $file > $dir/$name.vg.json
-      node_modules/.bin/vg2svg --seed 123456789 $dir/$name.vg.json $dir/$name.svg -b .
-    done
-  fi
+  forcesvg=false
 else
-  for name in "$@"
-  do
-    echo "Building $name"
-    rm -f examples/compiled/$name.vg.json
-    bin/vl2vg -p examples/specs/$name.vl.json > examples/compiled/$name.vg.json
-    rm -f examples/compiled/$name.svg
-    node_modules/vega/bin/vg2svg --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
-  done
+  forcesvg=true
 fi
+
+# record vega version and force rebuild SVG if version does not match
+rm -f $dir/vega-version
+echo "vega: `./scripts/version.sh vega`" > $dir/vega_version
+if ( ! git diff --no-patch --exit-code HEAD -- $dir/vega_version )
+then
+  forcesvg=true
+fi
+export forcesvg
+
+nopatch='--no-patch'
+export nopatch
+
+skipnormalize=false
+export skipnormalize
+
+# Clean up outdated normalized vega-lite files and vega files
+rm -f examples/specs/normalized/*_normalized.vl.json
+rm -f $dir/*.vg.json
+
+# Re-compile all examples
+echo "Using parallel to generate vega specs from examples in parallel."
+ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env nopatch --eta --no-notice --plus --halt 1 "./scripts/build-example.sh {/..}"
+
+scripts/build-normalized-examples
+
+# Clean up outdated svg files (This has to be done by checking files as we do not always regenerate svgs)
+ls examples/compiled/*.svg | parallel --eta --no-notice --plus --halt 1 "[ -f examples/specs/{/..}.vl.json ] || rm -f examples/compiled/{/..}.svg"
+
+

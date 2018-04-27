@@ -214,7 +214,6 @@ Similar to mark property channels, definitions of text and tooltip channels can 
 
 {% include table.html props="text,tooltip" source="Encoding" %}
 
-
 {:#text-field-def}
 ### Text and Tooltip Field Definition
 
@@ -229,6 +228,10 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="TextValueDefWithCondition" %}
+
+### Multiple Field Definitions for Tooltips
+
+Similar to [`detail`](#detail), you can use an array of field definitions. Vega-Lite will display a tooltip with multiple fields. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. See the [tooltip](tooltip.html) page for details.
 
 {:#href}
 ## Hyperlink Channel
