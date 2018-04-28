@@ -51,7 +51,6 @@ export class FilterInvalidNode extends DataFlowNode {
 
   // create the VgTransforms for each of the filtered fields
   public assemble(): VgFilterTransform {
-
     const filters = keys(this.filter).reduce((vegaFilters, field) => {
       const fieldDef = this.fieldDefs[field];
       const ref = fieldRef(fieldDef, {expr: 'datum'});

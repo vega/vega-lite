@@ -1,11 +1,12 @@
 import {assert} from 'chai';
+import {flatAccessWithDatum} from '../src/util';
 
 import {
+  accessPathDepth,
   accessPathWithDatum,
-  countAccessPath,
   deleteNestedProperty,
   hash,
-  removePathFromField,
+  replacePathInField,
   stringify,
   varName,
 } from '../src/util';
@@ -115,27 +116,41 @@ describe('util', () => {
     });
   });
 
-  describe('countAccessPath', () => {
+  describe('flatAccessWithDatum', () => {
+    it('should parse foo.bar', () => {
+      assert.equal(flatAccessWithDatum('foo.bar'), 'datum["foo.bar"]');
+    });
+
+    it('should return string value of field name', () => {
+      assert.equal(flatAccessWithDatum('foo["bar"].baz'), 'datum["foo.bar.baz"]');
+    });
+
+    it('should support cusotom datum', () => {
+      assert.equal(flatAccessWithDatum('foo', 'parent'), 'parent["foo"]');
+    });
+  });
+
+  describe('accessPathDepth', () => {
     it('should return 1 if the field is not nested', () => {
-      assert.equal(countAccessPath('foo'), 1);
+      assert.equal(accessPathDepth('foo'), 1);
     });
 
     it('should return 1 if . is escaped', () => {
-      assert.equal(countAccessPath('foo\\.bar'), 1);
+      assert.equal(accessPathDepth('foo\\.bar'), 1);
     });
 
     it('should return 2 for foo.bar', () => {
-      assert.equal(countAccessPath('foo.bar'), 2);
+      assert.equal(accessPathDepth('foo.bar'), 2);
     });
   });
 
   describe('removePathFromField', () => {
     it('should convert nested accesses to \\.', () => {
-      assert.equal(removePathFromField('foo["bar"].baz'), 'foo\\.bar\\.baz');
+      assert.equal(replacePathInField('foo["bar"].baz'), 'foo\\.bar\\.baz');
     });
 
     it('should keep \\.', () => {
-      assert.equal(removePathFromField('foo\\.bar'), 'foo\\.bar');
+      assert.equal(replacePathInField('foo\\.bar'), 'foo\\.bar');
     });
   });
 });

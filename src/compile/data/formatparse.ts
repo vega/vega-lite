@@ -6,7 +6,7 @@ import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPathWithDatum, countAccessPath, Dict, duplicate, keys, StringSet} from '../../util';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -80,10 +80,9 @@ export class ParseNode extends DataFlowNode {
             return;
           }
           parse[fieldDef.field] = 'number';
-        } else if (countAccessPath(fieldDef.field) > 1) {
-          if (calcFieldMap[fieldDef.field] || isCountingAggregateOp(fieldDef.aggregate)) {
-            return;
-          }
+        } else if (accessPathDepth(fieldDef.field) > 1) {
+          // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
+          // (Parsing numbers / dates already flattens numeric and temporal fields.)
           parse[fieldDef.field] = 'flatten';
         }
       });
@@ -126,7 +125,7 @@ export class ParseNode extends DataFlowNode {
   public assembleFormatParse() {
     const formatParse = {};
     for (const field of keys(this._parse)) {
-      if (countAccessPath(field) === 1) {
+      if (accessPathDepth(field) === 1) {
         formatParse[field] = this._parse[field];
       }
     }
@@ -144,7 +143,7 @@ export class ParseNode extends DataFlowNode {
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
     return keys(this._parse)
-      .filter(field => onlyNested ? countAccessPath(field) > 1 : true)
+      .filter(field => onlyNested ? accessPathDepth(field) > 1 : true)
       .map(field => {
         const expr = parseExpression(field, this._parse[field]);
         if (!expr) {
@@ -154,7 +153,7 @@ export class ParseNode extends DataFlowNode {
         const formula: VgFormulaTransform = {
           type: 'formula',
           expr,
-          as: field
+          as: removePathFromField(field)  // Vega output is always flattened
         };
         return formula;
       }).filter(t => t !== null);
