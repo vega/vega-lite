@@ -1,5 +1,5 @@
 {
-  "Basic": [
+  "Bar Charts and Histograms": [
     {
       "name": "bar",
       "title": "Simple Bar Chart",
@@ -7,37 +7,63 @@
       "style": "background-size: auto 110%; background-position: center center !important;"
     },
     {
-      "name": "bar_aggregate",
-      "title": "Aggregate Bar Chart"
-    },
-    {
       "name": "histogram",
       "title": "Histogram"
     },
     {
-      "name": "bar_gantt",
-      "title": "Gantt Chart",
-      "style": "background-size: auto 75%; background-position-y: center !important;"
+      "name": "bar_aggregate",
+      "title": "Aggregate Bar Chart"
     },
     {
       "name": "bar_grouped",
       "title": "Grouped Bar Chart"
     },
     {
+      "name": "stacked_bar_weather",
+      "title": "Stacked Bar Chart"
+    },
+    {
+      "name": "stacked_bar_h",
+      "title": "Horizontal Stacked Bar Chart"
+    },
+    {
+      "name": "stacked_bar_normalize",
+      "title": "Normalized Stacked Bar Chart"
+    },
+    {
+      "name": "bar_gantt",
+      "title": "Gantt Chart (Ranged Bar Marks)",
+      "style": "background-size: auto 75%; background-position-y: center !important;"
+    },
+    {
+      "name": "bar_color_disabled_scale",
+      "title": "A bar chart encoding color names in the data."
+    },
+    {
+      "name": "bar_layered_transparent",
+      "title": "Layered Bar Chart"
+    },
+    {
+      "name": "bar_diverging_stacked",
+      "title": "Diverging Stacked Bar Chart"
+    }
+  ],
+  "Scatter and Strip Plots": [
+    {
       "name": "point_2d",
       "title": "Scatterplot"
     },
     {
-      "name": "circle",
-      "title": "Scatterplot with Filled Circles"
+      "name": "point_color_with_shape",
+      "title": "Colored Scatterplot"
     },
     {
       "name": "circle_binned",
       "title": "Binned Scatterplot"
     },
     {
-      "name": "point_color_with_shape",
-      "title": "Colored Scatterplot"
+      "name": "point_bubble",
+      "title": "Bubble Plot"
     },
     {
       "name": "point_invalid_color",
@@ -45,18 +71,25 @@
       "title": "Scatterplot with Null Values in Grey"
     },
     {
-      "name": "point_bubble",
-      "title": "Bubble Plot"
+      "name": "circle",
+      "title": "Scatterplot with Filled Circles"
     },
     {
       "name": "circle_bubble_health_income",
-      "title": "Gapminder Bubble Plot"
+      "title": "Bubble Plot (Gapminder)"
+    },
+    {
+      "name": "circle_natural_disasters",
+      "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
+      "title": "Bubble Plot (Natural Disasters)"
     },
     {
       "name": "tick_strip",
       "title": "Strip Plot",
       "style": "background-size: auto 85%; background-position-y: center !important;"
-    },
+    }
+  ],
+  "Line Charts": [
     {
       "name": "line",
       "title": "Line Chart"
@@ -78,48 +111,19 @@
       "title": "Step Chart"
     },
     {
+      "name": "connected_scatterplot",
+      "title": "Connected Scatterplot (Lines with Custom Paths)",
+      "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
+    }
+  ],
+  "Area Charts and Streamgraphs": [
+    {
       "name": "area",
       "title": "Area Chart"
     },
     {
       "name": "area_overlay",
       "title": "Area Chart with Overlaying Lines and Point Markers"
-    },
-    {
-      "name": "rect_heatmap",
-      "title": "Table Heatmap",
-      "style": "background-size: auto"
-    },
-    {
-      "name": "bar_color_disabled_scale",
-      "title": "A bar chart encoding color names in the data."
-    },
-    {
-      "name": "rect_binned_heatmap",
-      "title": "Table Binned heatmap"
-    },
-    {
-      "name": "circle_github_punchcard",
-      "title": "Table Bubble Plot (Github Punch Card)"
-    },
-    {
-      "name": "circle_natural_disasters",
-      "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
-      "title": "Natural Disasters"
-    }
-  ],
-  "Stack": [
-    {
-      "name": "stacked_bar_weather",
-      "title": "Stacked Bar Chart"
-    },
-    {
-      "name": "stacked_bar_h",
-      "title": "Horizontal Stacked Bar Chart"
-    },
-    {
-      "name": "stacked_bar_normalize",
-      "title": "Normalized Stacked Bar Chart"
     },
     {
       "name": "stacked_area",
@@ -134,15 +138,27 @@
       "title": "Streamgraph"
     },
     {
-      "name": "bar_layered_transparent",
-      "title": "Layered Bar Chart"
-    },
-    {
-      "name": "bar_diverging_stacked",
-      "title": "Diverging Stacked Bar Chart"
+      "name": "area_horizon",
+      "title": "Horizon Graph",
+      "style": "background-size: auto 70%; background-position-y: center;"
     }
   ],
-  "Window Transform": [
+  "Table-based Plots": [
+    {
+      "name": "rect_heatmap",
+      "title": "Table Heatmap",
+      "style": "background-size: auto"
+    },
+    {
+      "name": "rect_binned_heatmap",
+      "title": "Table Binned heatmap"
+    },
+    {
+      "name": "circle_github_punchcard",
+      "title": "Table Bubble Plot (Github Punch Card)"
+    }
+  ],
+  "Advanced Calculations": [
     {
       "name": "window_percent_of_total",
       "title": "Calculate Percentage of Total"
@@ -164,7 +180,7 @@
       "title": "Line Charts Showing Ranks Over Time"
     }
   ],
-  "Trellis": [
+  "Trellis / Small Multiples": [
     { "name": "trellis_anscombe",
       "title": "Anscombe's Quartet"
     },
@@ -193,7 +209,7 @@
       "title": "Trellis Area"
     }
   ],
-  "Layering": [
+  "Layered Charts": [
     {
       "name": "layer_bar_labels",
       "title": "Simple Bar Chart with Labels",
@@ -265,17 +281,12 @@
       "style": "background-size: auto 70%; background-position-y: center;"
     },
     {
-      "name": "connected_scatterplot",
-      "title": "Connected Scatterplot (Lines with Custom Paths)",
-      "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
-    },
-    {
       "name": "layer_line_co2_concentration",
       "title": "Carbon Dioxide in the Atmosphere",
       "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
     }
   ],
-  "Composition": [
+  "Multi-View Composition": [
     {
       "name": "repeat_layer",
       "title": "Repeat and layer to show different weather measures"
@@ -338,7 +349,7 @@
       "description": "This example was created by Jo Wood."
     }
   ],
-  "Interactive": [
+  "Interactive Charts": [
     {
       "name": "interactive_brush",
       "title": "Rectangular Brush"
