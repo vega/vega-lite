@@ -134,6 +134,22 @@ describe('compile/scale', () => {
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
       }));
 
+      it('should follow the custom bin.extent for binned Q', log.wrap((localLogger) => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              field: 'origin',
+              type: 'quantitative',
+              bin: {maxbins: 15, extent:[0, 100]}
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model,'y');
+
+        assert.deepEqual(_domain, [[0, 100]]);
+      }));
+
       it('should return the unaggregated domain if requested for non-bin, non-sum Q',
         function() {
           const model = parseUnitModel({
@@ -191,7 +207,7 @@ describe('compile/scale', () => {
         assert.deepEqual(_domain, [[0, 200]]);
       });
 
-      it('should ignore the custom domain when binned', log.wrap((localLogger) => {
+      it('should follow the custom domain despite bin', log.wrap((localLogger) => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -205,14 +221,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model,'y');
 
-        assert.deepEqual(_domain, [{
-            data: 'main',
-            field: 'bin_maxbins_15_origin'
-          }, {
-            data: 'main',
-            field: 'bin_maxbins_15_origin_end'
-          }]);
-        assert.equal(localLogger.warns[0], log.message.conflictedDomain("y"));
+        assert.deepEqual(_domain, [[0, 200]]);
       }));
 
       it('should return the aggregated domain if we do not override it', function() {

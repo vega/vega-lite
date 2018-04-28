@@ -1,6 +1,6 @@
 import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
-import {binToString} from '../../bin';
+import {binToString, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
@@ -174,16 +174,12 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-    if (fieldDef.bin) {
-      log.warn(log.message.conflictedDomain(channel));
-    } else {
-      if (isDateTime(domain[0])) {
-        return (domain as DateTime[]).map((dt) => {
-          return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
-        });
-      }
-      return [domain];
+    if (isDateTime(domain[0])) {
+      return (domain as DateTime[]).map((dt) => {
+        return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
+      });
     }
+    return [domain];
   }
 
   const stack = model.stack;
@@ -236,6 +232,9 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       }];
     } else { // continuous scales
       if (channel === 'x' || channel === 'y') {
+        if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
+          return [fieldDef.bin.extent];
+        }
         // X/Y position have to include start and end for non-ordinal scale
         const data = model.requestDataName(MAIN);
         return [{
