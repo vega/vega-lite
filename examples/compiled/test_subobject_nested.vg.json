@@ -84,12 +84,12 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"source\"][\"reco\"])",
+                    "expr": "toNumber(datum[\"source\"] && datum[\"source\"][\"reco\"])",
                     "as": "source.reco"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"source\"][\"yes\"])",
+                    "expr": "toNumber(datum[\"source\"] && datum[\"source\"][\"yes\"])",
                     "as": "source.yes"
                 },
                 {

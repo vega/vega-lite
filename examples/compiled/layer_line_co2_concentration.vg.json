@@ -59,6 +59,11 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "datum[\"aggregated\"] && datum[\"aggregated\"][\"year\"]",
+                    "as": "aggregated.year"
+                },
+                {
                     "type": "aggregate",
                     "groupby": [
                         "decade"
@@ -93,6 +98,11 @@
             "name": "data_2",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "datum[\"aggregated\"] && datum[\"aggregated\"][\"year\"]",
+                    "as": "aggregated.year"
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -224,7 +234,7 @@
                         "field": "CO2"
                     },
                     "text": {
-                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                        "signal": "''+datum[\"aggregated.year\"]"
                     }
                 }
             }
@@ -264,7 +274,7 @@
                         "field": "CO2"
                     },
                     "text": {
-                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                        "signal": "''+datum[\"aggregated.year\"]"
                     }
                 }
             }
