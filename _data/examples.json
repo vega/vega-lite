@@ -237,37 +237,24 @@
       "title": "Trellis Area"
     }
   ],
-  "Layered Charts": [
+  "Using Layer to Add Labels": [
     {
       "name": "layer_bar_labels",
       "title": "Simple Bar Chart with Labels",
       "style": "background-size: auto 70%; background-position-y: center;"
     },
     {
-      "name": "layer_bar_annotations",
-      "title": "Bar chart that highlights values beyond a threshold",
-      "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
-    },
-    {
-      "name": "layer_precipitation_mean",
-      "title": "Mean overlay over precipitation chart"
-    },{
       "name": "layer_text_heatmap",
       "title": "Layering text over heatmap",
       "style": "background-size: auto 55%; background-position-y: center !important;"
     },
     {
-      "name": "box-plot_minmax_2D_vertical_normalized",
-      "title": "Box Plot with Min/Max Whiskers"
-    },
-    {
-      "name": "box-plot_tukey_2D_vertical_normalized",
-      "title": "Tukey Box Plot (1.5 IQR)"
-    },
-    {
-      "name": "layer_candlestick",
-      "title": "Candlestick Chart"
-    },
+      "name": "layer_line_co2_concentration",
+      "title": "Carbon Dioxide in the Atmosphere",
+      "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
+    }
+  ],
+  "Error Bars and Error Bands": [
     {
       "name": "layer_error_bars",
       "title": "Error Bars showing Confidence Interval"
@@ -277,20 +264,45 @@
       "title": "Error Bars showing Standard Deviation"
     },
     {
-      "name": "layer_histogram_global_mean",
-      "title": "Histogram with a Global Mean Overlay"
-    },
-    {
-      "name": "layer_global_mean_dev",
-      "title": "Scatterplot with Mean and Standard Deviation Overlay"
-    },
-    {
       "name": "layer_area_ci",
       "title": "Line chart with Confidence Interval Band"
     },
     {
+      "name": "layer_global_mean_dev",
+      "title": "Scatterplot with Mean and Standard Deviation Overlay"
+    }
+  ],
+  "Box Plots": [
+    {
+      "name": "box-plot_minmax_2D_vertical_normalized",
+      "title": "Box Plot with Min/Max Whiskers"
+    },
+    {
+      "name": "box-plot_tukey_2D_vertical_normalized",
+      "title": "Tukey Box Plot (1.5 IQR)"
+    }
+  ],
+  "Other Layered Charts": [
+    {
+      "name": "layer_bar_annotations",
+      "title": "Bar chart that highlights values beyond a threshold",
+      "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
+    },
+    {
+      "name": "layer_precipitation_mean",
+      "title": "Mean overlay over precipitation chart"
+    },
+    {
+      "name": "layer_candlestick",
+      "title": "Candlestick Chart"
+    },
+    {
+      "name": "layer_histogram_global_mean",
+      "title": "Histogram with a Global Mean Overlay"
+    },
+    {
       "name": "layer_falkensee",
-      "title": "Falkensee",
+      "title": "Line chart with Hilighted Rectangles",
       "style": "background-size: auto 90%; background-position-y: center !important;"
     },
     {
@@ -307,11 +319,6 @@
       "name": "area_horizon",
       "title": "Horizon Graph",
       "style": "background-size: auto 70%; background-position-y: center;"
-    },
-    {
-      "name": "layer_line_co2_concentration",
-      "title": "Carbon Dioxide in the Atmosphere",
-      "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
     }
   ],
   "Multi-View Composition": [
