@@ -106,7 +106,8 @@ describe('compile/axis', ()=> {
           "y": {
             "type": "quantitative",
             "field": 'US_Gross',
-            "scale": {"domain":[0,1]}
+            "scale": {"domain":[-1,2]},
+            "bin": {"extent":[0,1]}
           }
         },
         "data": {"url": "data/movies.json"}
