@@ -17,7 +17,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {accessPath, removePathFromField, titlecase} from './util';
+import {accessPathWithDatum, removePathFromField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -336,7 +336,7 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
   }
 
   if (opt.expr) {
-    field = `${opt.expr}${accessPath(field)}`;
+    field = `${accessPathWithDatum(field, opt.expr)}`;
   }
 
   return field;

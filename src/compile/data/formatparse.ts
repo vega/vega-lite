@@ -1,11 +1,12 @@
 import {toSet} from 'vega-util';
+
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeave} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPath, countAccessPath, Dict, duplicate, keys, StringSet} from '../../util';
+import {accessPathWithDatum, countAccessPath, Dict, duplicate, keys, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -15,7 +16,7 @@ import {DataFlowNode} from './dataflow';
  * @param parse What to parse the field as.
  */
 function parseExpression(field: string, parse: string): string {
-  const f = `datum${accessPath(field)}`;
+  const f = accessPathWithDatum(field);
   if (parse === 'number') {
     return `toNumber(${f})`;
   } else if (parse === 'boolean') {
@@ -158,7 +159,7 @@ export class ParseNode extends DataFlowNode {
       .map(field => {
         const formula: VgFormulaTransform = {
           type: 'formula',
-          expr: `datum${accessPath(field)}`,
+          expr: parseExpression(field, 'flatten'),
           as: field
         };
         return formula;

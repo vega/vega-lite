@@ -285,10 +285,18 @@ export function titlecase(s: string) {
 }
 
 /**
- * Converts a path to an access path.
+ * Converts a path to an access path with datum.
+ * @param path The field name.
+ * @param datum The string to use for `datum`.
  */
-export function accessPath(path: string) {
-  return `[${splitAccessPath(path).map(stringValue).join('][')}]`;
+export function accessPathWithDatum(path: string, datum='datum') {
+  const pieces = splitAccessPath(path);
+  const prefixes = [];
+  for (let i = 1; i <= pieces.length; i++) {
+    const prefix = `[${pieces.slice(0,i).map(stringValue).join('][')}]`;
+    prefixes.push(`${datum}${prefix}`);
+  }
+  return prefixes.join(' && ');
 }
 
 /**

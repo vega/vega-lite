@@ -1,5 +1,14 @@
 import {assert} from 'chai';
-import {accessPath, countAccessPath, deleteNestedProperty, hash, removePathFromField, stringify, varName} from '../src/util';
+
+import {
+  accessPathWithDatum,
+  countAccessPath,
+  deleteNestedProperty,
+  hash,
+  removePathFromField,
+  stringify,
+  varName,
+} from '../src/util';
 
 describe('util', () => {
   describe('varName', () => {
@@ -92,9 +101,17 @@ describe('util', () => {
     });
   });
 
-  describe('accessPath', () => {
+  describe('accessPathWithDatum', () => {
+    it('should parse foo', () => {
+      assert.equal(accessPathWithDatum('foo'), 'datum["foo"]');
+    });
+
     it('should parse foo.bar', () => {
-      assert.equal(accessPath('foo.bar'), '["foo"]["bar"]');
+      assert.equal(accessPathWithDatum('foo.bar'), 'datum["foo"] && datum["foo"]["bar"]');
+    });
+
+    it('should support cusotom datum', () => {
+      assert.equal(accessPathWithDatum('foo', 'parent'), 'parent["foo"]');
     });
   });
 
