@@ -54,6 +54,15 @@
       "title": "Scatterplot"
     },
     {
+      "name": "tick_dot",
+      "title": "Dot Plot"
+    },
+    {
+      "name": "tick_strip",
+      "title": "Strip Plot",
+      "style": "background-size: auto 85%; background-position-y: center !important;"
+    },
+    {
       "name": "point_color_with_shape",
       "title": "Colored Scatterplot"
     },
@@ -84,9 +93,8 @@
       "title": "Bubble Plot (Natural Disasters)"
     },
     {
-      "name": "tick_strip",
-      "title": "Strip Plot",
-      "style": "background-size: auto 85%; background-position-y: center !important;"
+      "name": "text_scatterplot_colored",
+      "title": "Scatter Plot with Text Marks"
     }
   ],
   "Line Charts": [
@@ -111,9 +119,29 @@
       "title": "Step Chart"
     },
     {
+      "name": "line_monotone",
+      "title": "Line Chart with Monotone Interpolation"
+    },
+    {
       "name": "connected_scatterplot",
       "title": "Connected Scatterplot (Lines with Custom Paths)",
       "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
+    },
+    {
+      "name": "line_skip_invalid",
+      "title": "Line Chart with Invalid Values"
+    },
+    {
+      "name": "trail_color",
+      "title": "Line Chart with Varying Size (using the \"trail\" mark)"
+    },
+    {
+      "name": "line_skip_invalid_mid_overlay",
+      "title": "Line Chart with Markers and Invalid Values"
+    },
+    {
+      "name": "line_skip_invalid_mid_cap_square",
+      "title": "Line Chart with Square Stroke Cap and Invalid Values"
     }
   ],
   "Area Charts and Streamgraphs": [
