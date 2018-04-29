@@ -251,7 +251,8 @@ export const defaultConfig: Config = {
     box: {},
     median: {color: 'white'},
     outliers: {},
-    whisker: {}
+    whisker: {},
+    ticks: null
   },
 
   scale: defaultScaleConfig,

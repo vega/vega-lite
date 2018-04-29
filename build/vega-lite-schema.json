@@ -1037,6 +1037,9 @@
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
         },
+        "ticks": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "whisker": {
           "$ref": "#/definitions/MarkConfig"
         }
@@ -1076,6 +1079,9 @@
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
+        },
+        "ticks": {
+          "$ref": "#/definitions/MarkConfig"
         },
         "type": {
           "$ref": "#/definitions/BoxPlot",

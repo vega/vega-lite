@@ -15,13 +15,14 @@ import {partLayerMixins} from './common';
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'whisker';
+export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'whisker' | 'ticks';
 
 const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
   median: 1,
   outliers: 1,
-  whisker: 1
+  whisker: 1,
+  ticks: 1
 };
 
 export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
@@ -127,6 +128,36 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
             type: continuousAxisChannelDef.type
           },
           [continuousAxis + '2']: {
+            field: 'upper_whisker_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type
+          },
+          ...encodingWithoutSizeColorAndContinuousAxis
+        }
+      }
+    ),
+    // lower tick
+    ...partLayerMixins<BoxPlotPartsMixins>(
+      markDef, 'ticks', config.boxplot,
+      {
+        mark: {type: 'tick', color: 'black', opacity: 1},
+        encoding: {
+          [continuousAxis]: {
+            field: 'lower_whisker_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type,
+            ...(scale ? {scale} : {}),
+            ...(axis ? {axis} : {})
+          },
+          ...encodingWithoutSizeColorAndContinuousAxis
+        }
+      }
+    ),
+    // upper tick
+    ...partLayerMixins<BoxPlotPartsMixins>(
+      markDef, 'ticks', config.boxplot,
+      {
+        mark: {type: 'tick', color: 'black', opacity: 1},
+        encoding: {
+          [continuousAxis]: {
             field: 'upper_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type
           },

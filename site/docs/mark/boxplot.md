@@ -33,7 +33,7 @@ A boxplot's mark definition contain the following properties:
 
 {% include table.html props="type,extent,orient,size" source="BoxPlotDef" %}
 
-Besides the properties listed above, `"box"`, `"median"`, `"whisker"`, `"outliers"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the box plots](#parts) as well.
+Besides the properties listed above, `"box"`, `"median"`, `"whisker"`, `"outliers"`, and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the box plots](#parts) as well.
 
 ## Types of Box Plot
 {:#boxplot-types}
@@ -90,9 +90,9 @@ Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-m
 
 To customize different parts of the box, we can customize different parts of the box plot [mark definition](#properties) or [config](#config).
 
-For example, we can set the box plot's `"median"` tick color to `"red"` via the mark definition:
+For example, we can customize the box plot's `"median"` tick by setting `"color"` to `"red"` and set `"ticks"` to true to make the box plot includes end ticks:
 
-<div class="vl-example" data-name="boxplot_2D_vertical_custom_mark"></div>
+<div class="vl-example" data-name="boxplot_1d_horizontal_custom_mark"></div>
 
 ## Color, Size, and Opacity Encoding Channels
 

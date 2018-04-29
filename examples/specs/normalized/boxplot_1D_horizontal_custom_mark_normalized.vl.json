@@ -35,9 +35,7 @@
               "as": "max_people"
             }
           ],
-          "groupby": [
-            "age"
-          ]
+          "groupby": []
         },
         {
           "calculate": "datum.upper_box_people - datum.lower_box_people",
@@ -59,20 +57,16 @@
             "style": "boxplot-whisker"
           },
           "encoding": {
-            "y": {
+            "x": {
               "field": "lower_whisker_people",
               "type": "quantitative",
               "axis": {
                 "title": "population"
               }
             },
-            "y2": {
+            "x2": {
               "field": "lower_box_people",
               "type": "quantitative"
-            },
-            "x": {
-              "field": "age",
-              "type": "ordinal"
             }
           }
         },
@@ -82,17 +76,44 @@
             "style": "boxplot-whisker"
           },
           "encoding": {
-            "y": {
+            "x": {
               "field": "upper_box_people",
               "type": "quantitative"
             },
-            "y2": {
+            "x2": {
               "field": "upper_whisker_people",
               "type": "quantitative"
-            },
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "tick",
+            "color": "black",
+            "opacity": 1,
+            "style": "boxplot-ticks"
+          },
+          "encoding": {
             "x": {
-              "field": "age",
-              "type": "ordinal"
+              "field": "lower_whisker_people",
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "tick",
+            "color": "black",
+            "opacity": 1,
+            "style": "boxplot-ticks"
+          },
+          "encoding": {
+            "x": {
+              "field": "upper_whisker_people",
+              "type": "quantitative"
             }
           }
         },
@@ -103,20 +124,13 @@
             "style": "boxplot-box"
           },
           "encoding": {
-            "y": {
+            "x": {
               "field": "lower_box_people",
               "type": "quantitative"
             },
-            "y2": {
+            "x2": {
               "field": "upper_box_people",
               "type": "quantitative"
-            },
-            "x": {
-              "field": "age",
-              "type": "ordinal"
-            },
-            "size": {
-              "value": 5
             }
           }
         },
@@ -128,16 +142,9 @@
             "color": "red"
           },
           "encoding": {
-            "y": {
+            "x": {
               "field": "mid_box_people",
               "type": "quantitative"
-            },
-            "x": {
-              "field": "age",
-              "type": "ordinal"
-            },
-            "size": {
-              "value": 5
             }
           }
         }
@@ -162,9 +169,7 @@
             null,
             null
           ],
-          "groupby": [
-            "age"
-          ]
+          "groupby": []
         },
         {
           "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
@@ -175,13 +180,9 @@
         "style": "boxplot-outliers"
       },
       "encoding": {
-        "y": {
+        "x": {
           "field": "people",
           "type": "quantitative"
-        },
-        "x": {
-          "field": "age",
-          "type": "ordinal"
         }
       }
     }
