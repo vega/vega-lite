@@ -1,3 +1,4 @@
+import {isObject} from 'vega-util';
 import {GenericMarkDef, isMarkDef, MarkConfig, VL_ONLY_MARK_CONFIG_PROPERTIES} from '../mark';
 import {NormalizedUnitSpec} from '../spec';
 
@@ -7,10 +8,9 @@ export type PartsMixins<P extends string> = {
 
 export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: GenericMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
-  baseSpec: NormalizedUnitSpec,
-  shownByDefault: boolean = true
+  baseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
-  if (markDef[part] || (markDef[part] === undefined && shownByDefault)) {
+  if (markDef[part] || (markDef[part] === undefined && compositeMarkConfig[part])) {
     return [{
       ...baseSpec,
       mark: {
@@ -31,7 +31,7 @@ function getMarkDefMixins<P extends PartsMixins<any>>(
   const configMixins = {};
 
   for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-    if (compositeMarkConfig && compositeMarkConfig[part] && compositeMarkConfig[part][prop] !== undefined) {
+    if (compositeMarkConfig && isObject(compositeMarkConfig[part]) && compositeMarkConfig[part][prop] !== undefined) {
       configMixins[prop] = compositeMarkConfig[part][prop];
     }
   }
