@@ -64,7 +64,7 @@ function makeWalkTree(data: VgData[]) {
         };
 
         // add calculates for all nested fields
-        dataSource.transform = dataSource.transform.concat(node.assembeFlattenTransform());
+        dataSource.transform = dataSource.transform.concat(node.assembleTransforms(true));
       } else {
         // Otherwise use Vega expression to parse
         dataSource.transform = dataSource.transform.concat(node.assembleTransforms());

@@ -170,6 +170,17 @@ describe('compile/data/formatparse', () => {
       ]);
     });
 
+    it('should assemble flatten for nested fields', function() {
+      const p = new ParseNode(null, {
+        flat: 'number',
+        'nested.field': 'number'
+      });
+
+      assert.deepEqual(p.assembleTransforms(true), [
+        {type: 'formula', expr: 'toNumber(datum["nested"] && datum["nested"]["field"])', as: 'nested.field'}
+      ]);
+    });
+
     it('should show warning for unrecognized types', log.wrap((localLogger) => {
       const p = new ParseNode(null, {
         x: 'foo',
@@ -178,5 +189,20 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(p.assembleTransforms(), []);
       assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
     }));
+  });
+
+  describe('assembleFormatParse', function() {
+    it('should assemble correct parse', function() {
+      const p = new ParseNode(null, {
+        n: 'number',
+        b: 'boolean',
+        'nested.field': 'flatten'
+      });
+
+      assert.deepEqual(p.assembleFormatParse(), {
+        n: 'number',
+        b: 'boolean'
+      });
+    });
   });
 });

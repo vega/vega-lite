@@ -124,7 +124,13 @@ export class ParseNode extends DataFlowNode {
     other.remove();
   }
   public assembleFormatParse() {
-    return this._parse;
+    const formatParse = {};
+    for (const field of keys(this._parse)) {
+      if (countAccessPath(field) === 1) {
+        formatParse[field] = this._parse[field];
+      }
+    }
+    return formatParse;
   }
 
   // format parse depends and produces all fields in its parse
@@ -136,8 +142,9 @@ export class ParseNode extends DataFlowNode {
     return toSet(keys(this.parse));
   }
 
-  public assembleTransforms(): VgFormulaTransform[] {
+  public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
     return keys(this._parse)
+      .filter(field => onlyNested ? countAccessPath(field) > 1 : true)
       .map(field => {
         const expr = parseExpression(field, this._parse[field]);
         if (!expr) {
@@ -151,18 +158,5 @@ export class ParseNode extends DataFlowNode {
         };
         return formula;
       }).filter(t => t !== null);
-  }
-
-  public assembeFlattenTransform(): VgFormulaTransform[] {
-    return keys(this._parse)
-      .filter(field => this._parse[field] === 'flatten')
-      .map(field => {
-        const formula: VgFormulaTransform = {
-          type: 'formula',
-          expr: parseExpression(field, 'flatten'),
-          as: field
-        };
-        return formula;
-      });
   }
 }
