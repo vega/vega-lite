@@ -222,6 +222,10 @@
       {
         "name": "window_rank",
         "title": "Line Charts Showing Ranks Over Time"
+      },
+      {
+        "name": "lookup",
+        "title": "Using the lookup transform to combine data"
       }
     ]
   },
