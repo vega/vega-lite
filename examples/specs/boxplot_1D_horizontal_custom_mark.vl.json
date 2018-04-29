@@ -5,15 +5,14 @@
   "mark": {
     "type": "boxplot",
     "extent": 1.5,
-    "median": {"color": "red"}
+    "median": {"color": "red"},
+    "ticks": true
   },
   "encoding": {
-    "x": {"field": "age","type": "ordinal"},
-    "y": {
+    "x": {
       "field": "people",
       "type": "quantitative",
       "axis": {"title": "population"}
-    },
-    "size": {"value": 5}
+    }
   }
 }
