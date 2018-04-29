@@ -1,432 +1,458 @@
 {
-  "Bar Charts and Histograms": [
-    {
-      "name": "bar",
-      "title": "Simple Bar Chart",
-      "description": "A bar chart encodes quantitative values as the extent of rectangular bars.",
-      "style": "background-size: auto 110%; background-position: center center !important;"
-    },
-    {
-      "name": "histogram",
-      "title": "Histogram"
-    },
-    {
-      "name": "bar_aggregate",
-      "title": "Aggregate Bar Chart"
-    },
-    {
-      "name": "bar_grouped",
-      "title": "Grouped Bar Chart"
-    },
-    {
-      "name": "stacked_bar_weather",
-      "title": "Stacked Bar Chart"
-    },
-    {
-      "name": "stacked_bar_h",
-      "title": "Horizontal Stacked Bar Chart"
-    },
-    {
-      "name": "stacked_bar_normalize",
-      "title": "Normalized Stacked Bar Chart"
-    },
-    {
-      "name": "bar_gantt",
-      "title": "Gantt Chart (Ranged Bar Marks)",
-      "style": "background-size: auto 75%; background-position-y: center !important;"
-    },
-    {
-      "name": "bar_color_disabled_scale",
-      "title": "A bar chart encoding color names in the data."
-    },
-    {
-      "name": "bar_layered_transparent",
-      "title": "Layered Bar Chart"
-    },
-    {
-      "name": "bar_diverging_stacked",
-      "title": "Diverging Stacked Bar Chart"
-    }
-  ],
-  "Scatter and Strip Plots": [
-    {
-      "name": "point_2d",
-      "title": "Scatterplot"
-    },
-    {
-      "name": "tick_dot",
-      "title": "Dot Plot"
-    },
-    {
-      "name": "tick_strip",
-      "title": "Strip Plot",
-      "style": "background-size: auto 85%; background-position-y: center !important;"
-    },
-    {
-      "name": "point_color_with_shape",
-      "title": "Colored Scatterplot"
-    },
-    {
-      "name": "circle_binned",
-      "title": "Binned Scatterplot"
-    },
-    {
-      "name": "point_bubble",
-      "title": "Bubble Plot"
-    },
-    {
-      "name": "point_invalid_color",
-      "png": true,
-      "title": "Scatterplot with Null Values in Grey"
-    },
-    {
-      "name": "circle",
-      "title": "Scatterplot with Filled Circles"
-    },
-    {
-      "name": "circle_bubble_health_income",
-      "title": "Bubble Plot (Gapminder)"
-    },
-    {
-      "name": "circle_natural_disasters",
-      "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
-      "title": "Bubble Plot (Natural Disasters)"
-    },
-    {
-      "name": "text_scatterplot_colored",
-      "title": "Scatter Plot with Text Marks"
-    }
-  ],
-  "Line Charts": [
-    {
-      "name": "line",
-      "title": "Line Chart"
-    },
-    {
-      "name": "line_overlay",
-      "title": "Line Chart with Overlaying Point Markers"
-    },
-    {
-      "name": "line_color",
-      "title": "Multi Series Line Chart"
-    },
-    {
-      "name": "line_slope",
-      "title": "Slope Graph"
-    },
-    {
-      "name": "line_step",
-      "title": "Step Chart"
-    },
-    {
-      "name": "line_monotone",
-      "title": "Line Chart with Monotone Interpolation"
-    },
-    {
-      "name": "connected_scatterplot",
-      "title": "Connected Scatterplot (Lines with Custom Paths)",
-      "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)."
-    },
-    {
-      "name": "line_skip_invalid",
-      "title": "Line Chart with Invalid Values"
-    },
-    {
-      "name": "trail_color",
-      "title": "Line Chart with Varying Size (using the \"trail\" mark)"
-    },
-    {
-      "name": "line_skip_invalid_mid_overlay",
-      "title": "Line Chart with Markers and Invalid Values"
-    },
-    {
-      "name": "line_skip_invalid_mid_cap_square",
-      "title": "Line Chart with Square Stroke Cap and Invalid Values"
-    }
-  ],
-  "Area Charts and Streamgraphs": [
-    {
-      "name": "area",
-      "title": "Area Chart"
-    },
-    {
-      "name": "area_overlay",
-      "title": "Area Chart with Overlaying Lines and Point Markers"
-    },
-    {
-      "name": "stacked_area",
-      "title": "Stacked Area Chart"
-    },
-    {
-      "name": "stacked_area_normalize",
-      "title": "Normalized Stacked Area Chart"
-    },
-    {
-      "name": "stacked_area_stream",
-      "title": "Streamgraph"
-    },
-    {
-      "name": "area_horizon",
-      "title": "Horizon Graph",
-      "style": "background-size: auto 70%; background-position-y: center;"
-    }
-  ],
-  "Table-based Plots": [
-    {
-      "name": "rect_heatmap",
-      "title": "Table Heatmap",
-      "style": "background-size: auto"
-    },
-    {
-      "name": "rect_binned_heatmap",
-      "title": "Table Binned heatmap"
-    },
-    {
-      "name": "circle_github_punchcard",
-      "title": "Table Bubble Plot (Github Punch Card)"
-    }
-  ],
-  "Advanced Calculations": [
-    {
-      "name": "window_percent_of_total",
-      "title": "Calculate Percentage of Total"
-    },
-    {
-      "name": "window_mean_difference",
-      "title": "Calculate Difference from Average"
-    },
-    {
-      "name": "window_mean_difference_by_year",
-      "title": "Calculate Difference from Annual Average"
-    },
-    {
-      "name": "window_residual_graph",
-      "title": "Calculate Residuals"
-    },
-    {
-      "name": "window_rank",
-      "title": "Line Charts Showing Ranks Over Time"
-    }
-  ],
-  "Trellis / Small Multiples": [
-    { "name": "trellis_anscombe",
-      "title": "Anscombe's Quartet"
-    },
-    {
-      "name": "trellis_bar",
-      "title": "Trellis Bar Chart"
-    },
-    {
-      "name": "trellis_stacked_bar",
-      "title": "Trellis Stacked Bar Chart"
-    },
-    {
-      "name": "trellis_scatter",
-      "title": "Trellis Scatter Plot"
-    },
-    {
-      "name": "trellis_bar_histogram",
-      "title": "Trellis Histograms"
-    },
-    {
-      "name": "trellis_barley",
-      "title": "Becker's Barley Trellis Plot"
-    },
-    {
-      "name": "trellis_area",
-      "title": "Trellis Area"
-    }
-  ],
-  "Using Layer to Add Labels": [
-    {
-      "name": "layer_bar_labels",
-      "title": "Simple Bar Chart with Labels",
-      "style": "background-size: auto 70%; background-position-y: center;"
-    },
-    {
-      "name": "layer_text_heatmap",
-      "title": "Layering text over heatmap",
-      "style": "background-size: auto 55%; background-position-y: center !important;"
-    },
-    {
-      "name": "layer_line_co2_concentration",
-      "title": "Carbon Dioxide in the Atmosphere",
-      "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)."
-    }
-  ],
-  "Error Bars and Error Bands": [
-    {
-      "name": "layer_error_bars",
-      "title": "Error Bars showing Confidence Interval"
-    },
-    {
-      "name": "layer_error_bars_dev",
-      "title": "Error Bars showing Standard Deviation"
-    },
-    {
-      "name": "layer_area_ci",
-      "title": "Line chart with Confidence Interval Band"
-    },
-    {
-      "name": "layer_global_mean_dev",
-      "title": "Scatterplot with Mean and Standard Deviation Overlay"
-    }
-  ],
-  "Box Plots": [
-    {
-      "name": "box-plot_minmax_2D_vertical_normalized",
-      "title": "Box Plot with Min/Max Whiskers"
-    },
-    {
-      "name": "box-plot_tukey_2D_vertical_normalized",
-      "title": "Tukey Box Plot (1.5 IQR)"
-    }
-  ],
-  "Other Layered Charts": [
-    {
-      "name": "layer_bar_annotations",
-      "title": "Bar chart that highlights values beyond a threshold",
-      "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
-    },
-    {
-      "name": "layer_precipitation_mean",
-      "title": "Mean overlay over precipitation chart"
-    },
-    {
-      "name": "layer_candlestick",
-      "title": "Candlestick Chart"
-    },
-    {
-      "name": "layer_histogram_global_mean",
-      "title": "Histogram with a Global Mean Overlay"
-    },
-    {
-      "name": "layer_falkensee",
-      "title": "Line chart with Hilighted Rectangles",
-      "style": "background-size: auto 90%; background-position-y: center !important;"
-    },
-    {
-      "name": "layer_ranged_dot",
-      "title": "Ranged Dot Plot",
-      "style": "background-size: auto 70%; background-position-y: center;"
-    },
-    {
-      "name": "layer_bar_dual_axis",
-      "title": "Layered Plot with Dual-Axis",
-      "style": "background-size: 100% auto; background-position-y: center;"
-    },
-    {
-      "name": "area_horizon",
-      "title": "Horizon Graph",
-      "style": "background-size: auto 70%; background-position-y: center;"
-    }
-  ],
-  "Multi-View Composition": [
-    {
-      "name": "repeat_layer",
-      "title": "Repeat and layer to show different weather measures"
-    },
-    {
-      "name": "vconcat_weather",
-      "title": "Vertically concatenated charts that show precipitation in Seattle",
-      "description": "Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature."
-    },
-    {
-      "name": "repeat_histogram",
-      "title": "Horizontally repeated charts",
-      "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries."
-    }
-  ],
-  "Geographical (Maps)": [
-    {
-      "name": "geo_choropleth",
-      "png": true,
-      "title": "Choropleth of unemployment rate per county"
-    },
-    {
-      "name": "geo_circle",
-      "png": true,
-      "title": "One dot per zipcode in the U.S."
-    },
-    {
-      "name": "geo_layer",
-      "png": true,
-      "title": "One dot per airport in the US overlayed on geoshape"
-    },
-    {
-      "name": "geo_rule",
-      "png": true,
-      "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
-    },
-    {
-      "name": "geo_repeat",
-      "png": true,
-      "title": "Three choropleths representing disjoint data from the same table"
-    },
-    {
-      "name": "geo_text",
-      "png": true,
-      "title": "U.S. state capitals overlayed on a map of the U.S."
-    },
-    {
-      "name": "geo_line",
-      "png": true,
-      "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
-    },
-    {
-      "name": "geo_trellis",
-      "png": true,
-      "title": "Income in the U.S. by state, faceted over income brackets"
-    },
-    {
-      "name": "geo_layer_line_london",
-      "title": "London Tube Lines",
-      "description": "This example was created by Jo Wood."
-    }
-  ],
-  "Interactive Charts": [
-    {
-      "name": "interactive_brush",
-      "title": "Rectangular Brush"
-    },
-    {
-      "name": "interactive_paintbrush",
-      "title": "Paintbrush Highlight"
-    },
-    {
-      "name": "selection_translate_scatterplot_drag",
-      "title": "Scatterplot Pan & Zoom"
-    },
-    {
-      "name": "interactive_query_widgets",
-      "title": "Query Widgets"
-    },
-    {
-      "name": "selection_layer_bar_month",
-      "title": "Interactive Average",
-      "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval."
-    },
-    {
-      "name": "interactive_overview_detail",
-      "title": "Overview and Detail"
-    },
-    {
-      "name": "interactive_layered_crossfilter",
-      "title": "Crossfilter"
-    },
-    {
-      "name": "interactive_splom",
-      "png": true,
-      "title": "Scatterplot Matrix"
-    },
-    {
-      "name": "interactive_concat_layer",
-      "title": "Interactive Dashboard with Cross Highlight"
-    },
-    {
-      "name": "interactive_multi_line_tooltip",
-      "title": "Multi Series Line Chart with Tooltips",
-      "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)."
-    }
-  ]
+  "Single-View Plots": {
+    "Bar Charts & Histograms": [
+      {
+        "name": "bar",
+        "title": "Simple Bar Chart",
+        "description": "A bar chart encodes quantitative values as the extent of rectangular bars",
+        "style": "background-size: auto 110%; background-position: center center !important;"
+      },
+      {
+        "name": "histogram",
+        "title": "Histogram"
+      },
+      {
+        "name": "bar_aggregate",
+        "title": "Aggregate Bar Chart"
+      },
+      {
+        "name": "bar_grouped",
+        "title": "Grouped Bar Chart"
+      },
+      {
+        "name": "stacked_bar_weather",
+        "title": "Stacked Bar Chart"
+      },
+      {
+        "name": "stacked_bar_h",
+        "title": "Horizontal Stacked Bar Chart"
+      },
+      {
+        "name": "stacked_bar_normalize",
+        "title": "Normalized Stacked Bar Chart"
+      },
+      {
+        "name": "bar_gantt",
+        "title": "Gantt Chart (Ranged Bar Marks)",
+        "style": "background-size: auto 75%; background-position-y: center !important;"
+      },
+      {
+        "name": "bar_color_disabled_scale",
+        "title": "A bar chart encoding color names in the data"
+      },
+      {
+        "name": "bar_layered_transparent",
+        "title": "Layered Bar Chart"
+      },
+      {
+        "name": "bar_diverging_stacked",
+        "title": "Diverging Stacked Bar Chart"
+      },
+      {
+        "name": "layer_bar_labels",
+        "title": "Simple Bar Chart with Labels",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      }
+    ],
+    "Scatter & Strip Plots": [
+      {
+        "name": "point_2d",
+        "title": "Scatterplot"
+      },
+      {
+        "name": "tick_dot",
+        "title": "Dot Plot"
+      },
+      {
+        "name": "tick_strip",
+        "title": "Strip Plot",
+        "style": "background-size: auto 85%; background-position-y: center !important;"
+      },
+      {
+        "name": "point_color_with_shape",
+        "title": "Colored Scatterplot"
+      },
+      {
+        "name": "circle_binned",
+        "title": "Binned Scatterplot"
+      },
+      {
+        "name": "point_bubble",
+        "title": "Bubble Plot"
+      },
+      {
+        "name": "point_invalid_color",
+        "png": true,
+        "title": "Scatterplot with Null Values in Grey"
+      },
+      {
+        "name": "circle",
+        "title": "Scatterplot with Filled Circles"
+      },
+      {
+        "name": "circle_bubble_health_income",
+        "title": "Bubble Plot (Gapminder)"
+      },
+      {
+        "name": "circle_natural_disasters",
+        "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
+        "title": "Bubble Plot (Natural Disasters)"
+      },
+      {
+        "name": "text_scatterplot_colored",
+        "title": "Scatter Plot with Text Marks"
+      }
+    ],
+    "Line Charts": [
+      {
+        "name": "line",
+        "title": "Line Chart"
+      },
+      {
+        "name": "line_overlay",
+        "title": "Line Chart with Overlaying Point Markers"
+      },
+      {
+        "name": "line_color",
+        "title": "Multi Series Line Chart"
+      },
+      {
+        "name": "line_slope",
+        "title": "Slope Graph"
+      },
+      {
+        "name": "line_step",
+        "title": "Step Chart"
+      },
+      {
+        "name": "line_monotone",
+        "title": "Line Chart with Monotone Interpolation"
+      },
+      {
+        "name": "connected_scatterplot",
+        "title": "Connected Scatterplot (Lines with Custom Paths)",
+        "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)"
+      },
+      {
+        "name": "trail_color",
+        "title": "Line Chart with Varying Size (using the trail mark)"
+      },
+      {
+        "name": "line_skip_invalid_mid_overlay",
+        "title": "Line Chart with Markers and Invalid Values"
+      },
+      {
+        "name": "line_skip_invalid_mid_cap_square",
+        "title": "Line Chart with Square Stroke Cap and Invalid Values"
+      },
+      {
+        "name": "layer_line_co2_concentration",
+        "title": "Carbon Dioxide in the Atmosphere",
+        "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)"
+      },
+      {
+        "name": "window_rank",
+        "title": "Line Charts Showing Ranks Over Time"
+      }
+    ],
+    "Area Charts & Streamgraphs": [
+      {
+        "name": "area",
+        "title": "Area Chart"
+      },
+      {
+        "name": "area_overlay",
+        "title": "Area Chart with Overlaying Lines and Point Markers"
+      },
+      {
+        "name": "stacked_area",
+        "title": "Stacked Area Chart"
+      },
+      {
+        "name": "stacked_area_normalize",
+        "title": "Normalized Stacked Area Chart"
+      },
+      {
+        "name": "stacked_area_stream",
+        "title": "Streamgraph"
+      },
+      {
+        "name": "area_horizon",
+        "title": "Horizon Graph",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      }
+    ],
+    "Table-based Plots": [
+      {
+        "name": "rect_heatmap",
+        "title": "Table Heatmap",
+        "style": "background-size: auto"
+      },
+      {
+        "name": "rect_binned_heatmap",
+        "title": "Table Binned heatmap"
+      },
+      {
+        "name": "circle_github_punchcard",
+        "title": "Table Bubble Plot (Github Punch Card)"
+      },
+      {
+        "name": "layer_text_heatmap",
+        "title": "Layering text over heatmap",
+        "style": "background-size: auto 55%; background-position-y: center !important;"
+      }
+    ],
+    "Advanced Calculations": [
+      {
+        "name": "window_percent_of_total",
+        "title": "Calculate Percentage of Total"
+      },
+      {
+        "name": "window_mean_difference",
+        "title": "Calculate Difference from Average"
+      },
+      {
+        "name": "window_mean_difference_by_year",
+        "title": "Calculate Difference from Annual Average"
+      },
+      {
+        "name": "window_residual_graph",
+        "title": "Calculate Residuals"
+      },
+      {
+        "name": "window_rank",
+        "title": "Line Charts Showing Ranks Over Time"
+      }
+    ]
+  },
+  "Layered & Multi-View Displays": {
+    "Faceting (Trellis Plot / Small Multiples)": [
+      {
+        "name": "trellis_bar",
+        "title": "Trellis Bar Chart"
+      },
+      {
+        "name": "trellis_stacked_bar",
+        "title": "Trellis Stacked Bar Chart"
+      },
+      {
+        "name": "trellis_scatter",
+        "title": "Trellis Scatter Plot"
+      },
+      {
+        "name": "trellis_bar_histogram",
+        "title": "Trellis Histograms"
+      },
+      {
+        "name": "trellis_anscombe",
+        "title": "Trellis Scatter Plot showing Anscombe's Quartet"
+      },
+      {
+        "name": "trellis_barley",
+        "title": "Becker's Barley Trellis Plot"
+      },
+      {
+        "name": "trellis_area",
+        "title": "Trellis Area"
+      }
+    ],
+    "Error Bars & Error Bands": [
+      {
+        "name": "layer_error_bars",
+        "title": "Error Bars showing Confidence Interval"
+      },
+      {
+        "name": "layer_error_bars_dev",
+        "title": "Error Bars showing Standard Deviation"
+      },
+      {
+        "name": "layer_area_ci",
+        "title": "Line Chart with Confidence Interval Band"
+      },
+      {
+        "name": "layer_global_mean_dev",
+        "title": "Scatterplot with Mean and Standard Deviation Overlay"
+      }
+    ],
+    "Box Plots": [
+      {
+        "name": "box-plot_minmax_2D_vertical_normalized",
+        "title": "Box Plot with Min/Max Whiskers"
+      },
+      {
+        "name": "box-plot_tukey_2D_vertical_normalized",
+        "title": "Tukey Box Plot (1.5 IQR)"
+      }
+    ],
+    "Using Layer to Add Labels": [
+      {
+        "name": "layer_bar_labels",
+        "title": "Simple Bar Chart with Labels",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "layer_text_heatmap",
+        "title": "Layering text over heatmap",
+        "style": "background-size: auto 55%; background-position-y: center !important;"
+      },
+      {
+        "name": "layer_line_co2_concentration",
+        "title": "Carbon Dioxide in the Atmosphere",
+        "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)"
+      }
+    ],
+    "Other Layered Displays": [
+      {
+        "name": "layer_bar_annotations",
+        "title": "Bar chart that highlights values beyond a threshold",
+        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value"
+      },
+      {
+        "name": "layer_precipitation_mean",
+        "title": "Mean overlay over precipitation chart"
+      },
+      {
+        "name": "layer_candlestick",
+        "title": "Candlestick Chart"
+      },
+      {
+        "name": "layer_histogram_global_mean",
+        "title": "Histogram with a Global Mean Overlay"
+      },
+      {
+        "name": "layer_falkensee",
+        "title": "Line Chart with Hilighted Rectangles",
+        "style": "background-size: auto 90%; background-position-y: center !important;"
+      },
+      {
+        "name": "layer_ranged_dot",
+        "title": "Ranged Dot Plot",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "layer_bar_dual_axis",
+        "title": "Layered Plot with Dual-Axis",
+        "style": "background-size: 100% auto; background-position-y: center;"
+      },
+      {
+        "name": "area_horizon",
+        "title": "Horizon Graph",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      }
+    ],
+    "Repeat & Concatenation": [
+      {
+        "name": "repeat_layer",
+        "title": "Repeat and layer to show different weather measures"
+      },
+      {
+        "name": "vconcat_weather",
+        "title": "Vertically concatenated charts that show precipitation in Seattle",
+        "description": "Two vertically concatenated charts"
+      },
+      {
+        "name": "repeat_histogram",
+        "title": "Horizontally repeated charts",
+        "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries"
+      }
+    ]
+  },
+  "Maps (Geographic Displays)": {
+    "": [
+      {
+        "name": "geo_choropleth",
+        "png": true,
+        "title": "Choropleth of unemployment rate per county"
+      },
+      {
+        "name": "geo_circle",
+        "png": true,
+        "title": "One dot per zipcode in the U.S"
+      },
+      {
+        "name": "geo_layer",
+        "png": true,
+        "title": "One dot per airport in the US overlayed on geoshape"
+      },
+      {
+        "name": "geo_rule",
+        "png": true,
+        "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
+      },
+      {
+        "name": "geo_repeat",
+        "png": true,
+        "title": "Three choropleths representing disjoint data from the same table"
+      },
+      {
+        "name": "geo_text",
+        "png": true,
+        "title": "U.S. state capitals overlayed on a map of the U.S"
+      },
+      {
+        "name": "geo_line",
+        "png": true,
+        "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
+      },
+      {
+        "name": "geo_trellis",
+        "png": true,
+        "title": "Income in the U.S. by state, faceted over income brackets"
+      },
+      {
+        "name": "geo_layer_line_london",
+        "title": "London Tube Lines",
+        "description": "This example was created by Jo Wood"
+      }
+    ]
+  },
+  "Interactive": {
+    "Interactive Charts": [
+      {
+        "name": "interactive_brush",
+        "title": "Rectangular Brush"
+      },
+      {
+        "name": "interactive_paintbrush",
+        "title": "Paintbrush Highlight"
+      },
+      {
+        "name": "selection_translate_scatterplot_drag",
+        "title": "Scatterplot Pan & Zoom"
+      },
+      {
+        "name": "interactive_query_widgets",
+        "title": "Query Widgets"
+      },
+      {
+        "name": "selection_layer_bar_month",
+        "title": "Interactive Average",
+        "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval"
+      },
+      {
+        "name": "interactive_multi_line_tooltip",
+        "title": "Multi Series Line Chart with Tooltips",
+        "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+      }
+    ],
+    "Interactive Multi-View Displays": [
+      {
+        "name": "interactive_overview_detail",
+        "title": "Overview and Detail"
+      },
+      {
+        "name": "interactive_layered_crossfilter",
+        "title": "Crossfilter"
+      },
+      {
+        "name": "interactive_splom",
+        "png": true,
+        "title": "Scatterplot Matrix"
+      },
+      {
+        "name": "interactive_concat_layer",
+        "title": "Interactive Dashboard with Cross Highlight"
+      }
+    ]
+  }
 }
