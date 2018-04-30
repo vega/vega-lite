@@ -24,16 +24,16 @@ export function isLogicalNot(op: LogicalOperand<any>): op is LogicalNot<any> {
   return !!op.not;
 }
 
-export function forEachLeave<T>(op: LogicalOperand<T>, fn: (op: T) => void) {
+export function forEachLeaf<T>(op: LogicalOperand<T>, fn: (op: T) => void) {
   if (isLogicalNot(op)) {
-    forEachLeave(op.not, fn);
+    forEachLeaf(op.not, fn);
   } else if (isLogicalAnd(op)) {
     for (const subop of op.and) {
-      forEachLeave(subop, fn);
+      forEachLeaf(subop, fn);
     }
   } else if (isLogicalOr(op)) {
     for (const subop of op.or) {
-      forEachLeave(subop, fn);
+      forEachLeaf(subop, fn);
     }
   } else {
     fn(op);

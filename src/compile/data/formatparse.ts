@@ -2,7 +2,7 @@ import {toSet} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {forEachLeave} from '../../logical';
+import {forEachLeaf} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
 import {accessPath, Dict, duplicate, keys, StringSet} from '../../util';
@@ -54,7 +54,7 @@ export class ParseNode extends DataFlowNode {
       if (isCalculate(transform)) {
         calcFieldMap[transform.as] = true;
       } else if (isFilter(transform)) {
-        forEachLeave(transform.filter, (filter) => {
+        forEachLeaf(transform.filter, (filter) => {
           if (isFieldPredicate(filter)) {
             if (filter.timeUnit) {
               parse[filter.field] = 'date';
