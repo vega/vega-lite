@@ -10,7 +10,7 @@ import {ORDINAL} from '../../src/type';
 import {VgLayout} from '../../src/vega.schema';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
-describe('FacetModel', function() {
+describe('FacetModel', () =>  {
   describe('initFacet', () => {
     it('should drop unsupported channel and throws warning', log.wrap((localLogger) => {
       const model = parseFacetModel({

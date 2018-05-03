@@ -1,14 +1,14 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
-import {getSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
-import {UnitModel} from '../../../src/compile/unit';
-import {GEOSHAPE} from '../../../src/mark';
-import {parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { assert } from 'chai';
+import { COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS } from '../../../src/channel';
+import { getSort, parseMarkGroup, pathGroupingFields } from '../../../src/compile/mark/mark';
+import { UnitModel } from '../../../src/compile/unit';
+import { GEOSHAPE } from '../../../src/mark';
+import { parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
-describe('Mark', function() {
-  describe('parseMarkGroup', function() {
+describe('Mark', () =>  {
+  describe('parseMarkGroup', () =>  {
     // PATH
     describe('Multi-series Line', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
@@ -188,7 +188,7 @@ describe('Mark', function() {
   });
 
   describe('getSort', () => {
-    it('should order by order field', function () {
+    it('should order by order field', () =>  {
       const model = parseUnitModel({
         "data": {"url": "data/driving.json"},
         "mark": "line",
@@ -204,7 +204,7 @@ describe('Mark', function() {
       });
     });
 
-    it('should have no sort if order = {value: null}', function () {
+    it('should have no sort if order = {value: null}', () =>  {
       const model = parseUnitModel({
         "data": {"url": "data/driving.json"},
         "mark": "line",
@@ -217,7 +217,7 @@ describe('Mark', function() {
       assert.equal(getSort(model), undefined);
     });
 
-    it('should order by x by default if x is the dimension', function () {
+    it('should order by x by default if x is the dimension', () =>  {
       const model = parseUnitModelWithScale({
         "data": {"url": "data/movies.json"},
         "mark": "line",
@@ -243,7 +243,7 @@ describe('Mark', function() {
       });
     });
 
-    it('should not order by a missing dimension', function () {
+    it('should not order by a missing dimension', () =>  {
       const model = parseUnitModelWithScale({
         "data": {"url": "data/movies.json"},
         "mark": "line",

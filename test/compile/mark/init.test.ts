@@ -1,13 +1,13 @@
 /* tslint:disable quotemark */
 
+import { assert } from 'chai';
 import * as log from '../../../src/log';
+import { CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK } from '../../../src/mark';
+import { without } from '../../../src/util';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
-import {assert} from 'chai';
-import {CIRCLE, Mark, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
-import {without} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-describe('compile/mark/init', function() {
+describe('compile/mark/init', () =>  {
   describe('defaultOpacity', () => {
     it('should return 0.7 by default for unaggregated point, tick, circle, and square', () => {
       for (const mark of [POINT, TICK, CIRCLE, SQUARE]) {
@@ -63,7 +63,7 @@ describe('compile/mark/init', function() {
     });
   });
 
-  describe('orient', function() {
+  describe('orient', () =>  {
     it('should return correct default for QxQ', log.wrap((localLogger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
@@ -95,7 +95,7 @@ describe('compile/mark/init', function() {
     }));
 
 
-    it('should return correct orient for vertical bar', function() {
+    it('should return correct orient for vertical bar', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -106,7 +106,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal bar', function() {
+    it('should return correct orient for horizontal bar', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -117,7 +117,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for vertical bar with raw temporal dimension', function() {
+    it('should return correct orient for vertical bar with raw temporal dimension', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -128,7 +128,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal bar with raw temporal dimension', function() {
+    it('should return correct orient for horizontal bar with raw temporal dimension', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -139,7 +139,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for vertical tick', function() {
+    it('should return correct orient for vertical tick', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "tick",
         "encoding": {
@@ -150,7 +150,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for vertical tick with bin', function() {
+    it('should return correct orient for vertical tick with bin', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "tick",
         "encoding": {
@@ -161,7 +161,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for vertical tick of continuous timeUnit dotplot', function() {
+    it('should return correct orient for vertical tick of continuous timeUnit dotplot', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "tick",
         "encoding": {
@@ -172,7 +172,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal tick', function() {
+    it('should return correct orient for horizontal tick', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "tick",
         "encoding": {
@@ -183,7 +183,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for vertical rule', function() {
+    it('should return correct orient for vertical rule', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -193,7 +193,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal rule', function () {
+    it('should return correct orient for horizontal rule', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -203,7 +203,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return undefined for line segment rule', function () {
+    it('should return undefined for line segment rule', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -216,7 +216,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, undefined);
     });
 
-    it('should return undefined for line segment rule with only x and y without x2, y2', function () {
+    it('should return undefined for line segment rule with only x and y without x2, y2', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -227,7 +227,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, undefined);
     });
 
-    it('should return correct orient for horizontal rules without x2 ', function() {
+    it('should return correct orient for horizontal rules without x2 ', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -239,7 +239,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for vertical rules without y2 ', function() {
+    it('should return correct orient for vertical rules without y2 ', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -251,7 +251,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for vertical rule with range', function() {
+    it('should return correct orient for vertical rule with range', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -263,7 +263,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
 
-    it('should return correct orient for horizontal rule with range', function() {
+    it('should return correct orient for horizontal rule with range', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -275,7 +275,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for horizontal rule with range and no ordinal', function() {
+    it('should return correct orient for horizontal rule with range and no ordinal', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -286,7 +286,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'horizontal');
     });
 
-    it('should return correct orient for vertical rule with range and no ordinal', function() {
+    it('should return correct orient for vertical rule with range and no ordinal', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "rule",
         "encoding": {
@@ -398,8 +398,8 @@ describe('compile/mark/init', function() {
     });
   });
 
-  describe('cursor', function() {
-    it('cursor should be undefined when no href channel defined', function() {
+  describe('cursor', () =>  {
+    it('cursor should be undefined when no href channel defined', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -410,7 +410,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, undefined);
     });
 
-    it('should return pointer cursor when href channel present', function() {
+    it('should return pointer cursor when href channel present', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "selection": {"test": {"type": "single"}},
@@ -427,7 +427,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor when href channel present but cursor specified', function() {
+    it('should return specified cursor when href channel present but cursor specified', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "cursor": "auto"},
         "selection": {"test": {"type": "single"}},
@@ -444,7 +444,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'auto');
     });
 
-    it('should return pointer cursor when href channel specified in mark definition', function() {
+    it('should return pointer cursor when href channel specified in mark definition', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "href": "http://www.google.com"},
         "encoding": {
@@ -455,7 +455,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor when href channel specified in mark definition but cursor also specified in mark', function() {
+    it('should return specified cursor when href channel specified in mark definition but cursor also specified in mark', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "href": "http://www.google.com", "cursor": "auto"},
         "encoding": {
@@ -466,7 +466,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'auto');
     });
 
-    it('should return pointer cursor when href channel specified in mark config', function() {
+    it('should return pointer cursor when href channel specified in mark config', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "config": {
           "mark": {
@@ -482,7 +482,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark', function() {
+    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "config": {
           "mark": {
@@ -498,7 +498,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'auto');
     });
 
-    it('should not specify cursor in the markdef if defined in the config', function() {
+    it('should not specify cursor in the markdef if defined in the config', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "config": {
           "mark": {

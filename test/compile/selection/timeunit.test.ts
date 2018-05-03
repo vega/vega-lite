@@ -42,8 +42,8 @@ function getModel(unit2: NormalizedUnitSpec) {
   return model;
 }
 
-describe('Selection time unit', function() {
-  it('dataflow nodes are constructed', function() {
+describe('Selection time unit', () =>  {
+  it('dataflow nodes are constructed', () =>  {
     const model = parseUnitModel({
       "mark": "point",
       "encoding": {
@@ -63,7 +63,7 @@ describe('Selection time unit', function() {
     assert.sameDeepMembers(as, ['seconds_date', 'minutes_date']);
   });
 
-  it('is added with conditional encodings', function() {
+  it('is added with conditional encodings', () =>  {
     const model = getModel({
       "mark": "point",
       "encoding": {
@@ -84,7 +84,7 @@ describe('Selection time unit', function() {
     assert.equal(data2.filter((tx) => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
   });
 
-  it('is added before selection filters', function() {
+  it('is added before selection filters', () =>  {
     const model = getModel({
       "transform": [{"filter": {"selection": "two"}}],
       "mark": "point",
@@ -115,7 +115,7 @@ describe('Selection time unit', function() {
     assert.isAbove(selIdx, tuIdx);
   });
 
-  it('removes duplicate time unit formulae', function() {
+  it('removes duplicate time unit formulae', () =>  {
     const model = getModel({
       "transform": [{"filter": {"selection": "two"}}],
       "mark": "point",

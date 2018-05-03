@@ -11,7 +11,7 @@ import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/scale', () => {
-  describe('parseRange()', function() {
+  describe('parseRange()', () =>  {
     describe('position', () => {
       it('should return [0, plot_width] for x-continuous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
@@ -125,7 +125,7 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('color', function() {
+    describe('color', () =>  {
       it('should use the specified scheme for a nominal color field.', () => {
         assert.deepEqual(
           parseRangeForChannel('color', 'ordinal', NOMINAL, {scheme: 'warm'}, defaultConfig, undefined, 'point', false, 'plot_width', []),
@@ -176,7 +176,7 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('opacity', function() {
+    describe('opacity', () =>  {
       it('should use default opacityRange as opacity\'s scale range.', () => {
         assert.deepEqual(
           parseRangeForChannel('opacity', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []),
@@ -185,8 +185,8 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('size', function() {
-      describe('bar', function() {
+    describe('size', () =>  {
+      describe('bar', () =>  {
         it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const config = {
             scale: {minBandSize: 2, maxBandSize: 9}
@@ -205,7 +205,7 @@ describe('compile/scale', () => {
         });
       });
 
-      describe('tick', function() {
+      describe('tick', () =>  {
         it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const config = {
             scale: {minBandSize: 4, maxBandSize: 9}
@@ -224,7 +224,7 @@ describe('compile/scale', () => {
         });
       });
 
-      describe('text', function() {
+      describe('text', () =>  {
         it('should return [minFontSize, maxFontSize]', () => {
           assert.deepEqual(
             parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'text', false, 'plot_width', []),
@@ -233,7 +233,7 @@ describe('compile/scale', () => {
         });
       });
 
-      describe('rule', function() {
+      describe('rule', () =>  {
         it('should return [minStrokeWidth, maxStrokeWidth]', () => {
           assert.deepEqual(
             parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'rule', false, 'plot_width', []),
@@ -242,7 +242,7 @@ describe('compile/scale', () => {
         });
       });
 
-      describe('point, square, circle', function() {
+      describe('point, square, circle', () =>  {
         it('should return [minSize, maxSize]', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
             const config = {
@@ -306,7 +306,7 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('shape', function() {
+    describe('shape', () =>  {
       it('should use default symbol range in Vega as shape\'s scale range.', () => {
         assert.deepEqual(
           parseRangeForChannel('shape', 'ordinal', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []),

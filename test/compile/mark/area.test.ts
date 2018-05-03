@@ -1,13 +1,13 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {COLOR, X, Y} from '../../../src/channel';
-import {area} from '../../../src/compile/mark/area';
-import {Encoding} from '../../../src/encoding';
-import {NormalizedUnitSpec} from '../../../src/spec';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { assert } from 'chai';
+import { COLOR, X, Y } from '../../../src/channel';
+import { area } from '../../../src/compile/mark/area';
+import { Encoding } from '../../../src/encoding';
+import { NormalizedUnitSpec } from '../../../src/spec';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
-describe('Mark: Area', function() {
+describe('Mark: Area', () =>  {
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       "mark": "area",
@@ -21,7 +21,7 @@ describe('Mark: Area', function() {
     };
   }
 
-  describe('vertical area, with log', function() {
+  describe('vertical area, with log', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "area",
       "encoding": {
@@ -32,16 +32,16 @@ describe('Mark: Area', function() {
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', function() {
+    it('should end on axis', () =>  {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', function() {
+    it('should has no height', () =>  {
       assert.isUndefined(props.height);
     });
   });
 
-  describe('stacked vertical area, with binned dimension', function() {
+  describe('stacked vertical area, with binned dimension', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "area",
       "encoding": {
@@ -53,12 +53,12 @@ describe('Mark: Area', function() {
     });
     const props = area.encodeEntry(model);
 
-    it('should use bin_mid for x', function() {
+    it('should use bin_mid for x', () =>  {
       assert.deepEqual(props.x, {field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
     });
   });
 
-  describe('vertical area, with zero=false', function() {
+  describe('vertical area, with zero=false', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "area",
       "encoding": {
@@ -69,24 +69,24 @@ describe('Mark: Area', function() {
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', function() {
+    it('should end on axis', () =>  {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', function() {
+    it('should has no height', () =>  {
       assert.isUndefined(props.height);
     });
   });
 
-  describe('vertical area', function() {
+  describe('vertical area', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for x', function() {
+    it('should have scale for x', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', function() {
+    it('should have scale for y', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -95,15 +95,15 @@ describe('Mark: Area', function() {
     });
   });
 
-  describe('vertical area with binned dimension', function() {
+  describe('vertical area with binned dimension', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for x', function() {
+    it('should have scale for x', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', function() {
+    it('should have scale for y', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -112,7 +112,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  describe('vertical stacked area with color', function () {
+  describe('vertical stacked area with color', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize(verticalArea({
       "color": {"field": "Origin", "type": "quantitative"}
     }));
@@ -128,7 +128,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.orient, {value: 'vertical'});
     });
 
-    it('should have scale for color', function () {
+    it('should have scale for color', () =>  {
       assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
     });
   });
@@ -145,15 +145,15 @@ describe('Mark: Area', function() {
     };
   }
 
-  describe('horizontal area', function() {
+  describe('horizontal area', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize(horizontalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for y', function() {
+    it('should have scale for y', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'year_Year'});
     });
 
-    it('should have scale for x', function() {
+    it('should have scale for x', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'count_*'});
     });
 
@@ -162,7 +162,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  describe('horizontal area, with log', function() {
+  describe('horizontal area, with log', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "area",
       "encoding": {
@@ -174,16 +174,16 @@ describe('Mark: Area', function() {
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', function() {
+    it('should end on axis', () =>  {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', function() {
+    it('should have no width', () =>  {
       assert.isUndefined(props.width);
     });
   });
 
-  describe('horizontal area, with zero=false', function() {
+  describe('horizontal area, with zero=false', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "area",
       "encoding": {
@@ -195,16 +195,16 @@ describe('Mark: Area', function() {
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', function() {
+    it('should end on axis', () =>  {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', function() {
+    it('should have no width', () =>  {
       assert.isUndefined(props.width);
     });
   });
 
-  describe('horizontal stacked area with color', function () {
+  describe('horizontal stacked area with color', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize(horizontalArea({
       "color": {"field": "Origin", "type": "nominal"}
     }));
@@ -220,13 +220,13 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.orient, {value: 'horizontal'});
     });
 
-    it('should have scale for color', function () {
+    it('should have scale for color', () =>  {
       assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
     });
   });
 
-  describe('ranged area', function () {
-    it ('vertical area should work with aggregate', function() {
+  describe('ranged area', () =>  {
+    it ('vertical area should work with aggregate', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/cars.json"},
         "mark": "area",
@@ -242,7 +242,7 @@ describe('Mark: Area', function() {
       assert.deepEqual(props.y2, {scale: 'y', field: 'max_Weight_in_lbs'});
     });
 
-    it ('horizontal area should work with aggregate', function() {
+    it ('horizontal area should work with aggregate', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/cars.json"},
         "mark": "area",

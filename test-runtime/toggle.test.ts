@@ -15,12 +15,12 @@ function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
   return `return ${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }
 
-describe('Toggle multi selections at runtime', function() {
+describe('Toggle multi selections at runtime', () =>  {
   const type = 'multi';
   const embed = embedFn(browser);
   const testRender = testRenderFn(browser, 'multi/toggle');
 
-  it('should toggle values into/out of the store', function() {
+  it('should toggle values into/out of the store', () =>  {
     embed(spec('unit', 0, {type}));
     browser.execute(toggle('qq', 0, false));
     browser.execute(toggle('qq', 1, true));
@@ -37,7 +37,7 @@ describe('Toggle multi selections at runtime', function() {
     testRender('click_2');
   });
 
-  it('should clear out the store w/o shiftKey', function() {
+  it('should clear out the store w/o shiftKey', () =>  {
     embed(spec('unit', 1, {type}));
     browser.execute(toggle('qq', 0, false));
     browser.execute(toggle('qq', 1, true));
@@ -54,7 +54,7 @@ describe('Toggle multi selections at runtime', function() {
     testRender(`clear_2`);
   });
 
-  it('should toggle binned fields', function() {
+  it('should toggle binned fields', () =>  {
     embed(spec('unit', 0, {type, encodings: ['x', 'y']},
       {x: {bin: true}, y: {bin: true}}));
 
@@ -74,7 +74,7 @@ describe('Toggle multi selections at runtime', function() {
   });
 
   compositeTypes.forEach(function(specType, idx) {
-    it(`should toggle in ${specType} views`, function() {
+    it(`should toggle in ${specType} views`, () =>  {
       embed(spec(specType, idx, {type, resolve: 'union'}));
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {

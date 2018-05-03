@@ -9,12 +9,12 @@ import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
 import {parseUnitModelWithScale} from '../../util';
 
-describe('compile/legend', function() {
+describe('compile/legend', () =>  {
   const symbolLegend = new LegendComponent({type: 'symbol'});
   const gradientLegend = new LegendComponent({type: 'gradient'});
 
-  describe('encode.symbols', function() {
-    it('should not have fill, strokeDash, or strokeDashOffset', function() {
+  describe('encode.symbols', () =>  {
+    it('should not have fill, strokeDash, or strokeDashOffset', () =>  {
 
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
@@ -28,7 +28,7 @@ describe('compile/legend', function() {
         assert.isUndefined((symbol||{}).strokeDashOffset);
     });
 
-    it('should have fill if a color encoding exists', function() {
+    it('should have fill if a color encoding exists', () =>  {
 
       const symbol = encode.symbols({field: 'a', type: 'quantitative'}, {}, parseUnitModelWithScale({
           mark: {
@@ -45,7 +45,7 @@ describe('compile/legend', function() {
         assert.deepEqual(symbol.fillOpacity, {value: 0.3});
     });
 
-    it('should return specific symbols.shape.value if user has specified', function() {
+    it('should return specific symbols.shape.value if user has specified', () =>  {
 
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
@@ -56,7 +56,7 @@ describe('compile/legend', function() {
         assert.deepEqual(symbol.shape['value'], 'square');
     });
 
-    it('should have default opacity', function() {
+    it('should have default opacity', () =>  {
 
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
@@ -66,7 +66,7 @@ describe('compile/legend', function() {
       assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
     });
 
-    it('should return the maximum value when there is a condition', function() {
+    it('should return the maximum value when there is a condition', () =>  {
 
       const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
@@ -81,8 +81,8 @@ describe('compile/legend', function() {
     });
   });
 
-  describe('encode.gradient', function() {
-    it('should have default opacity', function() {
+  describe('encode.gradient', () =>  {
+    it('should have default opacity', () =>  {
       const gradient = encode.gradient({field: 'a', type: 'quantitative'}, {}, parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -93,8 +93,8 @@ describe('compile/legend', function() {
     });
   });
 
-  describe('encode.labels', function() {
-    it('should return correct expression for the timeUnit: TimeUnit.MONTH', function() {
+  describe('encode.labels', () =>  {
+    it('should return correct expression for the timeUnit: TimeUnit.MONTH', () =>  {
 
       const model = parseUnitModelWithScale({
         mark: "point",
@@ -110,7 +110,7 @@ describe('compile/legend', function() {
       assert.deepEqual((label.text as SignalRef).signal, expected);
     });
 
-    it('should return correct expression for the timeUnit: TimeUnit.QUARTER', function() {
+    it('should return correct expression for the timeUnit: TimeUnit.QUARTER', () =>  {
 
       const model = parseUnitModelWithScale({
         mark: "point",

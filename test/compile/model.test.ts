@@ -1,10 +1,10 @@
-import {assert} from 'chai';
-import {NameMap} from '../../src/compile/model';
-import {parseFacetModel, parseFacetModelWithScale} from '../util';
+import { assert } from 'chai';
+import { NameMap } from '../../src/compile/model';
+import { parseFacetModel, parseFacetModelWithScale } from '../util';
 
 describe('Model', () => {
-  describe('NameMap', function () {
-    it('should rename correctly', function () {
+  describe('NameMap', () =>  {
+    it('should rename correctly', () =>  {
       const map = new NameMap();
       assert.equal(map.get('a'), 'a');
 

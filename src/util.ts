@@ -248,7 +248,7 @@ export function varName(s: string): string {
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
 
-export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
+export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => string): string {
   if (isLogicalNot(op)) {
     return '!(' + logicalExpr(op.not, cb) + ')';
   } else if (isLogicalAnd(op)) {

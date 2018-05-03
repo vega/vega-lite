@@ -21,7 +21,7 @@ describe('compile/scale', () => {
       return parseDomainForChannel(model, channel);
     }
 
-    it('should have correct domain with x and x2 channel', function() {
+    it('should have correct domain with x and x2 channel', () =>  {
       const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -39,7 +39,7 @@ describe('compile/scale', () => {
       assert.deepEqual(yDomain, [{data: 'main', field: 'c'}, {data: 'main', field: 'd'}]);
     });
 
-    it('should have correct domain for color', function() {
+    it('should have correct domain for color', () =>  {
       const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -51,7 +51,7 @@ describe('compile/scale', () => {
       assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
     });
 
-    it('should have correct domain for color ConditionField', function() {
+    it('should have correct domain for color ConditionField', () =>  {
       const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -65,7 +65,7 @@ describe('compile/scale', () => {
       assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
     });
 
-    it('should return domain for stack', function() {
+    it('should return domain for stack', () =>  {
       const model = parseUnitModel({
         mark: "bar",
         encoding: {
@@ -88,7 +88,7 @@ describe('compile/scale', () => {
       }]);
     });
 
-    it('should return normalize domain for stack if specified', function() {
+    it('should return normalize domain for stack if specified', () =>  {
       const model = parseUnitModel({
         mark: "bar",
         encoding: {
@@ -108,7 +108,7 @@ describe('compile/scale', () => {
       assert.deepEqual(testParseDomainForChannel(model,'y'), [[0, 1]]);
     });
 
-    describe('for quantitative', function() {
+    describe('for quantitative', () =>  {
       it('should return the right domain for binned Q', log.wrap((localLogger) => {
         const fieldDef: PositionFieldDef<string> = {
           bin: {maxbins: 15},
@@ -151,7 +151,7 @@ describe('compile/scale', () => {
       }));
 
       it('should return the unaggregated domain if requested for non-bin, non-sum Q',
-        function() {
+        () =>  {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
@@ -224,7 +224,7 @@ describe('compile/scale', () => {
         assert.deepEqual(_domain, [[0, 200]]);
       }));
 
-      it('should return the aggregated domain if we do not override it', function() {
+      it('should return the aggregated domain if we do not override it', () =>  {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -244,7 +244,7 @@ describe('compile/scale', () => {
         ]);
       });
 
-      it('should use the aggregated data for domain if specified in config', function() {
+      it('should use the aggregated data for domain if specified in config', () =>  {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -271,9 +271,9 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('for time', function() {
+    describe('for time', () =>  {
       it('should return the correct domain for month T',
-        function() {
+        () =>  {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
@@ -289,7 +289,7 @@ describe('compile/scale', () => {
         });
 
         it('should return the correct domain for month O',
-          function() {
+          () =>  {
             const model = parseUnitModel({
               mark: "point",
               encoding: {
@@ -305,7 +305,7 @@ describe('compile/scale', () => {
           });
 
         it('should return the correct domain for yearmonth T',
-          function() {
+          () =>  {
             const model = parseUnitModel({
               mark: "point",
               encoding: {
@@ -323,7 +323,7 @@ describe('compile/scale', () => {
 
 
         it('should return the correct domain for month O when specify sort',
-          function() {
+          () =>  {
             const sortDef: EncodingSortField<string> = {op: 'mean', field: 'precipitation', order: 'descending'} ;
             const model = parseUnitModel({
               mark: "bar",
@@ -389,8 +389,8 @@ describe('compile/scale', () => {
     });
   });
 
-    describe('for ordinal', function() {
-      it('should have correct domain for binned ordinal color', function() {
+    describe('for ordinal', () =>  {
+      it('should have correct domain for binned ordinal color', () =>  {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -403,8 +403,8 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('for nominal', function() {
-      it('should return correct domain with the provided sort property', function() {
+    describe('for nominal', () =>  {
+      it('should return correct domain with the provided sort property', () =>  {
         const sortDef: EncodingSortField<string> = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
@@ -419,7 +419,7 @@ describe('compile/scale', () => {
           }]);
       });
 
-      it('should return correct domain with the provided sort property with order property', function() {
+      it('should return correct domain with the provided sort property with order property', () =>  {
         const sortDef: EncodingSortField<string> = {op: 'min', field:'Acceleration', order: "descending"} ;
         const model = parseUnitModel({
             mark: "point",
@@ -435,7 +435,7 @@ describe('compile/scale', () => {
         }]);
       });
 
-      it('should return correct domain without sort if sort is not provided', function() {
+      it('should return correct domain without sort if sort is not provided', () =>  {
         const model = parseUnitModel({
           mark: "point",
           encoding: {

@@ -128,7 +128,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
-    return [X, Y].reduce(function(_axis, channel) {
+    return [X, Y].reduce((_axis, channel) => {
       // Position Axis
 
       // TODO: handle ConditionFieldDef
@@ -151,7 +151,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initLegend(encoding: Encoding<string>): LegendIndex {
-    return NONPOSITION_SCALE_CHANNELS.reduce(function(_legend, channel) {
+    return NONPOSITION_SCALE_CHANNELS.reduce((_legend, channel) => {
       const channelDef = encoding[channel];
       if (channelDef) {
         const legend = isFieldDef(channelDef) ? channelDef.legend :

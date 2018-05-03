@@ -49,9 +49,9 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   return {model, selCmpts};
 }
 
-describe('Zoom Selection Transform', function() {
+describe('Zoom Selection Transform', () =>  {
 
-  it('identifies transform invocation', function() {
+  it('identifies transform invocation', () =>  {
     const {model: _model, selCmpts} = getModel();
     assert.isNotTrue(zoom.has(selCmpts['one']));
     assert.isNotTrue(zoom.has(selCmpts['two']));
@@ -62,8 +62,8 @@ describe('Zoom Selection Transform', function() {
     assert.isNotTrue(zoom.has(selCmpts['seven']));
   });
 
-  describe('Anchor/Delta signals', function() {
-    it('builds then for default invocation', function() {
+  describe('Anchor/Delta signals', () =>  {
+    it('builds then for default invocation', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {four: selCmpts['four']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
@@ -90,7 +90,7 @@ describe('Zoom Selection Transform', function() {
       ]);
     });
 
-    it('builds them for custom events', function() {
+    it('builds them for custom events', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {five: selCmpts['five']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
@@ -117,7 +117,7 @@ describe('Zoom Selection Transform', function() {
       ]);
     });
 
-    it('builds them for scale-bound zoom', function() {
+    it('builds them for scale-bound zoom', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
@@ -145,8 +145,8 @@ describe('Zoom Selection Transform', function() {
     });
   });
 
-  describe('Zoom Signal', function() {
-    it('always builds zoomLinear exprs for brushes', function() {
+  describe('Zoom Signal', () =>  {
+    it('always builds zoomLinear exprs for brushes', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {four: selCmpts['four']};
       let signals = selection.assembleUnitSelectionSignals(model, []);
@@ -183,7 +183,7 @@ describe('Zoom Selection Transform', function() {
       ]);
     });
 
-    it('builds zoomLinear exprs for scale-bound zoom', function() {
+    it('builds zoomLinear exprs for scale-bound zoom', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
@@ -203,7 +203,7 @@ describe('Zoom Selection Transform', function() {
       ]);
     });
 
-    it('builds zoomLog/Pow exprs for scale-bound zoom', function() {
+    it('builds zoomLog/Pow exprs for scale-bound zoom', () =>  {
       const {model, selCmpts} = getModel('log', 'pow');
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);

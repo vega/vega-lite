@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import * as properties from '../../../src/compile/legend/properties';
 
-describe('compile/legend', function() {
+describe('compile/legend', () =>  {
   describe('values()', () => {
     it('should return correct timestamp values for DateTimes', () => {
       const values = properties.values({values: [{year: 1970}, {year: 1980}]}, {field: 'a', type: 'temporal'});

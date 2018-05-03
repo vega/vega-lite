@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {parseLayerModel} from '../util';
 
-describe('Layer', function() {
+describe('Layer', () =>  {
   describe('parseScale', () => {
     it('should merge domains', () => {
       const model = parseLayerModel({

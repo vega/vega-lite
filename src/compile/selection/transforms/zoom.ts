@@ -13,11 +13,11 @@ const ANCHOR = '_zoom_anchor';
 const DELTA = '_zoom_delta';
 
 const zoom:TransformCompiler = {
-  has: function(selCmpt) {
+  has: (selCmpt) => {
     return selCmpt.type === 'interval' && selCmpt.zoom;
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const delta = name + DELTA;

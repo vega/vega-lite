@@ -5,7 +5,7 @@ import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseLayerModel} from '../../util';
 
-describe('Layered Selections', function() {
+describe('Layered Selections', () =>  {
   const layers = parseLayerModel({
     layer: [{
       "selection": {
@@ -32,7 +32,7 @@ describe('Layered Selections', function() {
 
   layers.parse();
 
-  it('should appropriately name the unit', function() {
+  it('should appropriately name the unit', () =>  {
     const unit = layers.children[0] as UnitModel;
     assert.equal(selection.unitName(unit), '"layer_0"');
   });
@@ -41,7 +41,7 @@ describe('Layered Selections', function() {
   // mark individually. This ensures correct interleaving of brush marks
   // (i.e., that the brush mark appears above all layers and thus can be
   // moved around).
-  it('should pass through unit mark assembly', function() {
+  it('should pass through unit mark assembly', () =>  {
     assert.sameDeepMembers(layers.children[0].assembleMarks(), [{
       "name": "layer_0_marks",
       "type": "symbol",
@@ -107,7 +107,7 @@ describe('Layered Selections', function() {
     }]);
   });
 
-  it('should assemble selection marks across layers', function() {
+  it('should assemble selection marks across layers', () =>  {
     const child0 = layers.children[0].assembleMarks()[0];
     const child1 = layers.children[1].assembleMarks()[0];
 

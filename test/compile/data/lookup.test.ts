@@ -1,13 +1,13 @@
-import {assert} from 'chai';
-import {AncestorParse} from '../../../src/compile/data';
-import {LookupNode} from '../../../src/compile/data/lookup';
-import {parseTransformArray} from '../../../src/compile/data/parse';
+import { assert } from 'chai';
+import { AncestorParse } from '../../../src/compile/data';
+import { LookupNode } from '../../../src/compile/data/lookup';
+import { parseTransformArray } from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
-import {VgLookupTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
+import { VgLookupTransform } from '../../../src/vega.schema';
+import { parseUnitModel } from '../../util';
 
-describe('compile/data/lookup', function() {
-  it('should parse lookup from array', function () {
+describe('compile/data/lookup', () =>  {
+  it('should parse lookup from array', () =>  {
     const model = parseUnitModel({
       'data': {'url': 'data/lookup_groups.csv'},
       'transform': [{
@@ -32,7 +32,7 @@ describe('compile/data/lookup', function() {
     });
   });
 
-  it('should create node for flat lookup', function () {
+  it('should create node for flat lookup', () =>  {
     const lookup = new LookupNode(null, {
         'lookup': 'person',
         'from': {
@@ -51,7 +51,7 @@ describe('compile/data/lookup', function() {
     });
   });
 
-  it('should create node for nested lookup', function () {
+  it('should create node for nested lookup', () =>  {
     const lookup = new LookupNode(null, {
         'lookup': 'person',
         'from': {

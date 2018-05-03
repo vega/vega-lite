@@ -13,10 +13,10 @@ import {assembleDomain, getFieldFromDomain} from '../scale/domain';
 import {sortArrayIndexField} from './calculate';
 import {DataFlowNode} from './dataflow';
 
-type ChildIndependentFieldsWithStep = {
-  x?: string,
-  y?: string
-};
+interface ChildIndependentFieldsWithStep {
+  x?: string;
+  y?: string;
+}
 
 interface FacetChannelInfo {
   name: string;

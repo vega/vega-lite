@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import * as type from '../src/type';
 
 
-describe('type', function () {
+describe('type', () =>  {
   describe('getFullName()', () => {
     it('should return correct lowercase, full type names.', () => {
       for (const t of ['q', 'Q', 'quantitative', 'QUANTITATIVE']) {

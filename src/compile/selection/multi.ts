@@ -50,7 +50,7 @@ const multi:SelectionCompiler = {
 
   signals: signals,
 
-  modifyExpr: function(model, selCmpt) {
+  modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
       (selCmpt.resolve === 'global' ? 'null' : `{unit: ${unitName(model)}}`);

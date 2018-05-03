@@ -1,11 +1,11 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {geoshape} from '../../../src/compile/mark/geoshape';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { assert } from 'chai';
+import { geoshape } from '../../../src/compile/mark/geoshape';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
-describe('Mark: Geoshape', function() {
-  describe('encode', function () {
+describe('Mark: Geoshape', () =>  {
+  describe('encode', () =>  {
     it('should create no properties', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "geoshape",

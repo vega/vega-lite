@@ -4,8 +4,8 @@ import {rect} from '../../../src/compile/mark/rect';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-describe('Mark: Rect', function() {
-  describe('simple vertical', function() {
+describe('Mark: Rect', () =>  {
+  describe('simple vertical', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -16,7 +16,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar, with y from zero to field value and x band', function() {
+    it('should draw bar, with y from zero to field value and x band', () =>  {
       assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
       assert.deepEqual(props.width, {scale: 'x', band: true});
       assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
@@ -25,7 +25,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('simple horizontal', function() {
+  describe('simple horizontal', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -36,7 +36,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar from zero to field value and y band', function() {
+    it('should draw bar from zero to field value and y band', () =>  {
       assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
       assert.deepEqual(props.height, {scale: 'y', band: true});
       assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
@@ -45,7 +45,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('simple horizontal with size field', function() {
+  describe('simple horizontal with size field', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -58,7 +58,7 @@ describe('Mark: Rect', function() {
     const props = rect.encodeEntry(model);
 
     log.wrap((localLogger) => {
-      it('should draw bar from zero to field value and with band value for x/width', function() {
+      it('should draw bar from zero to field value and with band value for x/width', () =>  {
         assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
         assert.deepEqual(props.height, {scale: 'y', band: true});
         assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
@@ -72,7 +72,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('horizontal bin', function() {
+  describe('horizontal bin', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -83,14 +83,14 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar with y and y2', function() {
+    it('should draw bar with y and y2', () =>  {
       assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower'});
       assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       assert.isUndefined(props.height);
     });
   });
 
-  describe('vertical bin', function() {
+  describe('vertical bin', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -101,7 +101,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar with x and x2', function() {
+    it('should draw bar with x and x2', () =>  {
       assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower'});
       assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
       assert.isUndefined(props.width);
@@ -109,7 +109,7 @@ describe('Mark: Rect', function() {
   });
 
 
-  describe('simple ranged', function() {
+  describe('simple ranged', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -122,7 +122,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw rectangle with x, x2, y, y2', function() {
+    it('should draw rectangle with x, x2, y, y2', () =>  {
       assert.deepEqual(props.x, {scale: 'x', field: 'min_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', field: 'max_Acceleration'});
       assert.deepEqual(props.y, {scale: 'y', field: 'min_Horsepower'});
@@ -130,7 +130,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('simple heatmap', function() {
+  describe('simple heatmap', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/cars.json"},
       "mark": "rect",
@@ -142,7 +142,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw rect with x and y bands', function() {
+    it('should draw rect with x and y bands', () =>  {
       assert.deepEqual(props.x, {scale: 'x', field: 'Cylinders'});
       assert.deepEqual(props.width, {scale: 'x', band: true});
       assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
@@ -150,7 +150,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('vertical binned data', function() {
+  describe('vertical binned data', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "bar",
       "encoding": {
@@ -174,7 +174,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar with x and x2', function() {
+    it('should draw bar with x and x2', () =>  {
       assert.deepEqual(props.x2, {scale: "x", field: "bin_start", offset: 0});
       assert.deepEqual(props.x, {scale: "x", field: "bin_end", offset: 0});
       assert.deepEqual(props.y, {scale: "y", field: "count"});
@@ -183,7 +183,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('horizontal binned data', function() {
+  describe('horizontal binned data', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "bar",
       "encoding": {
@@ -207,7 +207,7 @@ describe('Mark: Rect', function() {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw bar with y and y2', function() {
+    it('should draw bar with y and y2', () =>  {
       assert.deepEqual(props.y2, {scale: "y", field: "bin_start", offset: 0});
       assert.deepEqual(props.y, {scale: "y", field: "bin_end", offset: 0});
       assert.deepEqual(props.x, {scale: "x", field: "count"});

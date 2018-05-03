@@ -13,7 +13,7 @@ const defaultScaleConfig = defaultConfig.scale;
 
 describe('compile/scale', () => {
   describe('type()', () => {
-    it('should return null for channel without scale', function() {
+    it('should return null for channel without scale', () =>  {
       assert.deepEqual(
         scaleType(undefined, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig),
         null
@@ -46,7 +46,7 @@ describe('compile/scale', () => {
       });
 
       describe('discrete channel (shape)', () => {
-        it('should return ordinal for nominal field', function() {
+        it('should return ordinal for nominal field', () =>  {
           assert.deepEqual(
             scaleType(undefined, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig),
             ScaleType.ORDINAL
@@ -155,7 +155,7 @@ describe('compile/scale', () => {
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'temporal'));
       }));
 
-      it('should return time for all time units.', function() {
+      it('should return time for all time units.', () =>  {
         for (const timeUnit of TIMEUNITS) {
           assert.deepEqual(
             scaleType(undefined, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', defaultScaleConfig),

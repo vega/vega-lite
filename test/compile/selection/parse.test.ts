@@ -6,7 +6,7 @@ import * as selection from '../../../src/compile/selection/selection';
 import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
-describe('Selection', function() {
+describe('Selection', () =>  {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -16,7 +16,7 @@ describe('Selection', function() {
     }
   });
 
-  it('parses default selection definitions', function() {
+  it('parses default selection definitions', () =>  {
     const component = selection.parseUnitSelection(model, {
       "one": {"type": "single"},
       "two": {"type": "multi"},
@@ -44,7 +44,7 @@ describe('Selection', function() {
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
   });
 
-  it('supports inline default overrides', function() {
+  it('supports inline default overrides', () =>  {
     const component = selection.parseUnitSelection(model, {
       "one": {
         "type": "single",
@@ -82,7 +82,7 @@ describe('Selection', function() {
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
   });
 
-  it('respects selection configs', function() {
+  it('respects selection configs', () =>  {
     model.config.selection = {
       single: {on: 'dblclick', fields: ['Cylinders']},
       multi: {on: 'mouseover', encodings: ['color'], toggle: 'event.ctrlKey'},

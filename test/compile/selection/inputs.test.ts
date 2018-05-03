@@ -5,7 +5,7 @@ import * as selection from '../../../src/compile/selection/selection';
 import inputs from '../../../src/compile/selection/transforms/inputs';
 import {parseUnitModel} from '../../util';
 
-describe('Inputs Selection Transform', function() {
+describe('Inputs Selection Transform', () =>  {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -43,7 +43,7 @@ describe('Inputs Selection Transform', function() {
     }
   });
 
-  it('identifies transform invocation', function() {
+  it('identifies transform invocation', () =>  {
     assert.isNotFalse(inputs.has(selCmpts['one']));
     assert.isNotFalse(inputs.has(selCmpts['two']));
     assert.isNotFalse(inputs.has(selCmpts['three']));
@@ -51,7 +51,7 @@ describe('Inputs Selection Transform', function() {
     assert.isNotTrue(inputs.has(selCmpts['six']));
   });
 
-  it('adds widget binding for default projection', function() {
+  it('adds widget binding for default projection', () =>  {
     model.component.selection = {one: selCmpts['one']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
@@ -75,7 +75,7 @@ describe('Inputs Selection Transform', function() {
     ]);
   });
 
-  it('adds single widget binding for compound projection', function() {
+  it('adds single widget binding for compound projection', () =>  {
     model.component.selection = {two: selCmpts['two']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
@@ -110,7 +110,7 @@ describe('Inputs Selection Transform', function() {
     ]);
   });
 
-  it('adds projection-specific widget bindings', function() {
+  it('adds projection-specific widget bindings', () =>  {
     model.component.selection = {three: selCmpts['three']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {

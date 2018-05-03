@@ -6,11 +6,11 @@ import {TransformCompiler} from './transforms';
 const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
-  has: function(selCmpt) {
+  has: (selCmpt) => {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
-  marks: function(model, selCmpt, marks) {
+  marks: (model, selCmpt, marks) => {
     const {x, y} = positionalProjections(selCmpt);
     const markType = model.mark;
     if (isPathMark(markType)) {

@@ -146,7 +146,7 @@ export function pt(key: string, idx: number, parent?: string) {
 }
 
 export function embedFn(browser: WebdriverIO.Client<void>) {
-  return function(specification: TopLevelSpec) {
+  return (specification: TopLevelSpec) => {
     browser.execute((_) => window['embed'](_), specification);
   };
 }
@@ -165,7 +165,7 @@ export function svg(browser: WebdriverIO.Client<void>, path: string, filename: s
 }
 
 export function testRenderFn(browser: WebdriverIO.Client<void>, path: string) {
-  return function(filename: string) {
+  return (filename: string) => {
     // const render =
       svg(browser, path, filename);
     // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);

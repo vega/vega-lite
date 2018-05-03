@@ -6,7 +6,7 @@ import single from '../../../src/compile/selection/single';
 import {parseUnitModelWithScale} from '../../util';
 
 
-describe('Single Selection', function() {
+describe('Single Selection', () =>  {
   const model = parseUnitModelWithScale({
     "mark": "circle",
     "encoding": {
@@ -24,7 +24,7 @@ describe('Single Selection', function() {
     }
   });
 
-  it('builds tuple signals', function() {
+  it('builds tuple signals', () =>  {
     const oneSg = single.signals(model, selCmpts['one']);
     assert.sameDeepMembers(oneSg, [{
       name: 'one_tuple',
@@ -51,7 +51,7 @@ describe('Single Selection', function() {
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 
-  it('builds modify signals', function() {
+  it('builds modify signals', () =>  {
     const oneExpr = single.modifyExpr(model, selCmpts['one']);
     assert.equal(oneExpr, 'one_tuple, true');
 
@@ -81,7 +81,7 @@ describe('Single Selection', function() {
     ]);
   });
 
-  it('builds top-level signals', function() {
+  it('builds top-level signals', () =>  {
     const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
       name: 'one', update: 'data(\"one_store\").length && {_vgsid_: data(\"one_store\")[0].values[0]}'
@@ -102,14 +102,14 @@ describe('Single Selection', function() {
     ].concat(oneSg, twoSg));
   });
 
-  it('builds unit datasets', function() {
+  it('builds unit datasets', () =>  {
     const data: any[] = [];
     assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
       {name: 'one_store'}, {name: 'two_store'}
     ]);
   });
 
-  it('leaves marks alone', function() {
+  it('leaves marks alone', () =>  {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
     assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);

@@ -61,7 +61,7 @@ describe('compile/data/formatparse', () => {
       });
     });
 
-    it('should include parse for all applicable fields, and exclude calculated fields', function() {
+    it('should include parse for all applicable fields, and exclude calculated fields', () =>  {
       const model = parseUnitModel({
         transform: [{calculate: 'datum["b"] * 2', as: 'b2'}],
         mark: "point",
@@ -83,7 +83,7 @@ describe('compile/data/formatparse', () => {
       });
     });
 
-    it('should not parse fields with aggregate=missing/valid/distinct', function() {
+    it('should not parse fields with aggregate=missing/valid/distinct', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -96,7 +96,7 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()), null);
     });
 
-    it('should not parse the same field twice', function() {
+    it('should not parse the same field twice', () =>  {
       const model = parseFacetModel({
         data: {
           values: [],
@@ -136,7 +136,7 @@ describe('compile/data/formatparse', () => {
       });
     });
 
-    it('should not parse the same field twice in explicit', function() {
+    it('should not parse the same field twice in explicit', () =>  {
       const model = parseUnitModel({
         data: {
           values: [],
@@ -153,7 +153,7 @@ describe('compile/data/formatparse', () => {
       assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
     });
 
-    it('should not parse the same field twice in implicit', function() {
+    it('should not parse the same field twice in implicit', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -239,8 +239,8 @@ describe('compile/data/formatparse', () => {
     });
   });
 
-  describe('assembleTransforms', function() {
-    it('should assemble correct parse expressions', function() {
+  describe('assembleTransforms', () =>  {
+    it('should assemble correct parse expressions', () =>  {
       const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',
@@ -260,7 +260,7 @@ describe('compile/data/formatparse', () => {
       ]);
     });
 
-    it('should assemble flatten for nested fields', function() {
+    it('should assemble flatten for nested fields', () =>  {
       const p = new ParseNode(null, {
         flat: 'number',
         'nested.field': 'flatten'
@@ -281,8 +281,8 @@ describe('compile/data/formatparse', () => {
     }));
   });
 
-  describe('assembleFormatParse', function() {
-    it('should assemble correct parse', function() {
+  describe('assembleFormatParse', () =>  {
+    it('should assemble correct parse', () =>  {
       const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',
@@ -296,8 +296,8 @@ describe('compile/data/formatparse', () => {
     });
   });
 
-  describe('producedFields', function() {
-    it('should produce the correct fields', function() {
+  describe('producedFields', () =>  {
+    it('should produce the correct fields', () =>  {
       const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',

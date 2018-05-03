@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {FacetNode} from '../../../src/compile/data/facet';
 import {parseFacetModelWithScale} from '../../util';
 
-describe('compile/data/facet', function() {
+describe('compile/data/facet', () =>  {
   describe('assemble', () => {
     it('should calculate column distinct if child has an independent discrete scale with step', () => {
       const model = parseFacetModelWithScale({

@@ -10,7 +10,7 @@ const single:SelectionCompiler = {
 
   signals: multiSignals,
 
-  topLevelSignals: function(model, selCmpt, signals) {
+  topLevelSignals: (model, selCmpt, signals) => {
     const hasSignal = signals.filter((s) => s.name === selCmpt.name);
     const data = `data(${stringValue(selCmpt.name + STORE)})`;
     const values = `${data}[0].values`;
@@ -21,7 +21,7 @@ const single:SelectionCompiler = {
     });
   },
 
-  modifyExpr: function(model, selCmpt) {
+  modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
       (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);

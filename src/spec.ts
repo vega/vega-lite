@@ -60,12 +60,12 @@ export type BaseSpec = Partial<DataMixins> & {
   transform?: Transform[];
 };
 
-export type DataMixins = {
+export interface DataMixins {
   /**
    * An object describing the data source
    */
   data: Data;
-};
+}
 
 
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
@@ -624,7 +624,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
 function accumulate(dict: any, defs: FieldDef<Field>[]): any {
-  defs.forEach(function(fieldDef) {
+  defs.forEach((fieldDef) => {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
       if (fieldDef[key] !== undefined) {

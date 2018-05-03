@@ -1,19 +1,19 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
-import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
-import {mergeDeep} from '../../../src/util';
-import {parseUnitModelWithScale} from '../../util';
+import { assert } from 'chai';
+import { FilterInvalidNode } from '../../../src/compile/data/filterinvalid';
+import { UnitModel } from '../../../src/compile/unit';
+import { NormalizedUnitSpec, TopLevel } from '../../../src/spec';
+import { mergeDeep } from '../../../src/util';
+import { parseUnitModelWithScale } from '../../util';
 
 
 function parse(model: UnitModel) {
   return FilterInvalidNode.make(null, model);
 }
 
-describe('compile/data/nullfilter', function() {
-  describe('compileUnit', function() {
+describe('compile/data/nullfilter', () =>  {
+  describe('compileUnit', () =>  {
     const spec: NormalizedUnitSpec = {
       mark: "point",
       encoding: {
@@ -24,7 +24,7 @@ describe('compile/data/nullfilter', function() {
       }
     };
 
-    it('should add filterNull for Q and T by default', function () {
+    it('should add filterNull for Q and T by default', () =>  {
       const model = parseUnitModelWithScale(spec);
       assert.deepEqual(parse(model).filter, {
         qq: {field: 'qq', type: "quantitative"},
@@ -32,7 +32,7 @@ describe('compile/data/nullfilter', function() {
       });
     });
 
-    it('should add filterNull for Q and T when invalidValues is "filter".', function () {
+    it('should add filterNull for Q and T when invalidValues is "filter".', () =>  {
       const model = parseUnitModelWithScale(mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
         config: {
           invalidValues: 'filter'
@@ -44,7 +44,7 @@ describe('compile/data/nullfilter', function() {
       });
     });
 
-    it('should add no null filter if when invalidValues is null', function () {
+    it('should add no null filter if when invalidValues is null', () =>  {
       const model = parseUnitModelWithScale(mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
         config: {
           invalidValues: null
@@ -65,7 +65,7 @@ describe('compile/data/nullfilter', function() {
     });
   });
 
-  describe('assemble', function() {
+  describe('assemble', () =>  {
     it ('should assemble simple filter', () => {
       const model = parseUnitModelWithScale({
         mark: "point",

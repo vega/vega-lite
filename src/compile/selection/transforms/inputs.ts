@@ -6,19 +6,19 @@ import {TransformCompiler} from './transforms';
 
 
 const inputBindings:TransformCompiler = {
-  has: function(selCmpt) {
+  has: (selCmpt) => {
     return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&
       selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
-  topLevelSignals: function(model, selCmpt, signals) {
+  topLevelSignals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
     const datum = nearest.has(selCmpt) ?
       '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
-    proj.forEach(function(p) {
+    proj.forEach((p) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter((s) => s.name === sgname);
       if (!hasSignal.length) {
@@ -37,7 +37,7 @@ const inputBindings:TransformCompiler = {
     return signals;
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const signal = signals.filter((s) => s.name === name + TUPLE)[0];

@@ -6,7 +6,7 @@ import {BAR} from '../../src/mark';
 import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
-describe('UnitModel', function() {
+describe('UnitModel', () =>  {
   describe('initEncoding', () => {
     it('should drop unsupported channel and throws warning', log.wrap((localLogger) => {
         const model = parseUnitModel({

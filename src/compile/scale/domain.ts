@@ -406,7 +406,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return true;
   }), util.hash) as VgUnionSortField[];
 
-  let sort: VgUnionSortField = undefined;
+  let sort: VgUnionSortField;
 
   if (simpleSorts.length === 1) {
     sort = simpleSorts[0];

@@ -47,7 +47,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     let fieldDef: FieldDef<string>;
-    let specifiedScale: Scale | null = undefined;
+    let specifiedScale: Scale | null;
 
     const channelDef = encoding[channel];
 

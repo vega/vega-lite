@@ -7,7 +7,7 @@ import {FacetedCompositeUnitSpec} from './spec';
 
 // TODO: move to vl.spec.validator?
 export interface RequiredChannelMap {
-  [mark: string]: Array<string>;
+  [mark: string]: string[];
 }
 
 /**

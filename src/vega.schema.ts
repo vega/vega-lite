@@ -85,10 +85,10 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export type VgScheme = {scheme: string, extent?: number[], count?: number};
+export interface VgScheme {scheme: string, extent?: number[], count?: number}
 export type VgRange = string | VgDataRef | (number|string|VgDataRef|SignalRef)[] | VgScheme | VgRangeStep;
 
-export type VgRangeStep = {step: number | SignalRef};
+export interface VgRangeStep {step: number | SignalRef}
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
@@ -102,7 +102,7 @@ export type VgMarkGroup = any;
 export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
 
 
-export type VgProjection = {
+export interface VgProjection {
   /*
    * The name of the projection.
    */
@@ -138,11 +138,11 @@ export type VgProjection = {
   /*
    * The desired precision of the projection.
    */
-  precision?: String;
+  precision?: string;
   /*
    * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
    */
-  fit?: SignalRef | Object | any[];
+  fit?: SignalRef | object | any[];
   /*
    * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
    */
@@ -162,7 +162,7 @@ export type VgProjection = {
   ratio?: number;
   spacing?: number;
   tilt?: number;
-};
+}
 
 export interface VgScale {
   name: string;
@@ -193,10 +193,10 @@ export interface ScaleInterpolateParams {
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
-export type RowCol<T> = {
+export interface RowCol<T> {
   row?: T,
   column?: T
-};
+}
 
 export interface VgLayout {
   center?: boolean | RowCol<boolean>;
@@ -454,35 +454,35 @@ export interface VgImputeTransform {
   value?: any;
 }
 
-export type VgCheckboxBinding = {
+export interface VgCheckboxBinding {
   input: 'checkbox';
   element?: string;
-};
+}
 
-export type VgRadioBinding = {
+export interface VgRadioBinding {
   input: 'radio';
   options: string[];
   element?: string;
-};
+}
 
-export type VgSelectBinding = {
+export interface VgSelectBinding {
   input: 'select';
   options: string[];
   element?: string;
-};
+}
 
-export type VgRangeBinding = {
+export interface VgRangeBinding {
   input: 'range';
   min?: number;
   max?: number;
   step?: number;
   element?: string;
-};
+}
 
-export type VgGenericBinding = {
+export interface VgGenericBinding {
   input: string;
   element?: string;
-};
+}
 
 export type VgBinding = VgCheckboxBinding | VgRadioBinding |
   VgSelectBinding | VgRangeBinding | VgGenericBinding;
@@ -1196,12 +1196,12 @@ export interface VgComparator {
 
 export interface VgWindowTransform {
   type: 'window';
-  params?: Number[];
+  params?: number[];
   as?: string[];
   ops?: (AggregateOp | WindowOnlyOp)[];
   fields?: string[];
-  frame?: Number[];
-  ignorePeers?: Boolean;
+  frame?: number[];
+  ignorePeers?: boolean;
   groupby?: string[];
   sort?: VgComparator;
 }

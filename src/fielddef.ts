@@ -99,9 +99,9 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
 /**
  * Reference to a repeated value.
  */
-export type RepeatRef = {
-  repeat: 'row' | 'column'
-};
+export interface RepeatRef {
+  repeat: 'row' | 'column';
+}
 
 export type Field = string | RepeatRef;
 
@@ -349,7 +349,7 @@ export function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | Aggreg
   if (isCount(fieldDef)) {
     field = 'count_*';
   } else {
-    let fn: string = undefined;
+    let fn: string;
 
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
@@ -690,7 +690,7 @@ export function valueExpr(
   }
 ): string {
 
-  let expr = undefined;
+  let expr;
   if (isDateTime(v)) {
     expr = dateTimeExpr(v, true);
   } else if (isString(v) || isNumber(v)) {

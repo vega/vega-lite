@@ -7,12 +7,12 @@ import {SelectionComponent} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const project: TransformCompiler = {
-  has: function(selDef: SelectionComponent | SelectionDef) {
+  has: (selDef: SelectionComponent | SelectionDef) => {
     const def = selDef as SelectionDef;
     return def.fields !== undefined || def.encodings !== undefined;
   },
 
-  parse: function(model, selDef, selCmpt) {
+  parse: (model, selDef, selCmpt) => {
     const channels = {};
     const timeUnits: {[key: string]: TimeUnitComponent} = {};
 

@@ -3,38 +3,38 @@ import {containsTimeUnit, convert, fieldExpr, formatExpression, TimeUnit} from '
 
 
 describe('timeUnit', () => {
-  describe('containsTimeUnit', function () {
-    it('should return true for quarter given quarter', function() {
+  describe('containsTimeUnit', () =>  {
+    it('should return true for quarter given quarter', () =>  {
       const fullTimeUnit = TimeUnit.QUARTER;
       const timeUnit = TimeUnit.QUARTER;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
     });
 
-    it('should return true for yearquarter given quarter', function() {
+    it('should return true for yearquarter given quarter', () =>  {
       const fullTimeUnit = TimeUnit.YEARQUARTER;
       const timeUnit = TimeUnit.QUARTER;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
     });
 
-    it('should return true for SECONDS and MILLISECONDS given SECONDSMILLISECONDS', function() {
+    it('should return true for SECONDS and MILLISECONDS given SECONDSMILLISECONDS', () =>  {
       const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
       const timeUnit = TimeUnit.SECONDS;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
     });
 
-    it('should return true for MILLISECONDS given SECONDSMILLISECONDS', function() {
+    it('should return true for MILLISECONDS given SECONDSMILLISECONDS', () =>  {
       const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
       const timeUnit = TimeUnit.MILLISECONDS;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
     });
 
-    it('should return false for quarter given year', function() {
+    it('should return false for quarter given year', () =>  {
       const fullTimeUnit = TimeUnit.YEAR;
       const timeUnit = TimeUnit.QUARTER;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), false);
     });
 
-    it('should return false for SECONDS given MILLISECONDS', function() {
+    it('should return false for SECONDS given MILLISECONDS', () =>  {
       const fullTimeUnit = TimeUnit.MILLISECONDS;
       const timeUnit = TimeUnit.SECONDS;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), false);
@@ -83,85 +83,85 @@ describe('timeUnit', () => {
     });
   });
 
-  describe('convert', function () {
-    it('should throw an error for the DAY timeunit', function() {
-      assert.throws(function() {
+  describe('convert', () =>  {
+    it('should throw an error for the DAY timeunit', () =>  {
+      assert.throws(() =>  {
         convert(TimeUnit.DAY, new Date(2000, 11, 2, 23, 59, 59, 999));
       }, Error, 'Cannot convert to TimeUnits containing \'day\'');
     });
 
-    it('should return expected result for YEARQUARTER', function() {
+    it('should return expected result for YEARQUARTER', () =>  {
       const date: Date = convert(TimeUnit.YEARQUARTER, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 9, 1, 0, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for UTCYEARQUARTER', function() {
+    it('should return expected result for UTCYEARQUARTER', () =>  {
       const date: Date = convert(TimeUnit.UTCYEARQUARTER, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
       assert.equal(date.getTime(), new Date(Date.UTC(2000, 9, 1, 0, 0, 0, 0)).getTime());
     });
 
-    it('should return expected result for YEARQUARTERMONTH', function() {
+    it('should return expected result for YEARQUARTERMONTH', () =>  {
       const date: Date = convert(TimeUnit.YEARQUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for YEARMONTH', function() {
+    it('should return expected result for YEARMONTH', () =>  {
       const date: Date = convert(TimeUnit.YEARMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for UTCYEARMONTH', function() {
+    it('should return expected result for UTCYEARMONTH', () =>  {
       const date: Date = convert(TimeUnit.UTCYEARMONTH, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
       assert.equal(date.getTime(), new Date(Date.UTC(2000, 11, 1, 0, 0, 0, 0)).getTime());
     });
 
 
-    it('should return expected result for UTCYEARMONTH', function() {
+    it('should return expected result for UTCYEARMONTH', () =>  {
       const date: Date = convert(TimeUnit.UTCYEAR, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
       assert.equal(date.getTime(), new Date(Date.UTC(2000, 0, 1, 0, 0, 0, 0)).getTime());
     });
 
-    it('should return expected result for YEARMONTHDATE', function() {
+    it('should return expected result for YEARMONTHDATE', () =>  {
       const date: Date = convert(TimeUnit.YEARMONTHDATE, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 2, 0, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for YEARMONTHDATEHOURS', function() {
+    it('should return expected result for YEARMONTHDATEHOURS', () =>  {
       const date: Date = convert(TimeUnit.YEARMONTHDATEHOURS, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 2, 23, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for YEARMONTHDATEHOURSMINUTES', function() {
+    it('should return expected result for YEARMONTHDATEHOURSMINUTES', () =>  {
       const date: Date = convert(TimeUnit.YEARMONTHDATEHOURSMINUTES, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 2, 23, 59, 0, 0).getTime());
     });
 
-    it('should return expected result for YEARMONTHDATEHOURSMINUTESSECONDS', function() {
+    it('should return expected result for YEARMONTHDATEHOURSMINUTESSECONDS', () =>  {
       const date: Date = convert(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(2000, 11, 2, 23, 59, 59, 0).getTime());
     });
 
-    it('should return expected result for QUARTERMONTH', function() {
+    it('should return expected result for QUARTERMONTH', () =>  {
       const date: Date = convert(TimeUnit.QUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(1900, 11, 1, 0, 0, 0, 0).getTime());
     });
 
-    it('should return expected result for HOURSMINUTES', function() {
+    it('should return expected result for HOURSMINUTES', () =>  {
       const date: Date = convert(TimeUnit.HOURSMINUTES, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(1900, 0, 1, 23, 59, 0, 0).getTime());
     });
 
-    it('should return expected result for HOURSMINUTESSECONDS', function() {
+    it('should return expected result for HOURSMINUTESSECONDS', () =>  {
       const date: Date = convert(TimeUnit.HOURSMINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(1900, 0, 1, 23, 59, 59, 0).getTime());
     });
 
-    it('should return expected result for MINUTESSECONDS', function() {
+    it('should return expected result for MINUTESSECONDS', () =>  {
       const date: Date = convert(TimeUnit.MINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(1900, 0, 1, 0, 59, 59, 0).getTime());
     });
 
-    it('should return expected result for SECONDSMILLISECONDS', function() {
+    it('should return expected result for SECONDSMILLISECONDS', () =>  {
       const date: Date = convert(TimeUnit.SECONDSMILLISECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
       assert.equal(date.getTime(), new Date(1900, 0, 1, 0, 0, 59, 999).getTime());
     });

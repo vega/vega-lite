@@ -6,10 +6,10 @@ import {ChannelDef, ScaleFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
 
-export type RepeaterValue = {
-  row?: string,
-  column?: string
-};
+export interface RepeaterValue {
+  row?: string;
+  column?: string;
+}
 
 export function replaceRepeaterInFacet(facet: FacetMapping<Field>, repeater: RepeaterValue): FacetMapping<string> {
   return replaceRepeater(facet, repeater) as FacetMapping<string>;

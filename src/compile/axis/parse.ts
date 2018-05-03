@@ -14,8 +14,9 @@ import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
+
 export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
-  return POSITION_SCALE_CHANNELS.reduce(function(axis, channel) {
+  return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
     if (model.component.scales[channel] && model.axis(channel)) {
       axis[channel] = [parseAxis(channel, model)];
     }
@@ -181,7 +182,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const axisComponent = new AxisComponent();
 
   // 1.2. Add properties
-  VG_AXIS_PROPERTIES.forEach(function(property) {
+  VG_AXIS_PROPERTIES.forEach((property) => {
     const value = getProperty(property, axis, channel, model);
     if (value !== undefined) {
       const explicit =

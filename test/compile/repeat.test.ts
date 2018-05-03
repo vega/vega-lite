@@ -6,7 +6,7 @@ import * as log from '../../src/log';
 import {keys} from '../../src/util';
 import {parseRepeatModel} from '../util';
 
-describe('Repeat', function() {
+describe('Repeat', () =>  {
   describe('resolveRepeat', () => {
     it('should resolve repeated fields', () => {
       const resolved = replaceRepeaterInEncoding({

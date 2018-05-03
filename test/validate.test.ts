@@ -2,9 +2,9 @@ import {assert} from 'chai';
 import {AREA, BAR, LINE, TEXT} from '../src/mark';
 import {getEncodingMappingError} from '../src/validate';
 
-describe('vl.validate', function() {
-  describe('getEncodingMappingError()', function () {
-    it('should return no error for valid specs', function() {
+describe('vl.validate', () =>  {
+  describe('getEncodingMappingError()', () =>  {
+    it('should return no error for valid specs', () =>  {
       assert.isNull(getEncodingMappingError({
         mark: BAR,
         encoding: {
@@ -29,7 +29,7 @@ describe('vl.validate', function() {
       }));
     });
 
-    it('should return error for invalid specs', function() {
+    it('should return error for invalid specs', () =>  {
       assert.isNotNull(getEncodingMappingError({
         mark: LINE,
         encoding: {

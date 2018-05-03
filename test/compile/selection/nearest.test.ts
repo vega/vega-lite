@@ -60,8 +60,8 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}) {
   ];
 }
 
-describe('Nearest Selection Transform', function() {
-  it('identifies transform invocation', function() {
+describe('Nearest Selection Transform', () =>  {
+  it('identifies transform invocation', () =>  {
     const selCmpts = getModel('circle').component.selection;
     assert.isNotFalse(nearest.has(selCmpts['one']));
     assert.isNotFalse(nearest.has(selCmpts['two']));
@@ -71,7 +71,7 @@ describe('Nearest Selection Transform', function() {
     assert.isNotTrue(nearest.has(selCmpts['six']));
   });
 
-  it('adds voronoi for non-path marks', function() {
+  it('adds voronoi for non-path marks', () =>  {
     const model = getModel('circle');
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: "world"}];
@@ -88,7 +88,7 @@ describe('Nearest Selection Transform', function() {
     assert.equal(localLogger.warns[0], log.message.nearestNotSupportForContinuous('line'));
   }));
 
-  it('limits to a single voronoi per unit', function() {
+  it('limits to a single voronoi per unit', () =>  {
     const model = getModel('circle');
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: "world"}];
@@ -98,7 +98,7 @@ describe('Nearest Selection Transform', function() {
       nearest.marks(model, selCmpts['two'], marks2), voronoiMark());
   });
 
-  it('supports 1D voronoi', function() {
+  it('supports 1D voronoi', () =>  {
     const model = getModel('circle');
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: "world"}];

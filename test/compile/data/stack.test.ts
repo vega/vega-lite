@@ -105,7 +105,7 @@ describe ('compile/data/stack', () => {
                                                        ]);
     });
 
-    it('should produce correct stack component for area with color and order', function() {
+    it('should produce correct stack component for area with color and order', () =>  {
       const model = parseUnitModelWithScale({
         "mark": "area",
         "encoding": {
@@ -153,7 +153,7 @@ describe ('compile/data/stack', () => {
       ]);
     });
 
-    it('should produce correct stack component for area with color and binned dimension', function() {
+    it('should produce correct stack component for area with color and binned dimension', () =>  {
       const model = parseUnitModelWithScale({
         "mark": "area",
         "encoding": {

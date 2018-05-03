@@ -5,7 +5,7 @@ import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseModel} from '../../util';
 
-describe('Faceted Selections', function() {
+describe('Faceted Selections', () =>  {
   const model = parseModel({
     "data": {"url": "data/anscombe.json"},
     "facet": {
@@ -33,7 +33,7 @@ describe('Faceted Selections', function() {
   model.parse();
   const unit = model.children[0].children[1] as UnitModel;
 
-  it('should assemble a facet signal', function() {
+  it('should assemble a facet signal', () =>  {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(unit, []), [
       {
         "name": "facet",
@@ -48,7 +48,7 @@ describe('Faceted Selections', function() {
     ]);
   });
 
-  it('should name the unit with the facet keys', function() {
+  it('should name the unit with the facet keys', () =>  {
     assert.equal(selection.unitName(unit),
       `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`);
   });

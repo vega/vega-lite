@@ -49,7 +49,7 @@ export class FacetModel extends ModelWithField {
 
   private initFacet(facet: FacetMapping<string>): FacetMapping<string> {
     // clone to prevent side effect to the original spec
-    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) {
+    return reduce(facet, (normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) => {
       if (!contains([ROW, COLUMN], channel)) {
         // Drop unsupported channel
         log.warn(log.message.incompatibleChannel(channel, 'facet'));

@@ -34,7 +34,7 @@ describe('compile/data/geojson', () => {
 
     while (node != null) {
       assert.instanceOf(node, GeoJSONNode);
-      const transform = (<GeoJSONNode>node).assemble();
+      const transform = (node as GeoJSONNode).assemble();
       assert.equal(transform.type, 'geojson');
       assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
       assert.isUndefined(transform.geojson);

@@ -1,42 +1,42 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
+import { assert } from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
-import {labelAlign, labelAngle, labelBaseline} from '../../../src/compile/axis/properties';
-import {TimeUnit} from '../../../src/timeunit';
-import {parseUnitModelWithScale} from '../../util';
+import { labelAlign, labelAngle, labelBaseline } from '../../../src/compile/axis/properties';
+import { TimeUnit } from '../../../src/timeunit';
+import { parseUnitModelWithScale } from '../../util';
 
 describe('compile/axis', () => {
-  describe('grid()', function () {
-    it('should return true by default for continuous scale that is not binned', function () {
+  describe('grid()', () =>  {
+    it('should return true by default for continuous scale that is not binned', () =>  {
       const grid = properties.grid('linear', {field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, true);
     });
 
-    it('should return false by default for binned field', function () {
+    it('should return false by default for binned field', () =>  {
       const grid = properties.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, false);
     });
 
-    it('should return false by default for a discrete scale', function () {
+    it('should return false by default for a discrete scale', () =>  {
       const grid = properties.grid('point', {field: 'a', type: 'quantitative'});
       assert.deepEqual(grid, false);
     });
   });
 
-  describe('orient()', function () {
-    it('should return bottom for x by default', function () {
+  describe('orient()', () =>  {
+    it('should return bottom for x by default', () =>  {
       const orient = properties.orient('x');
       assert.deepEqual(orient, 'bottom');
     });
 
-    it('should return left for y by default', function () {
+    it('should return left for y by default', () =>  {
       const orient = properties.orient('y');
       assert.deepEqual(orient, 'left');
     });
   });
 
-  describe('tickCount', function () {
+  describe('tickCount', () =>  {
     it('should return undefined by default for a binned field', () => {
       const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'}, undefined, {});
       assert.deepEqual(tickCount, {signal: 'ceil(a/20)'});
@@ -54,12 +54,12 @@ describe('compile/axis', () => {
       assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
     });
 
-    it('should return undefined by default for log scale', function () {
+    it('should return undefined by default for log scale', () =>  {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined, undefined, {});
       assert.deepEqual(tickCount, undefined);
     });
 
-    it('should return undefined by default for point scale', function () {
+    it('should return undefined by default for point scale', () =>  {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined, undefined, {});
       assert.deepEqual(tickCount, undefined);
     });
@@ -70,18 +70,18 @@ describe('compile/axis', () => {
     });
   });
 
-  describe('title()', function () {
-    it('should add return fieldTitle by default', function () {
+  describe('title()', () =>  {
+    it('should add return fieldTitle by default', () =>  {
       const title = properties.title(3, {field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'a');
     });
 
-    it('should add return fieldTitle by default', function () {
+    it('should add return fieldTitle by default', () =>  {
       const title = properties.title(10, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'Sum of a');
     });
 
-    it('should add return fieldTitle by default and truncate', function () {
+    it('should add return fieldTitle by default and truncate', () =>  {
       const title = properties.title(3, {aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'Su…');
     });

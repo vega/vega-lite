@@ -128,7 +128,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Automatically determine offset
-  let offset: StackOffset = undefined;
+  let offset: StackOffset;
   if (stackedFieldDef.stack !== undefined) {
     offset = stackedFieldDef.stack;
   } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {

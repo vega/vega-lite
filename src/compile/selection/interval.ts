@@ -23,7 +23,7 @@ const interval:SelectionCompiler = {
   predicate: 'vlInterval',
   scaleDomain: 'vlIntervalDomain',
 
-  signals: function(model, selCmpt) {
+  signals: (model, selCmpt) => {
     const name = selCmpt.name;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
@@ -33,7 +33,7 @@ const interval:SelectionCompiler = {
 
     if (selCmpt.translate && !hasScales) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
-      events(selCmpt, function(_: any[], evt: VgEventStream) {
+      events(selCmpt, (_: any[], evt: VgEventStream) => {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
         if (filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
@@ -41,11 +41,11 @@ const interval:SelectionCompiler = {
       });
     }
 
-    selCmpt.project.forEach(function(p) {
+    for (const p of selCmpt.project) {
       const channel = p.channel;
       if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
-        return;
+        continue;
       }
 
       const cs = channelSignals(model, selCmpt, channel);
@@ -66,7 +66,7 @@ const interval:SelectionCompiler = {
           `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
             `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
       });
-    });
+    }
 
     // Proxy scale reactions to ensure that an infinite loop doesn't occur
     // when an interval selection filter touches the scale.
@@ -91,13 +91,13 @@ const interval:SelectionCompiler = {
     });
   },
 
-  modifyExpr: function(model, selCmpt) {
+  modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
       (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
   },
 
-  marks: function(model, selCmpt, marks) {
+  marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
     const {xi, yi} = positionalProjections(selCmpt);
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
@@ -182,7 +182,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
-  const on = events(selCmpt, function(def: any[], evt: VgEventStream) {
+  const on = events(selCmpt, (def: any[], evt: VgEventStream) => {
     return def.concat(
       {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
@@ -206,8 +206,8 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   }];
 }
 
-function events(selCmpt: SelectionComponent, cb: Function) {
-  return selCmpt.events.reduce(function(on: any[], evt: VgEventStream) {
+function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {
+  return selCmpt.events.reduce((on: any[], evt: VgEventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;

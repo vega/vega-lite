@@ -13,11 +13,11 @@ const ANCHOR = '_translate_anchor';
 const DELTA = '_translate_delta';
 
 const translate:TransformCompiler = {
-  has: function(selCmpt) {
+  has: (selCmpt) => {
     return selCmpt.type === 'interval' && selCmpt.translate;
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const anchor = name + ANCHOR;
@@ -63,7 +63,7 @@ const translate:TransformCompiler = {
 
 export default translate;
 
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
+ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: ScaleChannel, size: 'width' | 'height', signals: VgSignal[]) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);
   const signal = signals.filter(s => {

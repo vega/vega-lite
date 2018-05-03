@@ -1,14 +1,14 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {Y} from '../../../src/channel';
-import {parseLayerAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util';
+import { assert } from 'chai';
+import { Y } from '../../../src/channel';
+import { parseLayerAxis, parseUnitAxis } from '../../../src/compile/axis/parse';
+import { parseLayerModel, parseUnitModelWithScale } from '../../util';
 
-describe('Axis', function() {
+describe('Axis', () =>  {
   // TODO: move this to model.test.ts
-  describe('= true', function() {
-    it('should produce default properties for axis', function() {
+  describe('= true', () =>  {
+    it('should produce default properties for axis', () =>  {
       const model1 = parseUnitModelWithScale({
         "mark": "bar",
         "encoding": {
@@ -27,8 +27,8 @@ describe('Axis', function() {
       assert.deepEqual(model1.axis(Y), model2.axis(Y));
     });
   });
-  describe('parseUnitAxis', function() {
-    it('should produce Vega grid', function() {
+  describe('parseUnitAxis', () =>  {
+    it('should produce Vega grid', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -44,7 +44,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.grid, true);
     });
 
-    it('should produce Vega grid when axis config is specified.', function() {
+    it('should produce Vega grid when axis config is specified.', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -60,7 +60,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].implicit.grid, true);
     });
 
-    it('should produce axis component with grid=false', function() {
+    it('should produce axis component with grid=false', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -76,7 +76,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.grid, false);
     });
 
-    it('should ignore null scales', function() {
+    it('should ignore null scales', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -95,7 +95,7 @@ describe('Axis', function() {
       assert.isUndefined(axisComponent['y']);
     });
 
-    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', function() {
+    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -112,7 +112,7 @@ describe('Axis', function() {
     });
 
 
-    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', function() {
+    it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -128,7 +128,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.grid, undefined);
     });
 
-    it('should store the title value if title = null, "", or false', function () {
+    it('should store the title value if title = null, "", or false', () =>  {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -146,7 +146,7 @@ describe('Axis', function() {
       }
     });
 
-    it('should store the fieldDef title value if title = null, "", or false', function () {
+    it('should store the fieldDef title value if title = null, "", or false', () =>  {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -164,7 +164,7 @@ describe('Axis', function() {
       }
     });
 
-    it('should store fieldDef.title as explicit', function () {
+    it('should store fieldDef.title as explicit', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -180,7 +180,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.title, 'foo');
     });
 
-    it('should merge title of fieldDef and fieldDef2', function () {
+    it('should merge title of fieldDef and fieldDef2', () =>  {
       const model = parseUnitModelWithScale({
         mark: "bar",
         encoding: {
@@ -201,7 +201,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.title, 'foo, bar');
     });
 
-    it('should use title of fieldDef2', function () {
+    it('should use title of fieldDef2', () =>  {
       const model = parseUnitModelWithScale({
         mark: "bar",
         encoding: {
@@ -221,7 +221,7 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.title, 'bar');
     });
 
-    it('should store both x and x2 for ranged mark', function () {
+    it('should store both x and x2 for ranged mark', () =>  {
       const model = parseUnitModelWithScale({
         mark: "rule",
         encoding: {

@@ -7,8 +7,8 @@ import {parseUnitModelWithScale} from '../../util';
 
 
 describe('compile/axis/encode', () => {
-  describe('encode.labels()', function () {
-    it('should not rotate label for temporal field by default', function() {
+  describe('encode.labels()', () =>  {
+    it('should not rotate label for temporal field by default', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -19,7 +19,7 @@ describe('compile/axis/encode', () => {
       assert.isUndefined(labels.angle);
     });
 
-    it('should do not rotate label for temporal field if labelAngle is specified in axis config', function() {
+    it('should do not rotate label for temporal field if labelAngle is specified in axis config', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -31,7 +31,7 @@ describe('compile/axis/encode', () => {
       assert.isUndefined(labels.angle);
     });
 
-    it('should have correct text.signal for quarter timeUnits', function () {
+    it('should have correct text.signal for quarter timeUnits', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -43,7 +43,7 @@ describe('compile/axis/encode', () => {
       assert.equal(labels.text.signal, expected);
     });
 
-    it('should have correct text.signal for yearquartermonth timeUnits', function () {
+    it('should have correct text.signal for yearquartermonth timeUnits', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {

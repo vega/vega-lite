@@ -5,8 +5,8 @@ import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel, parseRepeatModel} from '../../util';
 
-describe('Selection + Scales', function() {
-  it('assembles domainRaw from selection parameter', function() {
+describe('Selection + Scales', () =>  {
+  it('assembles domainRaw from selection parameter', () =>  {
     const model = parseConcatModel({
       vconcat: [
         {
@@ -82,7 +82,7 @@ describe('Selection + Scales', function() {
     assert.propertyVal(oscale.domainRaw, 'signal', 'null');
   });
 
-  it('should bind both scales in diagonal repeated views', function() {
+  it('should bind both scales in diagonal repeated views', () =>  {
     const model = parseRepeatModel({
       repeat: {
         row: ["Horsepower", "Acceleration"],
@@ -117,7 +117,7 @@ describe('Selection + Scales', function() {
     assert.propertyVal(scales[1].domainRaw, 'signal', 'grid_Acceleration');
   });
 
-  it('should merge domainRaw for layered views', function() {
+  it('should merge domainRaw for layered views', () =>  {
     const model = parseConcatModel({
       data: {url: "data/sp500.csv"},
       vconcat: [

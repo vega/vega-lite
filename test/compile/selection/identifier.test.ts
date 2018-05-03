@@ -25,8 +25,8 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
   return assembleRootData(model.component.data, {});
 }
 
-describe('Identifier transform', function() {
-  it('is not unnecessarily added', function() {
+describe('Identifier transform', () =>  {
+  it('is not unnecessarily added', () =>  {
     function test(selDef?: any) {
       const data = getVgData(selDef);
       for (const d of data) {
@@ -40,14 +40,14 @@ describe('Identifier transform', function() {
     }
   });
 
-  it('is added for default point selections', function() {
+  it('is added for default point selections', () =>  {
     for (const type of ['single', 'multi']) {
       const url = getVgData({pt: {type}});
       assert.equal(url[0].transform[0].type, 'identifier');
     }
   });
 
-  it('is added immediately after aggregate transforms', function() {
+  it('is added immediately after aggregate transforms', () =>  {
     function test(transform: VgTransform[]) {
       let aggr = -1;
       transform.some((t, i) => (aggr = i, t.type === 'aggregate'));
@@ -66,7 +66,7 @@ describe('Identifier transform', function() {
     }
   });
 
-  it('is added before any user-specified transforms', function() {
+  it('is added before any user-specified transforms', () =>  {
     for (const type of ['single', 'multi']) {
       const data = getVgData({pt: {type}}, null, null, null, null,
         [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);

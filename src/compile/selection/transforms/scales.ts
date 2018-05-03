@@ -8,15 +8,15 @@ import {TransformCompiler} from './transforms';
 
 
 const scaleBindings:TransformCompiler = {
-  has: function(selCmpt) {
+  has: (selCmpt) => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
       selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: function(model, selDef, selCmpt) {
+  parse: (model, selDef, selCmpt) => {
     const bound: Channel[] = selCmpt.scales = [];
 
-    selCmpt.project.forEach(function(p) {
+    selCmpt.project.forEach((p) => {
       const channel = p.channel;
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
@@ -37,7 +37,7 @@ const scaleBindings:TransformCompiler = {
     });
   },
 
-  topLevelSignals: function(model, selCmpt, signals) {
+  topLevelSignals: (model, selCmpt, signals) => {
     // Top-level signals are only needed when coordinating composed views.
     if (!model.parent) {
       return signals;
@@ -52,7 +52,7 @@ const scaleBindings:TransformCompiler = {
     }));
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals when within composed views.
     if (model.parent) {
       selCmpt.scales.forEach(channel => {

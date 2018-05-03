@@ -49,8 +49,8 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   return {model, selCmpts};
 }
 
-describe('Translate Selection Transform', function() {
-  it('identifies transform invocation', function() {
+describe('Translate Selection Transform', () =>  {
+  it('identifies transform invocation', () =>  {
     const {model: _model, selCmpts} = getModel();
     assert.isNotTrue(translate.has(selCmpts['one']));
     assert.isNotTrue(translate.has(selCmpts['two']));
@@ -61,10 +61,10 @@ describe('Translate Selection Transform', function() {
     assert.isNotTrue(translate.has(selCmpts['seven']));
   });
 
-  describe('Anchor/Delta signals', function() {
+  describe('Anchor/Delta signals', () =>  {
     const {model, selCmpts} = getModel();
 
-    it('builds them for default invocation', function() {
+    it('builds them for default invocation', () =>  {
       model.component.selection = {four: selCmpts['four']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
@@ -91,7 +91,7 @@ describe('Translate Selection Transform', function() {
       ]);
     });
 
-    it('builds them for custom events', function() {
+    it('builds them for custom events', () =>  {
       model.component.selection = {five: selCmpts['five']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
@@ -118,7 +118,7 @@ describe('Translate Selection Transform', function() {
       ]);
     });
 
-    it('builds them for scale-bound intervals', function() {
+    it('builds them for scale-bound intervals', () =>  {
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
@@ -146,8 +146,8 @@ describe('Translate Selection Transform', function() {
     });
   });
 
-  describe('Translate Signal', function() {
-    it('always builds panLinear exprs for brushes', function() {
+  describe('Translate Signal', () =>  {
+    it('always builds panLinear exprs for brushes', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {four: selCmpts['four']};
       let signals = selection.assembleUnitSelectionSignals(model, []);
@@ -183,7 +183,7 @@ describe('Translate Selection Transform', function() {
       ]);
     });
 
-    it('builds panLinear exprs for scale-bound intervals', function() {
+    it('builds panLinear exprs for scale-bound intervals', () =>  {
       const {model, selCmpts} = getModel();
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);
@@ -203,7 +203,7 @@ describe('Translate Selection Transform', function() {
       ]);
     });
 
-    it('builds panLog/panPow exprs for scale-bound intervals', function() {
+    it('builds panLog/panPow exprs for scale-bound intervals', () =>  {
       const {model, selCmpts} = getModel('log', 'pow');
       model.component.selection = {six: selCmpts['six']};
       const signals = selection.assembleUnitSelectionSignals(model, []);

@@ -9,7 +9,7 @@ import {parseUnitModel} from '../../util';
 
 const predicate = selection.selectionPredicate;
 
-describe('Selection Predicate', function() {
+describe('Selection Predicate', () =>  {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -41,7 +41,7 @@ describe('Selection Predicate', function() {
     "four": {"type": "single", "empty": "none"}
   });
 
-  it('generates the predicate expression', function() {
+  it('generates the predicate expression', () =>  {
     assert.equal(predicate(model, "one"),
       '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
 
@@ -73,7 +73,7 @@ describe('Selection Predicate', function() {
       '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
   });
 
-  it('generates Vega production rules', function() {
+  it('generates Vega production rules', () =>  {
     assert.deepEqual<VgEncodeEntry>(nonPosition('color', model, {vgChannel: 'fill'}), {
       fill: [
         {test: '!(length(data("one_store"))) || (vlSingle("one_store", datum))', value: "grey"},
@@ -93,7 +93,7 @@ describe('Selection Predicate', function() {
     });
   });
 
-  it('generates a selection filter', function() {
+  it('generates a selection filter', () =>  {
     assert.equal(expression(model, {"selection": "one"}),
       '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
 
@@ -118,7 +118,7 @@ describe('Selection Predicate', function() {
       '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
   });
 
-  it('throws an error for unknown selections', function() {
+  it('throws an error for unknown selections', () =>  {
     assert.throws(() => predicate(model, 'helloworld'), 'Cannot find a selection named "helloworld"');
   });
 });

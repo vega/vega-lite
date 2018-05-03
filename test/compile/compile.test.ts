@@ -7,7 +7,7 @@ import * as log from '../../src/log';
 import {compile} from '../../src/compile/compile';
 
 
-describe('compile/compile', function() {
+describe('compile/compile', () =>  {
   it('should throw error for invalid spec', () => {
     assert.throws(() => {
       compile({} as any);

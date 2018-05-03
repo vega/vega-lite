@@ -1,17 +1,17 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
+import { assert } from 'chai';
+import { COLOR, OPACITY, SHAPE, SIZE } from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
-import {parseLegend} from '../../../src/compile/legend/parse';
-import {isFieldDef} from '../../../src/fielddef';
-import {NormalizedUnitSpec} from '../../../src/spec';
-import {GEOJSON} from '../../../src/type';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util';
+import { parseLegend } from '../../../src/compile/legend/parse';
+import { isFieldDef } from '../../../src/fielddef';
+import { NormalizedUnitSpec } from '../../../src/spec';
+import { GEOJSON } from '../../../src/type';
+import { parseLayerModel, parseUnitModelWithScale } from '../../util';
 
-describe('compile/legend', function () {
-  describe('parseUnitLegend()', function () {
-    it(`should not produce a Vega legend object on channel 'shape' with type 'geojson'`, function () {
+describe('compile/legend', () =>  {
+  describe('parseUnitLegend()', () =>  {
+    it(`should not produce a Vega legend object on channel 'shape' with type 'geojson'`, () =>  {
       const spec: NormalizedUnitSpec = {
         "mark": "geoshape",
         "data": {"url": "data/income.json"},
@@ -45,8 +45,8 @@ describe('compile/legend', function () {
     });
   });
 
-  describe('parseLegendForChannel()', function() {
-    it('should produce a Vega legend object with correct type and scale for color', function() {
+  describe('parseLegendForChannel()', () =>  {
+    it('should produce a Vega legend object with correct type and scale for color', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -61,7 +61,7 @@ describe('compile/legend', function () {
       assert.equal(def.stroke, 'color');
     });
 
-    it('should produce no legend title when title is null, "", or false', function () {
+    it('should produce no legend title when title is null, "", or false', () =>  {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -80,7 +80,7 @@ describe('compile/legend', function () {
     });
 
 
-    it('should store fieldDef.title as explicit', function () {
+    it('should store fieldDef.title as explicit', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -97,7 +97,7 @@ describe('compile/legend', function () {
     });
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
-      it(`should produce a Vega legend object with correct type and scale for ${channel}`, function() {
+      it(`should produce a Vega legend object with correct type and scale for ${channel}`, () =>  {
         const spec: NormalizedUnitSpec = {
           mark: "point",
           encoding: {

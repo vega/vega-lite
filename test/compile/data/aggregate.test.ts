@@ -1,23 +1,23 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
+import { assert } from 'chai';
+import { AggregateNode } from '../../../src/compile/data/aggregate';
+import { AggregateTransform } from '../../../src/transform';
+import { StringSet } from '../../../src/util';
+import { VgAggregateTransform } from '../../../src/vega.schema';
+import { parseUnitModel } from '../../util';
 
-import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {AggregateTransform} from '../../../src/transform';
-import {StringSet} from '../../../src/util';
-import {VgAggregateTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
 
-describe('compile/data/summary', function () {
-  describe('clone', function() {
-    it('should have correct type', function() {
+describe('compile/data/summary', () =>  {
+  describe('clone', () =>  {
+    it('should have correct type', () =>  {
       const agg = new AggregateNode(null, {}, {});
       assert(agg instanceof AggregateNode);
       const clone = agg.clone();
       assert(clone instanceof AggregateNode);
     });
 
-    it('should have make a deep copy', function() {
+    it('should have make a deep copy', () =>  {
       const agg = new AggregateNode(null, {foo: true}, {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
@@ -26,7 +26,7 @@ describe('compile/data/summary', function () {
     });
   });
 
-  describe('parseUnit', function() {
+  describe('parseUnit', () =>  {
     it('should produce the correct summary component for sum(Acceleration) and count(*)' , () => {
       const model = parseUnitModel({
         mark: "point",
@@ -57,7 +57,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should produce the correct summary component for aggregated plot with detail arrays', function() {
+    it('should produce the correct summary component for aggregated plot with detail arrays', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -79,7 +79,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should include conditional field in the summary component', function() {
+    it('should include conditional field in the summary component', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -101,7 +101,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should add min and max if needed for unaggregated scale domain', function() {
+    it('should add min and max if needed for unaggregated scale domain', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -123,7 +123,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should add correct dimensions when binning', function() {
+    it('should add correct dimensions when binning', () =>  {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -149,7 +149,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should produce the correct summary component from transform array', function() {
+    it('should produce the correct summary component from transform array', () =>  {
       const t: AggregateTransform = {
         aggregate: [
           {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
@@ -167,7 +167,7 @@ describe('compile/data/summary', function () {
       });
     });
 
-    it('should produce the correct summary component from transform array with different aggregrations for the same field', function() {
+    it('should produce the correct summary component from transform array with different aggregrations for the same field', () =>  {
       const t: AggregateTransform = {aggregate: [
         {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
         {op: 'max', field: 'Displacement', as: 'Displacement_max'},

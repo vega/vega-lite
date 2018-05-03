@@ -9,7 +9,7 @@ import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../
 import {without} from '../../../src/util';
 import {parseModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
 
-describe('src/compile', function() {
+describe('src/compile', () =>  {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
     assert.deepEqual(
       toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES),
@@ -271,7 +271,7 @@ describe('src/compile', function() {
       assert.isUndefined(scale.get('padding'));
     });
 
-    describe('nominal with color', function() {
+    describe('nominal with color', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -281,7 +281,7 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should create correct color scale', function() {
+      it('should create correct color scale', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'ordinal');
         assert.deepEqual(scale.domains, [{
@@ -293,7 +293,7 @@ describe('src/compile', function() {
       });
     });
 
-    describe('ordinal with color', function() {
+    describe('ordinal with color', () =>  {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -303,7 +303,7 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should create sequential color scale', function() {
+      it('should create sequential color scale', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'ordinal');
 
@@ -315,7 +315,7 @@ describe('src/compile', function() {
       });
     });
 
-    describe('quantitative with color', function() {
+    describe('quantitative with color', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -325,7 +325,7 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should create linear color scale', function() {
+      it('should create linear color scale', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'sequential');
         assert.equal(scale.implicit.range, 'ramp');
@@ -337,7 +337,7 @@ describe('src/compile', function() {
       });
     });
 
-    describe('color with bin', function() {
+    describe('color with bin', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -347,13 +347,13 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should add correct scales', function() {
+      it('should add correct scales', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'bin-ordinal');
       });
     });
 
-    describe('ordinal color with bin', function() {
+    describe('ordinal color with bin', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -363,13 +363,13 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should add correct scales', function() {
+      it('should add correct scales', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'ordinal');
       });
     });
 
-    describe('opacity with bin', function() {
+    describe('opacity with bin', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -379,13 +379,13 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('opacity');
 
-      it('should add correct scales', function() {
+      it('should add correct scales', () =>  {
         assert.equal(scale.implicit.name, 'opacity');
         assert.equal(scale.implicit.type, 'bin-linear');
       });
     });
 
-    describe('size with bin', function() {
+    describe('size with bin', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -395,13 +395,13 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('size');
 
-      it('should add correct scales', function() {
+      it('should add correct scales', () =>  {
         assert.equal(scale.implicit.name, 'size');
         assert.equal(scale.implicit.type, 'bin-linear');
       });
     });
 
-    describe('color with time unit', function() {
+    describe('color with time unit', () =>  {
       const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
@@ -411,13 +411,13 @@ describe('src/compile', function() {
 
       const scale = model.getScaleComponent('color');
 
-      it('should add correct scales', function() {
+      it('should add correct scales', () =>  {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'sequential');
       });
     });
 
-    describe('selection domain', function() {
+    describe('selection domain', () =>  {
       const model = parseUnitModelWithScale({
         mark: "area",
         encoding: {
@@ -435,7 +435,7 @@ describe('src/compile', function() {
       const xScale = model.getScaleComponent('x');
       const yscale = model.getScaleComponent('y');
 
-      it('should add a raw selection domain', function() {
+      it('should add a raw selection domain', () =>  {
         assert.property(xScale.explicit, 'domainRaw');
         assert.propertyVal(xScale.explicit.domainRaw, 'signal',
           SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
@@ -447,9 +447,9 @@ describe('src/compile', function() {
     });
   });
 
-  describe('parseScaleDomain', function() {
-    describe('faceted domains', function() {
-      it('should use cloned subtree', function() {
+  describe('parseScaleDomain', () =>  {
+    describe('faceted domains', () =>  {
+      it('should use cloned subtree', () =>  {
         const model = parseModelWithScale({
           facet: {
             row: {field: "symbol", type: "nominal"}
@@ -469,7 +469,7 @@ describe('src/compile', function() {
         }]);
       });
 
-      it('should not use cloned subtree if the data is not faceted', function() {
+      it('should not use cloned subtree if the data is not faceted', () =>  {
         const model = parseModelWithScale({
           facet: {
             row: {field: "symbol", type: "nominal"}
@@ -490,7 +490,7 @@ describe('src/compile', function() {
         }]);
       });
 
-      it('should not use cloned subtree if the scale is independent', function() {
+      it('should not use cloned subtree if the scale is independent', () =>  {
         const model = parseModelWithScale({
           facet: {
             row: {field: "symbol", type: "nominal"}

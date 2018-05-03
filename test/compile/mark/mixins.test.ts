@@ -1,15 +1,15 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {X, Y} from '../../../src/channel';
-import {binPosition, color, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
-import {FieldDef} from '../../../src/fielddef';
+import { assert } from 'chai';
+import { X, Y } from '../../../src/channel';
+import { binPosition, color, pointPosition, tooltip } from '../../../src/compile/mark/mixins';
+import { FieldDef } from '../../../src/fielddef';
 import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
 describe('compile/mark/mixins', () => {
-  describe('color()', function() {
-    it('color should be mapped to fill for bar', function() {
+  describe('color()', () =>  {
+    it('color should be mapped to fill for bar', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -30,7 +30,7 @@ describe('compile/mark/mixins', () => {
       assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "color"});
     });
 
-    it('color should be mapped to stroke for point', function () {
+    it('color should be mapped to stroke for point', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -52,7 +52,7 @@ describe('compile/mark/mixins', () => {
       assert.propertyVal(colorMixins.fill, 'value', "transparent");
     });
 
-    it('add transparent fill when stroke is encoded', function () {
+    it('add transparent fill when stroke is encoded', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -150,7 +150,7 @@ describe('compile/mark/mixins', () => {
       assert.equal(logger.warns[0], log.message.droppingColor('property', {fill: true}));
     }));
 
-    it('should apply color property', function () {
+    it('should apply color property', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "point", "color": "red"},
         "encoding": {
@@ -162,7 +162,7 @@ describe('compile/mark/mixins', () => {
       assert.deepEqual(props.stroke, {value: "red"});
     });
 
-    it('should apply color from mark-specific config over general mark config', function () {
+    it('should apply color from mark-specific config over general mark config', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -175,7 +175,7 @@ describe('compile/mark/mixins', () => {
       assert.deepEqual(props.stroke, {value: "red"});
     });
 
-    it('should apply stroke mark config over color mark config', function () {
+    it('should apply stroke mark config over color mark config', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -188,7 +188,7 @@ describe('compile/mark/mixins', () => {
       assert.deepEqual(props.stroke, {value: "blue"});
     });
 
-    it('should apply stroke mark config over color mark config', function () {
+    it('should apply stroke mark config over color mark config', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -203,7 +203,7 @@ describe('compile/mark/mixins', () => {
   });
 
   describe('tooltip()', () => {
-    it('generates tooltip object signal for an array of tooltip fields', function () {
+    it('generates tooltip object signal for an array of tooltip fields', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "point",
         "encoding": {
@@ -218,8 +218,8 @@ describe('compile/mark/mixins', () => {
     });
   });
 
-  describe('midPoint()', function () {
-    it('should return correctly for lat/lng', function () {
+  describe('midPoint()', () =>  {
+    it('should return correctly for lat/lng', () =>  {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {
           "url": "data/zipcodes.csv",
@@ -247,7 +247,7 @@ describe('compile/mark/mixins', () => {
     });
   });
 
-  describe('binPosition', function() {
+  describe('binPosition', () =>  {
     it('generates warning for invalid binned spec without x2', log.wrap((logger) => {
       const fieldDef: FieldDef<string> = {"field": "bin_start", "bin": "binned", "type": "quantitative"};
       const props = binPosition(fieldDef, undefined, "x", undefined, undefined, undefined);

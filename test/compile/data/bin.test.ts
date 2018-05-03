@@ -16,8 +16,8 @@ function assembleFromTransform(model: Model, t: BinTransform) {
   return BinNode.makeFromTransform(null, t, model).assemble();
 }
 
-describe('compile/data/bin', function() {
-  it('should add bin transform and correctly apply bin with custom extent', function() {
+describe('compile/data/bin', () =>  {
+  it('should add bin transform and correctly apply bin with custom extent', () =>  {
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
@@ -108,7 +108,7 @@ describe('compile/data/bin', function() {
     });
   });
 
-  it('should add bin transform from transform array and correctly apply bin with custom extent', function() {
+  it('should add bin transform from transform array and correctly apply bin with custom extent', () =>  {
     const t: BinTransform = {
       bin: {extent: [0, 100]},
       field: 'Acceleration',
@@ -141,7 +141,7 @@ describe('compile/data/bin', function() {
     });
   });
 
-  it('should add bin transform from transform array and correctly apply bin with custom extent', function() {
+  it('should add bin transform from transform array and correctly apply bin with custom extent', () =>  {
     const t: BinTransform = {
       bin: {extent: [0, 100], maxbins: 20},
       field: 'Acceleration',
@@ -174,7 +174,7 @@ describe('compile/data/bin', function() {
     });
   });
 
-  it('should add bin transform from transform array with anchor property', function() {
+  it('should add bin transform from transform array with anchor property', () =>  {
     const t: BinTransform = {
       bin: {extent: [0, 100], anchor: 6},
       field: 'Acceleration',
@@ -208,7 +208,7 @@ describe('compile/data/bin', function() {
     });
   });
 
-  it('should add bin transform from transform array with array as', function() {
+  it('should add bin transform from transform array with array as', () =>  {
     const t: BinTransform = {
       bin: {extent: [0, 100], anchor: 6},
       field: 'Acceleration',

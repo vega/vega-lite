@@ -7,7 +7,7 @@ import interval from '../../../src/compile/selection/interval';
 import * as selection from '../../../src/compile/selection/selection';
 import {parseUnitModel} from '../../util';
 
-describe('Interval Selections', function() {
+describe('Interval Selections', () =>  {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -45,8 +45,8 @@ describe('Interval Selections', function() {
     }
   });
 
-  describe('Tuple Signals', function() {
-    it('builds projection signals', function() {
+  describe('Tuple Signals', () =>  {
+    it('builds projection signals', () =>  {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [{
         "name": "one_x",
@@ -157,7 +157,7 @@ describe('Interval Selections', function() {
       ]);
     });
 
-    it('builds trigger signals', function() {
+    it('builds trigger signals', () =>  {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [
         {
@@ -192,7 +192,7 @@ describe('Interval Selections', function() {
       ]);
     });
 
-    it('namespaces signals when encoding/fields collide', function() {
+    it('namespaces signals when encoding/fields collide', () =>  {
       const model2 = parseUnitModel({
         "mark": "circle",
         "encoding": {
@@ -215,7 +215,7 @@ describe('Interval Selections', function() {
     });
   });
 
-  it('builds modify signals', function() {
+  it('builds modify signals', () =>  {
     const oneExpr = interval.modifyExpr(model, selCmpts['one']);
     assert.equal(oneExpr, 'one_tuple, true');
 
@@ -257,7 +257,7 @@ describe('Interval Selections', function() {
     ]);
   });
 
-  it('builds brush mark', function() {
+  it('builds brush mark', () =>  {
     const marks: any[] = [{hello: "world"}];
     assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
       {

@@ -1,15 +1,15 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-
-import {COLOR, X, Y} from '../../../src/channel';
-import {line} from '../../../src/compile/mark/line';
+import { assert } from 'chai';
+import { COLOR, X, Y } from '../../../src/channel';
+import { line } from '../../../src/compile/mark/line';
 import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 
-describe('Mark: Line', function() {
 
-  describe('with x, y', function() {
+describe('Mark: Line', () =>  {
+
+  describe('with x, y', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
@@ -20,16 +20,16 @@ describe('Mark: Line', function() {
     });
     const props = line.encodeEntry(model);
 
-    it('should have scale for x', function() {
+    it('should have scale for x', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
 
-    it('should have scale for y', function() {
+    it('should have scale for y', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
   });
 
-  describe('with x, y, color', function () {
+  describe('with x, y, color', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
@@ -41,13 +41,13 @@ describe('Mark: Line', function() {
     });
     const props = line.encodeEntry(model);
 
-    it('should have scale for color', function () {
+    it('should have scale for color', () =>  {
       assert.deepEqual(props.stroke, {scale: COLOR, field: 'Acceleration'});
     });
   });
 
 
-  describe('with x, y, size', function () {
+  describe('with x, y, size', () =>  {
     it('should have scale for size', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "data": {"url": "data/barley.json"},
@@ -81,7 +81,7 @@ describe('Mark: Line', function() {
     }));
   });
 
-  describe('with stacked y', function() {
+  describe('with stacked y', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
@@ -94,12 +94,12 @@ describe('Mark: Line', function() {
     });
     const props = line.encodeEntry(model);
 
-    it('should use y_end', function() {
+    it('should use y_end', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'sum_yield_end'});
     });
   });
 
-  describe('with stacked x', function() {
+  describe('with stacked x', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
@@ -112,12 +112,12 @@ describe('Mark: Line', function() {
     });
     const props = line.encodeEntry(model);
 
-    it('should use x_end', function() {
+    it('should use x_end', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'sum_yield_end'});
     });
   });
 
-  describe('with x', function() {
+  describe('with x', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "line",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
@@ -126,19 +126,19 @@ describe('Mark: Line', function() {
 
     const props = line.encodeEntry(model);
 
-    it('should be centered on y', function() {
+    it('should be centered on y', () =>  {
       assert.deepEqual(props.y, {
         mult: 0.5,
         signal: 'height'
       });
     });
 
-    it('should scale on x', function() {
+    it('should scale on x', () =>  {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
   });
 
-  describe('with y', function() {
+  describe('with y', () =>  {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "mark": "line",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
@@ -147,14 +147,14 @@ describe('Mark: Line', function() {
 
     const props = line.encodeEntry(model);
 
-    it('should be centered on x', function() {
+    it('should be centered on x', () =>  {
       assert.deepEqual(props.x, {
         mult: 0.5,
         signal: 'width'
       });
     });
 
-    it('should scale on y', function() {
+    it('should scale on y', () =>  {
       assert.deepEqual(props.y, {scale: Y, field: 'year'});
     });
   });

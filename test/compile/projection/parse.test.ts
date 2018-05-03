@@ -1,8 +1,8 @@
-import {assert} from 'chai';
-import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import { assert } from 'chai';
+import { parseLayerModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 /* tslint:disable:quotemark */
 
-describe('src/compile/projection/parse', function () {
+describe('src/compile/projection/parse', () =>  {
   describe('parseUnitProjection', () => {
     it('should create projection from specified projection', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({

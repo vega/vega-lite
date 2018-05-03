@@ -1,17 +1,17 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
-
 import {Field, FieldDef} from '../src/fielddef';
-import {LocalLogger} from '../src/log';
 import * as log from '../src/log';
+import {LocalLogger} from '../src/log';
 import {fieldDefs, normalize, NormalizedSpec, TopLevel, TopLevelSpec} from '../src/spec';
 import {defaultConfig, initConfig} from './../src/config';
 
+
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
-describe('normalize()', function () {
+describe('normalize()', () =>  {
   describe('normalizeFacetedUnit', () => {
-    it('should convert single extended spec with column into a composite spec', function() {
+    it('should convert single extended spec with column into a composite spec', () =>  {
       const spec: any = {
         "name": "faceted",
         "width": 123,
@@ -45,7 +45,7 @@ describe('normalize()', function () {
       });
     });
 
-    it('should convert single extended spec with row into a composite spec', function() {
+    it('should convert single extended spec with row into a composite spec', () =>  {
       const spec: any = {
         "data": {"url": "data/movies.json"},
         "mark": "point",
@@ -606,7 +606,7 @@ describe('normalize()', function () {
 });
 
 describe('normalizeRangedUnitSpec', () => {
-  it('should convert y2 -> y if there is no y in the encoding', function() {
+  it('should convert y2 -> y if there is no y in the encoding', () =>  {
     const spec: NormalizedSpec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
@@ -628,7 +628,7 @@ describe('normalizeRangedUnitSpec', () => {
     });
   });
 
-  it('should do nothing if there is no missing x or y', function() {
+  it('should do nothing if there is no missing x or y', () =>  {
     const spec: NormalizedSpec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
@@ -642,7 +642,7 @@ describe('normalizeRangedUnitSpec', () => {
     assert.deepEqual(normalize(spec, defaultConfig), spec);
   });
 
-  it('should convert x2 -> x if there is no x in the encoding', function() {
+  it('should convert x2 -> x if there is no x in the encoding', () =>  {
     const spec: NormalizedSpec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
@@ -665,8 +665,8 @@ describe('normalizeRangedUnitSpec', () => {
   });
 });
 
-describe('fieldDefs()', function() {
-  it('should get all non-duplicate fieldDefs from an encoding', function() {
+describe('fieldDefs()', () =>  {
+  it('should get all non-duplicate fieldDefs from an encoding', () =>  {
     const spec: any = {
       "data": {"url": "data/cars.json"},
       "mark": "point",
@@ -682,7 +682,7 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', () =>  {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "layer": [
@@ -714,7 +714,7 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', () =>  {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "layer": [
@@ -745,7 +745,7 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', function() {
+  it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', () =>  {
     const facetSpec: any = {
       "data": {"url": "data/movies.json"},
       "facet": {"row": {"field": "MPAA_Rating","type": "ordinal"}},

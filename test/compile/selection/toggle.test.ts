@@ -5,7 +5,7 @@ import * as selection from '../../../src/compile/selection/selection';
 import toggle from '../../../src/compile/selection/transforms/toggle';
 import {parseUnitModel} from '../../util';
 
-describe('Toggle Selection Transform', function() {
+describe('Toggle Selection Transform', () =>  {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -28,7 +28,7 @@ describe('Toggle Selection Transform', function() {
     "six": {"type": "interval"}
   });
 
-  it('identifies transform invocation', function() {
+  it('identifies transform invocation', () =>  {
     assert.isNotFalse(toggle.has(selCmpts['one']));
     assert.isNotFalse(toggle.has(selCmpts['two']));
     assert.isNotTrue(toggle.has(selCmpts['three']));
@@ -37,7 +37,7 @@ describe('Toggle Selection Transform', function() {
     assert.isNotTrue(toggle.has(selCmpts['six']));
   });
 
-  it('builds toggle signals', function() {
+  it('builds toggle signals', () =>  {
     const oneSg = toggle.signals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
       name: 'one_toggle',
@@ -62,7 +62,7 @@ describe('Toggle Selection Transform', function() {
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 
-  it('builds modify expr', function() {
+  it('builds modify expr', () =>  {
     const oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
     assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
 

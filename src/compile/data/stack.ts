@@ -99,7 +99,7 @@ export class StackNode extends DataFlowNode {
       field: sortFields,
       order: sortOrder,
     };
-    let normalizedAs: Array<string>;
+    let normalizedAs: string[];
     if (isValidAsArray(as)) {
       normalizedAs = as;
     } else if(isString(as)) {

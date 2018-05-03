@@ -13,7 +13,7 @@ import {
 } from './util';
 
 [bound, unbound].forEach(function(bind, idx) {
-  describe(`Translate ${bind} interval selections at runtime`, function() {
+  describe(`Translate ${bind} interval selections at runtime`, () =>  {
     const type = 'interval';
     const hits = hitsMaster.interval;
     const embed = embedFn(browser);
@@ -31,7 +31,7 @@ import {
       }
     };
 
-    it('should move back-and-forth', function() {
+    it('should move back-and-forth', () =>  {
       for (let i = 0; i < hits.translate.length; i++) {
         embed(spec('unit', i, {type, ...binding}));
         const drag = browser.execute(brush('drag', i)).value[0];
@@ -45,7 +45,7 @@ import {
       }
     });
 
-    it('should work with binned domains', function() {
+    it('should work with binned domains', () =>  {
       for (let i = 0; i < hits.bins.length; i++) {
         embed(spec('unit', 1, {type, ...binding, encodings: ['y']}, {
           x: {aggregate: 'count', field: '*', type: 'quantitative'},
@@ -61,7 +61,7 @@ import {
       }
     });
 
-    it('should work with temporal domains', function() {
+    it('should work with temporal domains', () =>  {
       const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
       const toNumber = '[0].intervals[0].extent.map((d) => +d)';
 
@@ -78,7 +78,7 @@ import {
 
     });
 
-    it('should work with log/pow scales', function() {
+    it('should work with log/pow scales', () =>  {
       for (let i = 0; i < hits.translate.length; i++) {
         embed(spec('unit', i, {type, ...binding}, {
           x: {scale: {type: 'pow', exponent: 1.5}},
@@ -96,7 +96,7 @@ import {
     });
 
     if (bind === unbound) {
-      it('should work with ordinal/nominal domains', function() {
+      it('should work with ordinal/nominal domains', () =>  {
         for (let i = 0; i < hits.translate.length; i++) {
           embed(spec('unit', i, {type, ...binding}, {
             x: {type: 'ordinal'}, y: {type: 'nominal'}
@@ -123,7 +123,7 @@ import {
             y: ['isBelow', 'isAbove', 'isBelow']
           }
         };
-        it(`should work with shared scales in ${specType} views`, function() {
+        it(`should work with shared scales in ${specType} views`, () =>  {
           for (let i = 0; i < hits[specType].length; i++) {
             embed(spec(specType, 0, {type, ...binding},
               {resolve: {scale: {x:'shared', y: 'shared'}}}));

@@ -26,7 +26,7 @@ function zoom(key: string, idx: number, direction: InOut, parent?: string, targe
 const cmp = (a: number, b: number) => a - b;
 
 [bound, unbound].forEach(function(bind) {
-  describe(`Zoom ${bind} interval selections at runtime`, function() {
+  describe(`Zoom ${bind} interval selections at runtime`, () =>  {
     const type = 'interval';
     const embed = embedFn(browser);
     const testRender = testRenderFn(browser, `interval/zoom/${bind}`);
@@ -53,7 +53,7 @@ const cmp = (a: number, b: number) => a - b;
       return {inOut, xold, yold};
     }
 
-    it('should zoom in and out', function() {
+    it('should zoom in and out', () =>  {
       for (let i = 0; i < hits.zoom.length; i++) {
         embed(spec('unit', i, {type, ...binding}));
         const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
@@ -71,7 +71,7 @@ const cmp = (a: number, b: number) => a - b;
       }
     });
 
-    it('should work with binned domains', function() {
+    it('should work with binned domains', () =>  {
       for (let i = 0; i < hits.bins.length; i++) {
         const encodings = ['y'];
         embed(spec('unit', 1, {type, ...binding, encodings}, {
@@ -91,7 +91,7 @@ const cmp = (a: number, b: number) => a - b;
       }
     });
 
-    it('should work with temporal domains', function() {
+    it('should work with temporal domains', () =>  {
       const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
       const encodings = ['x'];
 
@@ -110,7 +110,7 @@ const cmp = (a: number, b: number) => a - b;
 
     });
 
-    it('should work with log/pow scales', function() {
+    it('should work with log/pow scales', () =>  {
       for (let i = 0; i < hits.zoom.length; i++) {
         embed(spec('unit', i, {type, ...binding}, {
           x: {scale: {type: 'pow', exponent: 1.5}},
@@ -131,7 +131,7 @@ const cmp = (a: number, b: number) => a - b;
     });
 
     if (bind === unbound) {
-      it('should work with ordinal/nominal domains', function() {
+      it('should work with ordinal/nominal domains', () =>  {
         for (let i = 0; i < hits.zoom.length; i++) {
           embed(spec('unit', i, {type, ...binding}, {
             x: {type: 'ordinal'}, y: {type: 'nominal'}
@@ -156,7 +156,7 @@ const cmp = (a: number, b: number) => a - b;
       });
     } else {
       compositeTypes.forEach(function(specType) {
-        it(`should work with shared scales in ${specType} views`, function() {
+        it(`should work with shared scales in ${specType} views`, () =>  {
           for (let i = 0; i < hits.bins.length; i++) {
             embed(spec(specType, 0, {type, ...binding},
               {resolve: {scale: {x: 'shared', y: 'shared'}}}));
