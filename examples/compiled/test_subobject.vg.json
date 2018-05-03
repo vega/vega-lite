@@ -65,12 +65,12 @@
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"source.reco\"])",
-                    "as": "source\\.reco"
+                    "as": "source.reco"
                 },
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"source.yes\"])",
-                    "as": "source\\.yes"
+                    "as": "source.yes"
                 },
                 {
                     "type": "filter",

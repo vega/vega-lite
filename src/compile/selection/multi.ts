@@ -1,6 +1,6 @@
 import {stringValue} from 'vega-util';
 
-import {accessPath} from '../../util';
+import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
@@ -17,9 +17,9 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
     const fieldDef = model.fieldDef(channel);
     // Binned fields should capture extents, for a range test against the raw field.
     return (fieldDef && fieldDef.bin) ? (bins.push(p.field),
-      `[${datum}${accessPath(model.vgField(channel, {}))}, ` +
-          `${datum}${accessPath(model.vgField(channel, {binSuffix: 'end'}))}]`) :
-      `${datum}${accessPath(p.field)}`;
+      `[${accessPathWithDatum(model.vgField(channel, {}), datum)}, ` +
+          `${accessPathWithDatum(model.vgField(channel, {binSuffix: 'end'}), datum)}]`) :
+      `${accessPathWithDatum(p.field, datum)}`;
   }).join(', ');
 
   // Only add a discrete selection to the store if a datum is present _and_

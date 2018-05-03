@@ -1,18 +1,22 @@
 import {toSet} from 'vega-util';
+
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isFieldPredicate} from '../../predicate';
 import {isCalculate, isFilter, Transform} from '../../transform';
-import {accessPath, Dict, duplicate, keys, StringSet} from '../../util';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
-
+/**
+ * @param field The field.
+ * @param parse What to parse the field as.
+ */
 function parseExpression(field: string, parse: string): string {
-  const f = `datum${accessPath(field)}`;
+  const f = accessPathWithDatum(field);
   if (parse === 'number') {
     return `toNumber(${f})`;
   } else if (parse === 'boolean') {
@@ -21,6 +25,8 @@ function parseExpression(field: string, parse: string): string {
     return `toString(${f})`;
   } else if (parse === 'date') {
     return `toDate(${f})`;
+  } else if (parse === 'flatten') {
+    return f;
   } else if (parse.indexOf('date:') === 0) {
     const specifier = parse.slice(5, parse.length);
     return `timeParse(${f},${specifier})`;
@@ -74,6 +80,10 @@ export class ParseNode extends DataFlowNode {
             return;
           }
           parse[fieldDef.field] = 'number';
+        } else if (accessPathDepth(fieldDef.field) > 1) {
+          // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
+          // (Parsing numbers / dates already flattens numeric and temporal fields.)
+          parse[fieldDef.field] = 'flatten';
         }
       });
     }
@@ -113,7 +123,13 @@ export class ParseNode extends DataFlowNode {
     other.remove();
   }
   public assembleFormatParse() {
-    return this._parse;
+    const formatParse = {};
+    for (const field of keys(this._parse)) {
+      if (accessPathDepth(field) === 1) {
+        formatParse[field] = this._parse[field];
+      }
+    }
+    return formatParse;
   }
 
   // format parse depends and produces all fields in its parse
@@ -125,19 +141,21 @@ export class ParseNode extends DataFlowNode {
     return toSet(keys(this.parse));
   }
 
-  public assembleTransforms(): VgFormulaTransform[] {
-    return keys(this._parse).map(field => {
-      const expr = parseExpression(field, this._parse[field]);
-      if (!expr) {
-        return null;
-      }
+  public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
+    return keys(this._parse)
+      .filter(field => onlyNested ? accessPathDepth(field) > 1 : true)
+      .map(field => {
+        const expr = parseExpression(field, this._parse[field]);
+        if (!expr) {
+          return null;
+        }
 
-      const formula: VgFormulaTransform = {
-        type: 'formula',
-        expr,
-        as: field
-      };
-      return formula;
-    }).filter(t => t !== null);
+        const formula: VgFormulaTransform = {
+          type: 'formula',
+          expr,
+          as: removePathFromField(field)  // Vega output is always flattened
+        };
+        return formula;
+      }).filter(t => t !== null);
   }
 }
