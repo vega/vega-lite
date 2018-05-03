@@ -27,6 +27,7 @@
   "include": [
     "typings/*.d.ts",
     "src/**/*.ts",
-    "test/**/*.ts"
+    "test/**/*.ts",
+    "test-runtime/**/*.ts"
   ]
 }
