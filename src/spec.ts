@@ -560,6 +560,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
   }
 
   const layer: NormalizedUnitSpec[] = [{
+    ...(selection ? {selection} : {}),
     // Do not include point / line overlay in the normalize spec
     mark: dropLineAndPoint({
       ...markDef,
@@ -595,7 +596,6 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
         type: 'line',
         ...lineOverlay
       },
-      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
@@ -608,7 +608,6 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
         filled: true,
         ...pointOverlay
       },
-      ...(selection ? {selection} : {}),
       encoding: overlayEncoding
     });
   }
