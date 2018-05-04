@@ -108,6 +108,10 @@ export namespace message {
     return `The "nearest" transform is not supported for ${mark} marks.`;
   }
 
+  export function selectionNotSupported(mark: CompositeMark) {
+    return `Selection not supported for ${mark} yet`;
+  }
+
   export function selectionNotFound(name: string) {
     return `Cannot find a selection named "${name}"`;
   }
