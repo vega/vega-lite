@@ -81,8 +81,9 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec);
+
   // TODO: use selection
-  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const {mark, encoding, selection: _selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
   const extent = markDef.extent || config.boxplot.extent;
@@ -169,7 +170,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ...partLayerMixins<BoxPlotPartsMixins>(
       markDef, 'box', config.boxplot,
       {
-        ...(selection ? {selection} : {}),
         mark: {
           type: 'bar',
           ...(sizeValue ? {size: sizeValue} : {})
