@@ -65,7 +65,17 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
 
-export interface MarkConfig extends VgMarkConfig {
+export interface ColorMixins {
+
+  /**
+   * Color of the marks.
+   *
+   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
+   */
+  color?: string;
+}
+
+export interface MarkConfig extends ColorMixins, VgMarkConfig {
   // ---------- Color ----------
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
@@ -79,14 +89,6 @@ export interface MarkConfig extends VgMarkConfig {
    */
   filled?: boolean;
 
-  /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
-   *
-   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
-   *
-   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
-   */
-  color?: string;
 }
 
 export interface BarBinSpacingMixins {
