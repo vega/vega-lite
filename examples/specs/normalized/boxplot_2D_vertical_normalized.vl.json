@@ -56,7 +56,7 @@
         {
           "mark": {
             "type": "rule",
-            "style": "boxplot-whisker"
+            "style": "boxplot-rule"
           },
           "encoding": {
             "y": {
@@ -79,7 +79,7 @@
         {
           "mark": {
             "type": "rule",
-            "style": "boxplot-whisker"
+            "style": "boxplot-rule"
           },
           "encoding": {
             "y": {
