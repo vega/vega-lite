@@ -112,10 +112,10 @@
     },
     {
       "mark": {
+        "color": "orange",
         "type": "tick",
         "size": 14,
-        "style": "boxplot-median",
-        "color": "orange"
+        "style": "boxplot-median"
       },
       "encoding": {
         "x": {
