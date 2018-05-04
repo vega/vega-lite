@@ -16,29 +16,33 @@ export type CompositeGenericMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
 
 export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: CompositeGenericMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
-  baseSpec: NormalizedUnitSpec
+  partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {color, opacity} = markDef;
+
+  const mark = markDef.type;
+  const partMarkDef: MarkConfig = markDef[part];
+
   if (markDef[part] || (markDef[part] === undefined && compositeMarkConfig[part])) {
     return [{
-      ...baseSpec,
+      ...partBaseSpec,
       mark: {
+        ...partConfigMixins(part, compositeMarkConfig),
         ...(color ? {color} : {}),
         ...(opacity ? {opacity} : {}),
-        ...(isMarkDef(baseSpec.mark) ? baseSpec.mark : {type: baseSpec.mark}),
-        ...getMarkDefMixins(markDef, part, compositeMarkConfig)
+        ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
+        style: `${mark}-${part}`,
+        ...partMarkDef
       }
     }];
   }
   return [];
 }
 
-function getMarkDefMixins<P extends PartsMixins<any>>(
-  markDef: GenericMarkDef<any> & P, part: keyof P, compositeMarkConfig: P
+function partConfigMixins<P extends PartsMixins<any>>(
+  part: keyof P,
+  compositeMarkConfig: P
 ) {
-  const mark = markDef.type;
-  const partMarkDef: MarkConfig = markDef[part];
-
   const configMixins = {};
 
   for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
@@ -47,9 +51,5 @@ function getMarkDefMixins<P extends PartsMixins<any>>(
     }
   }
 
-  return {
-    style: `${mark}-${part}`,
-    ...configMixins,
-    ...partMarkDef,
-  };
+  return configMixins;
 }

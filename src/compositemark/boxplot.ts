@@ -196,6 +196,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
       {
         mark: {
           type: 'tick',
+          color: config.boxplot.median.color,
           ...(sizeValue ? {size: sizeValue} : {})
         },
         encoding: {
