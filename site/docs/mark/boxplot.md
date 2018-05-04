@@ -31,7 +31,7 @@ To create a box plot, set `mark` to `"boxplot"`.
 
 A boxplot's mark definition contain the following properties:
 
-{% include table.html props="type,extent,orient,size" source="BoxPlotDef" %}
+{% include table.html props="type,extent,orient,size,color,opacity" source="BoxPlotDef" %}
 
 Besides the properties listed above, `"box"`, `"median"`, `"whisker"`, `"outliers"`, and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the box plots](#parts) as well.
 
