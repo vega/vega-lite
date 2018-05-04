@@ -90,11 +90,15 @@ export class ParseNode extends DataFlowNode {
 
     // Custom parse should override inferred parse
     const data = model.data;
-    if (data && data.format && data.format.parse) {
+    if (data && data.format) {
       const p = data.format.parse;
-      keys(p).forEach(field => {
-        parse[field] = p[field];
-      });
+      if (p === null) {
+        return null;  // disable parsing completely
+      } else if (p) {
+        keys(p).forEach(field => {
+          parse[field] = p[field];
+        });
+      }
     }
 
     // We should not parse what has already been parsed in a parent
@@ -106,6 +110,13 @@ export class ParseNode extends DataFlowNode {
         delete parse[field];
       }
     });
+
+    // filter out parse == null (do not parse the field)
+    for (const field of keys(parse)) {
+      if (parse[field] === null) {
+        delete parse[field];
+      }
+    }
 
     if (keys(parse).length === 0) {
       return null;

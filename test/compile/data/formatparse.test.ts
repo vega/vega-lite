@@ -176,6 +176,46 @@ describe('compile/data/formatparse', () => {
         "foo.baz": "flatten"
       });
     });
+
+    it('should not parse if parse is disables for a field', () => {
+      const model = parseUnitModel({
+        "mark": "point",
+        "data": {
+          "values": [],
+          "format": {
+            "parse": {
+              "b": null
+            }
+          }
+        },
+        "encoding": {
+          "x": {"field": "a", "type": "quantitative"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      });
+
+      assert.deepEqual(ParseNode.make(null, model).parse, {
+        "a": "number"
+      });
+    });
+
+    it('should not parse if parse is disabled', () => {
+      const model = parseUnitModel({
+        "mark": "point",
+        "data": {
+          "values": [],
+          "format": {
+            "parse": null
+          }
+        },
+        "encoding": {
+          "x": {"field": "a", "type": "quantitative"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      });
+
+      assert.isNull(ParseNode.make(null, model));
+    });
   });
 
   describe('assembleTransforms', function() {
