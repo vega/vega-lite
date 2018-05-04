@@ -1033,14 +1033,14 @@
         "outliers": {
           "$ref": "#/definitions/MarkConfig"
         },
+        "rule": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
         },
         "ticks": {
-          "$ref": "#/definitions/MarkConfig"
-        },
-        "whisker": {
           "$ref": "#/definitions/MarkConfig"
         }
       },
@@ -1084,6 +1084,9 @@
         "outliers": {
           "$ref": "#/definitions/MarkConfig"
         },
+        "rule": {
+          "$ref": "#/definitions/MarkConfig"
+        },
         "size": {
           "description": "Size of the box and median tick of a box plot ",
           "type": "number"
@@ -1094,9 +1097,6 @@
         "type": {
           "$ref": "#/definitions/BoxPlot",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
-        },
-        "whisker": {
-          "$ref": "#/definitions/MarkConfig"
         }
       },
       "required": [

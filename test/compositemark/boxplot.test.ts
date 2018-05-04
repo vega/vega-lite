@@ -87,7 +87,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -105,7 +105,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -324,7 +324,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -342,7 +342,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -451,7 +451,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -469,7 +469,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -578,7 +578,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -596,7 +596,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "quantitative"},
@@ -705,7 +705,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -723,7 +723,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "quantitative"},
@@ -831,7 +831,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
@@ -849,7 +849,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
@@ -957,7 +957,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -975,7 +975,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1082,7 +1082,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1100,7 +1100,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
@@ -1205,7 +1205,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {
@@ -1222,7 +1222,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "x": {
@@ -1324,7 +1324,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {
@@ -1341,7 +1341,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           {
             mark: {
               type: 'rule',
-              style: 'boxplot-whisker'
+              style: 'boxplot-rule'
             },
             "encoding": {
               "y": {
@@ -1460,7 +1460,7 @@ describe("normalizeBoxIQR", () => {
             {
               mark: {
                 type: 'rule',
-                style: 'boxplot-whisker'
+                style: 'boxplot-rule'
               },
               "encoding": {
                 "x": {"field": "age","type": "quantitative"},
@@ -1478,7 +1478,7 @@ describe("normalizeBoxIQR", () => {
             {
               mark: {
                 type: 'rule',
-                style: 'boxplot-whisker'
+                style: 'boxplot-rule'
               },
               "encoding": {
                 "x": {"field": "age","type": "quantitative"},
@@ -1636,7 +1636,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'rule',
-                  style: 'boxplot-whisker'
+                  style: 'boxplot-rule'
                 },
                 "encoding": {
                   "x": {"field": "age","type": "quantitative"},
@@ -1654,7 +1654,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'rule',
-                  style: 'boxplot-whisker'
+                  style: 'boxplot-rule'
                 },
                 "encoding": {
                   "x": {"field": "age","type": "quantitative"},
@@ -1821,7 +1821,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'rule',
-                  style: 'boxplot-whisker'
+                  style: 'boxplot-rule'
                 },
                 "encoding": {
                   "x": {"field": "age","type": "quantitative"},
@@ -1839,7 +1839,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'rule',
-                  style: 'boxplot-whisker'
+                  style: 'boxplot-rule'
                 },
                 "encoding": {
                   "x": {"field": "age","type": "quantitative"},

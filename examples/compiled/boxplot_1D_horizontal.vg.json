@@ -189,7 +189,7 @@
             "type": "rule",
             "style": [
                 "rule",
-                "boxplot-whisker"
+                "boxplot-rule"
             ],
             "from": {
                 "data": "data_1"
@@ -219,7 +219,7 @@
             "type": "rule",
             "style": [
                 "rule",
-                "boxplot-whisker"
+                "boxplot-rule"
             ],
             "from": {
                 "data": "data_2"

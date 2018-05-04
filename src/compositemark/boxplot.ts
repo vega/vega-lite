@@ -16,13 +16,13 @@ import {CompositeGenericMarkDef, partLayerMixins} from './common';
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'whisker' | 'ticks';
+export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'rule' | 'ticks';
 
 const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
   box: 1,
   median: 1,
   outliers: 1,
-  whisker: 1,
+  rule: 1,
   ticks: 1
 };
 
@@ -102,7 +102,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   const boxLayer: NormalizedUnitSpec[] = [
     // lower whisker
     ...partLayerMixins<BoxPlotPartsMixins>(
-      markDef, 'whisker', config.boxplot,
+      markDef, 'rule', config.boxplot,
       {
         mark: 'rule',
         encoding: {
@@ -122,7 +122,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ),
     // upper whisker
     ...partLayerMixins<BoxPlotPartsMixins>(
-      markDef, 'whisker', config.boxplot,
+      markDef, 'rule', config.boxplot,
       {
         mark: 'rule',
         encoding: {
