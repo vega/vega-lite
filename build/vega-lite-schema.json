@@ -2808,8 +2808,8 @@
         }
       },
       "required": [
-        "field",
-        "equal"
+        "equal",
+        "field"
       ],
       "type": "object"
     },
@@ -2817,7 +2817,7 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered",
+          "description": "Field to be filtered.",
           "type": "string"
         },
         "oneOf": {
@@ -2851,7 +2851,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
+          "description": "Time unit for the field to be filtered."
         }
       },
       "required": [
@@ -2864,7 +2864,7 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered",
+          "description": "Field to be filtered.",
           "type": "string"
         },
         "range": {
@@ -2888,7 +2888,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "time unit for the field to be filtered."
+          "description": "Time unit for the field to be filtered."
         }
       },
       "required": [
