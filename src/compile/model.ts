@@ -1,5 +1,4 @@
 import {isString} from 'vega-util';
-
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -12,19 +11,7 @@ import {BaseSpec, isFacetSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
-import {
-  isVgRangeStep,
-  VgAxis,
-  VgData,
-  VgEncodeEntry,
-  VgLayout,
-  VgLegend,
-  VgMarkGroup,
-  VgSignal,
-  VgSignalRef,
-  VgTitle,
-} from '../vega.schema';
-import {VgProjection} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -198,7 +185,6 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {},
         // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
         isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
       },

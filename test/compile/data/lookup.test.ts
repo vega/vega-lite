@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import {AncestorParse} from '../../../src/compile/data';
 import {LookupNode} from '../../../src/compile/data/lookup';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
@@ -21,7 +22,7 @@ describe('compile/data/lookup', function() {
       'encoding': {}
     });
 
-    const t = parseTransformArray(null, model);
+    const t = parseTransformArray(null, model, new AncestorParse);
     assert.deepEqual<VgLookupTransform>((t as LookupNode).assemble(), {
       type: 'lookup',
       from: 'lookup_0',

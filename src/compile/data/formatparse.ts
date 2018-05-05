@@ -1,15 +1,14 @@
 import {toSet} from 'vega-util';
-
+import {AncestorParse} from '.';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {forEachLeaf} from '../../logical';
-import {isFieldPredicate} from '../../predicate';
-import {isCalculate, isFilter, Transform} from '../../transform';
 import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
+import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
+
 
 /**
  * @param field The field.
@@ -27,6 +26,8 @@ function parseExpression(field: string, parse: string): string {
     return `toDate(${f})`;
   } else if (parse === 'flatten') {
     return f;
+  } else if (parse === null || parse === 'derived') {
+    return null;  // not not parse field
   } else if (parse.indexOf('date:') === 0) {
     const specifier = parse.slice(5, parse.length);
     return `timeParse(${f},${specifier})`;
@@ -40,7 +41,7 @@ function parseExpression(field: string, parse: string): string {
 }
 
 export class ParseNode extends DataFlowNode {
-  private _parse: Dict<string> = {};
+  private _parse: Dict<string>;
 
   public clone() {
     return new ParseNode(null, duplicate(this.parse));
@@ -52,77 +53,85 @@ export class ParseNode extends DataFlowNode {
     this._parse = parse;
   }
 
-  public static make(parent: DataFlowNode, model: Model) {
-    const parse = {};
-    const calcFieldMap = {};
+  /**
+   * Creates a parse node from a data.format.parse and updates ancestorParse.
+   */
+  public static makeExplicit(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse) {
+    // Custom parse
+    let explicit = {};
+    const data = model.data;
+    if (data && data.format && data.format.parse) {
+      explicit = data.format.parse;
+    }
 
-    (model.transforms || []).forEach((transform: Transform) => {
-      if (isCalculate(transform)) {
-        calcFieldMap[transform.as] = true;
-      } else if (isFilter(transform)) {
-        forEachLeaf(transform.filter, (filter) => {
-          if (isFieldPredicate(filter)) {
-            if (filter.timeUnit) {
-              parse[filter.field] = 'date';
-            }
-          }
-        });
-      }
-    }, {});
+    return this.makeWithAncestors(parent, explicit, {}, ancestorParse);
+  }
+
+  /**
+   * Creates a parse node for implicit parsing from a model and updates ancestorParse.
+   */
+  public static makeImplicit(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse) {
+    const implicit = {};
 
     if (isUnitModel(model) || isFacetModel(model)) {
       // Parse encoded fields
       model.forEachFieldDef(fieldDef => {
         if (isTimeFieldDef(fieldDef)) {
-          parse[fieldDef.field] = 'date';
+          implicit[fieldDef.field] = 'date';
         } else if (isNumberFieldDef(fieldDef)) {
-          if (calcFieldMap[fieldDef.field] || isCountingAggregateOp(fieldDef.aggregate)) {
+          if (isCountingAggregateOp(fieldDef.aggregate)) {
             return;
           }
-          parse[fieldDef.field] = 'number';
+          implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
           // (Parsing numbers / dates already flattens numeric and temporal fields.)
-          parse[fieldDef.field] = 'flatten';
+          implicit[fieldDef.field] = 'flatten';
         }
       });
     }
 
-    // Custom parse should override inferred parse
-    const data = model.data;
-    if (data && data.format) {
-      const p = data.format.parse;
-      if (p === null) {
-        return null;  // disable parsing completely
-      } else if (p) {
-        keys(p).forEach(field => {
-          parse[field] = p[field];
-        });
+    return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
+  }
+
+  /**
+   * Creates a parse node from two sets of explicit and implicit parse and updates ancestorParse.
+   */
+  public static makeWithAncestors(parent: DataFlowNode, explicit: Dict<string>, implicit: Dict<string>, ancestorParse: AncestorParse) {
+    // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived").
+    for (const field of keys(implicit)) {
+      const parsedAs = ancestorParse.getWithExplicit(field);
+      if (parsedAs.value !== undefined) {
+        // We always ignore derived fields even if they are implicitly defined because we expects users to create the right types.
+        if (parsedAs.explicit || parsedAs.value === implicit[field] || parsedAs.value === 'derived') {
+          delete implicit[field];
+        } else {
+          log.warn(log.message.differentParse(field, implicit[field], parsedAs.value));
+        }
       }
     }
 
-    // We should not parse what has already been parsed in a parent
-    const modelParse = model.component.data.ancestorParse;
-    keys(modelParse).forEach(field => {
-      if (parse[field] !== modelParse[field]) {
-        log.warn(log.message.differentParse(field, parse[field], modelParse[field]));
+    for (const field of keys(explicit)) {
+      const parsedAs = ancestorParse.get(field);
+      if (parsedAs !== undefined) {
+        if (parsedAs === explicit[field]) {
+          delete explicit[field];
       } else {
-        delete parse[field];
-      }
-    });
-
-    // filter out parse == null (do not parse the field)
-    for (const field of keys(parse)) {
-      if (parse[field] === null) {
-        delete parse[field];
+          log.warn(log.message.differentParse(field, explicit[field], parsedAs));
+        }
       }
     }
 
-    if (keys(parse).length === 0) {
+    const parse = new Split(explicit, implicit);
+
+    // add the format parse from this model so that children don't parse the same field again
+    ancestorParse.copyAll(parse);
+
+    if (keys(parse.combine()).length === 0 || ancestorParse.parseNothing) {
       return null;
     }
 
-    return new ParseNode(parent, parse);
+    return new ParseNode(parent, parse.combine());
   }
 
   public get parse() {
@@ -133,11 +142,16 @@ export class ParseNode extends DataFlowNode {
     this._parse = {...this._parse, ...other.parse};
     other.remove();
   }
+
+  /**
+   * Assemble an object for Vega's format.parse property.
+   */
   public assembleFormatParse() {
     const formatParse = {};
     for (const field of keys(this._parse)) {
-      if (accessPathDepth(field) === 1) {
-        formatParse[field] = this._parse[field];
+      const p = this._parse[field];
+      if (p !== null && p !== 'derived' && accessPathDepth(field) === 1) {
+        formatParse[field] = p;
       }
     }
     return formatParse;
