@@ -5,7 +5,7 @@ import {AncestorParse} from '../../../src/compile/data';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
-import {parseFacetModel, parseUnitModel} from '../../util';
+import {parseFacetModel, parseLayerModel, parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
@@ -115,6 +115,34 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(ParseNode.makeImplicit(null, model.child as ModelWithField, model.child.component.data.ancestorParse).parse, {
         'b': 'date'
       });
+    });
+
+    it('should not parse the same field twice in explicit', function() {
+      const model = parseUnitModel({
+        data: {
+          values: [],
+          format: {
+            parse: {
+              a: 'number'
+            }
+          }
+        },
+        mark: "point",
+        encoding: {}
+      });
+
+      assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
+    });
+
+    it('should not parse the same field twice in implicit', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: 'a', type: 'quantitative'}
+        }
+      });
+
+      assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
     });
 
     it('should not parse counts', () => {
