@@ -62,16 +62,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"upper\"])",
-                    "as": "upper"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lower\"])",
-                    "as": "lower"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"upper\"] !== null && !isNaN(datum[\"upper\"])"
                 }

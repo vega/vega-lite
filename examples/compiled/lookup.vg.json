@@ -32,11 +32,6 @@
                     ]
                 },
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"age\"])",
-                    "as": "age"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "group"

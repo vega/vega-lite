@@ -65,11 +65,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"AverageRating\"])",
-                    "as": "AverageRating"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [],
                     "ops": [

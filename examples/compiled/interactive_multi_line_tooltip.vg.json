@@ -35,28 +35,8 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
                     "as": "price"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
                 },
                 {
                     "type": "filter",
@@ -65,14 +45,19 @@
             ]
         },
         {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                }
+            ]
+        },
+        {
             "name": "data_3",
             "source": "source_0",
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
@@ -84,11 +69,6 @@
             "name": "data_4",
             "source": "source_0",
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"price\"])",
@@ -294,7 +274,7 @@
                 "rule"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -323,7 +303,7 @@
                 "text"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -370,11 +350,11 @@
                         "field": "date"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "date"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "date"
                     }
                 ]
@@ -400,7 +380,7 @@
                         "field": "price"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "price"
                     }
                 ]
@@ -428,7 +408,7 @@
                         "field": "symbol"
                     },
                     {
-                        "data": "data_2",
+                        "data": "data_1",
                         "field": "symbol"
                     }
                 ],
