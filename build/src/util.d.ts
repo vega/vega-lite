@@ -83,6 +83,28 @@ export declare type Omit<T, K extends keyof T> = {
 export declare function deleteNestedProperty(obj: any, orderedProps: string[]): boolean;
 export declare function titlecase(s: string): string;
 /**
- * Converts a path to an access path.
+ * Converts a path to an access path with datum.
+ * @param path The field name.
+ * @param datum The string to use for `datum`.
  */
-export declare function accessPath(path: string): string;
+export declare function accessPathWithDatum(path: string, datum?: string): string;
+/**
+ * Return access with datum to the falttened field.
+ * @param path The field name.
+ * @param datum The string to use for `datum`.
+ */
+export declare function flatAccessWithDatum(path: string, datum?: string): string;
+/**
+ * Replaces path accesses with access to non-nested field.
+ * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
+ */
+export declare function replacePathInField(path: string): string;
+/**
+ * Remove path accesses with access from field.
+ * For example, `foo["bar"].baz` becomes `foo.bar.baz`.
+ */
+export declare function removePathFromField(path: string): string;
+/**
+ * Count the depth of the path. Returns 1 for fields that are not nested.
+ */
+export declare function accessPathDepth(path: string): number;

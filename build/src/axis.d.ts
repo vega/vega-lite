@@ -96,8 +96,8 @@ export interface AxisEncoding {
     title?: GuideEncodingEntry;
 }
 export declare function isAxisProperty(prop: string): prop is keyof Axis;
-export declare const VG_AXIS_PROPERTIES: ("title" | "values" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "encode" | "scale" | "grid" | "gridScale" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding")[];
-export declare const AXIS_PROPERTIES: ("title" | "values" | "domain" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "grid" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "position" | "ticks" | "tickSize" | "titlePadding" | "labelAngle" | "encoding" | "titleMaxLength")[];
+export declare const VG_AXIS_PROPERTIES: ("title" | "orient" | "scale" | "zindex" | "ticks" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "domain" | "grid" | "gridScale" | "tickSize" | "tickCount" | "format" | "values" | "offset" | "position" | "titlePadding" | "minExtent" | "maxExtent" | "encode")[];
+export declare const AXIS_PROPERTIES: ("title" | "orient" | "zindex" | "ticks" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "domain" | "grid" | "tickSize" | "tickCount" | "format" | "values" | "offset" | "position" | "titlePadding" | "minExtent" | "maxExtent" | "labelAngle" | "encoding" | "titleMaxLength")[];
 export interface AxisConfigMixins {
     /**
      * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config).

@@ -923,7 +923,7 @@ export interface VgMarkConfig {
      */
     cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
 }
-export declare const VG_MARK_CONFIGS: ("font" | "text" | "shape" | "interpolate" | "fill" | "stroke" | "opacity" | "size" | "href" | "fillOpacity" | "strokeWidth" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "cursor" | "tension" | "orient" | "align" | "baseline" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "strokeCap")[];
+export declare const VG_MARK_CONFIGS: ("font" | "text" | "shape" | "orient" | "interpolate" | "fill" | "stroke" | "opacity" | "size" | "href" | "radius" | "fillOpacity" | "strokeWidth" | "strokeCap" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "cursor" | "tension" | "align" | "baseline" | "limit" | "dx" | "dy" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle")[];
 export declare type Anchor = 'start' | 'middle' | 'end';
 export interface VgTitle {
     /**

@@ -1,4 +1,3 @@
-/// <reference path="../../../../typings/vega-event-selector.d.ts" />
 import { Channel, ScaleChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';

@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Falkensee
+title: Line Chart with Highlighted Rectangles
 menu: examples
 permalink: /examples/layer_falkensee.html
 image: /examples/compiled/layer_falkensee.png

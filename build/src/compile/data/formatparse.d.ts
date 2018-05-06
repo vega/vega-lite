@@ -9,8 +9,8 @@ export declare class ParseNode extends DataFlowNode {
     static make(parent: DataFlowNode, model: Model): ParseNode;
     readonly parse: Dict<string>;
     merge(other: ParseNode): void;
-    assembleFormatParse(): Dict<string>;
+    assembleFormatParse(): {};
     producedFields(): StringSet;
     dependentFields(): StringSet;
-    assembleTransforms(): VgFormulaTransform[];
+    assembleTransforms(onlyNested?: boolean): VgFormulaTransform[];
 }

@@ -19,7 +19,7 @@ export declare function tickCount(channel: PositionScaleChannel, fieldDef: Field
     signal: string;
 };
 export declare function title(maxLength: number, fieldDef: FieldDef<string>, config: Config): string;
-export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>): number[] | DateTime[] | {
+export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel): number[] | DateTime[] | {
     signal: string;
 }[] | {
     signal: string;

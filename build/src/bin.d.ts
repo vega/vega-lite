@@ -55,4 +55,5 @@ export interface BinParams extends BaseBin {
     extent?: number[];
 }
 export declare function binToString(bin: BinParams | boolean): string;
+export declare function isBinParams(bin: BinParams | boolean): bin is BinParams;
 export declare function autoMaxBins(channel: Channel): number;

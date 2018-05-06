@@ -1,4 +1,3 @@
-/// <reference path="../../typings/json.d.ts" />
 import * as aggregate from './aggregate';
 import * as axis from './axis';
 import * as bin from './bin';

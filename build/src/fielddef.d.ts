@@ -223,7 +223,7 @@ export interface FieldRefOption {
     binSuffix?: 'end' | 'range' | 'mid';
     /** append suffix to the field ref (general) */
     suffix?: string;
-    /** Overrride which aggregate to use. Needed for unaggregated domain. */
+    /** Override which aggregate to use. Needed for unaggregated domain. */
     aggregate?: AggregateOp;
 }
 export declare function vgField(fieldDef: FieldDefBase<string>, opt?: FieldRefOption): string;

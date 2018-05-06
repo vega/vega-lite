@@ -100,7 +100,6 @@ export declare namespace message {
     function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType): string;
     function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T): string;
     function independentScaleMeansIndependentGuide(channel: Channel): string;
-    function conflictedDomain(channel: Channel): string;
     function domainSortDropped(sort: VgSortField): string;
     const UNABLE_TO_MERGE_DOMAINS = "Unable to merge domains";
     const MORE_THAN_ONE_SORT = "Domains that should be unioned has conflicting sort properties. Sort will be set to true.";
