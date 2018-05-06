@@ -90,7 +90,7 @@ describe('Mark: Text', function() {
     const props = text.encodeEntry(model);
 
     it('should use date template', function() {
-      assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
+      assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '')`});
     });
   });
 

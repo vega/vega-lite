@@ -1719,7 +1719,7 @@
           "description": "Tick-Specific Config "
         },
         "timeFormat": {
-          "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\n__Default value:__ `'%b %d, %Y'`.",
+          "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\n__Default value:__ `''` (The format will be automatically determined).",
           "type": "string"
         },
         "title": {
