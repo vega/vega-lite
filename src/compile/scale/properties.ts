@@ -216,7 +216,14 @@ export function reverse(scaleType: ScaleType, sort: SortOrder | SortField<string
 }
 
 export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain, markDef: MarkDef) {
-  // By default, return true only for the following cases:
+
+  // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
+  const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
+  if (hasCustomDomain) {
+    return false;
+  }
+
+  // If there is no custom domain, return true only for the following cases:
 
   // 1) using quantitative field with size
   // While this can be either ratio or interval fields, our assumption is that
@@ -225,11 +232,9 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
     return true;
   }
 
-  // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
-  // (For binning, we should not include zero by default because binning are calculated without zero.
-  // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
-  const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
-  if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
+  // 2) non-binned, quantitative x-scale or y-scale
+  // (For binning, we should not include zero by default because binning are calculated without zero.)
+  if (!fieldDef.bin && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if (

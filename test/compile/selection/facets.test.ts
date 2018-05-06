@@ -50,6 +50,6 @@ describe('Faceted Selections', function() {
 
   it('should name the unit with the facet keys', function() {
     assert.equal(selection.unitName(unit),
-      `"child_layer_1" + '_' + facet["bin_maxbins_6_X"] + '_' + facet["Series"]`);
+      `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`);
   });
 });

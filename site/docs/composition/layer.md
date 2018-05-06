@@ -39,7 +39,7 @@ To layer these two charts on top of each other, we have to put the two specifica
 
 <div class="vl-example" data-name="layer_line_color_rule"></div>
 
-See [the example gallery](examples.html#layering) for more layering examples.
+See [the example gallery]({{site.baseurl}}/examples/#layering) for more layering examples.
 
 ### Combined Scales and Guides
 

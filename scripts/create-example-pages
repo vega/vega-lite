@@ -30,12 +30,14 @@ ${example.description || ''}
 const fileMap = {};
 
 for (const category of Object.keys(examples)) {
-  for (const example of examples[category]) {
-    const name = example.name;
+  for (const subcategory of Object.keys(examples[category])) {
+    for (const example of examples[category][subcategory]) {
+      const name = example.name;
 
-    fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
-    fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
-    fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
+      fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
+      fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
+      fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
+    }
   }
 }
 

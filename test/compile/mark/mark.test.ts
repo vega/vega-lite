@@ -193,15 +193,28 @@ describe('Mark', function() {
         "data": {"url": "data/driving.json"},
         "mark": "line",
         "encoding": {
-          "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
-          "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
-          "order": {"field": "year","type": "temporal"}
+          "x": {"field": "miles", "type": "quantitative", "scale": {"zero": false}},
+          "y": {"field": "gas", "type": "quantitative", "scale": {"zero": false}},
+          "order": {"field": "year", "type": "temporal"}
         }
       });
       assert.deepEqual(getSort(model), {
         field: ['datum[\"year\"]'],
         order: ['ascending']
       });
+    });
+
+    it('should have no sort if order = {value: null}', function () {
+      const model = parseUnitModel({
+        "data": {"url": "data/driving.json"},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "miles", "type": "quantitative", "scale": {"zero": false}},
+          "y": {"field": "gas", "type": "quantitative", "scale": {"zero": false}},
+          "order": {"value": null}
+        }
+      });
+      assert.equal(getSort(model), undefined);
     });
 
     it('should order by x by default if x is the dimension', function () {

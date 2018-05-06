@@ -1,12 +1,10 @@
-/// <reference path="../../../typings/vega-event-selector.d.ts" />
-
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {accessPath, Dict, logicalExpr, varName} from '../../util';
+import {accessPathWithDatum, Dict, logicalExpr, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream, VgSignalRef} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
@@ -325,8 +323,8 @@ export function unitName(model: Model) {
   let name = stringValue(model.name);
   const facet = getFacetModel(model);
   if (facet) {
-    name += (facet.facet.row ? ` + '_' + facet${accessPath(facet.vgField('row'))}` : '')
-      + (facet.facet.column ? ` + '_' + facet${accessPath(facet.vgField('column'))}` : '');
+    name += (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '')
+      + (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
   }
   return name;
 }

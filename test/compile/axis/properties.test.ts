@@ -4,6 +4,8 @@
 import {assert} from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
+import {UnitModel} from '../../../src/compile/unit';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
@@ -83,7 +85,7 @@ describe('compile/axis', ()=> {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, null);
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, null, "x");
 
       assert.deepEqual(values, [
         {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
@@ -92,9 +94,27 @@ describe('compile/axis', ()=> {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = properties.values({values: [1,2,3,4]}, null, null);
+      const values = properties.values({values: [1,2,3,4]}, null, null, "x");
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+
+    it('should simply drop values when domain is specified', () => {
+      const model1 = parseUnitModelWithScale({
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "type": "quantitative",
+            "field": 'US_Gross',
+            "scale": {"domain":[-1,2]},
+            "bin": {"extent":[0,1]}
+          }
+        },
+        "data": {"url": "data/movies.json"}
+      });
+      const values = properties.values({}, model1, model1.fieldDef("y"), "y");
+
+      assert.deepEqual(values, undefined);
     });
   });
 });

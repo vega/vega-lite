@@ -251,7 +251,7 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
         )
       );
     case 'values':
-      return properties.values(specifiedAxis, model, fieldDef);
+      return properties.values(specifiedAxis, model, fieldDef, channel);
   }
   // Otherwise, return specified property.
   return isAxisProperty(property) ? specifiedAxis[property] : undefined;

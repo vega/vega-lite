@@ -27,7 +27,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModelWithScale(spec);
-      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filter, {
+      assert.deepEqual(parse(model).filter, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"}
       });
@@ -39,7 +39,7 @@ describe('compile/data/nullfilter', function() {
           invalidValues: 'filter'
         }
       }));
-      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filter, {
+      assert.deepEqual(parse(model).filter, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"}
       });
@@ -67,6 +67,32 @@ describe('compile/data/nullfilter', function() {
   });
 
   describe('assemble', function() {
-    // TODO: write
+    it ('should assemble simple filter', () => {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          y: {field: 'foo', type: "quantitative"}
+        }
+      });
+
+      assert.deepEqual(parse(model).assemble(), {
+        type: 'filter',
+        expr: 'datum["foo"] !== null && !isNaN(datum["foo"])'
+      });
+    });
+
+    it ('should assemble filter for nested data', () => {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          y: {field: 'foo.bar', type: "quantitative"}
+        }
+      });
+
+      assert.deepEqual(parse(model).assemble(), {
+        type: 'filter',
+        expr: 'datum["foo.bar"] !== null && !isNaN(datum["foo.bar"])'
+      });
+    });
   });
 });

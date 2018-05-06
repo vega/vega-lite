@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {FieldDef, vgField} from '../../fielddef';
+import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {duplicate} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
@@ -82,7 +82,7 @@ export class StackNode extends DataFlowNode {
     const orderDef = model.encoding.order;
 
     let sort: VgSort;
-    if (orderDef) {
+    if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
       // default = descending by stackFields
