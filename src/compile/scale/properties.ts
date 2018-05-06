@@ -1,6 +1,6 @@
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, MarkDef} from '../../mark';
 import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
@@ -30,7 +30,6 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
     const fieldDef = model.fieldDef(channel);
-    const sort = model.sort(channel);
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];
@@ -53,7 +52,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
         const value = getDefaultValue(
-          property, channel, fieldDef, sort,
+          property, channel, fieldDef,
           mergedScaleCmpt.get('type'),
           mergedScaleCmpt.get('padding'),
           mergedScaleCmpt.get('paddingInner'),
@@ -70,7 +69,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 
 // Note: This method is used in Voyager.
 export function getDefaultValue(
-  property: keyof Scale, channel: Channel, fieldDef: FieldDef<string>, sort: SortOrder | SortField<string> | string[],
+  property: keyof Scale, channel: Channel, fieldDef: ScaleFieldDef<string>,
   scaleType: ScaleType, scalePadding: number, scalePaddingInner: number,
   specifiedDomain: Scale['domain'], markDef: MarkDef, config: Config) {
   const scaleConfig = config.scale;
@@ -86,7 +85,7 @@ export function getDefaultValue(
     case 'paddingOuter':
       return paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, scaleConfig);
     case 'reverse':
-      return reverse(scaleType, sort);
+      return reverse(scaleType, fieldDef.sort);
     case 'zero':
       return zero(channel, fieldDef, specifiedDomain, markDef);
   }

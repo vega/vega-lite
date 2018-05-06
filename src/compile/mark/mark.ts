@@ -79,35 +79,37 @@ function parsePathMark(model: UnitModel) {
 }
 
 export function getSort(model: UnitModel) {
-  const order = model.encoding.order;
+  const {encoding, stack, mark, markDef} = model;
+  const order = encoding.order;
   if (!isArray(order) && isValueDef(order)) {
     return undefined;
-  } else if ((isArray(order) || isFieldDef(order)) && !model.stack) {
+  } else if ((isArray(order) || isFieldDef(order)) && !stack) {
     // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)
     return sortParams(order, {expr: 'datum'});
-  } else if (isPathMark(model.mark)) {
+  } else if (isPathMark(mark)) {
     // For both line and area, we sort values based on dimension by default
-    const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
-    const s = model.sort(dimensionChannel);
-    const sortField = isSortField(s) ?
-      vgField({
-        // FIXME: this op might not already exist?
-        // FIXME: what if dimensionChannel (x or y) contains custom domain?
-        aggregate: isAggregate(model.encoding) ? s.op : undefined,
-        field: s.field
-      }, {expr: 'datum'}) :
-      model.vgField(dimensionChannel, {
-        // For stack with imputation, we only have bin_mid
-        binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
-        expr: 'datum'
-      });
+    const dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
+    if (isFieldDef(dimensionChannelDef)) {
+      const s = dimensionChannelDef.sort;
+      const sortField = isSortField(s) ?
+        vgField({
+          // FIXME: this op might not already exist?
+          // FIXME: what if dimensionChannel (x or y) contains custom domain?
+          aggregate: isAggregate(model.encoding) ? s.op : undefined,
+          field: s.field
+        }, {expr: 'datum'}) :
+        vgField(dimensionChannelDef, {
+          // For stack with imputation, we only have bin_mid
+          binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
+          expr: 'datum'
+        });
 
-    return sortField ?
-      {
+      return {
         field: sortField,
         order: 'descending'
-      } :
-      undefined;
+      };
+    }
+    return undefined;
   }
   return undefined;
 }
