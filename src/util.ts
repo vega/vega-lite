@@ -285,8 +285,48 @@ export function titlecase(s: string) {
 }
 
 /**
- * Converts a path to an access path.
+ * Converts a path to an access path with datum.
+ * @param path The field name.
+ * @param datum The string to use for `datum`.
  */
-export function accessPath(path: string) {
-  return `[${splitAccessPath(path).map(stringValue).join('][')}]`;
+export function accessPathWithDatum(path: string, datum='datum') {
+  const pieces = splitAccessPath(path);
+  const prefixes = [];
+  for (let i = 1; i <= pieces.length; i++) {
+    const prefix = `[${pieces.slice(0,i).map(stringValue).join('][')}]`;
+    prefixes.push(`${datum}${prefix}`);
+  }
+  return prefixes.join(' && ');
+}
+
+/**
+ * Return access with datum to the falttened field.
+ * @param path The field name.
+ * @param datum The string to use for `datum`.
+ */
+export function flatAccessWithDatum(path: string, datum='datum') {
+  return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
+}
+
+/**
+ * Replaces path accesses with access to non-nested field.
+ * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
+ */
+export function replacePathInField(path: string) {
+  return `${splitAccessPath(path).map(p => p.replace('.', '\\.')).join('\\.')}`;
+}
+
+/**
+ * Remove path accesses with access from field.
+ * For example, `foo["bar"].baz` becomes `foo.bar.baz`.
+ */
+export function removePathFromField(path: string) {
+  return `${splitAccessPath(path).join('.')}`;
+}
+
+/**
+ * Count the depth of the path. Returns 1 for fields that are not nested.
+ */
+export function accessPathDepth(path: string) {
+  return splitAccessPath(path).length;
 }

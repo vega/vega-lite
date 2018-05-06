@@ -8,9 +8,13 @@ import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
 describe('fieldDef', () => {
-  describe('field()', () => {
-    it ('should construct paths', () => {
-      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo"]["bar.baz"]');
+  describe('vgField()', () => {
+    it ('should access flattened fields', () => {
+      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}), 'foo\\.bar\\.baz');
+    });
+
+    it ('should access flattened fields in expression', () => {
+      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo.bar.baz"]');
     });
   });
 

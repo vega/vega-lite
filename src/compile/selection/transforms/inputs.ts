@@ -1,5 +1,5 @@
 import {stringValue} from 'vega-util';
-import {accessPath, varName} from '../../../util';
+import {accessPathWithDatum, varName} from '../../../util';
 import {TUPLE} from '../selection';
 import nearest from './nearest';
 import {TransformCompiler} from './transforms';
@@ -27,7 +27,7 @@ const inputBindings:TransformCompiler = {
           value: '',
           on: [{
             events: selCmpt.events,
-            update: `datum && item().mark.marktype !== 'group' ? ${datum}${accessPath(p.field)} : null`
+            update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
           }],
           bind: bind[p.field] || bind[p.channel] || bind
         });

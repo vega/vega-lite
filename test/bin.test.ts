@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {autoMaxBins, binToString} from '../src/bin';
+import {autoMaxBins, isBinParams, binToString} from '../src/bin';
 import {COLOR, COLUMN, OPACITY, ROW, SHAPE} from '../src/channel';
 
 describe('autoMaxBins', () => {
@@ -15,3 +15,12 @@ describe('binToString', () => {
    assert.deepEqual(binToString(false), 'bin');
   });
 });
+
+describe('isBinParams', () => {
+  it('should detect whether the input is BinParams or not', () => {
+   assert.deepEqual(isBinParams(true), false);
+   assert.deepEqual(isBinParams({}), true);
+   assert.deepEqual(isBinParams({extent: [0,1]}), true);
+  });
+});
+

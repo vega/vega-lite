@@ -1,6 +1,7 @@
 // Declaration and utility for variants of a field definition object
 import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
+
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -17,7 +18,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {accessPath, titlecase} from './util';
+import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -297,7 +298,7 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
-  /** Overrride which aggregate to use. Needed for unaggregated domain. */
+  /** Override which aggregate to use. Needed for unaggregated domain. */
   aggregate?: AggregateOp;
 }
 
@@ -336,10 +337,12 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
   }
 
   if (opt.expr) {
-    field = `${opt.expr}${accessPath(field)}`;
+    // Expression to access flattened field. No need to escape dots.
+    return flatAccessWithDatum(field, opt.expr);
+  } else {
+    // We flattened all fields so paths should have become dot.
+    return replacePathInField(field);
   }
-
-  return field;
 }
 
 export function isDiscrete(fieldDef: FieldDef<Field>) {

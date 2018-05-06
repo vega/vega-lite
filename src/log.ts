@@ -298,10 +298,6 @@ export namespace message {
     return `Setting the scale to be independent for "${channel}" means we also have to set the guide (axis or legend) to be independent.`;
   }
 
-  export function conflictedDomain(channel: Channel) {
-    return `Cannot set ${channel}-scale's "domain" as it is binned. Please use "bin"'s "extent" instead.`;
-  }
-
   export function domainSortDropped(sort: VgSortField) {
     return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
   }

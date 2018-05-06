@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
-import {getFieldDef, vgField} from '../../fielddef';
+import {getFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, keys} from '../../util';
@@ -79,9 +79,12 @@ function parsePathMark(model: UnitModel) {
 }
 
 export function getSort(model: UnitModel) {
-  if (model.channelHasField('order') && !model.stack) {
+  const order = model.encoding.order;
+  if (!isArray(order) && isValueDef(order)) {
+    return undefined;
+  } else if ((isArray(order) || isFieldDef(order)) && !model.stack) {
     // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)
-    return sortParams(model.encoding.order, {expr: 'datum'});
+    return sortParams(order, {expr: 'datum'});
   } else if (isPathMark(model.mark)) {
     // For both line and area, we sort values based on dimension by default
     const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';

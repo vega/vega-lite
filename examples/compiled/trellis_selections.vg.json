@@ -336,7 +336,7 @@
                                     "signal": "brush_X"
                                 }
                             ],
-                            "update": "brush_X ? {unit: \"child\" + '_' + facet[\"Series\"], intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]} : null"
+                            "update": "brush_X ? {unit: \"child\" + '_' + (facet[\"Series\"]), intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]} : null"
                         }
                     ]
                 },
@@ -428,7 +428,7 @@
                             "events": {
                                 "signal": "brush_tuple"
                             },
-                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '_' + facet[\"Series\"]})"
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '_' + (facet[\"Series\"])})"
                         }
                     ]
                 },
@@ -480,7 +480,7 @@
                                     "signal": "grid_Y"
                                 }
                             ],
-                            "update": "grid_X && grid_Y ? {unit: \"child\" + '_' + facet[\"Series\"], intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]} : null"
+                            "update": "grid_X && grid_Y ? {unit: \"child\" + '_' + (facet[\"Series\"]), intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]} : null"
                         }
                     ]
                 },

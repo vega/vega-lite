@@ -64,63 +64,87 @@
                         "decade"
                     ],
                     "ops": [
-                        "argmin"
+                        "argmin",
+                        "argmax"
                     ],
                     "fields": [
+                        "scaled_date",
                         "scaled_date"
                     ],
                     "as": [
-                        "aggregated"
+                        "start",
+                        "end"
                     ]
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.aggregated.scaled_date",
-                    "as": "scaled_date"
+                    "expr": "datum.start.scaled_date",
+                    "as": "scaled_date_start"
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.aggregated.CO2",
-                    "as": "CO2"
+                    "expr": "datum.start.CO2",
+                    "as": "CO2_start"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                    "type": "formula",
+                    "expr": "datum.start.year",
+                    "as": "year_start"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.end.scaled_date",
+                    "as": "scaled_date_end"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.end.CO2",
+                    "as": "CO2_end"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.end.year",
+                    "as": "year_end"
                 }
             ]
         },
         {
             "name": "data_2",
-            "source": "source_0",
+            "source": "data_1",
             "transform": [
                 {
-                    "type": "aggregate",
-                    "groupby": [
-                        "decade"
-                    ],
-                    "ops": [
-                        "argmax"
-                    ],
-                    "fields": [
-                        "scaled_date"
-                    ],
-                    "as": [
-                        "aggregated"
-                    ]
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"scaled_date_start\"])",
+                    "as": "scaled_date_start"
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.aggregated.scaled_date",
-                    "as": "scaled_date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.aggregated.CO2",
-                    "as": "CO2"
+                    "expr": "toNumber(datum[\"CO2_start\"])",
+                    "as": "CO2_start"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                    "expr": "datum[\"scaled_date_start\"] !== null && !isNaN(datum[\"scaled_date_start\"]) && datum[\"CO2_start\"] !== null && !isNaN(datum[\"CO2_start\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"scaled_date_end\"])",
+                    "as": "scaled_date_end"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"CO2_end\"])",
+                    "as": "CO2_end"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"scaled_date_end\"] !== null && !isNaN(datum[\"scaled_date_end\"]) && datum[\"CO2_end\"] !== null && !isNaN(datum[\"CO2_end\"])"
                 }
             ]
         }
@@ -190,13 +214,13 @@
             ]
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -217,26 +241,26 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "scaled_date"
+                        "field": "scaled_date_start"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "CO2"
+                        "field": "CO2_start"
                     },
                     "text": {
-                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                        "signal": "''+datum[\"year_start\"]"
                     }
                 }
             }
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_1_layer_1_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_2"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -257,14 +281,14 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "scaled_date"
+                        "field": "scaled_date_end"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "CO2"
+                        "field": "CO2_end"
                     },
                     "text": {
-                        "signal": "''+datum[\"aggregated\"][\"year\"]"
+                        "signal": "''+datum[\"year_end\"]"
                     }
                 }
             }
@@ -281,12 +305,12 @@
                         "field": "scaled_date"
                     },
                     {
-                        "data": "data_1",
-                        "field": "scaled_date"
+                        "data": "data_2",
+                        "field": "scaled_date_start"
                     },
                     {
-                        "data": "data_2",
-                        "field": "scaled_date"
+                        "data": "data_3",
+                        "field": "scaled_date_end"
                     }
                 ]
             },
@@ -309,12 +333,12 @@
                         "field": "CO2"
                     },
                     {
-                        "data": "data_1",
-                        "field": "CO2"
+                        "data": "data_2",
+                        "field": "CO2_start"
                     },
                     {
-                        "data": "data_2",
-                        "field": "CO2"
+                        "data": "data_3",
+                        "field": "CO2_end"
                     }
                 ]
             },

@@ -83,7 +83,6 @@ export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlo
         parent = new ParseNode(parent, parse);
       }
 
-
       parent = new FilterNode(parent, model, t.filter);
     } else if (isBin(t)) {
       parent = BinNode.makeFromTransform(parent, t, model);

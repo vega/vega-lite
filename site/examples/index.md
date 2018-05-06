@@ -13,8 +13,21 @@ To see example code for embedding visualizations in a webpage, please read the [
 {:toc}
 
 {% for group in site.data.examples %}
+
 ## {{ group[0] }}
-<span class="gallery">{% for spec in group[1] %}{% include preview.html spec=spec.name title=spec.title style=spec.style png=spec.png %}{% endfor %}</span>
+
+{% for subgroup in group[1] %}
+
+
+{% if subgroup[0] != "" %}
+### {{ subgroup[0] }}
+
+{% endif %}
+
+<span class="gallery">{% for spec in subgroup[1] %}{% include preview.html spec=spec.name title=spec.title style=spec.style png=spec.png %}{% endfor %}</span>
+
+{% endfor %}
+
 {% endfor %}
 
 ## Community Examples
