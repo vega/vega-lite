@@ -8,7 +8,7 @@ import * as vlEncoding from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, AreaConfig, isMarkDef, isPathMark, isPrimitiveMark, LineConfig, Mark, MarkDef, MarkProperties} from './mark';
+import {AnyMark, AreaConfig, isMarkDef, isPathMark, isPrimitiveMark, LineConfig, Mark, MarkConfig, MarkDef} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -438,7 +438,7 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Fiel
     return isPrimitiveMark(spec.mark);
 }
 
-function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Encoding<Field>): MarkProperties {
+function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Encoding<Field>): MarkConfig {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
   } else if (markDef.point) { // truthy : true or object
@@ -455,7 +455,7 @@ function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Enc
   }
 }
 
-function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkProperties {
+function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkConfig {
   if (markDef.line) { // true or object
     return markDef.line === true ? {} : markDef.line;
   } else if (markDef.line !== undefined) { // false or null
