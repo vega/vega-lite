@@ -91,6 +91,12 @@ Load a comma-separated values (CSV) file. This format type does not support any 
 
 Load a tab-separated values (TSV) file. This format type does not support any additional properties.
 
+### dsv
+
+Load a delimited text file with a custom delimiter. This is a general version of CSV and TSV.
+
+{% include table.html props="delimiter" source="DsvDataFormat" %}
+
 ### topojson
 
 Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The input file must contain valid TopoJSON data. The TopoJSON input is then converted into a GeoJSON format. There are two mutually exclusive properties that can be used to specify the conversion process:
