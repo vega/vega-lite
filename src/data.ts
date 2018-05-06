@@ -17,16 +17,33 @@ export interface DataFormatBase {
 
 export interface CsvDataFormat extends DataFormatBase {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
    * The default format type is determined by the extension of the file URL.
    * If no extension is detected, `"json"` will be used by default.
    */
   type?: 'csv' | 'tsv';
 }
 
+export interface DsvDataFormat extends DataFormatBase {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
+   * The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: 'dsv';
+
+  /**
+   * The delimiter between records. The delimiter must be a single character (i.e., a single 16-bit code unit); so, ASCII delimiters are fine, but emoji delimiters are not.
+   *
+   * @minLength 1
+   * @maxLength 1
+   */
+  delimiter: string;
+}
+
 export interface JsonDataFormat extends DataFormatBase {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
    * The default format type is determined by the extension of the file URL.
    * If no extension is detected, `"json"` will be used by default.
    */
@@ -42,7 +59,7 @@ export interface JsonDataFormat extends DataFormatBase {
 
 export interface TopoDataFormat extends DataFormatBase {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
    * The default format type is determined by the extension of the file URL.
    * If no extension is detected, `"json"` will be used by default.
    */
@@ -62,9 +79,9 @@ export interface TopoDataFormat extends DataFormatBase {
   mesh?: string;
 }
 
-export type DataFormat = CsvDataFormat | JsonDataFormat | TopoDataFormat;
+export type DataFormat = CsvDataFormat | DsvDataFormat | JsonDataFormat | TopoDataFormat;
 
-export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
+export type DataFormatType = 'json' | 'csv' | 'tsv' | 'dsv' | 'topojson';
 
 export type Data = UrlData | InlineData | NamedData;
 

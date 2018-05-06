@@ -28,7 +28,7 @@ export class SourceNode extends DataFlowNode {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
         let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
-        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+        if (!contains(['json', 'csv', 'tsv', 'dsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
 
