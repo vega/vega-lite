@@ -37,7 +37,6 @@ import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
 
-
 /**
  * Composable Components that are intermediate results of the parsing phase of the
  * compilations.  The components represents parts of the specification in a form that

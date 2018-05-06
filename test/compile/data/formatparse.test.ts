@@ -1,11 +1,12 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
-
 import {AncestorParse} from '../../../src/compile/data';
+import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
+import {parseTransformArray} from '../../../src/compile/data/parse';
 import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
-import {parseFacetModel, parseLayerModel, parseUnitModel} from '../../util';
+import {parseFacetModel, parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
@@ -18,7 +19,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse()).parse, {
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
         a: 'number'
       });
     });
@@ -35,12 +36,13 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse()).parse, {
+      const ancestorParese = new AncestorParse();
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse, {
         a: 'number',
         b: 'date'
       });
 
-      assert.deepEqual(ParseNode.makeExplicit(null, model, new AncestorParse()).parse, {
+      assert.deepEqual(ParseNode.makeExplicit(null, model, ancestorParese).parse, {
         c: 'number',
         d: 'date'
       });
@@ -58,7 +60,11 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse({}, {'b2': 'derived'})).parse, {
+      const ancestorParse = new AncestorParse();
+      const parent = new DataFlowNode(null);
+      parseTransformArray(parent, model, ancestorParse);
+      assert.deepEqual(ancestorParse.combine(), {'b2': 'derived'});
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
         'a': 'date',
         'b': 'number'
       });
@@ -74,7 +80,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse()), null);
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()), null);
     });
 
     it('should not parse the same field twice', function() {
@@ -112,7 +118,7 @@ describe('compile/data/formatparse', () => {
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = new AncestorParse({a: 'number'});
-      assert.deepEqual(ParseNode.makeImplicit(null, model.child as ModelWithField, model.child.component.data.ancestorParse).parse, {
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model.child as ModelWithField, model.child.component.data.ancestorParse).parse, {
         'b': 'date'
       });
     });
@@ -154,7 +160,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse()).parse, {
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
         "foo": "number"
       });
     });
@@ -168,7 +174,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicit(null, model, new AncestorParse()).parse, {
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
         "foo.bar": "number",
         "foo.baz": "flatten"
       });
@@ -191,8 +197,13 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeExplicit(null, model, new AncestorParse()).parse, {
-        "b": null
+      const ancestorParse = new AncestorParse();
+      assert.isNull(ParseNode.makeExplicit(null, model, ancestorParse), null);
+      assert.deepEqual(ancestorParse.combine(), {
+        b: null
+      });
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
+        a: 'number'
       });
     });
 

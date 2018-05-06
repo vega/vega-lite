@@ -70,7 +70,7 @@ export class Split<T extends object> {
   }
 
   /**
-   * Merge split object this split object. Properties from the other split
+   * Merge split object into this split object. Properties from the other split
    * overwrite properties from this split.
    */
   public copyAll(other: Split<T>) {

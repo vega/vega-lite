@@ -1,9 +1,5 @@
-import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
-import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
-import {forEachLeaf} from '../../logical';
-import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
@@ -57,41 +53,7 @@ export function parseTransformArray(parent: DataFlowNode, model: Model, ancestor
       parent = new CalculateNode(parent, t);
       ancestorParse.set(t.as, 'derived', false);
     } else if (isFilter(t)) {
-      const parse = {};
-      forEachLeaf(t.filter, filter => {
-        if (isFieldPredicate(filter)) {
-          // Automatically add a parse node for filters with filter objects
-          let val: string | number | boolean | DateTime = null;
-
-          // For EqualFilter, just use the equal property.
-          // For RangeFilter and OneOfFilter, all array members should have
-          // the same type, so we only use the first one.
-          if (isFieldEqualPredicate(filter)) {
-            val = filter.equal;
-          } else if (isFieldRangePredicate(filter)) {
-            val = filter.range[0];
-          } else if (isFieldOneOfPredicate(filter)) {
-            val = (filter.oneOf || filter['in'])[0];
-          } // else -- for filter expression, we can't infer anything
-          if (val) {
-            if (isDateTime(val)) {
-              parse[filter.field] = 'date';
-            } else if (isNumber(val)) {
-              parse[filter.field] = 'number';
-            } else if (isString(val)) {
-              parse[filter.field] = 'string';
-            }
-          }
-
-          if (filter.timeUnit) {
-            parse[filter.field] = 'date';
-          }
-        }
-      });
-
-      if (keys(parse).length) {
-        parent = ParseNode.makeWithAncestors(parent, {}, parse, ancestorParse) || parent;
-      }
+      parent = ParseNode.makeImplicitFromFilterTransform(parent, t, ancestorParse) || parent;
 
       parent = new FilterNode(parent, model, t.filter);
     } else if (isBin(t)) {
@@ -224,7 +186,7 @@ export function parseData(model: Model): DataComponent {
     head = parseTransformArray(head, model, ancestorParse);
   }
 
-  head = ParseNode.makeImplicit(head, model, ancestorParse) || head;
+  head = ParseNode.makeImplicitFromEncoding(head, model, ancestorParse) || head;
 
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);
