@@ -47,7 +47,7 @@
     "site": "bundle exec jekyll serve --incremental",
     "lint": "tslint -p .",
     "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
-    "test:inspect" :"node --inspect-brk ./node_modules/.bin/jest --runInBand test",
+    "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
