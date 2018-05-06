@@ -7,7 +7,7 @@ export type PartsMixins<P extends string> = {
   [part in P]?: MarkConfig
 };
 
-export type CompositeGenericMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
+export type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
   /**
    * Opacity of the marks.
    */
@@ -15,7 +15,7 @@ export type CompositeGenericMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
 };
 
 export function partLayerMixins<P extends PartsMixins<any>>(
-  markDef: CompositeGenericMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
+  markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {color, opacity} = markDef;

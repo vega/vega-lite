@@ -11,7 +11,7 @@ import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} fr
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {CompositeGenericMarkDef, partLayerMixins} from './common';
+import {GenericCompositeMarkDef, partLayerMixins} from './common';
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -48,7 +48,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
   extent?: 'min-max' | number;
 }
 
-export type BoxPlotDef = CompositeGenericMarkDef<BoxPlot> & BoxPlotConfig & {
+export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> & BoxPlotConfig & {
   /**
    * Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
    *
