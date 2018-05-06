@@ -100,21 +100,6 @@ export interface BarBinSpacingMixins {
   binSpacing?: number;
 }
 
-export interface MarkProperties extends BarBinSpacingMixins, MarkConfig {
-  /**
-   *
-   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
-   *
-   * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
-   * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
-   */
-  style?: string | string[];
-
-  /**
-   * Whether a mark be clipped to the enclosing group’s width and height.
-   */
-  clip?: boolean;
-}
 
 /** @hide */
 export type HiddenComposite = CompositeMark | CompositeMarkDef;
@@ -232,7 +217,7 @@ export interface PointOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  point?: boolean | MarkProperties | 'transparent';
+  point?: boolean | MarkConfig | 'transparent';
 }
 
 export interface LineConfig extends MarkConfig, PointOverlayMixins {}
@@ -247,20 +232,33 @@ export interface LineOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  line?: boolean | MarkProperties;
+  line?: boolean | MarkConfig;
 }
 
 export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {}
 
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef extends MarkProperties, PointOverlayMixins, LineOverlayMixins {
+export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
    */
   type: Mark;
+
+  /**
+   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+   *
+   * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
+   * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
+   */
+  style?: string | string[];
+
+  /**
+   * Whether a mark be clipped to the enclosing group’s width and height.
+   */
+  clip?: boolean;
 }
 
 export const defaultBarConfig: BarConfig = {
