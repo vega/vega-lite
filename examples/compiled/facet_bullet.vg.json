@@ -1,0 +1,648 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "A simple bar chart with embedded data.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "title": "Revenue",
+                    "subtitle": "US$, in thousands",
+                    "ranges": [
+                        150,
+                        225,
+                        300
+                    ],
+                    "measures": [
+                        220,
+                        270
+                    ],
+                    "markers": [
+                        250
+                    ]
+                },
+                {
+                    "title": "Profit",
+                    "subtitle": "%",
+                    "ranges": [
+                        20,
+                        25,
+                        30
+                    ],
+                    "measures": [
+                        21,
+                        23
+                    ],
+                    "markers": [
+                        26
+                    ]
+                },
+                {
+                    "title": "Order Size",
+                    "subtitle": "US$, average",
+                    "ranges": [
+                        350,
+                        500,
+                        600
+                    ],
+                    "measures": [
+                        100,
+                        320
+                    ],
+                    "markers": [
+                        550
+                    ]
+                },
+                {
+                    "title": "New Customers",
+                    "subtitle": "count",
+                    "ranges": [
+                        1400,
+                        2000,
+                        2500
+                    ],
+                    "measures": [
+                        1000,
+                        1650
+                    ],
+                    "markers": [
+                        2100
+                    ]
+                },
+                {
+                    "title": "Satisfaction",
+                    "subtitle": "out of 5",
+                    "ranges": [
+                        3.5,
+                        4.25,
+                        5
+                    ],
+                    "measures": [
+                        3.2,
+                        4.7
+                    ],
+                    "markers": [
+                        4.4
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "row_domain",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
+                    "as": "ranges.2"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
+                    "as": "ranges.1"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
+                    "as": "ranges.0"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
+                    "as": "measures.1"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_6",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
+                    "as": "measures.0"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_7",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
+                    "as": "markers.0"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "value": 200
+        },
+        {
+            "name": "child_height",
+            "value": 21
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 1,
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "from": {
+                "data": "row_domain"
+            },
+            "sort": {
+                "field": "datum[\"title\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "''+parent[\"title\"]"
+                },
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-label",
+                "encode": {
+                    "update": {
+                        "angle": {
+                            "value": 0
+                        },
+                        "align": {
+                            "value": "right"
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            }
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "style": "cell",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "title"
+                    ]
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"title\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
+            },
+            "data": [
+                {
+                    "source": "facet",
+                    "name": "data_0",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
+                            "as": "ranges.2"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_1",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
+                            "as": "ranges.1"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_2",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
+                            "as": "ranges.0"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_3",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
+                            "as": "measures.1"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_4",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
+                            "as": "measures.0"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_5",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
+                            "as": "markers.0"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
+                        }
+                    ]
+                }
+            ],
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_layer_0_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "#eee"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "ranges\\.2"
+                            },
+                            "x2": {
+                                "scale": "child_x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 20
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_1_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "#ddd"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "ranges\\.1"
+                            },
+                            "x2": {
+                                "scale": "child_x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 20
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_2_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "#ccc"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "ranges\\.0"
+                            },
+                            "x2": {
+                                "scale": "child_x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 20
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_3_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_3"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "lightsteelblue"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "measures\\.1"
+                            },
+                            "x2": {
+                                "scale": "child_x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 10
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_4_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_4"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "steelblue"
+                            },
+                            "x": {
+                                "scale": "child_x",
+                                "field": "measures\\.0"
+                            },
+                            "x2": {
+                                "scale": "child_x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 10
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_5_marks",
+                    "type": "rect",
+                    "style": [
+                        "tick"
+                    ],
+                    "from": {
+                        "data": "data_5"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "xc": {
+                                "scale": "child_x",
+                                "field": "markers\\.0"
+                            },
+                            "yc": {
+                                "signal": "child_height",
+                                "mult": 0.5
+                            },
+                            "height": {
+                                "value": 14
+                            },
+                            "width": {
+                                "value": 2
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_x",
+                    "type": "linear",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "data_0",
+                                "field": "ranges\\.2"
+                            },
+                            {
+                                "data": "data_1",
+                                "field": "ranges\\.1"
+                            },
+                            {
+                                "data": "data_2",
+                                "field": "ranges\\.0"
+                            },
+                            {
+                                "data": "data_3",
+                                "field": "measures\\.1"
+                            },
+                            {
+                                "data": "data_4",
+                                "field": "measures\\.0"
+                            },
+                            {
+                                "data": "data_5",
+                                "field": "markers\\.0"
+                            }
+                        ]
+                    },
+                    "range": [
+                        0,
+                        {
+                            "signal": "child_width"
+                        }
+                    ],
+                    "nice": false,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_x",
+                    "orient": "bottom",
+                    "grid": false,
+                    "labelFlush": true,
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_x",
+                    "orient": "bottom",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "ticks": false,
+                    "zindex": 0
+                }
+            ]
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
