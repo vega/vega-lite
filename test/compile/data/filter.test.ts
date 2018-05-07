@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-
+import {AncestorParse} from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
@@ -24,7 +24,7 @@ describe('compile/data/filter', () => {
 
     // extract the parse from the parse nodes that were generated along with the filter nodes
     const root = new DataFlowNode(null);
-    parseTransformArray(root, model);
+    parseTransformArray(root, model, new AncestorParse());
     let node = root.children[0];
 
     while (node.numChildren() > 0) {

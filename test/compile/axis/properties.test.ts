@@ -1,11 +1,9 @@
-
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
-import {UnitModel} from '../../../src/compile/unit';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {

@@ -1,13 +1,12 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
 import {UnitModel} from '../../../src/compile/unit';
-import {FieldDef} from '../../../src/fielddef';
 import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
-import {Dict, mergeDeep} from '../../../src/util';
+import {mergeDeep} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
+
 
 function parse(model: UnitModel) {
   return FilterInvalidNode.make(null, model);

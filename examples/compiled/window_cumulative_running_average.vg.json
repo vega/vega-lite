@@ -89,11 +89,6 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"Average_MPG\"])",
-                    "as": "Average_MPG"
-                },
-                {
-                    "type": "formula",
                     "as": "year_Year",
                     "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
                 }

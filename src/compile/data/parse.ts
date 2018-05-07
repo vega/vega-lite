@@ -1,8 +1,5 @@
-import {isNumber, isString} from 'vega-util';
 import {MAIN, RAW} from '../../data';
-import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
-import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../../predicate';
 import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
@@ -18,7 +15,7 @@ import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
-import {DataComponent} from './index';
+import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
@@ -48,56 +45,47 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
-export function parseTransformArray(parent: DataFlowNode, model: Model): DataFlowNode {
+export function parseTransformArray(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
   model.transforms.forEach(t => {
     if (isCalculate(t)) {
       parent = new CalculateNode(parent, t);
+      ancestorParse.set(t.as, 'derived', false);
     } else if (isFilter(t)) {
-      // Automatically add a parse node for filters with filter objects
-      const parse = {};
-      const filter = t.filter;
-      let val: string | number | boolean | DateTime = null;
-      // For EqualFilter, just use the equal property.
-      // For RangeFilter and OneOfFilter, all array members should have
-      // the same type, so we only use the first one.
-      if (isFieldEqualPredicate(filter)) {
-        val = filter.equal;
-      } else if (isFieldRangePredicate(filter)) {
-        val = filter.range[0];
-      } else if (isFieldOneOfPredicate(filter)) {
-        val = (filter.oneOf || filter['in'])[0];
-      } // else -- for filter expression, we can't infer anything
-      if (val) {
-        if (isDateTime(val)) {
-          parse[filter['field']] = 'date';
-        } else if (isNumber(val)) {
-          parse[filter['field']] = 'number';
-        } else if (isString(val)) {
-          parse[filter['field']] = 'string';
-        }
-      }
-
-      if (keys(parse).length > 0) {
-        parent = new ParseNode(parent, parse);
-      }
+      parent = ParseNode.makeImplicitFromFilterTransform(parent, t, ancestorParse) || parent;
 
       parent = new FilterNode(parent, model, t.filter);
     } else if (isBin(t)) {
       parent = BinNode.makeFromTransform(parent, t, model);
+
+      ancestorParse.set(t.as, 'number', false);
     } else if (isTimeUnit(t)) {
       parent = TimeUnitNode.makeFromTransform(parent, t);
+
+      ancestorParse.set(t.as, 'date', false);
     } else if (isAggregate(t)) {
-      parent = AggregateNode.makeFromTransform(parent, t);
+      const agg = parent = AggregateNode.makeFromTransform(parent, t);
 
       if (requiresSelectionId(model)) {
         parent = new IdentifierNode(parent);
       }
+
+      for (const field of keys(agg.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
     } else if (isLookup(t)) {
-      parent = LookupNode.make(parent, model, t, lookupCounter++);
+      const lookup = parent = LookupNode.make(parent, model, t, lookupCounter++);
+
+      for (const field of keys(lookup.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
     } else if (isWindow(t)) {
-      parent = new WindowTransformNode(parent, t);
+      const window = parent = new WindowTransformNode(parent, t);
+
+      for (const field of keys(window.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
@@ -114,11 +102,16 @@ Description of the dataflow (http://asciiflow.com/):
      +---+----+
          |
          v
+     FormatParse
+     (explicit)
+         |
+         v
      Transforms
 (Filter, Calculate, ...)
          |
          v
      FormatParse
+     (implicit)
          |
          v
       Binning
@@ -160,8 +153,15 @@ Formula From Sort Array
 export function parseData(model: Model): DataComponent {
   let head = parseRoot(model, model.component.data.sources);
 
-  const outputNodes = model.component.data.outputNodes;
-  const outputNodeRefCounts = model.component.data.outputNodeRefCounts;
+  const {outputNodes, outputNodeRefCounts} = model.component.data;
+  const ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
+
+  // format.parse: null means disable parsing
+  if (model.data && model.data.format && model.data.format.parse === null) {
+    ancestorParse.parseNothing = true;
+  }
+
+  head = ParseNode.makeExplicit(head, model, ancestorParse) || head;
 
   // Default discrete selections require an identifier transform to
   // uniquely identify data points as the _id field is volatile. Add
@@ -183,13 +183,10 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (model.transforms.length > 0) {
-    head = parseTransformArray(head, model);
+    head = parseTransformArray(head, model, ancestorParse);
   }
 
-  const parse = ParseNode.make(head, model);
-  if (parse) {
-    head = parse;
-  }
+  head = ParseNode.makeImplicitFromEncoding(head, model, ancestorParse) || head;
 
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);
@@ -243,9 +240,6 @@ export function parseData(model: Model): DataComponent {
     outputNodes[facetName] = facetRoot;
     head = facetRoot;
   }
-
-  // add the format parse from this model so that children don't parse the same field again
-  const ancestorParse = {...model.component.data.ancestorParse, ...(parse ? parse.parse : {})};
 
   return {
     ...model.component.data,

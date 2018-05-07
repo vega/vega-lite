@@ -228,11 +228,6 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
-                    "type": "formula",
                     "expr": "toNumber(datum[\"population\"])",
                     "as": "population"
                 },
@@ -247,11 +242,6 @@
             "name": "data_3",
             "source": "data_1",
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"population\"])",

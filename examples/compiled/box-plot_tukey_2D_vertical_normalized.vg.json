@@ -57,11 +57,6 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"lowerWhisker\"])",
-                    "as": "lowerWhisker"
-                },
-                {
-                    "type": "formula",
                     "expr": "toNumber(datum[\"lowerBox\"])",
                     "as": "lowerBox"
                 },
@@ -79,11 +74,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"upperBox\"])",
                     "as": "upperBox"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"upperWhisker\"])",
-                    "as": "upperWhisker"
                 },
                 {
                     "type": "filter",

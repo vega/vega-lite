@@ -77,11 +77,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"AverageYearRating\"])",
-                    "as": "AverageYearRating"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"AverageYearRating\"] !== null && !isNaN(datum[\"AverageYearRating\"])"
                 }
