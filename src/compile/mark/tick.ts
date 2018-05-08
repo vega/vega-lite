@@ -26,7 +26,7 @@ export const tick: MarkCompiler = {
         defaultValue: defaultSize(model),
         vgChannel: vgSizeChannel
       }),
-      [vgThicknessChannel]: {value: config.tick.thickness},
+      [vgThicknessChannel]: {value: markDef.thickness || config.tick.thickness},
     };
   }
 };
