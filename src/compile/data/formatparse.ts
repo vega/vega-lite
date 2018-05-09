@@ -1,12 +1,12 @@
-import {isString} from 'util';
-import {isNumber, toSet} from 'vega-util';
+import {isNumber, isString, toSet} from 'vega-util';
 import {AncestorParse} from '.';
 import {isCountingAggregateOp} from '../../aggregate';
 import {DateTime, isDateTime} from '../../datetime';
-import {isNumberFieldDef, isTimeFieldDef} from '../../fielddef';
+import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
+import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
 import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
@@ -122,14 +122,20 @@ export class ParseNode extends DataFlowNode {
         if (isTimeFieldDef(fieldDef)) {
           implicit[fieldDef.field] = 'date';
         } else if (isNumberFieldDef(fieldDef)) {
-          if (isCountingAggregateOp(fieldDef.aggregate)) {
-            return;
+          if (!isCountingAggregateOp(fieldDef.aggregate)) {
+            implicit[fieldDef.field] = 'number';
           }
-          implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
           // (Parsing numbers / dates already flattens numeric and temporal fields.)
-          implicit[fieldDef.field] = 'flatten';
+          if (!(fieldDef.field in implicit)) {
+            implicit[fieldDef.field] = 'flatten';
+          }
+        } else if (isScaleFieldDef(fieldDef) && isSortField(fieldDef.sort) && accessPathDepth(fieldDef.sort.field) > 1) {
+          // Flatten fields that we sort by but that are not otherwise flattened.
+          if (!(fieldDef.sort.field in implicit)) {
+            implicit[fieldDef.sort.field] = 'flatten';
+          }
         }
       });
     }
@@ -141,12 +147,12 @@ export class ParseNode extends DataFlowNode {
    * Creates a parse node from "explicit" parse and "implicit" parse and updates ancestorParse.
    */
   private static makeWithAncestors(parent: DataFlowNode, explicit: Dict<string>, implicit: Dict<string>, ancestorParse: AncestorParse) {
-    // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived").
+    // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived"). We also don't need to flatten a field that has already been parsed.
     for (const field of keys(implicit)) {
       const parsedAs = ancestorParse.getWithExplicit(field);
       if (parsedAs.value !== undefined) {
         // We always ignore derived fields even if they are implicitly defined because we expect users to create the right types.
-        if (parsedAs.explicit || parsedAs.value === implicit[field] || parsedAs.value === 'derived') {
+        if (parsedAs.explicit || parsedAs.value === implicit[field] || parsedAs.value === 'derived' || implicit[field] === 'flatten') {
           delete implicit[field];
         } else {
           log.warn(log.message.differentParse(field, implicit[field], parsedAs.value));
