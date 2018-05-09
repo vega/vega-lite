@@ -328,5 +328,8 @@ export function removePathFromField(path: string) {
  * Count the depth of the path. Returns 1 for fields that are not nested.
  */
 export function accessPathDepth(path: string) {
+  if (!path) {
+    return 0;
+  }
   return splitAccessPath(path).length;
 }

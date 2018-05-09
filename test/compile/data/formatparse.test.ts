@@ -24,6 +24,19 @@ describe('compile/data/formatparse', () => {
       });
     });
 
+    it('should flatten nested fields that are used to sort domains', () => {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          x: {field: 'a', type: 'ordinal', sort: {field: 'foo.bar', op: 'mean'}},
+        }
+      });
+
+      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
+        'foo.bar': 'flatten'
+      });
+    });
+
     it('should return a correct customized parse.', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json", "format": {"parse": {"c": "number", "d": "date"}}},
