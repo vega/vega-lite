@@ -62,7 +62,7 @@ describe('compile/legend', function () {
       assert.equal(def.type, 'gradient');
     });
 
-    it('should produce no legend title when title is null, "", or false', function() {
+    it('should produce no legend title when title is null, "", or false', function () {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
           mark: "point",
@@ -78,6 +78,23 @@ describe('compile/legend', function () {
         const def = legendParse.parseLegendForChannel(model, COLOR).combine();
         assert.doesNotHaveAnyKeys(def, ['title']);
       }
+    });
+
+
+    it('should store fieldDef.title as explicit', function () {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "nominal"},
+          color: {
+            field: "a", type: "quantitative",
+            legend: {title: 'foo'} // Need to cast as false is not valid, but we want to fall back gracefully
+          }
+        }
+      });
+
+      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      assert.equal(def.title, 'foo');
     });
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {

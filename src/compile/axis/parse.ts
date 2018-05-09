@@ -167,6 +167,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         property === 'values' ? !!axis.values :
         // both VL axis.encoding and axis.labelAngle affect VG axis.encode
         property === 'encode' ? !!axis.encoding || !!axis.labelAngle :
+        // title can be explicit if fieldDef.title is set
+        property === 'title' && value === model.fieldDef(channel).title ? true :
+        // Otherwise, things are explicit if the returned value matches the specified property
         value === axis[property];
 
       const configValue = getAxisConfig(property, model.config, channel, axisComponent.get('orient'), model.getScaleComponent(channel).get('type'));

@@ -58,8 +58,12 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   LEGEND_PROPERTIES.forEach(function(property) {
     const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
-      const explicit = property === 'values' ?
-        !!legend.values :  // specified legend.values is already respected, but may get transformed.
+      const explicit =
+        // specified legend.values is already respected, but may get transformed.
+        property === 'values' ? !!legend.values :
+        // title can be explicit if fieldDef.title is set
+        property === 'title' && value === model.fieldDef(channel).title ? true :
+        // Otherwise, things are explicit if the returned value matches the specified property
         value === legend[property];
       if (explicit || model.config.legend[property] === undefined) {
         legendCmpt.set(property, value, explicit);
