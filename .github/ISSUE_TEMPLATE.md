@@ -1,6 +1,15 @@
 Please:
+- [ ] Use GitHub issues for bug reports or feature requests only. (For usage questions, use http://bit.ly/vega-discuss or http://bit.ly/vega-slack)
 - [ ] Check for duplicate issues. Please file separate requests as separate issues on GitHub.
 - [ ] Describe how to reproduce the bug / the goal of the feature request.
 - [ ] Use the latest versions of Vega and Vega-Lite.
-- [ ] Provide an example spec in JSON and, if applicable, screenshots, GIF videos (e.g. using [LICEcap](https://www.cockos.com/licecap/)), or working example (e.g. based on [this Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9)).
-- [ ] Please ensure all code snippets and error messages are formatted in appropriate code blocks. See [Creating and highlighting code blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks/).
+- [ ] Provide an example spec in JSON, wrapped by triple backticks like this:
+
+```json
+{
+  "mark": "point",
+  "encoding": {"x": {"field": "a"}}
+}
+```
+
+- [ ] If applicable, include error messages and screenshots, GIF videos (e.g. using https://www.cockos.com/licecap/), or working example (e.g. http://bit.ly/vega-lite-blocks)
