@@ -1,7 +1,14 @@
 import {assert} from 'chai';
-import {SCALE_CHANNELS, ScaleChannel} from '../src/channel';
+import {Channel, SCALE_CHANNELS, ScaleChannel} from '../src/channel';
 import * as scale from '../src/scale';
-import {channelSupportScaleType, CONTINUOUS_TO_CONTINUOUS_SCALES, SCALE_TYPES, ScaleType} from '../src/scale';
+import {
+  channelSupportScaleType,
+  CONTINUOUS_TO_CONTINUOUS_SCALES,
+  generateScaleTypeIndexKey, SCALE_TYPE_INDEX,
+  SCALE_TYPES,
+  ScaleType
+} from '../src/scale';
+import {Type} from '../src/type';
 import {some, without} from '../src/util';
 
 describe('scale', () => {
@@ -62,6 +69,7 @@ describe('scale', () => {
       }
     });
 
+
     it('x, y, size, opacity should support all continuous scale type as well as band and point', () => {
       // x,y should use either band or point for ordinal input
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
@@ -73,6 +81,72 @@ describe('scale', () => {
           assert(channelSupportScaleType(channel, scaleType), `Error: ${channel}, ${scaleType}`);
         }
       }
+    });
+  });
+
+  describe('generateScaleTypeIndexKey', () => {
+    it('key for quantitative channel with quantitative type should generate correct index key', () => {
+      const key = generateScaleTypeIndexKey(Channel.X, Type.QUANTITATIVE);
+      assert.equal(key, 'x_quantitative');
+    });
+
+    it('key for quantitative channel with binned quantitative type should generate correct index key that includes bin', () => {
+      const key = generateScaleTypeIndexKey(Channel.X, Type.QUANTITATIVE, true);
+      assert.equal(key, 'x_quantitative_bin');
+    });
+  });
+
+  describe('generateScaleTypeIndex', () => {
+    it('SCALE_TYPE_INDEX should return correct scale types for quantitative positional channels', () => {
+      const type = Type.QUANTITATIVE;
+      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.POW, ScaleType.SQRT];
+
+      // x channel
+      let key = generateScaleTypeIndexKey(Channel.X, type);
+      let scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(positionalScaleTypes, scaleTypes);
+
+      // y channel
+      key = generateScaleTypeIndexKey(Channel.Y, Type.QUANTITATIVE);
+      scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, positionalScaleTypes);
+    });
+
+    it('SCALE_TYPE_INDEX should return correct scale types for quantitative positional channels with bin', () => {
+      const type = Type.QUANTITATIVE;
+      const positionalScaleTypesBinned = [ScaleType.LINEAR, ScaleType.BIN_LINEAR];
+
+      // x channel
+      let key = generateScaleTypeIndexKey(Channel.X, type, true);
+      let scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, positionalScaleTypesBinned);
+
+      // y channel
+      key = generateScaleTypeIndexKey(Channel.Y, type, true);
+      scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, positionalScaleTypesBinned);
+    });
+
+    it('SCALE_TYPE_INDEX should return correct scale types for nominal positional channels', () => {
+      const type = Type.NOMINAL;
+      const nominalPositionalScaleTypes = [ScaleType.POINT, ScaleType.BAND];
+
+      let key = generateScaleTypeIndexKey(Channel.X, type);
+      let scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, nominalPositionalScaleTypes);
+
+      key = generateScaleTypeIndexKey(Channel.Y, type);
+      scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, nominalPositionalScaleTypes);
+    });
+
+    it('SCALE_TYPE_INDEX should return correct scale types for temporal positional channels', () => {
+      const type = Type.TEMPORAL;
+      const temporalPositionalScaleTypes = [ScaleType.TIME, ScaleType.UTC];
+
+      const key = generateScaleTypeIndexKey(Channel.X, type);
+      const scaleTypes = SCALE_TYPE_INDEX[key];
+      assert.deepEqual(scaleTypes, temporalPositionalScaleTypes);
     });
   });
 });

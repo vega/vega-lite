@@ -1,7 +1,9 @@
 import {toSet} from 'vega-util';
-import {Channel, isColorChannel} from './channel';
+import {BinParams} from './bin';
+import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
+import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, flagKeys, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
@@ -587,6 +589,8 @@ const {type, domain, range, rangeStep, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCA
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
+export const SCALE_TYPE_INDEX = generateScaleTypeIndex();
+
 export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
   switch (propName) {
     case 'type':
@@ -660,6 +664,21 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   throw new Error(`Invalid scale property "${propName}".`);
 }
 
+export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDefType: Type, bin?: boolean|BinParams):boolean {
+  if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
+    return specifiedType === undefined || hasDiscreteDomain(specifiedType);
+  } else if (fieldDefType === Type.TEMPORAL) {
+    return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
+  } else if (fieldDefType === Type.QUANTITATIVE) {
+    if (bin) {
+      return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
+    }
+    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, ScaleType.SEQUENTIAL, undefined], specifiedType);
+  }
+
+  return true;
+}
+
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
     case Channel.X:
@@ -680,4 +699,44 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
   }
   /* istanbul ignore next: it should never reach here */
   return false;
+}
+
+export function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean) {
+  return SCALE_TYPE_INDEX[generateScaleTypeIndexKey(channel, fieldDefType, bin)];
+}
+
+export interface ScaleTypeIndex {
+  [channel: string]: ScaleType[];
+}
+
+// generates ScaleTypeIndex where keys are encoding channels and values are list of valid ScaleTypes
+export function generateScaleTypeIndex() {
+  const index: ScaleTypeIndex = {};
+  for (const channel of CHANNELS) {
+    for (const fieldDefType of keys(TYPE_INDEX)) {
+      for (const scaleType of SCALE_TYPES) {
+        const key = generateScaleTypeIndexKey(channel, fieldDefType);
+        if (channelSupportScaleType(channel, scaleType) && fieldDefMatchScaleType(scaleType, fieldDefType)) {
+          index[key] ? index[key].push(scaleType) : index[key] = [scaleType];
+        }
+      }
+    }
+  }
+
+  // add quantitative binned keys to index
+  for (const channel of CHANNELS) {
+    for (const scaleType of SCALE_TYPES) {
+      const key = generateScaleTypeIndexKey(channel, Type.QUANTITATIVE, true);
+      if (channelSupportScaleType(channel, scaleType) && fieldDefMatchScaleType(scaleType, Type.QUANTITATIVE, true)) {
+        index[key] ? index[key].push(scaleType) : index[key] = [scaleType];
+      }
+    }
+  }
+
+  return index;
+}
+
+export function generateScaleTypeIndexKey(channel: Channel, fieldDefType: Type, bin?: boolean) {
+  const key = channel + '_' + fieldDefType;
+  return bin !== undefined ? key + '_bin' : key;
 }
