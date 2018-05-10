@@ -6,7 +6,7 @@ or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) or Github first,
+- For major changes, please discuss with us via [our mailing list](http://bit.ly/vega-discuss), [slack](http://bit.ly/vega-slack) or Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
@@ -154,8 +154,6 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 Use `yarn test` (or `yarn test:inspect` to inspect tests) run ts-lint and all unit-tests respectively.
 
 A lot of linting errors can be fixed automatically by running `yarn lint --fix`.
-
-To run only the unit tests or linting, you can run `yarn jest test/` and `yarn lint` respectively.
 
 ### Watch tasks
 
