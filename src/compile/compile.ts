@@ -25,7 +25,7 @@ export interface CompileOptions {
  *     |
  *     |  (Normalization)
  *     v
- * Normalized Spec
+ * Normalized Spec (Row/Column channels in single-view specs becomes faceted specs, composite marks becomes layered specs.)
  *     |
  *     |  (Build Model)
  *     v

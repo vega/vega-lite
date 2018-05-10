@@ -6,7 +6,7 @@ or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
+- For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) or Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
@@ -28,11 +28,7 @@ To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/4
 
 The website is under `site/` and the documentation is under `site/docs/`.
 We use Github Pages to publish our documentation when we release a new version.
-To contribute changes to the documentation or website, simply submit a pull request that changes
-the corresponding markdown files in `site/`.
-
-The images that are shown on the homepage and in the gallery have to be generated with `yarn build:images`.
-To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
+To contribute changes to the documentation or website, simply submit a pull request that changes the corresponding markdown files in `site/`.
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
@@ -77,7 +73,10 @@ To name the example file:
 - For interactive example, begin with either `interactive_` or `selection_`.
 - For examples that are only for regression test, begin with `test_`.
 
-After adding a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
+After building an updated code or add a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
+
+__Note:__ To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
+
 
 # Development Guide
 
@@ -127,7 +126,6 @@ After adding a new example, make sure to run `yarn build:example <examplename>` 
   - `compiled` The generated Vega specifications and SVG files of the Vega-Lite examples.
 
 - `scripts/` - Scripts for NPM commands.
-- `site/` - Misc files for serving the website and gallery.
 - `src/` - Main source code directory.
   - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
     - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
@@ -153,36 +151,19 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 
 ### Basic Lint & Test & Test Coverage
 
-`yarn lint` and `yarn test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `yarn start` and `yarn watch`.
-
-`yarn test` includes test coverage and generates a report inside `coverage/index.html`.
-You can see if specific lines are covered in the unit test by running `open coverage/index.html`
-and browsing through the report.
+Use `yarn test` (or `yarn test:inspect` to inspect tests) run ts-lint and all unit-tests respectively.
 
 A lot of linting errors can be fixed automatically by running `yarn lint --fix`.
 
+To run only the unit tests or linting, you can run `yarn jest test/` and `yarn lint` respectively.
+
 ### Watch tasks
 
-During development, it can be convenient to rebuild automatically or to run tests in the background.
-
-`yarn start` starts a watcher task that shows the example gallery.
-Whenever any `.ts` file changes, the watcher:
-(1) re-compiles Vega-Lite
-(2) automatically refreshes the gallery with BrowserSync
-(3) lints and runs tests
-(4) regenerates the JSON schema (`vega-lite-schema.json`).
-
-If you only want subset of these actions, you can use:
-
-- `yarn watch` to start a watcher task that does all of above except opening and syncing the gallery.
+During development, it can be convenient to rebuild automatically or to run tests in the background. You can use:
 
 - `yarn watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
 - `yarn watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
-
-#### Fast iteration testing
-
-To quickly run tests without long compile times, run `yarn jest` (or `yarn test:inspect` to inspect tests). Please note that this only runs unit tests; you should run the full tests before committing code.
 
 ### Website
 
@@ -234,7 +215,7 @@ When checking for code coverage, we require that your PR tests cover at least th
 
 # Note
 
-Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
+Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([CompassQL](https://github.com/uwdata/compassql)). Look at their contribute pages if you are interested!
 
 
 - [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)
