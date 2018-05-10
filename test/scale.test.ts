@@ -83,8 +83,8 @@ describe('scale', () => {
     });
   });
 
-  describe('generateScaleTypeIndex', () => {
-    it('SCALE_TYPE_INDEX should return correct scale types for quantitative positional channels', () => {
+  describe('getSupportedScaleType', () => {
+    it('should return correct scale types for quantitative positional channels', () => {
       const type = Type.QUANTITATIVE;
       const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.POW, ScaleType.SQRT];
 
@@ -97,7 +97,7 @@ describe('scale', () => {
       assert.deepEqual(scaleTypes, positionalScaleTypes);
     });
 
-    it('SCALE_TYPE_INDEX should return correct scale types for quantitative positional channels with bin', () => {
+    it('should return correct scale types for quantitative positional channels with bin', () => {
       const type = Type.QUANTITATIVE;
       const positionalScaleTypesBinned = [ScaleType.LINEAR, ScaleType.BIN_LINEAR];
 
@@ -110,7 +110,7 @@ describe('scale', () => {
       assert.deepEqual(scaleTypes, positionalScaleTypesBinned);
     });
 
-    it('SCALE_TYPE_INDEX should return correct scale types for nominal positional channels', () => {
+    it('should return correct scale types for nominal positional channels', () => {
       const type = Type.NOMINAL;
       const nominalPositionalScaleTypes = [ScaleType.POINT, ScaleType.BAND];
 
@@ -121,7 +121,7 @@ describe('scale', () => {
       assert.deepEqual(scaleTypes, nominalPositionalScaleTypes);
     });
 
-    it('SCALE_TYPE_INDEX should return correct scale types for temporal positional channels', () => {
+    it('should return correct scale types for temporal positional channels', () => {
       const type = Type.TEMPORAL;
       const temporalPositionalScaleTypes = [ScaleType.TIME, ScaleType.UTC];
 
