@@ -1,12 +1,12 @@
 # Contributing
 
 If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/)
-or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+or want a new feature, you can help us by creating an issue to [our repository](https://github.com/vega/vega-lite),
 or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list](http://bit.ly/vega-discuss), [slack](http://bit.ly/vega-slack) or Github first,
+- For major changes, please discuss with us via [our mailing list](https://bit.ly/vega-discuss), [slack](https://bit.ly/vega-slack) or Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
