@@ -664,7 +664,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   throw new Error(`Invalid scale property "${propName}".`);
 }
 
-export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDefType: Type, bin?: boolean|BinParams):boolean {
+export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean|BinParams):boolean {
   if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (fieldDefType === Type.TEMPORAL) {
@@ -710,33 +710,25 @@ export interface ScaleTypeIndex {
 }
 
 // generates ScaleTypeIndex where keys are encoding channels and values are list of valid ScaleTypes
-export function generateScaleTypeIndex() {
+function generateScaleTypeIndex() {
   const index: ScaleTypeIndex = {};
   for (const channel of CHANNELS) {
     for (const fieldDefType of keys(TYPE_INDEX)) {
       for (const scaleType of SCALE_TYPES) {
-        const key = generateScaleTypeIndexKey(channel, fieldDefType);
-        if (channelSupportScaleType(channel, scaleType) && fieldDefMatchScaleType(scaleType, fieldDefType)) {
-          index[key] ? index[key].push(scaleType) : index[key] = [scaleType];
+        for (const bin of [false, true]) {
+          const key = generateScaleTypeIndexKey(channel, fieldDefType, bin);
+          if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType, bin)) {
+            index[key] = index[key] || [];
+            index[key].push(scaleType);
+          }
         }
       }
     }
   }
-
-  // add quantitative binned keys to index
-  for (const channel of CHANNELS) {
-    for (const scaleType of SCALE_TYPES) {
-      const key = generateScaleTypeIndexKey(channel, Type.QUANTITATIVE, true);
-      if (channelSupportScaleType(channel, scaleType) && fieldDefMatchScaleType(scaleType, Type.QUANTITATIVE, true)) {
-        index[key] ? index[key].push(scaleType) : index[key] = [scaleType];
-      }
-    }
-  }
-
   return index;
 }
 
-export function generateScaleTypeIndexKey(channel: Channel, fieldDefType: Type, bin?: boolean) {
+function generateScaleTypeIndexKey(channel: Channel, fieldDefType: Type, bin: boolean) {
   const key = channel + '_' + fieldDefType;
-  return bin !== undefined ? key + '_bin' : key;
+  return bin ? key + '_bin' : key;
 }

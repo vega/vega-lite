@@ -3,8 +3,7 @@ import {Channel, SCALE_CHANNELS, ScaleChannel} from '../src/channel';
 import * as scale from '../src/scale';
 import {
   channelSupportScaleType,
-  CONTINUOUS_TO_CONTINUOUS_SCALES,
-  generateScaleTypeIndexKey, SCALE_TYPE_INDEX,
+  CONTINUOUS_TO_CONTINUOUS_SCALES, getSupportedScaleType,
   SCALE_TYPES,
   ScaleType
 } from '../src/scale';
@@ -84,31 +83,17 @@ describe('scale', () => {
     });
   });
 
-  describe('generateScaleTypeIndexKey', () => {
-    it('key for quantitative channel with quantitative type should generate correct index key', () => {
-      const key = generateScaleTypeIndexKey(Channel.X, Type.QUANTITATIVE);
-      assert.equal(key, 'x_quantitative');
-    });
-
-    it('key for quantitative channel with binned quantitative type should generate correct index key that includes bin', () => {
-      const key = generateScaleTypeIndexKey(Channel.X, Type.QUANTITATIVE, true);
-      assert.equal(key, 'x_quantitative_bin');
-    });
-  });
-
   describe('generateScaleTypeIndex', () => {
     it('SCALE_TYPE_INDEX should return correct scale types for quantitative positional channels', () => {
       const type = Type.QUANTITATIVE;
       const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.POW, ScaleType.SQRT];
 
       // x channel
-      let key = generateScaleTypeIndexKey(Channel.X, type);
-      let scaleTypes = SCALE_TYPE_INDEX[key];
+      let scaleTypes = getSupportedScaleType(Channel.X, type);
       assert.deepEqual(positionalScaleTypes, scaleTypes);
 
       // y channel
-      key = generateScaleTypeIndexKey(Channel.Y, Type.QUANTITATIVE);
-      scaleTypes = SCALE_TYPE_INDEX[key];
+      scaleTypes = getSupportedScaleType(Channel.Y, Type.QUANTITATIVE);
       assert.deepEqual(scaleTypes, positionalScaleTypes);
     });
 
@@ -117,13 +102,11 @@ describe('scale', () => {
       const positionalScaleTypesBinned = [ScaleType.LINEAR, ScaleType.BIN_LINEAR];
 
       // x channel
-      let key = generateScaleTypeIndexKey(Channel.X, type, true);
-      let scaleTypes = SCALE_TYPE_INDEX[key];
+      let scaleTypes = getSupportedScaleType(Channel.X, type, true);
       assert.deepEqual(scaleTypes, positionalScaleTypesBinned);
 
       // y channel
-      key = generateScaleTypeIndexKey(Channel.Y, type, true);
-      scaleTypes = SCALE_TYPE_INDEX[key];
+      scaleTypes = getSupportedScaleType(Channel.Y, type, true);
       assert.deepEqual(scaleTypes, positionalScaleTypesBinned);
     });
 
@@ -131,12 +114,10 @@ describe('scale', () => {
       const type = Type.NOMINAL;
       const nominalPositionalScaleTypes = [ScaleType.POINT, ScaleType.BAND];
 
-      let key = generateScaleTypeIndexKey(Channel.X, type);
-      let scaleTypes = SCALE_TYPE_INDEX[key];
+      let scaleTypes = getSupportedScaleType(Channel.X, type);
       assert.deepEqual(scaleTypes, nominalPositionalScaleTypes);
 
-      key = generateScaleTypeIndexKey(Channel.Y, type);
-      scaleTypes = SCALE_TYPE_INDEX[key];
+      scaleTypes = getSupportedScaleType(Channel.Y, type);
       assert.deepEqual(scaleTypes, nominalPositionalScaleTypes);
     });
 
@@ -144,8 +125,10 @@ describe('scale', () => {
       const type = Type.TEMPORAL;
       const temporalPositionalScaleTypes = [ScaleType.TIME, ScaleType.UTC];
 
-      const key = generateScaleTypeIndexKey(Channel.X, type);
-      const scaleTypes = SCALE_TYPE_INDEX[key];
+      let scaleTypes = getSupportedScaleType(Channel.X, type);
+      assert.deepEqual(scaleTypes, temporalPositionalScaleTypes);
+
+      scaleTypes = getSupportedScaleType(Channel.Y, type);
       assert.deepEqual(scaleTypes, temporalPositionalScaleTypes);
     });
   });

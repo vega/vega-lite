@@ -2,7 +2,7 @@ import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel'
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {channelSupportScaleType, fieldDefMatchScaleType, ScaleConfig, ScaleType} from '../../scale';
+import {channelSupportScaleType, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import * as util from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
@@ -31,7 +31,7 @@ export function scaleType(
     }
 
     // Check if explicitly specified scale type is supported by the data type
-    if (!fieldDefMatchScaleType(specifiedType, fieldDef.type, fieldDef.bin)) {
+    if (!scaleTypeSupportDataType(specifiedType, fieldDef.type, fieldDef.bin)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(specifiedType, defaultScaleType));
       return defaultScaleType;
     }
