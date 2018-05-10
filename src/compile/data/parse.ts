@@ -45,43 +45,43 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
-export function parseTransformArray(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
+export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
   model.transforms.forEach(t => {
     if (isCalculate(t)) {
-      parent = new CalculateNode(parent, t);
+      head = new CalculateNode(head, t);
       ancestorParse.set(t.as, 'derived', false);
     } else if (isFilter(t)) {
-      parent = ParseNode.makeImplicitFromFilterTransform(parent, t, ancestorParse) || parent;
+      head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
 
-      parent = new FilterNode(parent, model, t.filter);
+      head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      parent = BinNode.makeFromTransform(parent, t, model);
+      head = BinNode.makeFromTransform(head, t, model);
 
       ancestorParse.set(t.as, 'number', false);
     } else if (isTimeUnit(t)) {
-      parent = TimeUnitNode.makeFromTransform(parent, t);
+      head = TimeUnitNode.makeFromTransform(head, t);
 
       ancestorParse.set(t.as, 'date', false);
     } else if (isAggregate(t)) {
-      const agg = parent = AggregateNode.makeFromTransform(parent, t);
+      const agg = head = AggregateNode.makeFromTransform(head, t);
 
       if (requiresSelectionId(model)) {
-        parent = new IdentifierNode(parent);
+        head = new IdentifierNode(head);
       }
 
       for (const field of keys(agg.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isLookup(t)) {
-      const lookup = parent = LookupNode.make(parent, model, t, lookupCounter++);
+      const lookup = head = LookupNode.make(head, model, t, lookupCounter++);
 
       for (const field of keys(lookup.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isWindow(t)) {
-      const window = parent = new WindowTransformNode(parent, t);
+      const window = head = new WindowTransformNode(head, t);
 
       for (const field of keys(window.producedFields())) {
         ancestorParse.set(field, 'derived', false);
@@ -92,7 +92,7 @@ export function parseTransformArray(parent: DataFlowNode, model: Model, ancestor
     }
   });
 
-  return parent;
+  return head;
 }
 
 /*
@@ -107,17 +107,17 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
      Transforms
-(Filter, Calculate, ...)
+(Filter, Calculate, Binning, TimeUnit, Aggregate, Window, ...)
          |
          v
      FormatParse
      (implicit)
          |
          v
-      Binning
+ Binning (in `encoding`)
          |
          v
-      Timeunit
+ Timeunit (in `encoding`)
          |
          v
 Formula From Sort Array
@@ -128,10 +128,10 @@ Formula From Sort Array
       +-----+
          |
          v
-     Aggregate
+  Aggregate (in `encoding`)
          |
          v
-       Stack
+  Stack (in `encoding`)
          |
          v
   Invalid Filter
