@@ -322,7 +322,7 @@
                         "value": 10
                     },
                     "text": {
-                        "signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"
+                        "signal": "timeFormat(datum[\"date\"], '')"
                     }
                 }
             }

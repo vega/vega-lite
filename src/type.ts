@@ -17,7 +17,7 @@ export type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type
 
 export type Type = BasicType | GeoType;
 
-const TYPE_INDEX: Flag<Type> = {
+export const TYPE_INDEX: Flag<Type> = {
   quantitative: 1,
   ordinal: 1,
   temporal: 1,

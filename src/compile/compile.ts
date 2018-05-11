@@ -25,7 +25,7 @@ export interface CompileOptions {
  *     |
  *     |  (Normalization)
  *     v
- * Normalized Spec
+ * Normalized Spec (Row/Column channels in single-view specs becomes faceted specs, composite marks becomes layered specs.)
  *     |
  *     |  (Build Model)
  *     v
@@ -72,8 +72,11 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, RepeatModel, ConcatModel) for different types of models.
     const model: Model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
 
-    // 4 Parse: Model --> Model with components (components = intermediate that can be merged
-    // and assembled easily)
+    // 4 Parse: Model --> Model with components
+
+    // Note that components = intermediate representations that are equivalent to Vega specs.
+    // We need these intermediate representation because we need to merge many visualizaiton "components" like projections, scales, axes, and legends.
+    // We will later convert these components into actual Vega specs in the assemble phase.
 
     // In this phase, we do a bottom-up traversal over the whole tree to
     // parse for each type of components once (e.g., data, layout, mark, scale).
@@ -86,7 +89,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 5. Optimize the dataflow.  This will modify the data component of the model.
     optimizeDataflow(model.component.data);
 
-    // 6. Assemble: convert model and components --> Vega Spec.
+    // 6. Assemble: convert model components --> Vega Spec.
     return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
   } finally {
     // Reset the singleton logger if a logger is provided

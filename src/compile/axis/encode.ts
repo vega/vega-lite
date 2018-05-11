@@ -25,9 +25,11 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
-    labelsSpec.text = {
-      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
-    };
+    const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale);
+
+    if (expr) {
+      labelsSpec.text = {signal: expr};
+    }
   }
 
   // Label Angle

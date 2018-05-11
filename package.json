@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -47,7 +47,7 @@
     "site": "bundle exec jekyll serve --incremental",
     "lint": "tslint -p .",
     "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
-    "test:inspect" :"node --inspect-brk ./node_modules/.bin/jest --runInBand test",
+    "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
@@ -86,7 +86,7 @@
     "source-map-support": "^0.5.5",
     "svg2png-many": "^0.0.7",
     "ts-jest": "^22.4.4",
-    "ts-json-schema-generator": "^0.24.6",
+    "ts-json-schema-generator": "^0.25.1",
     "ts-node": "^6.0.2",
     "tslint": "5.9.1",
     "tslint-eslint-rules": "^5.1.0",

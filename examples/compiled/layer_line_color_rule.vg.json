@@ -222,15 +222,6 @@
             "tickCount": {
                 "signal": "ceil(width/40)"
             },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                        }
-                    }
-                }
-            },
             "zindex": 1
         },
         {

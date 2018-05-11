@@ -33,11 +33,6 @@
                     ]
                 },
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"rate\"])",
-                    "as": "rate"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"rate\"] !== null && !isNaN(datum[\"rate\"])"
                 }

@@ -236,6 +236,16 @@ export interface LineOverlayMixins {
 
 export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {}
 
+export interface TickThicknessMixins {
+  /**
+   * Thickness of the tick mark.
+   *
+   * __Default value:__  `1`
+   *
+   * @minimum 0
+   */
+  thickness?: number;
+}
 
 export interface GenericMarkDef<M> {
   /**
@@ -248,7 +258,7 @@ export interface GenericMarkDef<M> {
 }
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins {
+export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins {
 
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
@@ -277,7 +287,7 @@ export interface TextConfig extends MarkConfig {
   shortTimeLabels?: boolean;
 }
 
-export interface TickConfig extends MarkConfig {
+export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
@@ -285,15 +295,6 @@ export interface TickConfig extends MarkConfig {
    * @minimum 0
    */
   bandSize?: number;
-
-  /**
-   * Thickness of the tick mark.
-   *
-   * __Default value:__  `1`
-   *
-   * @minimum 0
-   */
-  thickness?: number;
 }
 
 export const defaultTickConfig: TickConfig = {

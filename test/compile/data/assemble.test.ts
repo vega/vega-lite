@@ -23,7 +23,6 @@ describe('compile/data/assemble', () => {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
-        ancestorParse: {},
         isFaceted: false
       }, {});
 
@@ -48,7 +47,6 @@ describe('compile/data/assemble', () => {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
-        ancestorParse: {},
         isFaceted: false
       }, {});
 
@@ -104,7 +102,6 @@ describe('compile/data/assemble', () => {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
-        ancestorParse: {},
         isFaceted: false
       }, {});
 
@@ -142,7 +139,6 @@ describe('compile/data/assemble', () => {
         sources: {named: src},
         outputNodes: {out: main},
         outputNodeRefCounts,
-        ancestorParse: {},
         isFaceted: false
       }, {
         foo: [1,2,3]

@@ -130,6 +130,22 @@ describe('Axis', function() {
       }
     });
 
+    it('should store fieldDef.title as explicit', function () {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative",
+            title: 'foo'
+          }
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].explicit.title, 'foo');
+    });
+
     it('should store both x and x2 for ranged mark', function () {
       const model = parseUnitModelWithScale({
         mark: "rule",

@@ -85,7 +85,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
-      signal: timeFormatExpression(vgField(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
+      signal: timeFormatExpression(vgField(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
     };
   } else {
     return {
@@ -138,14 +138,15 @@ export function binFormatExpression(startField: string, endField: string, format
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string {
+export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean, alwaysReturn: boolean = false): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
-    if (isUTCScale) {
-      return `utcFormat(${field}, '${_format}')`;
+    format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
+
+    if (format || alwaysReturn) {
+      return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
     } else {
-      return `timeFormat(${field}, '${_format}')`;
+      return undefined;
     }
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
