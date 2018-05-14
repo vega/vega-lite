@@ -24,7 +24,7 @@ describe('config', () => {
         fontWeight: 'bold'
       },
       boxplot: {
-        whisker: {
+        rule: {
           fill: 'red'
         },
         median: {
