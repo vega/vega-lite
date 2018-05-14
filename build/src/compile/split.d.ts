@@ -16,6 +16,11 @@ export declare class Split<T extends object> {
     set<K extends keyof T>(key: K, value: T[K], explicit: boolean): this;
     copyKeyFromSplit<S extends T>(key: keyof T, s: Split<S>): void;
     copyKeyFromObject<S extends Partial<T>>(key: keyof T, s: S): void;
+    /**
+     * Merge split object into this split object. Properties from the other split
+     * overwrite properties from this split.
+     */
+    copyAll(other: Split<T>): void;
 }
 export interface Explicit<T> {
     explicit: boolean;

@@ -1,5 +1,7 @@
+import { BinParams } from './bin';
 import { Channel } from './channel';
 import { DateTime } from './datetime';
+import { Type } from './type';
 import { ScaleInterpolate, ScaleInterpolateParams } from './vega.schema';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
@@ -400,9 +402,15 @@ export interface Scale {
 }
 export declare const SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "type" | "domain" | "range" | "zero" | "nice" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
 export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "zero" | "nice" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const SCALE_TYPE_INDEX: ScaleTypeIndex;
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**
  * Returns undefined if the input channel supports the input scale property name
  */
 export declare function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string;
+export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams): boolean;
 export declare function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean;
+export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): ("linear" | "time" | "ordinal" | "pow" | "sqrt" | "log" | "utc" | "sequential" | "band" | "point" | "bin-linear" | "bin-ordinal")[];
+export interface ScaleTypeIndex {
+    [channel: string]: ScaleType[];
+}

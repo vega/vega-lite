@@ -22,7 +22,7 @@ export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
      */
     config?: Config;
 };
-export interface BaseSpec {
+export declare type BaseSpec = Partial<DataMixins> & {
     /**
      * Title for the plot.
      */
@@ -43,8 +43,8 @@ export interface BaseSpec {
      * An array of data transformations such as filter and new field calculation.
      */
     transform?: Transform[];
-}
-export declare type DataRequired = {
+};
+export declare type DataMixins = {
     /**
      * An object describing the data source
      */
@@ -186,8 +186,8 @@ export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L exten
 export declare type NormalizedConcatSpec = GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec> | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 export declare type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> | GenericVConcatSpec<U, L> | GenericHConcatSpec<U, L>;
 export declare type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
-export declare type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataRequired;
-export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataRequired;
+export declare type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
+export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 export declare type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> | TopLevel<GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>>;
 export declare function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any>;
 export declare function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec;

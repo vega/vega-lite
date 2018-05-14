@@ -151,7 +151,17 @@ export interface LineOverlayMixins {
 }
 export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {
 }
-export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins {
+export interface TickThicknessMixins {
+    /**
+     * Thickness of the tick mark.
+     *
+     * __Default value:__  `1`
+     *
+     * @minimum 0
+     */
+    thickness?: number;
+}
+export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins {
     /**
      * The mark type.
      * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -177,7 +187,7 @@ export interface TextConfig extends MarkConfig {
      */
     shortTimeLabels?: boolean;
 }
-export interface TickConfig extends MarkConfig {
+export interface TickConfig extends MarkConfig, TickThicknessMixins {
     /**
      * The width of the ticks.
      *
@@ -185,13 +195,5 @@ export interface TickConfig extends MarkConfig {
      * @minimum 0
      */
     bandSize?: number;
-    /**
-     * Thickness of the tick mark.
-     *
-     * __Default value:__  `1`
-     *
-     * @minimum 0
-     */
-    thickness?: number;
 }
 export declare const defaultTickConfig: TickConfig;

@@ -139,7 +139,7 @@ export interface VLOnlyConfig {
     /**
      * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).
      *
-     * __Default value:__ `'%b %d, %Y'`.
+     * __Default value:__ `''` (The format will be automatically determined).
      *
      */
     timeFormat?: string;

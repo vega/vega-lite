@@ -1,3 +1,4 @@
+import { Flag } from './util';
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
 export declare namespace Type {
@@ -12,6 +13,7 @@ export declare namespace Type {
 export declare type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
 export declare type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
 export declare type Type = BasicType | GeoType;
+export declare const TYPE_INDEX: Flag<Type>;
 export declare function isType(t: any): t is Type;
 export declare const QUANTITATIVE: "quantitative";
 export declare const ORDINAL: "ordinal";

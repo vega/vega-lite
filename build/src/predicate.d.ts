@@ -12,7 +12,7 @@ export interface SelectionPredicate {
     selection: LogicalOperand<string>;
 }
 export declare function isSelectionPredicate(predicate: LogicalOperand<Predicate>): predicate is SelectionPredicate;
-export interface FieldEqualPredicate {
+export interface FieldPredicateBase {
     /**
      * Time unit for the field to be filtered.
      */
@@ -21,21 +21,15 @@ export interface FieldEqualPredicate {
      * Field to be filtered.
      */
     field: string;
+}
+export interface FieldEqualPredicate extends FieldPredicateBase {
     /**
      * The value that the field should be equal to.
      */
     equal: string | number | boolean | DateTime;
 }
 export declare function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate;
-export interface FieldRangePredicate {
-    /**
-     * time unit for the field to be filtered.
-     */
-    timeUnit?: TimeUnit;
-    /**
-     * Field to be filtered
-     */
-    field: string;
+export interface FieldRangePredicate extends FieldPredicateBase {
     /**
      * An array of inclusive minimum and maximum values
      * for a field value of a data item to be included in the filtered data.
@@ -45,15 +39,7 @@ export interface FieldRangePredicate {
     range: (number | DateTime | null)[];
 }
 export declare function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate;
-export interface FieldOneOfPredicate {
-    /**
-     * time unit for the field to be filtered.
-     */
-    timeUnit?: TimeUnit;
-    /**
-     * Field to be filtered
-     */
-    field: string;
+export interface FieldOneOfPredicate extends FieldPredicateBase {
     /**
      * A set of values that the `field`'s value should be a member of,
      * for a data item included in the filtered data.

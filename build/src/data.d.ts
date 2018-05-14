@@ -1,26 +1,45 @@
 import { VgData } from './vega.schema';
+export interface Parse {
+    [field: string]: null | string | 'string' | 'boolean' | 'date' | 'number';
+}
 export interface DataFormatBase {
     /**
-     * If set to auto (the default), perform automatic type inference to determine the desired data types.
-     * Alternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `"number"`, `"boolean"` or `"date"`).
+     * If set to `"auto"` (the default), perform automatic type inference to determine the desired data types.
+     * If set to `null`, disable type inference based on the spec and only use type inference based on the data.
+     * Alternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `"number"`, `"boolean"`, `"date"`, or null (do not parse the field)).
      * For example, `"parse": {"modified_on": "date"}` parses the `modified_on` field in each input record a Date value.
      *
      * For `"date"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
      * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
      */
-    parse?: 'auto' | object;
+    parse?: 'auto' | Parse | null;
 }
 export interface CsvDataFormat extends DataFormatBase {
     /**
-     * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+     * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
      * The default format type is determined by the extension of the file URL.
      * If no extension is detected, `"json"` will be used by default.
      */
     type?: 'csv' | 'tsv';
 }
+export interface DsvDataFormat extends DataFormatBase {
+    /**
+     * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
+     * The default format type is determined by the extension of the file URL.
+     * If no extension is detected, `"json"` will be used by default.
+     */
+    type?: 'dsv';
+    /**
+     * The delimiter between records. The delimiter must be a single character (i.e., a single 16-bit code unit); so, ASCII delimiters are fine, but emoji delimiters are not.
+     *
+     * @minLength 1
+     * @maxLength 1
+     */
+    delimiter: string;
+}
 export interface JsonDataFormat extends DataFormatBase {
     /**
-     * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+     * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
      * The default format type is determined by the extension of the file URL.
      * If no extension is detected, `"json"` will be used by default.
      */
@@ -35,7 +54,7 @@ export interface JsonDataFormat extends DataFormatBase {
 }
 export interface TopoDataFormat extends DataFormatBase {
     /**
-     * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+     * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
      * The default format type is determined by the extension of the file URL.
      * If no extension is detected, `"json"` will be used by default.
      */
@@ -54,8 +73,8 @@ export interface TopoDataFormat extends DataFormatBase {
      */
     mesh?: string;
 }
-export declare type DataFormat = CsvDataFormat | JsonDataFormat | TopoDataFormat;
-export declare type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
+export declare type DataFormat = CsvDataFormat | DsvDataFormat | JsonDataFormat | TopoDataFormat;
+export declare type DataFormatType = 'json' | 'csv' | 'tsv' | 'dsv' | 'topojson';
 export declare type Data = UrlData | InlineData | NamedData;
 export declare type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 export interface UrlData {
