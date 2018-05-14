@@ -4,8 +4,8 @@ import {BinParams} from './bin';
 import {Data} from './data';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
+import {SortField} from './sort';
 import {TimeUnit} from './timeunit';
-import {VgComparatorOrder} from './vega.schema';
 
 export interface FilterTransform {
   /**
@@ -166,9 +166,9 @@ export interface WindowTransform {
   groupby?: string[];
 
   /**
-   * A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
+   * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
    */
-  sort?: WindowSortField[];
+  sort?: SortField[];
 }
 
 export interface LookupData {
@@ -214,20 +214,6 @@ export interface LookupTransform {
 }
 
 
-/**
- * A compartor for fields within the window transform
- */
-export interface WindowSortField {
-  /**
-   * The name of the field to sort.
-   */
-  field: string;
-
-  /**
-   * Whether to sort the field in ascending or descending order.
-   */
-  order?: VgComparatorOrder;
-}
 
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;

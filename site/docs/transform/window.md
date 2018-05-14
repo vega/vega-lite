@@ -56,9 +56,9 @@ The window transform performs calculations over sorted groups of data objects. T
 
 {:#sort-field-def}
 
-### Window Sort Field Definition
+### Sort Field Definition
 
-{% include table.html props="field,order" source="WindowSortField" %}
+{% include table.html props="field,order" source="SortField" %}
 
 {:#ops}
 
