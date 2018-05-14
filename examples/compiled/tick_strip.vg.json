@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",
     "autosize": "pad",
     "padding": 5,

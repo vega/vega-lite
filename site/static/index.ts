@@ -1,4 +1,4 @@
-import {text} from 'd3-request';
+import {text} from 'd3-fetch';
 import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
@@ -89,13 +89,9 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
 
-    text(fullUrl, function(error, spec) {
-      if (error) {
-        console.error(error);
-      } else {
-        renderExample(sel, spec);
-      }
-    });
+    text(fullUrl).then(spec => {
+      renderExample(sel, spec);
+    }).catch(console.error);
   } else {
     console.error('No "data-name" specified to import examples from');
   }
