@@ -125,11 +125,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"time\"])",
-                    "as": "time"
-                },
-                {
                     "type": "extent",
                     "field": "time",
                     "signal": "child_time_bin_maxbins_20_time_extent"

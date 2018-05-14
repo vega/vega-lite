@@ -44,11 +44,6 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"scaled_date\"])",
-                    "as": "scaled_date"
-                },
-                {
-                    "type": "formula",
                     "expr": "toNumber(datum[\"CO2\"])",
                     "as": "CO2"
                 }
@@ -113,16 +108,6 @@
             "source": "data_1",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"scaled_date_start\"])",
-                    "as": "scaled_date_start"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"CO2_start\"])",
-                    "as": "CO2_start"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"scaled_date_start\"] !== null && !isNaN(datum[\"scaled_date_start\"]) && datum[\"CO2_start\"] !== null && !isNaN(datum[\"CO2_start\"])"
                 }
@@ -132,16 +117,6 @@
             "name": "data_3",
             "source": "data_1",
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"scaled_date_end\"])",
-                    "as": "scaled_date_end"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"CO2_end\"])",
-                    "as": "CO2_end"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"scaled_date_end\"] !== null && !isNaN(datum[\"scaled_date_end\"]) && datum[\"CO2_end\"] !== null && !isNaN(datum[\"CO2_end\"])"

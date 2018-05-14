@@ -2,12 +2,8 @@ import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel'
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {channelSupportScaleType, ScaleConfig, ScaleType} from '../../scale';
-import {hasDiscreteDomain} from '../../scale';
-import {Type} from '../../type';
+import {channelSupportScaleType, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import * as util from '../../util';
-import {contains} from '../../util';
-
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -35,7 +31,7 @@ export function scaleType(
     }
 
     // Check if explicitly specified scale type is supported by the data type
-    if (!fieldDefMatchScaleType(specifiedType, fieldDef)) {
+    if (!scaleTypeSupportDataType(specifiedType, fieldDef.type, fieldDef.bin)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(specifiedType, defaultScaleType));
       return defaultScaleType;
     }
@@ -115,20 +111,4 @@ function defaultType(
 
   /* istanbul ignore next: should never reach this */
   throw new Error(log.message.invalidFieldType(fieldDef.type));
-}
-
-export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef<string>):boolean {
-  const type: Type = fieldDef.type;
-  if (contains([Type.ORDINAL, Type.NOMINAL], type)) {
-    return specifiedType === undefined || hasDiscreteDomain(specifiedType);
-  } else if (type === Type.TEMPORAL) {
-    return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
-  } else if (type === Type.QUANTITATIVE) {
-    if (fieldDef.bin) {
-      return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
-    }
-    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, ScaleType.SEQUENTIAL, undefined], specifiedType);
-  }
-
-  return true;
 }

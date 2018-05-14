@@ -32,9 +32,7 @@ export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): pred
   return predicate && predicate['selection'];
 }
 
-export interface FieldEqualPredicate {
-  // TODO: support aggregate
-
+export interface FieldPredicateBase {
   /**
    * Time unit for the field to be filtered.
    */
@@ -44,6 +42,10 @@ export interface FieldEqualPredicate {
    * Field to be filtered.
    */
   field: string;
+}
+
+export interface FieldEqualPredicate extends FieldPredicateBase {
+  // TODO: support aggregate
 
   /**
    * The value that the field should be equal to.
@@ -56,18 +58,8 @@ export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPr
   return predicate && !!predicate.field && predicate.equal !== undefined;
 }
 
-export interface FieldRangePredicate {
+export interface FieldRangePredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered
-   */
-  field: string;
 
   /**
    * An array of inclusive minimum and maximum values
@@ -88,18 +80,8 @@ export function isFieldRangePredicate(predicate: any): predicate is FieldRangePr
   return false;
 }
 
-export interface FieldOneOfPredicate {
+export interface FieldOneOfPredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered
-   */
-  field: string;
 
   /**
    * A set of values that the `field`'s value should be a member of,

@@ -130,10 +130,9 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
+    const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale);
     labelsSpec = {
-      text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-      },
+      ...(expr ? {text: {signal: expr}} : {}),
       ...labelsSpec,
     };
   }

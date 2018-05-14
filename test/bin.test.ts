@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {autoMaxBins, isBinParams, binToString} from '../src/bin';
+import {autoMaxBins, binToString, isBinParams} from '../src/bin';
 import {COLOR, COLUMN, OPACITY, ROW, SHAPE} from '../src/channel';
 
 describe('autoMaxBins', () => {

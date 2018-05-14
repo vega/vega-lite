@@ -1,5 +1,5 @@
 import * as log from '../log';
-import {duplicate, stringify} from '../util';
+import {duplicate, keys, stringify} from '../util';
 
 
 /**
@@ -66,6 +66,17 @@ export class Split<T extends object> {
     // Explicit has higher precedence
     if (s[key] !== undefined) {
       this.set(key, s[key], true);
+    }
+  }
+
+  /**
+   * Merge split object into this split object. Properties from the other split
+   * overwrite properties from this split.
+   */
+  public copyAll(other: Split<T>) {
+    for (const key of keys(other.combine())) {
+      const val = other.getWithExplicit(key);
+      this.setWithExplicit(key, val);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./build/src/",
+    "outDir": "./build/",
     "target": "es5",
     "module": "ES2015",
     "moduleResolution": "node",
@@ -22,5 +22,9 @@
     "importHelpers": true
   },
   "files": ["src/index.ts"],
-  "include": ["./typings/*.d.ts"]
+  "include": [
+    "./typings/*.d.ts",
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
 }

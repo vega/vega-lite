@@ -7031,19 +7031,19 @@ ts-jest@^22.4.4:
     pkg-dir "^2.0.0"
     yargs "^11.0.0"
 
-ts-json-schema-generator@^0.24.6:
-  version "0.24.6"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.24.6.tgz#c52b91b85e31a1e22c661b6bfc0a1591692a90d7"
+ts-json-schema-generator@^0.25.1:
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.25.1.tgz#e86644a9b0769bea6fc6ba6d0df49bf54e05d837"
   dependencies:
     commander "~2.15.1"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
-    ts-node "^5.0.1"
-    typescript "~2.8.1"
+    ts-node "^6.0.3"
+    typescript "~2.8.3"
 
-ts-node@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-5.0.1.tgz#78e5d1cb3f704de1b641e43b76be2d4094f06f81"
+ts-node@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.0.2.tgz#e132d530e53173bc6a8c21ea65f64d8b47bc573e"
   dependencies:
     arrify "^1.0.0"
     chalk "^2.3.0"
@@ -7054,9 +7054,9 @@ ts-node@^5.0.1:
     source-map-support "^0.5.3"
     yn "^2.0.0"
 
-ts-node@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.0.2.tgz#e132d530e53173bc6a8c21ea65f64d8b47bc573e"
+ts-node@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.0.3.tgz#28bf74bcad134fad17f7469dad04638ece03f0f4"
   dependencies:
     arrify "^1.0.0"
     chalk "^2.3.0"
@@ -7143,7 +7143,7 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.8.3, typescript@~2.8.1:
+typescript@^2.8.3, typescript@~2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
@@ -7497,8 +7497,8 @@ vega-scale@2, vega-scale@^2.1:
     vega-util "1"
 
 vega-scenegraph@2, vega-scenegraph@^2.3:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.5.0.tgz#714ffbd86fc8faef98b4dec95c1c29dc3f5391b4"
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.4.2.tgz#1835c63a66984a368633dfcfd8fa7495ee12ff25"
   dependencies:
     d3-path "^1.0.5"
     d3-shape "^1.2.0"

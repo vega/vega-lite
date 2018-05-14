@@ -3,7 +3,9 @@
 /_layouts
 /_site
 /.*
+/build/examples
 /build/site
+/build/test
 /build/test-runtime
 /coverage
 /data
@@ -15,8 +17,6 @@
 /test-runtime
 
 _config.yml
-build/examples
-build/test
 CONTRIBUTING.md
 Gemfile
 Gemfile.lock
