@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
     "autosize": "pad",
     "padding": 5,

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Google's stock price over time. Used to demonstrate the time unit transform.",
     "autosize": "pad",
     "padding": 5,
