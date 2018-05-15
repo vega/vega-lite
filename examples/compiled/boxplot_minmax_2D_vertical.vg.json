@@ -48,6 +48,11 @@
             "transform": [
                 {
                     "type": "formula",
+                    "expr": "toNumber(datum[\"lower_whisker_people\"])",
+                    "as": "lower_whisker_people"
+                },
+                {
+                    "type": "formula",
                     "expr": "toNumber(datum[\"lower_box_people\"])",
                     "as": "lower_box_people"
                 },
@@ -65,6 +70,11 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"upper_box_people\"])",
                     "as": "upper_box_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper_whisker_people\"])",
+                    "as": "upper_whisker_people"
                 },
                 {
                     "type": "filter",

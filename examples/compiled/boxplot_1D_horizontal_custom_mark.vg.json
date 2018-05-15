@@ -66,11 +66,6 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"lower_whisker_people\"])",
-                    "as": "lower_whisker_people"
-                },
-                {
-                    "type": "formula",
                     "expr": "toNumber(datum[\"lower_box_people\"])",
                     "as": "lower_box_people"
                 },
@@ -90,11 +85,6 @@
                     "as": "upper_box_people"
                 },
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"upper_whisker_people\"])",
-                    "as": "upper_whisker_people"
-                },
-                {
                     "type": "filter",
                     "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
                 }
@@ -102,36 +92,6 @@
         },
         {
             "name": "data_3",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lower_whisker_people\"])",
-                    "as": "lower_whisker_people"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_4",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"upper_whisker_people\"])",
-                    "as": "upper_whisker_people"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"upper_whisker_people\"] !== null && !isNaN(datum[\"upper_whisker_people\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_5",
             "source": "data_0",
             "transform": [
                 {
@@ -151,7 +111,7 @@
             ]
         },
         {
-            "name": "data_6",
+            "name": "data_4",
             "source": "data_0",
             "transform": [
                 {
@@ -162,6 +122,26 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_6",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upper_whisker_people\"] !== null && !isNaN(datum[\"upper_whisker_people\"])"
                 }
             ]
         },
@@ -282,7 +262,7 @@
                 "boxplot-ticks"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_5"
             },
             "encode": {
                 "update": {
@@ -317,7 +297,7 @@
                 "boxplot-ticks"
             ],
             "from": {
-                "data": "data_4"
+                "data": "data_6"
             },
             "encode": {
                 "update": {
@@ -352,7 +332,7 @@
                 "boxplot-box"
             ],
             "from": {
-                "data": "data_5"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -385,7 +365,7 @@
                 "boxplot-median"
             ],
             "from": {
-                "data": "data_6"
+                "data": "data_4"
             },
             "encode": {
                 "update": {
@@ -468,23 +448,23 @@
                         "field": "upper_whisker_people"
                     },
                     {
-                        "data": "data_3",
+                        "data": "data_5",
                         "field": "lower_whisker_people"
                     },
                     {
-                        "data": "data_4",
+                        "data": "data_6",
                         "field": "upper_whisker_people"
                     },
                     {
-                        "data": "data_5",
+                        "data": "data_3",
                         "field": "lower_box_people"
                     },
                     {
-                        "data": "data_5",
+                        "data": "data_3",
                         "field": "upper_box_people"
                     },
                     {
-                        "data": "data_6",
+                        "data": "data_4",
                         "field": "mid_box_people"
                     },
                     {
