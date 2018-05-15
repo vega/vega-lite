@@ -31,13 +31,14 @@ function x(model: UnitModel): VgEncodeEntry {
   const sizeDef = encoding.size;
 
   const xDef = encoding.x;
+  const x2Def = encoding.x2;
   const xScaleName = model.scaleName(X);
   const xScale = model.getScaleComponent(X);
   // x, x2, and width -- we must specify two of these in all conditions
-  if (orient === 'horizontal') {
+  if (orient === 'horizontal' || x2Def) {
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'x2'),
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
@@ -68,13 +69,15 @@ function y(model: UnitModel) {
   const sizeDef = encoding.size;
 
   const yDef = encoding.y;
+  const y2Def = encoding.y2;
   const yScaleName = model.scaleName(Y);
   const yScale = model.getScaleComponent(Y);
+
   // y, y2 & height -- we must specify two of these in all conditions
-  if (orient === 'vertical') {
+  if (orient === 'vertical' || y2Def) {
     return {
       ...mixins.pointPosition('y', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'y2'),
     };
   } else {
     if (isFieldDef(yDef)) {
