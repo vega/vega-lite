@@ -219,6 +219,10 @@
   version "9.12.2"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.2.tgz#6ee7cd395effe5ec80b515d3ff1699068cd0cd1d"
 
+"@types/jest@^22.2.3":
+  version "22.2.3"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-22.2.3.tgz#0157c0316dc3722c43a7b71de3fdf3acbccef10d"
+
 "@types/json-stable-stringify@^1.0.32":
   version "1.0.32"
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.32.tgz#121f6917c4389db3923640b2e68de5fa64dda88e"
@@ -7500,11 +7504,11 @@ vega-scenegraph@2, vega-scenegraph@^2.3:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.4.2.tgz#1835c63a66984a368633dfcfd8fa7495ee12ff25"
   dependencies:
-    d3-path "^1.0.5"
-    d3-shape "^1.2.0"
-    vega-canvas "^1.0.1"
-    vega-loader "^2.1.0"
-    vega-util "^1.7.0"
+    d3-path "1"
+    d3-shape "1"
+    vega-canvas "1"
+    vega-loader "2"
+    vega-util "^1.7"
 
 vega-schema-url-parser@^1.0.0:
   version "1.0.0"
