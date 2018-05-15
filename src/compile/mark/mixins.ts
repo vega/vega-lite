@@ -335,9 +335,8 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
-  const {encoding, mark, markDef, stack} = model;
-  channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
+export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
+  const {encoding, mark, stack} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];

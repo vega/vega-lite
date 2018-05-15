@@ -3,6 +3,7 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {RECT} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {VgEncodeEntry} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
@@ -18,7 +19,7 @@ export const rect: MarkCompiler = {
   }
 };
 
-function x(model: UnitModel) {
+export function x(model: UnitModel): VgEncodeEntry {
   const xDef = model.encoding.x;
   const x2Def = model.encoding.x2;
   const xScale = model.getScaleComponent(X);
@@ -42,7 +43,7 @@ function x(model: UnitModel) {
   }
 }
 
-function y(model: UnitModel) {
+export function y(model: UnitModel): VgEncodeEntry {
   const yDef = model.encoding.y;
   const y2Def = model.encoding.y2;
   const yScale = model.getScaleComponent(Y);
