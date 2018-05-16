@@ -4855,6 +4855,22 @@
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
         }
       },
       "required": [
