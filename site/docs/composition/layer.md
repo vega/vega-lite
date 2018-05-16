@@ -31,7 +31,7 @@ The first chart is a line chart that shows the stock price of different stocks o
 
 <div class="vl-example" data-name="line_color"></div>
 
-The second chart shows the mean price of individual stocks with a rule mark. The `rule` mark is a special mark that can span the whole with/height of a single view specification.
+The second chart shows the mean price of individual stocks with a rule mark. The `rule` mark is a special mark that can span the whole width/height of a single view specification.
 
 <div class="vl-example" data-name="rule_color_mean"></div>
 
