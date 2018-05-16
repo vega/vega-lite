@@ -4,7 +4,7 @@ import {binToString, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {isSortArray, isSortField, SortField} from '../../sort';
@@ -274,7 +274,8 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
     return undefined;
   }
 
-  const sort = model.sort(channel);
+  const fieldDef: ScaleFieldDef<string> = model.fieldDef(channel);
+  const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
   if (isSortArray(sort)) {
