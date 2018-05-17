@@ -1,6 +1,8 @@
 import {isString} from 'vega-util';
+import {Axis} from '../axis';
 import {Config} from '../config';
 import {isMarkDef, Mark, MarkConfig} from '../mark';
+import {Scale} from '../scale';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
@@ -82,6 +84,44 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
+function makeErrorPartFactory(
+  partName: ErrorBarPart, startingPosition: string, endingPosition:string,
+  axis: Axis,
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  markDef: ErrorBarDef,
+  config: Config,
+  continuousAxis: 'x' | 'y',
+  scale: Scale,
+  encodingWithoutSizeAndContinuousAxis: Encoding<string>
+) {
+  const title = (axis && axis.title !== undefined) ? axis.title :
+  continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
+  continuousAxisChannelDef.field;
+
+  return partLayerMixins<ErrorBarPartsMixins>(
+    markDef, partName, config.errorbar,
+    {
+      mark: getErrorBarPartMark(partName),
+      encoding: {
+        [continuousAxis]: {
+          field: startingPosition + '_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type,
+          title,
+          ...(scale ? {scale} : {}),
+          ...(axis ? {axis} : {})
+        },
+        ...(isString(endingPosition) ? {
+          [continuousAxis + '2']: {
+            field: endingPosition + '_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type
+          }
+        } : {}),
+        ...encodingWithoutSizeAndContinuousAxis
+      }
+    }
+  );
+}
+
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec, ERRORBAR);
 
@@ -109,32 +149,14 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const {scale, axis} = continuousAxisChannelDef;
 
   function errorBarPartSpec(partName: ErrorBarPart, startingPosition: string = center, endingPosition: string = undefined) {
-    const title = (axis && axis.title !== undefined) ? axis.title :
-      continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
-      continuousAxisChannelDef.field;
-
-    return partLayerMixins<ErrorBarPartsMixins>(
-      markDef, partName, config.errorbar,
-      {
-        mark: getErrorBarPartMark(partName),
-        encoding: {
-          [continuousAxis]: {
-            field: startingPosition + '_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type,
-            title,
-            ...(scale ? {scale} : {}),
-            ...(axis ? {axis} : {})
-          },
-          ...(isString(endingPosition) ? {
-            [continuousAxis + '2']: {
-              field: endingPosition + '_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            }
-          } : {}),
-          ...encodingWithoutSizeAndContinuousAxis
-        }
-      }
-    );
+    return makeErrorPartFactory(partName, startingPosition, endingPosition,
+      axis,
+      continuousAxisChannelDef,
+      markDef,
+      config,
+      continuousAxis,
+      scale,
+      encodingWithoutSizeAndContinuousAxis);
   }
 
   return {
