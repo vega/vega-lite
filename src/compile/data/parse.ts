@@ -1,6 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isLookup, isTimeUnit, isWindow} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -86,6 +86,8 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       for (const field of keys(window.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
+    } else if (isStack(t)) {
+      const stack= head = StackNode.makeFromTransform(head, t);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;

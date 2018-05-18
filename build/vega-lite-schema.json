@@ -6140,6 +6140,54 @@
       ],
       "type": "string"
     },
+    "StackTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Output field names.\ny2 or x2 is optional if only one name is provided the end will be “<name>_end”\nOtherwise as will be [\"StackField_start\",\"StackField_end\"]"
+        },
+        "groupby": {
+          "description": "The data fields to group by.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "offset": {
+          "description": "Mode for stacking marks. Default is 'zero'",
+          "enum": [
+            "zero",
+            "center",
+            "normalize"
+          ],
+          "type": "string"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortField",
+          "description": "Field that determines the order of leves in the stacked charts."
+        },
+        "stack": {
+          "description": "The field which is stacked.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stack",
+        "groupby"
+      ],
+      "type": "object"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "$ref": "#/definitions/VgMarkConfig"
@@ -7302,6 +7350,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/StackTransform"
         }
       ]
     },

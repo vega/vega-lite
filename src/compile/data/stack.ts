@@ -1,12 +1,13 @@
-import {isArray} from 'vega-util';
+import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
+import {SortField} from '../../sort';
 import {StackOffset} from '../../stack';
+import {StackTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
-
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -45,12 +46,12 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort?: VgSort;
+  sort: VgSort | SortField;
 
   /** Mode for stacking marks. Used in both but optional in transform
    * TODO write the values and default
    */
-  offset?: StackOffset;
+  offset: StackOffset;
 
   /**
    * Whether to impute the data before stacking. Used only in makeFromEncoding.
@@ -72,6 +73,10 @@ export interface StackComponent {
 
 }
 
+function isAsValidArray(as: string[] | string): as is string[] {
+  return isArray(as) && as.every(s => isString(s)) && as.length ===2;
+}
+
 export class StackNode extends DataFlowNode {
   private _stack: StackComponent;
 
@@ -85,6 +90,20 @@ export class StackNode extends DataFlowNode {
     this._stack = stack;
   }
 
+  public static makeFromTransform(parent: DataFlowNode, model: StackTransform) {
+    const offset = model.offset || 'zero';
+    const sort = model.sort || {'field': model.stack, 'order': 'ascending'}; // refactor possible?
+
+
+
+    return new StackNode (parent, {
+      stack: model.stack,
+      groupby: model.groupby,
+      offset,
+      sort,
+      as: model.as
+    });
+  }
   public static make(parent: DataFlowNode, model: UnitModel) {
 
     const stackProperties = model.stack;
@@ -177,50 +196,62 @@ export class StackNode extends DataFlowNode {
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
+    if (this._stack.stackby) {
+      const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
 
-    const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
+      // Impute
+      if (impute && dimensionFieldDef) {
+        const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
 
-    // Impute
-    if (impute && dimensionFieldDef) {
-      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
+        if (dimensionFieldDef.bin) {
+          // As we can only impute one field at a time, we need to calculate
+          // mid point for a binned field
+          transform.push({
+            type: 'formula',
+            expr: '(' +
+              vgField(dimensionFieldDef, {expr: 'datum'}) +
+              '+' +
+              vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
+              ')/2',
+            as: dimensionField
+          });
+        }
 
-      if (dimensionFieldDef.bin) {
-        // As we can only impute one field at a time, we need to calculate
-        // mid point for a binned field
         transform.push({
-          type: 'formula',
-          expr: '(' +
-            vgField(dimensionFieldDef, {expr: 'datum'}) +
-            '+' +
-            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
-            ')/2',
-          as: dimensionField
+          type: 'impute',
+          field: stackField,
+          groupby: stackby,
+          key: dimensionField,
+          method: 'value',
+          value: 0
         });
       }
 
+      // Stack
       transform.push({
-        type: 'impute',
+        type: 'stack',
+        groupby: this.getGroupbyFields().concat(facetby),
         field: stackField,
-        groupby: stackby,
-        key: dimensionField,
-        method: 'value',
-        value: 0
+        sort,
+        as: [
+          stackField + '_start',
+          stackField + '_end'
+        ],
+        offset
       });
+
+      return transform;
+    } else {
+      const {stack, groupby, offset, sort, as} = this._stack;
+      let normalizedAs: Array<string>;
+      if (isAsValidArray(as)) {
+        normalizedAs = as;
+      } else if(typeof as === 'string') {
+        normalizedAs = [as, as + '_end'];
+      } else {
+        normalizedAs = [this._stack + '_start', this._stack + '_end'];
+      }
+      return [{type: 'stack',groupby,field: stack, sort, as: normalizedAs, offset}];
     }
-
-    // Stack
-    transform.push({
-      type: 'stack',
-      groupby: this.getGroupbyFields().concat(facetby),
-      field: stackField,
-      sort,
-      as: [
-        stackField + '_start',
-        stackField + '_end'
-      ],
-      offset
-    });
-
-    return transform;
   }
 }

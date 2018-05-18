@@ -265,7 +265,11 @@ export function isAggregate(t: Transform): t is AggregateTransform {
   return t['aggregate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform;
+export function isStack(t: Transform): t is StackTransform {
+  return t['stack'] !== undefined;
+}
+
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
