@@ -21,35 +21,55 @@ function getStackByFields(model: UnitModel): string[] {
 }
 
 export interface StackComponent {
+  // TODO it would be cleaner to compose the two interfaces to create this one.
+  // TODO remove Used in *comments
   /**
-   * Faceted field.
+   * Faceted field. Used in makeFromEncoding.
    */
-  facetby: string[];
+  facetby?: string[];
 
-  dimensionFieldDef: FieldDef<string>;
+  dimensionFieldDef?: FieldDef<string>;
 
   /**
-   * Stack measure's field
+   * Stack measure's field. Used in makeFromEncoding.
    */
-  field: string;
+  field?: string;
 
   /**
    * Level of detail fields for each level in the stacked charts such as color or detail.
+   * Used in makeFromEncoding.
    */
-  stackby: string[];
+  stackby?: string[];
 
   /**
    * Field that determines order of levels in the stacked charts.
+   * Used in both but optional in transform.
    */
-  sort: VgSort;
+  sort?: VgSort;
 
-  /** Mode for stacking marks. */
-  offset: StackOffset;
+  /** Mode for stacking marks. Used in both but optional in transform
+   * TODO write the values and default
+   */
+  offset?: StackOffset;
 
   /**
-   * Whether to impute the data before stacking.
+   * Whether to impute the data before stacking. Used only in makeFromEncoding.
    */
-  impute: boolean;
+  impute?: boolean;
+
+  /**
+   * Stack measure's field. Used in makeFromTransform
+   */
+  stack?: string;
+  /**
+   * The data fields to group by.
+   */
+  groupby?: string[];
+  /**
+   * Output field names of each stack field. TODO write about the defaults
+   */
+  as?: string | string[];
+
 }
 
 export class StackNode extends DataFlowNode {
