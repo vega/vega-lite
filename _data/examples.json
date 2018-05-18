@@ -5,11 +5,12 @@
         "name": "bar",
         "title": "Simple Bar Chart",
         "description": "A bar chart encodes quantitative values as the extent of rectangular bars",
-        "style": "background-size: auto 110%; background-position: center center !important;"
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "histogram",
-        "title": "Histogram"
+        "title": "Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "bar_aggregate",
@@ -57,11 +58,13 @@
     "Scatter & Strip Plots": [
       {
         "name": "point_2d",
-        "title": "Scatterplot"
+        "title": "Scatterplot",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "tick_dot",
-        "title": "Dot Plot"
+        "title": "Dot Plot",
+        "style": "background-size: auto 50%; background-position-y: center !important;"
       },
       {
         "name": "tick_strip",
@@ -87,7 +90,8 @@
       },
       {
         "name": "circle",
-        "title": "Scatterplot with Filled Circles"
+        "title": "Scatterplot with Filled Circles",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "circle_bubble_health_income",
@@ -106,11 +110,13 @@
     "Line Charts": [
       {
         "name": "line",
-        "title": "Line Chart"
+        "title": "Line Chart",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_overlay",
-        "title": "Line Chart with Overlaying Point Markers"
+        "title": "Line Chart with Overlaying Point Markers",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_color",
@@ -118,20 +124,24 @@
       },
       {
         "name": "line_slope",
-        "title": "Slope Graph"
+        "title": "Slope Graph",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_step",
-        "title": "Step Chart"
+        "title": "Step Chart",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_monotone",
-        "title": "Line Chart with Monotone Interpolation"
+        "title": "Line Chart with Monotone Interpolation",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "connected_scatterplot",
         "title": "Connected Scatterplot (Lines with Custom Paths)",
-        "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)"
+        "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "trail_color",
@@ -139,11 +149,13 @@
       },
       {
         "name": "line_skip_invalid_mid_overlay",
-        "title": "Line Chart with Markers and Invalid Values"
+        "title": "Line Chart with Markers and Invalid Values",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_skip_invalid_mid_cap_square",
-        "title": "Line Chart with Square Stroke Cap and Invalid Values"
+        "title": "Line Chart with Square Stroke Cap and Invalid Values",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "layer_line_co2_concentration",
@@ -217,7 +229,8 @@
       },
       {
         "name": "window_residual_graph",
-        "title": "Calculate Residuals"
+        "title": "Calculate Residuals",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "window_rank",
@@ -225,7 +238,8 @@
       },
       {
         "name": "lookup",
-        "title": "Using the lookup transform to combine data"
+        "title": "Using the lookup transform to combine data",
+        "style": "background-size: 75%; background-position-x: center;"
       }
     ]
   },
@@ -241,11 +255,13 @@
       },
       {
         "name": "layer_area_ci",
-        "title": "Line Chart with Confidence Interval Band"
+        "title": "Line Chart with Confidence Interval Band",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "layer_global_mean_dev",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay"
+        "title": "Scatterplot with Mean and Standard Deviation Overlay",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       }
     ],
     "Box Plots": [
@@ -285,7 +301,8 @@
       },
       {
         "name": "layer_histogram_global_mean",
-        "title": "Histogram with a Global Mean Overlay"
+        "title": "Histogram with a Global Mean Overlay",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "layer_falkensee",
