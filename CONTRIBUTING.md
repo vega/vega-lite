@@ -75,7 +75,9 @@ To name the example file:
 
 After building an updated code or add a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 
-__Note:__ To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
+__Notes:__
+1) Our example building scripts only re-compile SVGs if the output Vega file changes (so it runs way faster). However, if you have a bug and accidentally change Vega outputs, please do not commit SVGs after you fix the bugs (as the SVGs are **not** recompiled if Vega output do not change from prior commits).  Instead, please reset your SVG changes.
+2) To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 
 # Development Guide
