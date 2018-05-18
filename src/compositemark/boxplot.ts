@@ -8,7 +8,7 @@ import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} fr
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
+import {compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -77,8 +77,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   const sizeValue = markDef.size || config.boxplot.size;
   const isMinMax = !isNumber(extent);
 
-  const orient: Orient = compositeMarkOrient(spec, BOXPLOT);
-  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis} = boxParams(spec, orient, extent);
+
+  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis} = boxParams(spec, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -264,9 +264,9 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
   ];
 }
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, orient: Orient, extent: 'min-max' | number) {
-
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinousAxis(spec, orient, BOXPLOT);
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, extent: 'min-max' | number) {
+  const orient: Orient = compositeMarkOrient(spec, BOXPLOT);
+  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
 
   const isMinMax = !isNumber(extent);
   const boxplotSpecificAggregate: AggregatedFieldDef[] = [
