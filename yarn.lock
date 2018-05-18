@@ -245,10 +245,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/mocha@^5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.0.tgz#b3c8e69f038835db1a7fdc0b3d879fc50506e29e"
-
 "@types/node@*":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.0.tgz#2783ee1b6c47cbd4044f4a233976c1ac5fa9e942"
@@ -7656,7 +7652,7 @@ vega-lite@^2.4.1:
     vega-util "^1.7.0"
     yargs "^11.0.0"
 
-vega-loader@2, vega-loader@^2.1.0:
+vega-loader@2:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-loader/-/vega-loader-2.1.0.tgz#036bc573944559cc3895867f0c37fd1d9956ceef"
   dependencies:
@@ -7745,11 +7741,11 @@ vega-scenegraph@2, vega-scenegraph@^2.3:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.5.1.tgz#0e86a18a5561a3f5d5ec2c31fd1bef4b6acf9291"
   dependencies:
-    d3-path "1"
-    d3-shape "1"
-    vega-canvas "1"
-    vega-loader "2"
-    vega-util "^1.7"
+    d3-path "^1.0.5"
+    d3-shape "^1.2.0"
+    vega-canvas "^1.0.1"
+    vega-loader "^2.1.0"
+    vega-util "^1.7.0"
 
 vega-scenegraph@^3.0.0, vega-scenegraph@^3.1.0:
   version "3.1.0"
