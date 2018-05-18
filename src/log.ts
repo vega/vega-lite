@@ -258,7 +258,7 @@ export namespace message {
   }
 
   export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
-    return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;
+    return `Using size field when ${positionChannel}-channel has a band scale is not supported. Please use "point" scale instead.`;
   }
 
   export function cannotApplySizeToNonOrientedMark(mark: Mark) {
