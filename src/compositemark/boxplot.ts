@@ -104,6 +104,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
 
   const {scale, axis} = continuousAxisChannelDef;
 
+  const title = axis.title ? undefined : // no need to specify title
+    continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
+      continuousAxisChannelDef.field;
+
   const boxLayer: NormalizedUnitSpec[] = [
     // lower whisker
     ...partLayerMixins<BoxPlotPartsMixins>(
@@ -114,6 +118,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
           [continuousAxis]: {
             field: 'lower_whisker_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type,
+            ...(title ? {title} : {}),
             ...(scale ? {scale} : {}),
             ...(axis ? {axis} : {})
           },
