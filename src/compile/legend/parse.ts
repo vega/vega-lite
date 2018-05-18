@@ -4,7 +4,7 @@ import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {Explicit, makeImplicit} from '../split';
@@ -184,7 +184,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
       (v1: Explicit<any>, v2: Explicit<any>): any => {
         switch (prop) {
           case 'title':
-            return titleMerger(v1, v2);
+            return mergeTitleComponent(v1, v2);
           case 'type':
             // There are only two types. If we have different types, then prefer symbol over gradient.
             typeMerged = true;

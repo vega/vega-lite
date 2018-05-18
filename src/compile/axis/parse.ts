@@ -3,7 +3,7 @@ import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, mergeTitleFieldDefs, numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
@@ -137,7 +137,7 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
       (v1: Explicit<any>, v2: Explicit<any>) => {
         switch (prop) {
           case 'title':
-            return titleMerger(v1, v2);
+            return mergeTitleComponent(v1, v2);
           case 'gridScale':
             return {
               explicit: v1.explicit, // keep the old explicit
@@ -157,18 +157,21 @@ function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
   const fieldDef = model.fieldDef(channel);
   const fieldDef2 = model.fieldDef(channel2);
 
-  const titles = [
-    ...(fieldDef && fieldDef.title ? [fieldDef.title] : []),
-    ...(fieldDef2 && fieldDef2.title ? [fieldDef2.title] : [])
-  ];
+  const title1 = fieldDef ? fieldDef.title : undefined;
+  const title2 = fieldDef2 ? fieldDef2.title : undefined;
 
-  if (titles.length > 0) {
-    return titles.join(', ');
-  } else if (fieldDef && fieldDef.title !== undefined) { // explicit falsy value
-    return fieldDef.title;
-  } else if (fieldDef2 && fieldDef2.title !== undefined) { // explicit falsy value
-    return fieldDef2.title;
+  if (title1 && title2) {
+    return mergeTitle(title1, title2);
+  } else if (title1) {
+    return title1;
+  } else if (title2) {
+    return title2;
+  } else if (title1 !== undefined) {
+    return title1;
+  } else if (title2 !== undefined) {
+    return title2;
   }
+
   return undefined;
 }
 

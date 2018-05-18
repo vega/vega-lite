@@ -181,7 +181,13 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
   return merged;
 }
 
-export function titleMerger(
+export function mergeTitle(title1: string, title2: string) {
+  return title1 === title2 ?
+    title1 : // if title is the same just use one of them
+    title1 + ', ' + title2; // join title with comma if different
+}
+
+export function mergeTitleComponent(
   v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>
 ) {
   if (isArray(v1.value) && isArray(v2.value)) {
@@ -192,9 +198,7 @@ export function titleMerger(
   } else if (!isArray(v1.value) && !isArray(v2.value)) {
     return {
       explicit: v1.explicit, // keep the old explicit
-      value: v1.value === v2.value ?
-        v1.value : // if title is the same just use one of them
-        v1.value + ', ' + v2.value // join title with comma if different
+      value: mergeTitle(v1.value, v2.value)
     };
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
