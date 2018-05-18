@@ -23,7 +23,7 @@ function getStackByFields(model: UnitModel): string[] {
 
 export interface StackComponent {
   // TODO it would be cleaner to compose the two interfaces to create this one.
-  // TODO remove Used in *comments
+  // TODO Rename make to makeFromTransform
   /**
    * Faceted field. Used in makeFromEncoding.
    */
@@ -67,9 +67,9 @@ export interface StackComponent {
    */
   groupby?: string[];
   /**
-   * Output field names of each stack field. TODO write about the defaults
+   * Output field names of each stack field.
    */
-  as?: string | string[];
+  as: string[];
 
 }
 
@@ -92,8 +92,16 @@ export class StackNode extends DataFlowNode {
 
   public static makeFromTransform(parent: DataFlowNode, model: StackTransform) {
     const offset = model.offset || 'zero';
-    const sort = model.sort || {'field': model.stack, 'order': 'ascending'}; // refactor possible?
-
+    const sort = model.sort || {'field': model.stack, 'order': 'ascending'};
+    const as = model.as;
+    let normalizedAs: Array<string> | undefined;
+    if (isAsValidArray(as)) {
+      normalizedAs = as;
+    } else if(typeof as === 'string') {
+      normalizedAs = [as, as + '_end'];
+    } else {
+      normalizedAs = [model.stack + '_start', model.stack + '_end'];
+    }
 
 
     return new StackNode (parent, {
@@ -101,8 +109,9 @@ export class StackNode extends DataFlowNode {
       groupby: model.groupby,
       offset,
       sort,
-      as: model.as
+      as: normalizedAs
     });
+
   }
   public static make(parent: DataFlowNode, model: UnitModel) {
 
@@ -132,7 +141,13 @@ export class StackNode extends DataFlowNode {
         return s;
       }, {field:[], order: []});
     }
-
+    // Refactored to add as in the make phase so that we can get producedFields
+    // from the as property
+    const field = model.vgField(stackProperties.fieldChannel);
+    const as = [
+      field + '_start',
+      field + '_end'
+    ];
     return new StackNode(parent, {
       dimensionFieldDef,
       field: model.vgField(stackProperties.fieldChannel),
@@ -141,6 +156,7 @@ export class StackNode extends DataFlowNode {
       sort,
       offset: stackProperties.offset,
       impute: stackProperties.impute,
+      as
     });
   }
 
@@ -166,11 +182,10 @@ export class StackNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
-
-    out[this._stack.field + '_start'] = true;
-    out[this._stack.field + '_end'] = true;
-
+    const out = this._stack.as.reduce((result, item) => {
+      result[item] = true;
+      return result;
+    }, {});
     return out;
   }
 
@@ -243,15 +258,7 @@ export class StackNode extends DataFlowNode {
       return transform;
     } else {
       const {stack, groupby, offset, sort, as} = this._stack;
-      let normalizedAs: Array<string>;
-      if (isAsValidArray(as)) {
-        normalizedAs = as;
-      } else if(typeof as === 'string') {
-        normalizedAs = [as, as + '_end'];
-      } else {
-        normalizedAs = [this._stack + '_start', this._stack + '_end'];
-      }
-      return [{type: 'stack',groupby,field: stack, sort, as: normalizedAs, offset}];
+      return [{type: 'stack', groupby,field: stack, sort, as, offset}];
     }
   }
 }
