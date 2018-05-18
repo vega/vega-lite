@@ -44,7 +44,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   return [];
 }
 
-export function compositeMarkContinousAxis<M extends CompositeMark>(
+export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   orient: Orient,
   compositeMark: M

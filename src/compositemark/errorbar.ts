@@ -1,16 +1,22 @@
 import {isString} from 'vega-util';
-import {Axis} from '../axis';
+
 import {Config} from '../config';
 import {isMarkDef, Mark, MarkConfig} from '../mark';
-import {Scale} from '../scale';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
-import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} from './../fielddef';
+import {PositionFieldDef} from './../fielddef';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkContinousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
+import {PartsMixins} from './common';
+import {
+  compositeMarkContinuousAxis,
+  compositeMarkOrient,
+  filterUnsupportedChannels,
+  GenericCompositeMarkDef,
+  partLayerMixins,
+} from './common';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
@@ -19,18 +25,6 @@ export type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';
 export type ErrorBarCenter = 'mean' | 'median';
 
 export type ErrorBarPart = 'bar' | 'line' | 'point' | 'ticks' | 'rule';
-
-const ERRORBAR_PART_MARK: { [key: string]: Mark; }= {
-  bar: 'bar',
-  line: 'line',
-  point: 'point',
-  ticks: 'tick',
-  rule: 'rule'
-};
-
-function getErrorBarPartMark(key: ErrorBarPart): Mark {
-  return ERRORBAR_PART_MARK[key];
-}
 
 const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
   bar: 1,
@@ -84,42 +78,44 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
-function makeErrorPartFactory(
-  partName: ErrorBarPart, startingPosition: string, endingPosition:string,
-  axis: Axis,
+function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
   continuousAxisChannelDef: PositionFieldDef<string>,
-  markDef: ErrorBarDef,
-  config: Config,
+  compositeMarkDef: GenericCompositeMarkDef<any> & P,
+  compositeMarkConfig: P,
   continuousAxis: 'x' | 'y',
-  scale: Scale,
-  encodingWithoutSizeAndContinuousAxis: Encoding<string>
+  sharedEncoding: Encoding<string>
 ) {
-  const title = (axis && axis.title !== undefined) ? axis.title :
-  continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
-  continuousAxisChannelDef.field;
+  const {scale, axis} = continuousAxisChannelDef;
 
-  return partLayerMixins<ErrorBarPartsMixins>(
-    markDef, partName, config.errorbar,
-    {
-      mark: getErrorBarPartMark(partName),
-      encoding: {
-        [continuousAxis]: {
-          field: startingPosition + '_' + continuousAxisChannelDef.field,
-          type: continuousAxisChannelDef.type,
-          title,
-          ...(scale ? {scale} : {}),
-          ...(axis ? {axis} : {})
-        },
-        ...(isString(endingPosition) ? {
-          [continuousAxis + '2']: {
-            field: endingPosition + '_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          }
-        } : {}),
-        ...encodingWithoutSizeAndContinuousAxis
+  return (partName: keyof P, mark: Mark, positionPrefix: string, endPositionPrefix: string = undefined, extraEncoding: Encoding<string> = {}) => {
+    const title = (axis && axis.title !== undefined) ? undefined :
+      continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
+      continuousAxisChannelDef.field;
+
+    return partLayerMixins<P>(
+      compositeMarkDef, partName, compositeMarkConfig,
+      {
+        mark, // TODO better remove this method and just have mark as a parameter of the method
+        encoding: {
+          [continuousAxis]: {
+            field: positionPrefix + '_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type,
+            title,
+            ...(scale ? {scale} : {}),
+            ...(axis ? {axis} : {})
+          },
+          ...(isString(endPositionPrefix) ? {
+            [continuousAxis + '2']: {
+              field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
+              type: continuousAxisChannelDef.type
+            }
+          } : {}),
+          ...sharedEncoding,
+          ...extraEncoding
+        }
       }
-    }
-  );
+    );
+  };
 }
 
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
@@ -141,40 +137,35 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     log.warn(`${center} is not usually used with ${extent} for error bar.`);
   }
 
-  const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, orient, center, extent);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
 
   const {size: _s, ...encodingWithoutSizeAndContinuousAxis} = encodingWithoutContinuousAxis;
 
-  const {scale, axis} = continuousAxisChannelDef;
-
-  function errorBarPartSpec(partName: ErrorBarPart, startingPosition: string = center, endingPosition: string = undefined) {
-    return makeErrorPartFactory(partName, startingPosition, endingPosition,
-      axis,
+  const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
       continuousAxisChannelDef,
       markDef,
-      config,
+      config.errorbar,
       continuousAxis,
-      scale,
-      encodingWithoutSizeAndContinuousAxis);
-  }
+      encodingWithoutSizeAndContinuousAxis
+  );
 
   return {
     ...outerSpec,
     transform,
     layer: [
-      ...errorBarPartSpec('bar'),
-      ...errorBarPartSpec('line'),
-      ...errorBarPartSpec('ticks', 'lower_rule'),
-      ...errorBarPartSpec('ticks', 'upper_rule'),
-      ...errorBarPartSpec('rule', 'lower_rule', 'upper_rule'),
-      ...errorBarPartSpec('point')
+      ...makeErrorBarPart('bar', 'bar', center),
+      ...makeErrorBarPart('line', 'line', center),
+      ...makeErrorBarPart('ticks', 'tick', 'lower_rule'),
+      ...makeErrorBarPart('ticks', 'tick', 'upper_rule'),
+      ...makeErrorBarPart('rule', 'rule', 'lower_rule', 'upper_rule'),
+      ...makeErrorBarPart('point', 'point', center)
     ]
   };
 }
 
-function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, orient: Orient, center: ErrorBarCenter, extent: ErrorBarExtent) {
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinousAxis(spec, orient, ERRORBAR);
+function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, center: ErrorBarCenter, extent: ErrorBarExtent) {
+  const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
+  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, ERRORBAR);
   const continuousFieldName: string = continuousAxisChannelDef.field;
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
