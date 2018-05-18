@@ -5379,6 +5379,7 @@
     },
     "PartsMixins<BoxPlotPart>": {
       "additionalProperties": false,
+      "description": "Make all properties in T optional",
       "properties": {
         "box": {
           "anyOf": [
@@ -5435,6 +5436,7 @@
     },
     "PartsMixins<ErrorBarPart>": {
       "additionalProperties": false,
+      "description": "Make all properties in T optional",
       "properties": {
         "bar": {
           "anyOf": [
