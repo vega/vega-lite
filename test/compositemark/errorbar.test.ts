@@ -38,11 +38,11 @@ describe('normalizeErrorBar', () => {
         },
         {
           "calculate": "datum.mean_people + datum.extent_people",
-          "as": "upper_rule_people"
+          "as": "upper_people"
         },
         {
           "calculate": "datum.mean_people - datum.extent_people",
-          "as": "lower_rule_people"
+          "as": "lower_people"
         }
       ],
       "layer": [
@@ -50,11 +50,11 @@ describe('normalizeErrorBar', () => {
           "mark": {"type": "rule", "style": "errorbar-rule"},
           "encoding": {
             "y": {
-              "field": "lower_rule_people",
+              "field": "lower_people",
               "type": "quantitative",
               "title": "people"
             },
-            "y2": {"field": "upper_rule_people", "type": "quantitative"},
+            "y2": {"field": "upper_people", "type": "quantitative"},
             "x": {"field": "age", "type": "ordinal"}
           }
         },
