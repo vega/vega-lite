@@ -44,8 +44,6 @@ images:
 
 Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/).
 
-**[We are looking to mentor students for a Google Summer of Code project with us. Apply if you want to shape the future of declarative data visualization!](https://summerofcode.withgoogle.com/organizations/5646868357316608/)**
-
 ## Example
 
 <div id="carousel" class="carousel">
