@@ -79,11 +79,11 @@ export interface ErrorBarConfigMixins {
 }
 
 function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
-  continuousAxisChannelDef: PositionFieldDef<string>,
   compositeMarkDef: GenericCompositeMarkDef<any> & P,
-  compositeMarkConfig: P,
   continuousAxis: 'x' | 'y',
-  sharedEncoding: Encoding<string>
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  sharedEncoding: Encoding<string>,
+  compositeMarkConfig: P
 ) {
   const {scale, axis} = continuousAxisChannelDef;
 
@@ -139,14 +139,15 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
 
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
 
-  const {size: _s, ...encodingWithoutSizeAndContinuousAxis} = encodingWithoutContinuousAxis;
+  // drop size
+  const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
-      continuousAxisChannelDef,
       markDef,
-      config.errorbar,
       continuousAxis,
-      encodingWithoutSizeAndContinuousAxis
+      continuousAxisChannelDef,
+      sharedEncoding,
+      config.errorbar
   );
 
   return {
@@ -155,9 +156,9 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     layer: [
       ...makeErrorBarPart('bar', 'bar', center),
       ...makeErrorBarPart('line', 'line', center),
-      ...makeErrorBarPart('ticks', 'tick', 'lower_rule'),
-      ...makeErrorBarPart('ticks', 'tick', 'upper_rule'),
-      ...makeErrorBarPart('rule', 'rule', 'lower_rule', 'upper_rule'),
+      ...makeErrorBarPart('ticks', 'tick', 'lower_'),
+      ...makeErrorBarPart('ticks', 'tick', 'upper_'),
+      ...makeErrorBarPart('rule', 'rule', 'lower_', 'upper_'),
       ...makeErrorBarPart('point', 'point', center)
     ]
   };
@@ -179,23 +180,23 @@ function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | Error
 
     postAggregateCalculates = [{
         calculate: `datum.${center}_${continuousFieldName} + datum.extent_${continuousFieldName}`,
-        as: 'upper_rule_' + continuousFieldName
+        as: 'upper_' + continuousFieldName
       },
       {
         calculate: `datum.${center}_${continuousFieldName} - datum.extent_${continuousFieldName}`,
-        as: 'lower_rule_' + continuousFieldName
+        as: 'lower_' + continuousFieldName
     }];
   } else {
     errorbarSpecificAggregate = [
       {
         op: (extent === 'ci') ? 'ci0' : 'q1',
         field: continuousFieldName,
-        as: 'lower_rule_' + continuousFieldName
+        as: 'lower_' + continuousFieldName
       },
       {
         op: (extent === 'ci') ? 'ci1' : 'q3',
         field: continuousFieldName,
-        as: 'upper_rule_' + continuousFieldName
+        as: 'upper_' + continuousFieldName
       }
     ];
   }
