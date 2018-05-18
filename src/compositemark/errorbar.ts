@@ -1,21 +1,17 @@
-import {isString} from 'vega-util';
-
 import {Config} from '../config';
-import {isMarkDef, Mark, MarkConfig} from '../mark';
+import {isMarkDef, MarkConfig} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
-import {PositionFieldDef} from './../fielddef';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {PartsMixins} from './common';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
   filterUnsupportedChannels,
   GenericCompositeMarkDef,
-  partLayerMixins,
+  makeCompositeAggregatePartFactory,
 } from './common';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';
@@ -78,46 +74,6 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
-function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
-  compositeMarkDef: GenericCompositeMarkDef<any> & P,
-  continuousAxis: 'x' | 'y',
-  continuousAxisChannelDef: PositionFieldDef<string>,
-  sharedEncoding: Encoding<string>,
-  compositeMarkConfig: P
-) {
-  const {scale, axis} = continuousAxisChannelDef;
-
-  return (partName: keyof P, mark: Mark, positionPrefix: string, endPositionPrefix: string = undefined, extraEncoding: Encoding<string> = {}) => {
-    const title = (axis && axis.title !== undefined) ? undefined :
-      continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
-      continuousAxisChannelDef.field;
-
-    return partLayerMixins<P>(
-      compositeMarkDef, partName, compositeMarkConfig,
-      {
-        mark, // TODO better remove this method and just have mark as a parameter of the method
-        encoding: {
-          [continuousAxis]: {
-            field: positionPrefix + '_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type,
-            title,
-            ...(scale ? {scale} : {}),
-            ...(axis ? {axis} : {})
-          },
-          ...(isString(endPositionPrefix) ? {
-            [continuousAxis + '2']: {
-              field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
-            }
-          } : {}),
-          ...sharedEncoding,
-          ...extraEncoding
-        }
-      }
-    );
-  };
-}
-
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec, ERRORBAR);
 
@@ -156,9 +112,9 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     layer: [
       ...makeErrorBarPart('bar', 'bar', center),
       ...makeErrorBarPart('line', 'line', center),
-      ...makeErrorBarPart('ticks', 'tick', 'lower_'),
-      ...makeErrorBarPart('ticks', 'tick', 'upper_'),
-      ...makeErrorBarPart('rule', 'rule', 'lower_', 'upper_'),
+      ...makeErrorBarPart('ticks', 'tick', 'lower'),
+      ...makeErrorBarPart('ticks', 'tick', 'upper'),
+      ...makeErrorBarPart('rule', 'rule', 'lower', 'upper'),
       ...makeErrorBarPart('point', 'point', center)
     ]
   };

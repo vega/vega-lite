@@ -1,10 +1,10 @@
-import {isBoolean} from 'vega-util';
+import {isBoolean, isString} from 'vega-util';
 
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
 import {Encoding, reduce} from '../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
-import {ColorMixins, GenericMarkDef, isMarkDef, MarkConfig} from '../mark';
+import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {Orient} from '../vega.schema';
 import * as log from './../log';
@@ -19,6 +19,46 @@ export type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
    */
   opacity?: number;
 };
+
+export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
+  compositeMarkDef: GenericCompositeMarkDef<any> & P,
+  continuousAxis: 'x' | 'y',
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  sharedEncoding: Encoding<string>,
+  compositeMarkConfig: P
+) {
+  const {scale, axis} = continuousAxisChannelDef;
+
+  return (partName: keyof P, mark: Mark | MarkDef, positionPrefix: string, endPositionPrefix: string = undefined, extraEncoding: Encoding<string> = {}) => {
+    const title = (axis && axis.title !== undefined) ? undefined :
+      continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
+        continuousAxisChannelDef.field;
+
+    return partLayerMixins<P>(
+      compositeMarkDef, partName, compositeMarkConfig,
+      {
+        mark, // TODO better remove this method and just have mark as a parameter of the method
+        encoding: {
+          [continuousAxis]: {
+            field: positionPrefix + '_' + continuousAxisChannelDef.field,
+            type: continuousAxisChannelDef.type,
+            title,
+            ...(scale ? {scale} : {}),
+            ...(axis ? {axis} : {})
+          },
+          ...(isString(endPositionPrefix) ? {
+            [continuousAxis + '2']: {
+              field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
+              type: continuousAxisChannelDef.type
+            }
+          } : {}),
+          ...sharedEncoding,
+          ...extraEncoding
+        }
+      }
+    );
+  };
+}
 
 export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
