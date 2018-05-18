@@ -30,7 +30,7 @@ describe("normalizeBoxMinMax", () => {
     }, Error, 'Both x and y cannot have aggregate');
   });
 
-it("should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation", () => {
+  it("should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation", () => {
      assert.deepEqual(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
@@ -1772,6 +1772,11 @@ describe("normalizeBoxIQR", () => {
               {
                 "aggregate": [
                   {
+                    "op": "mean",
+                    "field": "people",
+                    "as": "mean_people"
+                  },
+                  {
                     "op": "q1",
                     "field": "people",
                     "as": "lower_box_people"
@@ -1795,11 +1800,6 @@ describe("normalizeBoxIQR", () => {
                     "op": "max",
                     "field": "people",
                     "as": "max_people"
-                  },
-                  {
-                    "op": "mean",
-                    "field": "people",
-                    "as": "mean_people"
                   }
                 ],
                 "groupby": ["age"]
