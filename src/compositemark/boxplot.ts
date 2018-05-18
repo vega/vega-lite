@@ -1,6 +1,6 @@
-import {isNumber} from 'vega-util';
+import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
-import {isMarkDef, MarkConfig} from '../mark';
+import {isMarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
@@ -8,7 +8,7 @@ import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef, vgField} fr
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins} from './common';
+import {compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, partLayerMixins, PartsMixins} from './common';
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -25,11 +25,7 @@ const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
 
 export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
 
-// TODO: Currently can't use `PartsMixins<BoxPlotPart>`
-// as the schema generator will fail
-export type BoxPlotPartsMixins = {
-  [part in BoxPlotPart]?: MarkConfig
-};
+export type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 
 export interface BoxPlotConfig extends BoxPlotPartsMixins {
   /** Size of the box and median tick of a box plot */
@@ -181,7 +177,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
       {
         mark: {
           type: 'tick',
-          color: config.boxplot.median.color,
+          ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
           ...(sizeValue ? {size: sizeValue} : {})
         },
         encoding: {

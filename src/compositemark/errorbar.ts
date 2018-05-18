@@ -1,11 +1,12 @@
 import {Config} from '../config';
-import {isMarkDef, MarkConfig} from '../mark';
+import {isMarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
+import {PartsMixins} from './common';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -32,11 +33,7 @@ const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
 
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
 
-// TODO: Currently can't use `PartsMixins<ErrorBarPart>`
-// as the schema generator will fail
-export type ErrorBarPartsMixins = {
-  [part in ErrorBarPart]?: boolean | MarkConfig
-};
+export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
   /**
