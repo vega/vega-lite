@@ -6,7 +6,28 @@ import {VgComparatorOrder} from './vega.schema';
 
 export type SortOrder = VgComparatorOrder | null;
 
-export interface SortField<F> {
+
+/**
+ * A sort definition for transform
+ */
+export interface SortField {
+  /**
+   * The name of the field to sort.
+   */
+  field: string;
+
+  /**
+   * Whether to sort the field in ascending or descending order.
+   */
+  order?: VgComparatorOrder;
+}
+
+
+/**
+ * A sort definition for sorting a discrete scale in an encoding field definition.
+ */
+
+export interface EncodingSortField<F> {
   /**
    * The data [field](field.html) to sort by.
    *
@@ -28,10 +49,10 @@ export interface SortField<F> {
   order?: SortOrder;
 }
 
-export function isSortField<F>(sort: string[] | SortOrder | SortField<F>): sort is SortField<F> {
+export function isSortField<F>(sort: string[] | SortOrder | EncodingSortField<F>): sort is EncodingSortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 
-export function isSortArray<F>(sort: string[] | SortOrder | SortField<F>): sort is string[] {
+export function isSortArray<F>(sort: string[] | SortOrder | EncodingSortField<F>): sort is string[] {
   return !!sort && isArray(sort) && sort.every(s => isString(s));
 }

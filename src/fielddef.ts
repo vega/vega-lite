@@ -14,7 +14,7 @@ import * as log from './log';
 import {LogicalOperand} from './logical';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
-import {SortField, SortOrder} from './sort';
+import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
@@ -190,7 +190,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    *
    * __Default value:__ `"ascending"`
    */
-  sort?: string[] | SortOrder | SortField<F> | null;
+  sort?: string[] | SortOrder | EncodingSortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {

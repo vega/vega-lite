@@ -49,9 +49,9 @@ If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's 
 
 {:#sort-field}
 
-2) Sorting by aggregated value of another "sort" field. In this case, `sort` is a __sort field definition object__, which has the following properties:
+2) Sorting by aggregated value of another "sort" field. In this case, `sort` is an __encoding sort field definition__, which has the following properties:
 
-{% include table.html props="field,op,order" source="SortField" %}
+{% include table.html props="field,op,order" source="EncodingSortField" %}
 
 3) Unsorted – `null` – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
 
@@ -65,7 +65,7 @@ In the case that sort array contains every field value, the sort order will foll
 
 <div class="vl-example" data-name="bar_custom_sort_full"></div>
 
-If some values are ignored, the sort order will precede by the specified values in the array while unspecified values will follow their original order.  For example, this plots orders `B`, `A` and `C` first, followed by `Z`, `Y`, `X`. 
+If some values are ignored, the sort order will precede by the specified values in the array while unspecified values will follow their original order.  For example, this plots orders `B`, `A` and `C` first, followed by `Z`, `Y`, `X`.
 
 <div class="vl-example" data-name="bar_custom_sort_partial"></div>
 

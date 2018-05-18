@@ -9,7 +9,7 @@ import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
-import {SortField} from '../../../src/sort';
+import {EncodingSortField} from '../../../src/sort';
 import {VgDomain, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
@@ -324,7 +324,7 @@ describe('compile/scale', () => {
 
         it('should return the correct domain for month O when specify sort',
           function() {
-            const sortDef: SortField<string> = {op: 'mean', field: 'precipitation', order: 'descending'} ;
+            const sortDef: EncodingSortField<string> = {op: 'mean', field: 'precipitation', order: 'descending'} ;
             const model = parseUnitModel({
               mark: "bar",
               encoding: {
@@ -386,7 +386,7 @@ describe('compile/scale', () => {
 
     describe('for nominal', function() {
       it('should return correct domain with the provided sort property', function() {
-        const sortDef: SortField<string> = {op: 'min' as 'min', field:'Acceleration'};
+        const sortDef: EncodingSortField<string> = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
             encoding: {
@@ -401,7 +401,7 @@ describe('compile/scale', () => {
       });
 
       it('should return correct domain with the provided sort property with order property', function() {
-        const sortDef: SortField<string> = {op: 'min', field:'Acceleration', order: "descending"} ;
+        const sortDef: EncodingSortField<string> = {op: 'min', field:'Acceleration', order: "descending"} ;
         const model = parseUnitModel({
             mark: "point",
             encoding: {

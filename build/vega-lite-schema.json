@@ -1211,7 +1211,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/SortField"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -1445,7 +1445,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/SortField"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -2129,6 +2129,35 @@
       },
       "type": "object"
     },
+    "EncodingSortField": {
+      "additionalProperties": false,
+      "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
+      "properties": {
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "The data [field](field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
+        },
+        "op": {
+          "$ref": "#/definitions/AggregateOp",
+          "description": "An [aggregate operation](aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`).\nThis property is required in cases where the sort field and the data reference field do not match.\nThe input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](aggregate.html#ops)."
+        },
+        "order": {
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "type": "object"
+    },
     "EncodingWithFacet": {
       "additionalProperties": false,
       "properties": {
@@ -2683,7 +2712,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/SortField"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -5064,7 +5093,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/SortField"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -6077,29 +6106,19 @@
     },
     "SortField": {
       "additionalProperties": false,
+      "description": "A sort definition for transform",
       "properties": {
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
-          "description": "The data [field](field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
-        },
-        "op": {
-          "$ref": "#/definitions/AggregateOp",
-          "description": "An [aggregate operation](aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`).\nThis property is required in cases where the sort field and the data reference field do not match.\nThe input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](aggregate.html#ops)."
+          "description": "The name of the field to sort.",
+          "type": "string"
         },
         "order": {
-          "$ref": "#/definitions/SortOrder",
-          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
+          "$ref": "#/definitions/VgComparatorOrder",
+          "description": "Whether to sort the field in ascending or descending order."
         }
       },
       "required": [
-        "op"
+        "field"
       ],
       "type": "object"
     },
@@ -8166,24 +8185,6 @@
       ],
       "type": "string"
     },
-    "WindowSortField": {
-      "additionalProperties": false,
-      "description": "A compartor for fields within the window transform",
-      "properties": {
-        "field": {
-          "description": "The name of the field to sort.",
-          "type": "string"
-        },
-        "order": {
-          "$ref": "#/definitions/VgComparatorOrder",
-          "description": "Whether to sort the field in ascending or descending order."
-        }
-      },
-      "required": [
-        "field"
-      ],
-      "type": "object"
-    },
     "WindowTransform": {
       "additionalProperties": false,
       "properties": {
@@ -8209,9 +8210,9 @@
           "type": "boolean"
         },
         "sort": {
-          "description": "A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
+          "description": "A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
           "items": {
-            "$ref": "#/definitions/WindowSortField"
+            "$ref": "#/definitions/SortField"
           },
           "type": "array"
         },
