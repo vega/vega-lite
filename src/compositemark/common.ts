@@ -9,9 +9,7 @@ import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {Orient} from '../vega.schema';
 import * as log from './../log';
 
-export type PartsMixins<P extends string> = {
-  [part in P]?: boolean | MarkConfig
-};
+export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
   /**
