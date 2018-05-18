@@ -153,11 +153,6 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
-        "name": "line_skip_invalid_mid_cap_square",
-        "title": "Line Chart with Square Stroke Cap and Invalid Values",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
         "name": "layer_line_co2_concentration",
         "title": "Carbon Dioxide in the Atmosphere",
         "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)"
