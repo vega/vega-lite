@@ -102,6 +102,32 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
+export interface StackTransform {
+  /**
+   * The field which is stacked.
+   */
+  stack: string;
+  /**
+   * The data fields to group by.
+   */
+  groupby: string[];
+  /**
+   * Mode for stacking marks. Default is 'zero'
+   */
+  offset?: 'zero' | 'center' | 'normalize';
+  /**
+   * Field that determines the order of leves in the stacked charts.
+   */
+  sort?: SortField ;
+  /**
+   * Output field names.
+   * y2 or x2 is optional if only one name is provided the end will be “<name>_end”
+   * Otherwise as will be ["StackField_start","StackField_end"]
+   */
+  as?: string | string[];
+
+}
+
 
 export type WindowOnlyOp =
   'row_number' |
