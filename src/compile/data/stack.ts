@@ -46,7 +46,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgSort | SortField;
+  sort: VgSort | SortField; // TODO Simplify the sort. make uses VgSort.
 
   /** Mode for stacking marks. Used in both but optional in transform
    * TODO write the values and default
@@ -72,7 +72,7 @@ export interface StackComponent {
   as: string[];
 
 }
-
+// TODO Better Name for this function
 function isAsValidArray(as: string[] | string): as is string[] {
   return isArray(as) && as.every(s => isString(s)) && as.length ===2;
 }
@@ -211,6 +211,9 @@ export class StackNode extends DataFlowNode {
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
+
+    // Detects whether assemble call is from Node created from make or MakeFromTransform
+    // TODO Create a stricter function to check that.
     if (this._stack.stackby) {
       const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
 
@@ -258,6 +261,7 @@ export class StackNode extends DataFlowNode {
       return transform;
     } else {
       const {stack, groupby, offset, sort, as} = this._stack;
+      // Wrapping in array. Alternative is to change assemble.ts to handle single object.
       return [{type: 'stack', groupby,field: stack, sort, as, offset}];
     }
   }
