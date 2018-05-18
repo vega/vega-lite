@@ -125,6 +125,7 @@
             "color": "white",
             "type": "tick",
             "size": 14,
+            "orient": "horizontal",
             "style": "boxplot-median"
           },
           "encoding": {

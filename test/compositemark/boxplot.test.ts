@@ -141,6 +141,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'horizontal',
               style: 'boxplot-median',
               color: 'white',
               size: 5
@@ -378,6 +379,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'horizontal',
               style: 'boxplot-median',
               size: 14,
               color: 'white'
@@ -505,6 +507,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'vertical',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -632,6 +635,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'horizontal',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -759,6 +763,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'vertical',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -885,6 +890,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'horizontal',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -1011,6 +1017,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'vertical',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -1135,6 +1142,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'vertical',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -1255,6 +1263,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'vertical',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -1374,6 +1383,7 @@ describe("normalizeBoxMinMax", () => {
           {
             mark: {
               type: 'tick',
+              orient: 'horizontal',
               style: 'boxplot-median',
               color: 'white',
               size: 14
@@ -1514,6 +1524,7 @@ describe("normalizeBoxIQR", () => {
             {
               mark: {
                 type: 'tick',
+                orient: 'horizontal',
                 style: 'boxplot-median',
                 color: 'white',
                 size: 14
@@ -1690,6 +1701,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'tick',
+                  orient: 'horizontal',
                   style: 'boxplot-median',
                   color: 'white',
                   size: 14
@@ -1878,6 +1890,7 @@ describe("normalizeBoxIQR", () => {
               {
                 mark: {
                   type: 'tick',
+                  orient: 'horizontal',
                   style: 'boxplot-median',
                   color: 'white',
                   size: 14

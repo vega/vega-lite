@@ -115,6 +115,7 @@
         "color": "orange",
         "type": "tick",
         "size": 14,
+        "orient": "vertical",
         "style": "boxplot-median"
       },
       "encoding": {
