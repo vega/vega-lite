@@ -87,7 +87,11 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isStack(t)) {
-      const stack= head = StackNode.makeFromTransform(head, t);
+      const stack = head = StackNode.makeFromTransform(head, t);
+
+      for (const field of keys(stack.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
