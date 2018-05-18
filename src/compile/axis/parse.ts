@@ -152,6 +152,25 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
   return merged;
 }
 
+function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
+  const channel2 = channel === 'x' ? 'x2' : 'y2';
+  const fieldDef = model.fieldDef(channel);
+  const fieldDef2 = model.fieldDef(channel2);
+
+  const titles = [
+    ...(fieldDef && fieldDef.title ? [fieldDef.title] : []),
+    ...(fieldDef2 && fieldDef2.title ? [fieldDef2.title] : [])
+  ];
+
+  if (titles.length > 0) {
+    return titles.join(', ');
+  } else if (fieldDef && fieldDef.title !== undefined) { // explicit falsy value
+    return fieldDef.title;
+  } else if (fieldDef2 && fieldDef2.title !== undefined) { // explicit falsy value
+    return fieldDef2.title;
+  }
+  return undefined;
+}
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
@@ -168,7 +187,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         // both VL axis.encoding and axis.labelAngle affect VG axis.encode
         property === 'encode' ? !!axis.encoding || !!axis.labelAngle :
         // title can be explicit if fieldDef.title is set
-        property === 'title' && value === model.fieldDef(channel).title ? true :
+            property === 'title' && value === getFieldDefTitle(model, channel) ? true :
         // Otherwise, things are explicit if the returned value matches the specified property
         value === axis[property];
 
@@ -242,7 +261,8 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      const specifiedTitle = fieldDef.title !== undefined ? fieldDef.title :
+      const fieldDefTitle = getFieldDefTitle(model, channel);
+      const specifiedTitle = fieldDefTitle !== undefined ? fieldDefTitle :
         specifiedAxis.title === undefined ? undefined : specifiedAxis.title;
 
       return getSpecifiedOrDefaultValue<string | FieldDefBase<string>[]>(
