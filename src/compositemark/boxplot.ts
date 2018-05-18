@@ -74,7 +74,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   const isMinMax = !isNumber(extent);
 
 
-  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis} = boxParams(spec, extent);
+  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis, tickOrient} = boxParams(spec, extent);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -123,7 +123,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ...partLayerMixins<BoxPlotPartsMixins>(
       markDef, 'ticks', config.boxplot,
       {
-        mark: {type: 'tick', color: 'black', opacity: 1},
+        mark: {type: 'tick', color: 'black', opacity: 1, orient: tickOrient},
         encoding: {
           [continuousAxis]: {
             field: 'lower_whisker_' + continuousAxisChannelDef.field,
@@ -139,7 +139,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ...partLayerMixins<BoxPlotPartsMixins>(
       markDef, 'ticks', config.boxplot,
       {
-        mark: {type: 'tick', color: 'black', opacity: 1},
+        mark: {type: 'tick', color: 'black', opacity: 1, orient: tickOrient},
         encoding: {
           [continuousAxis]: {
             field: 'upper_whisker_' + continuousAxisChannelDef.field,
@@ -178,7 +178,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
         mark: {
           type: 'tick',
           ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
-          ...(sizeValue ? {size: sizeValue} : {})
+          ...(sizeValue ? {size: sizeValue} : {}),
+          orient: tickOrient
         },
         encoding: {
           [continuousAxis]: {
@@ -301,6 +302,8 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
 
+  const tickOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+
   return {
     transform: [
       ...bins,
@@ -314,6 +317,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
     groupby,
     continuousAxisChannelDef,
     continuousAxis,
-    encodingWithoutContinuousAxis
+    encodingWithoutContinuousAxis,
+    tickOrient
   };
 }
