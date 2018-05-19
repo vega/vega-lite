@@ -268,19 +268,21 @@
             "encode": {
                 "update": {
                     "align": {
-                        "value": "left"
+                        "value": "right"
                     },
                     "dx": {
-                        "value": 215
+                        "value": -2
                     },
                     "dy": {
-                        "value": -5
+                        "value": -4
                     },
                     "fill": {
                         "value": "black"
                     },
                     "x": {
-                        "value": 45
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "y": {
                         "scale": "y",
