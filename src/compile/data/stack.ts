@@ -1,6 +1,5 @@
 import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
-import {SortField} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate} from '../../util';
@@ -22,8 +21,7 @@ function getStackByFields(model: UnitModel): string[] {
 }
 
 export interface StackComponent {
-  // TODO it would be cleaner to compose the two interfaces to create this one.
-  // TODO Rename make to makeFromTransform
+
   /**
    * Faceted field. Used in makeFromEncoding.
    */
@@ -46,10 +44,9 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgSort | SortField; // TODO Simplify the sort. make uses VgSort.
+  sort: VgSort;
 
-  /** Mode for stacking marks. Used in both but optional in transform
-   * TODO write the values and default
+  /** Mode for stacking marks.
    */
   offset: StackOffset;
 
