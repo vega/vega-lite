@@ -225,7 +225,7 @@ export function parseData(model: Model): DataComponent {
       }
     }
 
-    head = StackNode.make(head, model) || head;
+    head = StackNode.makeFromEncoding(head, model) || head;
   }
 
   if (isUnitModel(model)) {
