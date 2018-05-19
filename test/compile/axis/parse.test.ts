@@ -130,6 +130,24 @@ describe('Axis', function() {
       }
     });
 
+    it('should store the fieldDef title value if title = null, "", or false', function () {
+      for (const val of [null, '', false]) {
+        const model = parseUnitModelWithScale({
+          mark: "point",
+          encoding: {
+            x: {
+              field: "a",
+              type: "quantitative",
+              title: val as any // Need to cast as false is not valid, but we want to fall back gracefully
+            }
+          }
+        });
+        const axisComponent = parseUnitAxis(model);
+        assert.equal(axisComponent['x'].length, 1);
+        assert.equal(axisComponent['x'][0].explicit.title, val as any);
+      }
+    });
+
     it('should store fieldDef.title as explicit', function () {
       const model = parseUnitModelWithScale({
         mark: "point",
@@ -144,6 +162,47 @@ describe('Axis', function() {
       const axisComponent = parseUnitAxis(model);
       assert.equal(axisComponent['x'].length, 1);
       assert.equal(axisComponent['x'][0].explicit.title, 'foo');
+    });
+
+    it('should merge title of fieldDef and fieldDef2', function () {
+      const model = parseUnitModelWithScale({
+        mark: "bar",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative",
+            title: 'foo'
+          },
+          x2: {
+            field: "b",
+            type: "quantitative",
+            title: 'bar'
+          }
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].explicit.title, 'foo, bar');
+    });
+
+    it('should use title of fieldDef2', function () {
+      const model = parseUnitModelWithScale({
+        mark: "bar",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          },
+          x2: {
+            field: "b",
+            type: "quantitative",
+            title: 'bar'
+          }
+        }
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].explicit.title, 'bar');
     });
 
     it('should store both x and x2 for ranged mark', function () {

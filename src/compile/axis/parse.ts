@@ -3,7 +3,7 @@ import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, mergeTitleFieldDefs, numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
@@ -137,7 +137,7 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
       (v1: Explicit<any>, v2: Explicit<any>) => {
         switch (prop) {
           case 'title':
-            return titleMerger(v1, v2);
+            return mergeTitleComponent(v1, v2);
           case 'gridScale':
             return {
               explicit: v1.explicit, // keep the old explicit
@@ -152,6 +152,28 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
   return merged;
 }
 
+function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
+  const channel2 = channel === 'x' ? 'x2' : 'y2';
+  const fieldDef = model.fieldDef(channel);
+  const fieldDef2 = model.fieldDef(channel2);
+
+  const title1 = fieldDef ? fieldDef.title : undefined;
+  const title2 = fieldDef2 ? fieldDef2.title : undefined;
+
+  if (title1 && title2) {
+    return mergeTitle(title1, title2);
+  } else if (title1) {
+    return title1;
+  } else if (title2) {
+    return title2;
+  } else if (title1 !== undefined) { // falsy value to disable config
+    return title1;
+  } else if (title2 !== undefined) { // falsy value to disable config
+    return title2;
+  }
+
+  return undefined;
+}
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
@@ -168,7 +190,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         // both VL axis.encoding and axis.labelAngle affect VG axis.encode
         property === 'encode' ? !!axis.encoding || !!axis.labelAngle :
         // title can be explicit if fieldDef.title is set
-        property === 'title' && value === model.fieldDef(channel).title ? true :
+            property === 'title' && value === getFieldDefTitle(model, channel) ? true :
         // Otherwise, things are explicit if the returned value matches the specified property
         value === axis[property];
 
@@ -242,7 +264,8 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      const specifiedTitle = fieldDef.title !== undefined ? fieldDef.title :
+      const fieldDefTitle = getFieldDefTitle(model, channel);
+      const specifiedTitle = fieldDefTitle !== undefined ? fieldDefTitle :
         specifiedAxis.title === undefined ? undefined : specifiedAxis.title;
 
       return getSpecifiedOrDefaultValue<string | FieldDefBase<string>[]>(
