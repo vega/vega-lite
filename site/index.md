@@ -5,26 +5,26 @@ title: A High-Level Grammar of Interactive Graphics
 
 images:
  - spec: stacked_area_stream
- - spec: circle
- - spec: bar_layered_transparent
+ - spec: selection_translate_scatterplot_drag
+ - spec: layer_error_bars
  - spec: tick_strip
  - spec: layer_line_color_rule
  - spec: trellis_barley
- - spec: bar_grouped
+ - spec: geo_choropleth
  - spec: circle_github_punchcard
+ - spec: geo_layer_line_london
  - spec: stacked_bar_weather
- - spec: trellis_bar_histogram
- - spec: area
- - spec: stacked_bar_v
- - spec: line_color
- - spec: circle_opacity
+ - spec: layer_line_co2_concentration
+ - spec: circle_natural_disasters
+ - spec: trellis_area
+ - spec: layer_area_ci
  - spec: line_slope
- - spec: trellis_anscombe
- - spec: point_binned_opacity
- - spec: line_month
- - spec: rect_heatmap
+ - spec: layer_ranged_dot
+ - spec: layer_bar_annotations
+ - spec: rect_binned_heatmap
+ - spec: interactive_splom
  - spec: interactive_layered_crossfilter
- - spec: connected_scatterplot
+ - spec: interactive_overview_detail
 
 ---
 
@@ -43,8 +43,6 @@ images:
 </span>
 
 Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/).
-
-**[We are looking to mentor students for a Google Summer of Code project with us. Apply if you want to shape the future of declarative data visualization!](https://summerofcode.withgoogle.com/organizations/5646868357316608/)**
 
 ## Example
 
