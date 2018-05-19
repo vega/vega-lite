@@ -1,10 +1,6 @@
-import {LONGITUDE, X} from '../../channel';
 import {Config} from '../../config';
-import {channelHasField, Encoding} from '../../encoding';
-import {ChannelDef, isFieldDef} from '../../fielddef';
+import {Encoding} from '../../encoding';
 import {MarkDef} from '../../mark';
-import {QUANTITATIVE} from '../../type';
-import {VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -16,12 +12,11 @@ export const text: MarkCompiler = {
   vgMark: 'text',
 
   encodeEntry: (model: UnitModel) => {
-    const {config, encoding, height, markDef} = model;
-    const textDef = encoding.text;
+    const {config, encoding, width, height, markDef} = model;
 
     return {
       ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
-      ...mixins.pointPosition('x', model, xDefault(config, textDef)),
+      ...mixins.pointPosition('x', model, ref.mid(width)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
       ...mixins.nonPosition('size', model, {
@@ -32,19 +27,10 @@ export const text: MarkCompiler = {
     };
   }
 };
-
-function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
-  if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
-    return {field: {group: 'width'}, offset: -5};
-  }
-  // TODO: allow this to fit (Be consistent with ref.midX())
-  return {value: config.scale.textXRangeStep / 2};
-}
-
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   const a = markDef.align || getMarkConfig('align', markDef, config);
   if (a === undefined) {
-    return channelHasField(encoding, X) || channelHasField(encoding, LONGITUDE) ? 'center' : 'right';
+    return 'center';
   }
   // If there is a config, Vega-parser will process this already.
   return undefined;
