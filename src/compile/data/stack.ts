@@ -172,11 +172,10 @@ export class StackNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = this._stack.as.reduce((result, item) => {
+    return this._stack.as.reduce((result, item) => {
       result[item] = true;
       return result;
     }, {});
-    return out;
   }
 
   private getGroupbyFields() {
