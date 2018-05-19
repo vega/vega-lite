@@ -111,7 +111,7 @@ export interface InlineData {
    */
   format?: DataFormat;
   /**
-   * The full data set, included inline. This can be an array of objects or primitive values or a string.
+   * The full data set, included inline. This can be an array of objects or primitive values, an object, or a string.
    * Arrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type.
    */
   values: InlineDataset;
