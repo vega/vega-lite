@@ -1,9 +1,9 @@
+import {Legend as VgLegend, LegendEncode} from 'vega';
 import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from '../../channel';
 import {isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, keys} from '../../util';
-import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -54,7 +54,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
-  LEGEND_PROPERTIES.forEach(function(property) {
+  for (const property of LEGEND_PROPERTIES) {
     const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
       const explicit =
@@ -68,11 +68,11 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         legendCmpt.set(property, value, explicit);
       }
     }
-  });
+  }
 
   // 2) Add mark property definition groups
   const legendEncoding = legend.encoding || {};
-  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: VgLegendEncode, part) => {
+  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: LegendEncode, part) => {
     const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
     const value = encode[part] ?
       // TODO: replace legendCmpt with type is sufficient
@@ -82,7 +82,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       e[part] = {update: value};
     }
     return e;
-  }, {} as VgLegendEncode);
+  }, {} as LegendEncode);
 
   if (keys(legendEncode).length > 0) {
     legendCmpt.set('encode', legendEncode, !!legend.encoding);
@@ -110,8 +110,6 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
       ) || undefined; // make falsy value undefined so output Vega spec is shorter
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
-    case 'type':
-      return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }
 
   // Otherwise, return specified property.
@@ -166,12 +164,12 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
   const mergedOrient = mergedLegend.getWithExplicit('orient');
   const childOrient = childLegend.getWithExplicit('orient');
 
-
   if (mergedOrient.explicit && childOrient.explicit && mergedOrient.value !== childOrient.value) {
     // TODO: throw warning if resolve is explicit (We don't have info about explicit/implicit resolve yet.)
     // Cannot merge due to inconsistent orient
     return undefined;
   }
+
   let typeMerged = false;
   // Otherwise, let's merge
   for (const prop of VG_LEGEND_PROPERTIES) {
@@ -204,7 +202,5 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     }
   }
 
-
   return mergedLegend;
 }
-

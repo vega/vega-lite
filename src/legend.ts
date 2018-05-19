@@ -1,15 +1,15 @@
+import {BaseLegendConfig, Legend as VgLegend, LegendConfigNoSignals, LegendDirection, LegendOrient} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {VgLegend, VgLegendBase, VgLegendConfig} from './vega.schema';
 
 
-export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
+export interface LegendConfig extends LegendConfigNoSignals, VlOnlyGuideConfig {}
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends VgLegendBase, Guide {
+export interface Legend extends BaseLegendConfig, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
@@ -38,10 +38,23 @@ export interface Legend extends VgLegendBase, Guide {
    * A non-positive integer indicating z-index of the legend.
    * If zindex is 0, legend should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
+   *
    * @TJS-type integer
    * @minimum 0
    */
   zindex?: number;
+
+  /**
+   * The direction of the legend, one of `"vertical"` (default) or `"horizontal"`.
+   */
+  direction?: LegendDirection;
+
+  /**
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
+   *
+   * __Default value:__ `"right"`
+   */
+  orient?: LegendOrient;
 }
 
 export type LegendEncoding = {
@@ -75,19 +88,54 @@ export type LegendEncoding = {
 export const defaultLegendConfig: LegendConfig = {};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
-  entryPadding: 1,
+  clipHeight: 1,
+  columnPadding: 1,
+  columns: 1,
+  cornerRadius: 1,
+  direction: 1,
+  fillColor: 1,
   format: 1,
+  gradientLength: 1,
+  gradientStrokeColor: 1,
+  gradientStrokeWidth: 1,
+  gradientThickness: 1,
+  gridAlign: 1,
+  labelAlign: 1,
+  labelBaseline: 1,
+  labelColor: 1,
+  labelFont: 1,
+  labelFontSize: 1,
+  labelFontWeight: 1,
+  labelLimit: 1,
+  labelOffset: 1,
+  labelOverlap: 1,
   offset: 1,
   orient: 1,
   padding: 1,
+  rowPadding: 1,
+  strokeColor: 1,
+  strokeWidth: 1,
+  symbolFillColor: 1,
+  symbolSize: 1,
+  symbolStrokeColor: 1,
+  symbolStrokeWidth: 1,
+  symbolType: 1,
   tickCount: 1,
   title: 1,
+  titleAlign: 1,
+  titleBaseline: 1,
+  titleColor: 1,
+  titleFont: 1,
+  titleFontSize: 1,
+  titleFontWeight: 1,
+  titleLimit: 1,
+  titlePadding: 1,
   type: 1,
   values: 1,
   zindex: 1
 };
 
-const VG_LEGEND_PROPERTY_INDEX: Flag<keyof VgLegend> = {
+const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
   // channel scales
   opacity: 1,

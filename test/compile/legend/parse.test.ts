@@ -59,7 +59,6 @@ describe('compile/legend', function () {
       assert.isObject(def);
       assert.equal(def.title, 'a');
       assert.equal(def.stroke, 'color');
-      assert.equal(def.type, 'gradient');
     });
 
     it('should produce no legend title when title is null, "", or false', function () {
@@ -117,7 +116,7 @@ describe('compile/legend', function () {
         }
 
         if (channel !== OPACITY) {
-          assert.equal(def.encode.symbols.update.opacity.value, 0.7);
+          assert.equal((def.encode.symbols.update.opacity as any).value, 0.7);
         } else {
           assert.isUndefined(def.encode.symbols.update.opacity);
         }

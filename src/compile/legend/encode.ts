@@ -1,26 +1,16 @@
+import {LegendType, SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
-
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {
-  Conditional,
-  FieldDef,
-  FieldDefWithCondition,
-  hasConditionalValueDef,
-  isTimeFieldDef,
-  isValueDef,
-  MarkPropFieldDef,
-  ValueDef,
-  ValueDefWithCondition,
-} from '../../fielddef';
+import {Conditional, FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDef, ValueDefWithCondition} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
-import {LegendType, VgEncodeEntry} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType): VgEncodeEntry {
+
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType): SymbolEncodeEntry {
   if (type === 'gradient') {
     return undefined;
   }
@@ -28,7 +18,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
     ...mixins.color(model)
-  };
+  } as SymbolEncodeEntry;
 
   switch (model.mark) {
     case BAR:
@@ -60,7 +50,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
         // For others, remove fill field
         delete out.fill;
       } else if (isArray(out.fill)) {
-        const fill = getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
+        const fill = getFirstConditionValue(encoding.fill || encoding.color) as string || markDef.fill || (filled && markDef.color);
         if (fill) {
           out.fill = {value: fill};
         }
@@ -76,7 +66,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {
-        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) || markDef.stroke || (!filled && markDef.color);
+        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) as string || markDef.stroke || (!filled && markDef.color);
         if (stroke) {
           out.stroke = {value: stroke};
         }
@@ -90,7 +80,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   }
 
   if (channel !== SHAPE) {
-    const shape = getFirstConditionValue(encoding.shape) || markDef.shape;
+    const shape = getFirstConditionValue(encoding.shape) as string || markDef.shape;
     if (shape) {
       out.shape = {value: shape};
     }

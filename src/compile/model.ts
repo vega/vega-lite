@@ -1,3 +1,4 @@
+import {Legend as VgLegend} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -12,7 +13,7 @@ import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
-import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
