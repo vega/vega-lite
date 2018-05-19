@@ -6155,7 +6155,7 @@
               "type": "array"
             }
           ],
-          "description": "Output field names.\ny2 or x2 is optional if only one name is provided the end will be “<name>_end”\nOtherwise as will be [\"StackField_start\",\"StackField_end\"]"
+          "description": "Output field names. This can be either a string or an array of strings with\ntwo elements denoting the name for the fields for stack start and stack end\nrespectively.\nIf a single string(eg.\"val\") is provided, the end field will be \"val_end\"."
         },
         "groupby": {
           "description": "The data fields to group by.",
@@ -6165,7 +6165,7 @@
           "type": "array"
         },
         "offset": {
-          "description": "Mode for stacking marks. Default is 'zero'",
+          "description": "Mode for stacking marks.\n__Default value:__ `\"zero\"`",
           "enum": [
             "zero",
             "center",
@@ -6175,7 +6175,7 @@
         },
         "sort": {
           "$ref": "#/definitions/SortField",
-          "description": "Field that determines the order of leves in the stacked charts."
+          "description": "Field that determines the order of leaves in the stacked charts."
         },
         "stack": {
           "description": "The field which is stacked.",
@@ -6184,7 +6184,8 @@
       },
       "required": [
         "stack",
-        "groupby"
+        "groupby",
+        "as"
       ],
       "type": "object"
     },
