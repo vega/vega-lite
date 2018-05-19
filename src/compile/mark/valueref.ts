@@ -152,7 +152,15 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       }
       return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
     } else if (isValueDef(channelDef)) {
-      return {value: channelDef.value};
+      const value = channelDef.value;
+
+      if (contains(['x', 'x2'], channel) && value === 'width') {
+        return {field: {group: 'width'}};
+      } else if (contains(['y', 'y2'], channel) && value === 'height') {
+        return {field: {group: 'height'}};
+      }
+
+      return {value};
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.

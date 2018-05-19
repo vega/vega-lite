@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {getOffset} from '../../../src/compile/mark/valueref';
+import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
 import {MarkDef} from '../../../src/mark';
 
 
@@ -16,6 +16,18 @@ describe('compile/mark/valueref', () => {
     });
     it('should return undefined when the offset value for the given channel is not defined', function () {
       assert.equal(getOffset('x', markDef), undefined);
+
+    });
+  });
+
+  describe('midPoint()', () => {
+    it('should return correct value for width', () => {
+      const ref = midPoint('x', {value: 'width'}, undefined, undefined, undefined, undefined);
+      assert.deepEqual(ref, {field: {group: 'width'}});
+    });
+    it('should return correct value for height', () => {
+      const ref = midPoint('y', {value: 'height'}, undefined, undefined, undefined, undefined);
+      assert.deepEqual(ref, {field: {group: 'height'}});
     });
   });
 });
