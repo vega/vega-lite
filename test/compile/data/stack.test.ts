@@ -10,15 +10,15 @@ import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: UnitModel) {
-  return StackNode.make(null, model).stack;
+  return StackNode.makeFromEncoding(null, model).stack;
 }
 
 function assemble(model: UnitModel) {
-  return StackNode.make(null, model).assemble();
+  return StackNode.makeFromEncoding(null, model).assemble();
 }
 describe ('compile/data/stack', () => {
 
-  describe('StackNode.make', () => {
+  describe('StackNode.makeFromEncoding', () => {
     it('should produce correct stack component for bar with color', () => {
       const model = parseUnitModelWithScale({
         "mark": "bar",
@@ -32,7 +32,7 @@ describe ('compile/data/stack', () => {
       assert.deepEqual<StackComponent>(parse(model), {
         dimensionFieldDef: {field: 'b', type: 'nominal'},
         facetby: [],
-        field: 'sum_a',
+        stackField: 'sum_a',
         stackby: ['c'],
         sort: {
           field: ['c'],
@@ -57,7 +57,7 @@ describe ('compile/data/stack', () => {
       assert.deepEqual<StackComponent>(parse(model), {
         dimensionFieldDef: {"bin": {maxbins: 10}, "field": "b", "type": "quantitative"},
         facetby: [],
-        field: 'sum_a',
+        stackField: 'sum_a',
         stackby: ['c'],
         sort: {
           field: ['c'],
@@ -81,7 +81,7 @@ describe ('compile/data/stack', () => {
       assert.deepEqual<StackComponent>(parse(model), {
         dimensionFieldDef: undefined,
         facetby: [],
-        field: 'sum_a',
+        stackField: 'sum_a',
         stackby: ['c'],
         sort: {
           field: ['c'],
@@ -120,7 +120,7 @@ describe ('compile/data/stack', () => {
       assert.deepEqual<StackComponent>(parse(model), {
         dimensionFieldDef: {field: 'b', type: 'nominal'},
         facetby: [],
-        field: 'sum_a',
+        stackField: 'sum_a',
         stackby: ['c'],
         sort: {
           field: ['mean_d'],
@@ -167,7 +167,7 @@ describe ('compile/data/stack', () => {
       assert.deepEqual<StackComponent>(parse(model), {
         dimensionFieldDef: {"bin": {maxbins: 10}, "field": "b", "type": "quantitative"},
         facetby: [],
-        field: 'sum_a',
+        stackField: 'sum_a',
         stackby: ['c'],
         sort: {
           field: ['c'],
@@ -208,10 +208,11 @@ describe ('compile/data/stack', () => {
   });
 
   describe('StackNode.makeFromTransform', () => {
-    it('should fill in "as" field, offset and sort properly', () => {
+    it('should fill in offset and sort properly', () => {
       const transform: Transform = {
         stack : 'people',
-        groupby: ['age']
+        groupby: ['age'],
+        as: ['v1', 'v2']
       };
       const stack = StackNode.makeFromTransform(null, transform);
       assert.deepEqual<VgTransform[]>(stack.assemble(), [{
@@ -220,7 +221,7 @@ describe ('compile/data/stack', () => {
         field: 'people',
         sort: {field: 'people', order: 'ascending'},
         offset: 'zero',
-        as: ["people_start", "people_end"]
+        as: ['v1', 'v2']
       }]);
     });
 
@@ -248,11 +249,13 @@ describe ('compile/data/stack', () => {
     it('should give producedfields correctly', () => {
       const transform: Transform = {
         stack: 'people',
-        groupby: ['age']
+        groupby: ['age'],
+        as: 'people'
+
       };
       const stack = StackNode.makeFromTransform(null, transform);
       assert.deepEqual(stack.producedFields(), {
-        people_start: true,
+        people: true,
         people_end: true
       });
 
@@ -267,7 +270,7 @@ describe ('compile/data/stack', () => {
           "color": {"field": "c", "type": "ordinal",}
         }
       });
-      const stack = StackNode.make(null, model);
+      const stack = StackNode.makeFromEncoding(null, model);
       assert.deepEqual(stack.producedFields(), {
         sum_a_start: true,
         sum_a_end: true
