@@ -45,7 +45,6 @@ describe('legend/assemble', () => {
     const legends = model.assembleLegends();
     assert.equal(legends.length, 1);
     assert.equal(legends[0].title, 'b');
-    assert.equal(legends[0].type, 'symbol');
     assert.equal(legends[0].fill, 'color');
     assert.equal(legends[0].size, 'size');
   });

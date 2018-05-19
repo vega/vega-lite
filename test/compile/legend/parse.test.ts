@@ -59,7 +59,6 @@ describe('compile/legend', function () {
       assert.isObject(def);
       assert.equal(def.title, 'a');
       assert.equal(def.stroke, 'color');
-      assert.equal(def.type, 'gradient');
     });
 
     it('should produce no legend title when title is null, "", or false', function () {

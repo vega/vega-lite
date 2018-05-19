@@ -324,12 +324,13 @@ export interface VgLegend {
   shape?: string;
   opacity?: string;
 
-  entryPadding?: number;
   format?: string;
 
+  direction?: LegendDirection;
   offset?: number;
   orient?: LegendOrient;
   padding?: number;
+  columns?: number;
 
   tickCount?: number;
   title?: string;
@@ -743,12 +744,13 @@ export interface VgAxisConfig extends VgAxisBase {
 
 export type LegendOrient = 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
 
+export type LegendDirection = 'vertical' | 'horizontal';
+
 export interface VgLegendBase {
   /**
    * Padding (in pixels) between legend entries in a symbol legend.
    */
   entryPadding?: number;
-
 
   /**
    * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
@@ -768,6 +770,35 @@ export interface VgLegendBase {
    * The padding, in pixels, between the legend and axis.
    */
   padding?: number;
+
+  /**
+   * The number of columns in which to arrange symbol legend entries. A value of 0 indicates a single row with one column per entry.
+   *
+   * @TJS-type integer
+   * @minimum 0
+   */
+  columns?: number;
+
+  /**
+   * The vertical padding in pixels between symbol legend entries.
+   *
+   * @minimum 0
+   */
+  rowPadding?: number;
+
+  /**
+   * The horizontal padding in pixels between symbol legend entries.
+   *
+   * @minimum 0
+   */
+  columnPadding?: number;
+
+  /**
+   * The alignment to apply to symbol legends rows and columns. The supported string values are `"all"`, `"each"`, and `"none"`.
+   *
+   * __Default value:__  `"each"`
+   */
+  gridAlign?: 'all' | 'each' | 'none';
 }
 
 export interface VgLegendConfig extends VgLegendBase {
@@ -798,6 +829,11 @@ export interface VgLegendConfig extends VgLegendBase {
   strokeWidth?: number;
   // ---------- Gradient ----------
   /**
+   * The default direction (`"horizontal"` or `"vertical"`) for gradient legends.
+   */
+  gradientDirection?: LegendDirection;
+
+  /**
    * The color of the gradient stroke, can be in hex color code or regular color name.
    */
   gradientStrokeColor?: string;
@@ -807,12 +843,6 @@ export interface VgLegendConfig extends VgLegendBase {
    * @minimum 0
    */
   gradientStrokeWidth?: number;
-
-  /**
-   * The height of the gradient, in pixels.
-   * @minimum 0
-   */
-  gradientHeight?: number;
 
   /**
    * Text baseline for color ramp gradient labels.
@@ -830,10 +860,16 @@ export interface VgLegendConfig extends VgLegendBase {
   gradientLabelOffset?: number;
 
   /**
-   * The width of the gradient, in pixels.
+   * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
    * @minimum 0
    */
-  gradientWidth?: number;
+  gradientLength?: number;
+
+  /**
+   * The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.
+   * @minimum 0
+   */
+  gradientThickness?: number;
 
   // ---------- Label ----------
   /**
@@ -877,6 +913,17 @@ export interface VgLegendConfig extends VgLegendBase {
   labelOffset?: number;
 
   // ---------- Symbols ----------
+  /**
+   * The height in pixels to clip symbol legend entries and limit their size.
+   *
+   * @minimum 0
+   */
+  clipHeight?: number;
+
+  /**
+   * The default direction (`"horizontal"` or `"vertical"`) for symbol legends.
+   */
+  symbolDirection?: LegendDirection;
   /**
    * The color of the legend symbol,
    */

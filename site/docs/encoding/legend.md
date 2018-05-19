@@ -61,7 +61,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 
 {:#properties}
 
-{% include table.html props="type,entryPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
+{% include table.html props="type,gridAlign,direction,columns,columnPadding,rowPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
 
 <!--
 ### Custom Legend Encodings
@@ -89,11 +89,11 @@ To provide themes for all legends, the legends config (`config: {legend: {...}}`
 
 ### General
 
-{% include table.html props="cornerRadius,fillColor,orient,offset,strokeColor,strokeDash,strokeWidth,padding" source="LegendConfig" %}
+{% include table.html props="columns,columnPadding,cornerRadius,fillColor,gridAlign,orient,offset,rowPadding,strokeColor,strokeDash,strokeWidth,padding" source="LegendConfig" %}
 
 ### Gradient
 
-{% include table.html props="gradientLabelBaseline,gradientLabelLimit,gradientLabelOffset,gradientStrokeColor,gradientStrokeWidth,gradientHeight,gradientWidth" source="LegendConfig" %}
+{% include table.html props="gradientDirection,gradientLabelBaseline,gradientLabelLimit,gradientLabelOffset,gradientStrokeColor,gradientStrokeWidth,gradientHeight,gradientWidth" source="LegendConfig" %}
 
 ### Labels
 
@@ -101,7 +101,7 @@ To provide themes for all legends, the legends config (`config: {legend: {...}}`
 
 ### Symbols
 
-{% include table.html props="entryPadding,symbolColor,symbolType,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
+{% include table.html props="symbolDirection,symbolColor,symbolType,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
 
 ### Title
 

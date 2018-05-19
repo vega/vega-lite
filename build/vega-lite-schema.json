@@ -3613,12 +3613,35 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
+        "columnPadding": {
+          "description": "The horizontal padding in pixels between symbol legend entries.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "columns": {
+          "description": "The number of columns in which to arrange symbol legend entries. A value of 0 indicates a single row with one column per entry.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "direction": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The direction of the legend, one of `\"vertical\"` (default) or `\"horizontal\"`."
+        },
         "entryPadding": {
           "description": "Padding (in pixels) between legend entries in a symbol legend.",
           "type": "number"
         },
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](format.html) for more information.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
+          "type": "string"
+        },
+        "gridAlign": {
+          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n__Default value:__  `\"each\"`",
+          "enum": [
+            "all",
+            "each",
+            "none"
+          ],
           "type": "string"
         },
         "offset": {
@@ -3631,6 +3654,11 @@
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
+          "type": "number"
+        },
+        "rowPadding": {
+          "description": "The vertical padding in pixels between symbol legend entries.",
+          "minimum": 0,
           "type": "number"
         },
         "tickCount": {
@@ -3686,6 +3714,21 @@
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
+        "clipHeight": {
+          "description": "The height in pixels to clip symbol legend entries and limit their size.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "columnPadding": {
+          "description": "The horizontal padding in pixels between symbol legend entries.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "columns": {
+          "description": "The number of columns in which to arrange symbol legend entries. A value of 0 indicates a single row with one column per entry.",
+          "minimum": 0,
+          "type": "number"
+        },
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
           "type": "number"
@@ -3698,10 +3741,9 @@
           "description": "Background fill color for the full legend.",
           "type": "string"
         },
-        "gradientHeight": {
-          "description": "The height of the gradient, in pixels.",
-          "minimum": 0,
-          "type": "number"
+        "gradientDirection": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends."
         },
         "gradientLabelBaseline": {
           "description": "Text baseline for color ramp gradient labels.",
@@ -3715,6 +3757,11 @@
           "description": "Vertical offset in pixels for color ramp gradient labels.",
           "type": "number"
         },
+        "gradientLength": {
+          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.",
+          "minimum": 0,
+          "type": "number"
+        },
         "gradientStrokeColor": {
           "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
           "type": "string"
@@ -3724,10 +3771,19 @@
           "minimum": 0,
           "type": "number"
         },
-        "gradientWidth": {
-          "description": "The width of the gradient, in pixels.",
+        "gradientThickness": {
+          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.",
           "minimum": 0,
           "type": "number"
+        },
+        "gridAlign": {
+          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n__Default value:__  `\"each\"`",
+          "enum": [
+            "all",
+            "each",
+            "none"
+          ],
+          "type": "string"
         },
         "labelAlign": {
           "description": "The alignment of the legend label, can be left, middle or right.",
@@ -3771,6 +3827,11 @@
           "description": "The padding, in pixels, between the legend and axis.",
           "type": "number"
         },
+        "rowPadding": {
+          "description": "The vertical padding in pixels between symbol legend entries.",
+          "minimum": 0,
+          "type": "number"
+        },
         "shortTimeLabels": {
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
           "type": "boolean"
@@ -3793,6 +3854,10 @@
         "symbolColor": {
           "description": "The color of the legend symbol,",
           "type": "string"
+        },
+        "symbolDirection": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends."
         },
         "symbolSize": {
           "description": "The size of the legend symbol, in pixels.",
@@ -3842,6 +3907,13 @@
         }
       },
       "type": "object"
+    },
+    "LegendDirection": {
+      "enum": [
+        "vertical",
+        "horizontal"
+      ],
+      "type": "string"
     },
     "LegendOrient": {
       "enum": [

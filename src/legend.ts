@@ -1,7 +1,7 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {VgLegend, VgLegendBase, VgLegendConfig} from './vega.schema';
+import {LegendDirection, VgLegend, VgLegendBase, VgLegendConfig} from './vega.schema';
 
 
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
@@ -38,10 +38,16 @@ export interface Legend extends VgLegendBase, Guide {
    * A non-positive integer indicating z-index of the legend.
    * If zindex is 0, legend should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
+   *
    * @TJS-type integer
    * @minimum 0
    */
   zindex?: number;
+
+  /**
+   * The direction of the legend, one of `"vertical"` (default) or `"horizontal"`.
+   */
+  direction?: LegendDirection;
 }
 
 export type LegendEncoding = {
@@ -75,7 +81,8 @@ export type LegendEncoding = {
 export const defaultLegendConfig: LegendConfig = {};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
-  entryPadding: 1,
+  columns: 1,
+  direction: 1,
   format: 1,
   offset: 1,
   orient: 1,
