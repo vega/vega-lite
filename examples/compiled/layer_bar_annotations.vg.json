@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "$schema": "https://vega.github.io/schema/vega/v4.json",
     "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health. Data source https://chartaccent.github.io/chartaccent.html",
     "autosize": "pad",
     "padding": 5,

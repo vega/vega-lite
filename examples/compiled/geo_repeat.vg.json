@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "$schema": "https://vega.github.io/schema/vega/v4.json",
     "description": "the population per state, engineers per state, and hurricanes per state",
     "autosize": "pad",
     "padding": 5,
@@ -182,8 +182,7 @@
             "legends": [
                 {
                     "fill": "child_population_color",
-                    "title": "population",
-                    "type": "gradient"
+                    "title": "population"
                 }
             ]
         },
@@ -231,8 +230,7 @@
             "legends": [
                 {
                     "fill": "child_engineers_color",
-                    "title": "engineers",
-                    "type": "gradient"
+                    "title": "engineers"
                 }
             ]
         },
@@ -280,8 +278,7 @@
             "legends": [
                 {
                     "fill": "child_hurricanes_color",
-                    "title": "hurricanes",
-                    "type": "gradient"
+                    "title": "hurricanes"
                 }
             ]
         }

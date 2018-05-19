@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "$schema": "https://vega.github.io/schema/vega/v4.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -179,7 +179,18 @@
         {
             "stroke": "color",
             "title": "Miles_per_Gallon",
-            "type": "symbol",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        },
+                        "opacity": {
+                            "value": 0.7
+                        }
+                    }
+                }
+            },
             "size": "size"
         }
     ],
