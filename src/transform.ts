@@ -112,19 +112,21 @@ export interface StackTransform {
    */
   groupby: string[];
   /**
-   * Mode for stacking marks. Default is 'zero'
+   * Mode for stacking marks.
+   * __Default value:__ `"zero"`
    */
   offset?: 'zero' | 'center' | 'normalize';
   /**
-   * Field that determines the order of leves in the stacked charts.
+   * Field that determines the order of leaves in the stacked charts.
    */
   sort?: SortField ;
   /**
-   * Output field names.
-   * y2 or x2 is optional if only one name is provided the end will be “<name>_end”
-   * Otherwise as will be ["StackField_start","StackField_end"]
+   * Output field names. This can be either a string or an array of strings with
+   * two elements denoting the name for the fields for stack start and stack end
+   * respectively.
+   * If a single string(eg."val") is provided, the end field will be "val_end".
    */
-  as?: string | string[];
+  as: string | string[];
 
 }
 
