@@ -166,9 +166,9 @@ function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
     return title1;
   } else if (title2) {
     return title2;
-  } else if (title1 !== undefined) {
+  } else if (title1 !== undefined) { // falsy value to disable config
     return title1;
-  } else if (title2 !== undefined) {
+  } else if (title2 !== undefined) { // falsy value to disable config
     return title2;
   }
 
