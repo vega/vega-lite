@@ -158,7 +158,7 @@ describe('Mark: Text', function() {
     const props = text.encodeEntry(childModel);
 
     it('should fit the view on x', function() {
-      assert.deepEqual(props.x, {field: {group: 'width'}, offset: -5});
+      assert.deepEqual(props.x, {signal: 'child_width', mult: 0.5});
     });
 
     it('should center on y', function() {

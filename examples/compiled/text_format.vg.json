@@ -59,10 +59,8 @@
                         "value": "black"
                     },
                     "x": {
-                        "field": {
-                            "group": "width"
-                        },
-                        "offset": -5
+                        "signal": "width",
+                        "mult": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -72,7 +70,7 @@
                         "signal": "format(datum[\"mean_Horsepower\"], \".2f\")"
                     },
                     "align": {
-                        "value": "right"
+                        "value": "center"
                     }
                 }
             }
