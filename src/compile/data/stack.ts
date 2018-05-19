@@ -34,7 +34,7 @@ export interface StackComponent {
   /**
    * Stack measure's field. Used in makeFromEncoding.
    */
-  field?: string;
+  stackField: string;
 
   /**
    * Level of detail fields for each level in the stacked charts such as color or detail.
@@ -58,10 +58,6 @@ export interface StackComponent {
    */
   impute?: boolean;
 
-  /**
-   * Stack measure's field. Used in makeFromTransform
-   */
-  stack?: string;
   /**
    * The data fields to group by.
    */
@@ -90,30 +86,30 @@ export class StackNode extends DataFlowNode {
     this._stack = stack;
   }
 
-  public static makeFromTransform(parent: DataFlowNode, model: StackTransform) {
-    const offset = model.offset || 'zero';
-    const sort = model.sort || {'field': model.stack, 'order': 'ascending'};
-    const as = model.as;
-    let normalizedAs: Array<string> | undefined;
+  public static makeFromTransform(parent: DataFlowNode, stackTransform: StackTransform) {
+
+    const {stack, groupby, as, offset='zero'} = stackTransform;
+    const sort = stackTransform.sort || {'field': stack, 'order': 'ascending'};
+
+    let normalizedAs: Array<string>;
     if (isAsValidArray(as)) {
       normalizedAs = as;
     } else if(typeof as === 'string') {
       normalizedAs = [as, as + '_end'];
     } else {
-      normalizedAs = [model.stack + '_start', model.stack + '_end'];
+      normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
     }
 
-
     return new StackNode (parent, {
-      stack: model.stack,
-      groupby: model.groupby,
+      stackField: stackTransform.stack,
+      groupby,
       offset,
       sort,
       as: normalizedAs
     });
 
   }
-  public static make(parent: DataFlowNode, model: UnitModel) {
+  public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
 
     const stackProperties = model.stack;
 
@@ -144,19 +140,16 @@ export class StackNode extends DataFlowNode {
     // Refactored to add as in the make phase so that we can get producedFields
     // from the as property
     const field = model.vgField(stackProperties.fieldChannel);
-    const as = [
-      field + '_start',
-      field + '_end'
-    ];
+
     return new StackNode(parent, {
       dimensionFieldDef,
-      field: model.vgField(stackProperties.fieldChannel),
+      stackField:field,
       facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
       impute: stackProperties.impute,
-      as
+      as: [field + '_start', field + '_end']
     });
   }
 
@@ -171,7 +164,7 @@ export class StackNode extends DataFlowNode {
   public dependentFields() {
     const out = {};
 
-    out[this._stack.field] = true;
+    out[this._stack.stackField] = true;
 
     this.getGroupbyFields().forEach(f => out[f] = true);
     this._stack.facetby.forEach(f => out[f] = true);
@@ -211,58 +204,54 @@ export class StackNode extends DataFlowNode {
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
-
-    // Detects whether assemble call is from Node created from make or MakeFromTransform
-    // TODO Create a stricter function to check that.
-    if (this._stack.stackby) {
-      const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
+    const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, groupby, as} = this._stack;
 
       // Impute
-      if (impute && dimensionFieldDef) {
-        const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
+    if (impute && dimensionFieldDef) {
+      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
 
-        if (dimensionFieldDef.bin) {
-          // As we can only impute one field at a time, we need to calculate
-          // mid point for a binned field
-          transform.push({
-            type: 'formula',
-            expr: '(' +
-              vgField(dimensionFieldDef, {expr: 'datum'}) +
-              '+' +
-              vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
-              ')/2',
-            as: dimensionField
-          });
-        }
-
+      if (dimensionFieldDef.bin) {
+        // As we can only impute one field at a time, we need to calculate
+        // mid point for a binned field
         transform.push({
-          type: 'impute',
-          field: stackField,
-          groupby: stackby,
-          key: dimensionField,
-          method: 'value',
-          value: 0
+          type: 'formula',
+          expr: '(' +
+            vgField(dimensionFieldDef, {expr: 'datum'}) +
+            '+' +
+            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
+            ')/2',
+          as: dimensionField
         });
       }
+
+      transform.push({
+        type: 'impute',
+        field,
+        groupby: stackby,
+        key: dimensionField,
+        method: 'value',
+        value: 0
+      });
+    }
+    if(facetby) {
 
       // Stack
       transform.push({
         type: 'stack',
         groupby: this.getGroupbyFields().concat(facetby),
-        field: stackField,
+        field,
         sort,
-        as: [
-          stackField + '_start',
-          stackField + '_end'
-        ],
+        as,
         offset
       });
+    }
 
+    if (transform.length !== 0) {
       return transform;
     } else {
-      const {stack, groupby, offset, sort, as} = this._stack;
-      // Wrapping in array. Alternative is to change assemble.ts to handle single object.
-      return [{type: 'stack', groupby,field: stack, sort, as, offset}];
+
+      return [{type: 'stack', groupby, field, sort, as, offset}];
     }
+
   }
 }
