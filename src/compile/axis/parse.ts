@@ -254,10 +254,11 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       return getSpecifiedOrDefaultValue(specifiedAxis.orient, properties.orient(channel));
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
+      const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-      const size = sizeType ? model.getSizeSignalRef(sizeType)
-       : undefined;
-      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size));
+      const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
+      return getSpecifiedOrDefaultValue(specifiedAxis.tickCount,
+        properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis));
     }
     case 'title':
       const channel2 = channel === 'x' ? 'x2' : 'y2';

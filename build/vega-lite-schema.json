@@ -436,6 +436,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "tickStep": {
+          "description": "A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for data that is binned before importing into Vega-Lite.\n\n__Default value__: `undefined`",
+          "type": "number"
+        },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.",
           "type": "boolean"
