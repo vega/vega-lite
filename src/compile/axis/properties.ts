@@ -67,9 +67,12 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+export function tickCount(specifiedAxis: Axis, channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
-
+    if (specifiedAxis.tickStep) {
+      const step = specifiedAxis.tickStep;
+      return {signal: `(domain('${channel}')[1] - domain('${channel}')[0]) / ${step} + 1`};
+    }
     if (fieldDef.bin) {
       // for binned data, we don't want more ticks than maxbins
       return {signal: `ceil(${size.signal}/20)`};
@@ -95,13 +98,19 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
     });
   }
 
-  if (!vals && fieldDef.bin && fieldDef.type === QUANTITATIVE) {
-    const domain = model.scaleDomain(channel);
-    if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-      return vals;
+  if (!vals && fieldDef.type === QUANTITATIVE) {
+    if (fieldDef.bin) {
+      const domain = model.scaleDomain(channel);
+      if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
+        return vals;
+      }
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
-    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+    if (specifiedAxis.tickStep) {
+      const step = specifiedAxis.tickStep;
+      return {signal: `sequence(domain('${channel}')[0], domain('${channel}')[1] + 1, ${step})`};
+    }
   }
 
   return vals;
