@@ -37,35 +37,34 @@ describe('compile/axis', ()=> {
 
   describe('tickCount', function() {
     it('should return undefined by default for a binned field', () => {
-      const tickCount = properties.tickCount({}, 'x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      const tickCount = properties.tickCount('x', {bin: {maxbins: 10}, field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'}, undefined, undefined);
       assert.deepEqual(tickCount, {signal: 'ceil(a/20)'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
         it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
-          const tickCount = properties.tickCount({}, 'x', {timeUnit, field: 'a', type: 'temporal'}, 'linear', {signal : 'a'});
+          const tickCount = properties.tickCount('x', {timeUnit, field: 'a', type: 'temporal'}, 'linear', {signal : 'a'}, undefined, undefined);
           assert.isUndefined(tickCount);
         });
     }
 
     it('should return size/40 by default for linear scale', () => {
-      const tickCount = properties.tickCount({}, 'x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'});
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', {signal : 'a'}, undefined, undefined);
       assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
     });
 
     it('should return undefined by default for log scale', function () {
-      const tickCount = properties.tickCount({}, 'x', {field: 'a', type: 'quantitative'}, 'log', undefined);
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined, undefined, undefined);
       assert.deepEqual(tickCount, undefined);
     });
 
     it('should return undefined by default for point scale', function () {
-      const tickCount = properties.tickCount({}, 'x', {field: 'a', type: 'quantitative'}, 'point', undefined);
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'point', undefined, undefined, undefined);
       assert.deepEqual(tickCount, undefined);
     });
 
     it('should return prebin step signal for axis with tickStep', () => {
-      const axis = {tickStep: 3};
-      const tickCount = properties.tickCount(axis, 'x', {field: 'a', type: 'quantitative'}, 'linear', undefined);
+      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', undefined, 'x', 3);
       assert.deepEqual(tickCount, {signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1"});
     });
   });
@@ -122,8 +121,18 @@ describe('compile/axis', ()=> {
     });
 
     it('should return value signal for axis with tickStep', () => {
-      const values = properties.values({tickStep: 3}, null, {type: "quantitative"}, 'x');
-      assert.deepEqual(values, {signal: "sequence(domain('x')[0], domain('x')[1] + 1, 3)"});
+      const model = parseUnitModelWithScale({
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "type": "quantitative",
+            "field": 'US_Gross'
+          }
+        },
+        "data": {"url": "data/movies.json"}
+      });
+      const values = properties.values({tickStep: 3}, model, {type: "quantitative"}, 'x');
+      assert.deepEqual(values, {signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)"});
     });
   });
 });

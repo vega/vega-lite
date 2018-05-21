@@ -437,7 +437,7 @@
           "type": "number"
         },
         "tickStep": {
-          "description": "A desired step size for prebinned data. This property will generate the appropriate `tickCount` and `values` for the prebinned field\n\n__Default value__: `0`",
+          "description": "A desired step size for ticks. This property will generate the corresponding `tickCount` and `values` and can be useful for data that is prebinned before importing to Vega-Lite\n\n__Default value__: `undefined`",
           "type": "number"
         },
         "ticks": {
