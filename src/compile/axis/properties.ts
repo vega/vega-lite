@@ -67,10 +67,10 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef, scaleName: string, tickStep: number) {
+export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef, scaleName: string, specifiedAxis: Axis) {
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
-    if (tickStep) {
-      return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${tickStep} + 1`};
+    if (specifiedAxis.tickStep) {
+      return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
     } else if (fieldDef.bin) {
       // for binned data, we don't want more ticks than maxbins
       return {signal: `ceil(${size.signal}/20)`};
