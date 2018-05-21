@@ -436,6 +436,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "tickStep": {
+          "description": "A desired step size for prebinned data. This property will generate the appropriate `tickCount` and `values` for the prebinned field\n\n__Default value__: `0`",
+          "type": "number"
+        },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.",
           "type": "boolean"

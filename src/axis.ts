@@ -49,6 +49,13 @@ export interface Axis extends VgAxisBase, Guide {
   tickCount?: number;
 
   /**
+   * A desired step size for prebinned data. This property will generate the appropriate `tickCount` and `values` for the prebinned field
+   *
+   * __Default value__: `0`
+   */
+  tickStep?: number;
+
+  /**
    * Explicitly set the visible axis tick values.
    */
   values?: number[] | DateTime[];
@@ -165,7 +172,8 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   encoding: 1,
   labelAngle: 1,
-  titleMaxLength: 1
+  titleMaxLength: 1,
+  tickStep: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
