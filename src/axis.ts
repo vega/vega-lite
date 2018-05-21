@@ -38,6 +38,13 @@ export interface Axis extends VgAxisConfig, Guide {
   tickCount?: number;
 
   /**
+   * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for data that is binned before importing into Vega-Lite.
+   *
+   * __Default value__: `undefined`
+   */
+  tickStep?: number;
+
+  /**
    * Explicitly set the visible axis tick values.
    */
   values?: number[] | string[] | boolean[] | DateTime[];
@@ -181,7 +188,8 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   encoding: 1,
   labelAngle: 1,
-  titleMaxLength: 1
+  titleMaxLength: 1,
+  tickStep: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {

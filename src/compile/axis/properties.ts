@@ -135,10 +135,11 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef) {
+export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef, scaleName: string, specifiedAxis: Axis) {
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
-
-    if (fieldDef.bin) {
+    if (specifiedAxis.tickStep) {
+      return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
+    } else if (fieldDef.bin) {
       // for binned data, we don't want more ticks than maxbins
       return {signal: `ceil(${size.signal}/20)`};
     }
@@ -161,14 +162,20 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
     return valueArray(fieldDef, vals);
   }
 
-  if (fieldDef.bin && fieldDef.type === QUANTITATIVE) {
-    const domain = model.scaleDomain(channel);
-    if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-      return undefined;
-    }
 
-    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+  if (fieldDef.type === QUANTITATIVE) {
+    if (fieldDef.bin) {
+      const domain = model.scaleDomain(channel);
+      if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
+        return vals;
+      }
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+    } else if (specifiedAxis.tickStep) {
+      const scaleName = model.scaleName(channel);
+      const step = specifiedAxis.tickStep;
+      return {signal: `sequence(domain('${scaleName}')[0], domain('${scaleName}')[1] + ${step}, ${step})`};
+    }
   }
 
   return undefined;
