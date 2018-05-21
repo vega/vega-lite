@@ -13,7 +13,7 @@ export interface FilterTransform {
    * (1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,
    * where `datum` can be used to refer to the current data object;
    * (2) one of the field predicates: [equal predicate](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate);
-   * [range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);
+   * [range predicate](https://vega.github.io/vega-lite/docs/filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);
    * (3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate);
    * or (4) a logical operand that combines (1), (2), or (3).
    */
