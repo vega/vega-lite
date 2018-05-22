@@ -6174,8 +6174,11 @@
           "type": "string"
         },
         "sort": {
-          "$ref": "#/definitions/SortField",
-          "description": "Field that determines the order of leaves in the stacked charts."
+          "description": "Field that determines the order of leaves in the stacked charts.",
+          "items": {
+            "$ref": "#/definitions/SortField"
+          },
+          "type": "array"
         },
         "stack": {
           "description": "The field which is stacked.",
