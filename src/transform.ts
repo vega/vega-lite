@@ -103,6 +103,38 @@ export interface AggregatedFieldDef {
 }
 
 
+/**
+ * @hide
+ */
+export interface StackTransform {
+  /**
+   * The field which is stacked.
+   */
+  stack: string;
+  /**
+   * The data fields to group by.
+   */
+  groupby: string[];
+  /**
+   * Mode for stacking marks.
+   * __Default value:__ `"zero"`
+   */
+  offset?: 'zero' | 'center' | 'normalize';
+  /**
+   * Field that determines the order of leaves in the stacked charts.
+   */
+  sort?: SortField[];
+  /**
+   * Output field names. This can be either a string or an array of strings with
+   * two elements denoting the name for the fields for stack start and stack end
+   * respectively.
+   * If a single string(eg."val") is provided, the end field will be "val_end".
+   */
+  as: string | string[];
+
+}
+
+
 export type WindowOnlyOp =
   'row_number' |
    'rank' |
@@ -239,7 +271,11 @@ export function isAggregate(t: Transform): t is AggregateTransform {
   return t['aggregate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform;
+export function isStack(t: Transform): t is StackTransform {
+  return t['stack'] !== undefined;
+}
+
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
