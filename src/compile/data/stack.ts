@@ -23,7 +23,7 @@ function getStackByFields(model: UnitModel): string[] {
 export interface StackComponent {
 
   /**
-   * Faceted field. Used in makeFromEncoding.
+   * Faceted field.
    */
   facetby?: string[];
 
@@ -65,9 +65,9 @@ export interface StackComponent {
   as: string[];
 
 }
-// TODO Better Name for this function
+
 function isAsValidArray(as: string[] | string): as is string[] {
-  return isArray(as) && as.every(s => isString(s)) && as.length ===2;
+  return isArray(as) && as.every(s => isString(s)) && as.length >1;
 }
 
 export class StackNode extends DataFlowNode {
@@ -145,7 +145,7 @@ export class StackNode extends DataFlowNode {
         return s;
       }, {field:[], order: []});
     }
-    // Refactored to add as in the make phase so that we can get producedFields
+    // Refactored to add "as" in the make phase so that we can get producedFields
     // from the as property
     const field = model.vgField(stackProperties.fieldChannel);
 
