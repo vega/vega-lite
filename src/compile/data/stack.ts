@@ -25,7 +25,7 @@ export interface StackComponent {
   /**
    * Faceted field.
    */
-  facetby?: string[];
+  facetby: string[];
 
   dimensionFieldDef?: FieldDef<string>;
 
@@ -66,7 +66,7 @@ export interface StackComponent {
 
 }
 
-function isAsValidArray(as: string[] | string): as is string[] {
+function isValidAsArray(as: string[] | string): as is string[] {
   return isArray(as) && as.every(s => isString(s)) && as.length >1;
 }
 
@@ -100,9 +100,9 @@ export class StackNode extends DataFlowNode {
       order: sortOrder,
     };
     let normalizedAs: Array<string>;
-    if (isAsValidArray(as)) {
+    if (isValidAsArray(as)) {
       normalizedAs = as;
-    } else if(typeof as === 'string') {
+    } else if(isString(as)) {
       normalizedAs = [as, as + '_end'];
     } else {
       normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
@@ -113,6 +113,7 @@ export class StackNode extends DataFlowNode {
       groupby,
       offset,
       sort,
+      facetby: [],
       as: normalizedAs
     });
 
@@ -190,7 +191,7 @@ export class StackNode extends DataFlowNode {
   }
 
   private getGroupbyFields() {
-    const {dimensionFieldDef, impute} = this._stack;
+    const {dimensionFieldDef, impute, groupby} = this._stack;
     if (dimensionFieldDef) {
       if (dimensionFieldDef.bin) {
         if (impute) {
@@ -206,12 +207,12 @@ export class StackNode extends DataFlowNode {
       }
       return [vgField(dimensionFieldDef)];
     }
-    return [];
+    return groupby || [];
   }
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
-    const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, groupby, as} = this._stack;
+    const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, as} = this._stack;
 
       // Impute
     if (impute && dimensionFieldDef) {
@@ -240,25 +241,17 @@ export class StackNode extends DataFlowNode {
         value: 0
       });
     }
-    if(facetby) {
 
-      // Stack
-      transform.push({
-        type: 'stack',
-        groupby: this.getGroupbyFields().concat(facetby),
-        field,
-        sort,
-        as,
-        offset
-      });
-    }
+    // Stack
+    transform.push({
+      type: 'stack',
+      groupby: this.getGroupbyFields().concat(facetby),
+      field,
+      sort,
+      as,
+      offset
+    });
 
-    if (transform.length !== 0) {
-      return transform;
-    } else {
-
-      return [{type: 'stack', groupby, field, sort, as, offset}];
-    }
-
+    return transform;
   }
 }
