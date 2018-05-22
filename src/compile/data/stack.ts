@@ -3,7 +3,7 @@ import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate} from '../../util';
-import {VgSort, VgTransform} from '../../vega.schema';
+import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
@@ -86,8 +86,19 @@ export class StackNode extends DataFlowNode {
   public static makeFromTransform(parent: DataFlowNode, stackTransform: StackTransform) {
 
     const {stack, groupby, as, offset='zero'} = stackTransform;
-    const sort = stackTransform.sort || {'field': stack, 'order': 'ascending'};
 
+    const sortFields: string[] = [];
+    const sortOrder: VgComparatorOrder[] = [];
+    if (stackTransform.sort !== undefined) {
+      for (const sortField of stackTransform.sort) {
+        sortFields.push(sortField.field);
+        sortOrder.push(sortField.order === undefined ? 'ascending' : sortField.order as VgComparatorOrder);
+      }
+    }
+    const sort: VgSort = {
+      field: sortFields,
+      order: sortOrder,
+    };
     let normalizedAs: Array<string>;
     if (isAsValidArray(as)) {
       normalizedAs = as;
@@ -98,7 +109,7 @@ export class StackNode extends DataFlowNode {
     }
 
     return new StackNode (parent, {
-      stackField: stackTransform.stack,
+      stackField: stack,
       groupby,
       offset,
       sort,

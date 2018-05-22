@@ -119,7 +119,7 @@ export interface StackTransform {
   /**
    * Field that determines the order of leaves in the stacked charts.
    */
-  sort?: SortField ;
+  sort?: SortField[];
   /**
    * Output field names. This can be either a string or an array of strings with
    * two elements denoting the name for the fields for stack start and stack end
