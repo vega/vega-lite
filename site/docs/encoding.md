@@ -240,7 +240,6 @@ By setting the `href` channel, a mark becomes a hyperlink. The specified URL is 
 
 {% include table.html props="href" source="Encoding" %}
 
-
 {:#href-field-def}
 ### Hyperlink Field Definition
 
@@ -248,6 +247,10 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 [field definitions](#field-def) for the `href` channel can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="FieldDefWithCondition" %}
+
+The example below show how the href channel can be used to provide links to external resources with more details.
+
+<span class="vl-example" data-name="point_href"></span>
 
 {:#href-value-def}
 ### Hyperlink Value Definition

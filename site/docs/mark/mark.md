@@ -95,6 +95,8 @@ Marks can act as hyperlinks when the `href` property or [channel](encoding.html#
 
 {% include table.html props="href,cursor" source="MarkDef" %}
 
+<span class="vl-example" data-name="point_href"></span>
+
 {:#config}
 ## Mark Config
 
