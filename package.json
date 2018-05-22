@@ -109,7 +109,6 @@
   "dependencies": {
     "@types/json-stable-stringify": "^1.0.32",
     "json-stable-stringify": "^1.0.1",
-    "tslib": "^1.9.1",
     "vega-event-selector": "^2.0.0",
     "vega-typings": "^0.2.16",
     "vega-util": "^1.7.0",
