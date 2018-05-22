@@ -3,10 +3,9 @@
 import {assert} from 'chai';
 
 import {StackComponent, StackNode} from '../../../src/compile/data/stack';
-
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';
-import {VgTransform} from '../../../src/vega.schema';
+import {VgComparatorOrder, VgSort, VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: UnitModel) {
@@ -219,8 +218,8 @@ describe ('compile/data/stack', () => {
         type: 'stack',
         groupby: ['age'],
         field: 'people',
-        sort: {field: 'people', order: 'ascending'},
         offset: 'zero',
+        sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
         as: ['v1', 'v2']
       }]);
     });
@@ -237,11 +236,50 @@ describe ('compile/data/stack', () => {
         type: 'stack',
         groupby: ['age', 'gender'],
         field: 'people',
-        sort: {field: 'people', order: 'ascending'},
         offset: 'normalize',
-        'as': ["val", "val_end"]
+        sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+        as: ["val", "val_end"]
       }]);
+    });
 
+    it('should handle complete "sort"', () => {
+      const transform: Transform = {
+        stack : 'people',
+        groupby: ['age', 'gender'],
+        offset: 'normalize',
+        sort: [{'field': 'height', 'order': 'ascending'},
+               {'field': 'weight', 'order': 'descending'}],
+        as: 'val'
+      };
+      const stack = StackNode.makeFromTransform(null, transform);
+      assert.deepEqual<VgTransform[]>(stack.assemble(), [{
+        type: 'stack',
+        groupby: ['age', 'gender'],
+        field: 'people',
+        offset: 'normalize',
+        sort: {field: ['height', 'weight'], order: ['ascending', 'descending']},
+        as: ["val", "val_end"]
+      }]);
+    });
+
+    it('should handle incomplete "sort" field', () => {
+      const transform: Transform = {
+        stack : 'people',
+        groupby: ['age', 'gender'],
+        offset: 'normalize',
+        sort: [{'field': 'height'}],
+        as: 'val'
+      };
+      const stack = StackNode.makeFromTransform(null, transform);
+
+      assert.deepEqual<VgTransform[]>(stack.assemble(), [{
+        type: 'stack',
+        groupby: ['age', 'gender'],
+        field: 'people',
+        offset: 'normalize',
+        sort: {field: ['height'], order: ['ascending']},
+        as: ["val", "val_end"]
+      }]);
     });
 
   });
