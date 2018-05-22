@@ -1,7 +1,6 @@
 // Declaration and utility for variants of a field definition object
 import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -19,6 +18,7 @@ import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
+
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -588,10 +588,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (isDiscrete(fieldDef) && !fieldDef.bin) {
+      if (fieldDef.type === 'nominal') {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with discrete field.`
+          warning: `Channel ${channel} should not be used with a nominal field.`
         };
       }
       return COMPATIBLE;
