@@ -547,12 +547,12 @@ export function normalizeBin(bin: BinParams|boolean, channel: Channel) {
 
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {compatible: boolean; warning?: string;} {
+  const type = fieldDef.type;
+
   switch (channel) {
     case 'row':
     case 'column':
-      if (isContinuous(fieldDef) && !fieldDef.timeUnit) {
-        // TODO:(https://github.com/vega/vega-lite/issues/2011):
-        // with timeUnit it's not always strictly continuous
+      if (isContinuous(fieldDef)) {
         return {
           compatible: false,
           warning: log.message.facetChannelShouldBeDiscrete(channel)
@@ -576,10 +576,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'longitude2':
     case 'latitude':
     case 'latitude2':
-      if (fieldDef.type !== QUANTITATIVE) {
+      if (type !== QUANTITATIVE) {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with ${fieldDef.type} field.`
+          warning: log.message.channelShouldNotEncodeType(channel, type)
         };
       }
       return COMPATIBLE;
@@ -588,10 +588,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (fieldDef.type === 'nominal') {
+      if (type === 'nominal' || type === 'geojson') {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with a nominal field.`
+          warning: log.message.channelShouldNotEncodeType(channel, type)
         };
       }
       return COMPATIBLE;
@@ -600,7 +600,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data or geojson only'
+          warning: 'Shape channel should be used with only either nominal or geojson data'
         };
       }
       return COMPATIBLE;
