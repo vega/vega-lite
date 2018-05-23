@@ -25,6 +25,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 -   <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
 -   <span class="octicon octicon-star"></span> [Elm-Vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](http://elm-lang.org).
+-  [Altair wrapper in R](https://vegawidget.github.io/altair/)
 -   [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
 -   [Vega-Lite for Julia](https://github.com/fredo-dedup/VegaLite.jl)
 -   [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
