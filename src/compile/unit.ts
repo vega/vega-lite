@@ -9,7 +9,6 @@ import {isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
-import {EncodingSortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
