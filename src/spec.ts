@@ -17,7 +17,7 @@ import {stack} from './stack';
 import {TitleParams} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {Dict, duplicate, hash, keys, vals} from './util';
+import {Dict, duplicate, hash, keys, omit, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -568,7 +568,8 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
       // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
       ...(markDef.type === 'area' ? {opacity: 0.7} : {}),
     }),
-    encoding
+    // drop shape from encoding as this might be used to trigger point overlay
+    encoding: omit(encoding, ['shape'])
   }];
 
   // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
