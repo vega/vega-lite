@@ -32,7 +32,7 @@ For an [expression](types.html#expression) string, each datum object can be refe
 
 ## Field Predicate
 
-For a filter predicate, a `field` must be provided along with one of the predicate properties: ([`equal`](#equal-predicate), [`range`](#range-predicate), or [`oneOf`](#oneofilter)). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+For a filter predicate, a `field` must be provided along with one of the predicate properties: ([`equal`](#equal-predicate), [`less than`](#lt-predicate), [`less than or equals`](#lte-predicate), [`greater than`](#gt-predicate), [`greater than or equals`](#gte-predicate), [`range`](#range-predicate), or [`oneOf`](#oneofilter)). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#equal-predicate}
 ### Field Equal Predicate
@@ -44,6 +44,54 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 {: .suppress-error}
 ```json
 {"filter": {"field": "car_color", "equal": "red"}}
+```
+
+{:#lt-predicate}
+### Field Less Than Predicate
+
+{% include table.html props="field,lt,timeUnit" source="FieldLTPredicate" %}
+
+For example, to check if the `height` field's value is less than `180`, we can use the following filter:
+
+{: .suppress-error}
+```json
+{"filter": {"field": "height", "lt": 180}}
+```
+
+{:#lte-predicate}
+### Field Less Than or Equals Predicate
+
+{% include table.html props="field,lte,timeUnit" source="FieldLTEPredicate" %}
+
+For example, to check if the `Year` field's value is less than or equals to `"2000"`, we can use the following filter:
+
+{: .suppress-error}
+```json
+{"filter": {"timeUnit": "year", "field": "Year", "lte": "2000"}}
+```
+
+{:#gt-predicate}
+### Field Greater Than Predicate
+
+{% include table.html props="field,gt,timeUnit" source="FieldGTPredicate" %}
+
+For example, to check if the `state` field's value is greater than `"Arizona"`, we can use the following filter:
+
+{: .suppress-error}
+```json
+{"filter": {"field": "state", "gt": "Arizona"}}
+```
+
+{:#gte-predicate}
+### Field Greater Than or Equals Predicate
+
+{% include table.html props="field,gte,timeUnit" source="FieldGTEPredicate" %}
+
+For example, to check if the `height` field's value is greater than or equals to `0`, we can use the following filter:
+
+{: .suppress-error}
+```json
+{"filter": {"field": "height", "gte": 0}}
 ```
 
 {:#range-predicate}
