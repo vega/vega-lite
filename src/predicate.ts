@@ -79,8 +79,6 @@ export interface FieldLTPredicate {
 }
 
 export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
-  // if (predicate && !!predicate.field && predicate.lt !== undefined)
-  //   console.log(predicate)
   return predicate && !!predicate.field && predicate.lt !== undefined;
 }
 
