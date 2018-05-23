@@ -3219,7 +3219,7 @@
       ],
       "type": "object"
     },
-    "FacetedCompositeUnitSpecAlias": {
+    "FacetedUnitSpecAlias": {
       "additionalProperties": false,
       "properties": {
         "data": {
