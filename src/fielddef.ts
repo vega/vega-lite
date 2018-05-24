@@ -16,6 +16,7 @@ import {Scale} from './scale';
 import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
@@ -298,11 +299,13 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
-  /** Override which aggregate to use. Needed for unaggregated domain. */
-  aggregate?: AggregateOp;
 }
 
-export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
+function isOpFieldDef(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef): fieldDef is WindowFieldDef | AggregatedFieldDef {
+  return !!fieldDef['op'];
+}
+
+export function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -313,18 +316,20 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
     let fn: string = undefined;
 
     if (!opt.nofn) {
-      if (fieldDef.bin) {
+      if (isOpFieldDef(fieldDef)) {
+        fn = fieldDef.op;
+      } else if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
-        fn = String(opt.aggregate || fieldDef.aggregate);
+        fn = String(fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }
     }
 
     if (fn) {
-      field = `${fn}_${field}`;
+      field = field ? `${fn}_${field}` : fn;
     }
   }
 
