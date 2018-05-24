@@ -1,11 +1,11 @@
 import {Axis} from '../axis';
-import {Channel, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
+import {Channel, GEOPOSITION_CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
-import {isMarkDef, Mark, MarkDef} from '../mark';
+import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
@@ -24,13 +24,7 @@ import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
-import {
-  assembleTopLevelSignals,
-  assembleUnitSelectionData,
-  assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals,
-  parseUnitSelection,
-} from './selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 
 /**
@@ -79,6 +73,15 @@ export class UnitModel extends ModelWithField {
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
+  }
+
+  public get hasProjection(): boolean {
+    const {encoding} = this;
+    const isGeoShapeMark = this.mark === GEOSHAPE;
+    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(
+      channel => isFieldDef(encoding[channel])
+    );
+    return isGeoShapeMark || hasGeoPosition;
   }
 
   /**
