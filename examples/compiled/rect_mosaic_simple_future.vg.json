@@ -132,19 +132,19 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "y"
+                        "field": "x"
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "y2"
+                        "field": "x2"
                     },
                     "y": {
                         "scale": "y",
-                        "field": "x"
+                        "field": "y"
                     },
                     "y2": {
                         "scale": "y",
-                        "field": "x2"
+                        "field": "y2"
                     }
                 }
             }
@@ -157,8 +157,8 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "y",
-                    "y2"
+                    "x",
+                    "x2"
                 ]
             },
             "range": [
@@ -176,8 +176,8 @@
             "domain": {
                 "data": "source_0",
                 "fields": [
-                    "x",
-                    "x2"
+                    "y",
+                    "y2"
                 ]
             },
             "range": [
