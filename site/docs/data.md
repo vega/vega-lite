@@ -23,7 +23,7 @@ Vega-Lite's `data` property describes the visualization's data source as part of
 Inline Data can be specified using `values` property.
 Here is a list of all properties of an inline `data` source:
 
-{% include table.html props="values,format" source="InlineData" %}
+{% include table.html props="values,name,format" source="InlineData" %}
 
 For example, the following specification embeds an inline data table with nine rows and two columns (`a` and `b`).
 
@@ -46,7 +46,7 @@ Data can be loaded from a URL using the `url` property. In addition, the format 
 
 Here is a list of all properties describing a `data` source from URL:
 
-{% include table.html props="url,format" source="UrlData" %}
+{% include table.html props="url,name,format" source="UrlData" %}
 
 For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly `"json"` by default.
 
