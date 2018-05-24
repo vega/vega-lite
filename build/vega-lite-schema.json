@@ -3380,7 +3380,11 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "An object that specifies the format for parsing the data values."
+          "description": "An object that specifies the format for parsing the data."
+        },
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
         },
         "values": {
           "$ref": "#/definitions/InlineDataset",
@@ -7337,7 +7341,11 @@
       "properties": {
         "format": {
           "$ref": "#/definitions/DataFormat",
-          "description": "An object that specifies the format for parsing the data file."
+          "description": "An object that specifies the format for parsing the data."
+        },
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
         },
         "url": {
           "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
