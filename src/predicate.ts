@@ -9,9 +9,9 @@ import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit,
 import {logicalExpr} from './util';
 
 export type Predicate =
-  // a) FieldPrecidate (but we don't type FieldFilter here so the schema has no nesting
+  // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
   // and thus the documentation shows all of the types clearly)
-  FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate |
+  FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate |
   // b) Selection Predicate
   SelectionPredicate |
   // c) Vega Expression string
@@ -19,7 +19,7 @@ export type Predicate =
 
 
 
-export type FieldPredicate = FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate;
+export type FieldPredicate = FieldEqualPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate |FieldRangePredicate | FieldOneOfPredicate;
 
 export interface SelectionPredicate {
   /**
@@ -33,6 +33,7 @@ export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): pred
 }
 
 export interface FieldPredicateBase {
+
   /**
    * Time unit for the field to be filtered.
    */
@@ -56,6 +57,64 @@ export interface FieldEqualPredicate extends FieldPredicateBase {
 
 export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
   return predicate && !!predicate.field && predicate.equal !== undefined;
+}
+
+export interface FieldLTPredicate extends FieldPredicateBase {
+  // TODO: support aggregate
+
+  /**
+   * The value that the field should be less than.
+   */
+  lt: string | number | DateTime;
+
+}
+
+export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
+  return predicate && !!predicate.field && predicate.lt !== undefined;
+}
+
+
+export interface FieldLTEPredicate extends FieldPredicateBase {
+  // TODO: support aggregate
+
+  /**
+   * The value that the field should be less than or equals to.
+   */
+  lte: string | number | DateTime;
+
+}
+
+export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
+  return predicate && !!predicate.field && predicate.lte !== undefined;
+}
+
+
+export interface FieldGTPredicate extends FieldPredicateBase {
+  // TODO: support aggregate
+
+  /**
+   * The value that the field should be greater than.
+   */
+  gt: string | number | DateTime;
+
+}
+
+export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
+  return predicate && !!predicate.field && predicate.gt !== undefined;
+}
+
+export interface FieldGTEPredicate extends FieldPredicateBase {
+  // TODO: support aggregate
+
+  /**
+   * The value that the field should be greater than or equals to.
+   */
+  gte: string | number | DateTime;
+
+}
+
+export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
+  return predicate && !!predicate.field && predicate.gte !== undefined;
 }
 
 export interface FieldRangePredicate extends FieldPredicateBase {
@@ -98,8 +157,8 @@ export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPr
   );
 }
 
-export function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate {
-  return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate);
+export function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate {
+  return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTEPredicate(predicate);
 }
 
 /**
@@ -129,6 +188,18 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange=true
 
   if (isFieldEqualPredicate(predicate)) {
     return fieldExpr + '===' + valueExpr(predicate.equal, predicate.timeUnit);
+  } else if (isFieldLTPredicate(predicate)) {
+    const upper = predicate.lt;
+    return `${fieldExpr}<${valueExpr(upper, predicate.timeUnit)}`;
+  } else if (isFieldGTPredicate(predicate)) {
+    const lower = predicate.gt;
+    return `${fieldExpr}>${valueExpr(lower, predicate.timeUnit)}`;
+  } else if (isFieldLTEPredicate(predicate)) {
+    const upper = predicate.lte;
+    return `${fieldExpr}<=${valueExpr(upper, predicate.timeUnit)}`;
+  } else if (isFieldGTEPredicate(predicate)) {
+    const lower = predicate.gte;
+    return `${fieldExpr}>=${valueExpr(lower, predicate.timeUnit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
     // "oneOf" was formerly "in" -- so we need to add backward compatibility
     const oneOf: FieldOneOfPredicate[] = predicate.oneOf || predicate['in'];

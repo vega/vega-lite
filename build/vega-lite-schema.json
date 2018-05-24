@@ -2845,6 +2845,134 @@
       ],
       "type": "object"
     },
+    "FieldGTEPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "gte": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be greater than or equals to."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "gte"
+      ],
+      "type": "object"
+    },
+    "FieldGTPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "gt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be greater than."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "gt"
+      ],
+      "type": "object"
+    },
+    "FieldLTEPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "lte": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be less than or equals to."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "lte"
+      ],
+      "type": "object"
+    },
+    "FieldLTPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "lt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "The value that the field should be less than."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        }
+      },
+      "required": [
+        "field",
+        "lt"
+      ],
+      "type": "object"
+    },
     "FieldOneOfPredicate": {
       "additionalProperties": false,
       "properties": {
@@ -5159,6 +5287,18 @@
         },
         {
           "$ref": "#/definitions/FieldOneOfPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldLTPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldGTPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldLTEPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldGTEPredicate"
         },
         {
           "$ref": "#/definitions/SelectionPredicate"
