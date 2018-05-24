@@ -76,7 +76,7 @@ For example, to check if the `Year` field's value is less than or equals to `"20
 {% include table.html props="gt" source="FieldGTPredicate" %}
 
 To check if the `state` field's value is greater than `"Arizona"` by string comparison, we can use the following filter:
-(Note: Standard Javascript string comparison is done, ie., "A" < "a")
+(Note: Standard Javascript string comparison is done, ie., "A" < "B", but "B" < "a")
 
 {: .suppress-error}
 ```json
@@ -98,7 +98,7 @@ For example, to check if the `height` field's value is greater than or equals to
 {:#range-predicate}
 ### Field Range Predicate
 
-{% include table.html props="field,range,timeUnit" source="FieldRangePredicate" %}
+{% include table.html props="range" source="FieldRangePredicate" %}
 
 **Examples**
 
@@ -110,7 +110,7 @@ For example, to check if the `height` field's value is greater than or equals to
 {:#one-of-predicate}
 ### Field One-Of Predicate
 
-{% include table.html props="field,oneOf,timeUnit" source="FieldOneOfPredicate" %}
+{% include table.html props="oneOf" source="FieldOneOfPredicate" %}
 
 For example, `{"filter": {"field": "car_color", "oneOf":["red", "yellow"]}}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
 
