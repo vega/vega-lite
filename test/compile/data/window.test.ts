@@ -17,8 +17,8 @@ describe('compile/data/window', () => {
       sort:
         [
           {
-            field:'f',
-            order:'ascending'
+            field: 'f',
+            order: 'ascending'
           }
         ],
       groupby: ['f'],
@@ -30,12 +30,48 @@ describe('compile/data/window', () => {
       ops: ['row_number'],
       fields: [null],
       params: [null],
-      sort : {
+      sort: {
         field: ["f"],
         order: ["ascending"],
       },
       ignorePeers: false,
       as: ['ordered_row_number'],
+      frame: [null, 0],
+      groupby: ['f']
+    });
+  });
+
+  it('should augment as with default as', () => {
+    const transform: Transform = {
+      window: [
+        {
+          op: 'row_number',
+          as: undefined // intentionally omit for testing
+        },
+      ],
+      ignorePeers: false,
+      sort:
+        [
+          {
+            field: 'f',
+            order: 'ascending'
+          }
+        ],
+      groupby: ['f'],
+      frame: [null, 0]
+    };
+    const window = new WindowTransformNode(null, transform);
+    assert.deepEqual(window.assemble(), {
+      type: 'window',
+      ops: ['row_number'],
+      fields: [null],
+      params: [null],
+      sort: {
+        field: ["f"],
+        order: ["ascending"],
+      },
+      ignorePeers: false,
+      as: ['row_number'],
       frame: [null, 0],
       groupby: ['f']
     });
