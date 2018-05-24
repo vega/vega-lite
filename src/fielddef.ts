@@ -324,7 +324,7 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
     }
 
     if (fn) {
-      field = `${fn}_${field}`;
+      field = field ? `${fn}_${field}` : fn;
     }
   }
 

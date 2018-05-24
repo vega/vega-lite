@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {vgField} from '../../fielddef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
@@ -26,8 +27,7 @@ export class WindowTransformNode extends DataFlowNode {
   }
 
   private getDefaultName(windowFieldDef: WindowFieldDef): string {
-    const {as, op, field} = windowFieldDef;
-    return as || (field ? `${op}_${field}` : op);
+    return windowFieldDef.as || vgField(windowFieldDef);
   }
 
   public assemble(): VgWindowTransform {
