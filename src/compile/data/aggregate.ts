@@ -104,13 +104,14 @@ export class AggregateNode extends DataFlowNode {
     const meas = {};
 
     for (const s of t.aggregate) {
-      if (s.op) {
-        if (s.op === 'count') {
+      const {op, field, as} = s;
+      if (op) {
+        if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = s.as || vgField(s);
+          meas['*']['count'] = as || vgField(s, {op});
         } else {
-          meas[s.field] = meas[s.field] || {};
-          meas[s.field][s.op] = s.as || vgField(s);
+          meas[field] = meas[field] || {};
+          meas[field][op] = as || vgField(s, {op});
         }
       }
     }
