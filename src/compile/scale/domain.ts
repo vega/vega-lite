@@ -4,7 +4,7 @@ import {binToString, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef, ScaleFieldDef} from '../../fielddef';
+import {FieldDef, ScaleFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {EncodingSortField, isSortArray, isSortField} from '../../sort';
@@ -192,12 +192,13 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
+    const {field} = fieldDef;
     return [{
       data,
-      field: model.vgField(channel, {op: 'min'})
+      field: vgField({field, aggregate: 'min'})
     }, {
       data,
-      field: model.vgField(channel, {op: 'max'})
+      field: vgField({field, aggregate: 'max'})
     }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
