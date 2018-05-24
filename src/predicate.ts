@@ -33,6 +33,7 @@ export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): pred
 }
 
 export interface FieldPredicateBase {
+
   /**
    * Time unit for the field to be filtered.
    */
@@ -58,18 +59,8 @@ export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPr
   return predicate && !!predicate.field && predicate.equal !== undefined;
 }
 
-export interface FieldLTPredicate {
+export interface FieldLTPredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * Time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered.
-   */
-  field: string;
 
   /**
    * The value that the field should be less than.
@@ -83,18 +74,8 @@ export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicat
 }
 
 
-export interface FieldLTEPredicate {
+export interface FieldLTEPredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * Time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered.
-   */
-  field: string;
 
   /**
    * The value that the field should be less than or equals to.
@@ -108,18 +89,8 @@ export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredic
 }
 
 
-export interface FieldGTPredicate {
+export interface FieldGTPredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * Time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered.
-   */
-  field: string;
 
   /**
    * The value that the field should be greater than.
@@ -132,18 +103,8 @@ export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicat
   return predicate && !!predicate.field && predicate.gt !== undefined;
 }
 
-export interface FieldGTEPredicate {
+export interface FieldGTEPredicate extends FieldPredicateBase {
   // TODO: support aggregate
-
-  /**
-   * Time unit for the field to be filtered.
-   */
-  timeUnit?: TimeUnit;
-
-  /**
-   * Field to be filtered.
-   */
-  field: string;
 
   /**
    * The value that the field should be greater than or equals to.
