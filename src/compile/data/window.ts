@@ -27,7 +27,8 @@ export class WindowTransformNode extends DataFlowNode {
   }
 
   private getDefaultName(windowFieldDef: WindowFieldDef): string {
-    return windowFieldDef.as || vgField(windowFieldDef);
+    const {as, op} = windowFieldDef;
+    return as || vgField(windowFieldDef, {op});
   }
 
   public assemble(): VgWindowTransform {

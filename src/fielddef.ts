@@ -16,6 +16,7 @@ import {Scale} from './scale';
 import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {WindowOnlyOp} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
@@ -298,8 +299,8 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
-  /** Override which aggregate to use. Needed for unaggregated domain. */
-  aggregate?: AggregateOp;
+  /** Override which aggregate / window op to use. Needed for unaggregated domain. */
+  op?: AggregateOp | WindowOnlyOp;
 }
 
 export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
@@ -316,8 +317,8 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
       if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
-      } else if (fieldDef.aggregate) {
-        fn = String(opt.aggregate || fieldDef.aggregate);
+      } else if (opt.op || fieldDef.aggregate) {
+        fn = String(opt.op || fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }

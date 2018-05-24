@@ -194,10 +194,10 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     const data = model.requestDataName(MAIN);
     return [{
       data,
-      field: model.vgField(channel, {aggregate: 'min'})
+      field: model.vgField(channel, {op: 'min'})
     }, {
       data,
-      field: model.vgField(channel, {aggregate: 'max'})
+      field: model.vgField(channel, {op: 'max'})
     }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
