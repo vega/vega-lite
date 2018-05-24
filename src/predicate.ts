@@ -33,6 +33,7 @@ export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): pred
 }
 
 export interface FieldPredicateBase {
+  // TODO: support aggregate
 
   /**
    * Time unit for the field to be filtered.
@@ -46,8 +47,6 @@ export interface FieldPredicateBase {
 }
 
 export interface FieldEqualPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * The value that the field should be equal to.
    */
@@ -60,8 +59,6 @@ export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPr
 }
 
 export interface FieldLTPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * The value that the field should be less than.
    */
@@ -75,8 +72,6 @@ export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicat
 
 
 export interface FieldLTEPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * The value that the field should be less than or equals to.
    */
@@ -90,8 +85,6 @@ export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredic
 
 
 export interface FieldGTPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * The value that the field should be greater than.
    */
@@ -104,8 +97,6 @@ export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicat
 }
 
 export interface FieldGTEPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * The value that the field should be greater than or equals to.
    */
@@ -118,8 +109,6 @@ export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredic
 }
 
 export interface FieldRangePredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * An array of inclusive minimum and maximum values
    * for a field value of a data item to be included in the filtered data.
@@ -127,7 +116,6 @@ export interface FieldRangePredicate extends FieldPredicateBase {
    * @minItems 2
    */
   range: (number|DateTime|null)[];
-
 }
 
 export function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate {
@@ -140,8 +128,6 @@ export function isFieldRangePredicate(predicate: any): predicate is FieldRangePr
 }
 
 export interface FieldOneOfPredicate extends FieldPredicateBase {
-  // TODO: support aggregate
-
   /**
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
