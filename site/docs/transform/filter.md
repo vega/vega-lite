@@ -32,7 +32,7 @@ For an [expression](types.html#expression) string, each datum object can be refe
 
 ## Field Predicate
 
-For a filter predicate, a `field` must be provided along with one of the predicate properties: ([`equal`](#equal-predicate), [`less than`](#lt-predicate), [`less than or equals`](#lte-predicate), [`greater than`](#gt-predicate), [`greater than or equals`](#gte-predicate), [`range`](#range-predicate), or [`oneOf`](#one-of-predicate)). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+For a field predicate, a `field` must be provided along with one of the predicate properties: [`equal`](#equal-predicate), [`lt`](#lt-predicate) (less than), [`lte`](#lte-predicate) (less than or equal), [`gt`](#gt-predicate) (greater than), [`gte`](#gte-predicate)(greater than or equal), [`range`](#range-predicate), or [`oneOf`](#one-of-predicate). Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](types.html#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#equal-predicate}
 ### Field Equal Predicate
