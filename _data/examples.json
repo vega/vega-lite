@@ -433,7 +433,7 @@
     "Interactive Charts": [
       {
         "name": "point_href",
-        "title": "Scatterplot with External Links and Tooltips",
+        "title": "Scatterplot with External Links and Tooltips"
       },
       {
         "name": "interactive_brush",
